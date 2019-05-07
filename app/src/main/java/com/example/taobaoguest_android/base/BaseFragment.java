@@ -1,53 +1,63 @@
 package com.example.taobaoguest_android.base;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
- * Created by cuihaohao on 2019/5/7
- * Describe:
+ * Created by Administrator on 2019/3/7.
  */
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
 
+public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter> extends Fragment implements BaseMVP<V, P> {
     protected P presenter;
+    protected Unbinder unbinder;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(provideLayoutId(), null);
-        initListener();
-        presenter = providePresenter();
-        initData(view);
-        initNetWork();
-        ButterKnife.bind(this, view);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        presenter = createPresenter();
+        if (presenter != null) {
+            presenter.registerView(createView());
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayoutId(), container, false);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
-    protected abstract P providePresenter();
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initData();
+        initListener();
+    }
 
-    protected abstract int provideLayoutId();
+    public abstract int getLayoutId();
 
-    protected abstract void initNetWork();
+    public abstract void initData();
 
-    protected abstract void initData(View view);
+    public abstract void initListener();
 
-    protected abstract void initListener();
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (presenter != null) {
+            presenter.destroy();
+        }
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //释放activity的引用
-        if (presenter != null) {
-            presenter.onDestroy();
-        }
+        unbinder.unbind();
     }
-
 }

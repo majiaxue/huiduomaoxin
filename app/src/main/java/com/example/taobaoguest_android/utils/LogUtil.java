@@ -13,7 +13,10 @@ public class LogUtil {
 
     public static void e(String message) {
         if (isDebug) {
-            Log.e("tag", message);
+            while (message.length() >= 2000) {
+                Log.e("tag", message.substring(0, 2000));
+                message = message.substring(2000);
+            }
         }
     }
 

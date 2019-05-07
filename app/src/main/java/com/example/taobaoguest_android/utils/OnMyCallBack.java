@@ -7,13 +7,11 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 
 import javax.net.ssl.SSLHandshakeException;
 
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
-import retrofit2.HttpException;
 
 public class OnMyCallBack extends DisposableObserver<ResponseBody> {
     private OnDataListener listener;

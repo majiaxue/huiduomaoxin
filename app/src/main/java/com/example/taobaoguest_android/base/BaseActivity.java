@@ -1,46 +1,60 @@
 package com.example.taobaoguest_android.base;
 
+
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import com.example.taobaoguest_android.utils.AppManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
 /**
- * Created by .
+ * Created by Administrator on 2019/3/7.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter> extends Activity implements BaseMVP<V, P> {
     protected P presenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(provideLayoutId());
+        setContentView(getLayoutId());
         ButterKnife.bind(this);
-        initListener();
-        presenter = providePresenter();
+        EventBus.getDefault().register(this);
+        AppManager.getInstance().addActivity(this);
+        //创建Presenter
+        presenter = createPresenter();
+        if (presenter != null) {
+            //将View层注册到Presenter中
+            presenter.registerView(createView());
+        }
         initData();
-        initNetWork();
+        initListener();
     }
 
-    protected abstract P providePresenter();
+    public abstract int getLayoutId();
 
-    protected abstract int provideLayoutId();
+    public abstract void initData();
 
-    protected abstract void initNetWork();
+    public abstract void initListener();
 
-    protected abstract void initData();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
 
-    protected abstract void initListener();
-
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //释放activity的引用
+        EventBus.getDefault().unregister(this);
         if (presenter != null) {
-            presenter.onDestroy();
+            AppManager.getInstance().finishActivity(this);
+            //Activity销毁时的调用，让具体实现BasePresenter中onViewDestroy()方法做出决定
+            presenter.destroy();
         }
     }
 }

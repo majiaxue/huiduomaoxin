@@ -1,38 +1,191 @@
 package com.example.taobaoguest_android.mvp;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.taobaoguest_android.R;
+import com.example.taobaoguest_android.mvp.hairring.fragment.HairringFragment;
+import com.example.taobaoguest_android.mvp.home.fragment.HomeFragment;
+import com.example.taobaoguest_android.mvp.mine.fragment.MineFragment;
+import com.example.taobaoguest_android.mvp.search.fragment.SearchFragment;
+import com.example.taobaoguest_android.mvp.shopping.fragment.ShoppingFragment;
 import com.example.taobaoguest_android.utils.NetStatusUtils;
+import com.stx.xhb.xbanner.XBanner;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends FragmentActivity {
+
+    @BindView(R.id.activity_main_frame)
+    FrameLayout activityMainFrame;
+    @BindView(R.id.main_home)
+    RadioButton mainHome;
+    @BindView(R.id.main_shopping)
+    RadioButton mainShopping;
+    @BindView(R.id.main_search)
+    RadioButton mainSearch;
+    @BindView(R.id.main_hairring)
+    RadioButton mainHairring;
+    @BindView(R.id.main_mine)
+    RadioButton mainMine;
+    @BindView(R.id.main_group)
+    RadioGroup mainGroup;
+    @BindView(R.id.main_xbanner)
+    XBanner mainXbanner;
     //触碰标识
     private long exitTime = 0;
 
     private int ISFIRSTOPER = 0;
+    private FragmentManager fragmentManager;
+    private HairringFragment hairringFragment;
+    private HomeFragment homeFragment;
+    private MineFragment mineFragment;
+    private SearchFragment searchFragment;
+    private ShoppingFragment shoppingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
 
         //判断网络状态
         if (ISFIRSTOPER == 0)
             //首次开启APP,设置网络状态
-            setNetState();
+            NetStatusUtils.getInstance().setNetState(this);
         else {
             ISFIRSTOPER = 1;
         }
+
+        initData();
+        initListener();
+
+    }
+
+    private void initData() {
+        hairringFragment = new HairringFragment();
+        homeFragment = new HomeFragment();
+        mineFragment = new MineFragment();
+        searchFragment = new SearchFragment();
+        shoppingFragment = new ShoppingFragment();
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.activity_main_frame, hairringFragment)
+                .add(R.id.activity_main_frame, homeFragment)
+                .add(R.id.activity_main_frame, mineFragment)
+                .add(R.id.activity_main_frame, searchFragment)
+                .add(R.id.activity_main_frame, shoppingFragment);
+        transaction.show(homeFragment)
+                .hide(hairringFragment)
+                .hide(mineFragment)
+                .hide(searchFragment)
+                .hide(shoppingFragment)
+                .commit();
+        final List list = new ArrayList<>();
+        list.add("http://b.hiphotos.baidu.com/image/pic/item/32fa828ba61ea8d3fcd2e9ce9e0a304e241f5803.jpg");
+        list.add("http://b.hiphotos.baidu.com/image/pic/item/32fa828ba61ea8d3fcd2e9ce9e0a304e241f5803.jpg");
+        list.add("http://b.hiphotos.baidu.com/image/pic/item/32fa828ba61ea8d3fcd2e9ce9e0a304e241f5803.jpg");
+        list.add("http://b.hiphotos.baidu.com/image/pic/item/32fa828ba61ea8d3fcd2e9ce9e0a304e241f5803.jpg");
+        mainXbanner.setData(list, null);
+        mainXbanner.setmAdapter(new XBanner.XBannerAdapter() {
+            @Override
+            public void loadBanner(XBanner banner, Object model, View view, int position) {
+                ImageView img = (ImageView) view;
+                Glide.with(MainActivity.this).load(list.get(position)).into(img);
+            }
+        });
+    }
+
+    public void initListener() {
+        mainGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                switch (checkedId) {
+                    case R.id.main_home:
+                        transaction.show(homeFragment)
+                                .hide(hairringFragment)
+                                .hide(searchFragment)
+                                .hide(shoppingFragment)
+                                .hide(mineFragment)
+                                .commit();
+                        mainHome.setTextColor(Color.parseColor("#ff0000"));
+                        mainHairring.setTextColor(Color.parseColor("#000000"));
+                        mainMine.setTextColor(Color.parseColor("#000000"));
+                        mainSearch.setTextColor(Color.parseColor("#000000"));
+                        mainShopping.setTextColor(Color.parseColor("#000000"));
+                        break;
+                    case R.id.main_hairring:
+                        transaction.show(hairringFragment)
+                                .hide(homeFragment)
+                                .hide(searchFragment)
+                                .hide(shoppingFragment)
+                                .hide(mineFragment)
+                                .commit();
+                        mainHairring.setTextColor(Color.parseColor("#ff0000"));
+                        mainHome.setTextColor(Color.parseColor("#000000"));
+                        mainMine.setTextColor(Color.parseColor("#000000"));
+                        mainSearch.setTextColor(Color.parseColor("#000000"));
+                        mainShopping.setTextColor(Color.parseColor("#000000"));
+                        break;
+                    case R.id.main_search:
+                        transaction.show(searchFragment)
+                                .hide(hairringFragment)
+                                .hide(homeFragment)
+                                .hide(shoppingFragment)
+                                .hide(mineFragment)
+                                .commit();
+                        mainSearch.setTextColor(Color.parseColor("#ff0000"));
+                        mainHairring.setTextColor(Color.parseColor("#000000"));
+                        mainMine.setTextColor(Color.parseColor("#000000"));
+                        mainHome.setTextColor(Color.parseColor("#000000"));
+                        mainShopping.setTextColor(Color.parseColor("#000000"));
+                        break;
+                    case R.id.main_shopping:
+                        transaction.show(shoppingFragment)
+                                .hide(hairringFragment)
+                                .hide(searchFragment)
+                                .hide(homeFragment)
+                                .hide(mineFragment)
+                                .commit();
+                        mainShopping.setTextColor(Color.parseColor("#ff0000"));
+                        mainHairring.setTextColor(Color.parseColor("#000000"));
+                        mainMine.setTextColor(Color.parseColor("#000000"));
+                        mainSearch.setTextColor(Color.parseColor("#000000"));
+                        mainHome.setTextColor(Color.parseColor("#000000"));
+                        break;
+                    case R.id.main_mine:
+                        transaction.show(mineFragment)
+                                .hide(hairringFragment)
+                                .hide(searchFragment)
+                                .hide(shoppingFragment)
+                                .hide(homeFragment)
+                                .commit();
+                        mainMine.setTextColor(Color.parseColor("#ff0000"));
+                        mainHairring.setTextColor(Color.parseColor("#000000"));
+                        mainHome.setTextColor(Color.parseColor("#000000"));
+                        mainSearch.setTextColor(Color.parseColor("#000000"));
+                        mainShopping.setTextColor(Color.parseColor("#000000"));
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -55,89 +208,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 设置网络状态
-     */
-    public void setNetState() {
-        int netType = NetStatusUtils.getAPNType(this);
 
-        if (netType == 0) {
-            //无网络连接，打开网络设置页面
-            showSetNetworkUI(this);
-        } else if (netType == 1) {
-            //WIFI连接
-            Toast.makeText(this, "当前为WIFI连接...", Toast.LENGTH_SHORT).show();
-        } else {
-            //数据连接
-            new AlertDialog.Builder(this)
-                    .setTitle("确认网络")
-                    .setMessage("当前为蜂窝网数据连接，是否切换到WIFI网络？")
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .setPositiveButton("前往设置", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            // TODO Auto-generated method stub
-                            Intent intent = null;
-                            // 判断手机系统的版本 即API大于10 就是3.0或以上版本
-                            if (android.os.Build.VERSION.SDK_INT > 10) {
-                                intent = new Intent(
-                                        android.provider.Settings.ACTION_WIFI_SETTINGS);
-                            } else {
-                                intent = new Intent();
-                                ComponentName component = new ComponentName(
-                                        "com.android.settings",
-                                        "com.android.settings.WirelessSettings");
-                                intent.setComponent(component);
-                                intent.setAction("android.intent.action.VIEW");
-                            }
-                            dialog.dismiss();
-                            startActivity(intent);
-                        }
-                    }).show();
-        }
-    }
-
-    /**
-     * 打开设置网络界面
-     */
-    public void showSetNetworkUI(final Context context) {
-        // 提示对话框
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("网络设置提示")
-                .setMessage("网络连接不可用,是否进行设置?")
-                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        Intent intent = null;
-                        // 判断手机系统的版本 即API大于10 就是3.0或以上版本
-                        if (android.os.Build.VERSION.SDK_INT > 10) {
-                            intent = new Intent(
-                                    android.provider.Settings.ACTION_WIFI_SETTINGS);
-                        } else {
-                            intent = new Intent();
-                            ComponentName component = new ComponentName(
-                                    "com.android.settings",
-                                    "com.android.settings.WirelessSettings");
-                            intent.setComponent(component);
-                            intent.setAction("android.intent.action.VIEW");
-                        }
-                        context.startActivity(intent);
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                    }
-                }).show();
-    }
 }
