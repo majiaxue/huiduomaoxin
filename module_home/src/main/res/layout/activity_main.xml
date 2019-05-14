@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <FrameLayout
+        android:id="@+id/main_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/main_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_20"
+        android:layout_alignParentBottom="true"
+        android:clipChildren="false"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/main_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="首页"
+            android:textColor="#ff0000" />
+
+        <RadioButton
+            android:id="@+id/main_shopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="商城" />
+
+        <RadioButton
+            android:id="@+id/main_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableBottom="@drawable/ic_launcher_round"
+            android:gravity="center" />
+
+        <RadioButton
+            android:id="@+id/main_hairring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="发圈" />
+
+        <RadioButton
+            android:id="@+id/main_mine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="我的" />
+    </RadioGroup>
+
+</RelativeLayout>
