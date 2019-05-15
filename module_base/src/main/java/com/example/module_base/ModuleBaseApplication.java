@@ -2,11 +2,8 @@ package com.example.module_base;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
-import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.example.utils.LogUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -25,17 +22,6 @@ public class ModuleBaseApplication extends Application {
         Fresco.initialize(this);
         context = getApplicationContext();
 
-        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
-            @Override
-            public void onSuccess() {
-                Log.e("tag", "阿里百川初始化成功");
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Log.e("tag", "阿里百川初始化失败。code:" + i + ",msg:" + s);
-            }
-        });
     }
 
     public static Context getContext() {
