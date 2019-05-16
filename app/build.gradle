@@ -28,13 +28,13 @@ android {
         release {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
+            storeFile file('D:/workspace/taobaokeandroid/keystore.jks')
             storePassword '123456'
         }
         debug {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
+            storeFile file('D:/workspace/taobaokeandroid/keystore.jks')
             storePassword '123456'
         }
     }

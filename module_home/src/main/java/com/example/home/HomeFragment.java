@@ -1,13 +1,52 @@
 package com.example.home;
 
-import com.example.module_home.R;
-import com.example.mvp.BaseFragment;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.module_home.R;
+import com.example.module_home.R2;
+import com.example.mvp.BaseFragment;
+import com.example.view.MarqueeView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.stx.xhb.xbanner.XBanner;
+
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.Unbinder;
 
 public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView {
-    Unbinder unbinder;
 
+    Unbinder unbinder;
+    @BindView(R2.id.home_top_bg)
+    ImageView homeTopBg;
+    @BindView(R2.id.home_search)
+    LinearLayout homeSearch;
+    @BindView(R2.id.home_message)
+    LinearLayout homeMessage;
+    @BindView(R2.id.home_xbanner)
+    XBanner homeXbanner;
+    @BindView(R2.id.home_marquee)
+    MarqueeView homeMarquee;
+    @BindView(R2.id.home_see_more_top)
+    TextView homeSeeMoreTop;
+    @BindView(R2.id.home_top_rec)
+    RecyclerView homeTopRec;
+    @BindView(R2.id.taobaoke)
+    ImageView taobaoke;
+    @BindView(R2.id.home_see_more_bottom)
+    TextView homeSeeMoreBottom;
+    @BindView(R2.id.home_good_choice_rec)
+    RecyclerView homeGoodChoiceRec;
+    @BindView(R2.id.home_bottom_rec)
+    RecyclerView homeBottomRec;
+    @BindView(R2.id.home_smart_refresh)
+    SmartRefreshLayout homeSmartRefresh;
 
     @Override
     public int getLayoutId() {
@@ -16,12 +55,33 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
     @Override
     public void initData() {
-
+        //跑马灯
+        presenter.setViewSingleLine();
+        //xBanner
+        presenter.setXBanner(homeXbanner, homeTopBg);
+        //topRec
+        presenter.setRec(homeTopRec);
+        //优选recycler
+        presenter.setGoodChoiceRec(homeGoodChoiceRec);
+        //推荐recycler
+        presenter.setBottomRec(homeBottomRec);
     }
 
     @Override
     public void initClick() {
+        homeSeeMoreTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        homeSeeMoreBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -39,4 +99,26 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            //不可见
+            Log.d("HomeFragment", "hidden:" + hidden);
+            homeMarquee.stopFlipping();
+            homeXbanner.stopAutoPlay();
+        } else {
+            //可见
+            Log.d("HomeFragment", "hidden:" + hidden);
+            homeMarquee.startFlipping();
+            homeXbanner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void lodeMarquee(List<View> views) {
+        homeMarquee.setViews(views);
+    }
+
 }
