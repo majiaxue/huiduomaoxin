@@ -68,6 +68,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
                 return false;
             }
         });
+
         convert(holder, mList.get(position), position);
     }
 
