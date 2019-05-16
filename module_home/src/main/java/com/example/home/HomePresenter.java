@@ -85,15 +85,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-
-//                //1、此处使用的Glide加载图片，可自行替换自己项目中的图片加载框架
-//                //2、返回的图片路径为Object类型，你只需要强转成你传输的类型就行，切记不要胡乱强转！
-//                float dimension = mContext.getResources().getDimension(R.dimen.dp_10);
-//                RoundedCorners roundedCorners = new RoundedCorners((int) dimension);
-//                Glide.with(mContext)
-//                        .load(images.get(position))
-//                        .apply(RequestOptions.bitmapTransform(roundedCorners))
-//                        .into((ImageView) view);
                 SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
                 bannerImage.setImageResource((int) images.get(position).getXBannerUrl());
             }
@@ -128,8 +119,15 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             }
         });
+        //监听广告 item 的单击事件
+        homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+            @Override
+            public void onItemClick(XBanner banner, Object model,View view, int position) {
+                Toast.makeText(mContext, "点击了第"+position+"图片", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
+    //店铺
     public void setRec(RecyclerView homeTopRec) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
         homeTopRec.setLayoutManager(gridLayoutManager);
@@ -153,7 +151,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
 
     }
-
+    //优选
     public void setGoodChoiceRec(RecyclerView homeGoodChoiceRec) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
         homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
@@ -174,7 +172,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             }
         });
     }
-
+    //推荐
     public void setBottomRec(RecyclerView homeBottomRec) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
