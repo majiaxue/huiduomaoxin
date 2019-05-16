@@ -1,7 +1,10 @@
 package com.example.main;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;

@@ -38,9 +38,8 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         this.recyclerView = null;
     }
 
-    @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(mLayoutId, parent, false);
         return RecyclerViewHolder.getInstance(context, view);
     }

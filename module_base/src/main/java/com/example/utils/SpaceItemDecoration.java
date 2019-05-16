@@ -23,27 +23,9 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
-        //竖直方向的
-        if (layoutManager.getOrientation() == RecyclerView.VERTICAL) {
-            //最后一项需要 bottom
-            if (parent.getChildAdapterPosition(view) == layoutManager.getItemCount() - 1) {
-                outRect.bottom = topBottom;
-            }
-            outRect.top = topBottom;
-            outRect.left = leftRight;
-            outRect.right = leftRight;
-        } else {
-            //最后一项需要right
-            if (parent.getChildAdapterPosition(view) == layoutManager.getItemCount() - 1) {
-                outRect.right = leftRight;
-            }
-            outRect.top = topBottom;
-            outRect.left = leftRight;
-            outRect.bottom = topBottom;
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.left = 0;
-            }
-        }
+        outRect.top = topBottom;
+        outRect.left = leftRight;
+        outRect.right = leftRight;
+        outRect.bottom = topBottom;
     }
 }

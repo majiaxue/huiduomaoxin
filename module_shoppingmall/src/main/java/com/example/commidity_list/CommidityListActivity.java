@@ -12,6 +12,8 @@ import butterknife.BindView;
 
 @Route(path = "/shopping/commidityList")
 public class CommidityListActivity extends BaseActivity<CommidityListView, CommidityListPresenter> implements CommidityListView {
+    @BindView(R2.id.commidity_list_txt)
+    TextView commidityListTxt;
 
     @Override
     public int getLayoutId() {
@@ -25,7 +27,12 @@ public class CommidityListActivity extends BaseActivity<CommidityListView, Commi
 
     @Override
     public void initClick() {
-
+        commidityListTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jump();
+            }
+        });
     }
 
     @Override

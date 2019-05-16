@@ -1,9 +1,32 @@
 package com.example.mine;
 
-import com.example.module_home.R;
-import com.example.mvp.BaseFragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
+import com.example.module_home.R;
+import com.example.module_home.R2;
+import com.example.mvp.BaseFragment;
+import com.example.utils.LogUtil;
+import com.example.utils.SpaceItemDecoration;
+
+import butterknife.BindView;
+
+public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView, NestedScrollView.OnScrollChangeListener {
+    @BindView(R2.id.mine_rec)
+    RecyclerView mMyTool;
+    @BindView(R2.id.mine_advice)
+    ImageView mAdvice;
+    @BindView(R2.id.mine_tab_top)
+    ImageView mTabTop;
+    @BindView(R2.id.mine_parent)
+    NestedScrollView mParent;
+    @BindView(R2.id.mine_login)
+    TextView mLogin;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_mine;
@@ -11,12 +34,26 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initData() {
-
+        presenter.loadRec();
     }
 
     @Override
     public void initClick() {
+        mParent.setOnScrollChangeListener(this);
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToLogin();
+            }
+        });
+    }
 
+    @Override
+    public void loadMyTool(MyToolAdapter adapter) {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
+        mMyTool.setLayoutManager(layoutManager);
+        mMyTool.addItemDecoration(new SpaceItemDecoration(10, 10));
+        mMyTool.setAdapter(adapter);
     }
 
     @Override
@@ -27,5 +64,20 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public MinePresenter createPresenter() {
         return new MinePresenter(getContext());
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
+        int[] location = new int[2];
+        mAdvice.getLocationOnScreen(location);
+        int y = location[1];
+        LogUtil.e("Y轴：" + y);
+        if (y <= mTabTop.getHeight()) {
+            mTabTop.setVisibility(View.VISIBLE);
+            mAdvice.setVisibility(View.GONE);
+        } else {
+            mTabTop.setVisibility(View.GONE);
+            mAdvice.setVisibility(View.VISIBLE);
+        }
     }
 }

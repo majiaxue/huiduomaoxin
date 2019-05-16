@@ -4,4 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/commidity_list_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="这是CommidityListActivity"
+        android:textSize="@dimen/sp_20" />
 </LinearLayout>

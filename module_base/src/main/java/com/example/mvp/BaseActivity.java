@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.example.entity.EventBusBean;
 import com.example.utils.AppManager;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 

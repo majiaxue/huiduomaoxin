@@ -10,6 +10,10 @@ public class CommidityListPresenter extends BasePresenter<CommidityListView> {
         super(context);
     }
 
+    public void jump() {
+        ARouter.getInstance().build("/home/main").navigation();
+    }
+
     @Override
     protected void onViewDestroy() {
 
