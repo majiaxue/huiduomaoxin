@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
 
     @Override
     public void initClick() {
+        //点击登录
         loginBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,14 +61,14 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 }
             }
         });
-
+        //打开微信登陆
         loginJiantou.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.showWeiXin();
             }
         });
-
+        //打开微信登陆
         loginOtherType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

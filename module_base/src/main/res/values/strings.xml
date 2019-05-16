@@ -8,4 +8,10 @@
     <string name="no_register">还没有注册？</string>
     <string name="register_juston">立即注册</string>
     <string name="other_login">其他方式登录</string>
+    <string name="input_code">请输入验证码</string>
+    <string name="get_code">获取验证码</string>
+    <string name="invite_code">邀请码（非必填）</string>
+    <string name="register_btn">注册</string>
+    <string name="read_and_accept">已阅读并同意</string>
+    <string name="user_agreement">《用户协议》</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.mine;
 
 import android.content.Context;
+import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
