@@ -25,4 +25,8 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
             isRead = true;
         }
     }
+
+    public void getCodeNum() {
+        getView().getCodeSuccess();
+    }
 }

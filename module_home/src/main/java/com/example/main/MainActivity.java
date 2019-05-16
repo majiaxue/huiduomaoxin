@@ -1,7 +1,11 @@
 package com.example.main;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +22,9 @@ import butterknife.BindView;
 
 @Route(path = "/home/main")
 public class MainActivity extends BaseFragmentActivity<MainView, MainPresneter> implements MainView {
+    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    private final int REQUEST_CODE = 0xa123;
+
     @BindView(R2.id.main_home)
     RadioButton mainHome;
     @BindView(R2.id.main_shopping)
@@ -39,6 +46,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresneter> 
 
     @Override
     public void initData() {
+        initPermission();
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
     }
 
@@ -59,6 +67,28 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresneter> 
         mainSearch.setTextColor(Color.parseColor(position == 2 ? "#ff0000" : "#000000"));
         mainHairring.setTextColor(Color.parseColor(position == 3 ? "#ff0000" : "#000000"));
         mainMine.setTextColor(Color.parseColor(position == 4 ? "#ff0000" : "#000000"));
+    }
+
+    private void initPermission() {
+        for (String perm : perms) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, perms, REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            for (int result : grantResults) {
+                if (result == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    finish();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

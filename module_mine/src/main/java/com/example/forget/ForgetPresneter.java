@@ -24,4 +24,8 @@ public class ForgetPresneter extends BasePresenter<ForgetView> {
 
         }
     }
+
+    public void getCodeNum() {
+        getView().getCodeSuccess();
+    }
 }

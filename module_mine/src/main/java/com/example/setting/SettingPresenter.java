@@ -15,7 +15,9 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.mvp.BasePresenter;
+import com.example.update_password.UpdatePasswordActivity;
 import com.example.utils.CacheUtil;
 import com.example.utils.ImageUtil;
 import com.example.utils.OnChangeHeaderListener;
@@ -119,6 +121,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
+        getView().cropPhoto(intent);
     }
 
     public void parseUri(Intent intent) {
@@ -165,5 +168,9 @@ public class SettingPresenter extends BasePresenter<SettingView> {
             getView().showHeader(bitmap);
         } catch (Exception e) {
         }
+    }
+
+    public void preserve(String nickName, String sign) {
+
     }
 }

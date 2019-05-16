@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.module_mine">
 
+    <uses-permission android:name="android.permission.CAMERA" />    <!-- 相机权限 -->
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
@@ -22,6 +24,36 @@
 
         <activity
             android:name="com.example.code_login.CodeLoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.setting.SettingActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.update_password.UpdatePasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.bind_wechat.BindWeChatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.replace_phone.ReplacePhoneActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.wechat_login.WeChatLoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.predict.PredictActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

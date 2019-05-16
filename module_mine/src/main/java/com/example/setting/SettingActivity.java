@@ -3,14 +3,21 @@ package com.example.setting;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.bind_wechat.BindWeChatActivity;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.replace_phone.ReplacePhoneActivity;
+import com.example.update_password.UpdatePasswordActivity;
 import com.example.utils.CacheUtil;
 
 import butterknife.BindView;
@@ -26,9 +33,9 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     @BindView(R2.id.setting_update_header)
     TextView settingUpdateHeader;
     @BindView(R2.id.setting_nick_name)
-    TextView settingNickName;
+    EditText settingNickName;
     @BindView(R2.id.setting_personality_sign)
-    TextView settingPersonalitySign;
+    EditText settingPersonalitySign;
     @BindView(R2.id.setting_update_password)
     LinearLayout settingUpdatePassword;
     @BindView(R2.id.setting_bind_wechat)
@@ -66,6 +73,41 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
                 presenter.updateHeader();
             }
         });
+
+        settingClearCache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clearCache();
+            }
+        });
+
+        settingUpdatePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, UpdatePasswordActivity.class));
+            }
+        });
+
+        settingBindWechat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, BindWeChatActivity.class));
+            }
+        });
+
+        settingReplacePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, ReplacePhoneActivity.class));
+            }
+        });
+
+        settingPreserve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.preserve(settingNickName.getText().toString(), settingPersonalitySign.getText().toString());
+            }
+        });
     }
 
     @Override
@@ -85,7 +127,7 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
 
     @Override
     public void showHeader(Bitmap bitmap) {
-        settingHeader.setImageBitmap(bitmap);
+        Glide.with(this).load(bitmap).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(settingHeader);
     }
 
     @Override

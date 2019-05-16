@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.CountDownTimerUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +55,20 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
                 presenter.commit(forgetPhone.getText().toString(), forgetCode.getText().toString(), forgetPaddword.getText().toString(), forgetConfirmPassword.getText().toString());
             }
         });
+
+        forgetGetCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getCodeNum();
+            }
+        });
+    }
+
+    @Override
+    public void getCodeSuccess() {
+        forgetGetCode.setEnabled(false);
+        forgetGetCode.setBackgroundResource(R.drawable.bg_get_code_clicked);
+        CountDownTimerUtil.startTimer(this, forgetGetCode);
     }
 
     @Override

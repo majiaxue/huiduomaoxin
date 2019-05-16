@@ -56,6 +56,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 presenter.jumpToSetting();
             }
         });
+
+        mAdvice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToPredict();
+            }
+        });
     }
 
     @Override

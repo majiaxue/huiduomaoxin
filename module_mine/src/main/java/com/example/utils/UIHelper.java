@@ -50,7 +50,7 @@ public class UIHelper {
         TextView cancel = view.findViewById(R.id.pop_cache_cancel);
         TextView confirm = view.findViewById(R.id.pop_cache_confirm);
 
-        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        final PopupWindow popupWindow = new PopupWindow(view, (int) context.getResources().getDimension(R.dimen.dp_259), (int) context.getResources().getDimension(R.dimen.dp_177), true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);

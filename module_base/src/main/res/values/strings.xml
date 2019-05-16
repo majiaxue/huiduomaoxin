@@ -37,4 +37,15 @@
     <string name="preserve">保存</string>
     <string name="prompt">提示</string>
     <string name="confirm_clear_cache">确定要清除缓存吗？</string>
+    <string name="password_cannot_empty">密码不能为空</string>
+    <string name="bind_just">立即绑定</string>
+    <string name="input_old_phone">请输入原始手机号</string>
+    <string name="input_new_phone">请输入新手机号</string>
+    <string name="update_phone">修改手机号</string>
+    <string name="wechat_login">微信登录</string>
+    <string name="taobao">淘宝</string>
+    <string name="jingdong">京东</string>
+    <string name="pinduoduo">拼多多</string>
+    <string name="shangcheng">商城</string>
+    <string name="total_money">累计总收入（元）</string>
 </resources>

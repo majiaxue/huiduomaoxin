@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -66,7 +68,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_24"
         android:background="#eaeaea" />
@@ -86,10 +88,11 @@
             android:textColor="#000000"
             android:textSize="@dimen/sp_12" />
 
-        <TextView
+        <EditText
             android:id="@+id/setting_nick_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
             android:includeFontPadding="false"
             android:text="贵绳股份的萨芬"
             android:textColor="#999999"
@@ -98,7 +101,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -117,10 +120,11 @@
             android:textColor="#000000"
             android:textSize="@dimen/sp_12" />
 
-        <TextView
+        <EditText
             android:id="@+id/setting_personality_sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
             android:includeFontPadding="false"
             android:text="贵绳股份的萨芬"
             android:textColor="#999999"
@@ -129,7 +133,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -171,7 +175,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -213,7 +217,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -255,7 +259,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -285,7 +289,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="100M"
             android:textColor="#999999"
             android:textSize="@dimen/sp_12" />
 
@@ -293,7 +296,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -317,7 +320,7 @@
 
     <View
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 

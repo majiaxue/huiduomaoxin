@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.CountDownTimerUtil;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +61,20 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
                 finish();
             }
         });
+
+        registerGetCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getCodeNum();
+            }
+        });
+
+        registerUserAgreement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -68,6 +85,13 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
     @Override
     public void noRead() {
         registerCheck.setImageResource(R.drawable.icon_weiyuedu);
+    }
+
+    @Override
+    public void getCodeSuccess() {
+        registerGetCode.setEnabled(false);
+        registerGetCode.setBackgroundResource(R.drawable.bg_get_code_clicked);
+        CountDownTimerUtil.startTimer(this, registerGetCode);
     }
 
     @Override
