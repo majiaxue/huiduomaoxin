@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45">
+
+        <ImageView
+            android:id="@+id/predict_back"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_44"
+            android:padding="@dimen/dp_14"
+            android:src="@drawable/icon_fanhui" />
+
+        <RadioGroup
+            android:id="@+id/predict_radiogroup"
+            android:layout_width="@dimen/dp_250"
+            android:layout_height="@dimen/dp_30"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/predict_tb"
+                android:layout_width="@dimen/dp_65"
+                android:layout_height="match_parent"
+                android:background="@drawable/predict_left_click"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/taobao"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/sp_14" />
+
+            <RadioButton
+                android:id="@+id/predict_pdd"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="match_parent"
+                android:background="@drawable/predict_zhong_click"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/pinduoduo"
+                android:textColor="#222222"
+                android:textSize="@dimen/sp_14" />
+
+            <RadioButton
+                android:id="@+id/predict_jd"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="match_parent"
+                android:background="@drawable/predict_zhong_click"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/jingdong"
+                android:textColor="#222222"
+                android:textSize="@dimen/sp_14" />
+
+            <RadioButton
+                android:id="@+id/predict_sc"
+                android:layout_width="@dimen/dp_65"
+                android:layout_height="match_parent"
+                android:background="@drawable/predict_right_click"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/shangcheng"
+                android:textColor="#222222"
+                android:textSize="@dimen/sp_14" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/predict_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

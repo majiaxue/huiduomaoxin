@@ -1,8 +1,12 @@
 package com.example.login;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.example.code_login.CodeLoginActivity;
+import com.example.forget.ForgetActivity;
 import com.example.mvp.BasePresenter;
+import com.example.register.RegisterActivity;
 
 public class LoginPresenter extends BasePresenter<LoginView> {
     private boolean isShow = false;
@@ -33,5 +37,17 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             getView().hideWeiXin();
             isShow = true;
         }
+    }
+
+    public void toRegister() {
+        mContext.startActivity(new Intent(mContext, RegisterActivity.class));
+    }
+
+    public void toForget() {
+        mContext.startActivity(new Intent(mContext, ForgetActivity.class));
+    }
+
+    public void toCodeLogin() {
+        mContext.startActivity(new Intent(mContext, CodeLoginActivity.class));
     }
 }

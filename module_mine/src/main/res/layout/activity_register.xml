@@ -5,17 +5,18 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/register_back"
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_46"
-        android:background="#cccccc"
-        android:padding="@dimen/dp_14" />
+        android:padding="@dimen/dp_14"
+        android:src="@drawable/icon_fanhui" />
 
     <ImageView
         android:layout_width="@dimen/dp_84"
         android:layout_height="@dimen/dp_84"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_15"
-        android:background="#cccccc" />
+        android:src="@drawable/icon_touxiang10" />
 
     <LinearLayout
         android:layout_width="@dimen/dp_295"
@@ -27,9 +28,10 @@
         <ImageView
             android:layout_width="@dimen/dp_12"
             android:layout_height="@dimen/dp_16"
-            android:background="#cccccc" />
+            android:src="@drawable/icon_shoujihao" />
 
         <EditText
+            android:id="@+id/register_phone"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_34"
             android:layout_marginLeft="@dimen/dp_10"
@@ -37,6 +39,7 @@
             android:background="@null"
             android:gravity="top"
             android:hint="@string/input_phone"
+            android:inputType="phone"
             android:textColor="#333333"
             android:textColorHint="#999999"
             android:textSize="@dimen/sp_15" />
@@ -44,7 +47,7 @@
 
     <View
         android:layout_width="@dimen/dp_295"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -58,9 +61,10 @@
             android:layout_width="@dimen/dp_11"
             android:layout_height="@dimen/dp_15"
             android:layout_gravity="center_vertical"
-            android:background="#cccccc" />
+            android:src="@drawable/icon_yanzhengma" />
 
         <EditText
+            android:id="@+id/register_code"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_34"
             android:layout_gravity="bottom"
@@ -75,6 +79,7 @@
 
 
         <TextView
+            android:id="@+id/register_get_code"
             android:layout_width="@dimen/dp_70"
             android:layout_height="@dimen/dp_27"
             android:layout_gravity="center_vertical"
@@ -87,7 +92,7 @@
 
     <View
         android:layout_width="@dimen/dp_295"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -101,9 +106,10 @@
         <ImageView
             android:layout_width="@dimen/dp_14"
             android:layout_height="@dimen/dp_14"
-            android:background="#cccccc" />
+            android:src="@drawable/icon_yaoqing" />
 
         <EditText
+            android:id="@+id/register_invite_code"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_34"
             android:layout_marginLeft="@dimen/dp_8"
@@ -118,7 +124,7 @@
 
     <View
         android:layout_width="@dimen/dp_295"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
@@ -132,9 +138,10 @@
         <ImageView
             android:layout_width="@dimen/dp_12"
             android:layout_height="@dimen/dp_16"
-            android:background="#cccccc" />
+            android:src="@drawable/icon_shurumima" />
 
         <EditText
+            android:id="@+id/register_password"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_34"
             android:layout_marginLeft="@dimen/dp_10"
@@ -142,6 +149,7 @@
             android:background="@null"
             android:gravity="top"
             android:hint="@string/input_password"
+            android:inputType="textPassword"
             android:textColor="#333333"
             android:textColorHint="#999999"
             android:textSize="@dimen/sp_15" />
@@ -149,11 +157,12 @@
 
     <View
         android:layout_width="@dimen/dp_295"
-        android:layout_height="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
         android:background="#eaeaea" />
 
     <TextView
+        android:id="@+id/register_btn"
         android:layout_width="@dimen/dp_295"
         android:layout_height="@dimen/dp_45"
         android:layout_gravity="center_horizontal"
@@ -168,30 +177,33 @@
         android:layout_width="@dimen/dp_295"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/dp_13"
-            android:layout_height="@dimen/dp_13"
-            android:background="#cccccc" />
+            android:id="@+id/register_check"
+            android:layout_width="@dimen/dp_23"
+            android:layout_height="@dimen/dp_23"
+            android:padding="@dimen/dp_5"
+            android:src="@drawable/icon_yiyuedu" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_13"
+            android:layout_marginLeft="@dimen/dp_8"
             android:includeFontPadding="false"
             android:text="@string/read_and_accept"
             android:textColor="#666666"
             android:textSize="@dimen/sp_14" />
 
         <TextView
+            android:id="@+id/register_user_agreement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
+            android:text="@string/user_agreement"
             android:textColor="#fb4119"
-            android:textSize="@dimen/sp_14"
-            android:text="@string/user_agreement"/>
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 </LinearLayout>

@@ -46,4 +46,11 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
 
+    public void jumpToSetting() {
+        ARouter.getInstance().build("/mine/setting").navigation();
+    }
+
+    public void jumpToPredict() {
+        ARouter.getInstance().build("/mine/predict").navigation();
+    }
 }
