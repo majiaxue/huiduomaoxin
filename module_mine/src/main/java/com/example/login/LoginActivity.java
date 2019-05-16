@@ -75,6 +75,27 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 presenter.showWeiXin();
             }
         });
+
+        loginRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.toRegister();
+            }
+        });
+
+        loginForget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.toForget();
+            }
+        });
+
+        loginConfirmLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.toCodeLogin();
+            }
+        });
     }
 
     @Override

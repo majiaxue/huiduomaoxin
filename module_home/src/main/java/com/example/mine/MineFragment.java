@@ -26,6 +26,8 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     NestedScrollView mParent;
     @BindView(R2.id.mine_login)
     TextView mLogin;
+    @BindView(R2.id.mine_header)
+    ImageView mHeader;
 
     @Override
     public int getLayoutId() {
@@ -44,6 +46,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             @Override
             public void onClick(View v) {
                 presenter.jumpToLogin();
+            }
+        });
+
+        mHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToSetting();
             }
         });
     }

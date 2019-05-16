@@ -14,4 +14,27 @@
     <string name="register_btn">注册</string>
     <string name="read_and_accept">已阅读并同意</string>
     <string name="user_agreement">《用户协议》</string>
+    <string name="input_new_password">请输入新密码</string>
+    <string name="input_new_password_second">请再次输入新密码</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="please_input_more_info">请把信息填写完整</string>
+    <string name="password_no_same">两次输入密码不一致</string>
+    <string name="setting">设置</string>
+    <string name="code_login">验证码登录</string>
+    <string name="update_header">修改头像</string>
+    <string name="nick_name">昵称：</string>
+    <string name="personality_sign">个性签名：</string>
+    <string name="update_password">修改密码</string>
+    <string name="to_update">去修改</string>
+    <string name="bind_wechat">绑定微信</string>
+    <string name="to_bind">去绑定</string>
+    <string name="replace_phonenum">更换手机号</string>
+    <string name="to_replace">去更换</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="about_us">关于我们</string>
+    <string name="logout">退出登录</string>
+    <string name="preserve">保存</string>
+    <string name="prompt">提示</string>
+    <string name="confirm_clear_cache">确定要清除缓存吗？</string>
 </resources>
