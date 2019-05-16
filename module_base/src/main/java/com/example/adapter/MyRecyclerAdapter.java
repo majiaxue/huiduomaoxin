@@ -16,6 +16,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     private LayoutInflater inflater;
     private OnItemClickListener listener;
     private OnItemLongClickListener longClickListener;
+    public ViewOnClickListener viewOnClickListener;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -38,9 +39,8 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         this.recyclerView = null;
     }
 
-    @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(mLayoutId, parent, false);
         return RecyclerViewHolder.getInstance(context, view);
     }
@@ -96,5 +96,13 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public void setOnItemLongClick(OnItemLongClickListener longClickListener) {
         this.longClickListener = longClickListener;
+    }
+
+    public interface ViewOnClickListener {
+        void ViewOnClick(View view, int position);
+    }
+
+    public void setViewOnClickListener(ViewOnClickListener listener) {
+        this.viewOnClickListener = listener;
     }
 }

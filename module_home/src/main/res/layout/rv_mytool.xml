@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/rv_mytool_img"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:src="@drawable/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/rv_mytool_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:includeFontPadding="false"
+        android:text="我的收藏"
+        android:textColor="#363636"
+        android:textSize="@dimen/sp_13" />
+</LinearLayout>

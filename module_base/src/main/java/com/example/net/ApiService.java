@@ -17,5 +17,15 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST
-    Observable<ResponseBody> getData(@Url String url, @FieldMap Map<String, String> map);
+    Observable<ResponseBody> postData(@Url String url, @FieldMap Map map);
+
+    @FormUrlEncoded
+    @POST
+    Observable<ResponseBody> postDataWithout(@Url String url);
+
+    @GET
+    Observable<ResponseBody> getData(@Url String url, @QueryMap Map map);
+
+    @GET
+    Observable<ResponseBody> getDataWithout(@Url String url);
 }
