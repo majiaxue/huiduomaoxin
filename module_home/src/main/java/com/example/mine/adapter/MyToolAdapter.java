@@ -1,4 +1,4 @@
-package com.example.mine;
+package com.example.mine.adapter;
 
 import android.content.Context;
 import android.widget.TextView;
