@@ -117,6 +117,22 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("HomeFragment", "不可见");
+        homeMarquee.stopFlipping();
+        homeXbanner.stopAutoPlay();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("HomeFragment","可见");
+        homeMarquee.startFlipping();
+        homeXbanner.startAutoPlay();
+    }
+
+    @Override
     public void lodeMarquee(List<View> views) {
         homeMarquee.setViews(views);
     }

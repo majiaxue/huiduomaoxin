@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     android:orientation="vertical">
 
     <FrameLayout
@@ -29,23 +28,29 @@
             android:textColor="#ff0000" />
 
         <RadioButton
-            android:id="@+id/main_shopping"
+            android:id="@+id/main_classify"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
-            android:text="商城" />
+            android:text="分类" />
 
-        <RadioButton
-            android:id="@+id/main_search"
+        <LinearLayout
+            android:id="@+id/main_multi_user_mall"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_5"
             android:layout_weight="1"
-            android:button="@null"
-            android:drawableBottom="@drawable/ic_launcher_round"
-            android:gravity="center" />
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商城" />
+
+        </LinearLayout>
 
         <RadioButton
             android:id="@+id/main_hairring"

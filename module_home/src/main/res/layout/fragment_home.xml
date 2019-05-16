@@ -190,7 +190,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp_m_25"
                         android:background="@drawable/bg_corner_radius10"
-                        android:orientation="vertical">
+                        android:elevation="@dimen/dp_5">
 
                         <ImageView
                             android:id="@+id/diamond"

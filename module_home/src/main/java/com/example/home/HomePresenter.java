@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
@@ -122,11 +124,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
         //监听广告 item 的单击事件
         homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
             @Override
-            public void onItemClick(XBanner banner, Object model,View view, int position) {
-                Toast.makeText(mContext, "点击了第"+position+"图片", Toast.LENGTH_SHORT).show();
+            public void onItemClick(XBanner banner, Object model, View view, int position) {
+                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     //店铺
     public void setRec(RecyclerView homeTopRec) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
@@ -151,6 +154,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
 
     }
+
     //优选
     public void setGoodChoiceRec(RecyclerView homeGoodChoiceRec) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
@@ -172,6 +176,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             }
         });
     }
+
     //推荐
     public void setBottomRec(RecyclerView homeBottomRec) {
 
@@ -192,12 +197,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
                 Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/module_shoppingmall/CommodityDetailsActivity").navigation();
             }
         });
         recommendRecAdapter.setOnGetViewClickListener(new RecommendRecAdapter.OnGetViewClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/module_shoppingmall/CommodityDetailsActivity").navigation();
             }
         });
     }
