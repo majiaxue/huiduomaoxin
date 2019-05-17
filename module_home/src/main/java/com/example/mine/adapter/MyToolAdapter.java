@@ -17,7 +17,6 @@ public class MyToolAdapter extends MyRecyclerAdapter<String> {
 
     @Override
     public void convert(RecyclerViewHolder holder, String data, int position) {
-        LogUtil.e("" + data);
         holder.setText(R.id.rv_mytool_txt, data);
     }
 }

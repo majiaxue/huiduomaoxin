@@ -20,16 +20,12 @@ public class MinePresenter extends BasePresenter<MineView> {
     public void loadRec() {
         List dataList = new ArrayList();
         dataList.add("我的收藏");
-        dataList.add("邀请好友");
+        dataList.add("浏览记录");
         dataList.add("联系客服");
-        dataList.add("新手攻略");
-        dataList.add("我的足迹");
-        dataList.add("加权分红");
-        dataList.add("购物车");
-        dataList.add("订单找回");
+        dataList.add("消息通知");
         dataList.add("帮助中心");
-        dataList.add("关于我们");
-        dataList.add("区块链");
+        dataList.add("订单找回");
+
         MyToolAdapter myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
         if (getView() != null) {
             getView().loadMyTool(myToolAdapter);

@@ -7,9 +7,8 @@
 
     <ImageView
         android:id="@+id/rv_mytool_img"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_round" />
 
     <TextView
@@ -19,6 +18,6 @@
         android:layout_marginTop="@dimen/dp_10"
         android:includeFontPadding="false"
         android:text="我的收藏"
-        android:textColor="#363636"
-        android:textSize="@dimen/sp_13" />
+        android:textColor="#222222"
+        android:textSize="@dimen/sp_12" />
 </LinearLayout>
