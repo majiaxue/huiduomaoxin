@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.home.adapter.GoodChoiceRecAdapter;
@@ -22,7 +21,7 @@ import com.example.home.adapter.RecommendRecAdapter;
 import com.example.home.bean.GoodChoiceBean;
 import com.example.home.bean.RecommendBean;
 import com.example.home.bean.TopBannerBean;
-import com.example.home.bean.TopRecBean;
+import com.example.entity.BaseRecImageAndTextBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -38,7 +37,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<String> data;
     private List<View> views = new ArrayList<>();
     private List<TopBannerBean> images;
-    private List<TopRecBean> strings;
+    private List<BaseRecImageAndTextBean> strings;
     private List<GoodChoiceBean> goodList;
     private List<RecommendBean> recommendBeanList;
 
@@ -136,10 +135,10 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRec.setLayoutManager(gridLayoutManager);
 
         strings = new ArrayList<>();
-        strings.add(new TopRecBean("淘宝", R.drawable.tb));
-        strings.add(new TopRecBean("拼多多", R.drawable.pdd));
-        strings.add(new TopRecBean("京东", R.drawable.jd));
-        strings.add(new TopRecBean("天猫", R.drawable.tm));
+        strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.tb));
+        strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.pdd));
+        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.jd));
+        strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.tm));
 
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);

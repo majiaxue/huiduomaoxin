@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class TopBannerBean extends SimpleBannerInfo {
 
-    int url;
+    private int url;
 
     public TopBannerBean(int url) {
         this.url = url;

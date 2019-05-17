@@ -1,17 +1,15 @@
-package com.example.home.bean;
-
-import android.media.Image;
+package com.example.entity;
 
 /**
  * Created by cuihaohao on 2019/5/15
  * Describe:
  */
-public class TopRecBean {
+public class BaseRecImageAndTextBean {
 
-    String name;
-    int image;
+    private String name;
+    private int image;
 
-    public TopRecBean(String name, int image) {
+    public BaseRecImageAndTextBean(String name, int image) {
         this.name = name;
         this.image = image;
     }

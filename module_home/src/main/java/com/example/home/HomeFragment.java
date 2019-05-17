@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.view.CustomHeader;
 import com.example.view.MarqueeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.stx.xhb.xbanner.XBanner;
@@ -65,6 +66,11 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
         //推荐recycler
         presenter.setBottomRec(homeBottomRec);
+
+        //下拉刷新样式
+        CustomHeader customHeader = new CustomHeader(getActivity());
+        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
+        homeSmartRefresh.setRefreshHeader(customHeader);
     }
 
     @Override
@@ -127,7 +133,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("HomeFragment","可见");
+        Log.d("HomeFragment", "可见");
         homeMarquee.startFlipping();
         homeXbanner.startAutoPlay();
     }

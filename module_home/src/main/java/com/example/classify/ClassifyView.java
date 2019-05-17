@@ -1,4 +1,4 @@
-package com.example.shopping;
+package com.example.classify;
 
 import com.example.mvp.IView;
 

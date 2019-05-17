@@ -23,7 +23,7 @@ android {
             }
         }
         //解决65535
-        multiDexEnabled true
+//        multiDexEnabled true
     }
 
     signingConfigs {
@@ -36,8 +36,8 @@ android {
         debug {
             keyAlias 'key'
             keyPassword '123456'
-            storePassword '123456'
             storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
+            storePassword '123456'
         }
     }
 
@@ -64,6 +64,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //    implementation 'com.android.support:multidex:1.0.3'
     implementation project(':module_base')
     implementation project(':module_home')
     implementation project(':module_mine')

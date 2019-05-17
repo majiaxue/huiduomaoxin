@@ -13,62 +13,46 @@
     <RadioGroup
         android:id="@+id/main_group"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:clipChildren="false"
+        android:layout_height="@dimen/dp_45"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/main_home"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="首页"
-            android:textColor="#ff0000" />
+            style="@style/main_bottom_back"
+            android:checked="true"
+            android:drawableTop="@drawable/bg_home"
+            android:paddingTop="@dimen/dp_7" />
 
         <RadioButton
             android:id="@+id/main_classify"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="分类" />
+            style="@style/main_bottom_back"
+            android:drawableTop="@drawable/bg_classify"
+            android:paddingTop="@dimen/dp_7" />
 
         <LinearLayout
             android:id="@+id/main_multi_user_mall"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/main_bottom_back"
             android:gravity="center"
             android:orientation="vertical">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="商城" />
+            <ImageView
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_33"
+                android:src="@drawable/shangcheng" />
 
         </LinearLayout>
 
         <RadioButton
             android:id="@+id/main_hairring"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="发圈" />
+            style="@style/main_bottom_back"
+            android:drawableTop="@drawable/bg_hairring"
+            android:paddingTop="@dimen/dp_7" />
 
         <RadioButton
             android:id="@+id/main_mine"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="我的" />
+            style="@style/main_bottom_back"
+            android:drawableTop="@drawable/bg_mine"
+            android:paddingTop="@dimen/dp_7" />
     </RadioGroup>
 
 </LinearLayout>

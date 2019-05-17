@@ -1,4 +1,4 @@
-package com.example.shopping;
+package com.example.classify;
 
 import com.example.module_home.R;
 import com.example.mvp.BaseFragment;

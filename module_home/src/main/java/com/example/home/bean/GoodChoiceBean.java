@@ -5,10 +5,10 @@ package com.example.home.bean;
  * Describe:
  */
 public class GoodChoiceBean {
-    int image;
-    String name;
-    String preferential_price;
-    String original_price;
+    private int image;
+    private String name;
+    private String preferential_price;
+    private String original_price;
 
     public GoodChoiceBean(int image, String name, String preferential_price, String original_price) {
         this.image = image;
