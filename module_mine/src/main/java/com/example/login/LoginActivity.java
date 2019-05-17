@@ -1,10 +1,8 @@
 package com.example.login;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +12,10 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
+/**
+ * 登录
+ */
 @Route(path = "/mine/login")
 public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> implements LoginView {
     @BindView(R2.id.login_register)
@@ -75,21 +75,21 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 presenter.showWeiXin();
             }
         });
-
+        //注册
         loginRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.toRegister();
             }
         });
-
+        //忘记密码
         loginForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.toForget();
             }
         });
-
+        //手机验证登录
         loginConfirmLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,14 +97,14 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
             }
         });
     }
-
+    //显示微信登录
     @Override
     public void showWeiXin() {
         weiXin.setVisibility(View.VISIBLE);
         loginOtherType.setVisibility(View.INVISIBLE);
         loginJiantou.setImageResource(R.drawable.icon_jiantou);
     }
-
+    //隐藏微信登录
     @Override
     public void hideWeiXin() {
         loginOtherType.setVisibility(View.VISIBLE);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mine_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,7 +26,7 @@
             android:layout_width="@dimen/dp_41"
             android:layout_height="@dimen/dp_41"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/dp_7"
+            android:layout_marginTop="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_5"
             android:padding="@dimen/dp_10"
             android:src="@drawable/shezhi" />
@@ -38,7 +37,7 @@
             android:layout_width="@dimen/dp_345"
             android:layout_height="@dimen/dp_171"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_51"
+            android:layout_marginTop="@dimen/dp_66"
             android:background="@drawable/bg_mine_top"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -46,12 +45,29 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/mine_header"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_79"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_m_35"
+                android:src="@drawable/header_di" />
+
+            <ImageView
+                android:id="@+id/mine_header"
+                android:layout_width="@dimen/dp_66"
+                android:layout_height="@dimen/dp_65"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_m_27"
+                android:scaleType="fitXY"
                 android:src="@drawable/vhjfg" />
+
+            <ImageView
+                android:id="@+id/mine_lv"
+                android:layout_width="@dimen/dp_55"
+                android:layout_height="@dimen/dp_20"
+                android:layout_alignLeft="@id/mine_header"
+                android:layout_marginLeft="@dimen/dp_41"
+                android:layout_marginTop="@dimen/dp_18"
+                android:src="@drawable/lv_jin" />
 
             <TextView
                 android:id="@+id/mine_name"
@@ -470,6 +486,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_10"
                 android:background="#ededed" />
 
             <android.support.v7.widget.RecyclerView

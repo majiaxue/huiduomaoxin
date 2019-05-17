@@ -22,6 +22,9 @@ import com.example.utils.CacheUtil;
 
 import butterknife.BindView;
 
+/**
+ * 设置
+ */
 @Route(path = "/mine/setting")
 public class SettingActivity extends BaseActivity<SettingView, SettingPresenter> implements SettingView {
     @BindView(R2.id.setting_back)

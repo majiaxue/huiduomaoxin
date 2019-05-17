@@ -1,21 +1,20 @@
 package com.example.register;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
-import com.example.utils.LogUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
+/**
+ * 注册
+ */
 public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresenter> implements RegisterView {
     @BindView(R2.id.register_back)
     ImageView registerBack;
@@ -48,6 +47,7 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
 
     @Override
     public void initClick() {
+        //阅读协议勾选
         registerCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +61,7 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
                 finish();
             }
         });
-
+        //获取验证码
         registerGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

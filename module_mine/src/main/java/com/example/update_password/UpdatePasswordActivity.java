@@ -13,6 +13,9 @@ import com.example.mvp.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 修改密码
+ */
 public class UpdatePasswordActivity extends BaseActivity<UpdatePasswordView, UpdatePasswordPresenter> implements UpdatePasswordView {
     @BindView(R2.id.include_back)
     ImageView includeBack;

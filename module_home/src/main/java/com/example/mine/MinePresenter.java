@@ -3,6 +3,7 @@ package com.example.mine;
 import android.content.Context;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.entity.BaseRecImageAndTextBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
@@ -18,13 +19,13 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void loadRec() {
-        List dataList = new ArrayList();
-        dataList.add("我的收藏");
-        dataList.add("浏览记录");
-        dataList.add("联系客服");
-        dataList.add("消息通知");
-        dataList.add("帮助中心");
-        dataList.add("订单找回");
+        List<BaseRecImageAndTextBean> dataList = new ArrayList();
+        dataList.add(new BaseRecImageAndTextBean("我的收藏", R.drawable.shoucang));
+        dataList.add(new BaseRecImageAndTextBean("浏览记录", R.drawable.liulanjilu));
+        dataList.add(new BaseRecImageAndTextBean("联系客服", R.drawable.kefu_tianchong));
+        dataList.add(new BaseRecImageAndTextBean("消息通知", R.drawable.xiaoxi));
+        dataList.add(new BaseRecImageAndTextBean("帮助中心", R.drawable.bangzhuzhongxin));
+        dataList.add(new BaseRecImageAndTextBean("订单找回", R.drawable.tianchongxing));
 
         MyToolAdapter myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
         if (getView() != null) {
@@ -48,5 +49,9 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void jumpToPredict() {
         ARouter.getInstance().build("/mine/predict").navigation();
+    }
+
+    public void jumpToOrder(int type) {
+        ARouter.getInstance().build("/mine/order").withInt("type", type).navigation();
     }
 }

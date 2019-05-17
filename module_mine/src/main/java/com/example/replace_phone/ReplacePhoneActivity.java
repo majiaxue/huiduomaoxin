@@ -14,6 +14,9 @@ import com.example.utils.CountDownTimerUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 修改手机号
+ */
 public class ReplacePhoneActivity extends BaseActivity<ReplacePhoneView, ReplacePhonePresenter> implements ReplacePhoneView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
