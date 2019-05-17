@@ -7,13 +7,13 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
@@ -21,16 +21,16 @@ import com.example.mvp.BaseFragmentActivity;
 import butterknife.BindView;
 
 @Route(path = "/home/main")
-public class MainActivity extends BaseFragmentActivity<MainView, MainPresneter> implements MainView {
+public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> implements MainView {
+
     private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     private final int REQUEST_CODE = 0xa123;
-
     @BindView(R2.id.main_home)
     RadioButton mainHome;
-    @BindView(R2.id.main_shopping)
-    RadioButton mainShopping;
-    @BindView(R2.id.main_search)
-    RadioButton mainSearch;
+    @BindView(R2.id.main_classify)
+    RadioButton mainClassify;
+    @BindView(R2.id.main_multi_user_mall)
+    LinearLayout mainMultiUserMall;
     @BindView(R2.id.main_hairring)
     RadioButton mainHairring;
     @BindView(R2.id.main_mine)
@@ -58,13 +58,20 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresneter> 
                 presenter.click(checkedId);
             }
         });
+
+        mainMultiUserMall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "我是多用户商城", Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
+            }
+        });
     }
 
     @Override
     public void clickBottom(int position) {
         mainHome.setTextColor(Color.parseColor(position == 0 ? "#ff0000" : "#000000"));
-        mainShopping.setTextColor(Color.parseColor(position == 1 ? "#ff0000" : "#000000"));
-        mainSearch.setTextColor(Color.parseColor(position == 2 ? "#ff0000" : "#000000"));
+        mainClassify.setTextColor(Color.parseColor(position == 1 ? "#ff0000" : "#000000"));
         mainHairring.setTextColor(Color.parseColor(position == 3 ? "#ff0000" : "#000000"));
         mainMine.setTextColor(Color.parseColor(position == 4 ? "#ff0000" : "#000000"));
     }
@@ -107,7 +114,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresneter> 
     }
 
     @Override
-    public MainPresneter createPresenter() {
-        return new MainPresneter(this);
+    public MainPresenter createPresenter() {
+        return new MainPresenter(this);
     }
 }

@@ -45,10 +45,12 @@ public class UIHelper {
         listener.setOnChangeHeader(popupWindow, takePhoto, photoAlbum);
     }
 
-    public static void clearCache(final Context context, OnClearCacheListener listener) {
+    public static void clearCache(final Context context, String totalCache, OnClearCacheListener listener) {
         View view = LayoutInflater.from(context).inflate(R.layout.pop_clear_cache, null);
         TextView cancel = view.findViewById(R.id.pop_cache_cancel);
         TextView confirm = view.findViewById(R.id.pop_cache_confirm);
+        TextView content = view.findViewById(R.id.pop_cache_content);
+        content.setText("确定要清除(" + totalCache + ")缓存吗？");
 
         final PopupWindow popupWindow = new PopupWindow(view, (int) context.getResources().getDimension(R.dimen.dp_259), (int) context.getResources().getDimension(R.dimen.dp_177), true);
         popupWindow.setOutsideTouchable(true);
