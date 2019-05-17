@@ -1,4 +1,4 @@
-package com.example.shopping;
+package com.example.classify;
 
 import android.content.Context;
 

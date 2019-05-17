@@ -7,7 +7,7 @@ import com.stx.xhb.xbanner.entity.SimpleBannerInfo;
  * Describe:
  */
 public class CommodityXBannerBean extends SimpleBannerInfo {
-    int url;
+    private int url;
 
     public CommodityXBannerBean(int url) {
         this.url = url;

@@ -39,8 +39,8 @@ public class SettingPresenter extends BasePresenter<SettingView> {
 
     }
 
-    public void clearCache() {
-        UIHelper.clearCache(mContext, new OnClearCacheListener() {
+    public void clearCache(String totalCache) {
+        UIHelper.clearCache(mContext, totalCache, new OnClearCacheListener() {
             @Override
             public void setOnClearCache(final PopupWindow pop, TextView confirm) {
                 confirm.setOnClickListener(new View.OnClickListener() {

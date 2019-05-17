@@ -5,12 +5,12 @@ package com.example.home.bean;
  * Describe:
  */
 public class RecommendBean {
-    int image;
-    String name;
-    String reduce_price;
-    String preferential_price;
-    String original_price;
-    String number;
+    private int image;
+    private String name;
+    private String reduce_price;
+    private String preferential_price;
+    private String original_price;
+    private String number;
 
     public RecommendBean(int image, String name, String reduce_price, String preferential_price, String original_price, String number) {
         this.image = image;

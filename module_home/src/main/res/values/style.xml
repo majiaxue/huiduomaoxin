@@ -8,4 +8,5 @@
         <item name="android:windowDisablePreview">true</item>
 
     </style>
+
 </resources>

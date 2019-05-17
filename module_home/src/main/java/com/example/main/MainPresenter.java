@@ -10,7 +10,7 @@ import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
-import com.example.shopping.ClassifyFragment;
+import com.example.classify.ClassifyFragment;
 import com.example.utils.AppManager;
 
 public class MainPresenter extends BasePresenter<MainView> {

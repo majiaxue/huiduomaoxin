@@ -51,6 +51,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     @BindView(R2.id.setting_cache_txt)
     TextView settingCacheTxt;
 
+    private String totalCache;
+
     private final int TAKE_PHOTO_CODE = 0x111;
     private final int PHOTO_ALBUM_CODE = 0x222;
     private final int CROP_CODE = 0x333;
@@ -62,7 +64,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
 
     @Override
     public void initData() {
-        settingCacheTxt.setText(CacheUtil.getTotalCacheSize(this));
+        totalCache = CacheUtil.getTotalCacheSize(this);
+        settingCacheTxt.setText(totalCache);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
         settingClearCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.clearCache();
+                presenter.clearCache(totalCache);
             }
         });
 
