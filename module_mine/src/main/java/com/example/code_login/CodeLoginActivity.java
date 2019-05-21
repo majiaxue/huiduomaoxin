@@ -3,6 +3,9 @@ package com.example.code_login;
 import com.example.module_mine.R;
 import com.example.mvp.BaseActivity;
 
+/**
+ * 手机验证登录
+ */
 public class CodeLoginActivity extends BaseActivity<CodeLoginView, CodeLoginPresenter> implements CodeLoginView {
     @Override
     public int getLayoutId() {

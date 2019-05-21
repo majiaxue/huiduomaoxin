@@ -14,6 +14,7 @@ public class LogUtil {
                 Log.e("tag", message.substring(0, 2000));
                 message = message.substring(2000);
             }
+            Log.e("tag", message);
         }
     }
 

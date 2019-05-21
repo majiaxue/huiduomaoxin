@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/rv_factor_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="月版"
+        android:textColor="#222222"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/rv_factor_price"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_30"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:includeFontPadding="false"
+        android:text="10元"
+        android:textColor="#222222"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/rv_factor_pay"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_25"
+        android:background="@drawable/bg_5_fb4619"
+        android:gravity="center"
+        android:text="支付"
+        android:textColor="#fefefe"
+        android:textSize="@dimen/sp_12" />
+</LinearLayout>

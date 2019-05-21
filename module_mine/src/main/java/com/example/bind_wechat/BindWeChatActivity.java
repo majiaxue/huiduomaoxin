@@ -11,6 +11,9 @@ import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
 
+/**
+ * 绑定微信
+ */
 public class BindWeChatActivity extends BaseActivity<BindWeChatView, BindWeChatPresenter> implements BindWeChatView {
     @BindView(R2.id.include_back)
     ImageView includeBack;

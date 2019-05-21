@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<dimen name="dp_m_60">-65.7600dp</dimen>
+	<dimen name="dp_m_35">-38.3600dp</dimen>
 	<dimen name="dp_m_30">-32.8800dp</dimen>
+	<dimen name="dp_m_27">-29.5920dp</dimen>
 	<dimen name="dp_m_20">-21.9200dp</dimen>
 	<dimen name="dp_m_12">-13.1520dp</dimen>
 	<dimen name="dp_m_25">-27.4000dp</dimen>
@@ -413,6 +415,7 @@
 	<dimen name="sp_23">25.2080sp</dimen>
 	<dimen name="sp_24">26.3040sp</dimen>
 	<dimen name="sp_25">27.4000sp</dimen>
+	<dimen name="sp_26">28.4960sp</dimen>
 	<dimen name="sp_28">30.6880sp</dimen>
 	<dimen name="sp_30">32.8800sp</dimen>
 	<dimen name="sp_32">35.0720sp</dimen>

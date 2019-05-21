@@ -1,6 +1,5 @@
 package com.example.forget;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,8 +11,10 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
+/**
+ * 忘记密码
+ */
 public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> implements ForgetView {
     @BindView(R2.id.forget_back)
     ImageView forgetBack;
@@ -55,7 +56,7 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
                 presenter.commit(forgetPhone.getText().toString(), forgetCode.getText().toString(), forgetPaddword.getText().toString(), forgetConfirmPassword.getText().toString());
             }
         });
-
+        //获取验证码
         forgetGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +65,7 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
         });
     }
 
+    //获取后修改ui
     @Override
     public void getCodeSuccess() {
         forgetGetCode.setEnabled(false);

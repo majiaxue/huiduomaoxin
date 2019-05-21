@@ -3,35 +3,63 @@ package com.example.mine;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
-import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
+import butterknife.Unbinder;
 
 /**
- * 我的
+ * 个人中心
  */
-public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView, NestedScrollView.OnScrollChangeListener {
-    @BindView(R2.id.mine_rec)
-    RecyclerView mMyTool;
-    @BindView(R2.id.mine_advice)
-    ImageView mAdvice;
-    @BindView(R2.id.mine_tab_top)
-    ImageView mTabTop;
-    @BindView(R2.id.mine_parent)
-    NestedScrollView mParent;
-    @BindView(R2.id.mine_login)
-    TextView mLogin;
+public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
+
+    @BindView(R2.id.mine_setting)
+    ImageView mineSetting;
     @BindView(R2.id.mine_header)
-    ImageView mHeader;
+    ImageView mineHeader;
+    @BindView(R2.id.mine_lv)
+    ImageView mineLv;
+    @BindView(R2.id.mine_name)
+    TextView mineName;
+    @BindView(R2.id.mine_code)
+    TextView mineCode;
+    @BindView(R2.id.mine_copy)
+    TextView mineCopy;
+    @BindView(R2.id.mine_all_order)
+    LinearLayout mineAllOrder;
+    @BindView(R2.id.mine_yifukuan)
+    LinearLayout mineYifukuan;
+    @BindView(R2.id.mine_yijiesuan)
+    LinearLayout mineYijiesuan;
+    @BindView(R2.id.mine_yishixiao)
+    LinearLayout mineYishixiao;
+    @BindView(R2.id.mine_advice)
+    ImageView mineAdvice;
+    @BindView(R2.id.mine_income_form)
+    LinearLayout mineIncomeForm;
+    @BindView(R2.id.mine_fans_order)
+    LinearLayout mineFansOrder;
+    @BindView(R2.id.mine_group_fans)
+    LinearLayout mineGroupFans;
+    @BindView(R2.id.mine_up_yys)
+    ImageView mineUpYys;
+    @BindView(R2.id.mine_rec)
+    RecyclerView mineRec;
+    @BindView(R2.id.mine_parent)
+    NestedScrollView mineParent;
+    @BindView(R2.id.mine_rela)
+    RelativeLayout mineRela;
 
     @Override
     public int getLayoutId() {
@@ -45,25 +73,80 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initClick() {
-        mParent.setOnScrollChangeListener(this);
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mineRela.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mineHeader.dispatchTouchEvent(event);
+            }
+        });
+
+        mineName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToLogin();
             }
         });
 
-        mHeader.setOnClickListener(new View.OnClickListener() {
+        mineHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToSetting();
             }
         });
 
-        mAdvice.setOnClickListener(new View.OnClickListener() {
+        mineAdvice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToPredict();
+                presenter.jumpToUpgrade();
+            }
+        });
+
+        mineAllOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToOrder(0);
+            }
+        });
+
+        mineYifukuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToOrder(1);
+            }
+        });
+
+        mineYijiesuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToOrder(2);
+            }
+        });
+
+        mineYishixiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToOrder(3);
+            }
+        });
+
+        mineFansOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToFansOrder();
+            }
+        });
+
+        mineGroupFans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToGroupFans();
+            }
+        });
+
+        mineUpYys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToupYYS();
             }
         });
     }
@@ -71,9 +154,9 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void loadMyTool(MyToolAdapter adapter) {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
-        mMyTool.setLayoutManager(layoutManager);
-        mMyTool.addItemDecoration(new SpaceItemDecoration(10, 10));
-        mMyTool.setAdapter(adapter);
+        mineRec.setLayoutManager(layoutManager);
+        mineRec.addItemDecoration(new SpaceItemDecoration(10, 10, 10, 10));
+        mineRec.setAdapter(adapter);
     }
 
     @Override
@@ -84,20 +167,5 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public MinePresenter createPresenter() {
         return new MinePresenter(getContext());
-    }
-
-    @Override
-    public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
-        int[] location = new int[2];
-        mAdvice.getLocationOnScreen(location);
-        int y = location[1];
-        LogUtil.e("Y轴：" + y);
-        if (y <= mTabTop.getHeight()) {
-            mTabTop.setVisibility(View.VISIBLE);
-            mAdvice.setVisibility(View.GONE);
-        } else {
-            mTabTop.setVisibility(View.GONE);
-            mAdvice.setVisibility(View.VISIBLE);
-        }
     }
 }

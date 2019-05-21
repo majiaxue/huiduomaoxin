@@ -48,4 +48,15 @@
     <string name="pinduoduo">拼多多</string>
     <string name="shangcheng">商城</string>
     <string name="total_money">累计总收入（元）</string>
+    <string name="my_order">我的订单</string>
+    <string name="all_order">全部订单</string>
+    <string name="yifukuan">已付款</string>
+    <string name="yijiesuan">已结算</string>
+    <string name="yishixiao">已失效</string>
+    <string name="center_fxs">分销商中心</string>
+    <string name="income_form">收益报表</string>
+    <string name="fans_order">粉丝订单</string>
+    <string name="group_fans">团队粉丝</string>
+    <string name="quanyishuoming">权益说明：</string>
+    <string name="upgrade_just">立即升级</string>
 </resources>

@@ -12,6 +12,9 @@ import com.example.utils.CountDownTimerUtil;
 
 import butterknife.BindView;
 
+/**
+ * 微信登录
+ */
 public class WeChatLoginActivity extends BaseActivity<WeChatLoginView, WeChatLoginPresenter> implements WeChatLoginView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
