@@ -2,6 +2,7 @@ package com.example.order;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,7 +10,10 @@ import android.widget.TextView;
 
 import com.example.mvp.BasePresenter;
 import com.example.order.adapter.OrderVPAdapter;
-import com.example.order.fragment.OrderListFragment;
+import com.example.order.fragment_all.AllOrderFragment;
+import com.example.order.fragment_lose.LoseOrderFragment;
+import com.example.order.fragment_pay.PayOrderFragment;
+import com.example.order.fragment_settle.SettleOrderFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ import java.util.List;
 
 public class OrderPresenter extends BasePresenter<OrderView> {
     private String[] titleArr = {"全部订单", "已付款", "已结算", "已失效"};
-    private List<OrderListFragment> fragmentList = new ArrayList<>();
+    private List<Fragment> fragmentList = new ArrayList<>();
 
     public OrderPresenter(Context context) {
         super(context);
@@ -31,8 +35,11 @@ public class OrderPresenter extends BasePresenter<OrderView> {
     public void initTabLayout(final TabLayout orderTab) {
         for (String title : titleArr) {
             orderTab.addTab(orderTab.newTab().setText(title));
-            fragmentList.add(new OrderListFragment());
         }
+        fragmentList.add(new AllOrderFragment());
+        fragmentList.add(new PayOrderFragment());
+        fragmentList.add(new SettleOrderFragment());
+        fragmentList.add(new LoseOrderFragment());
 
         orderTab.post(new Runnable() {
             @Override
@@ -79,23 +86,23 @@ public class OrderPresenter extends BasePresenter<OrderView> {
     }
 
     public void initViewPager(FragmentManager fm) {
-        OrderVPAdapter vpAdapter = new OrderVPAdapter(fm, mContext, fragmentList, titleArr);
+        OrderVPAdapter vpAdapter = new OrderVPAdapter(fm, fragmentList, titleArr);
         getView().updateVP(vpAdapter);
     }
 
     public void TabScoll(String text) {
         switch (text) {
             case "全部订单":
-                fragmentList.get(0).setDataList(titleArr[0]);
+//                fragmentList.get(0).setDataList(titleArr[0]);
                 break;
             case "已付款":
-                fragmentList.get(1).setDataList(titleArr[1]);
+//                fragmentList.get(1).setDataList(titleArr[1]);
                 break;
             case "已结算":
-                fragmentList.get(2).setDataList(titleArr[2]);
+//                fragmentList.get(2).setDataList(titleArr[2]);
                 break;
             case "已失效":
-                fragmentList.get(3).setDataList(titleArr[3]);
+//                fragmentList.get(3).setDataList(titleArr[3]);
                 break;
         }
     }

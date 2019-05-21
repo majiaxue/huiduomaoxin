@@ -1,23 +1,18 @@
 package com.example.order.adapter;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.order.fragment.OrderListFragment;
-
 import java.util.List;
 
 public class OrderVPAdapter extends FragmentPagerAdapter {
-    private Context context;
-    private List<OrderListFragment> fragmentList;
+    private List<Fragment> fragmentList;
     private String[] dataList;
 
-    public OrderVPAdapter(FragmentManager fm, Context context, List<OrderListFragment> fragmentList, String[] dataList) {
+    public OrderVPAdapter(FragmentManager fm, List<Fragment> fragmentList, String[] dataList) {
         super(fm);
-        this.context = context;
         this.fragmentList = fragmentList;
         this.dataList = dataList;
     }

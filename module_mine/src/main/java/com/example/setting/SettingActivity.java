@@ -73,6 +73,13 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
 
     @Override
     public void initClick() {
+        settingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         settingUpdateHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

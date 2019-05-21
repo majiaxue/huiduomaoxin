@@ -1,4 +1,4 @@
-package com.example.order.fragment;
+package com.example.order.fragment_all;
 
 import android.content.Context;
 
@@ -8,11 +8,11 @@ import com.example.order.adapter.RvListAdapter;
 
 import java.util.List;
 
-public class OrderListPresenter extends BasePresenter<OrderListView> {
+public class AllOrderPresenter extends BasePresenter<AllOrderView> {
 
     private RvListAdapter adapter;
 
-    public OrderListPresenter(Context context) {
+    public AllOrderPresenter(Context context) {
         super(context);
     }
 

@@ -2,6 +2,7 @@ package com.example.order;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,9 +39,11 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        includeTitle.setText("我的订单");
         orderTab.setupWithViewPager(orderViewpager);
         presenter.initTabLayout(orderTab);
         presenter.initViewPager(getSupportFragmentManager());
+        orderViewpager.setOffscreenPageLimit(3);
         orderViewpager.setCurrentItem(type);
         orderTab.getTabAt(type).select();
 
@@ -62,6 +65,13 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        includeBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

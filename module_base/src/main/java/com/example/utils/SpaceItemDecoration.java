@@ -7,13 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
-    private int leftRight;
-    private int topBottom;
+    private int left;
+    private int right;
+    private int top;
+    private int bottom;
 
     //leftRight为横向间的距离 topBottom为纵向间距离
-    public SpaceItemDecoration(int leftRight, int topBottom) {
-        this.leftRight = leftRight;
-        this.topBottom = topBottom;
+    public SpaceItemDecoration(int left, int right, int top, int bottom) {
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
     }
 
     @Override
@@ -23,9 +27,9 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        outRect.top = topBottom;
-        outRect.left = leftRight;
-        outRect.right = leftRight;
-        outRect.bottom = topBottom;
+        outRect.top = top;
+        outRect.left = left;
+        outRect.right = right;
+        outRect.bottom = bottom;
     }
 }

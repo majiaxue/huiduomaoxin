@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,12 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public RecyclerViewHolder setText(int resId, String text) {
         TextView txt = getView(resId);
         txt.setText(text);
+        return this;
+    }
+
+    public RecyclerViewHolder setTextFormHtml(int resId, String html) {
+        TextView txt = getView(resId);
+        txt.setText(Html.fromHtml(html));
         return this;
     }
 

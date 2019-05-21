@@ -54,4 +54,20 @@ public class MinePresenter extends BasePresenter<MineView> {
     public void jumpToOrder(int type) {
         ARouter.getInstance().build("/mine/order").withInt("type", type).navigation();
     }
+
+    public void jumpToUpgrade() {
+        ARouter.getInstance().build("/mine/upgrade").navigation();
+    }
+
+    public void jumpToFansOrder() {
+        ARouter.getInstance().build("/mine/fansorder").navigation();
+    }
+
+    public void jumpToGroupFans() {
+        ARouter.getInstance().build("/mine/groupfans").navigation();
+    }
+
+    public void jumpToupYYS() {
+        ARouter.getInstance().build("/mine/operator").navigation();
+    }
 }

@@ -97,7 +97,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineAdvice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToPredict();
+                presenter.jumpToUpgrade();
             }
         });
 
@@ -128,13 +128,34 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 presenter.jumpToOrder(3);
             }
         });
+
+        mineFansOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToFansOrder();
+            }
+        });
+
+        mineGroupFans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToGroupFans();
+            }
+        });
+
+        mineUpYys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToupYYS();
+            }
+        });
     }
 
     @Override
     public void loadMyTool(MyToolAdapter adapter) {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         mineRec.setLayoutManager(layoutManager);
-        mineRec.addItemDecoration(new SpaceItemDecoration(10, 10));
+        mineRec.addItemDecoration(new SpaceItemDecoration(10, 10, 10, 10));
         mineRec.setAdapter(adapter);
     }
 

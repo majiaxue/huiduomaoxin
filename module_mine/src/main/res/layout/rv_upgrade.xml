@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_346"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_346"
+        android:layout_height="@dimen/dp_212"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@drawable/bg_mine_top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_28"
+            android:includeFontPadding="false"
+            android:text="@string/quanyishuoming"
+            android:textColor="#e20707"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/rv_upgrade_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_50"
+            android:includeFontPadding="false"
+            android:text="铜牌权益说明描述"
+            android:textColor="#222222"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_77"
+            android:includeFontPadding="false"
+            android:text="升级条件："
+            android:textColor="#e20707"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/rv_upgrade_shoufei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_98"
+            android:includeFontPadding="false"
+            android:text="收费金额达到：200 元"
+            android:textColor="#222222"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/rv_upgrade_zigou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_upgrade_shoufei"
+            android:layout_alignLeft="@id/rv_upgrade_shoufei"
+            android:layout_marginTop="@dimen/dp_5"
+            android:includeFontPadding="false"
+            android:text="自购订单达到：10 单"
+            android:textColor="#222222"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/rv_upgrade_yaoqing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_upgrade_zigou"
+            android:layout_alignLeft="@id/rv_upgrade_zigou"
+            android:layout_marginTop="@dimen/dp_5"
+            android:includeFontPadding="false"
+            android:text="邀请粉丝达到：10 人"
+            android:textColor="#222222"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/rv_upgrade_yugu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_upgrade_yaoqing"
+            android:layout_alignLeft="@id/rv_upgrade_yaoqing"
+            android:layout_marginTop="@dimen/dp_5"
+            android:includeFontPadding="false"
+            android:text="预估佣金达到：888 元"
+            android:textColor="#222222"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_upgrade_yugu"
+            android:layout_marginLeft="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_10"
+            android:includeFontPadding="false"
+            android:text="备注：上述条件满足任意一条即可升级"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/rv_upgrade_btn"
+            android:layout_width="@dimen/dp_79"
+            android:layout_height="@dimen/dp_31"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_28"
+            android:layout_marginRight="@dimen/dp_20"
+            android:background="@drawable/bg_btn_upgrade"
+            android:gravity="center"
+            android:text="@string/upgrade_just"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/rv_upgrade_title"
+        android:layout_width="@dimen/dp_304"
+        android:layout_height="@dimen/dp_40"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_upgrade_title"
+        android:gravity="center"
+        android:text="铜牌"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/sp_16" />
+</RelativeLayout>
