@@ -5,7 +5,7 @@ import com.example.mvp.BaseFragment;
 
 /**
  * Created by cuihaohao on 2019/5/16
- * Describe:
+ * Describe:多用户商城购物车页面
  */
 public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, ShoppingCartPresenter> implements ShoppingCartView {
     @Override

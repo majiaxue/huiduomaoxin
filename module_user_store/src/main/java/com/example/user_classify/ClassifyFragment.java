@@ -5,7 +5,7 @@ import com.example.mvp.BaseFragment;
 
 /**
  * Created by cuihaohao on 2019/5/16
- * Describe:
+ * Describe:商城分类
  */
 public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresenter> implements ClassifyView {
     @Override

@@ -20,6 +20,9 @@ import com.example.mvp.BaseFragmentActivity;
 
 import butterknife.BindView;
 
+/**
+ * 主页面
+ */
 @Route(path = "/home/main")
 public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> implements MainView {
 
@@ -70,10 +73,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
 
     @Override
     public void clickBottom(int position) {
-        mainHome.setTextColor(Color.parseColor(position == 0 ? "#ff0000" : "#000000"));
-        mainClassify.setTextColor(Color.parseColor(position == 1 ? "#ff0000" : "#000000"));
-        mainHairring.setTextColor(Color.parseColor(position == 3 ? "#ff0000" : "#000000"));
-        mainMine.setTextColor(Color.parseColor(position == 4 ? "#ff0000" : "#000000"));
+
     }
 
     private void initPermission() {

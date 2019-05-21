@@ -11,21 +11,22 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.module_shoppingmall.R;
-import com.example.module_shoppingmall.R2;
+import com.example.module_classify.R;
+import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
 import butterknife.BindView;
 
-@Route(path = "/module_shoppingmall/CommodityDetailsActivity")
+/**
+ * 淘宝客商品详情
+ */
+@Route(path = "/module_classify/CommodityDetailsActivity")
 public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView, CommodityDetailsPresenter> implements CommodityDetailsView, NestedScrollView.OnScrollChangeListener {
 
     @BindView(R2.id.commodity_image_back)
     ImageView commodityImageBack;
-    @BindView(R2.id.commodity_menu)
-    ImageView commodityMenu;
     @BindView(R2.id.commodity_xbanner)
     XBanner commodityXbanner;
     @BindView(R2.id.commodity_name)

@@ -21,6 +21,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.Unbinder;
 
+/**
+ * 首页
+ */
 public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView {
 
     Unbinder unbinder;

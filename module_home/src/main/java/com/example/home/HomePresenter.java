@@ -17,9 +17,9 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
-import com.example.home.adapter.RecommendRecAdapter;
+import com.example.adapter.RecAdapter;
 import com.example.home.bean.GoodChoiceBean;
-import com.example.home.bean.RecommendBean;
+import com.example.entity.RecBean;
 import com.example.home.bean.TopBannerBean;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.module_home.R;
@@ -39,7 +39,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<TopBannerBean> images;
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodChoiceBean> goodList;
-    private List<RecommendBean> recommendBeanList;
+    private List<RecBean> recBeanList;
 
     public HomePresenter(Context context) {
         super(context);
@@ -160,9 +160,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
 
         goodList = new ArrayList<>();
-        goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "￥39.90", "95.50"));
-        goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "￥12.88", "26.50"));
-        goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "￥19.90", "42.80"));
+        goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "39.90", "95.50"));
+        goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
+        goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
 
 
         GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
@@ -180,30 +180,31 @@ public class HomePresenter extends BasePresenter<HomeView> {
     public void setBottomRec(RecyclerView homeBottomRec) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        if (homeBottomRec.getItemDecorationCount() == 0) {
-            homeBottomRec.addItemDecoration(new DividerItemDecoration(mContext, LinearLayout.VERTICAL));
-        }
         homeBottomRec.setLayoutManager(linearLayoutManager);
-        recommendBeanList = new ArrayList<>();
-        recommendBeanList.add(new RecommendBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-        recommendBeanList.add(new RecommendBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-        recommendBeanList.add(new RecommendBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        recommendBeanList.add(new RecommendBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        RecommendRecAdapter recommendRecAdapter = new RecommendRecAdapter(mContext, recommendBeanList, R.layout.item_home_recommend_rec);
-        homeBottomRec.setAdapter(recommendRecAdapter);
+        recBeanList = new ArrayList<>();
+        recBeanList.add(new RecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
+        recBeanList.add(new RecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
+        recBeanList.add(new RecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        recBeanList.add(new RecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        RecAdapter recAdapter = new RecAdapter(mContext, recBeanList, R.layout.item_base_rec);
+        homeBottomRec.setAdapter(recAdapter);
 
-        recommendRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        recAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                ARouter.getInstance().build("/module_shoppingmall/CommodityDetailsActivity").navigation();
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
-        recommendRecAdapter.setOnGetViewClickListener(new RecommendRecAdapter.OnGetViewClickListener() {
+
+        recAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void onItemClick(int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                ARouter.getInstance().build("/module_shoppingmall/CommodityDetailsActivity").navigation();
+            public void ViewOnClick(View view,final int position) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                    }
+                });
             }
         });
     }

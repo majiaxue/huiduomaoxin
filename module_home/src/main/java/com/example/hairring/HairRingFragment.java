@@ -3,6 +3,9 @@ package com.example.hairring;
 import com.example.module_home.R;
 import com.example.mvp.BaseFragment;
 
+/**
+ * 社区
+ */
 public class HairRingFragment extends BaseFragment<HairringView, HairringPresenter> implements HairringView {
 
     @Override

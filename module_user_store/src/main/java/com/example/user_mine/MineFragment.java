@@ -5,7 +5,7 @@ import com.example.mvp.BaseFragment;
 
 /**
  * Created by cuihaohao on 2019/5/16
- * Describe:
+ * Describe:商城我的页面
  */
 public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
     @Override

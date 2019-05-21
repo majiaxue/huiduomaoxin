@@ -5,7 +5,7 @@ import com.example.mvp.BaseFragment;
 
 /**
  * Created by cuihaohao on 2019/5/16
- * Describe:
+ * Describe:商城首页
  */
 public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView {
     @Override

@@ -16,6 +16,9 @@ import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
 
+/**
+ * 我的
+ */
 public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView, NestedScrollView.OnScrollChangeListener {
     @BindView(R2.id.mine_rec)
     RecyclerView mMyTool;

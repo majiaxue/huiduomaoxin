@@ -1,25 +1,21 @@
 package com.example.commoditydetails;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.adapter.CommodityRecommendRecAdapter;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.bean.CommodityRecommendBean;
-import com.example.bean.CommodityXBannerBean;
-import com.example.module_shoppingmall.R;
+import com.example.adapter.RecAdapter;
+import com.example.commoditydetails.bean.CommodityXBannerBean;
+import com.example.entity.RecBean;
+import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
+import com.example.utils.ClickUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -34,7 +30,7 @@ import java.util.List;
 public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsView> {
 
     private List<CommodityXBannerBean> images;
-    private List<CommodityRecommendBean> commodityRecommendBeanList;
+    private List<RecBean> recBeanList;
 
 
     public CommodityDetailsPresenter(Context context) {
@@ -80,32 +76,35 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     public void setRecommendRec(RecyclerView shopRecommendRec) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        if (shopRecommendRec.getItemDecorationCount() == 0) {
-            shopRecommendRec.addItemDecoration(new DividerItemDecoration(mContext, LinearLayout.VERTICAL));
-        }
         shopRecommendRec.setLayoutManager(linearLayoutManager);
-        commodityRecommendBeanList = new ArrayList<>();
-        commodityRecommendBeanList.add(new CommodityRecommendBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-        commodityRecommendBeanList.add(new CommodityRecommendBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-        commodityRecommendBeanList.add(new CommodityRecommendBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        commodityRecommendBeanList.add(new CommodityRecommendBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        CommodityRecommendRecAdapter recommendRecAdapter = new CommodityRecommendRecAdapter(mContext, commodityRecommendBeanList, R.layout.item_commodity_recommend_rec);
-        shopRecommendRec.setAdapter(recommendRecAdapter);
+        recBeanList = new ArrayList<>();
+        recBeanList.add(new RecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
+        recBeanList.add(new RecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
+        recBeanList.add(new RecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        recBeanList.add(new RecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        RecAdapter recAdapter = new RecAdapter(mContext, recBeanList, R.layout.item_base_rec);
+        shopRecommendRec.setAdapter(recAdapter);
 
-        recommendRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        recAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                ARouter.getInstance().build("/module_shoppingmall/CommodityDetailsActivity").navigation();
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
-        recommendRecAdapter.setOnGetViewClickListener(new CommodityRecommendRecAdapter.OnGetViewClickListener() {
+
+        recAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void onItemClick(int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                ARouter.getInstance().build("/module_shoppingmall/CommodityDetailsActivity").navigation();
+            public void ViewOnClick(View view, final int position) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                    }
+                });
             }
         });
+
+
     }
 
 }

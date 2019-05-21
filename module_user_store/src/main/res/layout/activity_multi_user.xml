@@ -13,44 +13,54 @@
     <RadioGroup
         android:id="@+id/user_group"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
+        android:layout_height="@dimen/dp_47"
+
+
+
         android:clipChildren="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#FFFFFF">
 
         <RadioButton
             android:id="@+id/user_home"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_home"
             android:gravity="center"
-            android:text="首页" />
+            android:paddingTop="@dimen/dp_7" />
 
         <RadioButton
             android:id="@+id/user_classify"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/selector_classify"
             android:gravity="center"
-            android:text="分类" />
+            android:paddingTop="@dimen/dp_7" />
+
         <RadioButton
             android:id="@+id/user_shopping_cart"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/selector_shop_cart"
             android:gravity="center"
-            android:text="购物车" />
+            android:paddingTop="@dimen/dp_7" />
 
         <RadioButton
             android:id="@+id/user_mine"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/selector_mine"
             android:gravity="center"
-            android:text="我的" />
+            android:paddingTop="@dimen/dp_7" />
     </RadioGroup>
 
 </LinearLayout>
