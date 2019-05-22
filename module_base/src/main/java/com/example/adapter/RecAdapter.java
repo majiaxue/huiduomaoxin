@@ -30,8 +30,7 @@ public class RecAdapter extends MyRecyclerAdapter<RecBean> {
         holder.setText(R.id.base_original_price, data.getOriginal_price());
         holder.setText(R.id.base_number, data.getNumber());
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
-        TextView originalPrice = holder.getView(R.id.base_original_price);
-        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        holder.setTextLine(R.id.base_original_price);
 
         TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);
         viewOnClickListener.ViewOnClick(immediatelyGrab, position);

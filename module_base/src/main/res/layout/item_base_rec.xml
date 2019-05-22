@@ -21,7 +21,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_110"
+            android:layout_height="@dimen/dp_125"
             android:layout_marginLeft="@dimen/dp_17"
             android:layout_marginRight="@dimen/dp_13"
             android:orientation="vertical">
@@ -47,29 +47,31 @@
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/base_reduce_price"
+                android:layout_width="@dimen/dp_81"
+                android:layout_height="@dimen/dp_22"
+                android:layout_below="@id/base_linear"
+                android:layout_marginTop="@dimen/dp_11"
+                android:background="@drawable/bg_text_led_securities"
+                android:gravity="center"
+                android:text="领券减50元"
+                android:textColor="#222222"
+                android:textSize="@dimen/sp_12" />
+
             <LinearLayout
                 android:id="@+id/base_linear1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/base_linear"
-                android:layout_marginTop="@dimen/dp_11"
+                android:layout_below="@id/base_reduce_price"
+                android:layout_marginTop="@dimen/dp_8"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/base_reduce_price"
-                    android:layout_width="@dimen/dp_81"
-                    android:layout_height="@dimen/dp_22"
-                    android:background="@drawable/bg_text_led_securities"
-                    android:gravity="center"
-                    android:text="领券减50元"
-                    android:textColor="#222222"
-                    android:textSize="@dimen/sp_12" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_20"
                     android:text="到手价"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
@@ -95,7 +97,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                android:layout_below="@id/base_linear1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/dp_8">
 
                 <TextView
                     android:id="@+id/base_number"

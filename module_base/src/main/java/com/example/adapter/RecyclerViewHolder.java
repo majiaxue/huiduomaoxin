@@ -2,6 +2,7 @@ package com.example.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -9,9 +10,11 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
@@ -87,6 +90,25 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public RecyclerViewHolder setBackground(int resId, int colorId) {
         View view = getView(resId);
         view.setBackgroundColor(colorId);
+        return this;
+    }
+
+    public RecyclerViewHolder setProgressBar(int resId, int num) {
+        ProgressBar progressBar = getView(resId);
+        progressBar.setProgress(num);
+        return this;
+    }
+
+    public RecyclerViewHolder setImageFresco(int resId, String url) {
+        SimpleDraweeView simpleDraweeView = getView(resId);
+        simpleDraweeView.setImageURI(url);
+        return this;
+    }
+
+    public RecyclerViewHolder setTextLine(int resId) {
+        TextView textView = getView(resId);
+        textView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中间横线
+        textView.getPaint().setAntiAlias(true);// 抗锯齿
         return this;
     }
 }

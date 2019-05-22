@@ -14,6 +14,7 @@
         android:id="@+id/main_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45"
+        android:background="#FFFFFF"
         android:orientation="horizontal">
 
         <RadioButton
@@ -46,7 +47,8 @@
             android:id="@+id/main_hairring"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_hairring"
-            android:paddingTop="@dimen/dp_7" />
+            android:paddingTop="@dimen/dp_7"
+            android:visibility="gone" />
 
         <RadioButton
             android:id="@+id/main_mine"

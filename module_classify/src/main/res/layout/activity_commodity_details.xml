@@ -158,14 +158,15 @@
                         android:id="@+id/commodity_shop_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_9"
-                        android:layout_marginTop="@dimen/dp_19"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:layout_toRightOf="@id/commodity_shop_image"
                         android:text="梦园1978旗舰店"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_14" />
 
                     <TextView
+                        android:id="@+id/commodity_into_shop"
                         android:layout_width="@dimen/dp_67"
                         android:layout_height="@dimen/dp_20"
                         android:layout_alignParentRight="true"

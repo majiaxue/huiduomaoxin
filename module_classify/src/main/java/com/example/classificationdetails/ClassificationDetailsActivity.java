@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -26,12 +27,10 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
 
     @BindView(R2.id.classification_back)
     ImageView classificationBack;
-    @BindView(R2.id.classification_edit)
-    EditText classificationEdit;
     @BindView(R2.id.classification_message)
     LinearLayout classificationMessage;
     @BindView(R2.id.classification_search)
-    TextView classificationSearch;
+    LinearLayout classificationSearch;
     @BindView(R2.id.synthesize_bottom)
     ImageView synthesizeBottom;
     @BindView(R2.id.sales_volume_top)
@@ -72,14 +71,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
 
     @Override
     public void initData() {
-        //分类商品详情
-        if (state) {
-            presenter.setClassifyRec(classificationRec, classificationSwitchover);
-            state = false;
-        } else {
-            presenter.setClassifyGridRec(classificationRec, classificationSwitchover);
-            state = true;
-        }
+
+        presenter.setClassifyRec(classificationRec, classificationSwitchover);
+
     }
 
     @Override
@@ -91,35 +85,12 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
             }
         });
 
-        classificationEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //当点击搜索框获取焦点
-                classificationEdit.setFocusable(true);
-                classificationEdit.setFocusableInTouchMode(true);
-            }
-        });
-        classificationEdit.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    // 获得焦点显示光标
-                    classificationEdit.requestFocus();
-                    classificationSearch.setVisibility(View.VISIBLE);
-                    classificationMessage.setVisibility(View.GONE);
-                } else {
-                    // 失去焦点
-                    classificationSearch.setVisibility(View.GONE);
-                    classificationMessage.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         classificationSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                classificationEdit.setFocusable(false);
-                classificationEdit.setFocusableInTouchMode(false);
+//                Toast.makeText(ClassificationDetailsActivity.this, "我被点击了", Toast.LENGTH_SHORT).show();
+                //到搜索页面
+                ARouter.getInstance().build("/module_home/SearchActivity").navigation();
             }
         });
 
@@ -127,13 +98,11 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
             @Override
             public void onClick(View v) {
                 if (state) {
-                    Toast.makeText(ClassificationDetailsActivity.this, "state:" + state, Toast.LENGTH_SHORT).show();
-                    //切换布局条形
-                    presenter.setClassifyRec(classificationRec, classificationSwitchover);
+                    presenter.setClassifyGridRec(classificationRec, classificationSwitchover);
                     state = false;
                 } else {
-                    Toast.makeText(ClassificationDetailsActivity.this, "state:" + state, Toast.LENGTH_SHORT).show();
-                    presenter.setClassifyGridRec(classificationRec, classificationSwitchover);
+                    //切换布局条形
+                    presenter.setClassifyRec(classificationRec, classificationSwitchover);
                     state = true;
                 }
             }

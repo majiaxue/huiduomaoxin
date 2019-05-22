@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
@@ -78,6 +79,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
     @Override
     public void initClick() {
+        homeSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_home/SearchActivity").navigation();
+            }
+        });
+
         homeSeeMoreTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
