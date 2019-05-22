@@ -1,5 +1,6 @@
 package com.example.login;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 登录
@@ -36,6 +38,10 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     TextView loginOtherType;
     @BindView(R2.id.login_weixin)
     ImageView weiXin;
+    @BindView(R2.id.login_cancel_left)
+    View loginCancelLeft;
+    @BindView(R2.id.login_cancel_right)
+    View loginCancelRight;
 
 
     @Override
@@ -96,20 +102,36 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 presenter.toCodeLogin();
             }
         });
+
+        loginCancelLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.hideWeiXin();
+            }
+        });
+
+        loginCancelRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.hideWeiXin();
+            }
+        });
     }
+
     //显示微信登录
     @Override
     public void showWeiXin() {
         weiXin.setVisibility(View.VISIBLE);
-        loginOtherType.setVisibility(View.INVISIBLE);
-        loginJiantou.setImageResource(R.drawable.icon_jiantou);
+        loginOtherType.setVisibility(View.GONE);
+        loginJiantou.setVisibility(View.GONE);
     }
+
     //隐藏微信登录
     @Override
     public void hideWeiXin() {
         loginOtherType.setVisibility(View.VISIBLE);
-        weiXin.setVisibility(View.INVISIBLE);
-        loginJiantou.setImageResource(R.drawable.icon_xiajiantou);
+        weiXin.setVisibility(View.GONE);
+        loginJiantou.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -120,5 +142,12 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     @Override
     public LoginPresenter createPresenter() {
         return new LoginPresenter(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

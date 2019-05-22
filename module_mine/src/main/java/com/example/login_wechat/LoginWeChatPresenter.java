@@ -1,13 +1,13 @@
-package com.example.wechat_login;
+package com.example.login_wechat;
 
 import android.content.Context;
 
 import com.example.mvp.BasePresenter;
 
-public class WeChatLoginPresenter extends BasePresenter<WeChatLoginView> {
+public class LoginWeChatPresenter extends BasePresenter<LoginWeChatView> {
     private boolean isRead = true;
 
-    public WeChatLoginPresenter(Context context) {
+    public LoginWeChatPresenter(Context context) {
         super(context);
     }
 

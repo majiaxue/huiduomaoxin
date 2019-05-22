@@ -1,4 +1,4 @@
-package com.example.wechat_login;
+package com.example.login_wechat;
 
 import android.view.View;
 import android.widget.EditText;
@@ -15,7 +15,7 @@ import butterknife.BindView;
 /**
  * 微信登录
  */
-public class WeChatLoginActivity extends BaseActivity<WeChatLoginView, WeChatLoginPresenter> implements WeChatLoginView {
+public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeChatPresenter> implements LoginWeChatView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
     @BindView(R2.id.include_title)
@@ -37,7 +37,7 @@ public class WeChatLoginActivity extends BaseActivity<WeChatLoginView, WeChatLog
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_wechat_login;
+        return R.layout.activity_login_wechat;
     }
 
     @Override
@@ -87,12 +87,12 @@ public class WeChatLoginActivity extends BaseActivity<WeChatLoginView, WeChatLog
     }
 
     @Override
-    public WeChatLoginView createView() {
+    public LoginWeChatView createView() {
         return this;
     }
 
     @Override
-    public WeChatLoginPresenter createPresenter() {
-        return new WeChatLoginPresenter(this);
+    public LoginWeChatPresenter createPresenter() {
+        return new LoginWeChatPresenter(this);
     }
 }

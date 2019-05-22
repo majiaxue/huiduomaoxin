@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dd.ShadowLayout;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
@@ -60,6 +61,8 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     NestedScrollView mineParent;
     @BindView(R2.id.mine_rela)
     RelativeLayout mineRela;
+    @BindView(R2.id.mine_predict)
+    LinearLayout minePredict;
 
     @Override
     public int getLayoutId() {
@@ -147,6 +150,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             @Override
             public void onClick(View v) {
                 presenter.jumpToupYYS();
+            }
+        });
+
+        minePredict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToPredict();
             }
         });
     }

@@ -10,7 +10,8 @@
         android:layout_width="@dimen/dp_57"
         android:layout_height="@dimen/dp_57"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dp_11" />
+        android:layout_marginLeft="@dimen/dp_11"
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/rv_group_fans_name"

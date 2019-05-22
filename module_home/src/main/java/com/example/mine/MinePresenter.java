@@ -1,8 +1,10 @@
 package com.example.mine;
 
 import android.content.Context;
+import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
@@ -13,6 +15,8 @@ import java.util.List;
 
 public class MinePresenter extends BasePresenter<MineView> {
 
+
+    private MyToolAdapter myToolAdapter;
 
     public MinePresenter(Context context) {
         super(context);
@@ -27,9 +31,44 @@ public class MinePresenter extends BasePresenter<MineView> {
         dataList.add(new BaseRecImageAndTextBean("帮助中心", R.drawable.bangzhuzhongxin));
         dataList.add(new BaseRecImageAndTextBean("订单找回", R.drawable.tianchongxing));
 
-        MyToolAdapter myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
+        myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
         if (getView() != null) {
             getView().loadMyTool(myToolAdapter);
+        }
+
+        myToolAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+            @Override
+            public void ViewOnClick(View view, final int position) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toolClick(position);
+                    }
+                });
+            }
+        });
+    }
+
+    private void toolClick(int position) {
+        switch (position) {
+            case 0:
+                ARouter.getInstance().build("/mine/collection").navigation();
+                break;
+            case 1:
+
+                break;
+            case 2:
+                ARouter.getInstance().build("/mine/contactus").navigation();
+                break;
+            case 3:
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
+                break;
+            case 4:
+                ARouter.getInstance().build("/mine/helpcenter").navigation();
+                break;
+            case 5:
+                ARouter.getInstance().build("/mine/orderretrieve").navigation();
+                break;
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.forget;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,13 +12,13 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 忘记密码
  */
 public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> implements ForgetView {
-    @BindView(R2.id.forget_back)
-    ImageView forgetBack;
+
     @BindView(R2.id.forget_phone)
     EditText forgetPhone;
     @BindView(R2.id.forget_code)
@@ -30,6 +31,10 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
     EditText forgetConfirmPassword;
     @BindView(R2.id.forget_btn)
     TextView forgetBtn;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
 
     @Override
     public int getLayoutId() {
@@ -38,12 +43,12 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
 
     @Override
     public void initData() {
-
+        includeTitle.setText("忘记密码");
     }
 
     @Override
     public void initClick() {
-        forgetBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -81,5 +86,12 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
     @Override
     public ForgetPresneter createPresenter() {
         return new ForgetPresneter(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

@@ -9,7 +9,6 @@ import com.example.mvp.BasePresenter;
 import com.example.register.RegisterActivity;
 
 public class LoginPresenter extends BasePresenter<LoginView> {
-    private boolean isShow = false;
 
     public LoginPresenter(Context context) {
         super(context);
@@ -30,13 +29,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     public void showWeiXin() {
-        if (isShow) {
-            getView().showWeiXin();
-            isShow = false;
-        } else {
-            getView().hideWeiXin();
-            isShow = true;
-        }
+        getView().showWeiXin();
+    }
+
+    public void hideWeiXin() {
+        getView().hideWeiXin();
     }
 
     public void toRegister() {

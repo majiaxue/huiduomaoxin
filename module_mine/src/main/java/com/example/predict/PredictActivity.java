@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.module_mine.R;
@@ -18,16 +19,16 @@ import butterknife.BindView;
 public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPresenter> implements PredictView {
     @BindView(R2.id.predict_back)
     ImageView mBack;
-    @BindView(R2.id.predict_radiogroup)
-    RadioGroup predictRadiogroup;
+    //    @BindView(R2.id.predict_radiogroup)
+//    RadioGroup predictRadiogroup;
     @BindView(R2.id.predict_tb)
-    RadioButton predictTb;
+    TextView predictTb;
     @BindView(R2.id.predict_pdd)
-    RadioButton predictPdd;
+    TextView predictPdd;
     @BindView(R2.id.predict_jd)
-    RadioButton predictJd;
+    TextView predictJd;
     @BindView(R2.id.predict_sc)
-    RadioButton predictSc;
+    TextView predictSc;
 
     @Override
     public int getLayoutId() {
@@ -49,10 +50,31 @@ public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPr
             }
         });
 
-        predictRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        predictTb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                presenter.change(checkedId);
+            public void onClick(View v) {
+                presenter.change(0);
+            }
+        });
+
+        predictPdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(1);
+            }
+        });
+
+        predictJd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(2);
+            }
+        });
+
+        predictSc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(3);
             }
         });
     }
@@ -63,6 +85,11 @@ public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPr
         predictTb.setTextColor(Color.parseColor(type == 0 ? "#ffffff" : "#222222"));
         predictPdd.setTextColor(Color.parseColor(type == 1 ? "#ffffff" : "#222222"));
         predictSc.setTextColor(Color.parseColor(type == 3 ? "#ffffff" : "#222222"));
+
+        predictTb.setBackgroundResource(type == 0 ? R.drawable.predict_xuan_left : 0);
+        predictPdd.setBackgroundResource(type == 1 ? R.drawable.predict_xuan : 0);
+        predictJd.setBackgroundResource(type == 2 ? R.drawable.predict_xuan : 0);
+        predictSc.setBackgroundResource(type == 3 ? R.drawable.predict_xuan_right : 0);
     }
 
     @Override
