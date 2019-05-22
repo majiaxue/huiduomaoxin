@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
         android:layout_marginTop="@dimen/dp_10"
-        android:background="#dedede" />
+        android:background="#eeeeee" />
 
     <TextView
         android:id="@+id/pop_cache_content"
@@ -33,7 +33,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
-        android:background="#dedede" />
+        android:background="#eeeeee" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
         <View
             android:layout_width="@dimen/dp_1"
             android:layout_height="match_parent"
-            android:background="#dedede" />
+            android:background="#eeeeee" />
 
         <TextView
             android:id="@+id/pop_cache_confirm"

@@ -28,7 +28,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/no_register"
                 android:textColor="#222222"
-                android:textSize="@dimen/sp_13" />
+                android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:id="@+id/login_register"
@@ -37,7 +37,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/register_juston"
                 android:textColor="#ff4a34"
-                android:textSize="@dimen/sp_13" />
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -80,7 +80,8 @@
                     android:paddingLeft="@dimen/dp_51"
                     android:textColor="#333333"
                     android:textColorHint="#94666666"
-                    android:textSize="@dimen/sp_14" />
+                    android:textCursorDrawable="@drawable/edit_cursor"
+                    android:textSize="@dimen/sp_16" />
 
                 <ImageView
                     android:layout_width="@dimen/dp_18"
@@ -106,7 +107,8 @@
                     android:paddingLeft="@dimen/dp_51"
                     android:textColor="#333333"
                     android:textColorHint="#94666666"
-                    android:textSize="@dimen/sp_14" />
+                    android:textCursorDrawable="@drawable/edit_cursor"
+                    android:textSize="@dimen/sp_16" />
 
                 <ImageView
                     android:layout_width="@dimen/dp_16"
@@ -131,7 +133,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/forget_password"
                     android:textColor="#666666"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_14" />
 
                 <View
                     android:layout_width="@dimen/dp_0_5"
@@ -148,7 +150,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/confirm_login"
                     android:textColor="#666666"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
             <View
@@ -167,7 +169,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/login_title"
                 android:textColor="#ffffff"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/sp_18" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -181,7 +183,7 @@
         android:includeFontPadding="false"
         android:text="@string/other_login"
         android:textColor="#ffffff"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/sp_18" />
 
     <ImageView
         android:id="@+id/login_jiantou"
@@ -192,6 +194,19 @@
         android:layout_marginBottom="@dimen/dp_21"
         android:padding="@dimen/dp_10"
         android:src="@drawable/icon_xiajiantou" />
+
+    <View
+        android:id="@+id/login_cancel_left"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_100"
+        android:layout_alignParentBottom="true" />
+
+    <View
+        android:id="@+id/login_cancel_right"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_100"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
 
     <ImageView
         android:id="@+id/login_weixin"

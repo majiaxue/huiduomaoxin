@@ -50,6 +50,8 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     TextView operatorInviteFans;
     @BindView(R2.id.operator_shuoming)
     TextView operatorShuoming;
+    @BindView(R2.id.operator_bg_change)
+    RelativeLayout changeBg;
 
     @Override
     public int getLayoutId() {
@@ -65,7 +67,7 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
             }
         };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        SpaceItemDecoration itemDecoration = new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_10));
+        SpaceItemDecoration itemDecoration = new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_14));
         operatorFactor2RvJunior.setLayoutManager(layoutManager);
         operatorFactor2RvJunior.addItemDecoration(itemDecoration);
 
@@ -88,16 +90,22 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
         operatorJunior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changeBg.setBackgroundResource(R.drawable.ghfgdf);
                 operatorRelaJunior.setVisibility(View.VISIBLE);
                 operatorRelaSenior.setVisibility(View.INVISIBLE);
+                operatorQuanyiRv.clearFocus();
             }
         });
         //高级运营商权益
         operatorSenior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changeBg.setBackgroundResource(R.drawable.gaojiyys);
                 operatorRelaJunior.setVisibility(View.INVISIBLE);
                 operatorRelaSenior.setVisibility(View.VISIBLE);
+                operatorSenior.setFocusableInTouchMode(true);
+                operatorSenior.setFocusable(true);
+                operatorQuanyiRv.clearFocus();
             }
         });
         //高级运营商支付

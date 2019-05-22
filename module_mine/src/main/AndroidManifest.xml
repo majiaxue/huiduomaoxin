@@ -46,7 +46,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.example.wechat_login.WeChatLoginActivity"
+            android:name="com.example.login_wechat.LoginWeChatActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -77,6 +77,31 @@
 
         <activity
             android:name="com.example.operator.OperatorActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.contact_us.ContactUsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.help_center.HelpCenterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.order_retrieve.OrderRetrieveActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.collection.CollectionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.message_center.MessageCenterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

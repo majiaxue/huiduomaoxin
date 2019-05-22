@@ -33,10 +33,10 @@
         android:layout_width="@dimen/dp_347"
         android:layout_height="@dimen/dp_45"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/dp_34"
+        android:layout_marginBottom="@dimen/dp_29"
         android:background="@drawable/bg_btn_login"
         android:gravity="center"
         android:text="@string/bind_just"
         android:textColor="#ffffff"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/sp_18" />
 </LinearLayout>

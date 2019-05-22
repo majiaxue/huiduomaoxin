@@ -27,35 +27,39 @@ public class PredictPresenter extends BasePresenter<PredictView> {
 
     }
 
-    public void change(int resId) {
-        int type = 0;
+    public void change(int position) {
+
         FragmentTransaction transaction = manager.beginTransaction();
-        if (resId == R.id.predict_tb) {
+        if (position == 0) {
+
             transaction.show(tbFragment)
                     .hide(jdFragment)
                     .hide(pddFragment)
                     .hide(scFragment).commit();
-            type = 0;
-        } else if (resId == R.id.predict_jd) {
+
+        } else if (position == 2) {
+
             transaction.show(jdFragment)
                     .hide(pddFragment)
                     .hide(scFragment)
                     .hide(tbFragment).commit();
-            type = 2;
-        } else if (resId == R.id.predict_pdd) {
+
+        } else if (position == 1) {
+
             transaction.show(pddFragment)
                     .hide(jdFragment)
                     .hide(scFragment)
                     .hide(tbFragment).commit();
-            type = 1;
-        } else if (resId == R.id.predict_sc) {
+
+        } else if (position == 3) {
+
             transaction.show(scFragment)
                     .hide(jdFragment)
                     .hide(pddFragment)
                     .hide(tbFragment).commit();
-            type = 3;
+
         }
-        getView().changeType(type);
+        getView().changeType(position);
     }
 
     public void loadData(FragmentManager manager, int resId) {

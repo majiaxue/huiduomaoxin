@@ -26,6 +26,7 @@
             android:paddingLeft="@dimen/dp_23"
             android:textColor="#333333"
             android:textColorHint="#999999"
+            android:textCursorDrawable="@drawable/edit_cursor"
             android:textSize="@dimen/sp_12" />
 
         <TextView
@@ -169,7 +170,8 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:text="直代下级"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="@dimen/dp_135"

@@ -21,5 +21,7 @@ public class MyToolAdapter extends MyRecyclerAdapter<BaseRecImageAndTextBean> {
     public void convert(RecyclerViewHolder holder, BaseRecImageAndTextBean data, int position) {
         holder.setText(R.id.rv_mytool_txt, data.getName())
                 .setImageResource(R.id.rv_mytool_img, data.getImage());
+
+        viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_mytool_parent), position);
     }
 }
