@@ -1,14 +1,11 @@
 package com.example.user_store;
 
 
-import android.os.Bundle;
-import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.entity.EventBusBean;
 import com.example.mvp.BaseFragmentActivity;
 
@@ -17,7 +14,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 多用户商城主界面
@@ -41,7 +37,7 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_multi_user;
+        return R.layout.activity_user;
     }
 
     @Override
@@ -62,7 +58,7 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
-        if ("user_home_back".equals(eventBusBean.getMsg())) {
+        if ("user_back".equals(eventBusBean.getMsg())) {
             finish();
         }
     }

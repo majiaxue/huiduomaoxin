@@ -9,9 +9,9 @@ import android.widget.Toast;
 
 import com.example.classify.adapter.MyExpandableAdapter;
 import com.example.classify.adapter.MyRightRecAdapter;
-import com.example.classify.bean.LeftChildBean;
-import com.example.classify.bean.LeftGroupBean;
-import com.example.classify.bean.RightRecBean;
+import com.example.entity.LeftChildBean;
+import com.example.entity.LeftGroupBean;
+import com.example.entity.RightRecBean;
 import com.example.entity.TopBannerBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;

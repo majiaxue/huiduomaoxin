@@ -22,11 +22,12 @@
                 android:layout_width="@dimen/dp_351"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_20"
                 android:divider="@null"
-                android:dividerHeight="@dimen/dp_12"
                 android:scrollbars="none"></ListView>
+
+            <View
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_20" />
         </LinearLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

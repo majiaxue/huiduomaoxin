@@ -2,17 +2,15 @@ package com.example.classify.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.classify.bean.LeftChildBean;
-import com.example.classify.bean.LeftGroupBean;
+import com.example.entity.LeftChildBean;
+import com.example.entity.LeftGroupBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 

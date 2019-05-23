@@ -10,7 +10,7 @@ import com.example.mvp.BaseFragment;
 public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_multi_user_mine;
+        return R.layout.fragment_user_mine;
     }
 
     @Override

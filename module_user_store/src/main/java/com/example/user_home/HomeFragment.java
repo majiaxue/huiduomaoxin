@@ -62,7 +62,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_multi_user_home;
+        return R.layout.fragment_user_home;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         userHomeRefresh.setRefreshHeader(customHeader);
-        //********************设置上拉刷新下拉加载
+        //设置上拉刷新下拉加载
         userHomeRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -112,7 +112,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         userHomeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean("user_home_back"));
+                EventBus.getDefault().post(new EventBusBean("user_back"));
             }
         });
     }

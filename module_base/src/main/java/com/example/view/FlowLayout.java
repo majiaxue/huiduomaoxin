@@ -117,7 +117,7 @@ public class FlowLayout extends ViewGroup {
 
         int cCount = getChildCount();
 
-        for (int i = 0; i < cCount; i++) {
+        for (int i = cCount - 1; i >= 0; i--) {
             View child = getChildAt(i);
             MarginLayoutParams lp = (MarginLayoutParams) child
                     .getLayoutParams();

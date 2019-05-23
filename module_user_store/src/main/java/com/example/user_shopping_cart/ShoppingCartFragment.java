@@ -10,7 +10,7 @@ import com.example.mvp.BaseFragment;
 public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, ShoppingCartPresenter> implements ShoppingCartView {
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_multi_user_shopping_cart;
+        return R.layout.fragment_user_shopping_cart;
     }
 
     @Override
