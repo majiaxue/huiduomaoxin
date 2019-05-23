@@ -79,7 +79,7 @@ public class AppManager {
     /**
      * 结束所有activity
      */
-    private void finishAllActivity() {
+    public void finishAllActivity() {
         for (Activity activity : activityStack) {
             if (activity != null)
                 activity.finish();

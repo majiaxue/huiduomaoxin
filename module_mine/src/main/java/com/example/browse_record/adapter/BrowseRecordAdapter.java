@@ -1,0 +1,28 @@
+package com.example.browse_record.adapter;
+
+import android.content.Context;
+
+import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.RecyclerViewHolder;
+import com.example.entity.RecBean;
+import com.example.module_mine.R;
+
+import java.util.List;
+
+public class BrowseRecordAdapter extends MyRecyclerAdapter<RecBean> {
+    public BrowseRecordAdapter(Context context, List<RecBean> mList, int mLayoutId) {
+        super(context, mList, mLayoutId);
+    }
+
+    @Override
+    public void convert(RecyclerViewHolder holder, RecBean data, int position) {
+        holder.setText(R.id.base_name, data.getName())
+                .setText(R.id.base_reduce_price, data.getReduce_price())
+                .setText(R.id.base_preferential_price, data.getPreferential_price())
+                .setText(R.id.base_original_price, data.getOriginal_price())
+                .setText(R.id.base_number, "已抢" + data.getNumber() + "件")
+                .setTextLine(R.id.base_original_price)
+                .setProgressBar(R.id.base__progress, (int) (100.0 * Integer.valueOf(data.getNumber()) / Integer.valueOf(data.getTotalCount())))
+                .setImageFresco(R.id.base_image, data.getImgUrl());
+    }
+}

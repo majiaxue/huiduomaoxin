@@ -24,6 +24,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadRec() {
         List<BaseRecImageAndTextBean> dataList = new ArrayList();
+        dataList.add(new BaseRecImageAndTextBean("我的余额", R.drawable.shoucang));
         dataList.add(new BaseRecImageAndTextBean("我的收藏", R.drawable.shoucang));
         dataList.add(new BaseRecImageAndTextBean("浏览记录", R.drawable.liulanjilu));
         dataList.add(new BaseRecImageAndTextBean("联系客服", R.drawable.kefu_tianchong));
@@ -52,21 +53,24 @@ public class MinePresenter extends BasePresenter<MineView> {
     private void toolClick(int position) {
         switch (position) {
             case 0:
-                ARouter.getInstance().build("/mine/collection").navigation();
+                ARouter.getInstance().build("/mine/balance").navigation();
                 break;
             case 1:
-
+                ARouter.getInstance().build("/mine/collection").navigation();
                 break;
             case 2:
-                ARouter.getInstance().build("/mine/contactus").navigation();
+                ARouter.getInstance().build("/mine/browserecord").navigation();
                 break;
             case 3:
-                ARouter.getInstance().build("/mine/messagecenter").navigation();
+                ARouter.getInstance().build("/mine/contactus").navigation();
                 break;
             case 4:
-                ARouter.getInstance().build("/mine/helpcenter").navigation();
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
                 break;
             case 5:
+                ARouter.getInstance().build("/mine/helpcenter").navigation();
+                break;
+            case 6:
                 ARouter.getInstance().build("/mine/orderretrieve").navigation();
                 break;
         }

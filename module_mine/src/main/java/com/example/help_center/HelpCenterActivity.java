@@ -1,10 +1,12 @@
 package com.example.help_center;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.help_detail.HelpDetailActivity;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -44,6 +46,41 @@ public class HelpCenterActivity extends BaseActivity<HelpCenterView, HelpCenterP
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        helpCenterTxt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToDetail(0);
+            }
+        });
+
+        helpCenterTxt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToDetail(1);
+            }
+        });
+
+        helpCenterTxt3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToDetail(2);
+            }
+        });
+
+        helpCenterTxt4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToDetail(3);
+            }
+        });
+
+        helpCenterTxt5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToGuide();
             }
         });
     }
