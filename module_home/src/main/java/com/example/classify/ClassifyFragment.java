@@ -1,16 +1,9 @@
 package com.example.classify;
 
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
@@ -19,7 +12,6 @@ import com.example.mvp.BaseFragment;
 import com.stx.xhb.xbanner.XBanner;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * 分类
@@ -36,7 +28,6 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
     XBanner classifyXBanner;
     @BindView(R2.id.classify_rec)
     RecyclerView classifyRecommendRec;
-    Unbinder unbinder;
 
     @Override
     public int getLayoutId() {
@@ -76,21 +67,13 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden) {
             //不可见
-            Log.d("HomeFragment", "hidden:" + hidden);
             classifyXBanner.stopAutoPlay();
         } else {
             //可见
-            Log.d("HomeFragment", "hidden:" + hidden);
             classifyXBanner.startAutoPlay();
         }
     }

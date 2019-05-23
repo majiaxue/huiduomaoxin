@@ -2,7 +2,6 @@ package com.example.home;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,13 +14,13 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.RecAdapter;
+import com.example.entity.BaseRecImageAndTextBean;
+import com.example.entity.RecBean;
+import com.example.entity.TopBannerBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
-import com.example.adapter.RecAdapter;
 import com.example.home.bean.GoodChoiceBean;
-import com.example.entity.RecBean;
-import com.example.home.bean.TopBannerBean;
-import com.example.entity.BaseRecImageAndTextBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -198,7 +197,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         recAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view,final int position) {
+            public void ViewOnClick(View view, final int position) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

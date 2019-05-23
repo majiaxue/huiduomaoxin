@@ -87,7 +87,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @Override
     public void initData() {
 
-        AppManager.getInstance().addActivity(this);
+        AppManager.getInstance().addGoodsActivity(this);
         //详情轮播图
         presenter.setXBanner(commodityXbanner);
 
@@ -118,7 +118,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/home/main").navigation();
-                AppManager.getInstance().finishAllActivity();
+                AppManager.getInstance().finishGoodsActivity();
             }
         });
         //进入店铺

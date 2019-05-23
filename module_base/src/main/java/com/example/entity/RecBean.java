@@ -5,12 +5,15 @@ package com.example.entity;
  * Describe:
  */
 public class RecBean {
+    private String imgUrl;
     private int image;
     private String name;
     private String reduce_price;
     private String preferential_price;
     private String original_price;
     private String number;
+    private String totalCount;
+    private boolean isCheck;
 
     public RecBean(int image, String name, String reduce_price, String preferential_price, String original_price, String number) {
         this.image = image;
@@ -19,6 +22,27 @@ public class RecBean {
         this.preferential_price = preferential_price;
         this.original_price = original_price;
         this.number = number;
+    }
+
+    public RecBean(String imgUrl, String name, String reduce_price, String preferential_price, String original_price, String number, String totalCount) {
+        this.imgUrl = imgUrl;
+        this.name = name;
+        this.reduce_price = reduce_price;
+        this.preferential_price = preferential_price;
+        this.original_price = original_price;
+        this.number = number;
+        this.totalCount = totalCount;
+    }
+
+    public RecBean(String imgUrl, String name, String reduce_price, String preferential_price, String original_price, String number, String totalCount, boolean isCheck) {
+        this.imgUrl = imgUrl;
+        this.name = name;
+        this.reduce_price = reduce_price;
+        this.preferential_price = preferential_price;
+        this.original_price = original_price;
+        this.number = number;
+        this.totalCount = totalCount;
+        this.isCheck = isCheck;
     }
 
     public int getImage() {
@@ -67,5 +91,44 @@ public class RecBean {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(String totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
+    @Override
+    public String toString() {
+        return "RecBean{" +
+                "imgUrl='" + imgUrl + '\'' +
+                ", image=" + image +
+                ", name='" + name + '\'' +
+                ", reduce_price='" + reduce_price + '\'' +
+                ", preferential_price='" + preferential_price + '\'' +
+                ", original_price='" + original_price + '\'' +
+                ", number='" + number + '\'' +
+                ", totalCount='" + totalCount + '\'' +
+                ", isCheck=" + isCheck +
+                '}';
     }
 }

@@ -1,18 +1,19 @@
 package com.example.user_store;
 
 
-import android.os.Bundle;
-import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.entity.EventBusBean;
 import com.example.mvp.BaseFragmentActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 多用户商城主界面
@@ -36,11 +37,12 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_multi_user;
+        return R.layout.activity_user;
     }
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
         presenter.loadData(getSupportFragmentManager(), R.id.user_frame);
     }
 
@@ -54,14 +56,11 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
         });
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //返回淘宝客
-            ARouter.getInstance().build("/home/main").navigation();
-            return false;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if ("user_back".equals(eventBusBean.getMsg())) {
+            finish();
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -72,12 +71,5 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     @Override
     public UserPresenter createPresenter() {
         return new UserPresenter(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

@@ -6,6 +6,7 @@ import java.util.Stack;
 
 public class AppManager {
     private static Stack<Activity> activityStack;
+    private static Stack<Activity> goodsActivity;
     private static AppManager instance;
 
     private AppManager() {
@@ -37,6 +38,21 @@ public class AppManager {
             activityStack = new Stack<Activity>();
         }
         activityStack.add(activity);
+    }
+
+    public void addGoodsActivity(Activity activity) {
+        if (goodsActivity == null) {
+            goodsActivity = new Stack<Activity>();
+        }
+        goodsActivity.add(activity);
+    }
+
+    public void finishGoodsActivity() {
+        for (Activity activity : goodsActivity) {
+            if (activity != null)
+                activity.finish();
+        }
+        goodsActivity.clear();
     }
 
     /**

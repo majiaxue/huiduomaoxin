@@ -83,6 +83,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             }
         });
 
+        mineHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToLogin();
+            }
+        });
+
         mineName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +97,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             }
         });
 
-        mineHeader.setOnClickListener(new View.OnClickListener() {
+        mineSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToSetting();
@@ -153,7 +160,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             }
         });
 
-        minePredict.setOnClickListener(new View.OnClickListener() {
+        mineIncomeForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToPredict();

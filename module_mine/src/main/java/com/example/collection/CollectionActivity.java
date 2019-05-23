@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.collection.adapter.CollectionAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -57,6 +58,18 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
                 presenter.edit();
             }
         });
+
+        collectionDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.deleteList();
+            }
+        });
+    }
+
+    @Override
+    public void loadUI(CollectionAdapter adapter) {
+        collectionRv.setAdapter(adapter);
     }
 
     @Override

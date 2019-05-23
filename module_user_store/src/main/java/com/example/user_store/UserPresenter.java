@@ -10,6 +10,8 @@ import com.example.user_mine.MineFragment;
 import com.example.user_shopping_cart.ShoppingCartFragment;
 import com.example.mvp.BasePresenter;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by cuihaohao on 2019/5/16
  * Describe:
@@ -28,7 +30,7 @@ public class UserPresenter extends BasePresenter<UserView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(mContext);
     }
 
     public void loadData(FragmentManager fragmentManager, int resId) {

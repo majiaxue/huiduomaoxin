@@ -27,7 +27,6 @@ import butterknife.Unbinder;
  */
 public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView {
 
-    Unbinder unbinder;
     @BindView(R2.id.home_top_bg)
     ImageView homeTopBg;
     @BindView(R2.id.home_search)
@@ -109,12 +108,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public HomePresenter createPresenter() {
         return new HomePresenter(getContext());
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override

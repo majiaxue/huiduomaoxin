@@ -1,7 +1,6 @@
 package com.example.classify.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.classify.bean.RightRecBean;
+import com.example.entity.RightRecBean;
 import com.example.module_home.R;
 
 import java.util.List;
