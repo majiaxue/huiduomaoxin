@@ -1,6 +1,7 @@
 package com.example.commoditydetails;
 
 
+import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,16 +9,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.AppManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 淘宝客商品详情
@@ -71,6 +75,9 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     LinearLayout commodityLedSecurities;
     @BindView(R2.id.commodity_linear)
     LinearLayout commodityLinear;
+    @BindView(R2.id.commodity_into_shop)
+    TextView commodityIntoShop;
+
 
     @Override
     public int getLayoutId() {
@@ -79,6 +86,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
     @Override
     public void initData() {
+
+        AppManager.getInstance().addActivity(this);
         //详情轮播图
         presenter.setXBanner(commodityXbanner);
 
@@ -109,6 +118,49 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/home/main").navigation();
+                AppManager.getInstance().finishAllActivity();
+            }
+        });
+        //进入店铺
+        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+            }
+        });
+        //进入店铺
+        commodityShopImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+            }
+        });
+        //进入店铺
+        commodityShopName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+            }
+        });
+        //分享
+        commodityShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CommodityDetailsActivity.this, "点击了分享", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //领劵
+        commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //收藏
+        commodityCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CommodityDetailsActivity.this, "点击了收藏", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -126,14 +178,14 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("HomeFragment", "不可见");
+        Log.d("ShopHomeFragment", "不可见");
         commodityXbanner.stopAutoPlay();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("HomeFragment", "可见");
+        Log.d("ShopHomeFragment", "可见");
         commodityXbanner.startAutoPlay();
     }
 
@@ -150,4 +202,5 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             commodityStick.setVisibility(View.GONE);
         }
     }
+
 }

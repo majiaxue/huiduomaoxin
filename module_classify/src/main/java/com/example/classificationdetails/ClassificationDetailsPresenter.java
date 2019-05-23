@@ -14,6 +14,8 @@ import com.example.classificationdetails.adapter.ClassificationRecAdapter;
 import com.example.entity.RecBean;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
+import com.example.utils.DisplayUtil;
+import com.example.utils.SpaceItemDecorationLeftAndRight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     private List<RecBean> classifyRecList;
     private List<RecBean> classifyGridRecList;
+    private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
 
     public ClassificationDetailsPresenter(Context context) {
         super(context);
@@ -38,6 +41,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     public void setClassifyRec(RecyclerView classificationRec, ImageView classificationSwitchover){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
         classificationRec.setLayoutManager(linearLayoutManager);
         classifyRecList = new ArrayList<>();
         classifyRecList.add(new RecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
@@ -70,7 +74,12 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     }
 
     public void setClassifyGridRec(RecyclerView classificationRec, ImageView classificationSwitchover){
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false);
+        //添加间距
+        spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
+        if (classificationRec.getItemDecorationCount() == 0) {
+            classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setLayoutManager(gridLayoutManager);
         classifyGridRecList = new ArrayList<>();
         classifyGridRecList.add(new RecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", ""));

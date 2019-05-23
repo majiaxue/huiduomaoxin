@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
@@ -59,7 +60,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
             @Override
             public void onClick(View v) {
                 //到搜索页面
-
+                ARouter.getInstance().build("/module_home/SearchActivity").navigation();
             }
         });
     }

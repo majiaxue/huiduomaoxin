@@ -170,7 +170,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
     }
