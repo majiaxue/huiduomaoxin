@@ -23,6 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:divider="@null"
+                android:listSelector="@android:color/transparent"
+                android:overScrollMode="never"
                 android:scrollbars="none"></ListView>
 
             <View

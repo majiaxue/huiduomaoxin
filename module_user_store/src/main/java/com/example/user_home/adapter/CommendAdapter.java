@@ -30,5 +30,8 @@ public class CommendAdapter extends MyRecyclerAdapter<CommendBean> {
             params.height = (int) context.getResources().getDimension(R.dimen.dp_142);
             img.setLayoutParams(params);
         }
+        if (viewTwoOnClickListener != null) {
+            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_commend_parent), holder.getView(R.id.rv_commend_btn), position);
+        }
     }
 }
