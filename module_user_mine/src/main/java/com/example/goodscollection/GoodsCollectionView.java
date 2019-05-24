@@ -1,5 +1,6 @@
 package com.example.goodscollection;
 
+import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
 import com.example.mvp.IView;
 
 /**
@@ -7,4 +8,11 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface GoodsCollectionView extends IView {
+
+    void isCompile(boolean isCompile);
+
+    void isCheckAll(boolean isCheckAll);
+
+    void loadUI(GoodsCollectionRecAdapter adapter);
+
 }

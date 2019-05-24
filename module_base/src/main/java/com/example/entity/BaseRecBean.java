@@ -4,7 +4,7 @@ package com.example.entity;
  * Created by cuihaohao on 2019/5/15
  * Describe:
  */
-public class RecBean {
+public class BaseRecBean {
     private String imgUrl;
     private int image;
     private String name;
@@ -15,7 +15,7 @@ public class RecBean {
     private String totalCount;
     private boolean isCheck;
 
-    public RecBean(int image, String name, String reduce_price, String preferential_price, String original_price, String number) {
+    public BaseRecBean(int image, String name, String reduce_price, String preferential_price, String original_price, String number) {
         this.image = image;
         this.name = name;
         this.reduce_price = reduce_price;
@@ -24,7 +24,7 @@ public class RecBean {
         this.number = number;
     }
 
-    public RecBean(String imgUrl, String name, String reduce_price, String preferential_price, String original_price, String number, String totalCount) {
+    public BaseRecBean(String imgUrl, String name, String reduce_price, String preferential_price, String original_price, String number, String totalCount) {
         this.imgUrl = imgUrl;
         this.name = name;
         this.reduce_price = reduce_price;
@@ -34,7 +34,7 @@ public class RecBean {
         this.totalCount = totalCount;
     }
 
-    public RecBean(String imgUrl, String name, String reduce_price, String preferential_price, String original_price, String number, String totalCount, boolean isCheck) {
+    public BaseRecBean(String imgUrl, String name, String reduce_price, String preferential_price, String original_price, String number, String totalCount, boolean isCheck) {
         this.imgUrl = imgUrl;
         this.name = name;
         this.reduce_price = reduce_price;
@@ -119,7 +119,7 @@ public class RecBean {
 
     @Override
     public String toString() {
-        return "RecBean{" +
+        return "BaseRecBean{" +
                 "imgUrl='" + imgUrl + '\'' +
                 ", image=" + image +
                 ", name='" + name + '\'' +

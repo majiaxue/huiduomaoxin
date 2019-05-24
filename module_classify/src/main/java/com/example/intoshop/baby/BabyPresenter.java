@@ -78,7 +78,7 @@ public class BabyPresenter extends BasePresenter<BabyView> {
             babyRecBeanList.add(new BabyRecBean(R.drawable.img_56, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "", "班迪卡旗舰店"));
         }
 
-        BabyRecStaggeredAdapter babyRecStaggeredAdapter = new BabyRecStaggeredAdapter(mContext, babyRecBeanList, R.layout.item_baby_rec_staggered_grid);
+        BabyRecStaggeredAdapter babyRecStaggeredAdapter = new BabyRecStaggeredAdapter(mContext, babyRecBeanList, R.layout.item_base_rec_staggered_grid);
         intoShopRec.setAdapter(babyRecStaggeredAdapter);
 
         babyRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {

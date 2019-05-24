@@ -1,11 +1,9 @@
 package com.example.adapter;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.view.View;
 import android.widget.TextView;
 
-import com.example.entity.RecBean;
+import com.example.entity.BaseRecBean;
 import com.example.module_base.R;
 
 import java.util.List;
@@ -14,15 +12,15 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/15
  * Describe:
  */
-public class RecAdapter extends MyRecyclerAdapter<RecBean> {
+public class BaseRecAdapter extends MyRecyclerAdapter<BaseRecBean> {
 
 
-    public RecAdapter(Context context, List mList, int mLayoutId) {
+    public BaseRecAdapter(Context context, List mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, RecBean data, final int position) {
+    public void convert(RecyclerViewHolder holder, BaseRecBean data, final int position) {
         holder.setImageResource(R.id.base_image, data.getImage());
         holder.setText(R.id.base_name, data.getName());
         holder.setText(R.id.base_reduce_price, data.getReduce_price());

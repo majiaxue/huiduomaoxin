@@ -1,21 +1,18 @@
 package com.example.commoditydetails;
 
 import android.content.Context;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.adapter.RecAdapter;
+import com.example.adapter.BaseRecAdapter;
 import com.example.commoditydetails.bean.CommodityXBannerBean;
-import com.example.entity.RecBean;
+import com.example.entity.BaseRecBean;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
-import com.example.utils.ClickUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -30,7 +27,7 @@ import java.util.List;
 public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsView> {
 
     private List<CommodityXBannerBean> images;
-    private List<RecBean> recBeanList;
+    private List<BaseRecBean> baseRecBeanList;
 
 
     public CommodityDetailsPresenter(Context context) {
@@ -77,22 +74,22 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         shopRecommendRec.setLayoutManager(linearLayoutManager);
-        recBeanList = new ArrayList<>();
-        recBeanList.add(new RecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-        recBeanList.add(new RecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-        recBeanList.add(new RecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        recBeanList.add(new RecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        RecAdapter recAdapter = new RecAdapter(mContext, recBeanList, R.layout.item_base_rec);
-        shopRecommendRec.setAdapter(recAdapter);
+        baseRecBeanList = new ArrayList<>();
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        BaseRecAdapter baseRecAdapter = new BaseRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
+        shopRecommendRec.setAdapter(baseRecAdapter);
 
-        recAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
                 ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
 
-        recAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+        baseRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
             public void ViewOnClick(View view, final int position) {
                 view.setOnClickListener(new View.OnClickListener() {

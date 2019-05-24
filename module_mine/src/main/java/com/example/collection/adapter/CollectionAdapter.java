@@ -5,25 +5,25 @@ import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.entity.RecBean;
+import com.example.entity.BaseRecBean;
 import com.example.module_mine.R;
 
 import java.util.List;
 
-public class CollectionAdapter extends MyRecyclerAdapter<RecBean> {
+public class CollectionAdapter extends MyRecyclerAdapter<BaseRecBean> {
     private boolean isEdit;
 
-    public CollectionAdapter(Context context, List<RecBean> mList, int mLayoutId) {
+    public CollectionAdapter(Context context, List<BaseRecBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public CollectionAdapter(Context context, List<RecBean> mList, int mLayoutId, boolean isEdit) {
+    public CollectionAdapter(Context context, List<BaseRecBean> mList, int mLayoutId, boolean isEdit) {
         super(context, mList, mLayoutId);
         this.isEdit = isEdit;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, RecBean data, int position) {
+    public void convert(RecyclerViewHolder holder, BaseRecBean data, int position) {
         viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_collection_check), position);
         if (isEdit) {
             holder.getView(R.id.rv_collection_check).setVisibility(View.VISIBLE);

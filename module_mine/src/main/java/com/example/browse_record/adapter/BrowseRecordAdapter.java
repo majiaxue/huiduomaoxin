@@ -4,18 +4,18 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.entity.RecBean;
+import com.example.entity.BaseRecBean;
 import com.example.module_mine.R;
 
 import java.util.List;
 
-public class BrowseRecordAdapter extends MyRecyclerAdapter<RecBean> {
-    public BrowseRecordAdapter(Context context, List<RecBean> mList, int mLayoutId) {
+public class BrowseRecordAdapter extends MyRecyclerAdapter<BaseRecBean> {
+    public BrowseRecordAdapter(Context context, List<BaseRecBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, RecBean data, int position) {
+    public void convert(RecyclerViewHolder holder, BaseRecBean data, int position) {
         holder.setText(R.id.base_name, data.getName())
                 .setText(R.id.base_reduce_price, data.getReduce_price())
                 .setText(R.id.base_preferential_price, data.getPreferential_price())

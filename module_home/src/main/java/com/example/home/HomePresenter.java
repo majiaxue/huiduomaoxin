@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.adapter.RecAdapter;
+import com.example.adapter.BaseRecAdapter;
+import com.example.entity.BaseRecBean;
 import com.example.entity.BaseRecImageAndTextBean;
-import com.example.entity.RecBean;
 import com.example.entity.TopBannerBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
@@ -38,7 +38,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<TopBannerBean> images;
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodChoiceBean> goodList;
-    private List<RecBean> recBeanList;
+    private List<BaseRecBean> baseRecBeanList;
 
     public HomePresenter(Context context) {
         super(context);
@@ -180,22 +180,22 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         homeBottomRec.setLayoutManager(linearLayoutManager);
-        recBeanList = new ArrayList<>();
-        recBeanList.add(new RecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-        recBeanList.add(new RecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-        recBeanList.add(new RecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        recBeanList.add(new RecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        RecAdapter recAdapter = new RecAdapter(mContext, recBeanList, R.layout.item_base_rec);
-        homeBottomRec.setAdapter(recAdapter);
+        baseRecBeanList = new ArrayList<>();
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        baseRecBeanList.add(new BaseRecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        BaseRecAdapter baseRecAdapter = new BaseRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
+        homeBottomRec.setAdapter(baseRecAdapter);
 
-        recAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
                 ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
 
-        recAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+        baseRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
             public void ViewOnClick(View view, final int position) {
                 view.setOnClickListener(new View.OnClickListener() {

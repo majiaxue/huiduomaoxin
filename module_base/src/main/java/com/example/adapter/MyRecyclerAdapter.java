@@ -17,6 +17,8 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     private OnItemClickListener listener;
     private OnItemLongClickListener longClickListener;
     public ViewOnClickListener viewOnClickListener;
+    public ViewTwoOnClickListener viewTwoOnClickListener;
+    public ViewThreeOnClickListener viewThreeOnClickListener;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -90,6 +92,18 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         boolean onItemLongClick(RecyclerView parent, View view, int position);
     }
 
+    public interface ViewOnClickListener {
+        void ViewOnClick(View view, int position);
+    }
+
+    public interface ViewTwoOnClickListener {
+        void ViewTwoOnClick(View view1, View view2, int position);
+    }
+
+    public interface ViewThreeOnClickListener {
+        void ViewThreeOnClick(View view1, View view2, View view3, int position);
+    }
+
     public void setOnItemClick(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -98,11 +112,16 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         this.longClickListener = longClickListener;
     }
 
-    public interface ViewOnClickListener {
-        void ViewOnClick(View view, int position);
-    }
-
     public void setViewOnClickListener(ViewOnClickListener listener) {
         this.viewOnClickListener = listener;
     }
+
+    public void setViewTwoOnClickListener(ViewTwoOnClickListener listener) {
+        this.viewTwoOnClickListener = listener;
+    }
+
+    public void setViewThreeOnClickListener(ViewThreeOnClickListener listener) {
+        this.viewThreeOnClickListener = listener;
+    }
+
 }

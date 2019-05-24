@@ -239,7 +239,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_19"
-                    android:src="@drawable/my_order" />
+                    android:src="@drawable/icon_daifukuan" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -261,7 +261,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_17"
                     android:layout_height="@dimen/dp_18"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_daifahuo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -283,7 +283,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_18"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_daishouhuo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -305,7 +305,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_19"
                     android:layout_height="@dimen/dp_19"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_daipingjia" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -327,7 +327,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_19"
                     android:layout_height="@dimen/dp_19"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_tuihuan" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -393,7 +393,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="@dimen/dp_22"
-                    android:src="@drawable/my_order" />
+                    android:src="@drawable/icon_shangjia1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -415,7 +415,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="@dimen/dp_22"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_youhuiquan" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -437,7 +437,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="@dimen/dp_22"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_shouhuodizhi" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -459,7 +459,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="@dimen/dp_22"
-                    android:src="@drawable/dingdan" />
+                    android:src="@drawable/icon_xiaoxiytongzhi" />
 
                 <TextView
                     android:layout_width="wrap_content"
