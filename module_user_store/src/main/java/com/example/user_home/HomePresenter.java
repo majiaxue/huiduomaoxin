@@ -1,15 +1,18 @@
 package com.example.user_home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.CommendBean;
 import com.example.entity.SaleHotBean;
 import com.example.entity.TopBannerBean;
+import com.example.goods_detail.GoodsDetailActivity;
 import com.example.mvp.BasePresenter;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_home.adapter.NavBarAdapter;
@@ -75,9 +78,37 @@ public class HomePresenter extends BasePresenter<HomeView> {
         commendList.add(new CommendBean(R.drawable.img_114, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
         commendList.add(new CommendBean(R.drawable.img_115, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
         CommendAdapter commendAdapter = new CommendAdapter(mContext, commendList, R.layout.rv_commend);
+
+        commendAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
+            @Override
+            public void ViewTwoOnClick(View view1, View view2, final int position) {
+                view1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        jumpToGoodsDetail(position);
+                    }
+                });
+
+                view2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        jumpToShop(position);
+                    }
+                });
+            }
+        });
+
         if (getView() != null) {
             getView().loadCommend(commendAdapter);
         }
+    }
+
+    private void jumpToShop(int position) {
+
+    }
+
+    public void jumpToGoodsDetail(int position) {
+        mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
     }
 
     public void setXBanner(XBanner homeXbanner, final ImageView homeTopBg) {

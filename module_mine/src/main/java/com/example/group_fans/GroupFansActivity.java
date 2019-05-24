@@ -25,6 +25,7 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.KeyboardStateObserver;
 import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
+import com.example.utils.TxtUtil;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -65,9 +66,7 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     @Override
     public void initData() {
         includeTitle.setText("团队粉丝");
-        LinearGradient linearGradient = new LinearGradient(0, 0, 0, groupFansJianbian.getPaint().getTextSize(), Color.parseColor("#fb4119"), Color.parseColor("#febf0d"), Shader.TileMode.CLAMP);
-        groupFansJianbian.getPaint().setShader(linearGradient);
-        groupFansJianbian.invalidate();
+        TxtUtil.txtJianbian(groupFansJianbian, "#fb4119", "#febf0d");
         presenter.loadData();
 
         KeyboardStateObserver.getKeyboardStateObserver(this).setKeyboardVisibilityListener(new KeyboardStateObserver.OnKeyboardVisibilityListener() {

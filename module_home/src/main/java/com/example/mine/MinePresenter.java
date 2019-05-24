@@ -24,13 +24,14 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadRec() {
         List<BaseRecImageAndTextBean> dataList = new ArrayList();
-        dataList.add(new BaseRecImageAndTextBean("我的余额", R.drawable.shoucang));
+        dataList.add(new BaseRecImageAndTextBean("我的余额", R.drawable.icon_yu_e));
         dataList.add(new BaseRecImageAndTextBean("我的收藏", R.drawable.shoucang));
         dataList.add(new BaseRecImageAndTextBean("浏览记录", R.drawable.liulanjilu));
         dataList.add(new BaseRecImageAndTextBean("联系客服", R.drawable.kefu_tianchong));
         dataList.add(new BaseRecImageAndTextBean("消息通知", R.drawable.xiaoxi));
         dataList.add(new BaseRecImageAndTextBean("帮助中心", R.drawable.bangzhuzhongxin));
         dataList.add(new BaseRecImageAndTextBean("订单找回", R.drawable.tianchongxing));
+        dataList.add(new BaseRecImageAndTextBean("意见反馈", R.drawable.icon_yijian));
 
         myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
         if (getView() != null) {
@@ -72,6 +73,9 @@ public class MinePresenter extends BasePresenter<MineView> {
                 break;
             case 6:
                 ARouter.getInstance().build("/mine/orderretrieve").navigation();
+                break;
+            case 7:
+                ARouter.getInstance().build("/mine/suggestion").navigation();
                 break;
         }
     }
