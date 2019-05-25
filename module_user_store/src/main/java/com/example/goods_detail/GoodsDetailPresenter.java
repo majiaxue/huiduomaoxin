@@ -1,6 +1,7 @@
 package com.example.goods_detail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -12,6 +13,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.assess.AssessActivity;
 import com.example.entity.AssessBean;
 import com.example.entity.ChooseGoodsBean;
 import com.example.entity.CommendBean;
@@ -26,9 +28,10 @@ import com.example.goods_detail.adapter.SizeFlowLayoutAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
+import com.example.utils.LogUtil;
 import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
-import com.zhy.view.flowlayout.TagFlowLayout;
+import com.example.view.flowLayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +42,15 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     //选择商品列表
     private List<ChooseGoodsBean> dataList;
     //流式布局--颜色
-    TagFlowLayout flow1;
+    private TagFlowLayout flow1;
     //流式布局--尺码
-    TagFlowLayout flow2;
+    private TagFlowLayout flow2;
     //颜色选中下标
-    int colorPosition = -1;
+    private int colorPosition = -1;
     //尺码选中下标
-    int sizePosition = -1;
+    private int sizePosition = -1;
     //尺码列表
-    List<ChooseGoodsBean.GoodsSize> sizeList = new ArrayList<>();
+    private List<ChooseGoodsBean.GoodsSize> sizeList = new ArrayList<>();
 
     public GoodsDetailPresenter(Context context) {
         super(context);
@@ -209,7 +212,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             }
         });
 
-        initSizeList(0);
+        sizeList.addAll(dataList.get(0).getSize());
 
         final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, new OnFlowSelectListener() {
             @Override
@@ -224,12 +227,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 colorPosition = position;
                 img.setImageResource(dataList.get(position).getImg());
                 sizeList.clear();
+                sizePosition = -1;
                 initSizeList(position);
                 sizeFlowLayoutAdapter.notifyDataChanged();
             }
         }));
 
         flow2.setAdapter(sizeFlowLayoutAdapter);
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,6 +268,27 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             }
         });
 
+        shopCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (colorPosition == -1 || sizePosition == -1) {
+                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                } else {
+                    popupWindow.dismiss();
+                }
+            }
+        });
+
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (colorPosition == -1 || sizePosition == -1) {
+                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                } else {
+                    popupWindow.dismiss();
+                }
+            }
+        });
     }
 
     private void initSizeList(int position) {
@@ -271,5 +297,9 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 sizeList.add(dataList.get(position).getSize().get(i));
             }
         }
+    }
+
+    public void jumpToAssess() {
+        mContext.startActivity(new Intent(mContext, AssessActivity.class));
     }
 }

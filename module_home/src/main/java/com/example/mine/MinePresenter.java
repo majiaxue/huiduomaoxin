@@ -40,11 +40,11 @@ public class MinePresenter extends BasePresenter<MineView> {
 
         myToolAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, final int position) {
+            public void ViewOnClick(View view, final int index) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toolClick(position);
+                        toolClick(index);
                     }
                 });
             }

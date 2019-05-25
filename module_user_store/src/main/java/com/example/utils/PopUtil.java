@@ -72,11 +72,11 @@ public class PopUtil {
         rv.setAdapter(adapter);
         adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, final int position) {
+            public void ViewOnClick(View view, final int index) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dataList.get(position).setHas(true);
+                        dataList.get(index).setHas(true);
                         adapter.notifyDataSetChanged();
                     }
                 });

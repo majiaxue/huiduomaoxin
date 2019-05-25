@@ -430,9 +430,11 @@
                 android:layout_height="@dimen/dp_146"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/pop_clear_cache"
+                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/goods_detail_see_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
@@ -454,7 +456,6 @@
                         android:layout_weight="1" />
 
                     <TextView
-                        android:id="@+id/goods_detail_see_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="查看全部"
@@ -476,7 +477,7 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/goods_detail_rv_assess"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
 

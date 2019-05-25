@@ -40,11 +40,11 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
 
         collectionAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, final int position) {
+            public void ViewOnClick(View view, final int index) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        check(position);
+                        check(index);
                     }
                 });
             }

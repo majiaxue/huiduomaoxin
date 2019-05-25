@@ -5,6 +5,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,7 +56,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     @BindView(R2.id.goods_detail_assess_count)
     TextView goodsDetailAssessCount;
     @BindView(R2.id.goods_detail_see_all)
-    TextView goodsDetailSeeAll;
+    LinearLayout goodsDetailSeeAll;
     @BindView(R2.id.goods_detail_rv_assess)
     RecyclerView goodsDetailRvAssess;
     @BindView(R2.id.goods_detail_shop_img)
@@ -197,6 +198,13 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
             @Override
             public void onClick(View v) {
                 presenter.chooseGoods();
+            }
+        });
+
+        goodsDetailSeeAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToAssess();
             }
         });
     }

@@ -50,7 +50,7 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
 
         factorAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, int position) {
+            public void ViewOnClick(View view, int index) {
 
             }
         });
