@@ -97,7 +97,20 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 ARouter.getInstance().build("/module_user_mine/ShippingAddressActivity").navigation();
             }
         });
-
+        //商家申请
+        userMineBusinessApplication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
+            }
+        });
+        //消息通知
+        userMineMessageNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
+            }
+        });
 
     }
 

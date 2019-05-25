@@ -22,4 +22,10 @@
         <item name="android:windowEnterAnimation">@anim/pop_enter_frombottom</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_tobottom</item>
     </style>
+    <!--popupWindow出现动画-->
+    <style name="animTranslate">
+        <item name="android:windowEnterAnimation">@anim/translate_in</item>
+        <item name="android:windowExitAnimation">@anim/translate_out</item>
+    </style>
+
 </resources>
