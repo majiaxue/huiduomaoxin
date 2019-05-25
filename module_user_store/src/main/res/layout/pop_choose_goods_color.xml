@@ -5,7 +5,7 @@
     android:layout_height="@dimen/dp_38"
     android:layout_marginRight="@dimen/dp_11"
     android:layout_marginBottom="@dimen/dp_11"
-    android:background="@drawable/goods_5_e5e5e5"
+    android:background="@drawable/selector_flow_layout"
     android:orientation="horizontal">
 
     <ImageView
@@ -24,6 +24,5 @@
         android:layout_marginRight="@dimen/dp_10"
         android:gravity="center"
         android:text="黑色"
-        android:textColor="#333333"
         android:textSize="@dimen/sp_13" />
 </LinearLayout>

@@ -26,6 +26,7 @@ import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.goods_detail.adapter.PopParmsAdapter;
 import com.example.user_store.R;
 import com.example.view.FlowLayout;
+import com.example.view.FlowLayoutForLi;
 
 import java.util.List;
 
@@ -146,87 +147,5 @@ public class PopUtil {
         });
     }
 
-    public static void chooseGoodsPop(final Context context, final List<ChooseGoodsBean> dataList) {
-        View view = LayoutInflater.from(context).inflate(R.layout.pop_choose_goods, null);
-        ImageView img = view.findViewById(R.id.pop_choose_goods_img);
-        TextView price = view.findViewById(R.id.pop_choose_goods_price);
-        ImageView cancel = view.findViewById(R.id.pop_choose_goods_cancel);
-        FlowLayout flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
-        FlowLayout flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
-        TextView minus = view.findViewById(R.id.pop_choose_goods_minus);
-        TextView add = view.findViewById(R.id.pop_choose_goods_add);
-        final TextView count = view.findViewById(R.id.pop_choose_goods_count);
-        TextView shopCart = view.findViewById(R.id.pop_choose_goods_cart);
-        TextView buy = view.findViewById(R.id.pop_choose_goods_buy);
 
-        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.dp_444), true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
-        popupWindow.showAtLocation(new View(context), Gravity.BOTTOM, 0, 0);
-
-        setTransparency(context, 0.3f);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                setTransparency(context, 1f);
-            }
-        });
-
-        LinearLayout colorParent;
-        TextView colorContent;
-        for (int i = 0; i < dataList.size(); i++) {
-            View inflate = LayoutInflater.from(context).inflate(R.layout.pop_choose_goods_color, flow1, false);
-            colorParent = inflate.findViewById(R.id.flow_goods_color_parent);
-            colorContent = inflate.findViewById(R.id.flow_goods_color_content);
-            Glide.with(context).load(dataList.get(i).getImg()).into((ImageView) inflate.findViewById(R.id.flow_goods_color_img));
-            colorContent.setText(dataList.get(i).getName());
-            if (i == 0) {
-                colorParent.setBackgroundResource(R.drawable.goods_5_99fd3c15);
-                colorContent.setTextColor(Color.WHITE);
-            }
-            flow1.addView(inflate);
-        }
-
-        TextView sizeTxt;
-        for (int i = 0; i < dataList.get(0).getSize().size(); i++) {
-            sizeTxt = (TextView) LayoutInflater.from(context).inflate(R.layout.pop_choose_goods_size, flow2, false);
-            sizeTxt.setText(dataList.get(0).getSize().get(i).getSize());
-            if (i == 0) {
-                sizeTxt.setBackgroundResource(R.drawable.goods_5_99fd3c15);
-            }
-            flow2.addView(sizeTxt);
-        }
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Integer.valueOf(count.getText().toString()) <= 1) {
-                    count.setText("1");
-                } else {
-                    count.setText(Integer.valueOf(count.getText().toString()) - 1 + "");
-                }
-            }
-        });
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Integer.valueOf(count.getText().toString()) >= dataList.get(0).getSize().get(0).getCount()) {
-                    count.setText(dataList.get(0).getSize().get(0).getCount() + "");
-                } else {
-                    count.setText(Integer.valueOf(count.getText().toString()) + 1 + "");
-                }
-            }
-        });
-
-
-    }
 }
