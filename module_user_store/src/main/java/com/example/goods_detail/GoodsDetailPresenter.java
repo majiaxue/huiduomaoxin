@@ -1,6 +1,16 @@
 package com.example.goods_detail;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.entity.AssessBean;
 import com.example.entity.ChooseGoodsBean;
@@ -8,19 +18,36 @@ import com.example.entity.CommendBean;
 import com.example.entity.CouponBean;
 import com.example.entity.ParmsBean;
 import com.example.entity.TopBannerBean;
+import com.example.goods_detail.adapter.ColorFlowLayoutAdapter;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
+import com.example.goods_detail.adapter.SizeFlowLayoutAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
+import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
+    //是否关注
     private boolean isAttention = false;
+    //选择商品列表
+    private List<ChooseGoodsBean> dataList;
+    //流式布局--颜色
+    TagFlowLayout flow1;
+    //流式布局--尺码
+    TagFlowLayout flow2;
+    //颜色选中下标
+    int colorPosition = -1;
+    //尺码选中下标
+    int sizePosition = -1;
+    //尺码列表
+    List<ChooseGoodsBean.GoodsSize> sizeList = new ArrayList<>();
 
     public GoodsDetailPresenter(Context context) {
         super(context);
@@ -120,7 +147,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void chooseGoods() {
-        List<ChooseGoodsBean> dataList = new ArrayList<>();
+        dataList = new ArrayList<>();
         List<ChooseGoodsBean.GoodsSize> sizeList1 = new ArrayList<>();
         sizeList1.add(new ChooseGoodsBean.GoodsSize("M", 100));
         sizeList1.add(new ChooseGoodsBean.GoodsSize("L", 0));
@@ -149,9 +176,100 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         sizeList4.add(new ChooseGoodsBean.GoodsSize("XXL", 100));
         sizeList4.add(new ChooseGoodsBean.GoodsSize("XXXL", 100));
         dataList.add(new ChooseGoodsBean("黑色", sizeList1, R.drawable.img_48));
-        dataList.add(new ChooseGoodsBean("黑色", sizeList2, R.drawable.img_48));
-        dataList.add(new ChooseGoodsBean("黑色", sizeList3, R.drawable.img_48));
-        dataList.add(new ChooseGoodsBean("黑色", sizeList4, R.drawable.img_48));
-        PopUtil.chooseGoodsPop(mContext, dataList);
+        dataList.add(new ChooseGoodsBean("白色", sizeList2, R.drawable.img_49));
+        dataList.add(new ChooseGoodsBean("蓝色", sizeList3, R.drawable.img_50));
+        dataList.add(new ChooseGoodsBean("没有颜色", sizeList4, R.drawable.img_51));
+        chooseGoodsPop();
+    }
+
+    public void chooseGoodsPop() {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
+        final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
+        TextView price = view.findViewById(R.id.pop_choose_goods_price);
+        ImageView cancel = view.findViewById(R.id.pop_choose_goods_cancel);
+        flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
+        flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
+        TextView minus = view.findViewById(R.id.pop_choose_goods_minus);
+        TextView add = view.findViewById(R.id.pop_choose_goods_add);
+        final TextView count = view.findViewById(R.id.pop_choose_goods_count);
+        TextView shopCart = view.findViewById(R.id.pop_choose_goods_cart);
+        TextView buy = view.findViewById(R.id.pop_choose_goods_buy);
+
+        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
+        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+
+        PopUtil.setTransparency(mContext, 0.3f);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtil.setTransparency(mContext, 1f);
+            }
+        });
+
+        initSizeList(0);
+
+        final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, new OnFlowSelectListener() {
+            @Override
+            public void setOnFlowSelect(int position) {
+                sizePosition = position;
+            }
+        });
+
+        flow1.setAdapter(new ColorFlowLayoutAdapter(dataList, mContext, new OnFlowSelectListener() {
+            @Override
+            public void setOnFlowSelect(int position) {
+                colorPosition = position;
+                img.setImageResource(dataList.get(position).getImg());
+                sizeList.clear();
+                initSizeList(position);
+                sizeFlowLayoutAdapter.notifyDataChanged();
+            }
+        }));
+
+        flow2.setAdapter(sizeFlowLayoutAdapter);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.valueOf(count.getText().toString()) <= 1) {
+                    count.setText("1");
+                } else {
+                    count.setText(Integer.valueOf(count.getText().toString()) - 1 + "");
+                }
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (colorPosition == -1) {
+                    Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (Integer.valueOf(count.getText().toString()) >= dataList.get(colorPosition).getSize().get(sizePosition).getCount()) {
+                        count.setText(dataList.get(0).getSize().get(0).getCount() + "");
+                    } else {
+                        count.setText(Integer.valueOf(count.getText().toString()) + 1 + "");
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void initSizeList(int position) {
+        for (int i = 0; i < dataList.size(); i++) {
+            if (dataList.get(position).getSize().get(i).getCount() > 0) {
+                sizeList.add(dataList.get(position).getSize().get(i));
+            }
+        }
     }
 }

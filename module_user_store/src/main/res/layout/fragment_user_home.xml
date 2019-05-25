@@ -69,13 +69,13 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/user_home_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/user_home_top">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/user_home_nescroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/user_home_top"
             android:overScrollMode="never">
 
             <LinearLayout

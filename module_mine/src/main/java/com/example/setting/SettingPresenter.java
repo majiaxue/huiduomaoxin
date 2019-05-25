@@ -15,14 +15,12 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.mvp.BasePresenter;
-import com.example.update_password.UpdatePasswordActivity;
 import com.example.utils.CacheUtil;
 import com.example.utils.ImageUtil;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.OnClearCacheListener;
-import com.example.utils.UIHelper;
+import com.example.utils.PopTuils;
 
 import java.io.File;
 
@@ -40,7 +38,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void clearCache(String totalCache) {
-        UIHelper.clearCache(mContext, totalCache, new OnClearCacheListener() {
+        PopTuils.clearCache(mContext, totalCache, new OnClearCacheListener() {
             @Override
             public void setOnClearCache(final PopupWindow pop, TextView confirm) {
                 confirm.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +54,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void updateHeader() {
-        UIHelper.changeHeader(mContext, new OnChangeHeaderListener() {
+        PopTuils.changeHeader(mContext, new OnChangeHeaderListener() {
             @Override
             public void setOnChangeHeader(final PopupWindow pop, TextView camera, TextView album) {
                 camera.setOnClickListener(new View.OnClickListener() {
