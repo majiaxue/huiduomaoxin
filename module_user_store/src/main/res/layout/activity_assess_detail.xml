@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
     <include layout="@layout/page_top" />
@@ -27,7 +28,7 @@
                 android:id="@+id/assess_detail_zan_img"
                 android:layout_width="@dimen/dp_15"
                 android:layout_height="@dimen/dp_15"
-                android:src="@drawable/icon_dianzan" />
+                android:src="@drawable/icon_dianzan1" />
 
             <TextView
                 android:id="@+id/assess_detail_count_zan2"
@@ -97,7 +98,8 @@
                 <ImageView
                     android:id="@+id/assess_detail_header"
                     android:layout_width="@dimen/dp_25"
-                    android:layout_height="@dimen/dp_25" />
+                    android:layout_height="@dimen/dp_25"
+                    android:src="@drawable/img_42" />
 
                 <TextView
                     android:id="@+id/assess_detail_name"
@@ -150,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginRight="@dimen/dp_16"
+                android:text="挖法发阿斯蒂芬阿斯蒂芬啊士大夫撒旦阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯顿撒地方"
                 android:textColor="#666666"
                 android:textSize="@dimen/sp_11" />
 
@@ -216,8 +219,10 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/assess_detail_rv_inside_assess"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
                 android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

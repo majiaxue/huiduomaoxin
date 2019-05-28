@@ -1,6 +1,7 @@
 package com.example.user_classify.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.entity.RightRecBean;
+import com.example.type_detail.TypeDetailActivity;
 import com.example.user_store.R;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class UserRightRecAdapter extends MyRecyclerAdapter<RightRecBean> {
         myRightChildAdapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").navigation();
+                context.startActivity(new Intent(context, TypeDetailActivity.class));
             }
         });
     }

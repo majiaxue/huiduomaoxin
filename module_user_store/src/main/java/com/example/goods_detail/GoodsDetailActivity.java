@@ -179,6 +179,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
                 presenter.lingquan();
             }
         });
+
         //正品保障
         goodsDetailEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +206,20 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
             @Override
             public void onClick(View v) {
                 presenter.jumpToAssess();
+            }
+        });
+
+        goodsDetailShopGoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToShop();
+            }
+        });
+
+        goodsDetailBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToOrder();
             }
         });
     }

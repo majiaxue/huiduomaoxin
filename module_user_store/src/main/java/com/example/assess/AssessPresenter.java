@@ -1,6 +1,7 @@
 package com.example.assess;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.adapter.AssessAdapter;
 import com.example.assess.adapter.AssessTitleAdapter;
+import com.example.assess_detail.AssessDetailActivity;
 import com.example.entity.AssessBean;
 import com.example.entity.AssessTitleBean;
 import com.example.mvp.BasePresenter;
@@ -71,7 +73,7 @@ public class AssessPresenter extends BasePresenter<AssessView> {
         }
         assessAdapter.setOnFiveViewClickListener(new MyRecyclerAdapter.OnFiveViewClickListener() {
             @Override
-            public void FiveViewClick(final TextView zanCount, final ImageView zanImg, TextView assessCount, ImageView assessImg, final int groupPosition, ImageView img, final int position) {
+            public void fiveViewClick(final TextView zanCount, final ImageView zanImg, TextView assessCount, ImageView assessImg, final int groupPosition, ImageView img, final int position) {
                 zanImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -92,7 +94,7 @@ public class AssessPresenter extends BasePresenter<AssessView> {
                 assessImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        mContext.startActivity(new Intent(mContext, AssessDetailActivity.class));
                     }
                 });
 

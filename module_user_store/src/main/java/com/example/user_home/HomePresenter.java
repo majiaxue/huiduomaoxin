@@ -3,6 +3,7 @@ package com.example.user_home;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -10,17 +11,22 @@ import android.widget.Toast;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.CommendBean;
+import com.example.entity.EventBusBean2;
 import com.example.entity.SaleHotBean;
 import com.example.entity.TopBannerBean;
 import com.example.goods_detail.GoodsDetailActivity;
 import com.example.mvp.BasePresenter;
+import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_home.adapter.NavBarAdapter;
 import com.example.user_home.adapter.SaleHotAdapter;
 import com.example.user_store.R;
+import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +63,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
         navbarList.add(new BaseRecImageAndTextBean("家居", R.drawable.icon_jiaju));
         navbarList.add(new BaseRecImageAndTextBean("箱包", R.drawable.icon_xiangbao));
         NavBarAdapter navBarAdapter = new NavBarAdapter(mContext, navbarList, R.layout.rv_navbar);
+        navBarAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                EventBus.getDefault().post(new EventBusBean2("jump_type", position));
+            }
+        });
         if (getView() != null) {
             getView().loadNavBar(navBarAdapter);
         }
@@ -66,6 +78,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
         saleHotList.add(new SaleHotBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
         saleHotList.add(new SaleHotBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
         SaleHotAdapter saleHotAdapter = new SaleHotAdapter(mContext, saleHotList, R.layout.rv_hot);
+        saleHotAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+            }
+        });
         if (getView() != null) {
             getView().loadSaleHot(saleHotAdapter);
         }
@@ -104,7 +122,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     private void jumpToShop(int position) {
-
+        mContext.startActivity(new Intent(mContext, ShopHomeActivity.class));
     }
 
     public void jumpToGoodsDetail(int position) {

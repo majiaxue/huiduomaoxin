@@ -7,7 +7,9 @@ import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.entity.EventBusBean;
+import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragmentActivity;
+import com.example.user_classify.ClassifyFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,9 +59,13 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventBusBean eventBusBean) {
-        if ("user_back".equals(eventBusBean.getMsg())) {
+    public void onEventMainThread(EventBusBean2 eventBusBean2) {
+        if ("user_back".equals(eventBusBean2.getMsg())) {
             finish();
+        } else if ("jump_type".equals(eventBusBean2.getMsg())) {
+            ClassifyFragment.position = eventBusBean2.getPosition() + 1;
+            userClassify.setChecked(true);
+            presenter.click(R.id.user_classify);
         }
     }
 

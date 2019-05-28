@@ -22,6 +22,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public ViewTwoOnClickListener viewTwoOnClickListener;
     public ViewThreeOnClickListener viewThreeOnClickListener;
     public OnFiveViewClickListener fiveViewClickListener;
+    public OnTwoViewClickListener twoViewClickListener;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -107,16 +108,18 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         void ViewThreeOnClick(View view1, View view2, View view3, int position);
     }
 
-    public void setOnItemClick(OnItemClickListener listener) {
+    public MyRecyclerAdapter setOnItemClick(OnItemClickListener listener) {
         this.listener = listener;
+        return this;
     }
 
     public void setOnItemLongClick(OnItemLongClickListener longClickListener) {
         this.longClickListener = longClickListener;
     }
 
-    public void setViewOnClickListener(ViewOnClickListener listener) {
+    public MyRecyclerAdapter setViewOnClickListener(ViewOnClickListener listener) {
         this.viewOnClickListener = listener;
+        return this;
     }
 
     public void setViewTwoOnClickListener(ViewTwoOnClickListener listener) {
@@ -128,10 +131,18 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public interface OnFiveViewClickListener {
-        void FiveViewClick(TextView zanCount, ImageView zanImg, TextView assessCount, ImageView assessImg, int groupPosition, ImageView img, int childPosition);
+        void fiveViewClick(TextView zanCount, ImageView zanImg, TextView assessCount, ImageView assessImg, int groupPosition, ImageView img, int childPosition);
     }
 
     public void setOnFiveViewClickListener(OnFiveViewClickListener listener) {
         this.fiveViewClickListener = listener;
+    }
+
+    public interface OnTwoViewClickListener {
+        void twoViewClick(View minus, View add, int outside, int inside);
+    }
+
+    public void setOnTwoViewClickListener(OnTwoViewClickListener listener) {
+        this.twoViewClickListener = listener;
     }
 }

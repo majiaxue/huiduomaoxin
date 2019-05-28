@@ -31,6 +31,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     private List<List<LeftChildBean>> clist;
     private int FLAG = 0;
     private List<TopBannerBean> images;
+    private UserExpandableAdapter myExpandableAdapter;
 
 
     public ClassifyPresenter(Context context) {
@@ -57,10 +58,10 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         glist.add(new LeftGroupBean("洗护", false));
         glist.add(new LeftGroupBean("美妆", false));
         glist.add(new LeftGroupBean("家电", false));
-        glist.add(new LeftGroupBean("数码", false));
-        glist.add(new LeftGroupBean("数码", false));
-        glist.add(new LeftGroupBean("数码", false));
-        glist.add(new LeftGroupBean("数码", false));
+        glist.add(new LeftGroupBean("母婴", false));
+        glist.add(new LeftGroupBean("车品", false));
+        glist.add(new LeftGroupBean("家居", false));
+        glist.add(new LeftGroupBean("箱包", false));
 
         //定义第二级的数据
         clist = new ArrayList<>();
@@ -87,7 +88,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
 
 //        clist.add(t_list);
 
-        final UserExpandableAdapter myExpandableAdapter = new UserExpandableAdapter(mContext, glist, clist);
+        myExpandableAdapter = new UserExpandableAdapter(mContext, glist, clist);
         classifyExpand.setAdapter(myExpandableAdapter);
 
         classifyExpand.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -109,7 +110,6 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         classifyExpand.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Toast.makeText(mContext, "groupPosition:" + groupPosition, Toast.LENGTH_SHORT).show();
                 //判断父布局的位置
                 if (FLAG != groupPosition) {
                     //设置点击后的状态
@@ -158,7 +158,6 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         classifyExpand.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(mContext, "groupPosition:" + groupPosition + "++++++++++++++" + childPosition, Toast.LENGTH_SHORT).show();
                 if (clist.get(groupPosition).size() > 0 && groupPosition < clist.size()) {
                     for (int i = 0; i < clist.get(groupPosition).size(); i++) {
                         clist.get(groupPosition).get(i).setSelected(false);
@@ -169,6 +168,11 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
                 return false;
             }
         });
+
+    }
+
+    public void renovate() {
+        myExpandableAdapter.notifyDataSetChanged();
 
     }
 

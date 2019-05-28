@@ -1,14 +1,19 @@
 package com.example.assess_detail;
 
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.assess_detail.adapter.InsideAssessAdapter;
+import com.example.assess_detail.adapter.InsideImageAdapter;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.SpaceItemDecorationLeftAndRight;
 
 import butterknife.BindView;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
@@ -50,6 +55,8 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
     TextView assessDetailCountZan;
     @BindView(R2.id.assess_detail_count_assess)
     TextView assessDetailCountAssess;
+    @BindView(R2.id.assess_detail_rv_inside_assess)
+    RecyclerView assessDetailRvInsideAssess;
 
     @Override
     public int getLayoutId() {
@@ -60,6 +67,16 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
     public void initData() {
         includeTitle.setText("评价详情");
         includeRight.setImageResource(R.drawable.icon_fenxiang11);
+        assessDetailRatingbar.setRating(5f);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        assessDetailRvImg.setLayoutManager(gridLayoutManager);
+        assessDetailRvImg.addItemDecoration(new SpaceItemDecorationLeftAndRight((int) getResources().getDimension(R.dimen.dp_15), (int) getResources().getDimension(R.dimen.dp_15)));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        assessDetailRvInsideAssess.setLayoutManager(linearLayoutManager);
+
+        presenter.loadData();
     }
 
     @Override
@@ -70,6 +87,33 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
                 finish();
             }
         });
+
+        asssessDetailDianzan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.dianZan();
+            }
+        });
+    }
+
+    @Override
+    public void loadImg(InsideImageAdapter adapter) {
+        assessDetailRvImg.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadInsideAssess(InsideAssessAdapter adapter) {
+        assessDetailRvInsideAssess.setAdapter(adapter);
+    }
+
+    @Override
+    public void zan() {
+        assessDetailZanImg.setImageResource(R.drawable.icon_dianzan);
+    }
+
+    @Override
+    public void cancelZan() {
+        assessDetailZanImg.setImageResource(R.drawable.icon_dianzan1);
     }
 
     @Override

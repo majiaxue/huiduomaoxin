@@ -239,6 +239,7 @@
         android:id="@+id/classification_rec"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_5"></android.support.v7.widget.RecyclerView>
+        android:layout_marginTop="@dimen/dp_5"
+        android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.intoshop.baby.bean.BabyRecBean;
+import com.example.entity.BabyRecBean;
 import com.example.module_classify.R;
 
 import java.util.List;

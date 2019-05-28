@@ -11,7 +11,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.intoshop.baby.adapter.BabyRecAdapter;
 import com.example.intoshop.baby.adapter.BabyRecStaggeredAdapter;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
-import com.example.intoshop.baby.bean.BabyRecBean;
+import com.example.entity.BabyRecBean;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.utils.DisplayUtil;
@@ -78,7 +78,7 @@ public class BabyPresenter extends BasePresenter<BabyView> {
             babyRecBeanList.add(new BabyRecBean(R.drawable.img_56, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "", "班迪卡旗舰店"));
         }
 
-        BabyRecStaggeredAdapter babyRecStaggeredAdapter = new BabyRecStaggeredAdapter(mContext, babyRecBeanList, R.layout.item_base_rec_staggered_grid);
+        BabyRecStaggeredAdapter babyRecStaggeredAdapter = new BabyRecStaggeredAdapter(mContext, babyRecBeanList, R.layout.item_baby_rec_staggered_grid);
         intoShopRec.setAdapter(babyRecStaggeredAdapter);
 
         babyRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
