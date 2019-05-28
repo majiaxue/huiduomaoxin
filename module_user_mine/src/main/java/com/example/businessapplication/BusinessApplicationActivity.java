@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -66,6 +68,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     private final int TAKE_PHOTO_CODE = 0x111;
     private final int PHOTO_ALBUM_CODE = 0x222;
     private final int CROP_CODE = 0x333;
+    private int type;
 
     @Override
     public int getLayoutId() {
@@ -93,36 +96,53 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                 Toast.makeText(BusinessApplicationActivity.this, "请完善信息", Toast.LENGTH_SHORT).show();
             }
         });
+        //商家logo
+        businessApplicationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.openPhotoAlbum();
+                type = 0;
+            }
+        });
         //身份证正面
         businessApplicationFrontPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupWindow(1);
+                presenter.popupWindow();
+                type = 1;
             }
         });
         //身份证反面
         businessApplicationVersoPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupWindow(2);
+                presenter.popupWindow();
+                type = 2;
             }
         });
         //营业执照
         businessApplicationBusinessLicense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupWindow(3);
+                presenter.popupWindow();
+                type = 3;
             }
         });
         //食品安全许可证
         businessApplicationFoodSafetyPermit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupWindow(4);
+                presenter.popupWindow();
+                type = 4;
             }
         });
-
-
+        //选择分类
+        businessApplicationShopClassify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.popupGoodsClassify(businessApplicationShopClassifyText);
+            }
+        });
     }
 
     @Override
@@ -145,15 +165,20 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         startActivityForResult(intent, PHOTO_ALBUM_CODE);
     }
 
-    @Override
-    public void cropPhoto(Intent intent, Uri uri) {
-        startActivityForResult(intent, CROP_CODE);
-
-    }
 
     @Override
     public void selectPhoto(Uri uri) {
-
+        if (type == 1) {
+            businessApplicationFrontPhoto.setImageURI(uri);
+        } else if (type == 2) {
+            businessApplicationVersoPhoto.setImageURI(uri);
+        } else if (type == 3) {
+            businessApplicationBusinessLicense.setImageURI(uri);
+        } else if (type == 4) {
+            businessApplicationFoodSafetyPermit.setImageURI(uri);
+        } else {
+            businessApplicationIcon.setImageURI(uri);
+        }
     }
 
     @Override
@@ -175,7 +200,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
         switch (requestCode) {
             case TAKE_PHOTO_CODE:
-                presenter.cropImage();
                 break;
             case PHOTO_ALBUM_CODE:
                 presenter.parseUri(data);

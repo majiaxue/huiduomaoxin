@@ -57,6 +57,10 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         glist.add(new LeftGroupBean("数码", false));
         glist.add(new LeftGroupBean("数码", false));
         glist.add(new LeftGroupBean("数码", false));
+        glist.add(new LeftGroupBean("数码", false));
+        glist.add(new LeftGroupBean("数码", false));
+        glist.add(new LeftGroupBean("数码", false));
+        glist.add(new LeftGroupBean("数码", false));
 
         //定义第二级的数据
         clist = new ArrayList<>();
@@ -218,14 +222,16 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
 
 
         List<RightRecBean.ListBean> b_childList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            b_childList.add(new RightRecBean.ListBean(R.drawable.e76696ec1eea0f7e8f0208ba61583434, "电视"));
-            b_childList.add(new RightRecBean.ListBean(R.drawable.bingxiang, "冰箱"));
-            b_childList.add(new RightRecBean.ListBean(R.drawable.fgfd, "洗衣机"));
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 2; j++) {
+                b_childList.add(new RightRecBean.ListBean(R.drawable.e76696ec1eea0f7e8f0208ba61583434, "电视"));
+                b_childList.add(new RightRecBean.ListBean(R.drawable.bingxiang, "冰箱"));
+                b_childList.add(new RightRecBean.ListBean(R.drawable.fgfd, "洗衣机"));
+            }
+            list.add(new RightRecBean("专场推荐", a_childList));
+            list.add(new RightRecBean("热门分类", b_childList));
         }
 
-        list.add(new RightRecBean("专场推荐", a_childList));
-        list.add(new RightRecBean("热门分类", b_childList));
 
         MyRightRecAdapter myRightRecAdapter = new MyRightRecAdapter(mContext, list, R.layout.item_rec_group);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);

@@ -30,6 +30,8 @@ import com.stx.xhb.xbanner.transformers.Transformer;
 import java.util.ArrayList;
 import java.util.List;
 
+import okio.ForwardingTimeout;
+
 public class HomePresenter extends BasePresenter<HomeView> {
 
 
@@ -163,7 +165,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
         goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
         goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
 
-
         GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
         homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
 
@@ -181,10 +182,13 @@ public class HomePresenter extends BasePresenter<HomeView> {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         homeBottomRec.setLayoutManager(linearLayoutManager);
         baseRecBeanList = new ArrayList<>();
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+        for (int i = 0; i < 9; i++) {
+            baseRecBeanList.add(new BaseRecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
+            baseRecBeanList.add(new BaseRecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
+            baseRecBeanList.add(new BaseRecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+            baseRecBeanList.add(new BaseRecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
+
+        }
         BaseRecAdapter baseRecAdapter = new BaseRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
         homeBottomRec.setAdapter(baseRecAdapter);
 

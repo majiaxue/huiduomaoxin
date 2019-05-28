@@ -19,6 +19,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public ViewOnClickListener viewOnClickListener;
     public ViewTwoOnClickListener viewTwoOnClickListener;
     public ViewThreeOnClickListener viewThreeOnClickListener;
+    public ViewFourOnClickListener viewFourOnClickListener;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -104,6 +105,10 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         void ViewThreeOnClick(View view1, View view2, View view3, int position);
     }
 
+    public interface ViewFourOnClickListener {
+        void ViewFourOnClick(View view1, View view2, View view3, View view4, int position);
+    }
+
     public void setOnItemClick(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -124,4 +129,8 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         this.viewThreeOnClickListener = listener;
     }
 
+    public void setViewFourOnClickListener(ViewFourOnClickListener listener) {
+        this.viewFourOnClickListener = listener;
+
+    }
 }

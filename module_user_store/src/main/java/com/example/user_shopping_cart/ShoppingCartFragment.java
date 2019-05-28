@@ -1,11 +1,13 @@
 package com.example.user_shopping_cart;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.entity.EventBusBean;
 import com.example.mvp.BaseFragment;
@@ -44,6 +46,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     LinearLayout shoppingCartHide;
     @BindView(R2.id.shopping_cart_close_account_and_delete)
     TextView shoppingCartCloseAccountAndDelete;
+    private boolean compileStatus = true;
 
     @Override
     public int getLayoutId() {
@@ -62,6 +65,37 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         shoppingCartSmartRefresh.setRefreshHeader(customHeader);
+
+        //编辑
+        shoppingCartCompile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (compileStatus) {
+                    shoppingCartCompile.setText("完成");
+                    shoppingCartHide.setVisibility(View.INVISIBLE);
+                    shoppingCartCloseAccountAndDelete.setText("删除");
+                    compileStatus = false;
+                } else {
+                    shoppingCartCompile.setText("编辑");
+                    shoppingCartHide.setVisibility(View.VISIBLE);
+                    shoppingCartCloseAccountAndDelete.setText("去结算(0)");
+                    compileStatus = true;
+                }
+            }
+        });
+
+        //删除订单
+        shoppingCartCloseAccountAndDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (shoppingCartCloseAccountAndDelete.getText().equals("删除")){
+                    presenter.popupDelete();
+                }else{
+                    Toast.makeText(getContext(), "没有选中商品" , Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
     @Override

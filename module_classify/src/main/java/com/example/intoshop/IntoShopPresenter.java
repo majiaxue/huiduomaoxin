@@ -39,9 +39,6 @@ public class IntoShopPresenter extends BasePresenter<IntoShopView> {
             intoShopTab.addTab(intoShopTab.newTab().setText(title));
         }
 
-        intoShopTab.addTab(intoShopTab.newTab().setText("首页"));
-        intoShopTab.addTab(intoShopTab.newTab().setText("宝贝"));
-
         fragmentList.add(new ShopHomeFragment());
         fragmentList.add(new BabyFragment());
 

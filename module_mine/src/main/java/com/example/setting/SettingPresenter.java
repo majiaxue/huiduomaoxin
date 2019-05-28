@@ -20,7 +20,8 @@ import com.example.utils.CacheUtil;
 import com.example.utils.ImageUtil;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.OnClearCacheListener;
-import com.example.utils.PopTuils;
+import com.example.utils.PopUtils;
+import com.example.utils.UIHelper;
 
 import java.io.File;
 
@@ -38,7 +39,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void clearCache(String totalCache) {
-        PopTuils.clearCache(mContext, totalCache, new OnClearCacheListener() {
+        UIHelper.clearCache(mContext, totalCache, new OnClearCacheListener() {
             @Override
             public void setOnClearCache(final PopupWindow pop, TextView confirm) {
                 confirm.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +55,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void updateHeader() {
-        PopTuils.changeHeader(mContext, new OnChangeHeaderListener() {
+        UIHelper.changeHeader(mContext, new OnChangeHeaderListener() {
             @Override
             public void setOnChangeHeader(final PopupWindow pop, TextView camera, TextView album) {
                 camera.setOnClickListener(new View.OnClickListener() {
