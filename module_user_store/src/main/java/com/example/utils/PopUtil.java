@@ -11,22 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.entity.ChooseGoodsBean;
 import com.example.entity.CouponBean;
 import com.example.entity.ParmsBean;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.goods_detail.adapter.PopParmsAdapter;
 import com.example.user_store.R;
-import com.example.view.FlowLayout;
-import com.example.view.FlowLayoutForLi;
 
 import java.util.List;
 
