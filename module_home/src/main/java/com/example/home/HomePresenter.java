@@ -201,7 +201,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         baseRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, final int position) {
+            public void ViewOnClick(View view, final int index) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

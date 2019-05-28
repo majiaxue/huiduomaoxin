@@ -72,11 +72,11 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
         });
         baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, final int position) {
+            public void ViewOnClick(View view, final int index) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

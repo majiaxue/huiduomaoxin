@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -87,9 +89,15 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public RecyclerViewHolder setBackground(int resId, int colorId) {
+    public RecyclerViewHolder setImageUrlCircular(int resId, String url) {
+        ImageView imageView = getView(resId);
+        Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+        return this;
+    }
+
+    public RecyclerViewHolder setBackgroundResource(int resId, int colorId) {
         View view = getView(resId);
-        view.setBackgroundColor(colorId);
+        view.setBackgroundResource(colorId);
         return this;
     }
 

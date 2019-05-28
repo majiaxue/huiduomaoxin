@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.example.entity.ChooseGoodsBean;
 import com.example.user_store.R;
 import com.example.utils.OnFlowSelectListener;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
+import com.example.view.flowLayout.FlowLayout;
+import com.example.view.flowLayout.TagAdapter;
 
 import java.util.List;
 

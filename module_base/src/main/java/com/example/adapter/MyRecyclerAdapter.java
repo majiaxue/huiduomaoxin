@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public ViewOnClickListener viewOnClickListener;
     public ViewTwoOnClickListener viewTwoOnClickListener;
     public ViewThreeOnClickListener viewThreeOnClickListener;
+    public OnFiveViewClickListener fiveViewClickListener;
     public ViewFourOnClickListener viewFourOnClickListener;
     private RecyclerView recyclerView;
 
@@ -94,7 +97,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     }
 
     public interface ViewOnClickListener {
-        void ViewOnClick(View view, int position);
+        void ViewOnClick(View view, int index);
     }
 
     public interface ViewTwoOnClickListener {
@@ -132,5 +135,13 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public void setViewFourOnClickListener(ViewFourOnClickListener listener) {
         this.viewFourOnClickListener = listener;
 
+    }
+
+    public interface OnFiveViewClickListener {
+        void FiveViewClick(TextView zanCount, ImageView zanImg, TextView assessCount, ImageView assessImg, int groupPosition, ImageView img, int childPosition);
+    }
+
+    public void setOnFiveViewClickListener(OnFiveViewClickListener listener) {
+        this.fiveViewClickListener = listener;
     }
 }
