@@ -4,8 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.BaseRecStaggeredAdapter;
@@ -17,6 +21,8 @@ import com.example.user_shopping_cart.bean.CartChildBean;
 import com.example.user_shopping_cart.bean.CartParentBean;
 import com.example.user_store.R;
 import com.example.utils.DisplayUtil;
+import com.example.utils.OnPopListener;
+import com.example.utils.PopUtils;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.view.CustomerExpandableListView;
 
@@ -78,7 +84,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     }
 
-    public void setShoppingCartRec(RecyclerView shoppingCartRec){
+    public void setShoppingCartRec(RecyclerView shoppingCartRec) {
         List<CartParentBean> plist = new ArrayList<>();
         plist.add(new CartParentBean(false, "private简约男装"));
         plist.add(new CartParentBean(false, "班迪卡旗舰店"));
@@ -89,5 +95,30 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     }
 
+
+    public void popupDelete() {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.popup_delete, null,false);
+        final TextView confirm = view.findViewById(R.id.popup_delete_confirm);
+        final TextView cancel = view.findViewById(R.id.popup_delete_cancel);
+        PopUtils.createPopCenter(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, new OnPopListener() {
+            @Override
+            public void setOnPop(final PopupWindow pop) {
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //确定删除
+
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pop.dismiss();
+                    }
+                });
+            }
+        });
+        PopUtils.setTransparency(mContext, 0.3f);
+    }
 
 }

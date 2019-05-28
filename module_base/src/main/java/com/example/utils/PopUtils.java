@@ -38,4 +38,22 @@ public class PopUtils {
             }
         });
     }
+
+    public static void createPopCenter(final Context context, View view, int height, OnPopListener listener) {
+        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, height, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setAnimationStyle(R.style.animScale);
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        setTransparency(context, 0.3f);
+        listener.setOnPop(popupWindow);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setTransparency(context, 1f);
+            }
+        });
+    }
 }

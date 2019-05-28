@@ -118,7 +118,7 @@
                     android:layout_below="@id/goods_collection_rec"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:src="@drawable/xinpintuijian" />
+                    android:src="@drawable/icon_weinituijian" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/goods_collection_bottom_rec"
