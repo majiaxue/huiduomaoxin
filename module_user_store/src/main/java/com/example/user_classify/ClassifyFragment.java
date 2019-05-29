@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.stx.xhb.xbanner.XBanner;
 
 import butterknife.BindView;
@@ -31,6 +32,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
     XBanner userClassifyXBanner;
     @BindView(R2.id.user_classify_rec)
     RecyclerView userClassifyRec;
+
+    public static int position = -1;
 
     @Override
     public int getLayoutId() {
@@ -57,6 +60,25 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
                 ARouter.getInstance().build("/module_home/SearchActivity").navigation();
             }
         });
+
+        userClassifyMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userClassifyExpand.setSelectedGroup(3);
+                presenter.renovate();
+            }
+        });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && position != -1) {
+            userClassifyExpand.setSelectedGroup(position);
+            userClassifyExpand.setSelectedChild(position, 1, false);
+            presenter.renovate();
+            position = -1;
+        }
     }
 
     @Override

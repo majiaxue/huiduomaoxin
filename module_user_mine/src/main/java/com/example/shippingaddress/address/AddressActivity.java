@@ -3,6 +3,7 @@ package com.example.shippingaddress.address;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -28,7 +29,9 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
     @BindView(R2.id.address_phone)
     EditText addressPhone;
     @BindView(R2.id.address_where)
-    TextView addressWhere;
+    LinearLayout addressWhere;
+    @BindView(R2.id.address_where_text)
+    TextView addressWhereText;
     @BindView(R2.id.address_detailed)
     EditText addressDetailed;
     @BindView(R2.id.address_home)
@@ -62,6 +65,14 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
                 finish();
             }
         });
+        //选择地址
+        addressWhere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.popupAddressWhere(addressWhereText);
+            }
+        });
+
     }
 
     @Override

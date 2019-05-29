@@ -45,7 +45,7 @@ public class AssessAdapter extends MyRecyclerAdapter<AssessBean> {
             @Override
             public void ViewOnClick(View view, int index) {
                 if (fiveViewClickListener != null) {
-                    fiveViewClickListener.FiveViewClick((TextView) holder.getView(R.id.rv_assess_count_zan), (ImageView) holder.getView(R.id.rv_assess_zan), (TextView) holder.getView(R.id.rv_assess_count_assess), (ImageView) holder.getView(R.id.rv_assess_toassess), position, (ImageView) view, index);
+                    fiveViewClickListener.fiveViewClick((TextView) holder.getView(R.id.rv_assess_count_zan), (ImageView) holder.getView(R.id.rv_assess_zan), (TextView) holder.getView(R.id.rv_assess_count_assess), (ImageView) holder.getView(R.id.rv_assess_toassess), position, (ImageView) view, index);
                 }
             }
         });

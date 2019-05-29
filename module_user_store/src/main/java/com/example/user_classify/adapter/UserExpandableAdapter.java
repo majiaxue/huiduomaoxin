@@ -79,11 +79,6 @@ public class UserExpandableAdapter extends BaseExpandableListAdapter {
         }
         //给group赋值
         groupViewHolder.groupName.setText(groupList.get(groupPosition).getName());
-        if (isExpanded) {
-            groupViewHolder.groupIcon.setImageResource(R.drawable.icon_gengduo4);
-        } else {
-            groupViewHolder.groupIcon.setImageResource(R.drawable.icon_gengduo2);
-        }
         boolean selected = groupList.get(groupPosition).isSelected();
         if (groupPosition != 0) {
             if (selected) {
@@ -103,7 +98,6 @@ public class UserExpandableAdapter extends BaseExpandableListAdapter {
                 groupViewHolder.groupSelectBg.setVisibility(View.VISIBLE);
                 groupViewHolder.groupName.setTextColor(Color.parseColor("#fc5917"));
                 groupViewHolder.groupBg.setBackgroundColor(Color.parseColor("#ffffff"));
-                groupViewHolder.groupIcon.setVisibility(View.GONE);
             } else {
                 //未选中状态
                 groupViewHolder.groupSelectBg.setVisibility(View.INVISIBLE);
@@ -152,8 +146,6 @@ public class UserExpandableAdapter extends BaseExpandableListAdapter {
         TextView groupSelectBg;
         @BindView(R2.id.group_name)
         TextView groupName;
-        @BindView(R2.id.group_icon)
-        ImageView groupIcon;
         @BindView(R2.id.group_bg)
         LinearLayout groupBg;
 

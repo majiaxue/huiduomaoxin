@@ -22,8 +22,8 @@ public class PopUtils {
         window.setAttributes(params);
     }
 
-    public static void createPop(final Context context, View view, int height, OnPopListener listener) {
-        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, height, true);
+    public static void createPop(final Context context, View view, int width, int height, OnPopListener listener) {
+        PopupWindow popupWindow = new PopupWindow(view, width, height, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setAnimationStyle(R.style.pop_bottom_anim);

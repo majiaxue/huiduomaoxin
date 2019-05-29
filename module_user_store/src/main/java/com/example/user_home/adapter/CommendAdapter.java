@@ -34,4 +34,9 @@ public class CommendAdapter extends MyRecyclerAdapter<CommendBean> {
             viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_commend_parent), holder.getView(R.id.rv_commend_btn), position);
         }
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

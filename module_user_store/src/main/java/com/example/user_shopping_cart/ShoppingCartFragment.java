@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.entity.EventBusBean;
+import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -103,7 +104,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         shoppingCartImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean("user_back"));
+                EventBus.getDefault().post(new EventBusBean2("user_back", 0));
             }
         });
     }

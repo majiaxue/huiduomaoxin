@@ -426,6 +426,7 @@
                 android:textSize="@dimen/sp_13" />
 
             <LinearLayout
+                android:id="@+id/goods_detail_see_all"
                 android:layout_width="@dimen/dp_345"
                 android:layout_height="@dimen/dp_146"
                 android:layout_gravity="center_horizontal"
@@ -434,7 +435,6 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/goods_detail_see_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"

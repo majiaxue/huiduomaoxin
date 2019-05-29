@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.entity.EventBusBean;
+import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -80,7 +81,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         userMineImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean("user_back"));
+                EventBus.getDefault().post(new EventBusBean2("user_back", 0));
             }
         });
         //商品收藏

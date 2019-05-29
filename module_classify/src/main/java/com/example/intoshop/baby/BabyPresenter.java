@@ -11,7 +11,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.intoshop.baby.adapter.BabyRecAdapter;
 import com.example.intoshop.baby.adapter.BabyRecStaggeredAdapter;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
-import com.example.intoshop.baby.bean.BabyRecBean;
+import com.example.entity.BabyRecBean;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.utils.DisplayUtil;

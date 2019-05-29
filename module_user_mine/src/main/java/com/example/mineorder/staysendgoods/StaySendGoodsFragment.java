@@ -8,6 +8,9 @@ import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
 
+/**
+ * 待发货
+ */
 public class StaySendGoodsFragment extends BaseFragment<StaySendGoodsView, StaySendGoodsPresenter> implements StaySendGoodsView {
 
 

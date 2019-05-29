@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -63,7 +64,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         final TextView popHeaderCamera = view.findViewById(R.id.pop_header_camera);
         final TextView popHeaderXiangce = view.findViewById(R.id.pop_header_xiangce);
         PopUtils.setTransparency(mContext, 0.3f);
-        PopUtils.createPop(mContext, view, DisplayUtil.dip2px(mContext, 146), new OnPopListener() {
+        PopUtils.createPop(mContext, view,LinearLayout.LayoutParams.MATCH_PARENT ,DisplayUtil.dip2px(mContext, 146), new OnPopListener() {
             @Override
             public void setOnPop(final PopupWindow pop) {
                 popHeaderCancel.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +120,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
             but4.setChecked(false);
             but5.setChecked(false);
         }
-        PopUtils.createPop(mContext, view, DisplayUtil.dip2px(mContext, 352), new OnPopListener() {
+        PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(mContext, 352), new OnPopListener() {
             @Override
             public void setOnPop(final PopupWindow pop) {
                 imageClose.setOnClickListener(new View.OnClickListener() {

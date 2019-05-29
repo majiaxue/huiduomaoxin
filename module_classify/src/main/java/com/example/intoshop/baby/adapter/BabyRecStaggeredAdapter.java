@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.intoshop.baby.bean.BabyRecBean;
+import com.example.entity.BabyRecBean;
 import com.example.module_classify.R;
 import com.example.utils.DisplayUtil;
 import com.facebook.drawee.view.SimpleDraweeView;

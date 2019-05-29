@@ -8,6 +8,9 @@ import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
 
+/**
+ * 待评价
+ */
 public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayAppraisePresenter> implements StayAppraiseView {
 
 

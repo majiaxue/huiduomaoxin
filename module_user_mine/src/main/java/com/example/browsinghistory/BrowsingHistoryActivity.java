@@ -52,6 +52,27 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
                 finish();
             }
         });
+        //编辑
+        browsingHistoryState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.browsingHistoryState();
+            }
+        });
+        //全选
+        browsingHistoryCheckAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+        //删除
+        browsingHistoryDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -64,4 +85,14 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
         return new BrowsingHistoryPresenter(this);
     }
 
+    @Override
+    public void isCompile(boolean isCompile) {
+        if (isCompile) {
+            browsingHistoryState.setText("完成");
+            browsingHistoryBottom.setVisibility(View.VISIBLE);
+        } else {
+            browsingHistoryState.setText("编辑");
+            browsingHistoryBottom.setVisibility(View.GONE);
+        }
+    }
 }

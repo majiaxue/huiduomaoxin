@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.AssessActivity;
+import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.AssessBean;
 import com.example.entity.ChooseGoodsBean;
 import com.example.entity.CommendBean;
@@ -26,6 +29,7 @@ import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
 import com.example.goods_detail.adapter.SizeFlowLayoutAdapter;
 import com.example.mvp.BasePresenter;
+import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
@@ -67,6 +71,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         couponList.add("满50减5");
         couponList.add("满1500减100");
         GoodsCouponAdapter goodsCouponAdapter = new GoodsCouponAdapter(mContext, couponList, R.layout.rv_goods_coupon);
+
+        goodsCouponAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                lingquan();
+            }
+        });
         if (getView() != null) {
             getView().loadCoupon(goodsCouponAdapter);
         }
@@ -77,6 +88,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         imgList.add("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg");
         imgList.add("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg");
         GoodsImageAdapter goodsImageAdapter = new GoodsImageAdapter(mContext, imgList, R.layout.rv_goods_choose_image);
+
+        goodsImageAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                chooseGoods();
+            }
+        });
         if (getView() != null) {
             getView().loadImage(goodsImageAdapter);
         }
@@ -87,6 +105,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
         assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
         GoodsAssessAdapter goodsAssessAdapter = new GoodsAssessAdapter(mContext, assessList, R.layout.rv_goods_assess);
+
+        goodsAssessAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                jumpToAssess();
+            }
+        });
         if (getView() != null) {
             getView().loadAssess(goodsAssessAdapter);
         }
@@ -301,5 +326,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void jumpToAssess() {
         mContext.startActivity(new Intent(mContext, AssessActivity.class));
+    }
+
+    public void jumpToShop() {
+        mContext.startActivity(new Intent(mContext, ShopHomeActivity.class));
+    }
+
+    public void jumpToOrder() {
+        mContext.startActivity(new Intent(mContext, ConfirmOrderActivity.class));
     }
 }
