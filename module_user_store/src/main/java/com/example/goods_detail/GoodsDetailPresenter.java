@@ -16,11 +16,13 @@ import android.widget.Toast;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.AssessActivity;
+import com.example.common.CommonResource;
 import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.AssessBean;
 import com.example.entity.ChooseGoodsBean;
 import com.example.entity.CommendBean;
 import com.example.entity.CouponBean;
+import com.example.entity.EventBusBean2;
 import com.example.entity.ParmsBean;
 import com.example.entity.TopBannerBean;
 import com.example.goods_detail.adapter.ColorFlowLayoutAdapter;
@@ -32,10 +34,13 @@ import com.example.mvp.BasePresenter;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
+import com.example.user_store.UserActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
 import com.example.view.flowLayout.TagFlowLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +132,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         if (getView() != null) {
             getView().loadCommend(commendAdapter);
         }
+        commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+            }
+        });
+
         //轮播图
         List<TopBannerBean> bannerList = new ArrayList<>();
         bannerList.add(new TopBannerBean("http://g.hiphotos.baidu.com/image/pic/item/c2cec3fdfc03924590b2a9b58d94a4c27d1e2500.jpg"));
@@ -334,5 +346,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void jumpToOrder() {
         mContext.startActivity(new Intent(mContext, ConfirmOrderActivity.class));
+    }
+
+    public void jumpToCart() {
+        Intent intent = new Intent(mContext, UserActivity.class);
+        intent.putExtra("key", CommonResource.JUMP_CART);
+        mContext.startActivity(intent);
     }
 }

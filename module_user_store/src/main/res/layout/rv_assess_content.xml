@@ -23,18 +23,18 @@
         android:textColor="#666666"
         android:textSize="@dimen/sp_13" />
 
-    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+    <com.example.view.RatingBarView
         android:id="@+id/rv_assess_ratingbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rv_assess_name"
         android:layout_alignLeft="@id/rv_assess_name"
         android:layout_marginTop="@dimen/dp_8"
-        android:isIndicator="true"
-        android:maxHeight="@dimen/dp_18"
-        android:minHeight="@dimen/dp_18"
-        app:mrb_progressTint="@color/codeText"
-        app:mrb_secondaryProgressTint="@color/codeText" />
+        android:clickable="false"
+        app:starCount="5"
+        app:starEmpty="@drawable/icon_haopingweixuanzhong"
+        app:starFill="@drawable/icon_haopingxingxing"
+        app:starImageSize="@dimen/dp_18"></com.example.view.RatingBarView>
 
     <TextView
         android:id="@+id/rv_assess_content"

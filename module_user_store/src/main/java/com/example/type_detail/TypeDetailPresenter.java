@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.BabyRecBean;
 import com.example.goods_detail.GoodsDetailActivity;
@@ -110,5 +111,9 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         isPositivePrice = index == 2 ? !isPositivePrice : false;
         isPositiveCredit = index == 3 ? !isPositiveCredit : false;
         getView().updateTitle(isPositiveSalesVolume, isPositivePrice, isPositiveCredit);
+    }
+
+    public void jumpToSearch() {
+        ARouter.getInstance().build("/module_home/SearchActivity").navigation();
     }
 }

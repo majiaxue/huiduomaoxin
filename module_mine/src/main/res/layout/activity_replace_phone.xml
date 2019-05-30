@@ -16,6 +16,7 @@
         android:drawableLeft="@drawable/icon_shoujihao"
         android:drawablePadding="@dimen/dp_15"
         android:hint="@string/input_old_phone"
+        android:inputType="number"
         android:textColor="#333333"
         android:textColorHint="#999999"
         android:textCursorDrawable="@drawable/edit_cursor"
@@ -38,6 +39,7 @@
         android:drawableLeft="@drawable/icon_shoujihao"
         android:drawablePadding="@dimen/dp_15"
         android:hint="@string/input_new_phone"
+        android:inputType="number"
         android:textColor="#333333"
         android:textColorHint="#999999"
         android:textSize="@dimen/sp_17" />
@@ -67,6 +69,7 @@
             android:drawableLeft="@drawable/icon_yanzhengma"
             android:drawablePadding="@dimen/dp_15"
             android:hint="@string/input_code"
+            android:inputType="number"
             android:textColor="#333333"
             android:textColorHint="#999999"
             android:textCursorDrawable="@drawable/edit_cursor"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.CouponBean;
 import com.example.entity.ParmsBean;
@@ -25,7 +27,9 @@ import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.goods_detail.adapter.PopParmsAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
+import com.example.utils.adapter.VPBigPicAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PopUtil {
@@ -180,7 +184,52 @@ public class PopUtil {
                 context.startActivity(new Intent(context, UserActivity.class));
             }
         });
+    }
 
+    public static void popAssessBigPic(final Context context, List<String> list, int position) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_vp_big_pic, null);
+        ViewPager vp = inflate.findViewById(R.id.pop_vp_big_pic_vp);
 
+        final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setAnimationStyle(R.style.animScale);
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+
+        List<View> viewList = new ArrayList<>();
+        for (String url : list) {
+            ImageView imageView = new ImageView(context);
+            Glide.with(context).load(url).into(imageView);
+            viewList.add(imageView);
+        }
+        vp.setOffscreenPageLimit(list.size() - 1);
+        VPBigPicAdapter adapter = new VPBigPicAdapter(viewList, new OnViewListener() {
+            @Override
+            public void setOnViewListener(View view) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+            }
+        });
+        vp.setAdapter(adapter);
+        vp.setCurrentItem(position);
+
+        setTransparency(context, 0.3f);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setTransparency(context, 1f);
+            }
+        });
+
+        inflate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
 }

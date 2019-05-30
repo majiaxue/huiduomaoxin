@@ -55,7 +55,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void updateHeader() {
-        UIHelper.changeHeader(mContext, new OnChangeHeaderListener() {
+        PopUtils.changeHeader(mContext, new OnChangeHeaderListener() {
             @Override
             public void setOnChangeHeader(final PopupWindow pop, TextView camera, TextView album) {
                 camera.setOnClickListener(new View.OnClickListener() {

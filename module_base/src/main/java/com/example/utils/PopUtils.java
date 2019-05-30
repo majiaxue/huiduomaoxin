@@ -5,11 +5,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.module_base.R;
 
@@ -53,6 +56,35 @@ public class PopUtils {
             @Override
             public void onDismiss() {
                 setTransparency(context, 1f);
+            }
+        });
+    }
+
+    public static void changeHeader(final Context mContext, OnChangeHeaderListener listener) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_change_header, null);
+        TextView takePhoto = view.findViewById(R.id.pop_change_header_camera);
+        TextView photoAlbum = view.findViewById(R.id.pop_change_header_xiangce);
+        TextView cancel = view.findViewById(R.id.pop_change_header_cancel);
+
+        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+        setTransparency(mContext, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setTransparency(mContext, 1f);
+            }
+        });
+
+        listener.setOnChangeHeader(popupWindow, takePhoto, photoAlbum);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
             }
         });
     }

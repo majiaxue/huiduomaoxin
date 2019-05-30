@@ -87,11 +87,4 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
     public ForgetPresneter createPresenter() {
         return new ForgetPresneter(this);
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

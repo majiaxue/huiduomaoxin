@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -22,27 +23,6 @@ public class UIHelper {
         WindowManager.LayoutParams params = window.getAttributes();
         params.alpha = value;
         window.setAttributes(params);
-    }
-
-    public static void changeHeader(final Context mContext, OnChangeHeaderListener listener) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_change_header, null);
-        TextView takePhoto = view.findViewById(R.id.pop_header_camera);
-        TextView photoAlbum = view.findViewById(R.id.pop_header_xiangce);
-
-        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.showAtLocation(new View(mContext), Gravity.CENTER, 0, 0);
-        setTransparency(mContext, 0.3f);
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                setTransparency(mContext, 1f);
-            }
-        });
-
-        listener.setOnChangeHeader(popupWindow, takePhoto, photoAlbum);
     }
 
     public static void clearCache(final Context context, String totalCache, OnClearCacheListener listener) {
@@ -73,5 +53,31 @@ public class UIHelper {
         });
 
         listener.setOnClearCache(popupWindow, confirm);
+    }
+
+    public static void seeBigImg(final Context context, int imgId) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_full_image, null);
+        ImageView img = inflate.findViewById(R.id.pop_full_img);
+        img.setImageResource(imgId);
+
+        final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setTransparency(context, 1f);
+            }
+        });
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
 }

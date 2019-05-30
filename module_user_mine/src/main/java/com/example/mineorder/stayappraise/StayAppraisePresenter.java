@@ -1,6 +1,7 @@
 package com.example.mineorder.stayappraise;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.example.mineorder.adapter.MineOrderAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.order_assess.OrderAssessActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +33,11 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
     }
 
-    public void stayDeliveryGoodsRec(RecyclerView stayDeliveryGoodsRec){
+    public void stayDeliveryGoodsRec(RecyclerView stayDeliveryGoodsRec) {
         List<MineOrderBean> list = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            list.add(new MineOrderBean("维纳塔旗舰店", R.drawable.img_104,"买家已付款","【女王价】学生适用清爽护肤纯露保湿水俩件套","保湿水80ml [送两包试用装]","￥163.0","x1","共2件商品  合计：￥163.0"));
-            list.add(new MineOrderBean("维纳塔旗舰店", R.drawable.img_105,"买家已付款","【女王价】学生适用清爽护肤纯露保湿水俩件套","保湿水80ml [送两包试用装]","￥163.0","x1","共2件商品  合计：￥163.0"));
+            list.add(new MineOrderBean("维纳塔旗舰店", R.drawable.img_104, "买家已付款", "【女王价】学生适用清爽护肤纯露保湿水俩件套", "保湿水80ml [送两包试用装]", "￥163.0", "x1", "共2件商品  合计：￥163.0"));
+            list.add(new MineOrderBean("维纳塔旗舰店", R.drawable.img_105, "买家已付款", "【女王价】学生适用清爽护肤纯露保湿水俩件套", "保湿水80ml [送两包试用装]", "￥163.0", "x1", "共2件商品  合计：￥163.0"));
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         stayDeliveryGoodsRec.setLayoutManager(linearLayoutManager);
@@ -65,6 +67,13 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
                         Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        mineOrderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                mContext.startActivity(new Intent(mContext, OrderAssessActivity.class));
             }
         });
     }

@@ -1,11 +1,13 @@
 package com.example.user_store;
 
 
+import android.content.Intent;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragmentActivity;
@@ -46,6 +48,12 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     public void initData() {
         EventBus.getDefault().register(this);
         presenter.loadData(getSupportFragmentManager(), R.id.user_frame);
+        Intent intent = getIntent();
+        String key = intent.getStringExtra("key");
+        if (CommonResource.JUMP_CART.equals(key)) {
+            userShoppingCart.setChecked(true);
+            presenter.click(R.id.user_shopping_cart);
+        }
     }
 
     @Override
@@ -60,9 +68,9 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean2 eventBusBean2) {
-        if ("user_back".equals(eventBusBean2.getMsg())) {
+        if (CommonResource.USER_BACK.equals(eventBusBean2.getMsg())) {
             finish();
-        } else if ("jump_type".equals(eventBusBean2.getMsg())) {
+        } else if (CommonResource.JUMP_CLASSIFY.equals(eventBusBean2.getMsg())) {
             ClassifyFragment.position = eventBusBean2.getPosition() + 1;
             userClassify.setChecked(true);
             presenter.click(R.id.user_classify);

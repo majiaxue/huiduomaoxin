@@ -76,7 +76,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_login_edit"
                     android:hint="@string/input_phone"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:paddingLeft="@dimen/dp_51"
                     android:textColor="#333333"
                     android:textColorHint="#94666666"

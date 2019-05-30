@@ -65,6 +65,13 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
                 presenter.deleteList();
             }
         });
+
+        collectionAllCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.allCheck();
+            }
+        });
     }
 
     @Override
@@ -82,6 +89,16 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
     public void toFinish() {
         collectionEditor.setText("编辑");
         collectionBottom.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void allCheck() {
+        collectionAllCheck.setImageResource(R.drawable.ghftyf);
+    }
+
+    @Override
+    public void notAllCheck() {
+        collectionAllCheck.setImageResource(R.drawable.vghfgdg);
     }
 
     @Override

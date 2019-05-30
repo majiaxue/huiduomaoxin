@@ -80,7 +80,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/assess_detail_temp"
-        android:layout_marginTop="@dimen/dp_50">
+        android:layout_marginTop="@dimen/dp_50"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,15 +122,14 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                <com.example.view.RatingBarView
                     android:id="@+id/assess_detail_ratingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:maxHeight="@dimen/dp_18"
-                    android:minHeight="@dimen/dp_18"
-                    app:mrb_progressTint="@color/codeText"
-                    app:mrb_secondaryProgressTint="@color/codeText" />
+                    app:starCount="5"
+                    app:starEmpty="@drawable/icon_haopingweixuanzhong"
+                    app:starFill="@drawable/icon_haopingxingxing"
+                    app:starImageSize="@dimen/dp_18" />
 
                 <View
                     android:layout_width="@dimen/dp_0"

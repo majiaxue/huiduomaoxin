@@ -12,10 +12,9 @@ import com.example.adapter.RecyclerViewHolder;
 import com.example.entity.AssessBean;
 import com.example.user_store.R;
 import com.example.utils.SpaceItemDecoration;
+import com.example.view.RatingBarView;
 
 import java.util.List;
-
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class AssessAdapter extends MyRecyclerAdapter<AssessBean> {
     private AssessImageAdapter imageAdapter;
@@ -32,8 +31,9 @@ public class AssessAdapter extends MyRecyclerAdapter<AssessBean> {
                 .setText(R.id.rv_assess_time, data.getTime() + "  尺码：" + data.getSize() + "  颜色：" + data.getColor())
                 .setText(R.id.rv_assess_count_zan, data.getZanCount() + "")
                 .setText(R.id.rv_assess_count_assess, data.getAssessCount() + "");
-        MaterialRatingBar ratingBar = holder.getView(R.id.rv_assess_ratingbar);
-        ratingBar.setRating(data.getXingji());
+        RatingBarView ratingBar = holder.getView(R.id.rv_assess_ratingbar);
+        ratingBar.setStar(data.getXingji(), false);
+        ratingBar.setClickable(false);
 
         RecyclerView rv = holder.getView(R.id.rv_assess_pic);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);

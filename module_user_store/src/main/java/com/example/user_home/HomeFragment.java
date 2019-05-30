@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
@@ -113,7 +114,14 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         userHomeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean2("user_back", 0));
+                EventBus.getDefault().post(new EventBusBean2(CommonResource.USER_BACK, 0));
+            }
+        });
+
+        userHomeSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToSearch();
             }
         });
     }

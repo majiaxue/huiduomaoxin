@@ -5,7 +5,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +20,6 @@ import com.example.mvp.BaseActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
 import com.stx.xhb.xbanner.XBanner;
@@ -220,6 +218,20 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
             @Override
             public void onClick(View v) {
                 presenter.jumpToOrder();
+            }
+        });
+
+        goodsDetailBottomShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToShop();
+            }
+        });
+
+        goodsDetailBottomCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToCart();
             }
         });
     }
