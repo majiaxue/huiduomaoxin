@@ -76,8 +76,8 @@
         android:orientation="horizontal">
 
 
-        <ExpandableListView
-            android:id="@+id/classify_expand"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/classify_left_rec"
             android:layout_width="@dimen/dp_100"
             android:layout_height="match_parent"
             android:choiceMode="singleChoice"

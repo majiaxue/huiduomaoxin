@@ -8,6 +8,9 @@ import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
 
+/**
+ * 全部订单
+ */
 public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresenter> implements OrderAllView {
 
     @BindView(R2.id.order_all_rec)

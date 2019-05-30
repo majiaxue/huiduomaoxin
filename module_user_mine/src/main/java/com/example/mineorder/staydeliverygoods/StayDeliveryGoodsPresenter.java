@@ -1,6 +1,7 @@
 package com.example.mineorder.staydeliverygoods;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.logisticsinformation.LogisticsInformationActivity;
 import com.example.mineorder.adapter.MineOrderAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
@@ -65,6 +67,13 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                         Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        mineOrderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
             }
         });
     }

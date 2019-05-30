@@ -22,8 +22,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
     LinearLayout classifySearch;
     @BindView(R2.id.classify_message)
     LinearLayout classifyMessage;
-    @BindView(R2.id.classify_expand)
-    ExpandableListView classifyExpand;
+    @BindView(R2.id.classify_left_rec)
+    RecyclerView classifyLeftRec;
     @BindView(R2.id.classify_x_banner)
     XBanner classifyXBanner;
     @BindView(R2.id.classify_rec)
@@ -37,7 +37,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
     @Override
     public void initData() {
         //二级列表
-        presenter.setExpand(classifyExpand, classifyXBanner);
+        presenter.setLeftRec(classifyLeftRec, classifyXBanner);
         //xBanner
         presenter.setXBanner(classifyXBanner);
 

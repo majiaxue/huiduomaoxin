@@ -327,7 +327,7 @@
             android:layout_height="@dimen/dp_1"
             android:layout_marginLeft="@dimen/dp_12"
             android:layout_marginRight="@dimen/dp_12"
-            android:background="@drawable/dot_line" />
+            android:background="@drawable/bg_xuxian" />
 
         <LinearLayout
             android:layout_width="wrap_content"

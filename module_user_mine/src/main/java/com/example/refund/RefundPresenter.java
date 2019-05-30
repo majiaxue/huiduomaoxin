@@ -87,7 +87,7 @@ public class RefundPresenter extends BasePresenter<RefundView> {
             but4.setChecked(false);
             but5.setChecked(false);
         }
-        PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(mContext, 372), new OnPopListener() {
+        PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT,DisplayUtil.dip2px(mContext, 372), new OnPopListener() {
             @Override
             public void setOnPop(final PopupWindow pop) {
                 imageClose.setOnClickListener(new View.OnClickListener() {

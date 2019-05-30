@@ -1,19 +1,16 @@
 package com.example.mineorder.stayobligation;
 
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
+/**
+ * 待付款
+ */
 public class StayObligationFragment extends BaseFragment<StayObligationView, StayObligationPresenter> implements StayObligationView {
 
 

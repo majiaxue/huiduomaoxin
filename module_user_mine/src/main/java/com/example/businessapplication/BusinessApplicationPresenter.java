@@ -64,7 +64,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         final TextView popHeaderCamera = view.findViewById(R.id.pop_header_camera);
         final TextView popHeaderXiangce = view.findViewById(R.id.pop_header_xiangce);
         PopUtils.setTransparency(mContext, 0.3f);
-        PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(mContext, 146), new OnPopListener() {
+        PopUtils.createPop(mContext, view,LinearLayout.LayoutParams.MATCH_PARENT ,DisplayUtil.dip2px(mContext, 146), new OnPopListener() {
             @Override
             public void setOnPop(final PopupWindow pop) {
                 popHeaderCancel.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +91,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         });
     }
 
-    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText) {
+    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText){
         View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
         TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
         TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
@@ -113,7 +113,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
             but4.setChecked(true);
         } else if (textCause.equals(but5.getText().toString())) {
             but5.setChecked(true);
-        } else {
+        }else{
             but1.setChecked(false);
             but2.setChecked(false);
             but3.setChecked(false);

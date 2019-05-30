@@ -7,4 +7,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface BrowsingHistoryView extends IView {
+    void isCompile(boolean isCompile);
 }
