@@ -40,6 +40,13 @@ public class ContactUsActivity extends BaseActivity<ContactUsView, ContactUsPres
                 finish();
             }
         });
+
+        contactUsCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.callPhone("400-111-222");
+            }
+        });
     }
 
     @Override

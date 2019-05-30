@@ -4,17 +4,17 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.example.entity.LeftChildBean;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.LeftGroupBean;
 import com.example.entity.RightRecBean;
 import com.example.entity.TopBannerBean;
 import com.example.mvp.BasePresenter;
-import com.example.user_classify.adapter.UserExpandableAdapter;
+import com.example.user_classify.adapter.UserLeftRvAdapter;
 import com.example.user_classify.adapter.UserRightRecAdapter;
 import com.example.user_store.R;
+import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -27,11 +27,9 @@ import java.util.List;
  * Describe:
  */
 public class ClassifyPresenter extends BasePresenter<ClassifyView> {
-    private List<LeftGroupBean> glist;
-    private List<List<LeftChildBean>> clist;
-    private int FLAG = 0;
+    private List<LeftGroupBean> leftList;
     private List<TopBannerBean> images;
-    private UserExpandableAdapter myExpandableAdapter;
+    private UserLeftRvAdapter leftRvAdapter;
 
 
     public ClassifyPresenter(Context context) {
@@ -43,146 +41,13 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
 
     }
 
-    public void setExpand(final ExpandableListView classifyExpand, final XBanner classifyXBanner) {
-        //去掉系统给的指示器
-        classifyExpand.setGroupIndicator(null);
-        //去掉下划线
-        classifyExpand.setDivider(null);
-
-        //定义第一级的数据集合
-        glist = new ArrayList<>();
-        glist.add(new LeftGroupBean("推荐", true));
-        glist.add(new LeftGroupBean("服装", false));
-        glist.add(new LeftGroupBean("数码", false));
-        glist.add(new LeftGroupBean("配饰", false));
-        glist.add(new LeftGroupBean("洗护", false));
-        glist.add(new LeftGroupBean("美妆", false));
-        glist.add(new LeftGroupBean("家电", false));
-        glist.add(new LeftGroupBean("母婴", false));
-        glist.add(new LeftGroupBean("车品", false));
-        glist.add(new LeftGroupBean("家居", false));
-        glist.add(new LeftGroupBean("箱包", false));
-
-        //定义第二级的数据
-        clist = new ArrayList<>();
-
-        //第一组数据
-        List<LeftChildBean> o_list = new ArrayList<>();
-        o_list.add(new LeftChildBean("男装", false));
-        o_list.add(new LeftChildBean("女装", false));
-        o_list.add(new LeftChildBean("裤子", false));
-        o_list.add(new LeftChildBean("内衣", false));
-        o_list.add(new LeftChildBean("鞋子", false));
-
-        //放入大集合
-        for (int i = 0; i < glist.size(); i++) {
-            if (i == 0) {
-                List<LeftChildBean> t_list = new ArrayList<>();
-                t_list.add(new LeftChildBean());
-                clist.add(t_list);
-            } else {
-                clist.add(o_list);
-            }
-
-        }
-
-//        clist.add(t_list);
-
-        myExpandableAdapter = new UserExpandableAdapter(mContext, glist, clist);
-        classifyExpand.setAdapter(myExpandableAdapter);
-
-        classifyExpand.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                for (int i = 0, count = classifyExpand.getExpandableListAdapter().getGroupCount(); i < count; i++) {
-                    if (i > 0) {
-                        if (groupPosition != i) {// 关闭其他分组
-                            classifyExpand.collapseGroup(i);
-                        }
-                    } else {
-                        classifyExpand.collapseGroup(0);
-                    }
-                }
-
-            }
-        });
-
-        classifyExpand.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                //判断父布局的位置
-                if (FLAG != groupPosition) {
-                    //设置点击后的状态
-                    if (glist.size() > 0 && groupPosition < glist.size()) {
-                        for (int i = 0; i < glist.size(); i++) {
-                            glist.get(i).setSelected(false);
-                        }
-                        glist.get(groupPosition).setSelected(true);
-
-                        //判断父布局下标大于1而又点击后
-                        if (groupPosition > 0) {
-                            for (int i = 0; i < clist.get(groupPosition).size(); i++) {
-                                if (i == 0) {
-                                    clist.get(groupPosition).get(0).setSelected(true);
-                                } else {
-                                    clist.get(groupPosition).get(i).setSelected(false);
-                                }
-                            }
-                        } else {
-                            //关闭推荐
-                            classifyExpand.collapseGroup(0);
-                        }
-                        //判断推荐item是否选中选中显示没选中隐藏
-                        boolean selected = glist.get(0).isSelected();
-                        if (selected) {
-                            classifyXBanner.startAutoPlay();
-                            classifyXBanner.setVisibility(View.VISIBLE);
-                        } else {
-                            classifyXBanner.stopAutoPlay();
-                            classifyXBanner.setVisibility(View.GONE);
-                        }
-
-                        myExpandableAdapter.notifyDataSetChanged();
-                    }
-                    FLAG = groupPosition;
-                    return false;
-                } else {
-                    //如果父布局下标等于0不让展开子布局
-                    return true;
-                }
-
-
-            }
-        });
-
-        classifyExpand.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (clist.get(groupPosition).size() > 0 && groupPosition < clist.size()) {
-                    for (int i = 0; i < clist.get(groupPosition).size(); i++) {
-                        clist.get(groupPosition).get(i).setSelected(false);
-                    }
-                    clist.get(groupPosition).get(childPosition).setSelected(true);
-                    myExpandableAdapter.notifyDataSetChanged();
-                }
-                return false;
-            }
-        });
-
-    }
-
-    public void renovate() {
-        myExpandableAdapter.notifyDataSetChanged();
-
-    }
-
     public void setXBanner(XBanner homeXbanner) {
         images = new ArrayList<>();
         images.add(new TopBannerBean(R.drawable.banner1));
         images.add(new TopBannerBean(R.drawable.banner2));
         images.add(new TopBannerBean(R.drawable.banner3));
         images.add(new TopBannerBean(R.drawable.banner4));
-//        homeXbanner.setData(images, null);
+
         homeXbanner.setBannerData(R.layout.image_fresco, images);
         homeXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
@@ -232,5 +97,41 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         classifyRecommendRec.setLayoutManager(linearLayoutManager);
         classifyRecommendRec.setAdapter(myRightRecAdapter);
 
+    }
+
+    public void setLeftRv() {
+        leftList = new ArrayList<>();
+        leftList.add(new LeftGroupBean("推荐", true));
+        leftList.add(new LeftGroupBean("服装", false));
+        leftList.add(new LeftGroupBean("数码", false));
+        leftList.add(new LeftGroupBean("配饰", false));
+        leftList.add(new LeftGroupBean("洗护", false));
+        leftList.add(new LeftGroupBean("美妆", false));
+        leftList.add(new LeftGroupBean("家电", false));
+        leftList.add(new LeftGroupBean("母婴", false));
+        leftList.add(new LeftGroupBean("车品", false));
+        leftList.add(new LeftGroupBean("家居", false));
+        leftList.add(new LeftGroupBean("箱包", false));
+        leftRvAdapter = new UserLeftRvAdapter(mContext, leftList, R.layout.rv_left_classify);
+        if (getView() != null) {
+            getView().loadLeftRv(leftRvAdapter);
+        }
+
+        leftRvAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                for (int i = 0; i < leftList.size(); i++) {
+                    leftList.get(i).setSelected(i == position ? true : false);
+                }
+                leftRvAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void formHomeNavbar(int position) {
+        for (int i = 0; i < leftList.size(); i++) {
+            leftList.get(i).setSelected(i == position ? true : false);
+        }
+        leftRvAdapter.notifyDataSetChanged();
     }
 }

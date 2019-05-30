@@ -9,5 +9,9 @@ public interface CollectionView extends IView {
 
     void toFinish();
 
+    void allCheck();
+
+    void notAllCheck();
+
     void loadUI(CollectionAdapter adapter);
 }

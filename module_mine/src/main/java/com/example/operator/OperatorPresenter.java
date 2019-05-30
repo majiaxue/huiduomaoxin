@@ -1,8 +1,10 @@
 package com.example.operator;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.YysFactorBean;
 import com.example.entity.YysQuanyiBean;
@@ -47,6 +49,13 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
         if (getView() != null) {
             getView().loadQuanyi(quanyiAdapter);
         }
+
+        quanyiAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+            }
+        });
 
         factorAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override

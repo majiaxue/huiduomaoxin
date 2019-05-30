@@ -1,6 +1,7 @@
 package com.example.type_detail;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -15,11 +16,19 @@ import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.RvItemDecoration;
-import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.example.view.CustomHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 
 public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailPresenter> implements TypeDetailView {
+    @BindView(R2.id.type_detail_back)
+    ImageView mBack;
+    @BindView(R2.id.type_detail_search)
+    TextView mSearch;
     @BindView(R2.id.type_detail_synthesize)
     RelativeLayout mSynthesize;
     @BindView(R2.id.type_detail_sales_volume)
@@ -54,6 +63,8 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
     ImageView typeDetailCreditTop;
     @BindView(R2.id.type_detail_credit_bottom)
     ImageView typeDetailCreditBottom;
+    @BindView(R2.id.type_detail_refresh)
+    SmartRefreshLayout mRefreshLayout;
 
     private LinearLayoutManager linearLayoutManager;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -71,10 +82,37 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         itemDecoration = new RvItemDecoration((int) getResources().getDimension(R.dimen.dp_13), (int) getResources().getDimension(R.dimen.dp_10));
         presenter.loadData();
+
+        //下拉刷新样式
+        CustomHeader customHeader = new CustomHeader(this);
+        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
+        mRefreshLayout.setRefreshHeader(customHeader);
+        //设置上拉刷新下拉加载
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+                mRefreshLayout.finishRefresh();
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+                mRefreshLayout.finishLoadMore();
+            }
+        });
     }
 
     @Override
     public void initClick() {
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +149,13 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
             public void onClick(View v) {
                 index = 3;
                 presenter.changeTyep(index);
+            }
+        });
+
+        mSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToSearch();
             }
         });
     }

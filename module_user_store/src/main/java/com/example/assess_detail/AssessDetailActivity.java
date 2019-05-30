@@ -14,9 +14,9 @@ import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.example.view.RatingBarView;
 
 import butterknife.BindView;
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessDetailPresenter> implements AssessDetailView {
     @BindView(R2.id.include_back)
@@ -42,7 +42,7 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
     @BindView(R2.id.assess_detail_name)
     TextView assessDetailName;
     @BindView(R2.id.assess_detail_ratingbar)
-    MaterialRatingBar assessDetailRatingbar;
+    RatingBarView assessDetailRatingbar;
     @BindView(R2.id.assess_detail_time)
     TextView assessDetailTime;
     @BindView(R2.id.assess_detail_content)
@@ -67,7 +67,8 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
     public void initData() {
         includeTitle.setText("评价详情");
         includeRight.setImageResource(R.drawable.icon_fenxiang11);
-        assessDetailRatingbar.setRating(5f);
+        assessDetailRatingbar.setStar(4, false);
+        assessDetailRatingbar.setClickable(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         assessDetailRvImg.setLayoutManager(gridLayoutManager);
         assessDetailRvImg.addItemDecoration(new SpaceItemDecorationLeftAndRight((int) getResources().getDimension(R.dimen.dp_15), (int) getResources().getDimension(R.dimen.dp_15)));

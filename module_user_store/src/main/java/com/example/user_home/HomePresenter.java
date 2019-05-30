@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.CommendBean;
 import com.example.entity.EventBusBean2;
@@ -66,7 +68,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         navBarAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                EventBus.getDefault().post(new EventBusBean2("jump_type", position));
+                EventBus.getDefault().post(new EventBusBean2(CommonResource.JUMP_CLASSIFY, position));
             }
         });
         if (getView() != null) {
@@ -181,5 +183,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void jumpToSearch() {
+        ARouter.getInstance().build("/module_home/SearchActivity").navigation();
     }
 }

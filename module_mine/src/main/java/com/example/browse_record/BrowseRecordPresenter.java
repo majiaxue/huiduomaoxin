@@ -1,7 +1,11 @@
 package com.example.browse_record;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.browse_record.adapter.BrowseRecordAdapter;
 import com.example.entity.BaseRecBean;
 import com.example.module_mine.R;
@@ -34,5 +38,12 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
         if (getView() != null) {
             getView().loadUI(recordAdapter);
         }
+
+        recordAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+            }
+        });
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerViewHolder> {
     protected Context context;
-    private List<T> mList;
+    public List<T> mList;
     private int mLayoutId;
     private LayoutInflater inflater;
     private OnItemClickListener listener;

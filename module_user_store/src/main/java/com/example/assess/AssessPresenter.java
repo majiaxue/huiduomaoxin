@@ -15,6 +15,7 @@ import com.example.entity.AssessTitleBean;
 import com.example.mvp.BasePresenter;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
+import com.example.utils.PopUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class AssessPresenter extends BasePresenter<AssessView> {
             }
         });
 
-        List<String> urlList = new ArrayList<>();
+        final List<String> urlList = new ArrayList<>();
         urlList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1937445174,2133528823&fm=26&gp=0.jpg");
         urlList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1937445174,2133528823&fm=26&gp=0.jpg");
         urlList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1937445174,2133528823&fm=26&gp=0.jpg");
@@ -79,14 +80,14 @@ public class AssessPresenter extends BasePresenter<AssessView> {
                     public void onClick(View v) {
                         if (assessList.get(groupPosition).isZan()) {
                             assessList.get(groupPosition).setZan(false);
-                            assessList.get(groupPosition).setZanCount(assessList.get(groupPosition).getZanCount() + 1);
-                            zanCount.setText(assessList.get(groupPosition).getZanCount() + "");
-                            zanImg.setImageResource(R.drawable.icon_dianzan);
-                        } else {
-                            assessList.get(groupPosition).setZan(true);
                             assessList.get(groupPosition).setZanCount(assessList.get(groupPosition).getZanCount() - 1);
                             zanCount.setText(assessList.get(groupPosition).getZanCount() + "");
                             zanImg.setImageResource(R.drawable.icon_dianzan1);
+                        } else {
+                            assessList.get(groupPosition).setZan(true);
+                            assessList.get(groupPosition).setZanCount(assessList.get(groupPosition).getZanCount() + 1);
+                            zanCount.setText(assessList.get(groupPosition).getZanCount() + "");
+                            zanImg.setImageResource(R.drawable.icon_dianzan);
                         }
                     }
                 });
@@ -101,7 +102,7 @@ public class AssessPresenter extends BasePresenter<AssessView> {
                 img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LogUtil.e("点击了第" + groupPosition + "条的第" + position + "张图片");
+                        PopUtil.popAssessBigPic(mContext, urlList, position);
                     }
                 });
 

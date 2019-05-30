@@ -24,7 +24,6 @@ public class CollectionAdapter extends MyRecyclerAdapter<BaseRecBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, BaseRecBean data, int position) {
-        viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_collection_check), position);
         if (isEdit) {
             holder.getView(R.id.rv_collection_check).setVisibility(View.VISIBLE);
             holder.getView(R.id.rv_collection_immediately_grab).setVisibility(View.GONE);

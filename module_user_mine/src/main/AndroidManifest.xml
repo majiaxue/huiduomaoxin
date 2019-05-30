@@ -23,6 +23,9 @@
         <activity android:name="com.example.shippingaddress.address.AddressActivity" />
         <activity android:name="com.example.shippingaddress.ShippingAddressActivity" />
         <activity android:name="com.example.goodscollection.GoodsCollectionActivity" />
+        <activity
+            android:name="com.example.order_assess.OrderAssessActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

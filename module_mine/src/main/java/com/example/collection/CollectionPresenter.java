@@ -1,8 +1,10 @@
 package com.example.collection;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.collection.adapter.CollectionAdapter;
 import com.example.entity.BaseRecBean;
@@ -15,6 +17,7 @@ import java.util.List;
 public class CollectionPresenter extends BasePresenter<CollectionView> {
     private List<BaseRecBean> dataList;
     private boolean isEdit = false;
+    private boolean isAllCheck = false;
     private CollectionAdapter collectionAdapter;
 
     public CollectionPresenter(Context context) {
@@ -38,15 +41,14 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
             getView().loadUI(collectionAdapter);
         }
 
-        collectionAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+        collectionAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void ViewOnClick(View view, final int index) {
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        check(index);
-                    }
-                });
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                if (isEdit) {
+                    check(position);
+                } else {
+                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                }
             }
         });
     }
@@ -58,6 +60,18 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
             dataList.get(position).setCheck(true);
         }
         collectionAdapter.notifyDataSetChanged();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            if (!dataList.get(i).isCheck()) {
+                if (isAllCheck) {
+                    getView().notAllCheck();
+                }
+                isAllCheck = false;
+                return;
+            }
+        }
+        isAllCheck = true;
+        getView().allCheck();
     }
 
     public void deleteList() {
@@ -67,6 +81,8 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
             }
         }
         collectionAdapter.notifyDataSetChanged();
+        isEdit = true;
+        edit();
     }
 
     public void edit() {
@@ -78,5 +94,23 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
             getView().toEdit();
         }
         collectionAdapter.setEdit(isEdit);
+    }
+
+    public void allCheck() {
+        if (isAllCheck) {
+            for (BaseRecBean data : dataList) {
+                data.setCheck(false);
+            }
+            collectionAdapter.notifyDataSetChanged();
+            isAllCheck = false;
+            getView().notAllCheck();
+        } else {
+            for (BaseRecBean data : dataList) {
+                data.setCheck(true);
+            }
+            collectionAdapter.notifyDataSetChanged();
+            isAllCheck = true;
+            getView().allCheck();
+        }
     }
 }

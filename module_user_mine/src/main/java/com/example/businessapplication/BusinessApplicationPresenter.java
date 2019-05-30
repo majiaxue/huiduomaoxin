@@ -243,6 +243,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         Log.d("tag", "生成的照片输出路径：" + imageFilePath[0].toString());
         return imageFilePath[0];
     }
+
     //解决android版本大于7的问题
     private static Uri getUriForFile(Context context, File file) {
         if (context == null || file == null) {

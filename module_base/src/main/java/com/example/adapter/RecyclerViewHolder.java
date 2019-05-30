@@ -101,6 +101,12 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public RecyclerViewHolder setBackgroundColor(int resId, int color) {
+        View view = getView(resId);
+        view.setBackgroundColor(color);
+        return this;
+    }
+
     public RecyclerViewHolder setProgressBar(int resId, int num) {
         ProgressBar progressBar = getView(resId);
         progressBar.setProgress(num);
