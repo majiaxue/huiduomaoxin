@@ -3,6 +3,7 @@ package com.example.browsinghistory.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.example.adapter.MyListAdapter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -19,7 +20,8 @@ import java.util.List;
 public class BrowsingHistoryChildAdapter extends MyRecyclerAdapter<BrowsingHistoryChildBean> {
 
     private boolean isChildCompile;
-    private CheckBox browsingHistoryChildCheck;
+    private ImageView childCheck;
+    private List<BrowsingHistoryChildBean> data;
 
     public BrowsingHistoryChildAdapter(Context context, List<BrowsingHistoryChildBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
@@ -28,23 +30,23 @@ public class BrowsingHistoryChildAdapter extends MyRecyclerAdapter<BrowsingHisto
     public BrowsingHistoryChildAdapter(Context context, List<BrowsingHistoryChildBean> mList, int mLayoutId,boolean childCompile) {
         super(context, mList, mLayoutId);
         this.isChildCompile = childCompile;
+        this.data = mList;
     }
 
     @Override
     public void convert(RecyclerViewHolder holder, BrowsingHistoryChildBean data, int position) {
+        childCheck = holder.getView(R.id.browsing_history_child_check);
 
         if (isChildCompile) {
-            holder.getView(R.id.browsing_history_child_check).setVisibility(View.VISIBLE);
+            childCheck.setVisibility(View.VISIBLE);
         } else {
-            holder.getView(R.id.browsing_history_child_check).setVisibility(View.GONE);
+            childCheck.setVisibility(View.GONE);
         }
 
-        browsingHistoryChildCheck = holder.getView(R.id.browsing_history_child_check);
-
         if (data.isCheck()){
-            browsingHistoryChildCheck.setChecked(true);
+            childCheck.setImageResource(R.drawable.icon_xuanzhong);
         }else{
-            browsingHistoryChildCheck.setChecked(false);
+            childCheck.setImageResource(R.drawable.icon_weixuanzhong);
         }
 
         holder.setImageResource(R.id.browsing_history_child_image, data.getImage());
@@ -59,4 +61,7 @@ public class BrowsingHistoryChildAdapter extends MyRecyclerAdapter<BrowsingHisto
     public void setChildCompile(boolean childCompile){
         isChildCompile = childCompile;
     }
+
+
+
 }

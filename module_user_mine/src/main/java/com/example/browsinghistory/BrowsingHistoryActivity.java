@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.module_user_mine.R;
@@ -32,7 +33,10 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
     TextView browsingHistoryDelete;
     @BindView(R2.id.browsing_history_bottom)
     LinearLayout browsingHistoryBottom;
-
+    //全选初始状态
+    private boolean isCheckAllParent = false;
+//    //编辑初始状态
+//    private boolean isCompile = false;
 
     @Override
     public int getLayoutId() {
@@ -56,6 +60,15 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
         browsingHistoryState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if (isCompile) {
+//                    browsingHistoryState.setText("完成");
+//                    browsingHistoryBottom.setVisibility(View.VISIBLE);
+//                    isCompile = false;
+//                } else {
+//                    browsingHistoryState.setText("编辑");
+//                    browsingHistoryBottom.setVisibility(View.GONE);
+//                    isCompile = true;
+//                }
                 presenter.browsingHistoryState();
             }
         });
@@ -63,14 +76,22 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
         browsingHistoryCheckAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                if (isCheckAllParent) {
+                    browsingHistoryCheckAll.setImageResource(R.drawable.ghftyf);
+                    isCheckAllParent = false;
+                } else {
+                    browsingHistoryCheckAll.setImageResource(R.drawable.vghfgdg);
+                    isCheckAllParent = true;
+                }
+                presenter.checkAllParent(isCheckAllParent);
             }
         });
         //删除
         browsingHistoryDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(BrowsingHistoryActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                presenter.deleteList();
             }
         });
     }
@@ -93,6 +114,17 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
         } else {
             browsingHistoryState.setText("编辑");
             browsingHistoryBottom.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void isCheckAll(boolean isCheckAll) {
+        if (isCheckAll) {
+            browsingHistoryCheckAll.setImageResource(R.drawable.ghftyf);
+            isCheckAllParent = false;
+        } else {
+            browsingHistoryCheckAll.setImageResource(R.drawable.vghfgdg);
+            isCheckAllParent = true;
         }
     }
 }

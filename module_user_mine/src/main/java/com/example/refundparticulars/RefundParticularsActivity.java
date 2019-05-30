@@ -85,6 +85,12 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
 
     @Override
     public void initClick() {
+        refundParticularsBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         //联系卖家
         refundParticularsContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override

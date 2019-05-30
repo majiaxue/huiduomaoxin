@@ -1,6 +1,7 @@
 package com.example.goodscollection;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +13,8 @@ import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
+
+import java.security.cert.Certificate;
 
 import butterknife.BindView;
 
@@ -42,6 +45,10 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     TextView goodsCollectionDelete;
     @BindView(R2.id.goods_collection_bottom)
     LinearLayout goodsCollectionBottom;
+    //全选初始状态
+    private boolean checkAll = false;
+    //编辑初始状态
+    private boolean isCompile = false;
 
     @Override
     public int getLayoutId() {
@@ -82,7 +89,14 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
         goodsCollectionCheckAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.checkAll(goodsCollectionCheckAll);
+                if (checkAll) {
+                    goodsCollectionCheckAll.setImageResource(R.drawable.ghftyf);
+                    checkAll = false;
+                } else {
+                    goodsCollectionCheckAll.setImageResource(R.drawable.vghfgdg);
+                    checkAll = true;
+                }
+                presenter.checkAll(checkAll);
             }
         });
         //删除
@@ -120,8 +134,10 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     public void isCheckAll(boolean isCheckAll) {
         if (isCheckAll) {
             goodsCollectionCheckAll.setImageResource(R.drawable.ghftyf);
+            checkAll = false;
         } else {
             goodsCollectionCheckAll.setImageResource(R.drawable.vghfgdg);
+            checkAll = true;
         }
     }
 
@@ -129,4 +145,15 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     public void loadUI(GoodsCollectionRecAdapter adapter) {
         goodsCollectionRec.setAdapter(adapter);
     }
+
+    @Override
+    public void empty(boolean isEmpty) {
+        if (isEmpty) {
+            goodsCollectionEmpty.setVisibility(View.VISIBLE);
+        } else {
+            goodsCollectionEmpty.setVisibility(View.GONE);
+        }
+    }
+
+
 }

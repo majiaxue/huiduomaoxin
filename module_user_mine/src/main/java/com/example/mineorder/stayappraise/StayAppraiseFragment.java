@@ -14,8 +14,8 @@ import butterknife.BindView;
 public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayAppraisePresenter> implements StayAppraiseView {
 
 
-    @BindView(R2.id.stay_delivery_goods_rec)
-    RecyclerView stayDeliveryGoodsRec;
+    @BindView(R2.id.stay_appraise_rec)
+    RecyclerView stayAppraiseRec;
 
     @Override
     public int getLayoutId() {
@@ -24,7 +24,7 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
 
     @Override
     public void initData() {
-        presenter.stayDeliveryGoodsRec(stayDeliveryGoodsRec);
+        presenter.stayAppraiseRec(stayAppraiseRec);
     }
 
     @Override

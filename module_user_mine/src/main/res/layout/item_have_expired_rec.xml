@@ -79,8 +79,8 @@
                 app:roundedCornerRadius="5dp" />
 
             <RelativeLayout
-                android:layout_width="155dp"
-                android:layout_height="68dp"
+                android:layout_width="@dimen/dp_143"
+                android:layout_height="@dimen/dp_68"
                 android:layout_marginLeft="@dimen/dp_14">
 
                 <TextView
@@ -127,12 +127,18 @@
                     android:textColor="#dddddd"
                     android:textSize="@dimen/sp_13" />
 
+                <ImageView
+                    android:layout_width="@dimen/dp_64"
+                    android:layout_height="@dimen/dp_64"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@drawable/icon_shixiao" />
+
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_108"
-                android:layout_marginRight="@dimen/dp_11"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">

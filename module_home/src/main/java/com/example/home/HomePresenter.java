@@ -161,9 +161,13 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
 
         goodList = new ArrayList<>();
-        goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "39.90", "95.50"));
-        goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
-        goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
+
+        for (int i = 0; i < 3; i++) {
+            goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "39.90", "95.50"));
+            goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
+            goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
+
+        }
 
         GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
         homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
