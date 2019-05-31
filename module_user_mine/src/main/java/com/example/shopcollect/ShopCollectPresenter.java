@@ -86,6 +86,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                 list.remove(position);
 
                                 shopCollectAdapter.notifyDataSetChanged();
+                                shopCollectRec.closeMenu();
                                 selfDialog.dismiss();
                                 PopUtils.setTransparency(mContext, 1f);
                             }
@@ -94,6 +95,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                             @Override
                             public void onNoClick() {
                                 selfDialog.dismiss();
+                                shopCollectRec.closeMenu();
                                 PopUtils.setTransparency(mContext, 1f);
                             }
                         });
