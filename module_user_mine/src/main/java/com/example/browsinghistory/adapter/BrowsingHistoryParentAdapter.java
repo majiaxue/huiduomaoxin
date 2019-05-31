@@ -16,6 +16,7 @@ import com.example.browsinghistory.bean.BrowsingHistoryParentBean;
 import com.example.module_user_mine.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, BrowsingHistoryParentBean data, final int position) {
+    public void convert(RecyclerViewHolder holder, final BrowsingHistoryParentBean data, final int position) {
         holder.setText(R.id.browsing_history_parent_time, data.getTime());
         parentCheck = holder.getView(R.id.browsing_history_parent_check);
         if (isParentCompile) {
@@ -76,7 +77,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
                     @Override
                     public void onClick(View v) {
                         //选中
-                        Toast.makeText(context, "childPosition:" + position+ childPosition, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "childPosition:" + position + childPosition, Toast.LENGTH_SHORT).show();
                         isAllCheck(childPosition);
                     }
                 });
@@ -89,6 +90,19 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
                 });
             }
         });
+
+        if (data.isCheck()){
+            for (int i = 0; i < childList.size(); i++) {
+                childList.get(i).setCheck(true);
+            }
+        }else{
+            for (int i = 0; i < childList.size(); i++) {
+                childList.get(i).setCheck(false);
+            }
+        }
+        browsingHistoryChildAdapter.notifyDataSetChanged();
+
+
         browsingHistoryChildAdapter.setChildCompile(isParentCompile);
     }
 
@@ -103,31 +117,31 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
 
         browsingHistoryChildAdapter.notifyDataSetChanged();
 
-//        for (int i = 0; i < childList.size(); i++) {
-//            if (!childList.get(i).isCheck()){
-//                allCheck = false;
-//            }
-//        }
+        for (int i = 0; i < childList.size(); i++) {
+            if (!childList.get(i).isCheck()){
+                allCheck = false;
+            }
+        }
+
 
 //        return allCheck;
 
     }
 
 
-    public void checkAll(boolean status) {
-
-        if (status) {
-            for (int i = 0; i < childList.size(); i++) {
-                childList.get(i).setCheck(false);
-            }
-        } else {
-            for (int i = 0; i < childList.size(); i++) {
-                childList.get(i).setCheck(true);
-            }
-        }
-
-        browsingHistoryChildAdapter.notifyDataSetChanged();
-    }
+//    public void checkAll(boolean status) {
+//        if (status) {
+//            for (int i = 0; i < childList.size(); i++) {
+//                childList.get(i).setCheck(false);
+//            }
+//        } else {
+//            for (int i = 0; i < childList.size(); i++) {
+//                childList.get(i).setCheck(true);
+//            }
+//        }
+//
+//        browsingHistoryChildAdapter.notifyDataSetChanged();
+//    }
 
 
     public void setCompile(boolean compile) {

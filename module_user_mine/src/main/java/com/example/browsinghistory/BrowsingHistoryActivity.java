@@ -77,10 +77,10 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
             @Override
             public void onClick(View v) {
                 if (isCheckAllParent) {
-                    browsingHistoryCheckAll.setImageResource(R.drawable.ghftyf);
+                    browsingHistoryCheckAll.setImageResource(R.drawable.icon_xuanzhong);
                     isCheckAllParent = false;
                 } else {
-                    browsingHistoryCheckAll.setImageResource(R.drawable.vghfgdg);
+                    browsingHistoryCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
                     isCheckAllParent = true;
                 }
                 presenter.checkAllParent(isCheckAllParent);
@@ -120,10 +120,10 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
     @Override
     public void isCheckAll(boolean isCheckAll) {
         if (isCheckAll) {
-            browsingHistoryCheckAll.setImageResource(R.drawable.ghftyf);
+            browsingHistoryCheckAll.setImageResource(R.drawable.icon_xuanzhong);
             isCheckAllParent = false;
         } else {
-            browsingHistoryCheckAll.setImageResource(R.drawable.vghfgdg);
+            browsingHistoryCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
             isCheckAllParent = true;
         }
     }

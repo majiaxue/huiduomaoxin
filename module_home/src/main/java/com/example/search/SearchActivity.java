@@ -31,9 +31,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     ImageView searchDelete;
     @BindView(R2.id.search_flow_layout)
     FlowLayout searchFlowLayout;
-    private String[] mVals = new String[]{"渔夫帽", "渔夫帽蓝色", "渔夫帽湖蓝色 ", "渔夫帽蓝色",
-            "渔夫帽湖蓝色", "渔夫帽湖蓝色"};
-    private TextView searchTextView;
+
 
     @Override
     public int getLayoutId() {
@@ -42,18 +40,9 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
 
     @Override
     public void initData() {
-        for (int i = 0; i < mVals.length; i++) {
-            searchTextView = (TextView) LayoutInflater.from(this).inflate(R.layout.search_text_view, searchFlowLayout, false);
-            searchTextView.setText(mVals[i]);
-            final int finalI = i;
-            searchTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(SearchActivity.this, mVals[finalI], Toast.LENGTH_SHORT).show();
-                }
-            });
-            searchFlowLayout.addView(searchTextView);
-        }
+
+        presenter.searchFlowLayout(searchFlowLayout);
+
     }
 
     @Override
@@ -67,10 +56,8 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s = searchEdit.getText().toString();
-                searchTextView = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.search_text_view, searchFlowLayout, false);
-                searchTextView.setText(s);
-                searchFlowLayout.addView(searchTextView);
+                presenter.searchEdit(searchEdit,searchFlowLayout);
+
             }
         });
 

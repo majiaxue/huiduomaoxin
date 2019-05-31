@@ -1,5 +1,6 @@
 package com.example.user_shopping_cart;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.common.CommonResource;
+import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
@@ -86,18 +88,19 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
             }
         });
 
-        //删除订单
+        //删除订单和去结算
         shoppingCartCloseAccountAndDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (shoppingCartCloseAccountAndDelete.getText().equals("删除")){
                     presenter.popupDelete();
                 }else{
-                    Toast.makeText(getContext(), "没有选中商品" , Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), ConfirmOrderActivity.class));
                 }
 
             }
         });
+
     }
 
     @Override

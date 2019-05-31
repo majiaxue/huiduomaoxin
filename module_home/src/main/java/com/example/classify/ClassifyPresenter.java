@@ -86,11 +86,9 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
 
     public void setXBanner(XBanner homeXbanner) {
         images = new ArrayList<>();
-        images.add(new TopBannerBean(R.drawable.banner1));
-        images.add(new TopBannerBean(R.drawable.banner2));
-        images.add(new TopBannerBean(R.drawable.banner3));
-        images.add(new TopBannerBean(R.drawable.banner4));
-//        homeXbanner.setData(images, null);
+        images.add(new TopBannerBean(R.drawable.img_10));
+        images.add(new TopBannerBean(R.drawable.img_10));
+        images.add(new TopBannerBean(R.drawable.img_10));
         homeXbanner.setBannerData(R.layout.image_fresco, images);
         homeXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override

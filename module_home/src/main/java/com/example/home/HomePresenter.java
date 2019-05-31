@@ -1,6 +1,7 @@
 package com.example.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.home.adapter.HomeTopRecAdapter;
 import com.example.home.bean.GoodChoiceBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
+import com.example.secondarydetails.SecondaryDetailsActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -148,7 +150,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, SecondaryDetailsActivity.class);
+                intent.putExtra("type", "" + position);
+                mContext.startActivity(intent);
             }
         });
 

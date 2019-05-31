@@ -31,6 +31,9 @@ import java.util.List;
 public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
 
     private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
+    private List<BaseRecImageAndTextBean> list;
+    private ShopCollectAdapter shopCollectAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     public ShopCollectPresenter(Context context) {
         super(context);
@@ -41,15 +44,18 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
 
     }
 
-    public void shopCollectRec(final SlideRecyclerView shopCollectRec){
-        List<BaseRecImageAndTextBean> list = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            list.add(new BaseRecImageAndTextBean("班迪卡旗舰店",R.drawable.img_104));
-            list.add(new BaseRecImageAndTextBean("private简约男装",R.drawable.img_108));
-        }
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+    public void shopCollectRec(final SlideRecyclerView shopCollectRec) {
+        list = new ArrayList<>();
+        list.add(new BaseRecImageAndTextBean("班迪卡旗舰店", R.drawable.img_104));
+        list.add(new BaseRecImageAndTextBean("private简约男装1", R.drawable.img_108));
+        list.add(new BaseRecImageAndTextBean("private简约男装2", R.drawable.img_108));
+        list.add(new BaseRecImageAndTextBean("private简约男装3", R.drawable.img_108));
+        list.add(new BaseRecImageAndTextBean("private简约男装4", R.drawable.img_108));
+        list.add(new BaseRecImageAndTextBean("private简约男装5", R.drawable.img_108));
+        list.add(new BaseRecImageAndTextBean("private简约男装6", R.drawable.img_108));
+        linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         shopCollectRec.setLayoutManager(linearLayoutManager);
-        ShopCollectAdapter shopCollectAdapter = new ShopCollectAdapter(mContext, list, R.layout.item_shop_collect_rec);
+        shopCollectAdapter = new ShopCollectAdapter(mContext, list, R.layout.item_shop_collect_rec);
         shopCollectRec.setAdapter(shopCollectAdapter);
         shopCollectAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -76,19 +82,22 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                         selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                             @Override
                             public void onYesClick() {
-                                Toast.makeText(mContext, "还不能取消关注", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                list.remove(position);
+
+                                shopCollectAdapter.notifyDataSetChanged();
                                 selfDialog.dismiss();
-                                PopUtils.setTransparency(mContext,1f);
+                                PopUtils.setTransparency(mContext, 1f);
                             }
                         });
                         selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
                             @Override
                             public void onNoClick() {
                                 selfDialog.dismiss();
-                                PopUtils.setTransparency(mContext,1f);
+                                PopUtils.setTransparency(mContext, 1f);
                             }
                         });
-                        PopUtils.setTransparency(mContext,0.3f);
+                        PopUtils.setTransparency(mContext, 0.3f);
                         selfDialog.show();
                     }
                 });

@@ -33,6 +33,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/base_type"
                     android:layout_width="@dimen/dp_43"
                     android:layout_height="@dimen/dp_19"
                     android:src="@drawable/image_tbk" />

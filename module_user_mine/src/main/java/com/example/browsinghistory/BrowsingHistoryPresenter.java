@@ -44,7 +44,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     public void browsingHistoryRec(RecyclerView browsingHistoryRec) {
         parentBeanList = new ArrayList<>();
-        parentBeanList.add(new BrowsingHistoryParentBean(false, "5月27日"));
+        parentBeanList.add(new BrowsingHistoryParentBean(true, "5月27日"));
         parentBeanList.add(new BrowsingHistoryParentBean(false, "5月20日"));
         parentBeanList.add(new BrowsingHistoryParentBean(false, "5月17日"));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -61,21 +61,21 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
                     public void onClick(View v) {
                         flag = true;
                         checkAll(index);
+
                     }
                 });
 
             }
         });
+
     }
 
     //判断每个点击的parentCheckbox如果全部选中就去选中全选按钮
     private void checkAll(int index) {
         if (parentBeanList.get(index).isCheck()) {
             parentBeanList.get(index).setCheck(false);
-            browsingHistoryParentAdapter.checkAll(false);
         } else {
             parentBeanList.get(index).setCheck(true);
-            browsingHistoryParentAdapter.checkAll(true);
         }
 
         browsingHistoryParentAdapter.notifyDataSetChanged();
@@ -123,11 +123,15 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     }
 
     //删除
-    public void deleteList(){
+    public void deleteList() {
         for (int i = parentBeanList.size() - 1; i >= 0; i--) {
             if (parentBeanList.get(i).isCheck()) {
                 parentBeanList.remove(i);
             }
+        }
+        if (parentBeanList.size() == 0) {
+            getView().isCompile(false);
+            getView().isCheckAll(false);
         }
         browsingHistoryParentAdapter.notifyDataSetChanged();
     }

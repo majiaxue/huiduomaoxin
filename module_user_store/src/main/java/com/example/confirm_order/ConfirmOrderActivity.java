@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.confirm_order.adapter.ConfirmOrderAdapter;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
@@ -14,6 +15,10 @@ import com.example.user_store.R2;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
+
+/**
+ * 确认订单
+ */
 
 public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, ConfirmOrderPresenter> implements ConfirmOrderView {
     @BindView(R2.id.include_back)
