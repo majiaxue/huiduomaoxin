@@ -1,5 +1,6 @@
 package com.example.search;
 
+import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -31,7 +32,8 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     ImageView searchDelete;
     @BindView(R2.id.search_flow_layout)
     FlowLayout searchFlowLayout;
-
+    @BindView(R2.id.search_tab)
+    TabLayout searchTab;
 
     @Override
     public int getLayoutId() {
@@ -40,7 +42,8 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
 
     @Override
     public void initData() {
-
+        //初始化tablayout
+        presenter.initTabLayout(searchTab);
         presenter.searchFlowLayout(searchFlowLayout);
 
     }

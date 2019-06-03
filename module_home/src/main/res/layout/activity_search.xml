@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#f5f5f5"
     android:orientation="vertical"
     tools:context="com.example.search.SearchActivity">
@@ -49,10 +50,21 @@
 
     </RelativeLayout>
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/search_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        app:tabIndicatorColor="#fd3c15"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorGravity="bottom"
+        app:tabMode="fixed"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabSelectedTextColor="#fd3c15"
+        app:tabTextColor="#333333"></android.support.design.widget.TabLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_23"
         android:background="#FFFFFF">
 
         <TextView

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
@@ -48,7 +49,7 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     //全选初始状态
     private boolean checkAll = false;
     //编辑初始状态
-    private boolean isCompile = false;
+//    private boolean isCompile = false;
 
     @Override
     public int getLayoutId() {
@@ -90,10 +91,10 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
             @Override
             public void onClick(View v) {
                 if (checkAll) {
-                    goodsCollectionCheckAll.setImageResource(R.drawable.ghftyf);
+                    goodsCollectionCheckAll.setImageResource(R.drawable.icon_xuanzhong);
                     checkAll = false;
                 } else {
-                    goodsCollectionCheckAll.setImageResource(R.drawable.vghfgdg);
+                    goodsCollectionCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
                     checkAll = true;
                 }
                 presenter.checkAll(checkAll);
@@ -133,10 +134,10 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     @Override
     public void isCheckAll(boolean isCheckAll) {
         if (isCheckAll) {
-            goodsCollectionCheckAll.setImageResource(R.drawable.ghftyf);
+            goodsCollectionCheckAll.setImageResource(R.drawable.icon_xuanzhong);
             checkAll = false;
         } else {
-            goodsCollectionCheckAll.setImageResource(R.drawable.vghfgdg);
+            goodsCollectionCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
             checkAll = true;
         }
     }
@@ -153,6 +154,11 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
         } else {
             goodsCollectionEmpty.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void loadCommend(BaseRecStaggeredAdapter adapter) {
+        goodsCollectionBottomRec.setAdapter(adapter);
     }
 
 

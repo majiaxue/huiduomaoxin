@@ -2,6 +2,7 @@ package com.example.classificationdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
@@ -60,7 +61,8 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     RecyclerView classificationRec;
     @BindView(R2.id.classification_text)
     TextView classificationText;
-
+    @BindView(R2.id.classification_tab)
+    TabLayout classificationTab;
     private boolean state = true;
     private boolean salesvolume = true;
     private boolean price = true;
@@ -74,6 +76,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
 
     @Override
     public void initData() {
+        //初始化tablayout
+        presenter.initTabLayout(classificationTab);
+
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String text = extras.getString("text");

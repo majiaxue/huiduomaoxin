@@ -9,10 +9,10 @@
         android:supportsRtl="true"
         tools:replace="android:allowBackup">
         <activity android:name="com.example.secondarydetails.SecondaryDetailsActivity"></activity>
-        <activity android:name="com.example.main.MainActivity" />
+        <activity android:name="com.example.main.StartPageActivity" />
         <activity android:name="com.example.search.SearchActivity" />
         <activity
-            android:name="com.example.main.StartPageActivity"
+            android:name="com.example.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>

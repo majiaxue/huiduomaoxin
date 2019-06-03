@@ -71,7 +71,7 @@ public class RetrofitUtil {
         retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL2)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
+                .client(getHttpClient(context))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         if (mApiService2 == null) {
@@ -88,7 +88,7 @@ public class RetrofitUtil {
         retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL4)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
+                .client(getHttpClient(context))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         if (mApiService2 == null) {
@@ -122,7 +122,7 @@ public class RetrofitUtil {
                         Request build = null;
                         try {
                             build = chain.request().newBuilder()
-                                    .addHeader("Authorization", "JWT ff8f41da-bdb6-4b67-a415-7addfb482b86")
+                                    .addHeader("Authorization", "JWT b292216f-b7a6-4707-9098-e7467f0edb5f")
                                     .build();
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -1,11 +1,14 @@
 package com.example.classificationdetails;
 
 import android.content.Context;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -17,6 +20,7 @@ import com.example.mvp.BasePresenter;
 import com.example.utils.DisplayUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +33,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     private List<BaseRecBean> classifyRecList;
     private List<BaseRecBean> classifyGridRecList;
     private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
+    private String[] titleArr = {"淘宝","拼多多","京东"};
 
     public ClassificationDetailsPresenter(Context context) {
         super(context);
@@ -36,6 +41,57 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     @Override
     protected void onViewDestroy() {
+
+    }
+
+
+    public void initTabLayout(final TabLayout classificationTab) {
+        for (String title : titleArr) {
+            classificationTab.addTab(classificationTab.newTab().setText(title));
+        }
+
+        classificationTab.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //了解源码得知 线的宽度是根据 tabView的宽度来设置的
+                    LinearLayout mTabStrip = (LinearLayout) classificationTab.getChildAt(0);
+
+                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+                        View tabView = mTabStrip.getChildAt(i);
+
+                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
+                        Field mTextViewField =
+                                tabView.getClass().getDeclaredField("mTextView");
+                        mTextViewField.setAccessible(true);
+
+                        TextView mTextView = (TextView) mTextViewField.get(tabView);
+
+                        tabView.setPadding(0, 0, 0, 0);
+
+                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
+                        int width = 0;
+                        width = mTextView.getWidth();
+                        if (width == 0) {
+                            mTextView.measure(0, 0);
+                            width = mTextView.getMeasuredWidth();
+                        }
+
+                        //设置tab左右间距为10dp  注意这里不能使用Padding
+                        // 因为源码中线的宽度是根据 tabView的宽度来设置的
+                        LinearLayout.LayoutParams params =
+                                (LinearLayout.LayoutParams) tabView.getLayoutParams();
+                        params.width = width;
+                        tabView.setLayoutParams(params);
+
+                        tabView.invalidate();
+                    }
+
+                } catch (Exception e) {
+
+                }
+            }
+        });
 
     }
 

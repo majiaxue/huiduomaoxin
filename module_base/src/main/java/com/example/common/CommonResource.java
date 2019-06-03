@@ -12,6 +12,9 @@ public class CommonResource {
     public static final String TYPENAVBAR = "/rest/goods/category";     //多用户商城---分类导航
     public static final String WXLOGIN_CODE = "/wx/login";   //微信登录把code传给后台
 
+    public static final String GOODSCOLLECTION = "/rest/user/product/page";   //商品收藏
+    public static final String SELLERPAGE = "/rest/user/seller/page";   //商家收藏
+
 
     public static String WX_CODE = "";
     public static final String WXAPPID = "wxf08fd2965ac9ac30";
