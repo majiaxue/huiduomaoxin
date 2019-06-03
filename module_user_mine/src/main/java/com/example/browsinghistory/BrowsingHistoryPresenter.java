@@ -4,22 +4,18 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.browsinghistory.adapter.BrowsingHistoryParentAdapter;
-import com.example.browsinghistory.bean.BrowsingHistoryParentBean;
+import com.example.browsinghistory.bean.BrowsingHistoryBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+
+import io.reactivex.internal.operators.flowable.FlowableLastMaybe;
 
 /**
  * Created by cuihaohao on 2019/5/27
@@ -29,7 +25,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     private boolean isCompile = false;
     private BrowsingHistoryParentAdapter browsingHistoryParentAdapter;
-    private List<BrowsingHistoryParentBean> parentBeanList;
+    private List<BrowsingHistoryBean.ParentBean> parentBeanList;
     private boolean flag = true;
     private boolean isAllParentChecked;
 
@@ -43,10 +39,27 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     }
 
     public void browsingHistoryRec(RecyclerView browsingHistoryRec) {
+
+        List<BrowsingHistoryBean.ParentBean.ChildBean> childBeanList1 = new ArrayList<>();
+        childBeanList1.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖男T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
+        childBeanList1.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_109, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "10000人付款", "95%好评", "靓仔靓女旗舰店", false));
+
+        List<BrowsingHistoryBean.ParentBean.ChildBean> childBeanList2 = new ArrayList<>();
+        childBeanList2.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖男T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
+        childBeanList2.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_109, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "10000人付款", "95%好评", "靓仔靓女旗舰店", false));
+
+        List<BrowsingHistoryBean.ParentBean.ChildBean> childBeanList3 = new ArrayList<>();
+        childBeanList3.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖男T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
+        childBeanList3.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_109, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "10000人付款", "95%好评", "靓仔靓女旗舰店", false));
+
+
+
         parentBeanList = new ArrayList<>();
-        parentBeanList.add(new BrowsingHistoryParentBean(true, "5月27日"));
-        parentBeanList.add(new BrowsingHistoryParentBean(false, "5月20日"));
-        parentBeanList.add(new BrowsingHistoryParentBean(false, "5月17日"));
+        parentBeanList.add(new BrowsingHistoryBean.ParentBean(false, "5月27日", childBeanList1));
+        parentBeanList.add(new BrowsingHistoryBean.ParentBean(false, "5月20日", childBeanList2));
+        parentBeanList.add(new BrowsingHistoryBean.ParentBean(false, "5月17日", childBeanList3));
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         browsingHistoryRec.setLayoutManager(linearLayoutManager);
         browsingHistoryParentAdapter = new BrowsingHistoryParentAdapter(mContext, parentBeanList, R.layout.item_browsing_history_parent, false);
@@ -62,6 +75,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
                         flag = true;
                         checkAll(index);
 
+
                     }
                 });
 
@@ -74,8 +88,10 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     private void checkAll(int index) {
         if (parentBeanList.get(index).isCheck()) {
             parentBeanList.get(index).setCheck(false);
+            browsingHistoryParentAdapter.checkAll(index, true);
         } else {
             parentBeanList.get(index).setCheck(true);
+            browsingHistoryParentAdapter.checkAll(index, false);
         }
 
         browsingHistoryParentAdapter.notifyDataSetChanged();
@@ -111,10 +127,12 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
         if (isCheckAllParent) {
             for (int i = 0; i < parentBeanList.size(); i++) {
                 parentBeanList.get(i).setCheck(false);
+                browsingHistoryParentAdapter.checkAll(i, true);
             }
         } else {
             for (int i = 0; i < parentBeanList.size(); i++) {
                 parentBeanList.get(i).setCheck(true);
+                browsingHistoryParentAdapter.checkAll(i, true);
             }
         }
 

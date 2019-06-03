@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.example.adapter.MyListAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.browsinghistory.bean.BrowsingHistoryBean;
 import com.example.browsinghistory.bean.BrowsingHistoryChildBean;
 import com.example.module_user_mine.R;
 
@@ -17,24 +18,24 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
-public class BrowsingHistoryChildAdapter extends MyRecyclerAdapter<BrowsingHistoryChildBean> {
+public class BrowsingHistoryChildAdapter extends MyRecyclerAdapter<BrowsingHistoryBean.ParentBean.ChildBean> {
 
     private boolean isChildCompile;
     private ImageView childCheck;
-    private List<BrowsingHistoryChildBean> data;
+    private List<BrowsingHistoryBean.ParentBean.ChildBean> data;
 
-    public BrowsingHistoryChildAdapter(Context context, List<BrowsingHistoryChildBean> mList, int mLayoutId) {
+    public BrowsingHistoryChildAdapter(Context context, List<BrowsingHistoryBean.ParentBean.ChildBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public BrowsingHistoryChildAdapter(Context context, List<BrowsingHistoryChildBean> mList, int mLayoutId,boolean childCompile) {
+    public BrowsingHistoryChildAdapter(Context context, List<BrowsingHistoryBean.ParentBean.ChildBean> mList, int mLayoutId,boolean childCompile) {
         super(context, mList, mLayoutId);
         this.isChildCompile = childCompile;
         this.data = mList;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, BrowsingHistoryChildBean data, int position) {
+    public void convert(RecyclerViewHolder holder, BrowsingHistoryBean.ParentBean.ChildBean data, int position) {
         childCheck = holder.getView(R.id.browsing_history_child_check);
 
         if (isChildCompile) {

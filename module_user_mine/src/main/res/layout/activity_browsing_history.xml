@@ -70,7 +70,7 @@
             android:layout_height="@dimen/dp_29"
             android:layout_marginLeft="@dimen/dp_15"
             android:padding="@dimen/dp_5"
-            android:src="@drawable/vghfgdg" />
+            android:src="@drawable/icon_weixuanzhong" />
 
         <TextView
             android:layout_width="@dimen/dp_0"
