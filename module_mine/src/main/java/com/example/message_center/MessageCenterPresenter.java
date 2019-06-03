@@ -1,9 +1,11 @@
 package com.example.message_center;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.example.entity.MessageCenterBean;
 import com.example.message_center.adapter.MessageCenterAdapter;
+import com.example.message_detail.MessageDetailActivity;
 import com.example.mvp.BasePresenter;
 
 import java.util.ArrayList;
@@ -33,5 +35,9 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterView> {
         if (getView() != null) {
             getView().loadRv(centerAdapter);
         }
+    }
+
+    public void jumpToDetail(int position) {
+        mContext.startActivity(new Intent(mContext, MessageDetailActivity.class));
     }
 }

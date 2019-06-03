@@ -107,7 +107,8 @@
                         android:id="@+id/user_home_rv_navbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_18"></android.support.v7.widget.RecyclerView>
+                        android:layout_marginTop="@dimen/dp_18"
+                        android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 
                     <RelativeLayout
                         android:layout_width="@dimen/dp_350"
@@ -162,9 +163,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@id/user_home_temp1"
-                            android:layout_marginLeft="@dimen/dp_8"
-                            android:layout_marginTop="@dimen/dp_30"
-                            android:layout_marginRight="@dimen/dp_8"></android.support.v7.widget.RecyclerView>
+                            android:layout_marginLeft="@dimen/dp_12"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
                     </RelativeLayout>
 
                     <ImageView
@@ -180,6 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_17"
                         android:background="#f5f5f5"
+                        android:overScrollMode="never"
                         android:paddingBottom="@dimen/dp_20"></android.support.v7.widget.RecyclerView>
                 </LinearLayout>
             </LinearLayout>

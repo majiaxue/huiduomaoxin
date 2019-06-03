@@ -63,6 +63,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     RelativeLayout mineRela;
     @BindView(R2.id.mine_predict)
     LinearLayout minePredict;
+    @BindView(R2.id.mine_benri)
+    TextView mBenri;
+    @BindView(R2.id.mine_benyue)
+    TextView mBenyue;
+    @BindView(R2.id.mine_shangyue)
+    TextView mShangyue;
 
     @Override
     public int getLayoutId() {
@@ -161,6 +167,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         });
 
         mineIncomeForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToPredict();
+            }
+        });
+
+        minePredict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToPredict();

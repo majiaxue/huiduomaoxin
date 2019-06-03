@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.fans_order.adapter.FansOrderRvAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -15,9 +16,6 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 
 public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresenter> implements AllOrderView {
@@ -26,8 +24,21 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
     @BindView(R2.id.order_list_refresh)
     SmartRefreshLayout orderListRefresh;
 
-    private List dataList = new ArrayList();
+    private static AllOrderFragment fragment;
+    private static String allFlag;
     private int page = 1;
+
+    public static AllOrderFragment getInstance(String type) {
+        allFlag = type;
+        if (fragment == null) {
+            synchronized (AllOrderFragment.class) {
+                if (fragment == null) {
+                    fragment = new AllOrderFragment();
+                }
+            }
+        }
+        return fragment;
+    }
 
     @Override
     public int getLayoutId() {
@@ -39,8 +50,7 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
-        dataList.add("全部订单");
-        presenter.loadData(dataList);
+        presenter.loadData(allFlag);
 
         //设置 Header 为 官方主题 样式
         orderListRefresh.setRefreshHeader(new MaterialHeader(getActivity()));
@@ -51,7 +61,6 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
         orderListRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                dataList.clear();
 
                 orderListRefresh.finishRefresh();
             }
@@ -80,7 +89,12 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
     }
 
     @Override
-    public void loadUI(RvListAdapter adapter) {
+    public void loadMineRv(RvListAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadFansRv(FansOrderRvAdapter adapter) {
         orderListRv.setAdapter(adapter);
     }
 

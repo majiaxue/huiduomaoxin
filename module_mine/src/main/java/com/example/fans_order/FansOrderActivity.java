@@ -1,5 +1,6 @@
 package com.example.fans_order;
 
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -16,10 +17,16 @@ import butterknife.BindView;
 
 @Route(path = "/mine/fansorder")
 public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansOrderPresenter> implements FansOrderView {
-    @BindView(R2.id.include_back)
-    ImageView includeBack;
-    @BindView(R2.id.include_title)
-    TextView includeTitle;
+    @BindView(R2.id.fans_order_back)
+    ImageView mBack;
+    @BindView(R2.id.fans_order_tb)
+    TextView fansOrderTb;
+    @BindView(R2.id.fans_order_pdd)
+    TextView fansOrderPdd;
+    @BindView(R2.id.fans_order_jd)
+    TextView fansOrderJd;
+    @BindView(R2.id.fans_order_sc)
+    TextView fansOrderSc;
     @BindView(R2.id.fans_order_txt1)
     TextView fansOrderTxt1;
     @BindView(R2.id.fans_order_txt2)
@@ -38,7 +45,6 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
 
     @Override
     public void initData() {
-        includeTitle.setText("粉丝订单");
         fansOrderTab.setupWithViewPager(fansOrderViewpager);
         presenter.initTabLayout(fansOrderTab);
         presenter.initViewPager(getSupportFragmentManager());
@@ -47,10 +53,38 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
 
     @Override
     public void initClick() {
-        includeBack.setOnClickListener(new View.OnClickListener() {
+        mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        fansOrderTb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(0);
+            }
+        });
+
+        fansOrderPdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(1);
+            }
+        });
+
+        fansOrderJd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(2);
+            }
+        });
+
+        fansOrderSc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(3);
             }
         });
     }
@@ -58,6 +92,19 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
     @Override
     public void updateVP(OrderVPAdapter adapter) {
         fansOrderViewpager.setAdapter(adapter);
+    }
+
+    @Override
+    public void typeChanged(int position) {
+        fansOrderTb.setTextColor(Color.parseColor(position == 0 ? "#ffffff" : "#222222"));
+        fansOrderPdd.setTextColor(Color.parseColor(position == 1 ? "#ffffff" : "#222222"));
+        fansOrderJd.setTextColor(Color.parseColor(position == 2 ? "#ffffff" : "#222222"));
+        fansOrderSc.setTextColor(Color.parseColor(position == 3 ? "#ffffff" : "#222222"));
+
+        fansOrderTb.setBackgroundResource(position == 0 ? R.drawable.predict_xuan_left : 0);
+        fansOrderPdd.setBackgroundResource(position == 1 ? R.drawable.predict_xuan : 0);
+        fansOrderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan : 0);
+        fansOrderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
     }
 
     @Override

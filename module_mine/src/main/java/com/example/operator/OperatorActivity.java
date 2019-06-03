@@ -1,6 +1,7 @@
 package com.example.operator;
 
-import android.os.Bundle;
+import android.graphics.Color;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,13 +16,13 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.operator.adapter.YysFactorAdapter;
 import com.example.operator.adapter.YysQuanyiAdapter;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @Route(path = "/mine/operator")
-public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresenter> implements OperatorView {
+public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresenter> implements OperatorView, NestedScrollView.OnScrollChangeListener {
     @BindView(R2.id.operator_back)
     ImageView operatorBack;
     @BindView(R2.id.operator_junior)
@@ -52,6 +53,12 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     TextView operatorShuoming;
     @BindView(R2.id.operator_bg_change)
     RelativeLayout changeBg;
+    @BindView(R2.id.operator_scroll)
+    NestedScrollView mScorll;
+    @BindView(R2.id.operator_top)
+    RelativeLayout mTop;
+    @BindView(R2.id.operator_title)
+    TextView mTitle;
 
     @Override
     public int getLayoutId() {
@@ -76,6 +83,7 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
         operatorQuanyiRv.setLayoutManager(gridLayoutManager);
         operatorQuanyiRv.addItemDecoration(itemDecoration1);
         presenter.loadData();
+        mScorll.setOnScrollChangeListener(this);
     }
 
     @Override
@@ -122,6 +130,19 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
 
             }
         });
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        if (scrollY < 60) {
+            mTop.setBackgroundColor(Color.TRANSPARENT);
+            operatorBack.setImageResource(R.drawable.icon_fanhui_bai);
+            mTitle.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            mTop.setBackgroundColor(Color.WHITE);
+            operatorBack.setImageResource(R.drawable.icon_fanhui);
+            mTitle.setTextColor(Color.parseColor("#333333"));
+        }
     }
 
     @Override

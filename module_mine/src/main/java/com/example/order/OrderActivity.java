@@ -1,5 +1,6 @@
 package com.example.order;
 
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -20,10 +21,16 @@ import butterknife.BindView;
 
 @Route(path = "/mine/order")
 public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresenter> implements OrderView {
-    @BindView(R2.id.include_back)
-    ImageView includeBack;
-    @BindView(R2.id.include_title)
-    TextView includeTitle;
+    @BindView(R2.id.order_back)
+    ImageView mBack;
+    @BindView(R2.id.order_tb)
+    TextView orderTb;
+    @BindView(R2.id.order_pdd)
+    TextView orderPdd;
+    @BindView(R2.id.order_jd)
+    TextView orderJd;
+    @BindView(R2.id.order_sc)
+    TextView orderSc;
     @BindView(R2.id.order_tab)
     TabLayout orderTab;
     @BindView(R2.id.order_viewpager)
@@ -39,7 +46,6 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        includeTitle.setText("我的订单");
         orderTab.setupWithViewPager(orderViewpager);
         presenter.initTabLayout(orderTab);
         presenter.initViewPager(getSupportFragmentManager());
@@ -51,6 +57,41 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
 
     @Override
     public void initClick() {
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        orderTb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(0);
+            }
+        });
+
+        orderPdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(1);
+            }
+        });
+
+        orderJd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(2);
+            }
+        });
+
+        orderSc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.change(3);
+            }
+        });
+
         orderTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -67,18 +108,24 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
 
             }
         });
-
-        includeBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     @Override
     public void updateVP(OrderVPAdapter adapter) {
         orderViewpager.setAdapter(adapter);
+    }
+
+    @Override
+    public void typeChanged(int position) {
+        orderTb.setTextColor(Color.parseColor(position == 0 ? "#ffffff" : "#222222"));
+        orderPdd.setTextColor(Color.parseColor(position == 1 ? "#ffffff" : "#222222"));
+        orderJd.setTextColor(Color.parseColor(position == 2 ? "#ffffff" : "#222222"));
+        orderSc.setTextColor(Color.parseColor(position == 3 ? "#ffffff" : "#222222"));
+
+        orderTb.setBackgroundResource(position == 0 ? R.drawable.predict_xuan_left : 0);
+        orderPdd.setBackgroundResource(position == 1 ? R.drawable.predict_xuan : 0);
+        orderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan : 0);
+        orderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
     }
 
     @Override

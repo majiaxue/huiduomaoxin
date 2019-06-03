@@ -35,7 +35,7 @@ public class CollectionAdapter extends MyRecyclerAdapter<BaseRecBean> {
         }
 
         if (data.isCheck()) {
-            holder.setImageResource(R.id.rv_collection_check, R.drawable.ghftyf);
+            holder.setImageResource(R.id.rv_collection_check, R.drawable.icon_xuanzhong);
         } else {
             holder.setImageResource(R.id.rv_collection_check, R.drawable.vghfgdg);
         }

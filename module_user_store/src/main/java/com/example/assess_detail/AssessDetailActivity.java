@@ -1,24 +1,29 @@
 package com.example.assess_detail;
 
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.assess_detail.adapter.InsideAssessAdapter;
 import com.example.assess_detail.adapter.InsideImageAdapter;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.view.RatingBarView;
 
 import butterknife.BindView;
 
-public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessDetailPresenter> implements AssessDetailView {
+public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessDetailPresenter> implements AssessDetailView, NestedScrollView.OnScrollChangeListener {
     @BindView(R2.id.include_back)
     ImageView includeBack;
     @BindView(R2.id.include_title)
@@ -37,6 +42,14 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
     LinearLayout assessDetailPinglun;
     @BindView(R2.id.assess_detail_bootom)
     LinearLayout assessDetailBootom;
+    @BindView(R2.id.assess_detail_input_assess)
+    LinearLayout mAssessInput;
+    @BindView(R2.id.assess_detail_edit)
+    EditText mEdit;
+    @BindView(R2.id.assess_detail_btn)
+    TextView mBtn;
+    @BindView(R2.id.assess_detail_scroll)
+    NestedScrollView mScroll;
     @BindView(R2.id.assess_detail_header)
     ImageView assessDetailHeader;
     @BindView(R2.id.assess_detail_name)
@@ -76,7 +89,7 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         assessDetailRvInsideAssess.setLayoutManager(linearLayoutManager);
-
+        mScroll.setOnScrollChangeListener(this);
         presenter.loadData();
     }
 
@@ -95,6 +108,37 @@ public class AssessDetailActivity extends BaseActivity<AssessDetailView, AssessD
                 presenter.dianZan();
             }
         });
+
+        assessDetailPinglun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assessDetailPinglun.setVisibility(View.GONE);
+                mAssessInput.setVisibility(View.VISIBLE);
+                mEdit.setFocusable(true);
+                mEdit.setFocusableInTouchMode(true);
+            }
+        });
+
+        mBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mEdit.getText().toString().length() < 2) {
+                    Toast.makeText(AssessDetailActivity.this, "请至少输入2个字符", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AssessDetailActivity.this, "评价了。。。", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        if (mAssessInput.getVisibility() == View.VISIBLE) {
+            if (scrollY - oldScrollY > 42 || scrollY - oldScrollY < -42) {
+                assessDetailPinglun.setVisibility(View.VISIBLE);
+                mAssessInput.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override

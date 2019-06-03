@@ -33,10 +33,10 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
     }
 
     public void initTabLayout(final TabLayout orderTab) {
-        fragmentList.add(new AllOrderFragment());
-        fragmentList.add(new PayOrderFragment());
-        fragmentList.add(new SettleOrderFragment());
-        fragmentList.add(new LoseOrderFragment());
+        fragmentList.add(AllOrderFragment.getInstance("fans"));
+        fragmentList.add(PayOrderFragment.getInstance("fans"));
+        fragmentList.add(SettleOrderFragment.getInstance("fans"));
+        fragmentList.add(LoseOrderFragment.getInstance("fans"));
 
         orderTab.post(new Runnable() {
             @Override
@@ -85,5 +85,9 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
     public void initViewPager(FragmentManager fm) {
         OrderVPAdapter vpAdapter = new OrderVPAdapter(fm, fragmentList, titleArr);
         getView().updateVP(vpAdapter);
+    }
+
+    public void change(int i) {
+        getView().typeChanged(i);
     }
 }

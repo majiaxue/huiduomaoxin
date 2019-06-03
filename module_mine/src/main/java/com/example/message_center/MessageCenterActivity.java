@@ -2,6 +2,7 @@ package com.example.message_center;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -69,6 +70,13 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        messageCenterLst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                presenter.jumpToDetail(position);
             }
         });
     }

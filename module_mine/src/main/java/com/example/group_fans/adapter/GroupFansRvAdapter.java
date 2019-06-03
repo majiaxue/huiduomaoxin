@@ -18,6 +18,6 @@ public class GroupFansRvAdapter extends MyRecyclerAdapter<GroupFansBean> {
     public void convert(RecyclerViewHolder holder, GroupFansBean data, int position) {
         holder.setText(R.id.rv_group_fans_name, data.getName())
                 .setText(R.id.rv_group_fans_time, data.getTime())
-                .setImageUrl(R.id.rv_group_fans_img, data.getImgUrl());
+                .setImageUrlCircular(R.id.rv_group_fans_img, data.getImgUrl());
     }
 }

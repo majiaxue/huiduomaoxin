@@ -8,9 +8,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
+import com.example.entity.EventBusBean2;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +60,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
 
     @Override
     public void initData() {
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -116,6 +125,20 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 presenter.hideWeiXin();
             }
         });
+
+        weiXin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.WeChatLogin();
+            }
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if ("WXCODE".equals(eventBusBean.getMsg())) {
+            presenter.sendCode();
+        }
     }
 
     //显示微信登录
@@ -142,12 +165,5 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     @Override
     public LoginPresenter createPresenter() {
         return new LoginPresenter(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

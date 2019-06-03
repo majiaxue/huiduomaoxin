@@ -68,6 +68,12 @@ public class SuggestionActivity extends BaseActivity<SuggestionView, SuggestionP
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    suggestionBtn.setBackgroundResource(R.drawable.bg_btn_login);
+                } else {
+                    suggestionBtn.setBackgroundResource(R.drawable.bg_22_999);
+                }
+
                 if (s.length() > 300) {
                     s.delete(300, s.length());
                 }

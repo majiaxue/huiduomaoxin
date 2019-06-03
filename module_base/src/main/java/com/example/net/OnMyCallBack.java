@@ -1,7 +1,9 @@
 package com.example.net;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.common.CommonResource;
-import com.example.entity.BaseEntity;
+import com.example.bean.BaseEntity;
 import com.example.utils.LogUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,7 +16,6 @@ import javax.net.ssl.SSLHandshakeException;
 
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
-
 
 
 public class OnMyCallBack extends DisposableObserver<ResponseBody> {
@@ -38,10 +39,10 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
     public void onNext(ResponseBody responseBody) {
         try {
             String string = responseBody.string();
-            BaseEntity baseEntity = new Gson().fromJson(string, new TypeToken<BaseEntity>() {
+            BaseEntity baseEntity = JSON.parseObject(string, new TypeReference<BaseEntity>() {
             }.getType());
             if (CommonResource.CODE_SUCCESS.equals(baseEntity.getCode())) {
-                listener.onSuccess(baseEntity.getData(), baseEntity.getMsg());
+                listener.onSuccess(JSON.toJSONString(baseEntity.getData()), baseEntity.getMsg());
             } else {
                 listener.onError(baseEntity.getCode(), baseEntity.getMsg());
             }
@@ -63,7 +64,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
             } else if (e instanceof SSLHandshakeException) {//安全证书异常
                 listener.onError(CommonResource.ERROR, "安全证书异常");
             } else {
-                listener.onError(CommonResource.ERROR, "error:" + e.getMessage());
+                listener.onError(CommonResource.ERROR, "error");
             }
         } catch (Exception e2) {
             e2.printStackTrace();

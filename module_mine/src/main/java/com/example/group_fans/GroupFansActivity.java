@@ -66,7 +66,6 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     @Override
     public void initData() {
         includeTitle.setText("团队粉丝");
-        TxtUtil.txtJianbian(groupFansJianbian, "#fb4119", "#febf0d");
         presenter.loadData();
 
         KeyboardStateObserver.getKeyboardStateObserver(this).setKeyboardVisibilityListener(new KeyboardStateObserver.OnKeyboardVisibilityListener() {
