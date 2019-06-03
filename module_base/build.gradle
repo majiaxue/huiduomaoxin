@@ -72,6 +72,5 @@ dependencies {
     implementation files('libs/BASE64.jar')
     //微信开发工具包（登陆、分享、支付等）
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-
     api 'com.alibaba:fastjson:1.1.71.android'
 }

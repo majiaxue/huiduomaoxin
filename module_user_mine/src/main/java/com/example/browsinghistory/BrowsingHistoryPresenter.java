@@ -27,8 +27,6 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     private BrowsingHistoryParentAdapter browsingHistoryParentAdapter;
     private List<BrowsingHistoryBean.ParentBean> parentBeanList;
     private boolean flag = true;
-    private boolean isAllParentChecked;
-
     public BrowsingHistoryPresenter(Context context) {
         super(context);
     }
@@ -53,7 +51,6 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
         childBeanList3.add(new BrowsingHistoryBean.ParentBean.ChildBean(R.drawable.img_109, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "10000人付款", "95%好评", "靓仔靓女旗舰店", false));
 
 
-
         parentBeanList = new ArrayList<>();
         parentBeanList.add(new BrowsingHistoryBean.ParentBean(false, "5月27日", childBeanList1));
         parentBeanList.add(new BrowsingHistoryBean.ParentBean(false, "5月20日", childBeanList2));
@@ -74,8 +71,6 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
                     public void onClick(View v) {
                         flag = true;
                         checkAll(index);
-
-
                     }
                 });
 
@@ -98,7 +93,6 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
         for (int i = 0; i < parentBeanList.size(); i++) {
             if (!parentBeanList.get(i).isCheck()) {
-                isAllParentChecked = false;
                 flag = false;
             }
         }
@@ -123,7 +117,6 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     //选中parent全部的checkbox
     public void checkAllParent(boolean isCheckAllParent) {
-        this.isAllParentChecked = isCheckAllParent;
         if (isCheckAllParent) {
             for (int i = 0; i < parentBeanList.size(); i++) {
                 parentBeanList.get(i).setCheck(false);
@@ -132,7 +125,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
         } else {
             for (int i = 0; i < parentBeanList.size(); i++) {
                 parentBeanList.get(i).setCheck(true);
-                browsingHistoryParentAdapter.checkAll(i, true);
+                browsingHistoryParentAdapter.checkAll(i, false);
             }
         }
 
@@ -142,15 +135,19 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     //删除
     public void deleteList() {
-        for (int i = parentBeanList.size() - 1; i >= 0; i--) {
-            if (parentBeanList.get(i).isCheck()) {
-                parentBeanList.remove(i);
-            }
-        }
+//        for (int i = parentBeanList.size() - 1; i >= 0; i--) {
+//            if (parentBeanList.get(i).isCheck()) {
+//                parentBeanList.remove(i);
+//            }
+//        }
+
+
+
         if (parentBeanList.size() == 0) {
             getView().isCompile(false);
             getView().isCheckAll(false);
         }
+
         browsingHistoryParentAdapter.notifyDataSetChanged();
     }
 }

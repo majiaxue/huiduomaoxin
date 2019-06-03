@@ -28,7 +28,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
     private List<BrowsingHistoryBean.ParentBean> parentList;
     private boolean allCheck = true;
     private ImageView parentCheck;
-    private boolean isAllParentChecked;
+    private List<BrowsingHistoryBean.ParentBean.ChildBean> childList = new ArrayList<>();
 
 
     public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.ParentBean> mList, int mLayoutId) {
@@ -43,6 +43,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
 
     @Override
     public void convert(RecyclerViewHolder holder, final BrowsingHistoryBean.ParentBean data, final int position) {
+        childList.addAll(data.getChildList());
         holder.setText(R.id.browsing_history_parent_time, data.getTime());
         parentCheck = holder.getView(R.id.browsing_history_parent_check);
         if (isParentCompile) {
@@ -58,7 +59,6 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
         }
 
         viewOnClickListener.ViewOnClick(holder.getView(R.id.browsing_history_parent_check), position);
-
 
         final RecyclerView browsingHistoryParentRec = holder.getView(R.id.browsing_history_parent_rec);
 
@@ -76,7 +76,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
                         //选中
                         Toast.makeText(context, "childPosition:" + position + childPosition, Toast.LENGTH_SHORT).show();
                         allCheck = true;
-                        isAllCheck(position,childPosition);
+                        isAllCheck(position, childPosition);
                     }
                 });
 
@@ -93,10 +93,10 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
     }
 
 
-    public void isAllCheck(int position,int childPosition) {
+    public void isAllCheck(int position, int childPosition) {
 
-        Log.d("77777", "position: --->"+position);
-        Log.d("77777", "childPosition: ----->"+childPosition);
+        Log.d("77777", "position: --->" + position);
+        Log.d("77777", "childPosition: ----->" + childPosition);
 
         if (parentList.get(position).getChildList().get(childPosition).isCheck()) {
             parentList.get(position).getChildList().get(childPosition).setCheck(false);
@@ -106,9 +106,8 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
 
 //        browsingHistoryChildAdapter.notifyDataSetChanged();
 
-        for (int i = 0; i <  parentList.get(position).getChildList().size(); i++) {
-            if (! parentList.get(position).getChildList().get(i).isCheck()){
-                isAllParentChecked = false;
+        for (int i = 0; i < parentList.get(position).getChildList().size(); i++) {
+            if (!parentList.get(position).getChildList().get(i).isCheck()) {
                 allCheck = false;
             }
         }
@@ -119,8 +118,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
     }
 
 
-    public void checkAll(int position,boolean status) {
-        this.isAllParentChecked = status;
+    public void checkAll(int position, boolean status) {
         if (status) {
             for (int i = 0; i < parentList.get(position).getChildList().size(); i++) {
                 parentList.get(position).getChildList().get(i).setCheck(false);
