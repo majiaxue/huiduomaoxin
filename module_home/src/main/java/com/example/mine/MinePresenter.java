@@ -28,9 +28,9 @@ public class MinePresenter extends BasePresenter<MineView> {
         dataList.add(new BaseRecImageAndTextBean("我的收藏", R.drawable.shoucang));
         dataList.add(new BaseRecImageAndTextBean("浏览记录", R.drawable.liulanjilu));
         dataList.add(new BaseRecImageAndTextBean("联系客服", R.drawable.kefu_tianchong));
-        dataList.add(new BaseRecImageAndTextBean("消息通知", R.drawable.xiaoxi));
         dataList.add(new BaseRecImageAndTextBean("帮助中心", R.drawable.bangzhuzhongxin));
-        dataList.add(new BaseRecImageAndTextBean("订单找回", R.drawable.tianchongxing));
+        dataList.add(new BaseRecImageAndTextBean("邀请好友", R.drawable.invitefri));
+        dataList.add(new BaseRecImageAndTextBean("消息通知", R.drawable.xiaoxi));
         dataList.add(new BaseRecImageAndTextBean("意见反馈", R.drawable.icon_yijian));
 
         myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
@@ -66,13 +66,13 @@ public class MinePresenter extends BasePresenter<MineView> {
                 ARouter.getInstance().build("/mine/contactus").navigation();
                 break;
             case 4:
-                ARouter.getInstance().build("/mine/messagecenter").navigation();
-                break;
-            case 5:
                 ARouter.getInstance().build("/mine/helpcenter").navigation();
                 break;
+            case 5:
+                ARouter.getInstance().build("/mine/invite_friends").navigation();
+                break;
             case 6:
-                ARouter.getInstance().build("/mine/orderretrieve").navigation();
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
                 break;
             case 7:
                 ARouter.getInstance().build("/mine/suggestion").navigation();

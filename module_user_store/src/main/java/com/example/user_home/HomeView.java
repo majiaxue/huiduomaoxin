@@ -1,9 +1,12 @@
 package com.example.user_home;
 
+import com.example.bean.BannerBean;
 import com.example.mvp.IView;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_home.adapter.NavBarAdapter;
 import com.example.user_home.adapter.SaleHotAdapter;
+
+import java.util.List;
 
 /**
  * Created by cuihaohao on 2019/5/16
@@ -16,4 +19,6 @@ public interface HomeView extends IView {
     void loadSaleHot(SaleHotAdapter adapter);
 
     void loadCommend(CommendAdapter adapter);
+
+    void loadBanner(List<BannerBean> beanList);
 }

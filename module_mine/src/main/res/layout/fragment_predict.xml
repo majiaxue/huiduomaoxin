@@ -69,8 +69,8 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text="￥200"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -97,8 +97,8 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text="￥200"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -149,8 +149,8 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text="￥200"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -177,8 +177,8 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text="￥200"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -237,8 +237,8 @@
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
                     android:text="100"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -268,8 +268,8 @@
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
                     android:text="￥100"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -326,8 +326,8 @@
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
                     android:text="100"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView
@@ -357,8 +357,8 @@
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
                     android:text="￥100"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/sp_18"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
 
                 <TextView

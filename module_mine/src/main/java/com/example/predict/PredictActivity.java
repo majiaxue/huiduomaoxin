@@ -19,8 +19,6 @@ import butterknife.BindView;
 public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPresenter> implements PredictView {
     @BindView(R2.id.predict_back)
     ImageView mBack;
-    //    @BindView(R2.id.predict_radiogroup)
-//    RadioGroup predictRadiogroup;
     @BindView(R2.id.predict_tb)
     TextView predictTb;
     @BindView(R2.id.predict_pdd)
@@ -81,9 +79,9 @@ public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPr
 
     @Override
     public void changeType(int type) {
-        predictJd.setTextColor(Color.parseColor(type == 2 ? "#ffffff" : "#222222"));
         predictTb.setTextColor(Color.parseColor(type == 0 ? "#ffffff" : "#222222"));
         predictPdd.setTextColor(Color.parseColor(type == 1 ? "#ffffff" : "#222222"));
+        predictJd.setTextColor(Color.parseColor(type == 2 ? "#ffffff" : "#222222"));
         predictSc.setTextColor(Color.parseColor(type == 3 ? "#ffffff" : "#222222"));
 
         predictTb.setBackgroundResource(type == 0 ? R.drawable.predict_xuan_left : 0);

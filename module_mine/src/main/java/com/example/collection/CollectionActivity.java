@@ -93,7 +93,7 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
 
     @Override
     public void allCheck() {
-        collectionAllCheck.setImageResource(R.drawable.ghftyf);
+        collectionAllCheck.setImageResource(R.drawable.icon_xuanzhong);
     }
 
     @Override

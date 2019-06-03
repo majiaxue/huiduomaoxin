@@ -1,5 +1,7 @@
 package com.example.goods_detail;
 
+import com.example.bean.BannerBean;
+import com.example.bean.UserGoodsDetail;
 import com.example.entity.TopBannerBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
@@ -18,9 +20,15 @@ public interface GoodsDetailView extends IView {
 
     void loadCommend(CommendAdapter adapter);
 
-    void loadBanner(List<TopBannerBean> list);
+    void loadBanner(List<BannerBean> list);
 
     void attention();
 
     void cancelAttention();
+
+    void yixuanze(String color, String size);
+
+    void weixuanze();
+
+    void loadUI(UserGoodsDetail data);
 }

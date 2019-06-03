@@ -14,42 +14,49 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.AssessActivity;
+import com.example.bean.BannerBean;
+import com.example.bean.HotSaleBean;
+import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
 import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.AssessBean;
-import com.example.entity.ChooseGoodsBean;
-import com.example.entity.CommendBean;
 import com.example.entity.CouponBean;
-import com.example.entity.EventBusBean2;
 import com.example.entity.ParmsBean;
-import com.example.entity.TopBannerBean;
 import com.example.goods_detail.adapter.ColorFlowLayoutAdapter;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
 import com.example.goods_detail.adapter.SizeFlowLayoutAdapter;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
-import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
 import com.example.view.flowLayout.TagFlowLayout;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     //是否关注
     private boolean isAttention = false;
     //选择商品列表
-    private List<ChooseGoodsBean> dataList;
+    private List<UserGoodsDetail.StoInfoBean.RecordsBean> dataList = new ArrayList<>();
     //流式布局--颜色
     private TagFlowLayout flow1;
     //流式布局--尺码
@@ -58,8 +65,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private int colorPosition = -1;
     //尺码选中下标
     private int sizePosition = -1;
+
+    private boolean isChoose = false;
     //尺码列表
-    private List<ChooseGoodsBean.GoodsSize> sizeList = new ArrayList<>();
+    private List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> sizeList = new ArrayList<>();
+    //缩略图
+    private List imgList = new ArrayList();
+    //为你推荐
+    List<HotSaleBean.DataBean> commendList = new ArrayList<>();
 
     public GoodsDetailPresenter(Context context) {
         super(context);
@@ -70,7 +83,53 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     }
 
-    public void loadData() {
+    public void loadData(String id) {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).goodsDetail("39");
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                UserGoodsDetail userGoodsDetail = JSON.parseObject(result, new TypeReference<UserGoodsDetail>() {
+                }.getType());
+                if (getView() != null) {
+                    getView().loadUI(userGoodsDetail);
+                }
+
+                dataList.clear();
+                dataList.addAll(userGoodsDetail.getStoInfo().getRecords());
+
+                //规格缩略图
+                for (int i = 0; i < dataList.size(); i++) {
+                    imgList.add(dataList.get(i).getList().get(0).getPic());
+                }
+                GoodsImageAdapter goodsImageAdapter = new GoodsImageAdapter(mContext, imgList, R.layout.rv_goods_choose_image);
+                goodsImageAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        chooseGoodsPop();
+                    }
+                });
+                if (getView() != null) {
+                    getView().loadImage(goodsImageAdapter);
+                }
+
+                //轮播图
+                String albumPics = userGoodsDetail.getAlbumPics();
+                List<BannerBean> bannerList = new ArrayList<>();
+                String[] split = albumPics.split(",");
+                for (int i = 0; i < split.length; i++) {
+                    bannerList.add(new BannerBean(split[i]));
+                }
+                if (getView() != null) {
+                    getView().loadBanner(bannerList);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+
         //优惠券
         List couponList = new ArrayList();
         couponList.add("满50减5");
@@ -86,23 +145,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         if (getView() != null) {
             getView().loadCoupon(goodsCouponAdapter);
         }
-        //图片
-        List imgList = new ArrayList();
-        imgList.add("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg");
-        imgList.add("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg");
-        imgList.add("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg");
-        imgList.add("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg");
-        GoodsImageAdapter goodsImageAdapter = new GoodsImageAdapter(mContext, imgList, R.layout.rv_goods_choose_image);
 
-        goodsImageAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                chooseGoods();
-            }
-        });
-        if (getView() != null) {
-            getView().loadImage(goodsImageAdapter);
-        }
         //评论
         List<AssessBean> assessList = new ArrayList<>();
         assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
@@ -120,33 +163,37 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         if (getView() != null) {
             getView().loadAssess(goodsAssessAdapter);
         }
-        //推荐
-        List<CommendBean> commendList = new ArrayList<>();
-        commendList.add(new CommendBean(R.drawable.img_114, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
-        commendList.add(new CommendBean(R.drawable.img_115, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
-        commendList.add(new CommendBean(R.drawable.img_116, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
-        commendList.add(new CommendBean(R.drawable.img_117, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
-        commendList.add(new CommendBean(R.drawable.img_114, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
-        commendList.add(new CommendBean(R.drawable.img_115, "2019夏季新款纯棉白色短袖女T恤个性字母简约受到广大", "39.9", "12345", "班迪卡旗舰店"));
-        CommendAdapter commendAdapter = new CommendAdapter(mContext, commendList, R.layout.rv_commend);
-        if (getView() != null) {
-            getView().loadCommend(commendAdapter);
-        }
-        commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
-            }
-        });
+    }
 
-        //轮播图
-        List<TopBannerBean> bannerList = new ArrayList<>();
-        bannerList.add(new TopBannerBean("http://g.hiphotos.baidu.com/image/pic/item/c2cec3fdfc03924590b2a9b58d94a4c27d1e2500.jpg"));
-        bannerList.add(new TopBannerBean("http://g.hiphotos.baidu.com/image/pic/item/c2cec3fdfc03924590b2a9b58d94a4c27d1e2500.jpg"));
-        bannerList.add(new TopBannerBean("http://g.hiphotos.baidu.com/image/pic/item/c2cec3fdfc03924590b2a9b58d94a4c27d1e2500.jpg"));
-        if (getView() != null) {
-            getView().loadBanner(bannerList);
-        }
+    public void loadCommend(String keyWords) {
+        Map map = MapUtil.getInstance().addParms("searchInfo", keyWords).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
+                }.getType());
+                commendList.clear();
+                commendList.addAll(hotSaleBean.getData());
+                CommendAdapter commendAdapter = new CommendAdapter(mContext, commendList, R.layout.rv_commend);
+                if (getView() != null) {
+                    getView().loadCommend(commendAdapter);
+                }
+                commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+                        intent.putExtra("id", commendList.get(position).getId());
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     public void toAttention() {
@@ -186,42 +233,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         PopUtil.parmsPop(mContext, dataList);
     }
 
-    public void chooseGoods() {
-        dataList = new ArrayList<>();
-        List<ChooseGoodsBean.GoodsSize> sizeList1 = new ArrayList<>();
-        sizeList1.add(new ChooseGoodsBean.GoodsSize("M", 100));
-        sizeList1.add(new ChooseGoodsBean.GoodsSize("L", 0));
-        sizeList1.add(new ChooseGoodsBean.GoodsSize("XL", 100));
-        sizeList1.add(new ChooseGoodsBean.GoodsSize("XXL", 100));
-        sizeList1.add(new ChooseGoodsBean.GoodsSize("XXXL", 100));
-
-        List<ChooseGoodsBean.GoodsSize> sizeList2 = new ArrayList<>();
-        sizeList2.add(new ChooseGoodsBean.GoodsSize("M", 100));
-        sizeList2.add(new ChooseGoodsBean.GoodsSize("L", 10));
-        sizeList2.add(new ChooseGoodsBean.GoodsSize("XL", 100));
-        sizeList2.add(new ChooseGoodsBean.GoodsSize("XXL", 100));
-        sizeList2.add(new ChooseGoodsBean.GoodsSize("XXXL", 100));
-
-        List<ChooseGoodsBean.GoodsSize> sizeList3 = new ArrayList<>();
-        sizeList3.add(new ChooseGoodsBean.GoodsSize("M", 100));
-        sizeList3.add(new ChooseGoodsBean.GoodsSize("L", 10));
-        sizeList3.add(new ChooseGoodsBean.GoodsSize("XL", 0));
-        sizeList3.add(new ChooseGoodsBean.GoodsSize("XXL", 0));
-        sizeList3.add(new ChooseGoodsBean.GoodsSize("XXXL", 100));
-
-        List<ChooseGoodsBean.GoodsSize> sizeList4 = new ArrayList<>();
-        sizeList4.add(new ChooseGoodsBean.GoodsSize("M", 0));
-        sizeList4.add(new ChooseGoodsBean.GoodsSize("L", 10));
-        sizeList4.add(new ChooseGoodsBean.GoodsSize("XL", 100));
-        sizeList4.add(new ChooseGoodsBean.GoodsSize("XXL", 100));
-        sizeList4.add(new ChooseGoodsBean.GoodsSize("XXXL", 100));
-        dataList.add(new ChooseGoodsBean("黑色", sizeList1, R.drawable.img_48));
-        dataList.add(new ChooseGoodsBean("白色", sizeList2, R.drawable.img_49));
-        dataList.add(new ChooseGoodsBean("蓝色", sizeList3, R.drawable.img_50));
-        dataList.add(new ChooseGoodsBean("没有颜色", sizeList4, R.drawable.img_51));
-        chooseGoodsPop();
-    }
-
     public void chooseGoodsPop() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
         final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
@@ -246,10 +257,17 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             @Override
             public void onDismiss() {
                 PopUtil.setTransparency(mContext, 1f);
+                if (colorPosition != -1 && sizePosition != -1) {
+                    isChoose = true;
+                    getView().yixuanze(dataList.get(colorPosition).getSkuName(), dataList.get(colorPosition).getList().get(sizePosition).getSp2());
+                } else {
+                    isChoose = false;
+                    getView().weixuanze();
+                }
             }
         });
 
-        sizeList.addAll(dataList.get(0).getSize());
+        sizeList.addAll(dataList.get(0).getList());
 
         final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, new OnFlowSelectListener() {
             @Override
@@ -262,7 +280,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             @Override
             public void setOnFlowSelect(int position) {
                 colorPosition = position;
-                img.setImageResource(dataList.get(position).getImg());
+                Glide.with(mContext).load(dataList.get(position).getList().get(0).getPic()).into(img);
                 sizeList.clear();
                 sizePosition = -1;
                 initSizeList(position);
@@ -293,11 +311,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (colorPosition == -1) {
+                if (sizePosition == -1) {
                     Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Integer.valueOf(count.getText().toString()) >= dataList.get(colorPosition).getSize().get(sizePosition).getCount()) {
-                        count.setText(dataList.get(0).getSize().get(0).getCount() + "");
+                    if (Integer.valueOf(count.getText().toString()) >= dataList.get(colorPosition).getList().get(sizePosition).getStock()) {
+                        count.setText(dataList.get(0).getList().get(0).getStock() + "");
                     } else {
                         count.setText(Integer.valueOf(count.getText().toString()) + 1 + "");
                     }
@@ -330,8 +348,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     private void initSizeList(int position) {
         for (int i = 0; i < dataList.size(); i++) {
-            if (dataList.get(position).getSize().get(i).getCount() > 0) {
-                sizeList.add(dataList.get(position).getSize().get(i));
+            if (dataList.get(position).getList().get(i).getStock() > 0) {
+                sizeList.add(dataList.get(position).getList().get(i));
             }
         }
     }
@@ -344,8 +362,12 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         mContext.startActivity(new Intent(mContext, ShopHomeActivity.class));
     }
 
-    public void jumpToOrder() {
-        mContext.startActivity(new Intent(mContext, ConfirmOrderActivity.class));
+    public void chooseOrJump() {
+        if (isChoose) {
+            mContext.startActivity(new Intent(mContext, ConfirmOrderActivity.class));
+        } else {
+            chooseGoodsPop();
+        }
     }
 
     public void jumpToCart() {

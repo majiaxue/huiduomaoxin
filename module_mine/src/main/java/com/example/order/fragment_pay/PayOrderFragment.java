@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.fans_order.adapter.FansOrderRvAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -27,8 +28,21 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
     @BindView(R2.id.order_list_refresh)
     SmartRefreshLayout orderListRefresh;
 
-    private List dataList = new ArrayList();
+    private static PayOrderFragment fragment;
     private int page = 1;
+    public static String payFlag;
+
+    public static PayOrderFragment getInstance(String type) {
+        payFlag = type;
+        if (fragment == null) {
+            synchronized (PayOrderFragment.class) {
+                if (fragment == null) {
+                    fragment = new PayOrderFragment();
+                }
+            }
+        }
+        return fragment;
+    }
 
     @Override
     public int getLayoutId() {
@@ -40,8 +54,7 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
-        dataList.add("已付款");
-        presenter.loadData(dataList);
+        presenter.loadData(payFlag);
 
         //设置 Header 为 官方主题 样式
         orderListRefresh.setRefreshHeader(new MaterialHeader(getActivity()));
@@ -52,7 +65,6 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
         orderListRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                dataList.clear();
 
                 orderListRefresh.finishRefresh();
             }
@@ -81,7 +93,12 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
     }
 
     @Override
-    public void loadUI(RvListAdapter adapter) {
+    public void loadMineRv(RvListAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadFansRv(FansOrderRvAdapter adapter) {
         orderListRv.setAdapter(adapter);
     }
 

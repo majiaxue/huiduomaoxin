@@ -15,8 +15,7 @@
         <ImageView
             android:id="@+id/rv_commend_img"
             android:layout_width="@dimen/dp_167"
-            android:layout_height="@dimen/dp_173"
-            android:scaleType="fitXY" />
+            android:layout_height="@dimen/dp_173" />
 
         <TextView
             android:id="@+id/rv_commend_name"

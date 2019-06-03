@@ -33,3 +33,23 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -keep class okio.**{*;}
 -dontwarn okio.**
+
+# ARouter
+-keep public class com.alibaba.android.arouter.routes.**{*;}
+-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
+
+# EventBus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+
+# Gson
+-keep class com.google.gson.examples.models.** { *; }
+-keep interface com.google.gson.examples.models.** { *; }
+-keep class com.google.gson.examples.upgrade.internal.VersionInfo {*;}

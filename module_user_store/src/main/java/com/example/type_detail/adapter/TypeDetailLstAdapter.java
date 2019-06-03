@@ -18,7 +18,7 @@ public class TypeDetailLstAdapter extends MyRecyclerAdapter<BabyRecBean> {
     public void convert(RecyclerViewHolder holder, BabyRecBean data, int position) {
         holder.setImageResource(R.id.type_detail_lst_image, data.getImage())
                 .setText(R.id.type_detail_lst_name, data.getName())
-                .setText(R.id.type_detail_lst_price, data.getPrice())
+                .setText(R.id.type_detail_lst_price, "￥" + data.getPrice())
                 .setText(R.id.type_detail_lst_payment_amount, data.getPayment_amount() + "人付款")
                 .setText(R.id.type_detail_lst_good_reputation, data.getGood_reputation() + "好评")
                 .setText(R.id.type_detail_lst_shop_name, data.getShop());

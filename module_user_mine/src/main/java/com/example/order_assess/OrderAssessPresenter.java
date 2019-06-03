@@ -20,7 +20,6 @@ import com.example.mvp.BasePresenter;
 import com.example.order_assess.adapter.OrderAssessAdapter;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.PopUtils;
-import com.example.utils.UIHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
         adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                UIHelper.seeBigImg(mContext, uriList.get(position));
+                PopUtils.seeBigImg(mContext, uriList.get(position));
             }
         });
     }

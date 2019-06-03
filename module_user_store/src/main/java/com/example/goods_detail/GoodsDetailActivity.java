@@ -1,5 +1,6 @@
 package com.example.goods_detail;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.entity.TopBannerBean;
+import com.example.bean.BannerBean;
+import com.example.bean.UserGoodsDetail;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
@@ -105,6 +107,10 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     RecyclerView goodsDetailRvImg;
     @BindView(R2.id.goods_detail_scroll)
     NestedScrollView goodsDetailScroll;
+    @BindView(R2.id.goods_detail_temp1)
+    TextView mTxt;
+    @BindView(R2.id.goods_detail_total_specs)
+    TextView mTotalSpecs;
 
     @Override
     public int getLayoutId() {
@@ -140,12 +146,15 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(GoodsDetailActivity.this).load(((TopBannerBean) model).getImgUrl()).into((ImageView) view);
+                Glide.with(GoodsDetailActivity.this).load(((BannerBean) model).getXBannerUrl()).into((ImageView) view);
             }
         });
 
         goodsDetailScroll.setOnScrollChangeListener(this);
-        presenter.loadData();
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+        presenter.loadData(id);
+        presenter.loadCommend("两件套");
     }
 
     @Override
@@ -196,7 +205,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailChooseGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.chooseGoods();
+                presenter.chooseGoodsPop();
             }
         });
 
@@ -217,7 +226,14 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder();
+                presenter.chooseOrJump();
+            }
+        });
+
+        goodsDetailAddCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.chooseOrJump();
             }
         });
 
@@ -289,6 +305,14 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
+    public void loadUI(UserGoodsDetail data) {
+        goodsDetailName.setText(data.getName());
+        goodsDetailPrice.setText(data.getPrice() + "");
+        mTotalSpecs.setText("共" + data.getStoInfo().getRecords().size() + "种颜色可选");
+
+    }
+
+    @Override
     public void loadCoupon(GoodsCouponAdapter adapter) {
         goodsDetailRvCoupon.setAdapter(adapter);
     }
@@ -309,7 +333,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
-    public void loadBanner(List<TopBannerBean> list) {
+    public void loadBanner(List<BannerBean> list) {
         goodsDetailXbanner.setBannerData(list);
     }
 
@@ -321,6 +345,16 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     @Override
     public void cancelAttention() {
         goodsDetailAttentionImg.setImageResource(R.drawable.icon_shoucang1);
+    }
+
+    @Override
+    public void yixuanze(String color, String size) {
+        mTxt.setText("已选:\"" + color + "\"\"" + size + "\"");
+    }
+
+    @Override
+    public void weixuanze() {
+        mTxt.setText("选择颜色、尺码");
     }
 
     @Override

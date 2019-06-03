@@ -7,107 +7,82 @@
         android:supportsRtl="true">
         <activity
             android:name="com.example.login.LoginActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.register.RegisterActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.forget.ForgetActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.code_login.CodeLoginActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.setting.SettingActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.update_password.UpdatePasswordActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.bind_wechat.BindWeChatActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.replace_phone.ReplacePhoneActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.login_wechat.LoginWeChatActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.predict.PredictActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.order.OrderActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.upgrade.UpGradeActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.fans_order.FansOrderActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.group_fans.GroupFansActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.operator.OperatorActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.contact_us.ContactUsActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.help_center.HelpCenterActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.example.order_retrieve.OrderRetrieveActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.collection.CollectionActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.message_center.MessageCenterActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.browse_record.BrowseRecordActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
@@ -117,32 +92,34 @@
 
         <activity
             android:name="com.example.new_guide.NewGuideActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.balance.BalanceActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.message_list.MessageListActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.suggestion.SuggestionActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.suggestion_history.SuggestionHistoryActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.cashout.CashoutActivity"
-            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.message_detail.MessageDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.invite_friends.InviteFriendsActivity"
             android:screenOrientation="portrait" />
 
         <provider

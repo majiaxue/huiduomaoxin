@@ -138,6 +138,40 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/mine_benri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="0.00"
+                        android:textColor="@color/codeText"
+                        android:textSize="@dimen/sp_18" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:includeFontPadding="false"
+                        android:text="本日预估"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/sp_12" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/dp_1"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:background="#eeeeee" />
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/mine_benyue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
@@ -170,6 +204,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/mine_shangyue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
@@ -182,39 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_7"
                         android:includeFontPadding="false"
-                        android:text="本月预估"
-                        android:textColor="#999999"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="@dimen/dp_1"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_15"
-                    android:background="#eeeeee" />
-
-                <LinearLayout
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:text="0.00"
-                        android:textColor="@color/codeText"
-                        android:textSize="@dimen/sp_18" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_7"
-                        android:includeFontPadding="false"
-                        android:text="本月预估"
+                        android:text="上月预估"
                         android:textColor="#999999"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -287,7 +290,7 @@
                     <ImageView
                         android:layout_width="@dimen/dp_17"
                         android:layout_height="@dimen/dp_18"
-                        android:src="@drawable/dingdan" />
+                        android:src="@drawable/fukuan" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -309,7 +312,7 @@
                     <ImageView
                         android:layout_width="@dimen/dp_18"
                         android:layout_height="@dimen/dp_18"
-                        android:src="@drawable/dingdan" />
+                        android:src="@drawable/jiesuan" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -331,7 +334,7 @@
                     <ImageView
                         android:layout_width="@dimen/dp_19"
                         android:layout_height="@dimen/dp_19"
-                        android:src="@drawable/dingdan" />
+                        android:src="@drawable/renyuanzhuangtai_shixiao" />
 
                     <TextView
                         android:layout_width="wrap_content"

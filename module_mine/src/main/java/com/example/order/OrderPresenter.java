@@ -36,10 +36,10 @@ public class OrderPresenter extends BasePresenter<OrderView> {
         for (String title : titleArr) {
             orderTab.addTab(orderTab.newTab().setText(title));
         }
-        fragmentList.add(new AllOrderFragment());
-        fragmentList.add(new PayOrderFragment());
-        fragmentList.add(new SettleOrderFragment());
-        fragmentList.add(new LoseOrderFragment());
+        fragmentList.add(AllOrderFragment.getInstance("mine"));
+        fragmentList.add(PayOrderFragment.getInstance("mine"));
+        fragmentList.add(SettleOrderFragment.getInstance("mine"));
+        fragmentList.add(LoseOrderFragment.getInstance("mine"));
 
         orderTab.post(new Runnable() {
             @Override
@@ -105,5 +105,9 @@ public class OrderPresenter extends BasePresenter<OrderView> {
 //                fragmentList.get(3).setDataList(titleArr[3]);
                 break;
         }
+    }
+
+    public void change(int i) {
+        getView().typeChanged(i);
     }
 }

@@ -40,18 +40,18 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
 
     public void loadData() {
         dataList = new ArrayList<>();
-        dataList.add(new BabyRecBean(R.drawable.img_114, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_115, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_116, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_117, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_114, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_115, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_116, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_117, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_114, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_115, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_116, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345", "97%", "班迪卡旗舰店"));
-        dataList.add(new BabyRecBean(R.drawable.img_117, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_114, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "39.90", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_115, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "18.80", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_116, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "15.88", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_117, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "39.90", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_114, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "18.80", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_115, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "15.88", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_116, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "39.90", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_117, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "18.80", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_114, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "15.88", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_115, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "39.90", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_116, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "18.80", "12345", "97%", "班迪卡旗舰店"));
+        dataList.add(new BabyRecBean(R.drawable.img_117, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "15.88", "12345", "97%", "班迪卡旗舰店"));
 
         lstAdapter = new TypeDetailLstAdapter(mContext, dataList, R.layout.rv_type_detail_lst);
 

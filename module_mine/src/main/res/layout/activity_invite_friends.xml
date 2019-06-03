@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/page_top" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.stx.xhb.xbanner.XBanner
+                android:id="@+id/invite_friends_banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_394"></com.stx.xhb.xbanner.XBanner>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_12"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/dp_131"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="#000000" />
+
+                <View
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请规则"
+                    android:textColor="#222222"
+                    android:textSize="@dimen/sp_16" />
+
+                <View
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="@dimen/dp_131"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:layout_marginTop="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:background="@drawable/bg_num_yuan"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="转发邀请海报，好友下载APP注册时填写海报上的邀请码；"
+                    android:textColor="#222222"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:background="@drawable/bg_num_yuan"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="分享邀请码链接给好友下载APP注册，并使用链接后面的邀请码；"
+                    android:textColor="#222222"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_37"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="注："
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="好友下载APP并使用您的邀请码成功注册会员，Ta将永久成为您的粉丝，未来Ta通过推广商品产生的订单佣金您都有奖励，会自动计入您的账户中"
+                    android:textColor="@color/codeText"
+                    android:textSize="@dimen/sp_10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_25"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/invite_friends_link"
+                    android:layout_width="@dimen/dp_141"
+                    android:layout_height="@dimen/dp_45"
+                    android:background="@drawable/bg_22_feb_fb4"
+                    android:gravity="center"
+                    android:text="分享邀请链接"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_16" />
+
+                <View
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/invite_friends_bill"
+                    android:layout_width="@dimen/dp_141"
+                    android:layout_height="@dimen/dp_45"
+                    android:background="@drawable/bg_22_feb_fb4"
+                    android:gravity="center"
+                    android:text="分享邀请海报"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

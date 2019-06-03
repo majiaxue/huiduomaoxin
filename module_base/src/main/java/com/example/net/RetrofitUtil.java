@@ -25,6 +25,7 @@ public class RetrofitUtil {
     private static RetrofitUtil mInstance;
     private Retrofit retrofit;
     private volatile ApiService mApiService;
+    private volatile ApiService mApiService2;
     /**
      * 请求失败重连次数
      */
@@ -49,7 +50,7 @@ public class RetrofitUtil {
         return mInstance;
     }
 
-    public ApiService getApi(Context context) {
+    public ApiService getApi1(Context context) {
         retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -64,6 +65,40 @@ public class RetrofitUtil {
             }
         }
         return mApiService;
+    }
+
+    public ApiService getApi2(Context context) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURL2)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService2 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService2 == null) {
+                    mApiService2 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService2;
+    }
+
+    public ApiService getApi4(Context context) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURL4)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService2 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService2 == null) {
+                    mApiService2 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService2;
     }
 
     /**
@@ -87,8 +122,7 @@ public class RetrofitUtil {
                         Request build = null;
                         try {
                             build = chain.request().newBuilder()
-                                    .addHeader("appType", "android")
-                                    .addHeader("encryption", "1")   //加密方式  1：RSA加密     2：AES加密
+                                    .addHeader("Authorization", "JWT ff8f41da-bdb6-4b67-a415-7addfb482b86")
                                     .build();
                         } catch (Exception e) {
                             e.printStackTrace();

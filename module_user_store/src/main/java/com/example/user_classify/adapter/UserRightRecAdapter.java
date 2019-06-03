@@ -10,21 +10,22 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.ClassifyBean;
 import com.example.entity.RightRecBean;
 import com.example.type_detail.TypeDetailActivity;
 import com.example.user_store.R;
 
 import java.util.List;
 
-public class UserRightRecAdapter extends MyRecyclerAdapter<RightRecBean> {
-    public UserRightRecAdapter(Context context, List<RightRecBean> mList, int mLayoutId) {
+public class UserRightRecAdapter extends MyRecyclerAdapter<ClassifyBean.ClassifySecond> {
+    public UserRightRecAdapter(Context context, List<ClassifyBean.ClassifySecond> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, RightRecBean data, int position) {
+    public void convert(RecyclerViewHolder holder, ClassifyBean.ClassifySecond data, int position) {
         holder.setText(R.id.classify_right_title, data.getName());
-        List<RightRecBean.ListBean> list = data.getList();
+        List<ClassifyBean.ClassifySecond.ClassifyThird> list = data.getChildren();
         //嵌套recycler
         UserRightRecChildAdapter myRightChildAdapter = new UserRightRecChildAdapter(context, list, R.layout.item_rec_child);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);

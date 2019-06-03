@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.bean.UserGoodsDetail;
 import com.example.entity.ChooseGoodsBean;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
@@ -15,24 +16,24 @@ import com.example.view.flowLayout.TagAdapter;
 
 import java.util.List;
 
-public class SizeFlowLayoutAdapter extends TagAdapter<ChooseGoodsBean.GoodsSize> {
+public class SizeFlowLayoutAdapter extends TagAdapter<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> {
     private OnFlowSelectListener listener;
     private LayoutInflater inflater;
 
-    public SizeFlowLayoutAdapter(List<ChooseGoodsBean.GoodsSize> datas) {
+    public SizeFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> datas) {
         super(datas);
     }
 
-    public SizeFlowLayoutAdapter(List<ChooseGoodsBean.GoodsSize> datas, Context context, OnFlowSelectListener listener) {
+    public SizeFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> datas, Context context, OnFlowSelectListener listener) {
         super(datas);
         this.listener = listener;
         inflater = LayoutInflater.from(context);
     }
 
     @Override
-    public View getView(FlowLayout parent, int position, ChooseGoodsBean.GoodsSize goodsSize) {
+    public View getView(FlowLayout parent, int position, UserGoodsDetail.StoInfoBean.RecordsBean.ListBean goodsSize) {
         TextView txt = (TextView) inflater.inflate(R.layout.pop_choose_goods_size, parent, false);
-        txt.setText(goodsSize.getSize());
+        txt.setText(goodsSize.getSp2());
 //        if (goodsSize.getCount() <= 0) {
 //            txt.setTextColor(Color.parseColor("#f5f5f5"));
 //        } else {

@@ -170,6 +170,7 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:text="直代下级"
+            android:textColor="@color/codeText"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold" />
 
