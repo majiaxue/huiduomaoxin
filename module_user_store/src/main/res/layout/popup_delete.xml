@@ -3,12 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="@dimen/dp_300"
         android:layout_height="@dimen/dp_247"
-        android:layout_gravity="center"
         android:layout_centerInParent="true"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <ImageView
@@ -16,9 +15,19 @@
             android:layout_height="@dimen/dp_203"
             android:src="@drawable/background_shanchudingdan" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_164"
+            android:text="您确认删除订单吗？"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_16" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_44"
+            android:layout_alignParentBottom="true"
             android:background="#ffffff"
             android:orientation="horizontal">
 
@@ -49,6 +58,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

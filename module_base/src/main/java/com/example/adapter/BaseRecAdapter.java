@@ -14,13 +14,35 @@ import java.util.List;
  */
 public class BaseRecAdapter extends MyRecyclerAdapter<BaseRecBean> {
 
+    private String type;
 
     public BaseRecAdapter(Context context, List mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
+    public BaseRecAdapter(Context context, List mList, int mLayoutId, String type) {
+        super(context, mList, mLayoutId);
+        this.type = type;
+    }
+
+
     @Override
     public void convert(RecyclerViewHolder holder, BaseRecBean data, final int position) {
+
+        if (type != null && type.equals("0")) {
+            //淘宝
+            holder.setImageResource(R.id.base_type, R.drawable.taobao);
+        } else if (type != null && type.equals("1")) {
+            //拼多多
+            holder.setImageResource(R.id.base_type, R.drawable.pinduoduo);
+        } else if (type != null && type.equals("2")) {
+            //京东
+            holder.setImageResource(R.id.base_type, R.drawable.jingdong);
+        } else {
+            //天猫
+            holder.setImageResource(R.id.base_type, R.drawable.tianmao);
+        }
+
         holder.setImageResource(R.id.base_image, data.getImage());
         holder.setText(R.id.base_name, data.getName());
         holder.setText(R.id.base_reduce_price, data.getReduce_price());

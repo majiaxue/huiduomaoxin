@@ -29,7 +29,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     private List<GoodsCollectionRecBean> recBeanList;
     private boolean isCompile = false;
-    private boolean isCheckAll = false;
+    private boolean isAllCheck;
     private boolean flag = true;
     private GoodsCollectionRecAdapter goodsCollectionRecAdapter;
     private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
@@ -82,7 +82,11 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                 });
             }
         });
-
+        if (recBeanList.size() == 0) {
+            getView().empty(true);
+        } else {
+            getView().empty(false);
+        }
 
     }
 
@@ -134,7 +138,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
         for (int i = 0; i < recBeanList.size(); i++) {
             if (!recBeanList.get(i).isCheck()) {
-                isCheckAll = false;
+                isAllCheck = false;
                 flag = false;
             }
 
@@ -159,19 +163,16 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     //点击选中全部
-    public void checkAll(ImageView goodsCollectionCheckAll) {
+    public void checkAll(boolean isCheckAll) {
+        this.isAllCheck = isCheckAll;
         if (isCheckAll) {
             for (int i = 0; i < recBeanList.size(); i++) {
                 recBeanList.get(i).setCheck(false);
             }
-            goodsCollectionCheckAll.setImageResource(R.drawable.vghfgdg);
-            isCheckAll = false;
         } else {
             for (int i = 0; i < recBeanList.size(); i++) {
                 recBeanList.get(i).setCheck(true);
             }
-            goodsCollectionCheckAll.setImageResource(R.drawable.ghftyf);
-            isCheckAll = true;
         }
         goodsCollectionRecAdapter.notifyDataSetChanged();
     }
@@ -182,6 +183,13 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             if (recBeanList.get(i).isCheck()) {
                 recBeanList.remove(i);
             }
+        }
+        if (recBeanList.size() == 0) {
+            getView().empty(true);
+            getView().isCheckAll(false);
+            getView().isCompile(false);
+        } else {
+            getView().empty(false);
         }
         goodsCollectionRecAdapter.notifyDataSetChanged();
     }

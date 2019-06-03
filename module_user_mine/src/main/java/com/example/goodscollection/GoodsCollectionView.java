@@ -15,4 +15,5 @@ public interface GoodsCollectionView extends IView {
 
     void loadUI(GoodsCollectionRecAdapter adapter);
 
+    void empty(boolean isEmpty);
 }

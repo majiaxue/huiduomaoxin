@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.adapter.MyRecyclerAdapter;
@@ -14,6 +16,7 @@ import com.example.browsinghistory.bean.BrowsingHistoryParentBean;
 import com.example.module_user_mine.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,8 +27,10 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
 
     private boolean isParentCompile;
     private BrowsingHistoryChildAdapter browsingHistoryChildAdapter;
-    private List<BrowsingHistoryChildBean> list;
-    private boolean flag = true;
+    private List<BrowsingHistoryChildBean> childList;
+    private List<BrowsingHistoryParentBean> parentList;
+    private boolean allCheck = true;
+    private ImageView parentCheck;
 
     public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryParentBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
@@ -34,73 +39,110 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
     public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryParentBean> mList, int mLayoutId, boolean parentCompile) {
         super(context, mList, mLayoutId);
         this.isParentCompile = parentCompile;
+        parentList = mList;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, BrowsingHistoryParentBean data, int position) {
+    public void convert(RecyclerViewHolder holder, final BrowsingHistoryParentBean data, final int position) {
         holder.setText(R.id.browsing_history_parent_time, data.getTime());
+        parentCheck = holder.getView(R.id.browsing_history_parent_check);
         if (isParentCompile) {
-            holder.getView(R.id.browsing_history_parent_check).setVisibility(View.VISIBLE);
+            parentCheck.setVisibility(View.VISIBLE);
         } else {
-            holder.getView(R.id.browsing_history_parent_check).setVisibility(View.GONE);
+            parentCheck.setVisibility(View.GONE);
         }
+
+        if (data.isCheck()) {
+            parentCheck.setImageResource(R.drawable.icon_xuanzhong);
+        } else {
+            parentCheck.setImageResource(R.drawable.icon_weixuanzhong);
+        }
+
+
         viewOnClickListener.ViewOnClick(holder.getView(R.id.browsing_history_parent_check), position);
 
-        RecyclerView browsingHistoryParentRec = holder.getView(R.id.browsing_history_parent_rec);
-        list = new ArrayList<>();
-        list.add(new BrowsingHistoryChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
-        list.add(new BrowsingHistoryChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
+        final RecyclerView browsingHistoryParentRec = holder.getView(R.id.browsing_history_parent_rec);
+        childList = new ArrayList<>();
+        childList.add(new BrowsingHistoryChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
+        childList.add(new BrowsingHistoryChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         browsingHistoryParentRec.setLayoutManager(linearLayoutManager);
-        browsingHistoryChildAdapter = new BrowsingHistoryChildAdapter(context, list, R.layout.item_browsing_history_child, false);
+        browsingHistoryChildAdapter = new BrowsingHistoryChildAdapter(context, childList, R.layout.item_browsing_history_child, false);
         browsingHistoryParentRec.setAdapter(browsingHistoryChildAdapter);
 
         browsingHistoryChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
             @Override
-            public void ViewTwoOnClick(final View view1, View view2, final int position) {
+            public void ViewTwoOnClick(final View view1, View view2, final int childPosition) {
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        flag = true;
-                        check(position);
+                        //选中
+                        Toast.makeText(context, "childPosition:" + position + childPosition, Toast.LENGTH_SHORT).show();
+                        isAllCheck(childPosition);
                     }
                 });
 
                 view2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Toast.makeText(context, "childPosition:" + childPosition, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
+
+        if (data.isCheck()){
+            for (int i = 0; i < childList.size(); i++) {
+                childList.get(i).setCheck(true);
+            }
+        }else{
+            for (int i = 0; i < childList.size(); i++) {
+                childList.get(i).setCheck(false);
+            }
+        }
+        browsingHistoryChildAdapter.notifyDataSetChanged();
+
+
         browsingHistoryChildAdapter.setChildCompile(isParentCompile);
     }
 
-    //选中recycler的item
-    private void check(int position) {
 
-        if (list.get(position).isCheck()) {
-            list.get(position).setCheck(false);
+    public void isAllCheck(int childPosition) {
+
+        if (childList.get(childPosition).isCheck()) {
+            childList.get(childPosition).setCheck(false);
         } else {
-            list.get(position).setCheck(true);
+            childList.get(childPosition).setCheck(true);
         }
 
         browsingHistoryChildAdapter.notifyDataSetChanged();
 
-//        for (int i = 0; i < list.size(); i++) {
-//            if (!list.get(i).isCheck()) {
-//                isCheckAll = false;
-//                flag = false;
-//            }
-//
-//        }
+        for (int i = 0; i < childList.size(); i++) {
+            if (!childList.get(i).isCheck()){
+                allCheck = false;
+            }
+        }
 
-//        if (getView() != null) {
-//            getView().isCheckAll(flag);
-//        }
+
+//        return allCheck;
 
     }
+
+
+//    public void checkAll(boolean status) {
+//        if (status) {
+//            for (int i = 0; i < childList.size(); i++) {
+//                childList.get(i).setCheck(false);
+//            }
+//        } else {
+//            for (int i = 0; i < childList.size(); i++) {
+//                childList.get(i).setCheck(true);
+//            }
+//        }
+//
+//        browsingHistoryChildAdapter.notifyDataSetChanged();
+//    }
+
 
     public void setCompile(boolean compile) {
         isParentCompile = compile;

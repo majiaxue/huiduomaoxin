@@ -79,8 +79,8 @@
                 app:roundedCornerRadius="5dp" />
 
             <RelativeLayout
-                android:layout_width="155dp"
-                android:layout_height="68dp"
+                android:layout_width="@dimen/dp_143"
+                android:layout_height="@dimen/dp_68"
                 android:layout_marginLeft="@dimen/dp_14">
 
                 <TextView
@@ -133,7 +133,6 @@
                 android:id="@+id/coupon_rec_immediate_use"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginRight="@dimen/dp_11"
                 android:layout_height="@dimen/dp_108"
                 android:gravity="center"
                 android:orientation="vertical">

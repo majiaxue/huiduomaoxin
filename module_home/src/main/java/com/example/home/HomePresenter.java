@@ -1,6 +1,7 @@
 package com.example.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.home.adapter.HomeTopRecAdapter;
 import com.example.home.bean.GoodChoiceBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
+import com.example.secondarydetails.SecondaryDetailsActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -148,7 +150,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, SecondaryDetailsActivity.class);
+                intent.putExtra("type", "" + position);
+                mContext.startActivity(intent);
             }
         });
 
@@ -161,9 +165,13 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
 
         goodList = new ArrayList<>();
-        goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "39.90", "95.50"));
-        goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
-        goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
+
+        for (int i = 0; i < 3; i++) {
+            goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "39.90", "95.50"));
+            goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
+            goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
+
+        }
 
         GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
         homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);

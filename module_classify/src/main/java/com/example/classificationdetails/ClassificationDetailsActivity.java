@@ -1,5 +1,6 @@
 package com.example.classificationdetails;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -57,6 +58,8 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     ImageView classificationSwitchover;
     @BindView(R2.id.classification_rec)
     RecyclerView classificationRec;
+    @BindView(R2.id.classification_text)
+    TextView classificationText;
 
     private boolean state = true;
     private boolean salesvolume = true;
@@ -71,7 +74,12 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
 
     @Override
     public void initData() {
-
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        String text = extras.getString("text");
+        if (text != null && !text.equals("")) {
+            classificationText.setText(text);
+        }
         presenter.setClassifyRec(classificationRec, classificationSwitchover);
 
     }
