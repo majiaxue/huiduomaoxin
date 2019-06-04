@@ -1,13 +1,16 @@
 package com.example.net;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -27,10 +30,15 @@ public interface ApiService {
 
 
     @GET
-    Observable<ResponseBody> getData(@Url String url, @QueryMap Map<String,String> map);
+    Observable<ResponseBody> getData(@Url String url, @QueryMap Map<String, String> map);
 
     @GET
     Observable<ResponseBody> getDataWithout(@Url String url);
+
+
+    @HTTP(method = "DELETE", path = "/rest/user/favorite/delete", hasBody = true)
+    Observable<ResponseBody> favoriteDelete(@Body List<Integer> list);
+
 
     //多用户商城---新品推荐
     @GET
@@ -51,4 +59,8 @@ public interface ApiService {
     //多用户商城---搜索
     @GET
     Observable<ResponseBody> search(@Url String url, @Query("current") int current, @Query("searchInfo") String search);
+
+    //购物车
+    @GET("/rest/order/list/{id}/{flag}")
+    Observable<ResponseBody> cart(@Path("id") int id, @Path("flag") int flag);
 }

@@ -14,15 +14,15 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/25
  * Describe:
  */
-public class ShopCollectAdapter extends MyRecyclerAdapter<ShopCollectBean.DataBean> {
-    public ShopCollectAdapter(Context context, List<ShopCollectBean.DataBean> mList, int mLayoutId) {
+public class ShopCollectAdapter extends MyRecyclerAdapter<ShopCollectBean.RecordsBean> {
+    public ShopCollectAdapter(Context context, List<ShopCollectBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, ShopCollectBean.DataBean data, int position) {
+    public void convert(RecyclerViewHolder holder, ShopCollectBean.RecordsBean data, int position) {
         holder.setImageFresco(R.id.shop_collect_rec_image,data.getSellerLogo());
         holder.setText(R.id.shop_collect_rec_name,data.getSellerShopName());
-        viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.shop_collect_rec_menu),holder.getView(R.id.shop_collect_rec_un_follow),position);
+        viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.shop_collect_rec_menu),holder.getView(R.id.shop_collect_rec_un_follow),data.getFavoriteId());
     }
 }

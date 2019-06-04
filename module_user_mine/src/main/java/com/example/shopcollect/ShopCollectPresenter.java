@@ -31,7 +31,9 @@ import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.view.SelfDialog;
 import com.example.view.SlideRecyclerView;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
     private ShopCollectAdapter shopCollectAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
-    private List<ShopCollectBean.DataBean> dataBeanList = new ArrayList<>();
+    private List<ShopCollectBean.RecordsBean> dataBeanList = new ArrayList<>();
 
     public ShopCollectPresenter(Context context) {
         super(context);
@@ -60,16 +62,18 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
 
     }
 
-    public void shopCollectRec(final SlideRecyclerView shopCollectRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.SELLERPAGE);
+    public void initShopCollectRec(final SlideRecyclerView shopCollectRec) {
+        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.SELLERPAGE);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("result--------->"+result);
+            public void onSuccess(final String result, String msg) {
+                LogUtil.e("result--------->" + result);
                 ShopCollectBean shopCollectBean = JSON.parseObject(result, new TypeReference<ShopCollectBean>() {
                 }.getType());
+
                 dataBeanList.clear();
-                dataBeanList.addAll(shopCollectBean.getData());
+                dataBeanList.addAll(shopCollectBean.getRecords());
+
                 linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 shopCollectRec.setLayoutManager(linearLayoutManager);
                 shopCollectAdapter = new ShopCollectAdapter(mContext, dataBeanList, R.layout.item_shop_collect_rec);
@@ -99,13 +103,34 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                                     @Override
                                     public void onYesClick() {
-                                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                                        list.remove(position);
+                                        int favoriteId = position;
+                                        List<Integer> integers = new ArrayList<>();
+                                        integers.add(favoriteId);
+                                        LogUtil.e("shopCollect--------->" + favoriteId);
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).favoriteDelete(integers);
+                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                            @Override
+                                            public void onSuccess(String result, String msg) {
+                                                LogUtil.e("shopCollect--------->" + msg);
+//                                                initShopCollectRec(shopCollectRec);
 
-                                        shopCollectAdapter.notifyDataSetChanged();
-                                        shopCollectRec.closeMenu();
-                                        selfDialog.dismiss();
-                                        PopUtils.setTransparency(mContext, 1f);
+                                                shopCollectAdapter.notifyDataSetChanged();
+
+                                                shopCollectRec.closeMenu();
+                                                selfDialog.dismiss();
+                                                PopUtils.setTransparency(mContext, 1f);
+
+                                                getView().refreshRec(true);
+
+                                            }
+
+                                            @Override
+                                            public void onError(String errorCode, String errorMsg) {
+                                                LogUtil.e("shopCollect--------->" + errorMsg);
+                                            }
+                                        }));
+
+
                                     }
                                 });
                                 selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
@@ -126,7 +151,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("errorMSG----->"+errorMsg);
+                LogUtil.e("errorMSG----->" + errorMsg);
             }
         }));
 

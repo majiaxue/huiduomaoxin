@@ -6,38 +6,36 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
-import com.example.entity.BaseStaggeredRecBean;
 import com.example.mvp.BasePresenter;
+import com.example.net.ApiService;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
-import com.example.user_shopping_cart.bean.CartChildBean;
-import com.example.user_shopping_cart.bean.CartParentBean;
+import com.example.user_shopping_cart.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
-import com.example.view.CustomerExpandableListView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -50,6 +48,8 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
+    private List<CartBean.RecordsBean> dataBeanList = new ArrayList<>();
+
     public ShoppingCartPresenter(Context context) {
         super(context);
     }
@@ -60,8 +60,8 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void setShoppingCartRecommendRec(final RecyclerView shoppingCartRecommendRec) {
-        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
+//        Map map = MapUtil.getInstance().addParms("searchInfo", "两件套").build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -101,26 +101,51 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("errorMsg------->"+errorMsg);
+                LogUtil.e("errorMsg------->" + errorMsg);
             }
         }));
 
     }
 
-    public void setShoppingCartRec(RecyclerView shoppingCartRec) {
-        List<CartParentBean> plist = new ArrayList<>();
-        plist.add(new CartParentBean(false, "private简约男装"));
-        plist.add(new CartParentBean(false, "班迪卡旗舰店"));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        shoppingCartRec.setLayoutManager(linearLayoutManager);
-        CartParentRecAdapter cartParentRecAdapter = new CartParentRecAdapter(mContext, plist, R.layout.item_cart_parent);
-        shoppingCartRec.setAdapter(cartParentRecAdapter);
+    public void setShoppingCartRec(final RecyclerView shoppingCartRec) {
+
+        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi5(mContext).cart(1, 1);
+        RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("cart------>" + result);
+                CartBean cartBean = JSON.parseObject(result, new TypeReference<CartBean>() {
+                }.getType());
+
+                dataBeanList.clear();
+                dataBeanList.addAll(cartBean.getRecords());
+
+                if (dataBeanList.size() == 0) {
+                    getView().isHide(true);
+
+                } else {
+                    getView().isHide(false);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    shoppingCartRec.setLayoutManager(linearLayoutManager);
+                    CartParentRecAdapter cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent);
+                    shoppingCartRec.setAdapter(cartParentRecAdapter);
+
+                }
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("cart-------->" + errorCode + "        " + errorMsg);
+            }
+        }));
+
 
     }
 
 
     public void popupDelete() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.popup_delete, null,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.popup_delete, null, false);
         final TextView confirm = view.findViewById(R.id.popup_delete_confirm);
         final TextView cancel = view.findViewById(R.id.popup_delete_cancel);
         PopUtils.createPopCenter(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, new OnPopListener() {
@@ -130,7 +155,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                     @Override
                     public void onClick(View v) {
                         //确定删除
-
+                        Toast.makeText(mContext, "删除", Toast.LENGTH_SHORT).show();
                     }
                 });
                 cancel.setOnClickListener(new View.OnClickListener() {

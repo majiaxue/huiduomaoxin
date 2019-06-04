@@ -49,7 +49,7 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     //全选初始状态
     private boolean checkAll = false;
     //编辑初始状态
-//    private boolean isCompile = false;
+    private boolean isCompile = false;
 
     @Override
     public int getLayoutId() {

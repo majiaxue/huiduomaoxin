@@ -26,6 +26,8 @@ public class RetrofitUtil {
     private Retrofit retrofit;
     private volatile ApiService mApiService;
     private volatile ApiService mApiService2;
+    private volatile ApiService mApiService4;
+    private volatile ApiService mApiService5;
     /**
      * 请求失败重连次数
      */
@@ -91,15 +93,34 @@ public class RetrofitUtil {
                 .client(getHttpClient(context))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        if (mApiService2 == null) {
+        if (mApiService4 == null) {
             synchronized (ApiService.class) {
-                if (mApiService2 == null) {
-                    mApiService2 = retrofit.create(ApiService.class);
+                if (mApiService4 == null) {
+                    mApiService4 = retrofit.create(ApiService.class);
                 }
             }
         }
-        return mApiService2;
+        return mApiService4;
     }
+
+    public ApiService getApi5(Context context) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURLCART)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(getHttpClient(context))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService5 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService5 == null) {
+                    mApiService5 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService5;
+    }
+
+
 
     /**
      * 设置订阅 和 所在的线程环境
@@ -122,7 +143,7 @@ public class RetrofitUtil {
                         Request build = null;
                         try {
                             build = chain.request().newBuilder()
-                                    .addHeader("Authorization", "JWT b292216f-b7a6-4707-9098-e7467f0edb5f")
+                                    .addHeader("Authorization", "JWT a4d0b57f-a694-4166-87cc-38040cad6abe")
                                     .build();
                         } catch (Exception e) {
                             e.printStackTrace();

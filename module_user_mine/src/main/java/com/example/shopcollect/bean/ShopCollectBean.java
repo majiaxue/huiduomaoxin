@@ -8,41 +8,18 @@ import java.util.List;
  */
 public class ShopCollectBean {
 
-    /**
-     * code : 0
-     * msg : success
-     * data : [{"id":11,"sellerCode":"100001","sellerShopName":"Allisjoy/舞悦时节","sellerLogo":"","sellerCategory":"1003","sellerName":"孙浩","sellerPhone":"15133339666","sellerIdPositiveCardUrl":"seller-50092d094d5346c186b771f907a3d432.jpg","sellerIdBackCardUrl":"seller-77dd7b92391d427984a9da0284e1dca6.jpg","sellerBusinessLicenseUrl":"seller-882cd7fd5bf7465fba0cd3f5985905ce.jpg","sellerFoodSafetyPermitUrl":"seller-f6e3c13312004275a4734de3e02dbef7.jpg","sellerIscheck":1,"sellerAddredd":"北京市 北京 朝阳区 朝阳区 soho大厦 1001室","sellerStatus":1,"createTime":"2019-05-29 10:20:25","updateTime":"2019-05-29 10:20:55","sellerIntroduce":"<p>这是店铺介绍<\/p>"}]
-     */
 
-    private int code;
-    private String msg;
-    private List<DataBean> data;
+    private List<RecordsBean> records;
 
-    public int getCode() {
-        return code;
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public List<DataBean> getData() {
-        return data;
-    }
-
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
-
-    public static class DataBean {
+    public static class RecordsBean {
         /**
          * id : 11
          * sellerCode : 100001
@@ -80,6 +57,15 @@ public class ShopCollectBean {
         private String createTime;
         private String updateTime;
         private String sellerIntroduce;
+        private int favoriteId;
+
+        public int getFavoriteId() {
+            return favoriteId;
+        }
+
+        public void setFavoriteId(int favoriteId) {
+            this.favoriteId = favoriteId;
+        }
 
         public int getId() {
             return id;

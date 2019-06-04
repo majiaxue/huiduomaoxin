@@ -17,6 +17,7 @@ import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomerExpandableListView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -61,7 +62,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     public void initData() {
         //商品
 //        presenter.setShoppingCartExpandableList(shoppingCartExpandableList);
-        presenter.setShoppingCartRec(shoppingCartRec);
         //推荐
         presenter.setShoppingCartRecommendRec(shoppingCartRecommendRec);
 
@@ -92,9 +92,9 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         shoppingCartCloseAccountAndDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shoppingCartCloseAccountAndDelete.getText().equals("删除")){
+                if (shoppingCartCloseAccountAndDelete.getText().equals("删除")) {
                     presenter.popupDelete();
-                }else{
+                } else {
                     startActivity(new Intent(getActivity(), ConfirmOrderActivity.class));
                 }
 
@@ -114,6 +114,15 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+          //显示
+            presenter.setShoppingCartRec(shoppingCartRec);
+        }
+    }
+
+    @Override
     public ShoppingCartView createView() {
         return this;
     }
@@ -123,4 +132,12 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         return new ShoppingCartPresenter(getContext());
     }
 
+    @Override
+    public void isHide(boolean isHide) {
+        if (isHide){
+            shoppingCartEmpty.setVisibility(View.VISIBLE);
+        }else{
+            shoppingCartEmpty.setVisibility(View.GONE);
+        }
+    }
 }

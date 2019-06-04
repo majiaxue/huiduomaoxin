@@ -43,12 +43,13 @@ import okhttp3.ResponseBody;
  */
 public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView> {
 
-    private List<GoodsCollectionRecBean.DataBean> recBeanList = new ArrayList<>();
+    private List<GoodsCollectionRecBean.RecordsBean> recBeanList = new ArrayList<>();
     private boolean isCompile = false;
-    private boolean isAllCheck;
+//    private boolean isAllCheck;
     private boolean flag = true;
     private GoodsCollectionRecAdapter goodsCollectionRecAdapter;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
+
     public GoodsCollectionPresenter(Context context) {
         super(context);
     }
@@ -63,57 +64,57 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("setGoodsCollectionRec----->"+result);
+                LogUtil.e("setGoodsCollectionRec----->" + result);
                 GoodsCollectionRecBean goodsCollectionRecBean = JSON.parseObject(result, new TypeReference<GoodsCollectionRecBean>() {
                 }.getType());
                 recBeanList.clear();
-                recBeanList.addAll(goodsCollectionRecBean.getData());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                goodsCollectionRec.setLayoutManager(linearLayoutManager);
-
-                goodsCollectionRecAdapter = new GoodsCollectionRecAdapter(mContext, recBeanList, R.layout.item_goods_collection_rec);
-                if (getView() != null) {
-                    getView().loadUI(goodsCollectionRecAdapter);
-                }
-                goodsCollectionRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                goodsCollectionRecAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
-                    @Override
-                    public void ViewTwoOnClick(View view1, View view2, final int position) {
-                        //点击选中
-                        view1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                flag = true;
-                                check(position);
-                            }
-                        });
-                        //进入店铺
-                        view2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
+                recBeanList.addAll(goodsCollectionRecBean.getRecords());
 
                 if (recBeanList.size() == 0) {
                     getView().empty(true);
                 } else {
                     getView().empty(false);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    goodsCollectionRec.setLayoutManager(linearLayoutManager);
+
+                    goodsCollectionRecAdapter = new GoodsCollectionRecAdapter(mContext, recBeanList, R.layout.item_goods_collection_rec);
+                    if (getView() != null) {
+                        getView().loadUI(goodsCollectionRecAdapter);
+                    }
+                    goodsCollectionRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    goodsCollectionRecAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
+                        @Override
+                        public void ViewTwoOnClick(View view1, View view2, final int position) {
+                            //点击选中
+                            view1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    flag = true;
+                                    check(position);
+                                }
+                            });
+                            //进入店铺
+                            view2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
                 }
 
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("onError------->"+errorMsg);
+                LogUtil.e("onError------->" + errorMsg);
             }
         }));
 
@@ -126,7 +127,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("result----->"+result);
+                LogUtil.e("result----->" + result);
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
                 commendList.clear();
@@ -165,10 +166,9 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("errorMsg------->"+errorMsg);
+                LogUtil.e("errorMsg------->" + errorMsg);
             }
         }));
-
 
 
     }

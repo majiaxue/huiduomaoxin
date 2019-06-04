@@ -14,21 +14,21 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/22
  * Describe:
  */
-public class GoodsCollectionRecAdapter extends MyRecyclerAdapter<GoodsCollectionRecBean.DataBean> {
+public class GoodsCollectionRecAdapter extends MyRecyclerAdapter<GoodsCollectionRecBean.RecordsBean> {
 
     private boolean isCompile;
 
-    public GoodsCollectionRecAdapter(Context context, List<GoodsCollectionRecBean.DataBean> mList, int mLayoutId) {
+    public GoodsCollectionRecAdapter(Context context, List<GoodsCollectionRecBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public GoodsCollectionRecAdapter(Context context, List<GoodsCollectionRecBean.DataBean> mList, int mLayoutId, boolean isCompile) {
+    public GoodsCollectionRecAdapter(Context context, List<GoodsCollectionRecBean.RecordsBean> mList, int mLayoutId, boolean isCompile) {
         super(context, mList, mLayoutId);
         this.isCompile = isCompile;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, GoodsCollectionRecBean.DataBean data, int position) {
+    public void convert(RecyclerViewHolder holder, GoodsCollectionRecBean.RecordsBean data, int position) {
         if (isCompile) {
             holder.getView(R.id.goods_collection_check).setVisibility(View.VISIBLE);
         } else {
@@ -44,7 +44,7 @@ public class GoodsCollectionRecAdapter extends MyRecyclerAdapter<GoodsCollection
         holder.setText(R.id.goods_collection_name, data.getName());
         holder.setText(R.id.goods_collection_price, "￥" + data.getPrice());
         holder.setText(R.id.goods_collection_payment_amount, data.getSale() + "人付款");
-        holder.setText(R.id.goods_collection_good_reputation, data.getGood_reputation());
+        holder.setText(R.id.goods_collection_good_reputation, data.getGoodReputation() + "好评");
         holder.setText(R.id.goods_collection_shop, data.getSellerName());
         viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.goods_collection_check), holder.getView(R.id.goods_collection_go_shop), position);
     }

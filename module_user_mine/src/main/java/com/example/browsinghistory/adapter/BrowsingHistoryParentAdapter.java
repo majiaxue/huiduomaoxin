@@ -10,41 +10,55 @@ import android.widget.Toast;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.browsinghistory.bean.BrowsingHistoryChildBean;
 import com.example.browsinghistory.bean.BrowsingHistoryBean;
 import com.example.module_user_mine.R;
+import com.example.utils.LogUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
-public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHistoryBean.ParentBean> {
+public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHistoryBean.RecordsBean> {
 
     private boolean isParentCompile;
     private BrowsingHistoryChildAdapter browsingHistoryChildAdapter;
-    private List<BrowsingHistoryBean.ParentBean> parentList;
+    private List<BrowsingHistoryBean.RecordsBean> parentList;
     private boolean allCheck = true;
     private ImageView parentCheck;
-    private List<BrowsingHistoryBean.ParentBean.ChildBean> childList = new ArrayList<>();
+    private List<BrowsingHistoryBean.RecordsBean.ItemBean> childList = new ArrayList<>();
 
 
-    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.ParentBean> mList, int mLayoutId) {
+    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.ParentBean> mList, int mLayoutId, boolean parentCompile) {
+    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.RecordsBean> mList, int mLayoutId, boolean parentCompile) {
         super(context, mList, mLayoutId);
         this.isParentCompile = parentCompile;
         parentList = mList;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, final BrowsingHistoryBean.ParentBean data, final int position) {
-        childList.addAll(data.getChildList());
-        holder.setText(R.id.browsing_history_parent_time, data.getTime());
+    public void convert(RecyclerViewHolder holder, final BrowsingHistoryBean.RecordsBean data, final int position) {
+        childList.addAll(data.getItem());
+        String createTime = data.getCreateTime();
+        String[] s = createTime.split(" ");
+        String s1 = s[0];
+        String[] split = s1.split("-");
+
+        holder.setText(R.id.browsing_history_parent_time, split[1] + "月" + split[2] + "日");
+
+        LogUtil.e("simpleDateFormat------------->" + split[1] + "月" + split[2] + "日");
+
+
         parentCheck = holder.getView(R.id.browsing_history_parent_check);
         if (isParentCompile) {
             parentCheck.setVisibility(View.VISIBLE);
@@ -53,9 +67,9 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
         }
 
         if (data.isCheck()) {
-            parentCheck.setImageResource(R.drawable.icon_xuanzhong);
+        parentCheck.setImageResource(R.drawable.icon_xuanzhong);
         } else {
-            parentCheck.setImageResource(R.drawable.icon_weixuanzhong);
+        parentCheck.setImageResource(R.drawable.icon_weixuanzhong);
         }
 
         viewOnClickListener.ViewOnClick(holder.getView(R.id.browsing_history_parent_check), position);
@@ -64,7 +78,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         browsingHistoryParentRec.setLayoutManager(linearLayoutManager);
-        browsingHistoryChildAdapter = new BrowsingHistoryChildAdapter(context, data.getChildList(), R.layout.item_browsing_history_child, false);
+        browsingHistoryChildAdapter = new BrowsingHistoryChildAdapter(context, data.getItem(), R.layout.item_browsing_history_child, false);
         browsingHistoryChildAdapter.setChildCompile(isParentCompile);
         browsingHistoryParentRec.setAdapter(browsingHistoryChildAdapter);
         browsingHistoryChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
@@ -98,16 +112,16 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
         Log.d("77777", "position: --->" + position);
         Log.d("77777", "childPosition: ----->" + childPosition);
 
-        if (parentList.get(position).getChildList().get(childPosition).isCheck()) {
-            parentList.get(position).getChildList().get(childPosition).setCheck(false);
+        if (parentList.get(position).getItem().get(childPosition).isCheck()) {
+            parentList.get(position).getItem().get(childPosition).setCheck(false);
         } else {
-            parentList.get(position).getChildList().get(childPosition).setCheck(true);
+            parentList.get(position).getItem().get(childPosition).setCheck(true);
         }
 
 //        browsingHistoryChildAdapter.notifyDataSetChanged();
 
-        for (int i = 0; i < parentList.get(position).getChildList().size(); i++) {
-            if (!parentList.get(position).getChildList().get(i).isCheck()) {
+        for (int i = 0; i < parentList.get(position).getItem().size(); i++) {
+            if (!parentList.get(position).getItem().get(i).isCheck()) {
                 allCheck = false;
             }
         }
@@ -120,12 +134,12 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
 
     public void checkAll(int position, boolean status) {
         if (status) {
-            for (int i = 0; i < parentList.get(position).getChildList().size(); i++) {
-                parentList.get(position).getChildList().get(i).setCheck(false);
+            for (int i = 0; i < parentList.get(position).getItem().size(); i++) {
+                parentList.get(position).getItem().get(i).setCheck(false);
             }
         } else {
-            for (int i = 0; i < parentList.get(position).getChildList().size(); i++) {
-                parentList.get(position).getChildList().get(i).setCheck(true);
+            for (int i = 0; i < parentList.get(position).getItem().size(); i++) {
+                parentList.get(position).getItem().get(i).setCheck(true);
             }
         }
 
