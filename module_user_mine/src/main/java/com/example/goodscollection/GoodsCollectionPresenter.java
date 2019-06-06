@@ -45,7 +45,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     private List<GoodsCollectionRecBean.RecordsBean> recBeanList = new ArrayList<>();
     private boolean isCompile = false;
-//    private boolean isAllCheck;
+    //    private boolean isAllCheck;
     private boolean flag = true;
     private GoodsCollectionRecAdapter goodsCollectionRecAdapter;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
@@ -65,15 +65,17 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("setGoodsCollectionRec----->" + result);
+                LogUtil.e("setGoodsCollectionRec----->" + msg);
+
                 GoodsCollectionRecBean goodsCollectionRecBean = JSON.parseObject(result, new TypeReference<GoodsCollectionRecBean>() {
                 }.getType());
-                recBeanList.clear();
-                recBeanList.addAll(goodsCollectionRecBean.getRecords());
 
-                if (recBeanList.size() == 0) {
-                    getView().empty(true);
-                } else {
+                if (goodsCollectionRecBean != null) {
+                    recBeanList.clear();
+                    recBeanList.addAll(goodsCollectionRecBean.getRecords());
+
                     getView().empty(false);
+
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     goodsCollectionRec.setLayoutManager(linearLayoutManager);
 
@@ -108,13 +110,18 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                             });
                         }
                     });
+
+                } else {
+                    getView().empty(true);
                 }
+
 
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("onError------->" + errorMsg);
+                LogUtil.e("setGoodsCollectionRecError------->" + errorCode);
+                LogUtil.e("setGoodsCollectionRecError------->" + errorMsg);
             }
         }));
 
@@ -166,7 +173,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("errorMsg------->" + errorMsg);
+                LogUtil.e("result------->" + errorMsg);
             }
         }));
 
@@ -200,14 +207,25 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     //编辑
     public void compile() {
-        if (isCompile) {
-            isCompile = false;
-            getView().isCompile(isCompile);
-        } else {
-            isCompile = true;
-            getView().isCompile(isCompile);
+        if (recBeanList.size()==0){
+            if (isCompile) {
+                isCompile = false;
+                getView().isCompile(isCompile);
+            } else {
+                isCompile = true;
+                getView().isCompile(isCompile);
+            }
+        }else{
+            if (isCompile) {
+                isCompile = false;
+                getView().isCompile(isCompile);
+            } else {
+                isCompile = true;
+                getView().isCompile(isCompile);
+            }
+            goodsCollectionRecAdapter.setCompile(isCompile);
         }
-        goodsCollectionRecAdapter.setCompile(isCompile);
+
     }
 
     //点击选中全部
@@ -227,18 +245,41 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     //删除
     public void deleteList() {
-        for (int i = recBeanList.size() - 1; i >= 0; i--) {
+        List<Integer> deleteList = new ArrayList<>();
+        for (int i = 0; i < recBeanList.size(); i++) {
             if (recBeanList.get(i).isCheck()) {
-                recBeanList.remove(i);
+                deleteList.add(recBeanList.get(i).getFavoriteId());
             }
         }
-        if (recBeanList.size() == 0) {
-            getView().empty(true);
-            getView().isCheckAll(false);
-            getView().isCompile(false);
-        } else {
-            getView().empty(false);
-        }
-        goodsCollectionRecAdapter.notifyDataSetChanged();
+
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.FAVORITEDELETE,deleteList);
+        RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("deleteGoodsCollection----->" + msg);
+                for (int i = recBeanList.size() - 1; i >= 0; i--) {
+                    if (recBeanList.get(i).isCheck()) {
+                        recBeanList.remove(i);
+                    }
+                }
+
+                goodsCollectionRecAdapter.notifyDataSetChanged();
+
+                if (recBeanList.size() == 0) {
+                    getView().empty(true);
+                    getView().isCheckAll(false);
+                    getView().isCompile(false);
+                } else {
+                    getView().empty(false);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("deleteGoodsCollection----->" + errorMsg);
+            }
+        }));
+
+
     }
 }

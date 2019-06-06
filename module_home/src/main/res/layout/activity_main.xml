@@ -27,7 +27,7 @@
         <RadioButton
             android:id="@+id/main_classify"
             style="@style/main_bottom_back"
-            android:drawableTop="@drawable/bg_classify"
+            android:drawableTop="@drawable/bg_super_brand"
             android:paddingTop="@dimen/dp_7" />
 
         <LinearLayout

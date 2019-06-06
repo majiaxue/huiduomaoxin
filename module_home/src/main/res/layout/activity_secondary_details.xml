@@ -53,7 +53,6 @@
         app:tabIndicatorColor="#fb4119"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorGravity="bottom"
-        app:tabMaxWidth="@dimen/dp_54"
         app:tabMode="scrollable"
         app:tabRippleColor="@android:color/transparent"
         app:tabSelectedTextColor="#fb4119"
@@ -62,7 +61,16 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/secondary_details_rec"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:visibility="visible"></android.support.v7.widget.RecyclerView>
 
+    <ImageView
+        android:id="@+id/secondary_details_no_goods"
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_220"
+        android:layout_gravity="center"
+        android:src="@drawable/no_goods"
+        android:layout_marginTop="@dimen/dp_150"
+        android:visibility="gone"/>
 
 </LinearLayout>

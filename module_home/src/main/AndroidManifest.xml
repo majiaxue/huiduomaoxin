@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         tools:replace="android:allowBackup">
-        <activity android:name="com.example.secondarydetails.SecondaryDetailsActivity"></activity>
-        <activity android:name="com.example.main.StartPageActivity" />
+        <activity android:name="com.example.superbrand.SuperBrandFragment"></activity>
+        <activity android:name="com.example.main.WelcomeActivity" />
+        <activity android:name="com.example.secondarydetails.SecondaryDetailsActivity" />
+        <activity android:name="com.example.main.GuideActivity" />
         <activity android:name="com.example.search.SearchActivity" />
         <activity
             android:name="com.example.main.MainActivity"

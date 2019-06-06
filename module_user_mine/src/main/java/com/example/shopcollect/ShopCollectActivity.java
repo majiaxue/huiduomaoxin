@@ -59,10 +59,4 @@ public class ShopCollectActivity extends BaseActivity<ShopCollectView, ShopColle
         return new ShopCollectPresenter(this);
     }
 
-    @Override
-    public void refreshRec(boolean refreshRec) {
-        if (refreshRec) {
-            presenter.initShopCollectRec(shopCollectRec);
-        }
-    }
 }

@@ -103,25 +103,20 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                                     @Override
                                     public void onYesClick() {
-                                        int favoriteId = position;
+                                        int favoriteId = dataBeanList.get(position).getFavoriteId();
                                         List<Integer> integers = new ArrayList<>();
                                         integers.add(favoriteId);
                                         LogUtil.e("shopCollect--------->" + favoriteId);
-                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).favoriteDelete(integers);
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE,integers);
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                             @Override
                                             public void onSuccess(String result, String msg) {
                                                 LogUtil.e("shopCollect--------->" + msg);
-//                                                initShopCollectRec(shopCollectRec);
-
+                                                dataBeanList.remove(position);
                                                 shopCollectAdapter.notifyDataSetChanged();
-
                                                 shopCollectRec.closeMenu();
                                                 selfDialog.dismiss();
                                                 PopUtils.setTransparency(mContext, 1f);
-
-                                                getView().refreshRec(true);
-
                                             }
 
                                             @Override
@@ -206,4 +201,5 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
         }));
 
     }
+
 }

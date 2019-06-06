@@ -16,6 +16,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,36 +51,39 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("browsingHistoryRecResult------------->" + result);
+                LogUtil.e("browsingHistoryRecMsg------------->" + msg);
                 BrowsingHistoryBean browsingHistoryBean = JSON.parseObject(result, new TypeReference<BrowsingHistoryBean>() {
                 }.getType());
+                if (browsingHistoryBean != null) {
+                    parentBeanList.clear();
+                    parentBeanList.addAll(browsingHistoryBean.getRecords());
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    browsingHistoryRec.setLayoutManager(linearLayoutManager);
+                    browsingHistoryParentAdapter = new BrowsingHistoryParentAdapter(mContext, parentBeanList, R.layout.item_browsing_history_parent, false);
+                    browsingHistoryRec.setAdapter(browsingHistoryParentAdapter);
+                    //点击选中全部子布局的check
+                    browsingHistoryParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                        @Override
+                        public void ViewOnClick(final View view, final int index) {
 
-                parentBeanList.clear();
-                parentBeanList.addAll(browsingHistoryBean.getRecords());
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    flag = true;
+                                    checkAll(index);
+                                }
+                            });
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                browsingHistoryRec.setLayoutManager(linearLayoutManager);
-                browsingHistoryParentAdapter = new BrowsingHistoryParentAdapter(mContext, parentBeanList, R.layout.item_browsing_history_parent, false);
-                browsingHistoryRec.setAdapter(browsingHistoryParentAdapter);
-                //点击选中全部子布局的check
-                browsingHistoryParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(final View view, final int index) {
+                        }
+                    });
+                }
 
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                flag = true;
-                                checkAll(index);
-                            }
-                        });
-
-                    }
-                });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("browsingHistoryRecErrorMsg------------->" + errorMsg);
             }
         }));
 
@@ -112,14 +116,26 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     //编辑状态
     public void browsingHistoryState() {
-        if (isCompile) {
-            isCompile = false;
-            getView().isCompile(isCompile);
+        if (parentBeanList.size() == 0) {
+            if (isCompile) {
+                isCompile = false;
+                getView().isCompile(isCompile);
+            } else {
+                isCompile = true;
+                getView().isCompile(isCompile);
+            }
         } else {
-            isCompile = true;
-            getView().isCompile(isCompile);
+            if (isCompile) {
+                isCompile = false;
+                getView().isCompile(isCompile);
+            } else {
+                isCompile = true;
+                getView().isCompile(isCompile);
+            }
+            browsingHistoryParentAdapter.setCompile(isCompile);
+
         }
-        browsingHistoryParentAdapter.setCompile(isCompile);
+
     }
 
     //选中parent全部的checkbox
@@ -142,18 +158,48 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     //删除
     public void deleteList() {
-//        for (int i = parentBeanList.size() - 1; i >= 0; i--) {
-//            if (parentBeanList.get(i).isCheck()) {
-//                parentBeanList.remove(i);
-//            }
-//        }
 
-
-        if (parentBeanList.size() == 0) {
-            getView().isCompile(false);
-            getView().isCheckAll(false);
+        List<Integer> deleteList = new ArrayList<>();
+        for (int i = 0; i < parentBeanList.size(); i++) {
+            for (int j = 0; j < parentBeanList.get(i).getItem().size(); j++) {
+                if (parentBeanList.get(i).getItem().get(j).isCheck()) {
+                    deleteList.add(parentBeanList.get(i).getItem().get(j).getHistoryId());
+                }
+            }
         }
 
-        browsingHistoryParentAdapter.notifyDataSetChanged();
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE,deleteList);
+        RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("deleteBrowsingHistory----->" + msg);
+
+                for (int i = parentBeanList.size() - 1; i >= 0; i--) {
+                    List<BrowsingHistoryBean.RecordsBean.ItemBean> items = parentBeanList.get(i).getItem();
+                    if (parentBeanList.get(i).isCheck()) {
+                        parentBeanList.remove(i);
+                    }
+                    for (int j = items.size() - 1; j >= 0; j--) {
+                        if (items.get(j).isCheck()) {
+                            items.remove(j);
+                        }
+                    }
+                }
+
+                browsingHistoryParentAdapter.notifyDataSetChanged();
+
+                if (parentBeanList.size() == 0) {
+                    getView().isCompile(false);
+                    getView().isCheckAll(false);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("deleteBrowsingHistory----->" + errorMsg);
+            }
+        }));
+
+
     }
 }

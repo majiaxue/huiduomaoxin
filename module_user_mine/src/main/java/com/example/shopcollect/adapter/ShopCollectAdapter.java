@@ -23,6 +23,6 @@ public class ShopCollectAdapter extends MyRecyclerAdapter<ShopCollectBean.Record
     public void convert(RecyclerViewHolder holder, ShopCollectBean.RecordsBean data, int position) {
         holder.setImageFresco(R.id.shop_collect_rec_image,data.getSellerLogo());
         holder.setText(R.id.shop_collect_rec_name,data.getSellerShopName());
-        viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.shop_collect_rec_menu),holder.getView(R.id.shop_collect_rec_un_follow),data.getFavoriteId());
+        viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.shop_collect_rec_menu),holder.getView(R.id.shop_collect_rec_un_follow),position);
     }
 }

@@ -11,6 +11,7 @@ import com.example.mine.MineFragment;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.classify.ClassifyFragment;
+import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 
 public class MainPresenter extends BasePresenter<MainView> {
@@ -22,6 +23,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private HomeFragment homeFragment;
     private MineFragment mineFragment;
     private ClassifyFragment classifyFragment;
+    private SuperBrandFragment superBrandFragment;
 
     public MainPresenter(Context context) {
         super(context);
@@ -33,16 +35,19 @@ public class MainPresenter extends BasePresenter<MainView> {
         homeFragment = new HomeFragment();
         mineFragment = new MineFragment();
         classifyFragment = new ClassifyFragment();
+        superBrandFragment = new SuperBrandFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(resId, hairRingFragment)
                 .add(resId, homeFragment)
                 .add(resId, mineFragment)
-                .add(resId, classifyFragment);
+                .add(resId, classifyFragment)
+                .add(resId, superBrandFragment);
         transaction.show(homeFragment)
                 .hide(hairRingFragment)
                 .hide(mineFragment)
                 .hide(classifyFragment)
+                .hide(superBrandFragment)
                 .commit();
 
     }
@@ -55,10 +60,12 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(hairRingFragment)
                     .hide(classifyFragment)
                     .hide(mineFragment)
+                    .hide(superBrandFragment)
                     .commit();
             position = 0;
         } else if (resId == R.id.main_classify) {
-            transaction.show(classifyFragment)
+            transaction.show(superBrandFragment)
+                    .hide(classifyFragment)
                     .hide(hairRingFragment)
                     .hide(homeFragment)
                     .hide(mineFragment)
@@ -67,6 +74,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         } else if (resId == R.id.main_hairring) {
             transaction.show(hairRingFragment)
                     .hide(homeFragment)
+                    .hide(superBrandFragment)
                     .hide(classifyFragment)
                     .hide(mineFragment)
                     .commit();
@@ -74,6 +82,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         } else if (resId == R.id.main_mine) {
             transaction.show(mineFragment)
                     .hide(hairRingFragment)
+                    .hide(superBrandFragment)
                     .hide(classifyFragment)
                     .hide(homeFragment)
                     .commit();

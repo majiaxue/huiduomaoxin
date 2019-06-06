@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.search.SearchActivity;
+import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +31,9 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     TabLayout secondaryDetailsTab;
     @BindView(R2.id.secondary_details_rec)
     RecyclerView secondaryDetailsRec;
+    @BindView(R2.id.secondary_details_no_goods)
+    ImageView secondaryDetailsNoGoods;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_secondary_details;
@@ -41,8 +43,8 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     public void initData() {
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
-        presenter.initTab(secondaryDetailsTab);
-        presenter.secondaryDetailsRec(secondaryDetailsRec,type);
+        presenter.initTab(secondaryDetailsTab, secondaryDetailsRec, type);
+//        presenter.secondaryDetailsRec(secondaryDetailsRec,type);
     }
 
     @Override
@@ -71,6 +73,22 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     @Override
     public SecondaryDetailsPresenter createPresenter() {
         return new SecondaryDetailsPresenter(this);
+    }
+
+    @Override
+    public void lodeRec(SecondaryPddRecAdapter baseRecAdapter) {
+        secondaryDetailsRec.setAdapter(baseRecAdapter);
+    }
+
+    @Override
+    public void noGoods(boolean isNoGoods) {
+        if (isNoGoods) {
+            secondaryDetailsNoGoods.setVisibility(View.VISIBLE);
+            secondaryDetailsRec.setVisibility(View.GONE);
+        } else {
+            secondaryDetailsNoGoods.setVisibility(View.GONE);
+            secondaryDetailsRec.setVisibility(View.VISIBLE);
+        }
     }
 
 }

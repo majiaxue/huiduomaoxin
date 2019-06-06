@@ -22,7 +22,6 @@ public class BrowseRecordAdapter extends MyRecyclerAdapter<BaseRecBean> {
                 .setText(R.id.base_original_price, data.getOriginal_price())
                 .setText(R.id.base_number, "已抢" + data.getNumber() + "件")
                 .setTextLine(R.id.base_original_price)
-                .setProgressBar(R.id.base__progress, (int) (100.0 * Integer.valueOf(data.getNumber()) / Integer.valueOf(data.getTotalCount())))
                 .setImageFresco(R.id.base_image, data.getImgUrl());
     }
 }

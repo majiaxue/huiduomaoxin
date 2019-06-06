@@ -51,6 +51,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.Url;
 
 public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     //是否关注
@@ -84,7 +85,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadData(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).goodsDetail("39");
+        Map map = MapUtil.getInstance().addParms("id", id).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.GETGOODSDETAIL,map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
