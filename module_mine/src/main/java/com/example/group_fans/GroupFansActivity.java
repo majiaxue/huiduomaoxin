@@ -58,6 +58,8 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     @BindView(R2.id.group_fans_refresh)
     SmartRefreshLayout groupFansRefresh;
 
+    private int page = 1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_group_fans;
@@ -66,7 +68,7 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     @Override
     public void initData() {
         includeTitle.setText("团队粉丝");
-        presenter.loadData();
+        presenter.loadData(page);
 
         KeyboardStateObserver.getKeyboardStateObserver(this).setKeyboardVisibilityListener(new KeyboardStateObserver.OnKeyboardVisibilityListener() {
             @Override
@@ -89,15 +91,15 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
         groupFansRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-                groupFansRefresh.finishRefresh();
+                page = 1;
+                presenter.loadData(page);
             }
         });
         groupFansRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-                groupFansRefresh.finishLoadMore();
+                page++;
+                presenter.loadData(page);
             }
         });
     }
@@ -168,6 +170,12 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
         }
         return onTouchEvent(ev);
 
+    }
+
+    @Override
+    public void loadFinish() {
+        groupFansRefresh.finishRefresh();
+        groupFansRefresh.finishLoadMore();
     }
 
     @Override

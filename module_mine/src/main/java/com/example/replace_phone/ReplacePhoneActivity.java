@@ -1,15 +1,18 @@
 package com.example.replace_phone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bean.UserInfoBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +35,7 @@ public class ReplacePhoneActivity extends BaseActivity<ReplacePhoneView, Replace
     TextView phoneGetCode;
     @BindView(R2.id.phone_btn)
     TextView phoneBtn;
+    private UserInfoBean userInfoBean;
 
     @Override
     public int getLayoutId() {
@@ -41,6 +45,8 @@ public class ReplacePhoneActivity extends BaseActivity<ReplacePhoneView, Replace
     @Override
     public void initData() {
         includeTitle.setText(getResources().getString(R.string.update_phone));
+        Intent intent = getIntent();
+        userInfoBean = (UserInfoBean) intent.getSerializableExtra("bean");
     }
 
     @Override
@@ -55,14 +61,14 @@ public class ReplacePhoneActivity extends BaseActivity<ReplacePhoneView, Replace
         phoneGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getCodeNum();
+                presenter.getCodeNum(phoneNewNum.getText().toString());
             }
         });
 
         phoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.commit(phoneOldNum.getText().toString(), phoneNewNum.getText().toString(), phoneCode.getText().toString());
+                presenter.commit(phoneOldNum.getText().toString(), phoneNewNum.getText().toString(), phoneCode.getText().toString(), userInfoBean);
             }
         });
     }

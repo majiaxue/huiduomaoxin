@@ -2,7 +2,8 @@
 <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/order_list_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/order_list_rv"
@@ -10,5 +11,6 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_14"
         android:layout_marginTop="@dimen/dp_19"
-        android:layout_marginRight="@dimen/dp_14"></android.support.v7.widget.RecyclerView>
+        android:layout_marginRight="@dimen/dp_14"
+        android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

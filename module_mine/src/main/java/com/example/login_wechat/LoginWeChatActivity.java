@@ -1,10 +1,12 @@
 package com.example.login_wechat;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bean.UserInfoBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -34,6 +36,7 @@ public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeCh
     ImageView wechatCheck;
     @BindView(R2.id.wechat_user_agreement)
     TextView wechatUserAgreement;
+    private UserInfoBean userInfoBean;
 
     @Override
     public int getLayoutId() {
@@ -43,6 +46,9 @@ public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeCh
     @Override
     public void initData() {
         includeTitle.setText(getResources().getString(R.string.wechat_login));
+        Intent intent = getIntent();
+        userInfoBean = (UserInfoBean) intent.getSerializableExtra("bean");
+
     }
 
     @Override
@@ -64,7 +70,16 @@ public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeCh
         wechatGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getCodeNum();
+                presenter.getCodeNum(wechatPhone.getText().toString());
+            }
+        });
+
+        wechatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userInfoBean.setCheckCode(wechatCode.getText().toString());
+                userInfoBean.setPhone(wechatPhone.getText().toString());
+                presenter.login(userInfoBean);
             }
         });
     }

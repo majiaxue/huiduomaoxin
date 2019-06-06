@@ -55,7 +55,7 @@ public class CodeLoginActivity extends BaseActivity<CodeLoginView, CodeLoginPres
         codeLoginGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getCode();
+                presenter.getCode(codeLoginPhone.getText().toString());
             }
         });
 

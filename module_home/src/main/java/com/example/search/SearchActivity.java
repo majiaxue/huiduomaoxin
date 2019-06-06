@@ -7,10 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.LogUtil;
 import com.example.view.FlowLayout;
 
 import butterknife.BindView;
@@ -31,6 +34,8 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     ImageView searchDelete;
     @BindView(R2.id.search_flow_layout)
     FlowLayout searchFlowLayout;
+    @Autowired(name = "from")
+    String from;
 
 
     @Override
@@ -40,9 +45,8 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
 
     @Override
     public void initData() {
-
+        ARouter.getInstance().inject(this);
         presenter.searchFlowLayout(searchFlowLayout);
-
     }
 
     @Override
@@ -56,7 +60,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.searchEdit(searchEdit,searchFlowLayout);
+                presenter.searchEdit(searchEdit.getText().toString(), from);
 
             }
         });

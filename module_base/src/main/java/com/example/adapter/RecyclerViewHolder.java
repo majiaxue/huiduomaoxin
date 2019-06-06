@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.module_base.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -91,7 +92,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public RecyclerViewHolder setImageUrlCircular(int resId, String url) {
         ImageView imageView = getView(resId);
-        Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+        Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).placeholder(R.drawable.icon_touxiang1).into(imageView);
         return this;
     }
 

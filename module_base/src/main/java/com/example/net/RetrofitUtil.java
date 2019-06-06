@@ -3,6 +3,8 @@ package com.example.net;
 import android.content.Context;
 
 import com.example.common.CommonResource;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import java.io.IOException;
 
@@ -23,9 +25,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitUtil {
     private static RetrofitUtil mInstance;
-    private Retrofit retrofit;
     private volatile ApiService mApiService;
     private volatile ApiService mApiService2;
+    private volatile ApiService mApiService3;
+    private volatile ApiService mApiService4;
     /**
      * 请求失败重连次数
      */
@@ -51,10 +54,10 @@ public class RetrofitUtil {
     }
 
     public ApiService getApi1(Context context) {
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(getHttpClient(context))
+                .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         if (mApiService == null) {
@@ -68,7 +71,7 @@ public class RetrofitUtil {
     }
 
     public ApiService getApi2(Context context) {
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL2)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(new OkHttpClient())
@@ -85,20 +88,20 @@ public class RetrofitUtil {
     }
 
     public ApiService getApi4(Context context) {
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL4)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        if (mApiService2 == null) {
+        if (mApiService4 == null) {
             synchronized (ApiService.class) {
-                if (mApiService2 == null) {
-                    mApiService2 = retrofit.create(ApiService.class);
+                if (mApiService4 == null) {
+                    mApiService4 = retrofit.create(ApiService.class);
                 }
             }
         }
-        return mApiService2;
+        return mApiService4;
     }
 
     /**
@@ -114,22 +117,23 @@ public class RetrofitUtil {
 
     }
 
-    private OkHttpClient getHttpClient(final Context context) {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request build = null;
-                        try {
-                            build = chain.request().newBuilder()
-                                    .addHeader("Authorization", "JWT ff8f41da-bdb6-4b67-a415-7addfb482b86")
-                                    .build();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return chain.proceed(build);
-                    }
-                }).build();
-        return okHttpClient;
-    }
+//    private OkHttpClient getHttpClient(final Context context) {
+//        final String token = SPUtil.getToken();
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .addInterceptor(new Interceptor() {
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        Request build = null;
+//                        try {
+//                            build = chain.request().newBuilder()
+//                                    .addHeader("Authorization", token)
+//                                    .build();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        return chain.proceed(build);
+//                    }
+//                }).build();
+//        return okHttpClient;
+//    }
 }

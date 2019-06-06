@@ -40,6 +40,7 @@ import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
+import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
@@ -56,7 +57,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     //是否关注
     private boolean isAttention = false;
     //选择商品列表
-    private List<UserGoodsDetail.StoInfoBean.RecordsBean> dataList = new ArrayList<>();
+    private List<UserGoodsDetail.StoInfoBean.RecordsBean> dataList;
     //流式布局--颜色
     private TagFlowLayout flow1;
     //流式布局--尺码
@@ -84,7 +85,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadData(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).goodsDetail("39");
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.GETGOODSDETAIL + "/" + "39");
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -93,9 +94,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 if (getView() != null) {
                     getView().loadUI(userGoodsDetail);
                 }
-
-                dataList.clear();
-                dataList.addAll(userGoodsDetail.getStoInfo().getRecords());
+                dataList = userGoodsDetail.getStoInfo().getRecords();
 
                 //规格缩略图
                 for (int i = 0; i < dataList.size(); i++) {

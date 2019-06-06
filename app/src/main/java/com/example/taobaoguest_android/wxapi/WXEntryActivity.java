@@ -11,6 +11,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -49,12 +50,13 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp baseResp) {
         if (baseResp != null) {
-            CommonResource.WX_CODE = ((SendAuth.Resp) baseResp).code; //即为所需的code
+//            CommonResource.WX_CODE = ((SendAuth.Resp) baseResp).code; //即为所需的code
+            SPUtil.addParm("wx_code", ((SendAuth.Resp) baseResp).code);
         }
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                LogUtil.e("onResp: 成功" + CommonResource.WX_CODE);
-                EventBus.getDefault().post(new EventBusBean("WXCODE"));
+                String weixin = SPUtil.getStringValue("weixin");
+                EventBus.getDefault().post(new EventBusBean("bind".equals(weixin) ? "WXBIND" : "WXCODE"));
                 finish();
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:

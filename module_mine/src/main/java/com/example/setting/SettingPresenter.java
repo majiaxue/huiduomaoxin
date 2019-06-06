@@ -1,5 +1,6 @@
 package com.example.setting;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,19 +16,37 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.example.bean.UserInfoBean;
+import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.replace_phone.ReplacePhoneActivity;
+import com.example.update_password.UpdatePasswordActivity;
 import com.example.utils.CacheUtil;
 import com.example.utils.ImageUtil;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.utils.UIHelper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class SettingPresenter extends BasePresenter<SettingView> {
     private Uri fileUri;
     private Uri cropUri;
+    private UserInfoBean userInfoBean;
 
     public SettingPresenter(Context context) {
         super(context);
@@ -164,12 +183,106 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(cropUri));
             String base64 = ImageUtil.bitmapToBase64(bitmap);
-            getView().showHeader(bitmap);
+            userInfoBean.setIcon(base64);
+            String jsonString = JSON.toJSONString(userInfoBean);
+            Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
+            Observable observable = RetrofitUtil.getInstance().getApi4(mContext).putData(CommonResource.REVISEHEADER, map, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("修改头像：" + result);
+                    userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
+                    }.getType());
+                    getView().showHeader(userInfoBean.getIcon());
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("----->" + errorCode + "=====" + errorMsg);
+                }
+            }));
+
         } catch (Exception e) {
         }
     }
 
     public void preserve(String nickName, String sign) {
+        if ("".equals(nickName)) {
+            nickName = userInfoBean.getNickname();
+        }
+        if ("".equals(sign)) {
+            sign = userInfoBean.getPersonalizedSignature();
+        }
+        UserInfoBean userInfoBean = new UserInfoBean();
+        userInfoBean.setNickname(nickName);
+        userInfoBean.setPersonalizedSignature(sign);
+        String jsonString = JSON.toJSONString(userInfoBean);
+        Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
+        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).putData(CommonResource.REVISEINFO, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("修改信息：" + result);
+                ((Activity) mContext).finish();
+            }
 
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------" + errorMsg);
+            }
+        }));
+    }
+
+    public void loadData() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
+                }.getType());
+                LogUtil.e("设置-个人信息:" + userInfoBean);
+                if (getView() != null) {
+                    getView().getDataSUccess(userInfoBean);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
+    public void aboutUs() {
+
+    }
+
+    public void jumpToRevisePassword() {
+        Intent intent = new Intent(mContext, UpdatePasswordActivity.class);
+        intent.putExtra("bean", userInfoBean);
+        mContext.startActivity(new Intent(intent));
+    }
+
+    public void logout() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).deleteDataWithout(CommonResource.LOGOUT, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("退出：" + result);
+                SPUtil.loginOut();
+                ((Activity) mContext).finish();
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------" + errorMsg);
+            }
+        }));
+    }
+
+    public void jumpToRevisePhone() {
+        Intent intent = new Intent(mContext, ReplacePhoneActivity.class);
+        intent.putExtra("bean", userInfoBean);
+        mContext.startActivity(new Intent(intent));
     }
 }

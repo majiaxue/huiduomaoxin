@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
@@ -146,7 +147,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(GoodsDetailActivity.this).load(((BannerBean) model).getXBannerUrl()).into((ImageView) view);
+                Glide.with(GoodsDetailActivity.this).load(((BannerBean) model).getXBannerUrl()).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
             }
         });
 

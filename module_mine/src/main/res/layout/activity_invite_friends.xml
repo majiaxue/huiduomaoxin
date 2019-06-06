@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -19,7 +20,15 @@
             <com.stx.xhb.xbanner.XBanner
                 android:id="@+id/invite_friends_banner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_394"></com.stx.xhb.xbanner.XBanner>
+                android:layout_height="@dimen/dp_394"
+                android:overScrollMode="never"
+                app:clipChildrenLeftRightMargin="@dimen/dp_88"
+                app:clipChildrenTopBottomMargin="@dimen/dp_18"
+                app:isAutoPlay="false"
+                app:isClipChildrenMode="true"
+                app:isHandLoop="true"
+                app:pointsVisibility="false"
+                app:viewPagerClipChildren="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -4,94 +4,26 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ClassifyBean implements Serializable {
-    private String id;
-    private String parentId;
-    private String name;
-    private String level;
-    private String productCount;
-    private String productUnit;
-    private String navStatus;
-    private String showStatus;
-    private String sort;
-    private String icon;
-    private String keywords;
-    private String description;
-    private String path;
-    private String productAttributeIdList;
-    private boolean isSelect;
-    private List<ClassifySecond> children;
+    private List<Records> records;
 
-    public boolean isSelect() {
-        return isSelect;
+    public List<Records> getRecords() {
+        return records;
     }
 
-    public void setSelect(boolean select) {
-        isSelect = select;
+    public void setRecords(List<Records> records) {
+        this.records = records;
     }
 
-    public String getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "ClassifyBean{" +
+                "records=" + records +
+                '}';
     }
 
-    public String getParentId() {
-        return parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public String getProductCount() {
-        return productCount;
-    }
-
-    public String getProductUnit() {
-        return productUnit;
-    }
-
-    public String getNavStatus() {
-        return navStatus;
-    }
-
-    public String getShowStatus() {
-        return showStatus;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public String getProductAttributeIdList() {
-        return productAttributeIdList;
-    }
-
-    public List<ClassifySecond> getChildren() {
-        return children;
-    }
-
-    public static class ClassifySecond {
-        private String id;
-        private String parentId;
+    public static class Records {
+        private Integer id;
+        private Integer parentId;
         private String name;
         private String level;
         private String productCount;
@@ -104,13 +36,18 @@ public class ClassifyBean implements Serializable {
         private String description;
         private String path;
         private String productAttributeIdList;
-        private List<ClassifyThird> children;
+        private boolean isSelect;
+        private List<RecordsSecond> children;
 
-        public String getId() {
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
+
+        public Integer getId() {
             return id;
         }
 
-        public String getParentId() {
+        public Integer getParentId() {
             return parentId;
         }
 
@@ -162,13 +99,39 @@ public class ClassifyBean implements Serializable {
             return productAttributeIdList;
         }
 
-        public List<ClassifyThird> getChildren() {
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public List<RecordsSecond> getChildren() {
             return children;
         }
 
-        public static class ClassifyThird {
-            private String id;
-            private String parentId;
+        @Override
+        public String toString() {
+            return "ClassifyBean{" +
+                    "id='" + id + '\'' +
+                    ", parentId='" + parentId + '\'' +
+                    ", name='" + name + '\'' +
+                    ", level='" + level + '\'' +
+                    ", productCount='" + productCount + '\'' +
+                    ", productUnit='" + productUnit + '\'' +
+                    ", navStatus='" + navStatus + '\'' +
+                    ", showStatus='" + showStatus + '\'' +
+                    ", sort='" + sort + '\'' +
+                    ", icon='" + icon + '\'' +
+                    ", keywords='" + keywords + '\'' +
+                    ", description='" + description + '\'' +
+                    ", path='" + path + '\'' +
+                    ", productAttributeIdList='" + productAttributeIdList + '\'' +
+                    ", isSelect=" + isSelect +
+                    ", children=" + children +
+                    '}';
+        }
+
+        public static class RecordsSecond {
+            private Integer id;
+            private Integer parentId;
             private String name;
             private String level;
             private String productCount;
@@ -181,13 +144,18 @@ public class ClassifyBean implements Serializable {
             private String description;
             private String path;
             private String productAttributeIdList;
-            private List children;
+            private boolean isSelect;
+            private List<RecordsThird> children;
 
-            public String getId() {
+            public void setSelect(boolean select) {
+                isSelect = select;
+            }
+
+            public Integer getId() {
                 return id;
             }
 
-            public String getParentId() {
+            public Integer getParentId() {
                 return parentId;
             }
 
@@ -239,15 +207,19 @@ public class ClassifyBean implements Serializable {
                 return productAttributeIdList;
             }
 
-            public List getChildren() {
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public List<RecordsThird> getChildren() {
                 return children;
             }
 
             @Override
             public String toString() {
-                return "ClassifyThird{" +
-                        "id='" + id + '\'' +
-                        ", parentId='" + parentId + '\'' +
+                return "RecordsSecond{" +
+                        "id=" + id +
+                        ", parentId=" + parentId +
                         ", name='" + name + '\'' +
                         ", level='" + level + '\'' +
                         ", productCount='" + productCount + '\'' +
@@ -260,51 +232,119 @@ public class ClassifyBean implements Serializable {
                         ", description='" + description + '\'' +
                         ", path='" + path + '\'' +
                         ", productAttributeIdList='" + productAttributeIdList + '\'' +
-                        ", children=" + children +
+                        ", isSelect=" + isSelect +
+                        ", children='" + children + '\'' +
                         '}';
             }
-        }
 
-        @Override
-        public String toString() {
-            return "ClassifySecond{" +
-                    "id='" + id + '\'' +
-                    ", parentId='" + parentId + '\'' +
-                    ", name='" + name + '\'' +
-                    ", level='" + level + '\'' +
-                    ", productCount='" + productCount + '\'' +
-                    ", productUnit='" + productUnit + '\'' +
-                    ", navStatus='" + navStatus + '\'' +
-                    ", showStatus='" + showStatus + '\'' +
-                    ", sort='" + sort + '\'' +
-                    ", icon='" + icon + '\'' +
-                    ", keywords='" + keywords + '\'' +
-                    ", description='" + description + '\'' +
-                    ", path='" + path + '\'' +
-                    ", productAttributeIdList='" + productAttributeIdList + '\'' +
-                    ", children=" + children +
-                    '}';
-        }
-    }
+            public static class RecordsThird {
+                private Integer id;
+                private Integer parentId;
+                private String name;
+                private String level;
+                private String productCount;
+                private String productUnit;
+                private String navStatus;
+                private String showStatus;
+                private String sort;
+                private String icon;
+                private String keywords;
+                private String description;
+                private String path;
+                private String productAttributeIdList;
+                private boolean isSelect;
+                private String children;
 
-    @Override
-    public String toString() {
-        return "ClassifyBean{" +
-                "id='" + id + '\'' +
-                ", parentId='" + parentId + '\'' +
-                ", name='" + name + '\'' +
-                ", level='" + level + '\'' +
-                ", productCount='" + productCount + '\'' +
-                ", productUnit='" + productUnit + '\'' +
-                ", navStatus='" + navStatus + '\'' +
-                ", showStatus='" + showStatus + '\'' +
-                ", sort='" + sort + '\'' +
-                ", icon='" + icon + '\'' +
-                ", keywords='" + keywords + '\'' +
-                ", description='" + description + '\'' +
-                ", path='" + path + '\'' +
-                ", productAttributeIdList='" + productAttributeIdList + '\'' +
-                ", children=" + children +
-                '}';
+                public void setSelect(boolean select) {
+                    isSelect = select;
+                }
+
+                public Integer getId() {
+                    return id;
+                }
+
+                public Integer getParentId() {
+                    return parentId;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public String getLevel() {
+                    return level;
+                }
+
+                public String getProductCount() {
+                    return productCount;
+                }
+
+                public String getProductUnit() {
+                    return productUnit;
+                }
+
+                public String getNavStatus() {
+                    return navStatus;
+                }
+
+                public String getShowStatus() {
+                    return showStatus;
+                }
+
+                public String getSort() {
+                    return sort;
+                }
+
+                public String getIcon() {
+                    return icon;
+                }
+
+                public String getKeywords() {
+                    return keywords;
+                }
+
+                public String getDescription() {
+                    return description;
+                }
+
+                public String getPath() {
+                    return path;
+                }
+
+                public String getProductAttributeIdList() {
+                    return productAttributeIdList;
+                }
+
+                public boolean isSelect() {
+                    return isSelect;
+                }
+
+                public String getChildren() {
+                    return children;
+                }
+
+                @Override
+                public String toString() {
+                    return "RecordThird{" +
+                            "id=" + id +
+                            ", parentId=" + parentId +
+                            ", name='" + name + '\'' +
+                            ", level='" + level + '\'' +
+                            ", productCount='" + productCount + '\'' +
+                            ", productUnit='" + productUnit + '\'' +
+                            ", navStatus='" + navStatus + '\'' +
+                            ", showStatus='" + showStatus + '\'' +
+                            ", sort='" + sort + '\'' +
+                            ", icon='" + icon + '\'' +
+                            ", keywords='" + keywords + '\'' +
+                            ", description='" + description + '\'' +
+                            ", path='" + path + '\'' +
+                            ", productAttributeIdList='" + productAttributeIdList + '\'' +
+                            ", isSelect=" + isSelect +
+                            ", children='" + children + '\'' +
+                            '}';
+                }
+            }
+        }
     }
 }

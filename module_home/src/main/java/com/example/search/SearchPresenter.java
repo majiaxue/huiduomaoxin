@@ -1,12 +1,14 @@
 package com.example.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.view.FlowLayout;
@@ -56,15 +58,9 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         }
     }
 
-    public void searchEdit(EditText searchEdit, FlowLayout searchFlowLayout) {
-        String s = searchEdit.getText().toString();
-        searchTextView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.search_text_view, searchFlowLayout, false);
-        mVals.add(s);
-        searchTextView.setText(s);
-        if (s != null && !s.equals("")) {
-            searchFlowLayout.addView(searchTextView);
-        } else {
-            Toast.makeText(mContext, "请输入商品信息", Toast.LENGTH_SHORT).show();
+    public void searchEdit(String content, String from) {
+        if ("users".equals(from)) {
+            ARouter.getInstance().build("/module_user_store/typeDetail").withString("search", content).navigation();
         }
     }
 }

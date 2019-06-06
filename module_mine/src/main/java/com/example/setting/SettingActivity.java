@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.bean.UserInfoBean;
 import com.example.bind_wechat.BindWeChatActivity;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
@@ -19,6 +20,7 @@ import com.example.mvp.BaseActivity;
 import com.example.replace_phone.ReplacePhoneActivity;
 import com.example.update_password.UpdatePasswordActivity;
 import com.example.utils.CacheUtil;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -53,8 +55,11 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     TextView settingLogout;
     @BindView(R2.id.setting_cache_txt)
     TextView settingCacheTxt;
+    @BindView(R2.id.setting_temp)
+    TextView settingTemp;
 
     private String totalCache;
+    private boolean isLoad = true;
 
     private final int TAKE_PHOTO_CODE = 0x111;
     private final int PHOTO_ALBUM_CODE = 0x222;
@@ -69,6 +74,7 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     public void initData() {
         totalCache = CacheUtil.getTotalCacheSize(this);
         settingCacheTxt.setText(totalCache);
+
     }
 
     @Override
@@ -83,6 +89,7 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
         settingUpdateHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isLoad = false;
                 presenter.updateHeader();
             }
         });
@@ -97,13 +104,15 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
         settingUpdatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingActivity.this, UpdatePasswordActivity.class));
+                isLoad = false;
+                presenter.jumpToRevisePassword();
             }
         });
 
         settingBindWechat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isLoad = true;
                 startActivity(new Intent(SettingActivity.this, BindWeChatActivity.class));
             }
         });
@@ -111,7 +120,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
         settingReplacePhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingActivity.this, ReplacePhoneActivity.class));
+                isLoad = false;
+                presenter.jumpToRevisePhone();
             }
         });
 
@@ -121,6 +131,41 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
                 presenter.preserve(settingNickName.getText().toString(), settingPersonalitySign.getText().toString());
             }
         });
+
+        settingAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isLoad = false;
+                presenter.aboutUs();
+            }
+        });
+
+        settingLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.logout();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isLoad)
+            presenter.loadData();
+    }
+
+    @Override
+    public void getDataSUccess(UserInfoBean userInfoBean) {
+        Glide.with(this).load(userInfoBean.getIcon()).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(settingHeader);
+        settingNickName.setText(userInfoBean.getNickname());
+        settingPersonalitySign.setText(userInfoBean.getPersonalizedSignature());
+        if ("".equals(userInfoBean.getWeixinOpenid()) || userInfoBean.getWeixinOpenid() == null) {
+            settingTemp.setText("去绑定");
+        } else {
+            settingTemp.setText("已绑定");
+            settingBindWechat.setEnabled(false);
+        }
     }
 
     @Override
@@ -139,8 +184,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     }
 
     @Override
-    public void showHeader(Bitmap bitmap) {
-        Glide.with(this).load(bitmap).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(settingHeader);
+    public void showHeader(String url) {
+        Glide.with(this).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(settingHeader);
     }
 
     @Override

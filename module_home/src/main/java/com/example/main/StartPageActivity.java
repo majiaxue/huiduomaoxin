@@ -13,7 +13,7 @@ import com.example.module_home.R;
  * 启动页
  */
 public class StartPageActivity extends Activity {
-    private int i = 3;
+    private int i = 1;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

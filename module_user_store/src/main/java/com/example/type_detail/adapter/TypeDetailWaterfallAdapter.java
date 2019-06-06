@@ -6,18 +6,19 @@ import android.widget.ImageView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.HotSaleBean;
 import com.example.entity.BabyRecBean;
 import com.example.user_store.R;
 
 import java.util.List;
 
-public class TypeDetailWaterfallAdapter extends MyRecyclerAdapter<BabyRecBean> {
-    public TypeDetailWaterfallAdapter(Context context, List<BabyRecBean> mList, int mLayoutId) {
+public class TypeDetailWaterfallAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean> {
+    public TypeDetailWaterfallAdapter(Context context, List<HotSaleBean.DataBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, BabyRecBean data, int position) {
+    public void convert(RecyclerViewHolder holder, HotSaleBean.DataBean data, int position) {
         if (position == 0) {
             ImageView img = holder.getView(R.id.rv_commend_img);
             ViewGroup.LayoutParams params = img.getLayoutParams();
@@ -27,9 +28,9 @@ public class TypeDetailWaterfallAdapter extends MyRecyclerAdapter<BabyRecBean> {
 
         holder.setText(R.id.rv_commend_name, data.getName())
                 .setText(R.id.rv_commend_price, "￥" + data.getPrice())
-                .setText(R.id.rv_commend_count, data.getPayment_amount() + "人付款")
-                .setText(R.id.rv_commend_shop, data.getShop())
-                .setImageResource(R.id.rv_commend_img, data.getImage());
+                .setText(R.id.rv_commend_count, data.getSale() + "人付款")
+                .setText(R.id.rv_commend_shop, data.getSellerName())
+                .setImageFresco(R.id.rv_commend_img, data.getPic());
 
         if (viewOnClickListener != null) {
             viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_commend_btn), position);

@@ -10,15 +10,23 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dd.ShadowLayout;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.bean.UserInfoBean;
+import com.example.entity.EventBusBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
-import butterknife.Unbinder;
 
 /**
  * 个人中心
@@ -33,6 +41,8 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     ImageView mineLv;
     @BindView(R2.id.mine_name)
     TextView mineName;
+    @BindView(R2.id.mine_temp)
+    LinearLayout mineTemp;
     @BindView(R2.id.mine_code)
     TextView mineCode;
     @BindView(R2.id.mine_copy)
@@ -77,6 +87,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
         presenter.loadRec();
     }
 
@@ -179,6 +190,42 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 presenter.jumpToPredict();
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if ("login".equals(eventBusBean.getMsg())) {
+            presenter.loadData();
+        }
+    }
+
+    @Override
+    public void loginSuccess(UserInfoBean userInfo) {
+        mineName.setText(userInfo.getNickname());
+        Glide.with(getContext()).load(userInfo.getIcon()).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(mineHeader);
+        mineCode.setText(userInfo.getInviteCode());
+        mineTemp.setVisibility(View.VISIBLE);
+        if (userInfo.getLevel() != null) {
+            mineLv.setVisibility(View.VISIBLE);
+            if ("铜牌".equals(userInfo.getLevel())) {
+                mineLv.setImageResource(R.drawable.lv_tong);
+            } else if ("银牌".equals(userInfo.getLevel())) {
+                mineLv.setImageResource(R.drawable.lv_yin);
+            } else if ("金牌".equals(userInfo.getLevel())) {
+                mineLv.setImageResource(R.drawable.lv_jin);
+            } else {
+                mineLv.setVisibility(View.GONE);
+            }
+        } else {
+            mineLv.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onError() {
+        mineName.setText("请注册/登录");
+        mineHeader.setImageResource(R.drawable.vhjfg);
+        mineTemp.setVisibility(View.GONE);
     }
 
     @Override

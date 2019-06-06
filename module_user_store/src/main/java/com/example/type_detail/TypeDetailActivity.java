@@ -1,5 +1,6 @@
 package com.example.type_detail;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,11 +11,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.mvp.BaseActivity;
 import com.example.type_detail.adapter.TypeDetailLstAdapter;
 import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -22,8 +28,11 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.Map;
+
 import butterknife.BindView;
 
+@Route(path = "/module_user_store/typeDetail")
 public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailPresenter> implements TypeDetailView {
     @BindView(R2.id.type_detail_back)
     ImageView mBack;
@@ -70,6 +79,13 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private RvItemDecoration itemDecoration;
     private int index = 0;
+    private int page = 1;
+
+    @Autowired(name = "search")
+    String searchString;
+    @Autowired(name = "hotSale")
+    boolean isHotSale;
+
 
     @Override
     public int getLayoutId() {
@@ -78,10 +94,19 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
+        if (searchString != null || !"".equals(searchString)) {
+            mSearch.setText(searchString);
+        }
+        if (isHotSale) {
+            index = 1;
+            presenter.fromSeeAll();
+        }
+
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         itemDecoration = new RvItemDecoration((int) getResources().getDimension(R.dimen.dp_13), (int) getResources().getDimension(R.dimen.dp_10));
-        presenter.loadData();
+        presenter.loadData(searchString, isHotSale);
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(this);
@@ -91,15 +116,15 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-                mRefreshLayout.finishRefresh();
+                page = 1;
+                presenter.refreshData(page);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-                mRefreshLayout.finishLoadMore();
+                page++;
+                presenter.refreshData(page);
             }
         });
     }
@@ -124,6 +149,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
             @Override
             public void onClick(View v) {
                 index = 0;
+                page = 1;
                 presenter.changeTyep(index);
             }
         });
@@ -132,6 +158,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
             @Override
             public void onClick(View v) {
                 index = 1;
+                page = 1;
                 presenter.changeTyep(index);
             }
         });
@@ -140,6 +167,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
             @Override
             public void onClick(View v) {
                 index = 2;
+                page = 1;
                 presenter.changeTyep(index);
             }
         });
@@ -148,6 +176,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
             @Override
             public void onClick(View v) {
                 index = 3;
+                page = 1;
                 presenter.changeTyep(index);
             }
         });
@@ -166,6 +195,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         mRv.setLayoutManager(linearLayoutManager);
         mRv.removeItemDecoration(itemDecoration);
         mRv.setAdapter(adapter);
+        presenter.click();
     }
 
     @Override
@@ -182,16 +212,22 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         typeDetailSynthesizeBottom.setImageResource(index == 0 ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
 
         typeDetailText2.setTextColor(Color.parseColor(index == 1 ? "#fd3c15" : "#333333"));
-        typeDetailSalesVolumeTop.setImageResource(index == 1 ? salesVolume ? R.drawable.gvhgh : R.drawable.ghfgh : R.drawable.ghfgh);
-        typeDetailSalesVolumeBottom.setImageResource(index == 1 ? salesVolume ? R.drawable.khjkjhgjk : R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
+        typeDetailSalesVolumeTop.setImageResource(index == 1 ? salesVolume ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
+        typeDetailSalesVolumeBottom.setImageResource(index == 1 ? salesVolume ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
 
         typeDetailText3.setTextColor(Color.parseColor(index == 2 ? "#fd3c15" : "#333333"));
-        typeDetailPriceTop.setImageResource(index == 2 ? price ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
-        typeDetailPriceBottom.setImageResource(index == 2 ? price ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
+        typeDetailPriceTop.setImageResource(index == 2 ? price ? R.drawable.gvhgh : R.drawable.ghfgh : R.drawable.ghfgh);
+        typeDetailPriceBottom.setImageResource(index == 2 ? price ? R.drawable.khjkjhgjk : R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
 
         typeDetailText4.setTextColor(Color.parseColor(index == 3 ? "#fd3c15" : "#333333"));
-        typeDetailCreditTop.setImageResource(index == 3 ? credit ? R.drawable.gvhgh : R.drawable.ghfgh : R.drawable.ghfgh);
-        typeDetailCreditBottom.setImageResource(index == 3 ? credit ? R.drawable.khjkjhgjk : R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
+        typeDetailCreditTop.setImageResource(index == 3 ? credit ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
+        typeDetailCreditBottom.setImageResource(index == 3 ? credit ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
+    }
+
+    @Override
+    public void refreshSuccess() {
+        mRefreshLayout.finishLoadMore();
+        mRefreshLayout.finishRefresh();
     }
 
     @Override

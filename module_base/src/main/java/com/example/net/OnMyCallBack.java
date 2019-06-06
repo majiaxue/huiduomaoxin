@@ -2,11 +2,13 @@ package com.example.net;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.example.common.CommonResource;
 import com.example.bean.BaseEntity;
+import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.utils.SPUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -39,14 +41,26 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
     public void onNext(ResponseBody responseBody) {
         try {
             String string = responseBody.string();
-            BaseEntity baseEntity = JSON.parseObject(string, new TypeReference<BaseEntity>() {
-            }.getType());
-            if (CommonResource.CODE_SUCCESS.equals(baseEntity.getCode())) {
-                listener.onSuccess(JSON.toJSONString(baseEntity.getData()), baseEntity.getMsg());
+//            BaseEntity baseEntity = JSON.parseObject(string, new TypeReference<BaseEntity>() {
+//            }.getType());
+//            if (CommonResource.CODE_SUCCESS.equals(baseEntity.getCode())) {
+//                listener.onSuccess(JSON.toJSONString(baseEntity.getData()), baseEntity.getMsg());
+//            } else {
+//                listener.onError(baseEntity.getCode(), baseEntity.getMsg());
+//            }
+            JSONObject jsonObject = new JSONObject(string);
+
+            String code = jsonObject.optString("code");
+            String data = jsonObject.optString("data");
+            String msg = jsonObject.optString("msg");
+            if (CommonResource.CODE_SUCCESS.equals(code)) {
+                listener.onSuccess(data, msg);
+            } else if (CommonResource.TOKEN_EXPIRE.equals(code)) {
+                SPUtil.addParm(CommonResource.TOKEN, "");
             } else {
-                listener.onError(baseEntity.getCode(), baseEntity.getMsg());
+                listener.onError(code, msg);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
