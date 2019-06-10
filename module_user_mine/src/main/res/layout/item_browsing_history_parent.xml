@@ -23,10 +23,9 @@
 
             <ImageView
                 android:id="@+id/browsing_history_parent_check"
-                android:layout_width="@dimen/dp_39"
-                android:layout_height="@dimen/dp_39"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:padding="@dimen/dp_10"
+                android:layout_width="@dimen/dp_29"
+                android:layout_height="@dimen/dp_29"
+                android:padding="@dimen/dp_5"
                 android:src="@drawable/icon_weixuanzhong"
                 android:visibility="gone" />
 

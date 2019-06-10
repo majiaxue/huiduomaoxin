@@ -4,6 +4,7 @@ public class CommonResource {
     public static final String BASEURL = "http://192.168.1.30:9004";
     public static final String BASEURL2 = "http://192.168.1.23:9005";
     public static final String BASEURL4 = "http://192.168.1.2:4001";
+    public static final String BASEURLCART= "http://192.168.1.30:9004";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -27,6 +28,10 @@ public class CommonResource {
     public static final String LOGOUT = "/rest/logout";             //退出登录
     public static final String GROUP_FANS = "/rest/user/fans";    //获取团队粉丝
 
+    public static final String GOODSCOLLECTION = "/rest/user/product/page";   //商品收藏
+    public static final String SELLERPAGE = "/rest/user/seller/page";   //商家收藏
+    public static final String HISTORYALL = "/rest/user/history/all";   //浏览历史
+    public static final String FAVORITEDELETE = "/rest/user/favorite/delete";   //商家收藏删除
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";
     public static final String CODE_SUCCESS = "0";  //联网成功

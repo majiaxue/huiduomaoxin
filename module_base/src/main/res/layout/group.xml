@@ -3,6 +3,7 @@
     android:id="@+id/group_bg"
     android:layout_width="@dimen/dp_100"
     android:layout_height="@dimen/dp_47"
+    android:background="#f5f5f5"
     android:orientation="horizontal">
 
     <TextView

@@ -47,6 +47,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     public void initData() {
         ARouter.getInstance().inject(this);
         presenter.searchFlowLayout(searchFlowLayout);
+
     }
 
     @Override

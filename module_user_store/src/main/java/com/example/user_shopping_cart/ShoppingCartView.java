@@ -7,4 +7,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface ShoppingCartView extends IView {
+    void isHide(boolean isHide);
 }

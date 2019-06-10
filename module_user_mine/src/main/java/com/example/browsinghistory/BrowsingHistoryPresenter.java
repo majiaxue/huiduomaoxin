@@ -4,22 +4,26 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.browsinghistory.adapter.BrowsingHistoryParentAdapter;
-import com.example.browsinghistory.bean.BrowsingHistoryParentBean;
+import com.example.browsinghistory.bean.BrowsingHistoryBean;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
-
-import org.w3c.dom.Text;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+
+import io.reactivex.Observable;
+import io.reactivex.internal.operators.flowable.FlowableLastMaybe;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/27
@@ -29,9 +33,8 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     private boolean isCompile = false;
     private BrowsingHistoryParentAdapter browsingHistoryParentAdapter;
-    private List<BrowsingHistoryParentBean> parentBeanList;
+    private List<BrowsingHistoryBean.RecordsBean> parentBeanList = new ArrayList<>();
     private boolean flag = true;
-    private boolean isAllParentChecked;
 
     public BrowsingHistoryPresenter(Context context) {
         super(context);
@@ -42,31 +45,44 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     }
 
-    public void browsingHistoryRec(RecyclerView browsingHistoryRec) {
-        parentBeanList = new ArrayList<>();
-        parentBeanList.add(new BrowsingHistoryParentBean(true, "5月27日"));
-        parentBeanList.add(new BrowsingHistoryParentBean(false, "5月20日"));
-        parentBeanList.add(new BrowsingHistoryParentBean(false, "5月17日"));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        browsingHistoryRec.setLayoutManager(linearLayoutManager);
-        browsingHistoryParentAdapter = new BrowsingHistoryParentAdapter(mContext, parentBeanList, R.layout.item_browsing_history_parent, false);
-        browsingHistoryRec.setAdapter(browsingHistoryParentAdapter);
-        //点击选中全部子布局的check
-        browsingHistoryParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+    public void browsingHistoryRec(final RecyclerView browsingHistoryRec) {
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.HISTORYALL);
+        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void ViewOnClick(final View view, final int index) {
+            public void onSuccess(String result, String msg) {
+                BrowsingHistoryBean browsingHistoryBean = JSON.parseObject(result, new TypeReference<BrowsingHistoryBean>() {
+                }.getType());
 
-                view.setOnClickListener(new View.OnClickListener() {
+                parentBeanList.clear();
+                parentBeanList.addAll(browsingHistoryBean.getRecords());
+
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                browsingHistoryRec.setLayoutManager(linearLayoutManager);
+                browsingHistoryParentAdapter = new BrowsingHistoryParentAdapter(mContext, parentBeanList, R.layout.item_browsing_history_parent, false);
+                browsingHistoryRec.setAdapter(browsingHistoryParentAdapter);
+                //点击选中全部子布局的check
+                browsingHistoryParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        flag = true;
-                        checkAll(index);
+                    public void ViewOnClick(final View view, final int index) {
+
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                flag = true;
+                                checkAll(index);
+                            }
+                        });
 
                     }
                 });
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
 
             }
-        });
+        }));
+
 
     }
 
@@ -74,15 +90,16 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     private void checkAll(int index) {
         if (parentBeanList.get(index).isCheck()) {
             parentBeanList.get(index).setCheck(false);
+            browsingHistoryParentAdapter.checkAll(index, true);
         } else {
             parentBeanList.get(index).setCheck(true);
+            browsingHistoryParentAdapter.checkAll(index, false);
         }
 
         browsingHistoryParentAdapter.notifyDataSetChanged();
 
         for (int i = 0; i < parentBeanList.size(); i++) {
             if (!parentBeanList.get(i).isCheck()) {
-                isAllParentChecked = false;
                 flag = false;
             }
         }
@@ -107,14 +124,15 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     //选中parent全部的checkbox
     public void checkAllParent(boolean isCheckAllParent) {
-        this.isAllParentChecked = isCheckAllParent;
         if (isCheckAllParent) {
             for (int i = 0; i < parentBeanList.size(); i++) {
                 parentBeanList.get(i).setCheck(false);
+                browsingHistoryParentAdapter.checkAll(i, true);
             }
         } else {
             for (int i = 0; i < parentBeanList.size(); i++) {
                 parentBeanList.get(i).setCheck(true);
+                browsingHistoryParentAdapter.checkAll(i, false);
             }
         }
 
@@ -124,15 +142,18 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
     //删除
     public void deleteList() {
-        for (int i = parentBeanList.size() - 1; i >= 0; i--) {
-            if (parentBeanList.get(i).isCheck()) {
-                parentBeanList.remove(i);
-            }
-        }
+//        for (int i = parentBeanList.size() - 1; i >= 0; i--) {
+//            if (parentBeanList.get(i).isCheck()) {
+//                parentBeanList.remove(i);
+//            }
+//        }
+
+
         if (parentBeanList.size() == 0) {
             getView().isCompile(false);
             getView().isCheckAll(false);
         }
+
         browsingHistoryParentAdapter.notifyDataSetChanged();
     }
 }

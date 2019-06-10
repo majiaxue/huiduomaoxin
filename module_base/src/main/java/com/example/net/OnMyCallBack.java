@@ -57,6 +57,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
                 listener.onSuccess(data, msg);
             } else if (CommonResource.TOKEN_EXPIRE.equals(code)) {
                 SPUtil.addParm(CommonResource.TOKEN, "");
+                listener.onError(code, msg);
             } else {
                 listener.onError(code, msg);
             }

@@ -17,6 +17,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.search.UserSearchActivity;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.shop_home.adapter.TreasureLstAdapter;
 import com.example.type_detail.adapter.TypeDetailLstAdapter;
@@ -133,7 +134,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
     }
 
     public void jumpToSearch() {
-        ARouter.getInstance().build("/module_home/SearchActivity").withString("from", "users").navigation();
+        mContext.startActivity(new Intent(mContext, UserSearchActivity.class));
     }
 
     public void click() {

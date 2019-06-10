@@ -1,5 +1,6 @@
 package com.example.goodscollection;
 
+import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
 import com.example.mvp.IView;
 
@@ -16,4 +17,6 @@ public interface GoodsCollectionView extends IView {
     void loadUI(GoodsCollectionRecAdapter adapter);
 
     void empty(boolean isEmpty);
+
+    void loadCommend(BaseRecStaggeredAdapter adapter);
 }

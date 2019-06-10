@@ -80,10 +80,10 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setXBanner(XBanner homeXbanner, final ImageView homeTopBg) {
         images = new ArrayList<>();
-        images.add(new TopBannerBean(R.drawable.banner1));
-        images.add(new TopBannerBean(R.drawable.banner2));
-        images.add(new TopBannerBean(R.drawable.banner3));
-        images.add(new TopBannerBean(R.drawable.banner4));
+        for (int i = 0; i < 4; i++) {
+            images.add(new TopBannerBean(R.drawable.banner11));
+        }
+
 //        homeXbanner.setData(images, null);
         homeXbanner.setBannerData(R.layout.image_fresco, images);
         homeXbanner.loadImage(new XBanner.XBannerAdapter() {

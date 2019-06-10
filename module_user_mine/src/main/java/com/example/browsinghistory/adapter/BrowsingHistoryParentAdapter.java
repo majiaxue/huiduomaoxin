@@ -3,48 +3,62 @@ package com.example.browsinghistory.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.browsinghistory.bean.BrowsingHistoryChildBean;
-import com.example.browsinghistory.bean.BrowsingHistoryParentBean;
+import com.example.browsinghistory.bean.BrowsingHistoryBean;
 import com.example.module_user_mine.R;
+import com.example.utils.LogUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
-public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHistoryParentBean> {
+public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHistoryBean.RecordsBean> {
 
     private boolean isParentCompile;
     private BrowsingHistoryChildAdapter browsingHistoryChildAdapter;
-    private List<BrowsingHistoryChildBean> childList;
-    private List<BrowsingHistoryParentBean> parentList;
+    private List<BrowsingHistoryBean.RecordsBean> parentList;
     private boolean allCheck = true;
     private ImageView parentCheck;
+    private List<BrowsingHistoryBean.RecordsBean.ItemBean> childList = new ArrayList<>();
 
-    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryParentBean> mList, int mLayoutId) {
+
+    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryParentBean> mList, int mLayoutId, boolean parentCompile) {
+    public BrowsingHistoryParentAdapter(Context context, List<BrowsingHistoryBean.RecordsBean> mList, int mLayoutId, boolean parentCompile) {
         super(context, mList, mLayoutId);
         this.isParentCompile = parentCompile;
         parentList = mList;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, final BrowsingHistoryParentBean data, final int position) {
-        holder.setText(R.id.browsing_history_parent_time, data.getTime());
+    public void convert(RecyclerViewHolder holder, final BrowsingHistoryBean.RecordsBean data, final int position) {
+        childList.addAll(data.getItem());
+        String createTime = data.getCreateTime();
+        String[] s = createTime.split(" ");
+        String s1 = s[0];
+        String[] split = s1.split("-");
+
+        holder.setText(R.id.browsing_history_parent_time, split[1] + "月" + split[2] + "日");
+
+        LogUtil.e("simpleDateFormat------------->" + split[1] + "月" + split[2] + "日");
+
+
         parentCheck = holder.getView(R.id.browsing_history_parent_check);
         if (isParentCompile) {
             parentCheck.setVisibility(View.VISIBLE);
@@ -53,23 +67,20 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
         }
 
         if (data.isCheck()) {
-            parentCheck.setImageResource(R.drawable.icon_xuanzhong);
+        parentCheck.setImageResource(R.drawable.icon_xuanzhong);
         } else {
-            parentCheck.setImageResource(R.drawable.icon_weixuanzhong);
+        parentCheck.setImageResource(R.drawable.icon_weixuanzhong);
         }
-
 
         viewOnClickListener.ViewOnClick(holder.getView(R.id.browsing_history_parent_check), position);
 
         final RecyclerView browsingHistoryParentRec = holder.getView(R.id.browsing_history_parent_rec);
-        childList = new ArrayList<>();
-        childList.add(new BrowsingHistoryChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
-        childList.add(new BrowsingHistoryChildBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店", false));
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         browsingHistoryParentRec.setLayoutManager(linearLayoutManager);
-        browsingHistoryChildAdapter = new BrowsingHistoryChildAdapter(context, childList, R.layout.item_browsing_history_child, false);
+        browsingHistoryChildAdapter = new BrowsingHistoryChildAdapter(context, data.getItem(), R.layout.item_browsing_history_child, false);
+        browsingHistoryChildAdapter.setChildCompile(isParentCompile);
         browsingHistoryParentRec.setAdapter(browsingHistoryChildAdapter);
-
         browsingHistoryChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
             @Override
             public void ViewTwoOnClick(final View view1, View view2, final int childPosition) {
@@ -78,7 +89,8 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
                     public void onClick(View v) {
                         //选中
                         Toast.makeText(context, "childPosition:" + position + childPosition, Toast.LENGTH_SHORT).show();
-                        isAllCheck(childPosition);
+                        allCheck = true;
+                        isAllCheck(position, childPosition);
                     }
                 });
 
@@ -91,57 +103,48 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
             }
         });
 
-        if (data.isCheck()){
-            for (int i = 0; i < childList.size(); i++) {
-                childList.get(i).setCheck(true);
-            }
-        }else{
-            for (int i = 0; i < childList.size(); i++) {
-                childList.get(i).setCheck(false);
-            }
-        }
-        browsingHistoryChildAdapter.notifyDataSetChanged();
 
-
-        browsingHistoryChildAdapter.setChildCompile(isParentCompile);
     }
 
 
-    public void isAllCheck(int childPosition) {
+    public void isAllCheck(int position, int childPosition) {
 
-        if (childList.get(childPosition).isCheck()) {
-            childList.get(childPosition).setCheck(false);
+        Log.d("77777", "position: --->" + position);
+        Log.d("77777", "childPosition: ----->" + childPosition);
+
+        if (parentList.get(position).getItem().get(childPosition).isCheck()) {
+            parentList.get(position).getItem().get(childPosition).setCheck(false);
         } else {
-            childList.get(childPosition).setCheck(true);
+            parentList.get(position).getItem().get(childPosition).setCheck(true);
         }
 
-        browsingHistoryChildAdapter.notifyDataSetChanged();
+//        browsingHistoryChildAdapter.notifyDataSetChanged();
 
-        for (int i = 0; i < childList.size(); i++) {
-            if (!childList.get(i).isCheck()){
+        for (int i = 0; i < parentList.get(position).getItem().size(); i++) {
+            if (!parentList.get(position).getItem().get(i).isCheck()) {
                 allCheck = false;
             }
         }
 
+        parentList.get(position).setCheck(allCheck);
 
-//        return allCheck;
-
+        notifyDataSetChanged();
     }
 
 
-//    public void checkAll(boolean status) {
-//        if (status) {
-//            for (int i = 0; i < childList.size(); i++) {
-//                childList.get(i).setCheck(false);
-//            }
-//        } else {
-//            for (int i = 0; i < childList.size(); i++) {
-//                childList.get(i).setCheck(true);
-//            }
-//        }
-//
-//        browsingHistoryChildAdapter.notifyDataSetChanged();
-//    }
+    public void checkAll(int position, boolean status) {
+        if (status) {
+            for (int i = 0; i < parentList.get(position).getItem().size(); i++) {
+                parentList.get(position).getItem().get(i).setCheck(false);
+            }
+        } else {
+            for (int i = 0; i < parentList.get(position).getItem().size(); i++) {
+                parentList.get(position).getItem().get(i).setCheck(true);
+            }
+        }
+
+        browsingHistoryChildAdapter.notifyDataSetChanged();
+    }
 
 
     public void setCompile(boolean compile) {

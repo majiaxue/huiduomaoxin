@@ -46,7 +46,7 @@
 
             <LinearLayout
                 android:id="@+id/cart_child_specification"
-                android:layout_width="@dimen/dp_71"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_21"
                 android:layout_below="@id/cart_child_name"
                 android:layout_marginTop="@dimen/dp_11"
@@ -58,6 +58,7 @@
                     android:id="@+id/cart_child_colour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
                     android:includeFontPadding="false"
                     android:text="白色，"
                     android:textColor="#999999"
@@ -75,6 +76,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_8"
                     android:layout_height="@dimen/dp_4"
+                    android:layout_marginRight="@dimen/dp_5"
                     android:src="@drawable/icon_gengduo20" />
 
             </LinearLayout>

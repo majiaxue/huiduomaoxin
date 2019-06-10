@@ -13,12 +13,21 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.HotSaleBean;
+import com.example.common.CommonResource;
 import com.example.entity.BaseStaggeredRecBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
@@ -26,12 +35,18 @@ import com.example.utils.TxtUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/28
  * Describe:
  */
 public class ObligationPresenter extends BasePresenter<ObligationView> {
+
+    private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
 
     public ObligationPresenter(Context context) {
         super(context);
@@ -42,41 +57,51 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
 
     }
 
-    public void obligationRec(RecyclerView obligationRec) {
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        //添加间距
-        SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
-        if (obligationRec.getItemDecorationCount() == 0) {
-            obligationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
-        }
-        obligationRec.setLayoutManager(staggeredGridLayoutManager);
-        List<BaseStaggeredRecBean> baseStaggeredRecList = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            baseStaggeredRecList.add(new BaseStaggeredRecBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店"));
-            baseStaggeredRecList.add(new BaseStaggeredRecBean(R.drawable.img_109, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345人付款", "97%好评", "班迪卡旗舰店"));
-            baseStaggeredRecList.add(new BaseStaggeredRecBean(R.drawable.img_110, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "97%好评", "班迪卡旗舰店"));
-
-        }
-        BaseRecStaggeredAdapter baseRecStaggeredAdapter = new BaseRecStaggeredAdapter(mContext, baseStaggeredRecList, R.layout.item_base_rec_staggered_grid);
-        obligationRec.setAdapter(baseRecStaggeredAdapter);
-
-        baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+    public void obligationRec(final RecyclerView obligationRec) {
+//        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.HOTNEWSEARCH);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-            @Override
-            public void ViewOnClick(View view, final int index) {
-                view.setOnClickListener(new View.OnClickListener() {
+            public void onSuccess(String result, String msg) {
+                HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
+                }.getType());
+                commendList.clear();
+                commendList.addAll(hotSaleBean.getData());
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                //添加间距
+                SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
+                if (obligationRec.getItemDecorationCount() == 0) {
+                    obligationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+                }
+                obligationRec.setLayoutManager(staggeredGridLayoutManager);
+                BaseRecStaggeredAdapter baseRecStaggeredAdapter = new BaseRecStaggeredAdapter(mContext, commendList, R.layout.item_base_rec_staggered_grid);
+                obligationRec.setAdapter(baseRecStaggeredAdapter);
+
+                baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                     }
                 });
+                baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                    @Override
+                    public void ViewOnClick(View view, final int index) {
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("errorMsg------->"+errorMsg);
+            }
+        }));
     }
 
     public void popupCancellationOrder(){
