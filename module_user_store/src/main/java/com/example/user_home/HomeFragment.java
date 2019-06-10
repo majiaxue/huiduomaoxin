@@ -113,21 +113,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         userHomeRefresh.setRefreshHeader(customHeader);
-        //设置上拉刷新下拉加载
-        userHomeRefresh.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                newGoodsIndex = 1;
-                presenter.getNewRecommend(newGoodsIndex);
-            }
-        });
-        userHomeRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                newGoodsIndex++;
-                presenter.getNewRecommend(newGoodsIndex);
-            }
-        });
+
     }
 
     @Override
@@ -160,6 +146,29 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                 Toast.makeText(getContext(), "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //设置上拉刷新下拉加载
+        userHomeRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                newGoodsIndex = 1;
+                presenter.getNewRecommend(newGoodsIndex);
+            }
+        });
+        userHomeRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                newGoodsIndex++;
+                presenter.getNewRecommend(newGoodsIndex);
+            }
+        });
+
+        userHomeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_user_store/typeDetail").withBoolean("hotSale", true).navigation();
+            }
+        });
     }
 
     @Override
@@ -176,11 +185,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     public void loadCommend(CommendAdapter adapter) {
         userHomeRefresh.finishLoadMore();
         userHomeRvGoods.setAdapter(adapter);
+        presenter.commendClick();
     }
 
     @Override
     public void loadBanner(final List<BannerBean> beanList) {
         userHomeXbanner.setBannerData(beanList);
+        Glide.with(getContext()).load(beanList.get(0).getPicBackUrl()).into(userHomeTopImg);
         userHomeXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
@@ -198,14 +209,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
             @Override
             public void onPageSelected(int i) {
-                if (i == 0) {
-                    userHomeTopImg.setImageResource(R.drawable.image1);
-                } else if (i == 1) {
-                    userHomeTopImg.setImageResource(R.drawable.image2);
-                } else if (i == 2) {
-                    userHomeTopImg.setImageResource(R.drawable.image3);
-                } else {
-                    userHomeTopImg.setImageResource(R.drawable.image4);
+                if (!getActivity().isFinishing()) {
+                    Glide.with(getContext()).load(beanList.get(i).getPicBackUrl()).into(userHomeTopImg);
                 }
             }
 
@@ -214,6 +219,12 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
             }
         });
+    }
+
+    @Override
+    public void refreshSuccess() {
+        userHomeRefresh.finishLoadMore();
+        userHomeRefresh.finishRefresh();
     }
 
     @Override

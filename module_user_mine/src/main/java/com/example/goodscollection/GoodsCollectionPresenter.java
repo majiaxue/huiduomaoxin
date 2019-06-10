@@ -27,6 +27,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 
 import java.util.ArrayList;
@@ -252,7 +253,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.FAVORITEDELETE,deleteList);
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

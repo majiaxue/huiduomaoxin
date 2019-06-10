@@ -1,25 +1,26 @@
 package com.example.main;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.view.StatusBarView;
+import com.example.utils.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -35,15 +36,16 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     RadioButton mainHome;
     @BindView(R2.id.main_classify)
     RadioButton mainClassify;
-    @BindView(R2.id.main_multi_user_mall)
-    LinearLayout mainMultiUserMall;
+    @BindView(R2.id.main_user_mall)
+    LinearLayout mainUserMall;
     @BindView(R2.id.main_hairring)
     RadioButton mainHairring;
     @BindView(R2.id.main_mine)
     RadioButton mainMine;
     @BindView(R2.id.main_group)
     RadioGroup mainGroup;
-
+    @Autowired(name = "type")
+    String type;
 
     @Override
     public int getLayoutId() {
@@ -52,8 +54,12 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         initPermission();
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
+        if ("login".equals(type)) {
+            presenter.click(R.id.main_mine);
+        }
     }
 
     @Override
@@ -65,13 +71,19 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
             }
         });
 
-        mainMultiUserMall.setOnClickListener(new View.OnClickListener() {
+        mainUserMall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(MainActivity.this, "我是多用户商城", Toast.LENGTH_SHORT).show();
                 ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().post(new EventBusBean("login"));
     }
 
     @Override

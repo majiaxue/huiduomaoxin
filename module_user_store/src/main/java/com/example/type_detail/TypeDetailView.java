@@ -10,4 +10,6 @@ public interface TypeDetailView extends IView {
     void loadWaterfallRv(TypeDetailWaterfallAdapter adapter);
 
     void updateTitle(boolean salesVolume, boolean price, boolean credit);
+
+    void refreshSuccess();
 }

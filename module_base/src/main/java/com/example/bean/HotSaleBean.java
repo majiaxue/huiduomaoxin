@@ -122,6 +122,7 @@ public class HotSaleBean implements Serializable {
         private Object createTime;
         private int sellerId;
         private String sellerName;
+        private String goodReputation;
 
         public String getSellerName() {
             return sellerName;
@@ -481,6 +482,14 @@ public class HotSaleBean implements Serializable {
 
         public void setSellerId(int sellerId) {
             this.sellerId = sellerId;
+        }
+
+        public String getGoodReputation() {
+            return goodReputation;
+        }
+
+        public void setGoodReputation(String goodReputation) {
+            this.goodReputation = goodReputation;
         }
     }
 }

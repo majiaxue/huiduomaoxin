@@ -10,8 +10,7 @@
         android:id="@+id/user_home_top_img"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_151"
-        android:scaleType="fitXY"
-        android:src="@drawable/image1" />
+        android:scaleType="fitXY"/>
 
     <LinearLayout
         android:id="@+id/user_home_top"

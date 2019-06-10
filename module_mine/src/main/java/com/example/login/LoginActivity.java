@@ -69,11 +69,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
         loginBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (presenter.inputIsEmpty(loginName.getText().toString(), loginPassword.getText().toString())) {
-                    Toast.makeText(LoginActivity.this, "账号或密码不能为空", Toast.LENGTH_SHORT).show();
-                } else {
-
-                }
+                presenter.login(loginName.getText().toString(), loginPassword.getText().toString());
             }
         });
         //打开微信登陆

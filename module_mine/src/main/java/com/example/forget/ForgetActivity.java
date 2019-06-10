@@ -65,7 +65,7 @@ public class ForgetActivity extends BaseActivity<ForgetView, ForgetPresneter> im
         forgetGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getCodeNum();
+                presenter.getCodeNum(forgetPhone.getText().toString());
             }
         });
     }

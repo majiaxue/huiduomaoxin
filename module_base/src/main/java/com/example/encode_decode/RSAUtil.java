@@ -2,6 +2,8 @@ package com.example.encode_decode;
 
 import android.content.Context;
 
+import com.example.utils.LogUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,16 +37,16 @@ public class RSAUtil {
      *
      * @author szk
      */
-    public static String encrypt(Context context, String info) {
+    public static String encrypt(Context context, String info, String key) {
         // 从文件中得到公钥
         PublicKey publicKey = null;
+
         try {
-            InputStream inPublic = context.getResources().getAssets().open("public_key.pem");
-            publicKey = loadPublicKey(inPublic);
+            publicKey = loadingPublicKey(key);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        LogUtil.e("公钥：" + publicKey.toString());
         // 加密encryptByPublicKey
         byte[] encryptByte = encryptData(info.getBytes(), publicKey);
         return Base64Utils.encode(encryptByte);

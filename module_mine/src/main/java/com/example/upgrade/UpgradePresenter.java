@@ -39,7 +39,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LogUtil.e("开发中。。。。");
+
                     }
                 });
             }

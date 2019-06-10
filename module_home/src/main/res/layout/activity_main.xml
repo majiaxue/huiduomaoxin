@@ -31,7 +31,7 @@
             android:paddingTop="@dimen/dp_7" />
 
         <LinearLayout
-            android:id="@+id/main_multi_user_mall"
+            android:id="@+id/main_user_mall"
             style="@style/main_bottom_back"
             android:gravity="center"
             android:orientation="vertical">

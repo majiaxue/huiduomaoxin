@@ -7,6 +7,7 @@ import android.support.multidex.MultiDexApplication;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -24,6 +25,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
             ARouter.openDebug();// 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
         }
         ARouter.init(this);
+        SPUtil.getInstance(this);
 
         wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
         wxapi.registerApp(CommonResource.WXAPPID);

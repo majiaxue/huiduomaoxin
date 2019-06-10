@@ -1,19 +1,18 @@
 package com.example.search;
 
 import android.content.Context;
-import android.support.design.widget.TabLayout;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.view.FlowLayout;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,6 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 //            "渔夫帽湖蓝色", "渔夫帽湖蓝色"};
     private List<String> mVals = new ArrayList<>();
     private TextView searchTextView;
-    private String[] titleArr = {"淘宝","拼多多","京东"};
 
     public SearchPresenter(Context context) {
         super(context);
@@ -35,56 +33,6 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     @Override
     protected void onViewDestroy() {
-
-    }
-
-    public void initTabLayout(final TabLayout searchTab) {
-        for (String title : titleArr) {
-            searchTab.addTab(searchTab.newTab().setText(title));
-        }
-
-        searchTab.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //了解源码得知 线的宽度是根据 tabView的宽度来设置的
-                    LinearLayout mTabStrip = (LinearLayout) searchTab.getChildAt(0);
-
-                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-                        View tabView = mTabStrip.getChildAt(i);
-
-                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
-                        Field mTextViewField =
-                                tabView.getClass().getDeclaredField("mTextView");
-                        mTextViewField.setAccessible(true);
-
-                        TextView mTextView = (TextView) mTextViewField.get(tabView);
-
-                        tabView.setPadding(0, 0, 0, 0);
-
-                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
-                        int width = 0;
-                        width = mTextView.getWidth();
-                        if (width == 0) {
-                            mTextView.measure(0, 0);
-                            width = mTextView.getMeasuredWidth();
-                        }
-
-                        //设置tab左右间距为10dp  注意这里不能使用Padding
-                        // 因为源码中线的宽度是根据 tabView的宽度来设置的
-                        LinearLayout.LayoutParams params =
-                                (LinearLayout.LayoutParams) tabView.getLayoutParams();
-                        params.width = width;
-                        tabView.setLayoutParams(params);
-
-                        tabView.invalidate();
-                    }
-
-                } catch (Exception e) {
-
-                }
-            }
-        });
 
     }
 
@@ -110,15 +58,9 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         }
     }
 
-    public void searchEdit(EditText searchEdit, FlowLayout searchFlowLayout) {
-        String s = searchEdit.getText().toString();
-        searchTextView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.search_text_view, searchFlowLayout, false);
-        mVals.add(s);
-        searchTextView.setText(s);
-        if (s != null && !s.equals("")) {
-            searchFlowLayout.addView(searchTextView);
-        } else {
-            Toast.makeText(mContext, "请输入商品信息", Toast.LENGTH_SHORT).show();
+    public void searchEdit(String content, String from) {
+        if ("users".equals(from)) {
+            ARouter.getInstance().build("/module_user_store/typeDetail").withString("search", content).navigation();
         }
     }
 }

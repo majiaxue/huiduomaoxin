@@ -5,4 +5,6 @@ import com.example.mvp.IView;
 
 public interface GroupFansView extends IView {
     void loadUI(GroupFansRvAdapter adapter);
+
+    void loadFinish();
 }

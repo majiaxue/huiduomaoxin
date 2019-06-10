@@ -65,7 +65,7 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
         registerGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getCodeNum();
+                presenter.getCodeNum(registerPhone.getText().toString());
             }
         });
 
@@ -73,6 +73,13 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.toRegister(registerPhone.getText().toString(),registerPassword.getText().toString(),registerCode.getText().toString(),registerInviteCode.getText().toString());
             }
         });
     }

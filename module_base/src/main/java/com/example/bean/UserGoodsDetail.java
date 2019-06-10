@@ -109,10 +109,10 @@ public class UserGoodsDetail {
     private int is_favorite;
     private Object path;
     private StoInfoBean stoInfo;
-    private List<?> productLadderList;
-    private List<?> productFullReductionList;
-    private List<?> memberPriceList;
-    private List<?> productAttributeValueList;
+    private List productLadderList;
+    private List productFullReductionList;
+    private List memberPriceList;
+    private List productAttributeValueList;
 
     public int getId() {
         return id;
@@ -506,35 +506,35 @@ public class UserGoodsDetail {
         this.stoInfo = stoInfo;
     }
 
-    public List<?> getProductLadderList() {
+    public List getProductLadderList() {
         return productLadderList;
     }
 
-    public void setProductLadderList(List<?> productLadderList) {
+    public void setProductLadderList(List productLadderList) {
         this.productLadderList = productLadderList;
     }
 
-    public List<?> getProductFullReductionList() {
+    public List getProductFullReductionList() {
         return productFullReductionList;
     }
 
-    public void setProductFullReductionList(List<?> productFullReductionList) {
+    public void setProductFullReductionList(List productFullReductionList) {
         this.productFullReductionList = productFullReductionList;
     }
 
-    public List<?> getMemberPriceList() {
+    public List getMemberPriceList() {
         return memberPriceList;
     }
 
-    public void setMemberPriceList(List<?> memberPriceList) {
+    public void setMemberPriceList(List memberPriceList) {
         this.memberPriceList = memberPriceList;
     }
 
-    public List<?> getProductAttributeValueList() {
+    public List getProductAttributeValueList() {
         return productAttributeValueList;
     }
 
-    public void setProductAttributeValueList(List<?> productAttributeValueList) {
+    public void setProductAttributeValueList(List productAttributeValueList) {
         this.productAttributeValueList = productAttributeValueList;
     }
 
@@ -708,7 +708,92 @@ public class UserGoodsDetail {
                 public void setLockStock(int lockStock) {
                     this.lockStock = lockStock;
                 }
+
+                @Override
+                public String toString() {
+                    return "ListBean{" +
+                            "id=" + id +
+                            ", productId=" + productId +
+                            ", skuCode='" + skuCode + '\'' +
+                            ", price=" + price +
+                            ", stock=" + stock +
+                            ", lowStock=" + lowStock +
+                            ", sp1='" + sp1 + '\'' +
+                            ", sp2='" + sp2 + '\'' +
+                            ", sp3=" + sp3 +
+                            ", pic='" + pic + '\'' +
+                            ", sale=" + sale +
+                            ", promotionPrice=" + promotionPrice +
+                            ", lockStock=" + lockStock +
+                            '}';
+                }
             }
         }
+
+        @Override
+        public String toString() {
+            return "StoInfoBean{" +
+                    "records=" + records +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "UserGoodsDetail{" +
+                "id=" + id +
+                ", productCategoryId=" + productCategoryId +
+                ", feightTemplateId=" + feightTemplateId +
+                ", productAttributeCategoryId=" + productAttributeCategoryId +
+                ", name='" + name + '\'' +
+                ", pic='" + pic + '\'' +
+                ", productSn='" + productSn + '\'' +
+                ", deleteStatus=" + deleteStatus +
+                ", publishStatus=" + publishStatus +
+                ", newStatus=" + newStatus +
+                ", recommandStatus=" + recommandStatus +
+                ", verifyStatus=" + verifyStatus +
+                ", sort=" + sort +
+                ", sale=" + sale +
+                ", price=" + price +
+                ", promotionPrice=" + promotionPrice +
+                ", giftGrowth=" + giftGrowth +
+                ", giftPoint=" + giftPoint +
+                ", usePointLimit=" + usePointLimit +
+                ", subTitle='" + subTitle + '\'' +
+                ", description='" + description + '\'' +
+                ", originalPrice=" + originalPrice +
+                ", stock=" + stock +
+                ", lowStock=" + lowStock +
+                ", unit='" + unit + '\'' +
+                ", weight=" + weight +
+                ", previewStatus=" + previewStatus +
+                ", serviceIds='" + serviceIds + '\'' +
+                ", keywords='" + keywords + '\'' +
+                ", note='" + note + '\'' +
+                ", albumPics='" + albumPics + '\'' +
+                ", detailTitle='" + detailTitle + '\'' +
+                ", detailDesc='" + detailDesc + '\'' +
+                ", detailHtml='" + detailHtml + '\'' +
+                ", detailMobileHtml='" + detailMobileHtml + '\'' +
+                ", promotionStartTime=" + promotionStartTime +
+                ", promotionEndTime=" + promotionEndTime +
+                ", promotionPerLimit=" + promotionPerLimit +
+                ", promotionType=" + promotionType +
+                ", brandName='" + brandName + '\'' +
+                ", productCategoryName='" + productCategoryName + '\'' +
+                ", supplyId=" + supplyId +
+                ", createTime=" + createTime +
+                ", sellerId=" + sellerId +
+                ", skuStockList=" + skuStockList +
+                ", cateParentId=" + cateParentId +
+                ", is_favorite=" + is_favorite +
+                ", path=" + path +
+                ", stoInfo=" + stoInfo +
+                ", productLadderList=" + productLadderList +
+                ", productFullReductionList=" + productFullReductionList +
+                ", memberPriceList=" + memberPriceList +
+                ", productAttributeValueList=" + productAttributeValueList +
+                '}';
     }
 }

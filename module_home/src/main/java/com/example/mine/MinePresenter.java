@@ -5,13 +5,27 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.UserInfoBean;
+import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class MinePresenter extends BasePresenter<MineView> {
 
@@ -81,12 +95,16 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void jumpToLogin() {
-        ARouter.getInstance().build("/mine/login").navigation();
+        if ("".equals(SPUtil.getToken())) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/setting").navigation();
+        }
     }
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(mContext);
     }
 
 
@@ -116,5 +134,31 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void jumpToupYYS() {
         ARouter.getInstance().build("/mine/operator").navigation();
+    }
+
+    public void loadData() {
+        LogUtil.e("--->" + SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
+                }.getType());
+                LogUtil.e("个人信息：" + userInfoBean);
+                if (getView() != null) {
+                    getView().loginSuccess(userInfoBean);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "---------" + errorMsg);
+                if ("2".equals(errorCode)) {
+                    if (getView() != null) {
+                        getView().onError();
+                    }
+                }
+            }
+        }));
     }
 }

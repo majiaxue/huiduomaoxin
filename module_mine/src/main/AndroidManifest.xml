@@ -23,7 +23,8 @@
 
         <activity
             android:name="com.example.setting.SettingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
 
         <activity
             android:name="com.example.update_password.UpdatePasswordActivity"

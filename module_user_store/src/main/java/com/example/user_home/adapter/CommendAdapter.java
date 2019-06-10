@@ -24,7 +24,7 @@ public class CommendAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean> {
                 .setText(R.id.rv_commend_price, "￥" + data.getPrice())
                 .setText(R.id.rv_commend_count, data.getSale() + "人付款")
                 .setText(R.id.rv_commend_shop, data.getSellerName())
-                .setImageUrl(R.id.rv_commend_img, data.getPic());
+                .setImageFresco(R.id.rv_commend_img, data.getPic());
         if (position == 0) {
             ImageView img = holder.getView(R.id.rv_commend_img);
             ViewGroup.LayoutParams params = img.getLayoutParams();

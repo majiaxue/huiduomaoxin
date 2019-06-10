@@ -17,6 +17,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +169,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE,deleteList);
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE,deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

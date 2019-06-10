@@ -1,6 +1,5 @@
 package com.example.search;
 
-import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -8,10 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.LogUtil;
 import com.example.view.FlowLayout;
 
 import butterknife.BindView;
@@ -32,8 +34,9 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     ImageView searchDelete;
     @BindView(R2.id.search_flow_layout)
     FlowLayout searchFlowLayout;
-    @BindView(R2.id.search_tab)
-    TabLayout searchTab;
+    @Autowired(name = "from")
+    String from;
+
 
     @Override
     public int getLayoutId() {
@@ -42,8 +45,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
 
     @Override
     public void initData() {
-        //初始化tablayout
-        presenter.initTabLayout(searchTab);
+        ARouter.getInstance().inject(this);
         presenter.searchFlowLayout(searchFlowLayout);
 
     }
@@ -59,7 +61,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.searchEdit(searchEdit,searchFlowLayout);
+                presenter.searchEdit(searchEdit.getText().toString(), from);
 
             }
         });

@@ -11,21 +11,20 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.ClassifyBean;
-import com.example.entity.RightRecBean;
 import com.example.type_detail.TypeDetailActivity;
 import com.example.user_store.R;
 
 import java.util.List;
 
-public class UserRightRecAdapter extends MyRecyclerAdapter<ClassifyBean.ClassifySecond> {
-    public UserRightRecAdapter(Context context, List<ClassifyBean.ClassifySecond> mList, int mLayoutId) {
+public class UserRightRecAdapter extends MyRecyclerAdapter<ClassifyBean.Records.RecordsSecond> {
+    public UserRightRecAdapter(Context context, List<ClassifyBean.Records.RecordsSecond> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, ClassifyBean.ClassifySecond data, int position) {
+    public void convert(RecyclerViewHolder holder, ClassifyBean.Records.RecordsSecond data, int position) {
         holder.setText(R.id.classify_right_title, data.getName());
-        List<ClassifyBean.ClassifySecond.ClassifyThird> list = data.getChildren();
+        final List<ClassifyBean.Records.RecordsSecond.RecordsThird> list = data.getChildren();
         //嵌套recycler
         UserRightRecChildAdapter myRightChildAdapter = new UserRightRecChildAdapter(context, list, R.layout.item_rec_child);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
@@ -36,7 +35,7 @@ public class UserRightRecAdapter extends MyRecyclerAdapter<ClassifyBean.Classify
         myRightChildAdapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                context.startActivity(new Intent(context, TypeDetailActivity.class));
+                ARouter.getInstance().build("/module_user_store/typeDetail").withString("search", list.get(position).getName()).navigation();
             }
         });
     }

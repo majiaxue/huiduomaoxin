@@ -5,10 +5,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bumptech.glide.Glide;
+import com.example.bean.BannerBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.stx.xhb.xbanner.XBanner;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -33,6 +37,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
     @Override
     public void initData() {
         includeTitle.setText("邀请好友");
+        presenter.loadData();
     }
 
     @Override
@@ -41,6 +46,17 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+    }
+
+    @Override
+    public void loadBanner(List<BannerBean> beanList) {
+        inviteFriendsBanner.setBannerData(beanList);
+        inviteFriendsBanner.loadImage(new XBanner.XBannerAdapter() {
+            @Override
+            public void loadBanner(XBanner banner, Object model, View view, int position) {
+                Glide.with(InviteFriendsActivity.this).load(((BannerBean) model).getXBannerUrl()).into((ImageView) view);
             }
         });
     }

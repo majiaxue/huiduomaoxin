@@ -21,4 +21,6 @@ public interface HomeView extends IView {
     void loadCommend(CommendAdapter adapter);
 
     void loadBanner(List<BannerBean> beanList);
+
+    void refreshSuccess();
 }

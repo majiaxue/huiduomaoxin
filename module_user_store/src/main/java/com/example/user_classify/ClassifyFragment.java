@@ -10,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean2;
@@ -82,7 +85,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
             @Override
             public void onClick(View v) {
                 //到搜索页面
-                ARouter.getInstance().build("/module_home/SearchActivity").navigation();
+                ARouter.getInstance().build("/module_home/SearchActivity").withString("from", "users").navigation();
             }
         });
 
@@ -100,6 +103,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
         if (!hidden && position != -1) {
             presenter.formHomeNavbar(position);
             position = -1;
+            hideBanner();
         }
     }
 
@@ -112,12 +116,12 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
 
     @Override
     public void loadBanner(final List<BannerBean> list) {
-        userClassifyXBanner.setBannerData(R.layout.image_fresco, list);
+        userClassifyXBanner.setBannerData(list);
         userClassifyXBanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
-                bannerImage.setImageURI(Uri.parse(list.get(position).getXBannerUrl()));
+                RequestOptions requestOptions = RequestOptions.centerCropTransform();
+                Glide.with(getContext()).load(((BannerBean) model).getXBannerUrl()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(R.dimen.dp_10))).into((ImageView) view);
             }
         });
         // 设置XBanner的页面切换特效
@@ -132,6 +136,16 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
                 Toast.makeText(getContext(), "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void showBanner() {
+        userClassifyXBanner.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideBanner() {
+        userClassifyXBanner.setVisibility(View.GONE);
     }
 
     @Override

@@ -27,6 +27,7 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.view.SelfDialog;
 import com.example.view.SlideRecyclerView;
@@ -107,7 +108,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                         List<Integer> integers = new ArrayList<>();
                                         integers.add(favoriteId);
                                         LogUtil.e("shopCollect--------->" + favoriteId);
-                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE,integers);
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                             @Override
                                             public void onSuccess(String result, String msg) {
@@ -201,5 +202,4 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
         }));
 
     }
-
 }

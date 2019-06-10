@@ -3,22 +3,15 @@ package com.example.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.common.CommonResource;
+
 public class SPUtil {
     private static SharedPreferences userSP;
 
     public static void getInstance(Context context) {
-        //获取用户登录状态sharedPreferences对象
-        userSP = context.getSharedPreferences("userLoginStatus", Context.MODE_PRIVATE);
-    }
-
-    /**
-     * 获取用户登录状态
-     *
-     * @return
-     */
-    public static boolean isLogin() {
-        boolean loginStatus = userSP.getBoolean("isLogin", false);
-        return loginStatus;
+        if (userSP == null) {
+            userSP = context.getSharedPreferences("fltk", 0);
+        }
     }
 
     /**
@@ -53,6 +46,10 @@ public class SPUtil {
 
     public static boolean getBooleanValue(String key) {
         return userSP.getBoolean(key, false);
+    }
+
+    public static String getToken() {
+        return userSP.getString(CommonResource.TOKEN, "");
     }
 
     /**

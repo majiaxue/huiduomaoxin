@@ -8,16 +8,13 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.PUT;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -32,8 +29,6 @@ public interface ApiService {
     @POST
     Observable<ResponseBody> postDataWithout(@Url String url);
 
-    @POST
-    Observable<ResponseBody> postDataWithBody(@Url String url, @Body RequestBody body);
 
     @GET
     Observable<ResponseBody> getData(@Url String url, @QueryMap Map<String, String> map);
@@ -41,25 +36,30 @@ public interface ApiService {
     @GET
     Observable<ResponseBody> getDataWithout(@Url String url);
 
+    @POST
+    Observable<ResponseBody> postDataWithBody(@Url String url, @Body RequestBody body);
+
+    @FormUrlEncoded
+    @PUT
+    Observable<ResponseBody> putData(@Url String url, @FieldMap Map<String, String> map, @Header("Authorization") String token);
+
     @DELETE
-    Observable<ResponseBody> postDelete(@Url String url, @Body List<Integer> list);
+    Observable<ResponseBody> deleteDataWithout(@Url String url, @Header("Authorization") String token);
 
-    //多用户商城---新品推荐
+    @DELETE
+    Observable<ResponseBody> postDelete(@Url String url, @Body List<Integer> list, @Header("Authorization") String token);
+
+    @FormUrlEncoded
+    @POST
+    Observable<ResponseBody> postHead(@Url String url, @FieldMap Map<String, String> map, @Header("Authorization") String token);
+
+    @POST
+    Observable<ResponseBody> postHeadWithout(@Url String url, @Header("Authorization") String token);
+
+
     @GET
-    Observable<ResponseBody> newCommend(@Url String url, @Query("current") int current, @Query("saleDesc") int saleDesc);
+    Observable<ResponseBody> getHead(@Url String url, @QueryMap Map<String, String> map, @Header("Authorization") String token);
 
-    //多用户商城---热销商品
     @GET
-    Observable<ResponseBody> hotSale(@Url String url, @Query("current") int current, @Query("saleDesc") int newStatus);
-
-    //把微信code传给后台---获取商品详情
-    @GET
-    Observable<ResponseBody> sendCode(@Url String url, @Query("code") String code);
-
-    //多用户商城---搜索
-    @GET
-    Observable<ResponseBody> search(@Url String url, @Query("current") int current, @Query("searchInfo") String search);
-
-
-
+    Observable<ResponseBody> getHeadWithout(@Url String url, @Header("Authorization") String token);
 }

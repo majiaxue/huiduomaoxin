@@ -374,7 +374,6 @@
                         android:background="@drawable/bg_5_f5f5f5"
                         android:gravity="center"
                         android:padding="@dimen/dp_4"
-                        android:text="共30种颜色可选"
                         android:textColor="#999999"
                         android:textSize="@dimen/sp_10" />
                 </RelativeLayout>

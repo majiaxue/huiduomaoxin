@@ -10,18 +10,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
-import com.example.bean.BaseEntity;
 import com.example.bean.HotSaleBean;
 import com.example.bean.NavBarBean;
 import com.example.bean.Records;
 import com.example.common.CommonResource;
-import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.EventBusBean2;
 import com.example.goods_detail.GoodsDetailActivity;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.search.UserSearchActivity;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_home.adapter.NavBarAdapter;
@@ -29,13 +28,10 @@ import com.example.user_home.adapter.SaleHotAdapter;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,11 +60,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void loadData(int hotSaleIndex) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).hotSale(CommonResource.HOTNEWSEARCH, hotSaleIndex, 1);
+        //热销
+        Map map = MapUtil.getInstance().addParms("pageNum", hotSaleIndex + "").addParms("saleDesc", "1").build();
+        Observable observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("xinpin:"+result);
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
                 if (hotSaleBean != null) {
@@ -94,6 +91,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             }
         }));
 
+        //导航栏
         Observable<ResponseBody> observable1 = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.TYPENAVBAR);
         RetrofitUtil.getInstance().toSubscribe(observable1, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -133,10 +131,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void setXBanner() {
+        //轮播图
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.USERSBANNER);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e(result);
                 Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
                 }.getType());
                 beanList = records.getRecords();
@@ -153,13 +153,13 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void jumpToSearch() {
-        ARouter.getInstance().build("/module_home/SearchActivity").navigation();
+        mContext.startActivity(new Intent(mContext, UserSearchActivity.class));
     }
 
     public void getNewRecommend(final int newGoodsIndex) {
-        Map map = MapUtil.getInstance().addParms("current", newGoodsIndex + "").addParms("saleDesc", "1").build();
+        //新品推荐
+        Map map = MapUtil.getInstance().addParms("pageNum", newGoodsIndex + "").addParms("saleDesc", "1").build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
-//        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).newCommend(CommonResource.HOTNEWSEARCH, newGoodsIndex, 1);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -172,35 +172,43 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     commendList.addAll(hotSaleBean.getData());
                     if (commendAdapter == null) {
                         commendAdapter = new CommendAdapter(mContext, commendList, R.layout.rv_commend);
-                    }
-                    if (getView() != null) {
-                        getView().loadCommend(commendAdapter);
-                    }
-                    commendAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
-                        @Override
-                        public void ViewTwoOnClick(View view1, View view2, final int position) {
-                            view1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    jumpToGoodsDetail(position);
-                                }
-                            });
-
-                            view2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    jumpToShop(position);
-                                }
-                            });
+                        if (getView() != null) {
+                            getView().loadCommend(commendAdapter);
                         }
-                    });
+                    } else {
+                        commendAdapter.notifyDataSetChanged();
+                        getView().refreshSuccess();
+                    }
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                if (getView() != null) {
+                    getView().refreshSuccess();
+                }
             }
         }));
+    }
+
+    public void commendClick() {
+        commendAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
+            @Override
+            public void ViewTwoOnClick(View view1, View view2, final int position) {
+                view1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        jumpToGoodsDetail(position);
+                    }
+                });
+
+                view2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        jumpToShop(position);
+                    }
+                });
+            }
+        });
     }
 }
