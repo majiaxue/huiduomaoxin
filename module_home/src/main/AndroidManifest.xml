@@ -16,7 +16,6 @@
         <activity android:name="com.example.search.SearchActivity" />
         <activity
             android:name="com.example.main.StartPageActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -84,7 +84,7 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
                 LogUtil.e("注册：" + result);
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
-                SPUtil.addParm("token", "JWT " + userInfoBean.getToken());
+                SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
                 ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                 ((Activity) mContext).finish();
             }

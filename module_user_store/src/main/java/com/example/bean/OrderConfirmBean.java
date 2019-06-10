@@ -15,7 +15,7 @@ public class OrderConfirmBean implements Serializable {
     /**
      * 对应的商品skuId
      */
-    private String ProductSkuId;
+    private String productSkuId;
     /**
      * 收货人手机号
      */
@@ -45,7 +45,7 @@ public class OrderConfirmBean implements Serializable {
     /**
      * 运费
      */
-    private BigDecimal freightAmount;
+    private double freightAmount;
 
     /**
      * 订单留言
@@ -64,7 +64,7 @@ public class OrderConfirmBean implements Serializable {
     /**
      * 优惠券抵扣金额
      */
-    private BigDecimal couponAmount;
+    private double couponAmount;
 
     /**
      * 购买数量
@@ -102,6 +102,16 @@ public class OrderConfirmBean implements Serializable {
      * 库存
      */
     private Long stock;
+
+    private String productId;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public Long getStock() {
         return stock;
@@ -152,11 +162,11 @@ public class OrderConfirmBean implements Serializable {
     }
 
     public String getProductSkuId() {
-        return ProductSkuId;
+        return productSkuId;
     }
 
     public void setProductSkuId(String productSkuId) {
-        ProductSkuId = productSkuId;
+        this.productSkuId = productSkuId;
     }
 
     public String getReceiverPhone() {
@@ -207,11 +217,11 @@ public class OrderConfirmBean implements Serializable {
         this.orderAddress = orderAddress;
     }
 
-    public BigDecimal getFreightAmount() {
+    public double getFreightAmount() {
         return freightAmount;
     }
 
-    public void setFreightAmount(BigDecimal freightAmount) {
+    public void setFreightAmount(double freightAmount) {
         this.freightAmount = freightAmount;
     }
 
@@ -239,11 +249,11 @@ public class OrderConfirmBean implements Serializable {
         this.couponId = couponId;
     }
 
-    public BigDecimal getCouponAmount() {
+    public double getCouponAmount() {
         return couponAmount;
     }
 
-    public void setCouponAmount(BigDecimal couponAmount) {
+    public void setCouponAmount(double couponAmount) {
         this.couponAmount = couponAmount;
     }
 
@@ -284,7 +294,7 @@ public class OrderConfirmBean implements Serializable {
         return "OrderConfirmBean{" +
                 "sellerId='" + sellerId + '\'' +
                 ", sellerName='" + sellerName + '\'' +
-                ", ProductSkuId='" + ProductSkuId + '\'' +
+                ", productSkuId='" + productSkuId + '\'' +
                 ", receiverPhone='" + receiverPhone + '\'' +
                 ", receiverName='" + receiverName + '\'' +
                 ", receiverRegion='" + receiverRegion + '\'' +
@@ -304,6 +314,7 @@ public class OrderConfirmBean implements Serializable {
                 ", goodsName='" + goodsName + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
+                ", productId=" + productId +
                 '}';
     }
 }

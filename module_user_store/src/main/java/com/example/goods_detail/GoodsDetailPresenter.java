@@ -383,13 +383,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             orderConfirmBean.setQuantity((int) quantity);
             orderConfirmBean.setSp1(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp1());
             orderConfirmBean.setSp2(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
-            orderConfirmBean.setPrice(userGoodsDetail.getPrice());
+            orderConfirmBean.setPrice(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPrice());
             orderConfirmBean.setSourceType(1);
             orderConfirmBean.setPic(userGoodsDetail.getPic());
             orderConfirmBean.setPrice(userGoodsDetail.getPrice());
             orderConfirmBean.setGoodsName(userGoodsDetail.getName());
             orderConfirmBean.setFeightTemplateId(userGoodsDetail.getFeightTemplateId());
             orderConfirmBean.setStock(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getStock());
+            orderConfirmBean.setProductId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getProductId());
             Intent intent = new Intent(mContext, OrderConfirmActivity.class);
             intent.putExtra("order", orderConfirmBean);
             mContext.startActivity(intent);

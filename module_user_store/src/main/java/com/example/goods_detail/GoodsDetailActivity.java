@@ -310,7 +310,8 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailName.setText(data.getName());
         goodsDetailPrice.setText(data.getPrice() + "");
         mTotalSpecs.setText("共" + data.getStoInfo().getRecords().size() + "种颜色可选");
-
+        Glide.with(this).load(data.getSellerLogo()).into(goodsDetailShopImg);
+        goodsDetailShopName.setText(data.getSellerName());
     }
 
     @Override

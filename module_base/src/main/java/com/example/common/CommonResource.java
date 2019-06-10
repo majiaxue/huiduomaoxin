@@ -30,6 +30,7 @@ public class CommonResource {
     public static final String GROUP_FANS = "/rest/user/fans";    //获取团队粉丝
     public static final String GROUP_FANS_POPPLE = "/rest/user/fans/detail";    //团队粉丝--一级粉丝数、今日新增
     public static final String MOREN_ADDRESS = "/rest/address/default";     //获取默认收货地址
+    public static final String GET_YUNGEI = "/rest/goods/queryFeight";      //获取运费
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //商品收藏

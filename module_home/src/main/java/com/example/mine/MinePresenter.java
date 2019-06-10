@@ -137,7 +137,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void loadData() {
-        LogUtil.e("--->" + SPUtil.getToken());
+        LogUtil.e("token--->" + SPUtil.getToken());
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

@@ -1,17 +1,15 @@
 package com.example.shippingaddress;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.browsinghistory.bean.BrowsingHistoryBean;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
@@ -20,18 +18,14 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.shippingaddress.adapter.ShippingAddressAdapter;
 import com.example.shippingaddress.amendaddress.AmendAddressActivity;
-import com.example.shippingaddress.bean.ShippingAddressBean;
+import com.example.bean.ShippingAddressBean;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -72,6 +66,17 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
                 shippingAddressAdapter = new ShippingAddressAdapter(mContext, shippingAddressBeanList, R.layout.item_shipping_address_rec);
                 shippingAddressRec.setAdapter(shippingAddressAdapter);
 
+                shippingAddressAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        Intent intent = new Intent();
+                        intent.putExtra("address", shippingAddressBeanList.get(position));
+                        ((Activity) mContext).setResult(Activity.RESULT_OK, intent);
+//                        ARouter.getInstance().build("/user/order_confirm").withSerializable("address", shippingAddressBeanList.get(position)).navigation();
+                        ((Activity) mContext).finish();
+                    }
+                });
+
                 shippingAddressAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                     @Override
                     public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
@@ -107,8 +112,8 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(mContext, AmendAddressActivity.class);
-                                intent.putExtra("shippingAddressBeanList",(Serializable) shippingAddressBeanList);
-                                intent.putExtra("position",position);
+                                intent.putExtra("shippingAddressBeanList", (Serializable) shippingAddressBeanList);
+                                intent.putExtra("position", position);
                                 mContext.startActivity(intent);
                             }
                         });
@@ -129,7 +134,7 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
                                             public void onSuccess(String result, String msg) {
                                                 LogUtil.e("shippingAddressResult删除地址------------->" + msg);
 //                                                for (int i = shippingAddressBeanList.size() - 1; i >= 0; i--) {
-                                                    shippingAddressBeanList.remove(position);
+                                                shippingAddressBeanList.remove(position);
 //                                                }
 
                                                 shippingAddressAdapter.notifyDataSetChanged();

@@ -18,7 +18,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.shippingaddress.amendaddress.bean.AmendAddressBean;
-import com.example.shippingaddress.bean.ShippingAddressBean;
+import com.example.bean.ShippingAddressBean;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;

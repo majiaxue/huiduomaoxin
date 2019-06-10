@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
-import com.example.bean.AddressBean;
 import com.example.bean.OrderConfirmBean;
+import com.example.bean.PostageBean;
+import com.example.bean.ShippingAddressBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -33,6 +34,8 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     TextView orderConfirmName;
     @BindView(R2.id.order_confirm_phone)
     TextView orderConfirmPhone;
+    @BindView(R2.id.order_confirm_address_detail)
+    TextView mAddressDetail;
     @BindView(R2.id.order_confirm_choose_address)
     TextView orderConfirmChooseAddress;
     @BindView(R2.id.order_confirm_shop_name)
@@ -80,7 +83,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     @BindView(R2.id.order_confirm_submit)
     TextView orderConfirmSubmit;
 
-    private OrderConfirmBean order;
+    private OrderConfirmBean confirmBean;
 
     @Override
     public int getLayoutId() {
@@ -90,20 +93,20 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     @Override
     public void initData() {
         Intent intent = getIntent();
-        order = (OrderConfirmBean) intent.getSerializableExtra("order");
-        LogUtil.e("确认：" + order);
+        confirmBean = (OrderConfirmBean) intent.getSerializableExtra("order");
+        LogUtil.e("确认：" + confirmBean);
         includeTitle.setText("确认订单");
-        orderConfirmShopName.setText(order.getSellerName());
-        Glide.with(this).load(order.getPic()).into(orderConfirmImg);
-        orderConfirmGoods.setText(order.getGoodsName());
-        orderConfirmColor.setText("颜色：" + order.getSp1() + "，" + "尺码：" + order.getSp2());
-        orderConfirmPrice.setText(order.getPrice() + "");
-        orderConfirmCount.setText(order.getQuantity() + "");
-        orderConfirmGoodsCount.setText("共" + order.getQuantity() + "件");
-        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(order.getPrice(), order.getQuantity()));
-        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(order.getPrice(), order.getQuantity()));
+        orderConfirmShopName.setText(confirmBean.getSellerName());
+        Glide.with(this).load(confirmBean.getPic()).into(orderConfirmImg);
+        orderConfirmGoods.setText(confirmBean.getGoodsName());
+        orderConfirmColor.setText("颜色：" + confirmBean.getSp1() + "，" + "尺码：" + confirmBean.getSp2());
+        orderConfirmPrice.setText(confirmBean.getPrice() + "");
+        orderConfirmCount.setText(confirmBean.getQuantity() + "");
+        orderConfirmGoodsCount.setText("共" + confirmBean.getQuantity() + "件");
+        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
+        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
 
-        presenter.loadData(order);
+        presenter.loadData();
     }
 
     @Override
@@ -118,7 +121,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmGoshop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToShop(order.getSellerId());
+                presenter.jumpToShop(confirmBean.getSellerId());
             }
         });
 
@@ -139,14 +142,20 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.minusCount();
+                if (confirmBean.getQuantity() > 1) {
+                    confirmBean.setQuantity(confirmBean.getQuantity() - 1);
+                    reviseCount();
+                }
             }
         });
 
         orderConfirmAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.addCount();
+                if (confirmBean.getQuantity() < confirmBean.getStock()) {
+                    confirmBean.setQuantity(confirmBean.getQuantity() + 1);
+                    reviseCount();
+                }
             }
         });
 
@@ -159,24 +168,53 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
+            loadAddress(addressBean);
+        }
+    }
+
+    @Override
     public void noAddress() {
         orderConfirmChooseAddress.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void loadAddress(AddressBean addressBean) {
+    public void loadAddress(ShippingAddressBean addressBean) {
         orderConfirmName.setText(addressBean.getAddressName());
         orderConfirmPhone.setText(addressBean.getAddressPhone());
-        orderConfirmChooseAddress.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
-        presenter.getPostage(order);
+        mAddressDetail.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
+
+        confirmBean.setReceiverName(addressBean.getAddressName());
+        confirmBean.setReceiverPhone(addressBean.getAddressPhone());
+        confirmBean.setReceiverProvince(addressBean.getAddressProvince());
+        confirmBean.setReceiverCity(addressBean.getAddressCity());
+        confirmBean.setReceiverRegion(addressBean.getAddressArea());
+        confirmBean.setOrderAddress(addressBean.getAddressDetail());
+
+        presenter.getPostage(confirmBean);
     }
 
     @Override
-    public void reviseCount(OrderConfirmBean orderConfirmBean) {
-        orderConfirmCount.setText(orderConfirmBean.getQuantity() + "");
-        orderConfirmGoodsCount.setText("共" + orderConfirmBean.getQuantity() + "件");
-        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(orderConfirmBean.getPrice(), orderConfirmBean.getQuantity()));
-        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(orderConfirmBean.getPrice(), orderConfirmBean.getQuantity()));
+    public void loadPostage(PostageBean postageBean) {
+        orderConfirmTotalYunfei.setText("+￥" + postageBean.getFeight());
+        if (postageBean.getIsPinkage() == 0) {
+            orderConfirmDeliveryTxt2.setText("包邮");
+        } else {
+            orderConfirmDeliveryTxt2.setText("+￥" + postageBean.getFeight());
+        }
+        confirmBean.setFreightAmount(postageBean.getFeight());
+        orderConfirmFinalPrice.setText("￥" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), postageBean.getFeight()));
+    }
+
+    private void reviseCount() {
+        orderConfirmCount.setText(confirmBean.getQuantity() + "");
+        orderConfirmGoodsCount.setText("共" + confirmBean.getQuantity() + "件");
+        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
+        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
+        orderConfirmFinalPrice.setText("￥" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), confirmBean.getFreightAmount()));
     }
 
     @Override

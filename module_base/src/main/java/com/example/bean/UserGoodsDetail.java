@@ -107,6 +107,7 @@ public class UserGoodsDetail {
     private Object createTime;
     private String sellerId;
     private String sellerName;
+    private String sellerLogo;
     private Object skuStockList;
     private String cateParentId;
     private String is_favorite;
@@ -116,6 +117,14 @@ public class UserGoodsDetail {
     private List productFullReductionList;
     private List memberPriceList;
     private List productAttributeValueList;
+
+    public String getSellerLogo() {
+        return sellerLogo;
+    }
+
+    public void setSellerLogo(String sellerLogo) {
+        this.sellerLogo = sellerLogo;
+    }
 
     public String getSellerName() {
         return sellerName;
@@ -605,7 +614,7 @@ public class UserGoodsDetail {
                 private String id;
                 private String productId;
                 private String skuCode;
-                private BigDecimal price;
+                private double price;
                 private Long stock;
                 private Long lowStock;
                 private String sp1;
@@ -613,7 +622,7 @@ public class UserGoodsDetail {
                 private String sp3;
                 private String pic;
                 private Long sale;
-                private BigDecimal promotionPrice;
+                private double promotionPrice;
                 private Long lockStock;
 
                 public String getId() {
@@ -640,11 +649,11 @@ public class UserGoodsDetail {
                     this.skuCode = skuCode;
                 }
 
-                public BigDecimal getPrice() {
+                public double getPrice() {
                     return price;
                 }
 
-                public void setPrice(BigDecimal price) {
+                public void setPrice(double price) {
                     this.price = price;
                 }
 
@@ -704,11 +713,11 @@ public class UserGoodsDetail {
                     this.sale = sale;
                 }
 
-                public BigDecimal getPromotionPrice() {
+                public double getPromotionPrice() {
                     return promotionPrice;
                 }
 
-                public void setPromotionPrice(BigDecimal promotionPrice) {
+                public void setPromotionPrice(double promotionPrice) {
                     this.promotionPrice = promotionPrice;
                 }
 
@@ -754,7 +763,7 @@ public class UserGoodsDetail {
         return "UserGoodsDetail{" +
                 "id='" + id + '\'' +
                 ", productCategoryId='" + productCategoryId + '\'' +
-                ", feightTemplateId='" + feightTemplateId + '\'' +
+                ", feightTemplateId=" + feightTemplateId +
                 ", productAttributeCategoryId='" + productAttributeCategoryId + '\'' +
                 ", name='" + name + '\'' +
                 ", pic='" + pic + '\'' +
@@ -797,6 +806,7 @@ public class UserGoodsDetail {
                 ", createTime=" + createTime +
                 ", sellerId='" + sellerId + '\'' +
                 ", sellerName='" + sellerName + '\'' +
+                ", sellerLogo='" + sellerLogo + '\'' +
                 ", skuStockList=" + skuStockList +
                 ", cateParentId='" + cateParentId + '\'' +
                 ", is_favorite='" + is_favorite + '\'' +
