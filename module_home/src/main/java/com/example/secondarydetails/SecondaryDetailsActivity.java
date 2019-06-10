@@ -8,11 +8,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.search.SearchActivity;
 import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +39,10 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     RecyclerView secondaryDetailsRec;
     @BindView(R2.id.secondary_details_no_goods)
     ImageView secondaryDetailsNoGoods;
+    @BindView(R2.id.secondary_details_smart_refresh)
+    SmartRefreshLayout secondaryDetailsSmartRefresh;
+    @Autowired(name = "type")
+    String type;
 
     @Override
     public int getLayoutId() {
@@ -41,9 +51,13 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
 
     @Override
     public void initData() {
-        Intent intent = getIntent();
-        String type = intent.getStringExtra("type");
-        presenter.initTab(secondaryDetailsTab, secondaryDetailsRec, type);
+        ARouter.getInstance().inject(this);
+//        Intent intent = getIntent();
+//        String type = intent.getStringExtra("type");
+        presenter.initView(secondaryDetailsTab, secondaryDetailsRec, secondaryDetailsSmartRefresh, type);
+        secondaryDetailsSmartRefresh.setRefreshHeader(new MaterialHeader(this));
+        //设置 Footer 为 球脉冲 样式
+        secondaryDetailsSmartRefresh.setRefreshFooter(new ClassicsFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
 //        presenter.secondaryDetailsRec(secondaryDetailsRec,type);
     }
 
@@ -90,5 +104,4 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
             secondaryDetailsRec.setVisibility(View.VISIBLE);
         }
     }
-
 }

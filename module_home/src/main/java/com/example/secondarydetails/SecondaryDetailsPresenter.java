@@ -26,6 +26,10 @@ import com.example.net.RetrofitUtil;
 import com.example.secondarydetails.bean.SecondaryPddRecBean;
 import com.example.secondarydetails.bean.SecondaryTabBean;
 import com.example.utils.LogUtil;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,7 +47,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
     private List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans = new ArrayList<>();
     private List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> baseRecBeanList = new ArrayList<>();
-
+    private int page = 1;
 
     public SecondaryDetailsPresenter(Context context) {
         super(context);
@@ -54,7 +58,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
     }
 
-    public void initTab(final TabLayout secondaryDetailsTab, final RecyclerView secondaryDetailsRec, final String type) {
+    public void initView(final TabLayout secondaryDetailsTab, final RecyclerView secondaryDetailsRec, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
         if (type.equals("1")) {
             Observable data = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.GOODSCATS);
             RetrofitUtil.getInstance().toSubscribe(data, new OnPddCallBack(new OnDataListener() {
@@ -79,7 +83,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             long cat_id = catsListBeans.get(tab.getPosition()).getCat_id();
                             Toast.makeText(mContext, "cat_id:" + cat_id, Toast.LENGTH_SHORT).show();
                             PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
-                            pddGoodsSearchVo.setPage(1);
+                            pddGoodsSearchVo.setPage(page);
                             pddGoodsSearchVo.setCatId(cat_id);
                             String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
                             LogUtil.e("SecondaryDetailsJson----------->" + pddGoodsSearchVoStr);
@@ -150,7 +154,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
                     });
 
-                    initList(catsListBeans, secondaryDetailsRec, type);
+                    initList(catsListBeans, secondaryDetailsRec, type, page);
+
 
 
                 }
@@ -160,12 +165,31 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsTabErrorMsg------------------>" + errorMsg);
                 }
             }));
+
+            secondaryDetailsSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(RefreshLayout refreshlayout) {
+                    page = 1;
+                    initList(catsListBeans, secondaryDetailsRec, type, page);
+//                            refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                    refreshlayout.finishRefresh();
+                }
+            });
+            secondaryDetailsSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(RefreshLayout refreshlayout) {
+                    page++;
+                    initList(catsListBeans, secondaryDetailsRec, type, page);
+//                            refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                    refreshlayout.finishLoadMore();
+                }
+            });
         }
     }
 
-    private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, final RecyclerView secondaryDetailsRec, final String type) {
+    private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, final RecyclerView secondaryDetailsRec, final String type, int page) {
         PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
-        pddGoodsSearchVo.setPage(1);
+        pddGoodsSearchVo.setPage(page);
         if (catsListBeans.size() != 0) {
             pddGoodsSearchVo.setCatId((long) catsListBeans.get(0).getCat_id());
         }
@@ -181,7 +205,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 }.getType());
                 if (!secondaryPddRecBean.getGoods_search_response().getTotal_count().equals("0")) {
                     getView().noGoods(false);
-                    baseRecBeanList.clear();
+//                    baseRecBeanList.clear();
                     baseRecBeanList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
