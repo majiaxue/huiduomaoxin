@@ -28,6 +28,7 @@ import com.example.user_shopping_cart.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -108,37 +110,37 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void setShoppingCartRec(final RecyclerView shoppingCartRec) {
+        Map map = MapUtil.getInstance().addParms("id", 1).addParms("flag", 1).build();
+        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi5(mContext).getData(CommonResource.CARTLIST,map);
+        RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("cart------>" + result);
+                CartBean cartBean = JSON.parseObject(result, new TypeReference<CartBean>() {
+                }.getType());
 
-//        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi5(mContext).cart(1, 1);
-//        RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
-//            @Override
-//            public void onSuccess(String result, String msg) {
-//                LogUtil.e("cart------>" + result);
-//                CartBean cartBean = JSON.parseObject(result, new TypeReference<CartBean>() {
-//                }.getType());
-//
-//                dataBeanList.clear();
-//                dataBeanList.addAll(cartBean.getRecords());
-//
-//                if (dataBeanList.size() == 0) {
-//                    getView().isHide(true);
-//
-//                } else {
-//                    getView().isHide(false);
-//                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//                    shoppingCartRec.setLayoutManager(linearLayoutManager);
-//                    CartParentRecAdapter cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent);
-//                    shoppingCartRec.setAdapter(cartParentRecAdapter);
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onError(String errorCode, String errorMsg) {
-//                LogUtil.e("cart-------->" + errorCode + "        " + errorMsg);
-//            }
-//        }));
+                dataBeanList.clear();
+                dataBeanList.addAll(cartBean.getRecords());
+
+                if (dataBeanList.size() == 0) {
+                    getView().isHide(true);
+
+                } else {
+                    getView().isHide(false);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    shoppingCartRec.setLayoutManager(linearLayoutManager);
+                    CartParentRecAdapter cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent);
+                    shoppingCartRec.setAdapter(cartParentRecAdapter);
+
+                }
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("cart-------->" + errorCode + "        " + errorMsg);
+            }
+        }));
 
 
     }

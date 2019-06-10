@@ -27,6 +27,7 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.view.SelfDialog;
 import com.example.view.SlideRecyclerView;
@@ -87,64 +88,59 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                 shopCollectAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
                     @Override
                     public void ViewTwoOnClick(View view1, View view2, final int position) {
-//                        view1.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                            }
-//                        });
-//                        view2.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                //取消店铺
-//                                final SelfDialog selfDialog = new SelfDialog(mContext);
-//                                selfDialog.setTitle("提示");
-//                                selfDialog.setMessage("您确定要取消关注此店铺吗？");
-//                                selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
-//                                    @Override
-//                                    public void onYesClick() {
-//                                        int favoriteId = position;
-//                                        List<Integer> integers = new ArrayList<>();
-//                                        integers.add(favoriteId);
-//                                        LogUtil.e("shopCollect--------->" + favoriteId);
-//                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).favoriteDelete(integers);
-//                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-//                                            @Override
-//                                            public void onSuccess(String result, String msg) {
-//                                                LogUtil.e("shopCollect--------->" + msg);
-////                                                initShopCollectRec(shopCollectRec);
-//
-//                                                shopCollectAdapter.notifyDataSetChanged();
-//
-//                                                shopCollectRec.closeMenu();
-//                                                selfDialog.dismiss();
-//                                                PopUtils.setTransparency(mContext, 1f);
-//
-//                                                getView().refreshRec(true);
-//
-//                                            }
-//
-//                                            @Override
-//                                            public void onError(String errorCode, String errorMsg) {
-//                                                LogUtil.e("shopCollect--------->" + errorMsg);
-//                                            }
-//                                        }));
-//
-//
-//                                    }
-//                                });
-//                                selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-//                                    @Override
-//                                    public void onNoClick() {
-//                                        selfDialog.dismiss();
-//                                        shopCollectRec.closeMenu();
-//                                        PopUtils.setTransparency(mContext, 1f);
-//                                    }
-//                                });
-//                                PopUtils.setTransparency(mContext, 0.3f);
-//                                selfDialog.show();
-//                            }
-//                        });
+                        view1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
+                        view2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //取消店铺
+                                final SelfDialog selfDialog = new SelfDialog(mContext);
+                                selfDialog.setTitle("提示");
+                                selfDialog.setMessage("您确定要取消关注此店铺吗？");
+                                selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+                                    @Override
+                                    public void onYesClick() {
+                                        int favoriteId = dataBeanList.get(position).getFavoriteId();
+                                        List<Integer> integers = new ArrayList<>();
+                                        integers.add(favoriteId);
+                                        LogUtil.e("shopCollect--------->" + favoriteId);
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
+                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                            @Override
+                                            public void onSuccess(String result, String msg) {
+                                                LogUtil.e("shopCollect--------->" + msg);
+                                                dataBeanList.remove(position);
+                                                shopCollectAdapter.notifyDataSetChanged();
+                                                shopCollectRec.closeMenu();
+                                                selfDialog.dismiss();
+                                                PopUtils.setTransparency(mContext, 1f);
+                                            }
+
+                                            @Override
+                                            public void onError(String errorCode, String errorMsg) {
+                                                LogUtil.e("shopCollect--------->" + errorMsg);
+                                            }
+                                        }));
+
+
+                                    }
+                                });
+                                selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                                    @Override
+                                    public void onNoClick() {
+                                        selfDialog.dismiss();
+                                        shopCollectRec.closeMenu();
+                                        PopUtils.setTransparency(mContext, 1f);
+                                    }
+                                });
+                                PopUtils.setTransparency(mContext, 0.3f);
+                                selfDialog.show();
+                            }
+                        });
                     }
                 });
             }

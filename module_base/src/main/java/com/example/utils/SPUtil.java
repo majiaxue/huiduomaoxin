@@ -14,6 +14,16 @@ public class SPUtil {
         }
     }
 
+    /**
+     * 获取用户登录状态
+     *
+     * @return
+     */
+    public static boolean isFirstIn() {
+        boolean firstInStatus = userSP.getBoolean("isFirstIn", false);
+        return firstInStatus;
+    }
+
     public static void addParm(String key, String value) {
         userSP.edit().putString(key, value).commit();
     }

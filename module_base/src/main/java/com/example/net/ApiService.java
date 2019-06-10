@@ -1,5 +1,6 @@
 package com.example.net;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -24,6 +25,7 @@ public interface ApiService {
     @POST
     Observable<ResponseBody> postData(@Url String url, @FieldMap Map<String, String> map);
 
+    @FormUrlEncoded
     @POST
     Observable<ResponseBody> postDataWithout(@Url String url);
 
@@ -44,6 +46,8 @@ public interface ApiService {
     @DELETE
     Observable<ResponseBody> deleteDataWithout(@Url String url, @Header("Authorization") String token);
 
+    @DELETE
+    Observable<ResponseBody> postDelete(@Url String url, @Body List<Integer> list, @Header("Authorization") String token);
 
     @FormUrlEncoded
     @POST

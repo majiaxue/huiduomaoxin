@@ -3,19 +3,12 @@ package com.example.net;
 import android.content.Context;
 
 import com.example.common.CommonResource;
-import com.example.utils.LogUtil;
-import com.example.utils.SPUtil;
-
-import java.io.IOException;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,6 +22,7 @@ public class RetrofitUtil {
     private volatile ApiService mApiService2;
     private volatile ApiService mApiService3;
     private volatile ApiService mApiService4;
+    private volatile ApiService mApiService5;
     /**
      * 请求失败重连次数
      */
@@ -102,6 +96,23 @@ public class RetrofitUtil {
             }
         }
         return mApiService4;
+    }
+
+    public ApiService getApi5(Context context) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURLCART)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService5 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService5 == null) {
+                    mApiService5 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService5;
     }
 
     /**

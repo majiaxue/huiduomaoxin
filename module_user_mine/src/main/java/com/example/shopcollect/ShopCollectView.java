@@ -7,5 +7,4 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface ShopCollectView extends IView {
-    void refreshRec(boolean refreshRec);
 }

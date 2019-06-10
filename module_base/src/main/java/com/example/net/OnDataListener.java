@@ -8,7 +8,6 @@ public interface OnDataListener {
      * @param result
      */
     void onSuccess(String result, String msg);
-
     /**
      * 网络请求失败
      */
