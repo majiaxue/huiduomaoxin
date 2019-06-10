@@ -4,7 +4,7 @@ public class CommonResource {
     public static final String BASEURL = "http://192.168.1.30:9001";
     public static final String BASEURL2 = "http://192.168.1.23:9005";
     public static final String BASEURL4 = "http://192.168.1.2:4001";
-    public static final String BASEURLCART= "http://192.168.1.30:9004";
+    public static final String BASEURLCART = "http://192.168.1.30:9004";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -17,6 +17,7 @@ public class CommonResource {
     public static final String GETREGISTERCODE = "/rest/register";      //获取注册验证码
     public static final String PHONEREGISTER = "/rest/register/phone";      //手机号注册
     public static final String WXLOGIN_PHONE = "/rest/wx/save";       //微信登陆后绑定手机号
+    public static final String WXLOGIN_GETCODE = "/rest/wx";        //微信登陆后获取手机验证码
     public static final String GETUSERINFO = "/rest/user/info";     //获取个人信息
     public static final String LOGIN_PHONE = "/rest/login";         //手机号密码登录----获取登录/忘记密码验证码
     public static final String LOGIN_CODE = "/rest/login/code";     //手机验证码登录
@@ -27,6 +28,9 @@ public class CommonResource {
     public static final String REVISEPHONE = "/rest/phone";         //修改手机号
     public static final String LOGOUT = "/rest/logout";             //退出登录
     public static final String GROUP_FANS = "/rest/user/fans";    //获取团队粉丝
+    public static final String GROUP_FANS_POPPLE = "/rest/user/fans/detail";    //团队粉丝--一级粉丝数、今日新增
+    public static final String MOREN_ADDRESS = "/rest/address/default";     //获取默认收货地址
+
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏
@@ -36,8 +40,6 @@ public class CommonResource {
     public static final String FAVORITEDELETE = "/rest/user/favorite/delete";   //删除收藏商品,取消关注商家
     public static final String HISTORYDELETE = "/rest/user/history/delete";   //浏览历史记录删除
     public static final String CARTLIST = "/rest/order/list";   //购物车
-
-
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

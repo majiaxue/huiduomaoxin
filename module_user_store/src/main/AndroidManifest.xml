@@ -43,6 +43,10 @@
         <activity
             android:name="com.example.search.UserSearchActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.order_confirm.OrderConfirmActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -49,7 +49,7 @@ public class LoginWeChatPresenter extends BasePresenter<LoginWeChatView> {
         if (!PhoneNumUtil.isMobileNO(string)) {
             Toast.makeText(mContext, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
         } else {
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.GETREGISTERCODE + "/" + string);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.WXLOGIN_GETCODE + "/" + string);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -82,7 +82,7 @@ public class LoginWeChatPresenter extends BasePresenter<LoginWeChatView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }));
         } else {

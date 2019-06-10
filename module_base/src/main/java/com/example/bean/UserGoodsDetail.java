@@ -1,5 +1,6 @@
 package com.example.bean;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class UserGoodsDetail {
@@ -49,6 +50,7 @@ public class UserGoodsDetail {
      * supplyId : null
      * createTime : null
      * sellerId : 11
+     * sellName: 一二三旗舰店
      * productLadderList : []
      * productFullReductionList : []
      * memberPriceList : []
@@ -60,33 +62,33 @@ public class UserGoodsDetail {
      * stoInfo : {"records":[{"skuName":"黑色","list":[{"id":263,"productId":39,"skuCode":"201905270039001","price":null,"stock":0,"lowStock":0,"sp1":"黑色","sp2":"M","sp3":null,"pic":"http://192.168.1.5:9000/goods/4edc88f93808416fa93698c5b975688a.jpg","sale":null,"promotionPrice":null,"lockStock":0},{"id":264,"productId":39,"skuCode":"201905270039002","price":null,"stock":0,"lowStock":0,"sp1":"黑色","sp2":"XL","sp3":null,"pic":"http://192.168.1.5:9000/goods/4edc88f93808416fa93698c5b975688a.jpg","sale":null,"promotionPrice":null,"lockStock":0}]},{"skuName":"白色","list":[{"id":265,"productId":39,"skuCode":"201905270039003","price":null,"stock":0,"lowStock":0,"sp1":"白色","sp2":"M","sp3":null,"pic":"http://192.168.1.5:9000/goods/6079d34a440b4c8a80d1e1521def1600.jpg","sale":null,"promotionPrice":null,"lockStock":0},{"id":266,"productId":39,"skuCode":"201905270039004","price":null,"stock":0,"lowStock":0,"sp1":"白色","sp2":"XL","sp3":null,"pic":"http://192.168.1.5:9000/goods/6079d34a440b4c8a80d1e1521def1600.jpg","sale":null,"promotionPrice":null,"lockStock":0}]}]}
      */
 
-    private int id;
-    private int productCategoryId;
-    private int feightTemplateId;
-    private int productAttributeCategoryId;
+    private String id;
+    private String productCategoryId;
+    private Long feightTemplateId;
+    private String productAttributeCategoryId;
     private String name;
     private String pic;
     private String productSn;
-    private int deleteStatus;
-    private int publishStatus;
-    private int newStatus;
-    private int recommandStatus;
-    private int verifyStatus;
-    private int sort;
-    private int sale;
+    private String deleteStatus;
+    private String publishStatus;
+    private String newStatus;
+    private String recommandStatus;
+    private String verifyStatus;
+    private String sort;
+    private String sale;
     private double price;
     private double promotionPrice;
-    private int giftGrowth;
-    private int giftPoint;
-    private int usePointLimit;
+    private String giftGrowth;
+    private String giftPoint;
+    private String usePointLimit;
     private String subTitle;
     private String description;
     private double originalPrice;
-    private int stock;
-    private int lowStock;
+    private String stock;
+    private String lowStock;
     private String unit;
     private double weight;
-    private int previewStatus;
+    private String previewStatus;
     private String serviceIds;
     private String keywords;
     private String note;
@@ -97,16 +99,17 @@ public class UserGoodsDetail {
     private String detailMobileHtml;
     private Object promotionStartTime;
     private Object promotionEndTime;
-    private int promotionPerLimit;
-    private int promotionType;
+    private String promotionPerLimit;
+    private String promotionType;
     private String brandName;
     private String productCategoryName;
     private Object supplyId;
     private Object createTime;
-    private int sellerId;
+    private String sellerId;
+    private String sellerName;
     private Object skuStockList;
-    private int cateParentId;
-    private int is_favorite;
+    private String cateParentId;
+    private String is_favorite;
     private Object path;
     private StoInfoBean stoInfo;
     private List productLadderList;
@@ -114,35 +117,43 @@ public class UserGoodsDetail {
     private List memberPriceList;
     private List productAttributeValueList;
 
-    public int getId() {
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getProductCategoryId() {
+    public String getProductCategoryId() {
         return productCategoryId;
     }
 
-    public void setProductCategoryId(int productCategoryId) {
+    public void setProductCategoryId(String productCategoryId) {
         this.productCategoryId = productCategoryId;
     }
 
-    public int getFeightTemplateId() {
+    public Long getFeightTemplateId() {
         return feightTemplateId;
     }
 
-    public void setFeightTemplateId(int feightTemplateId) {
+    public void setFeightTemplateId(Long feightTemplateId) {
         this.feightTemplateId = feightTemplateId;
     }
 
-    public int getProductAttributeCategoryId() {
+    public String getProductAttributeCategoryId() {
         return productAttributeCategoryId;
     }
 
-    public void setProductAttributeCategoryId(int productAttributeCategoryId) {
+    public void setProductAttributeCategoryId(String productAttributeCategoryId) {
         this.productAttributeCategoryId = productAttributeCategoryId;
     }
 
@@ -170,59 +181,59 @@ public class UserGoodsDetail {
         this.productSn = productSn;
     }
 
-    public int getDeleteStatus() {
+    public String getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(int deleteStatus) {
+    public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
-    public int getPublishStatus() {
+    public String getPublishStatus() {
         return publishStatus;
     }
 
-    public void setPublishStatus(int publishStatus) {
+    public void setPublishStatus(String publishStatus) {
         this.publishStatus = publishStatus;
     }
 
-    public int getNewStatus() {
+    public String getNewStatus() {
         return newStatus;
     }
 
-    public void setNewStatus(int newStatus) {
+    public void setNewStatus(String newStatus) {
         this.newStatus = newStatus;
     }
 
-    public int getRecommandStatus() {
+    public String getRecommandStatus() {
         return recommandStatus;
     }
 
-    public void setRecommandStatus(int recommandStatus) {
+    public void setRecommandStatus(String recommandStatus) {
         this.recommandStatus = recommandStatus;
     }
 
-    public int getVerifyStatus() {
+    public String getVerifyStatus() {
         return verifyStatus;
     }
 
-    public void setVerifyStatus(int verifyStatus) {
+    public void setVerifyStatus(String verifyStatus) {
         this.verifyStatus = verifyStatus;
     }
 
-    public int getSort() {
+    public String getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(String sort) {
         this.sort = sort;
     }
 
-    public int getSale() {
+    public String getSale() {
         return sale;
     }
 
-    public void setSale(int sale) {
+    public void setSale(String sale) {
         this.sale = sale;
     }
 
@@ -242,27 +253,27 @@ public class UserGoodsDetail {
         this.promotionPrice = promotionPrice;
     }
 
-    public int getGiftGrowth() {
+    public String getGiftGrowth() {
         return giftGrowth;
     }
 
-    public void setGiftGrowth(int giftGrowth) {
+    public void setGiftGrowth(String giftGrowth) {
         this.giftGrowth = giftGrowth;
     }
 
-    public int getGiftPoint() {
+    public String getGiftPoint() {
         return giftPoint;
     }
 
-    public void setGiftPoint(int giftPoint) {
+    public void setGiftPoint(String giftPoint) {
         this.giftPoint = giftPoint;
     }
 
-    public int getUsePointLimit() {
+    public String getUsePointLimit() {
         return usePointLimit;
     }
 
-    public void setUsePointLimit(int usePointLimit) {
+    public void setUsePointLimit(String usePointLimit) {
         this.usePointLimit = usePointLimit;
     }
 
@@ -290,19 +301,19 @@ public class UserGoodsDetail {
         this.originalPrice = originalPrice;
     }
 
-    public int getStock() {
+    public String getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(String stock) {
         this.stock = stock;
     }
 
-    public int getLowStock() {
+    public String getLowStock() {
         return lowStock;
     }
 
-    public void setLowStock(int lowStock) {
+    public void setLowStock(String lowStock) {
         this.lowStock = lowStock;
     }
 
@@ -322,11 +333,11 @@ public class UserGoodsDetail {
         this.weight = weight;
     }
 
-    public int getPreviewStatus() {
+    public String getPreviewStatus() {
         return previewStatus;
     }
 
-    public void setPreviewStatus(int previewStatus) {
+    public void setPreviewStatus(String previewStatus) {
         this.previewStatus = previewStatus;
     }
 
@@ -410,19 +421,19 @@ public class UserGoodsDetail {
         this.promotionEndTime = promotionEndTime;
     }
 
-    public int getPromotionPerLimit() {
+    public String getPromotionPerLimit() {
         return promotionPerLimit;
     }
 
-    public void setPromotionPerLimit(int promotionPerLimit) {
+    public void setPromotionPerLimit(String promotionPerLimit) {
         this.promotionPerLimit = promotionPerLimit;
     }
 
-    public int getPromotionType() {
+    public String getPromotionType() {
         return promotionType;
     }
 
-    public void setPromotionType(int promotionType) {
+    public void setPromotionType(String promotionType) {
         this.promotionType = promotionType;
     }
 
@@ -458,11 +469,11 @@ public class UserGoodsDetail {
         this.createTime = createTime;
     }
 
-    public int getSellerId() {
+    public String getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
 
@@ -474,19 +485,19 @@ public class UserGoodsDetail {
         this.skuStockList = skuStockList;
     }
 
-    public int getCateParentId() {
+    public String getCateParentId() {
         return cateParentId;
     }
 
-    public void setCateParentId(int cateParentId) {
+    public void setCateParentId(String cateParentId) {
         this.cateParentId = cateParentId;
     }
 
-    public int getIs_favorite() {
+    public String getIs_favorite() {
         return is_favorite;
     }
 
-    public void setIs_favorite(int is_favorite) {
+    public void setIs_favorite(String is_favorite) {
         this.is_favorite = is_favorite;
     }
 
@@ -591,33 +602,33 @@ public class UserGoodsDetail {
                  * lockStock : 0
                  */
 
-                private int id;
-                private int productId;
+                private String id;
+                private String productId;
                 private String skuCode;
-                private Object price;
-                private int stock;
-                private int lowStock;
+                private BigDecimal price;
+                private Long stock;
+                private Long lowStock;
                 private String sp1;
                 private String sp2;
-                private Object sp3;
+                private String sp3;
                 private String pic;
-                private Object sale;
-                private Object promotionPrice;
-                private int lockStock;
+                private Long sale;
+                private BigDecimal promotionPrice;
+                private Long lockStock;
 
-                public int getId() {
+                public String getId() {
                     return id;
                 }
 
-                public void setId(int id) {
+                public void setId(String id) {
                     this.id = id;
                 }
 
-                public int getProductId() {
+                public String getProductId() {
                     return productId;
                 }
 
-                public void setProductId(int productId) {
+                public void setProductId(String productId) {
                     this.productId = productId;
                 }
 
@@ -629,27 +640,27 @@ public class UserGoodsDetail {
                     this.skuCode = skuCode;
                 }
 
-                public Object getPrice() {
+                public BigDecimal getPrice() {
                     return price;
                 }
 
-                public void setPrice(Object price) {
+                public void setPrice(BigDecimal price) {
                     this.price = price;
                 }
 
-                public int getStock() {
+                public Long getStock() {
                     return stock;
                 }
 
-                public void setStock(int stock) {
+                public void setStock(Long stock) {
                     this.stock = stock;
                 }
 
-                public int getLowStock() {
+                public Long getLowStock() {
                     return lowStock;
                 }
 
-                public void setLowStock(int lowStock) {
+                public void setLowStock(Long lowStock) {
                     this.lowStock = lowStock;
                 }
 
@@ -669,11 +680,11 @@ public class UserGoodsDetail {
                     this.sp2 = sp2;
                 }
 
-                public Object getSp3() {
+                public String getSp3() {
                     return sp3;
                 }
 
-                public void setSp3(Object sp3) {
+                public void setSp3(String sp3) {
                     this.sp3 = sp3;
                 }
 
@@ -685,27 +696,27 @@ public class UserGoodsDetail {
                     this.pic = pic;
                 }
 
-                public Object getSale() {
+                public Long getSale() {
                     return sale;
                 }
 
-                public void setSale(Object sale) {
+                public void setSale(Long sale) {
                     this.sale = sale;
                 }
 
-                public Object getPromotionPrice() {
+                public BigDecimal getPromotionPrice() {
                     return promotionPrice;
                 }
 
-                public void setPromotionPrice(Object promotionPrice) {
+                public void setPromotionPrice(BigDecimal promotionPrice) {
                     this.promotionPrice = promotionPrice;
                 }
 
-                public int getLockStock() {
+                public Long getLockStock() {
                     return lockStock;
                 }
 
-                public void setLockStock(int lockStock) {
+                public void setLockStock(Long lockStock) {
                     this.lockStock = lockStock;
                 }
 
@@ -741,33 +752,33 @@ public class UserGoodsDetail {
     @Override
     public String toString() {
         return "UserGoodsDetail{" +
-                "id=" + id +
-                ", productCategoryId=" + productCategoryId +
-                ", feightTemplateId=" + feightTemplateId +
-                ", productAttributeCategoryId=" + productAttributeCategoryId +
+                "id='" + id + '\'' +
+                ", productCategoryId='" + productCategoryId + '\'' +
+                ", feightTemplateId='" + feightTemplateId + '\'' +
+                ", productAttributeCategoryId='" + productAttributeCategoryId + '\'' +
                 ", name='" + name + '\'' +
                 ", pic='" + pic + '\'' +
                 ", productSn='" + productSn + '\'' +
-                ", deleteStatus=" + deleteStatus +
-                ", publishStatus=" + publishStatus +
-                ", newStatus=" + newStatus +
-                ", recommandStatus=" + recommandStatus +
-                ", verifyStatus=" + verifyStatus +
-                ", sort=" + sort +
-                ", sale=" + sale +
+                ", deleteStatus='" + deleteStatus + '\'' +
+                ", publishStatus='" + publishStatus + '\'' +
+                ", newStatus='" + newStatus + '\'' +
+                ", recommandStatus='" + recommandStatus + '\'' +
+                ", verifyStatus='" + verifyStatus + '\'' +
+                ", sort='" + sort + '\'' +
+                ", sale='" + sale + '\'' +
                 ", price=" + price +
                 ", promotionPrice=" + promotionPrice +
-                ", giftGrowth=" + giftGrowth +
-                ", giftPoint=" + giftPoint +
-                ", usePointLimit=" + usePointLimit +
+                ", giftGrowth='" + giftGrowth + '\'' +
+                ", giftPoint='" + giftPoint + '\'' +
+                ", usePointLimit='" + usePointLimit + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", description='" + description + '\'' +
                 ", originalPrice=" + originalPrice +
-                ", stock=" + stock +
-                ", lowStock=" + lowStock +
+                ", stock='" + stock + '\'' +
+                ", lowStock='" + lowStock + '\'' +
                 ", unit='" + unit + '\'' +
                 ", weight=" + weight +
-                ", previewStatus=" + previewStatus +
+                ", previewStatus='" + previewStatus + '\'' +
                 ", serviceIds='" + serviceIds + '\'' +
                 ", keywords='" + keywords + '\'' +
                 ", note='" + note + '\'' +
@@ -778,16 +789,17 @@ public class UserGoodsDetail {
                 ", detailMobileHtml='" + detailMobileHtml + '\'' +
                 ", promotionStartTime=" + promotionStartTime +
                 ", promotionEndTime=" + promotionEndTime +
-                ", promotionPerLimit=" + promotionPerLimit +
-                ", promotionType=" + promotionType +
+                ", promotionPerLimit='" + promotionPerLimit + '\'' +
+                ", promotionType='" + promotionType + '\'' +
                 ", brandName='" + brandName + '\'' +
                 ", productCategoryName='" + productCategoryName + '\'' +
                 ", supplyId=" + supplyId +
                 ", createTime=" + createTime +
-                ", sellerId=" + sellerId +
+                ", sellerId='" + sellerId + '\'' +
+                ", sellerName='" + sellerName + '\'' +
                 ", skuStockList=" + skuStockList +
-                ", cateParentId=" + cateParentId +
-                ", is_favorite=" + is_favorite +
+                ", cateParentId='" + cateParentId + '\'' +
+                ", is_favorite='" + is_favorite + '\'' +
                 ", path=" + path +
                 ", stoInfo=" + stoInfo +
                 ", productLadderList=" + productLadderList +

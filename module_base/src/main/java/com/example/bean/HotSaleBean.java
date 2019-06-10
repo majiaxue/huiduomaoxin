@@ -75,6 +75,7 @@ public class HotSaleBean implements Serializable {
          * supplyId : null
          * createTime : null
          * sellerId : 10
+         * sellName: 一二三旗舰店
          */
 
         private int id;

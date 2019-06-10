@@ -21,6 +21,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.AssessActivity;
 import com.example.bean.BannerBean;
 import com.example.bean.HotSaleBean;
+import com.example.bean.OrderConfirmBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
 import com.example.confirm_order.ConfirmOrderActivity;
@@ -36,10 +37,12 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.order_confirm.OrderConfirmActivity;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnFlowSelectListener;
@@ -67,6 +70,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     //尺码选中下标
     private int sizePosition = -1;
 
+    private long quantity = 1;
+
     private boolean isChoose = false;
     //尺码列表
     private List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> sizeList = new ArrayList<>();
@@ -74,6 +79,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private List imgList = new ArrayList();
     //为你推荐
     List<HotSaleBean.DataBean> commendList = new ArrayList<>();
+    private UserGoodsDetail userGoodsDetail;
 
     public GoodsDetailPresenter(Context context) {
         super(context);
@@ -89,7 +95,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                UserGoodsDetail userGoodsDetail = JSON.parseObject(result, new TypeReference<UserGoodsDetail>() {
+                LogUtil.e("商品详情：" + result);
+                userGoodsDetail = JSON.parseObject(result, new TypeReference<UserGoodsDetail>() {
                 }.getType());
                 if (getView() != null) {
                     getView().loadUI(userGoodsDetail);
@@ -266,6 +273,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             }
         });
 
+        count.setText("" + quantity);
         sizeList.addAll(dataList.get(0).getList());
 
         final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, new OnFlowSelectListener() {
@@ -299,11 +307,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.valueOf(count.getText().toString()) <= 1) {
-                    count.setText("1");
+                if (quantity <= 1) {
+                    quantity = 1;
                 } else {
+                    quantity--;
                     count.setText(Integer.valueOf(count.getText().toString()) - 1 + "");
                 }
+                count.setText("" + quantity);
             }
         });
 
@@ -313,11 +323,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 if (sizePosition == -1) {
                     Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Integer.valueOf(count.getText().toString()) >= dataList.get(colorPosition).getList().get(sizePosition).getStock()) {
-                        count.setText(dataList.get(0).getList().get(0).getStock() + "");
+                    if (quantity >= dataList.get(colorPosition).getList().get(sizePosition).getStock()) {
+
+                        quantity = dataList.get(0).getList().get(0).getStock();
                     } else {
-                        count.setText(Integer.valueOf(count.getText().toString()) + 1 + "");
+                        quantity++;
                     }
+                    count.setText("" + quantity);
                 }
             }
         });
@@ -340,6 +352,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                 } else {
                     popupWindow.dismiss();
+                    chooseOrJump();
                 }
             }
         });
@@ -363,7 +376,23 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void chooseOrJump() {
         if (isChoose) {
-            mContext.startActivity(new Intent(mContext, ConfirmOrderActivity.class));
+            OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
+            orderConfirmBean.setSellerId(userGoodsDetail.getSellerId());
+            orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+            orderConfirmBean.setProductSkuId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getId());
+            orderConfirmBean.setQuantity((int) quantity);
+            orderConfirmBean.setSp1(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp1());
+            orderConfirmBean.setSp2(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
+            orderConfirmBean.setPrice(userGoodsDetail.getPrice());
+            orderConfirmBean.setSourceType(1);
+            orderConfirmBean.setPic(userGoodsDetail.getPic());
+            orderConfirmBean.setPrice(userGoodsDetail.getPrice());
+            orderConfirmBean.setGoodsName(userGoodsDetail.getName());
+            orderConfirmBean.setFeightTemplateId(userGoodsDetail.getFeightTemplateId());
+            orderConfirmBean.setStock(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getStock());
+            Intent intent = new Intent(mContext, OrderConfirmActivity.class);
+            intent.putExtra("order", orderConfirmBean);
+            mContext.startActivity(intent);
         } else {
             chooseGoodsPop();
         }

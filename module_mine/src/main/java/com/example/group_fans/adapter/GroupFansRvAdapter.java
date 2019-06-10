@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.UserInfoBean;
-import com.example.entity.GroupFansBean;
 import com.example.module_mine.R;
 
 import java.util.List;
