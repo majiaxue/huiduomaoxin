@@ -1,9 +1,6 @@
 package com.example.predict.pdd;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.module_mine.R;
@@ -11,7 +8,6 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class PddFragment extends BaseFragment<PddView, PddPresenter> implements PddView {

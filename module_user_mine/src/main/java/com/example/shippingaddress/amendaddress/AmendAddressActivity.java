@@ -1,6 +1,5 @@
 package com.example.shippingaddress.amendaddress;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -8,17 +7,30 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.fastjson.JSON;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.shippingaddress.amendaddress.bean.AmendAddressBean;
+import com.example.shippingaddress.bean.ShippingAddressBean;
+import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
 
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 /**
  * 修改地址
@@ -51,6 +63,8 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
     Switch amendAddressSwitch;
     @BindView(R2.id.amend_address_save)
     TextView amendAddressSave;
+    private List<ShippingAddressBean> shippingAddressBeanList;
+    private int position;
 
     @Override
     public int getLayoutId() {
@@ -59,6 +73,27 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
 
     @Override
     public void initData() {
+        position = getIntent().getIntExtra("position", 0);
+        shippingAddressBeanList = (List<ShippingAddressBean>) getIntent().getSerializableExtra("shippingAddressBeanList");
+        amendAddressName.setText(shippingAddressBeanList.get(position).getAddressName());
+        amendAddressPhone.setText(shippingAddressBeanList.get(position).getAddressPhone());
+        amendAddressWhere.setText(shippingAddressBeanList.get(position).getAddressProvince() + shippingAddressBeanList.get(position).getAddressCity() + shippingAddressBeanList.get(position).getAddressArea());
+        amendAddressDetailed.setText(shippingAddressBeanList.get(position).getAddressDetail());
+
+        if (shippingAddressBeanList.get(position).getAddressTips() == 1) {
+            amendAddressHome.setChecked(true);
+        } else if (shippingAddressBeanList.get(position).getAddressTips() == 2) {
+            amendAddressCompany.setChecked(true);
+        } else {
+            amendAddressSchool.setChecked(true);
+        }
+
+        if (shippingAddressBeanList.get(position).getAddressDefault() == 1) {
+            amendAddressSwitch.setChecked(true);
+        } else {
+            amendAddressSwitch.setChecked(false);
+        }
+
 
     }
 
@@ -74,6 +109,7 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         amendAddressDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //删除地址
                 final SelfDialog selfDialog = new SelfDialog(AmendAddressActivity.this);
                 selfDialog.setTitle("提示");
@@ -81,20 +117,78 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                     @Override
                     public void onYesClick() {
-                        Toast.makeText(AmendAddressActivity.this, "还不能取消关注", Toast.LENGTH_SHORT).show();
-                        selfDialog.dismiss();
-                        PopUtils.setTransparency(AmendAddressActivity.this,1f);
+                        Observable observable = RetrofitUtil.getInstance().getApi4(AmendAddressActivity.this).deleteDataWithout(CommonResource.DELETEADDRESS + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
+                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                            @Override
+                            public void onSuccess(String result, String msg) {
+                                selfDialog.dismiss();
+                                PopUtils.setTransparency(AmendAddressActivity.this, 1f);
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(String errorCode, String errorMsg) {
+                                LogUtil.e("shippingAddressErrorMsg删除地址------>" + errorMsg);
+                            }
+                        }));
+
                     }
                 });
                 selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
                     @Override
                     public void onNoClick() {
                         selfDialog.dismiss();
-                        PopUtils.setTransparency(AmendAddressActivity.this,1f);
+                        PopUtils.setTransparency(AmendAddressActivity.this, 1f);
                     }
                 });
-                PopUtils.setTransparency(AmendAddressActivity.this,0.3f);
+                PopUtils.setTransparency(AmendAddressActivity.this, 0.3f);
                 selfDialog.show();
+            }
+        });
+
+        //保存
+        amendAddressSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AmendAddressBean amendAddressBean = new AmendAddressBean();
+                amendAddressBean.setId(shippingAddressBeanList.get(position).getId());
+                amendAddressBean.setUserCode(shippingAddressBeanList.get(position).getUserCode());
+                LogUtil.e("userCode------>"+shippingAddressBeanList.get(position).getUserCode());
+                amendAddressBean.setAddressName(amendAddressName.getText().toString());
+                amendAddressBean.setAddressPhone(amendAddressPhone.getText().toString());
+                amendAddressBean.setAddressProvince(shippingAddressBeanList.get(position).getAddressProvince());
+                amendAddressBean.setAddressCity(shippingAddressBeanList.get(position).getAddressCity());
+                amendAddressBean.setAddressArea(shippingAddressBeanList.get(position).getAddressArea());
+                amendAddressBean.setAddressDetail(amendAddressDetailed.getText().toString());
+                if (amendAddressHome.isChecked()) {
+                    amendAddressBean.setAddressTips(1);
+                } else if (amendAddressCompany.isChecked()) {
+                    amendAddressBean.setAddressTips(2);
+                } else if (amendAddressSchool.isChecked()) {
+                    amendAddressBean.setAddressTips(3);
+                }
+                if (amendAddressSwitch.isChecked()) {
+                    amendAddressBean.setAddressDefault(1);
+                } else {
+                    amendAddressBean.setAddressDefault(0);
+                }
+                String amendAddressJson = JSON.toJSONString(amendAddressBean);
+                LogUtil.e("AmendAddressActivityJson----------->" + amendAddressJson);
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), amendAddressJson);
+                Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi4(AmendAddressActivity.this).putDataBody(CommonResource.AMENDADDRESS, body, SPUtil.getToken());
+                RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                    @Override
+                    public void onSuccess(String result, String msg) {
+                        LogUtil.e("AmendAddressActivityResult----------->" + result);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        LogUtil.e("AmendAddressActivityErrorMsg----------->"+errorMsg);
+                    }
+                }));
+
             }
         });
     }
