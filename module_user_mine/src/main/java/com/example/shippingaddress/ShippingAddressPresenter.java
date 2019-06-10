@@ -1,22 +1,40 @@
 package com.example.shippingaddress;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.browsinghistory.bean.BrowsingHistoryBean;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.shippingaddress.adapter.ShippingAddressAdapter;
+import com.example.shippingaddress.amendaddress.AmendAddressActivity;
 import com.example.shippingaddress.bean.ShippingAddressBean;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
 
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/23
@@ -25,78 +43,129 @@ import java.util.List;
 public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView> {
 
     private ShippingAddressAdapter shippingAddressAdapter;
-    private List<ShippingAddressBean> beanList;
 
     public ShippingAddressPresenter(Context context) {
         super(context);
     }
+
+    private List<ShippingAddressBean> shippingAddressBeanList;
 
     @Override
     protected void onViewDestroy() {
 
     }
 
-    public void setShippingAddressRec(RecyclerView shippingAddressRec) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        shippingAddressRec.setLayoutManager(linearLayoutManager);
-        beanList = new ArrayList<>();
-        beanList.add(new ShippingAddressBean("付韶", "188  1888  1888", "河南省郑州市金水区金成国际广场3号楼204室", true));
-        beanList.add(new ShippingAddressBean("富少", "188  1888  1888", "河南省郑州市金水区金成国际广场3号楼204室", false));
-        shippingAddressAdapter = new ShippingAddressAdapter(mContext, beanList, R.layout.item_shipping_address_rec);
-        shippingAddressRec.setAdapter(shippingAddressAdapter);
+    public void setShippingAddressRec(final RecyclerView shippingAddressRec) {
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.ADDRESSSHOW, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
 
-        shippingAddressAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+
             @Override
-            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
-                //点击选中
-                view1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        for (int i = 0; i < beanList.size(); i++) {
-                            if (i != position) {
-                                beanList.get(i).setCheck(false);
-                            }
-                            beanList.get(position).setCheck(true);
-                            shippingAddressAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-                //修改
-                view2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ARouter.getInstance().build("/module_user_mine/AmendAddressActivity").navigation();
-                    }
-                });
-                //删除
-                view3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //删除地址
-                        final SelfDialog selfDialog = new SelfDialog(mContext);
-                        selfDialog.setTitle("提示");
-                        selfDialog.setMessage("您确定要删除此地址吗？");
-                        selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
-                            @Override
-                            public void onYesClick() {
-                                Toast.makeText(mContext, "还不能取消关注", Toast.LENGTH_SHORT).show();
-                                selfDialog.dismiss();
-                                PopUtils.setTransparency(mContext,1f);
-                            }
-                        });
-                        selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-                            @Override
-                            public void onNoClick() {
-                                selfDialog.dismiss();
-                                PopUtils.setTransparency(mContext,1f);
-                            }
-                        });
-                        PopUtils.setTransparency(mContext,0.3f);
-                        selfDialog.show();
-                    }
-                });
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("ShippingAddressResult----->" + result);
+                shippingAddressBeanList = JSON.parseArray(result, ShippingAddressBean.class);
 
+                LogUtil.e("ShippingAddressResult----->" + shippingAddressBeanList);
+
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                shippingAddressRec.setLayoutManager(linearLayoutManager);
+                shippingAddressAdapter = new ShippingAddressAdapter(mContext, shippingAddressBeanList, R.layout.item_shipping_address_rec);
+                shippingAddressRec.setAdapter(shippingAddressAdapter);
+
+                shippingAddressAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+                    @Override
+                    public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                        //点击选中
+                        view1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.ADDRESSDEFAULT + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
+                                RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                    @Override
+                                    public void onSuccess(String result, String msg) {
+                                        LogUtil.e("shippingAddressResult默认地址------------->" + msg);
+                                        for (int i = 0; i < shippingAddressBeanList.size(); i++) {
+                                            if (i != position) {
+                                                shippingAddressBeanList.get(i).setAddressDefault(0);
+                                            }
+                                            shippingAddressBeanList.get(position).setAddressDefault(1);
+                                            shippingAddressAdapter.notifyDataSetChanged();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onError(String errorCode, String errorMsg) {
+                                        LogUtil.e("shippingAddressErrorMsg默认地址------>" + errorMsg);
+                                    }
+                                }));
+
+                            }
+                        });
+                        //修改
+                        view2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(mContext, AmendAddressActivity.class);
+                                intent.putExtra("shippingAddressBeanList",(Serializable) shippingAddressBeanList);
+                                intent.putExtra("position",position);
+                                mContext.startActivity(intent);
+                            }
+                        });
+                        //删除
+                        view3.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //删除地址
+                                final SelfDialog selfDialog = new SelfDialog(mContext);
+                                selfDialog.setTitle("提示");
+                                selfDialog.setMessage("您确定要删除此地址吗？");
+                                selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+                                    @Override
+                                    public void onYesClick() {
+                                        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).deleteDataWithout(CommonResource.DELETEADDRESS + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
+                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                            @Override
+                                            public void onSuccess(String result, String msg) {
+                                                LogUtil.e("shippingAddressResult删除地址------------->" + msg);
+//                                                for (int i = shippingAddressBeanList.size() - 1; i >= 0; i--) {
+                                                    shippingAddressBeanList.remove(position);
+//                                                }
+
+                                                shippingAddressAdapter.notifyDataSetChanged();
+                                                selfDialog.dismiss();
+                                                PopUtils.setTransparency(mContext, 1f);
+                                            }
+
+                                            @Override
+                                            public void onError(String errorCode, String errorMsg) {
+                                                LogUtil.e("shippingAddressErrorMsg删除地址------>" + errorMsg);
+                                            }
+                                        }));
+
+                                    }
+                                });
+                                selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                                    @Override
+                                    public void onNoClick() {
+                                        selfDialog.dismiss();
+                                        PopUtils.setTransparency(mContext, 1f);
+                                    }
+                                });
+                                PopUtils.setTransparency(mContext, 0.3f);
+                                selfDialog.show();
+                            }
+                        });
+
+                    }
+                });
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("ShippingAddressMsg--------->" + errorMsg);
+            }
+        }));
+
     }
 }

@@ -43,6 +43,9 @@ public interface ApiService {
     @PUT
     Observable<ResponseBody> putData(@Url String url, @FieldMap Map<String, String> map, @Header("Authorization") String token);
 
+    @PUT
+    Observable<ResponseBody> putDataBody(@Url String url, @Body RequestBody body, @Header("Authorization") String token);
+
     @DELETE
     Observable<ResponseBody> deleteDataWithout(@Url String url, @Header("Authorization") String token);
 
