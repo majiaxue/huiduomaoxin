@@ -1,13 +1,15 @@
 package com.example.adapter;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-public class BaseVPAdapter extends FragmentPagerAdapter {
+public class BaseVPAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragmentList;
     private String[] dataList;
 
@@ -31,5 +33,10 @@ public class BaseVPAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return dataList[position];
+    }
+
+    @Override
+    public void restoreState(Parcelable state, ClassLoader loader) {
+
     }
 }

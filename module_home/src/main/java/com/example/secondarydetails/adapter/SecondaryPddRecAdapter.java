@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.module_home.R;
 import com.example.secondarydetails.bean.SecondaryPddRecBean;
 
 import java.util.List;
@@ -32,13 +33,13 @@ public class SecondaryPddRecAdapter extends MyRecyclerAdapter<SecondaryPddRecBea
         }
 
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getGoods_thumbnail_url());
-        holder.setText(com.example.module_base.R.id.base_name, data.getGoods_name());
-        holder.setText(com.example.module_base.R.id.base_reduce_price, "领劵减50元");
-        holder.setText(com.example.module_base.R.id.base_preferential_price, "￥" + Double.valueOf(data.getMin_group_price()) / 100);
-        holder.setText(com.example.module_base.R.id.base_original_price, "" + Double.valueOf(data.getMin_normal_price()) / 100);
-        holder.setText(com.example.module_base.R.id.base_number, "已抢" + data.getSold_quantity());
+        holder.setText(R.id.base_name, data.getGoods_name());
+        holder.setText(R.id.base_reduce_price, "领劵减" + Double.valueOf(data.getCoupon_discount()) / 100 + "元");
+        holder.setText(R.id.base_preferential_price, "￥" + (Double.valueOf(data.getMin_group_price()) / 100 - Double.valueOf(data.getCoupon_discount()) / 100));
+        holder.setText(R.id.base_original_price, "" + Double.valueOf(data.getMin_group_price()) / 100);
+        holder.setText(R.id.base_number, "已抢" + data.getSold_quantity());
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
-        holder.setTextLine(com.example.module_base.R.id.base_original_price);
+        holder.setTextLine(R.id.base_original_price);
 
         TextView immediatelyGrab = holder.getView(com.example.module_base.R.id.base_immediately_grab);
         viewOnClickListener.ViewOnClick(immediatelyGrab, position);

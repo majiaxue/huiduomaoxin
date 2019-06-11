@@ -43,9 +43,10 @@ public class MineOrderActivity extends BaseFragmentActivity<MineOrderView, MineO
         presenter.initTabLayout(mineOrderTab);
         presenter.initViewPager(getSupportFragmentManager());
         //预加载
-        mineOrderVp.setOffscreenPageLimit(3);
+        mineOrderVp.setOffscreenPageLimit(0);
         //tablayout联动viewpager
         mineOrderTab.setupWithViewPager(mineOrderVp);
+
         mineOrderVp.setCurrentItem(type);
         mineOrderTab.getTabAt(type).select();
 
@@ -74,5 +75,6 @@ public class MineOrderActivity extends BaseFragmentActivity<MineOrderView, MineO
     @Override
     public void updateVp(BaseVPAdapter baseVPAdapter) {
         mineOrderVp.setAdapter(baseVPAdapter);
+        mineOrderTab.setTabsFromPagerAdapter(baseVPAdapter);
     }
 }

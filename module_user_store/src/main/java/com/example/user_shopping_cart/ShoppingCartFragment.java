@@ -118,6 +118,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         super.onHiddenChanged(hidden);
         if (!hidden) {
           //显示
+            LogUtil.e("cart----->加载数据");
             presenter.setShoppingCartRec(shoppingCartRec);
         }
     }

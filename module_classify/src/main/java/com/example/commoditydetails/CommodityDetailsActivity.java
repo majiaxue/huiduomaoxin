@@ -11,14 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.commoditydetails.bean.CommodityDetailsBean;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,7 +81,11 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     LinearLayout commodityLinear;
     @BindView(R2.id.commodity_into_shop)
     TextView commodityIntoShop;
+    @Autowired(name = "goods_id")
+    long goods_id;
 
+    @Autowired(name = "type")
+    String type;
 
     @Override
     public int getLayoutId() {
@@ -86,10 +94,16 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
     @Override
     public void initData() {
-
+        ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        //详情轮播图
-        presenter.setXBanner(commodityXbanner);
+        if (type.equals("1")){
+            commodityIntoShop.setVisibility(View.INVISIBLE);
+        }
+        //加载视图
+        presenter.initView(goods_id);
+
+//        //详情轮播图
+//        presenter.setXBanner(commodityXbanner);
 
         //推荐recycler
         presenter.setRecommendRec(shopRecommendRec);
@@ -203,4 +217,19 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         }
     }
 
+    @Override
+    public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+
+        commodityName.setText(beanList.get(0).getGoods_name());//名字
+        commodityPreferentialPrice.setText("￥" + (Double.valueOf(beanList.get(0).getMin_group_price()) / 100 - Double.valueOf(beanList.get(0).getCoupon_discount()) / 100));//优惠价
+        commodityOriginalPrice.setText("原价：￥" + Double.valueOf(beanList.get(0).getMin_group_price()) / 100);//原价
+        commodityEarnings.setText("预估收益：￥" + Double.valueOf(beanList.get(0).getPromotion_rate()) / 100);//收益
+        commodityNumberSold.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
+        commodityShopName.setText(beanList.get(0).getMall_name());
+        shopDescribeScore.setText("" + Double.valueOf(beanList.get(0).getAvg_desc()) / 100);
+        shopServiceScore.setText("" + Double.valueOf(beanList.get(0).getAvg_serv()) / 100);
+        shopLogisticsScore.setText("" + Double.valueOf(beanList.get(0).getAvg_lgst()) / 100);
+        //详情轮播图
+        presenter.setXBanner(commodityXbanner, beanList);
+    }
 }

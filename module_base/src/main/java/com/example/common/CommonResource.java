@@ -46,6 +46,9 @@ public class CommonResource {
     public static final String HISTORYALL = "/rest/user/history/all";   //浏览历史
     public static final String PDDGOODS = "/rest/pdd/goods/pddgoods";   //pdd获取商品列表
     public static final String GOODSCATS = "/rest/pdd/goods/goodscats/0";   //pdd获取商品标准类目接口
+    public static final String PDDGOODSDETAIL = "/rest/pdd/goods/detail";   //pdd获取商品详情信息
+
+
     public static final String FAVORITEDELETE = "/rest/user/favorite/delete";   //删除收藏商品,取消关注商家
     public static final String HISTORYDELETE = "/rest/user/history/delete";   //浏览历史记录删除
     public static final String CARTLIST = "/rest/order/list";   //购物车
@@ -53,6 +56,9 @@ public class CommonResource {
     public static final String ADDRESSDEFAULT = "/rest/address/default";   //设置默认收货地址
     public static final String DELETEADDRESS = "/rest/address";   //删除收货地址
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
+    public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
+    public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
+
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";
