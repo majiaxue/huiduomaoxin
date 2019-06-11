@@ -10,6 +10,7 @@
         tools:replace="android:allowBackup">
         <activity
             android:name="com.example.user_store.UserActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
@@ -46,6 +47,10 @@
 
         <activity
             android:name="com.example.order_confirm.OrderConfirmActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.pay_success.PaySuccessActivity"
             android:screenOrientation="portrait" />
     </application>
 

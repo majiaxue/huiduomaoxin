@@ -3,6 +3,7 @@ package com.example.payment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.pay_success.PaySuccessActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
@@ -31,6 +33,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
     private String info = "";
     private final int ALI_CODE = 0x123;
     private final String WX_APPID = "wxf08fd2965ac9ac30";
+    private SubmitOrderBean submitOrderBean;
 
     public PaymentPresenter(Context context) {
         super(context);
@@ -50,6 +53,9 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 String result = map.get("result");
                 String memo = map.get("memo");
                 if ("9000".equals(resultStatus)) {
+                    Intent intent = new Intent(mContext, PaySuccessActivity.class);
+                    intent.putExtra("bean", submitOrderBean);
+                    mContext.startActivity(intent);
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "支付失败", Toast.LENGTH_SHORT).show();
@@ -60,7 +66,8 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
     };
 
     public void pay(boolean isWeChat, SubmitOrderBean submitOrderBean) {
-        Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", submitOrderBean.getProductName()).build();
+        this.submitOrderBean = submitOrderBean;
+        Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", submitOrderBean.getProductName()).build();
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {
