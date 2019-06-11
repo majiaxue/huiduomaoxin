@@ -70,14 +70,23 @@ public class SuggestionActivity extends BaseActivity<SuggestionView, SuggestionP
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
                     suggestionBtn.setBackgroundResource(R.drawable.bg_btn_login);
+                    suggestionBtn.setEnabled(true);
                 } else {
                     suggestionBtn.setBackgroundResource(R.drawable.bg_22_999);
+                    suggestionBtn.setEnabled(false);
                 }
 
                 if (s.length() > 300) {
                     s.delete(300, s.length());
                 }
                 suggestionNums.setText(s.length() + "/300");
+            }
+        });
+
+        suggestionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.submit(suggestionEdit.getText().toString());
             }
         });
     }

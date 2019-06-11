@@ -97,7 +97,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     mContext.startActivity(intent);
                     ((Activity) mContext).finish();
                 } else {
-                    SPUtil.addParm("token", userInfoBean.getToken());
+                    SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

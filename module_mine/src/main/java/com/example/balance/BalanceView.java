@@ -6,4 +6,6 @@ import com.example.order.adapter.OrderVPAdapter;
 public interface BalanceView extends IView {
 
     void updateVP(OrderVPAdapter adapter);
+
+    void loadBalance(String balance);
 }

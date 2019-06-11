@@ -6,9 +6,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.alibaba.fastjson.JSON;
+import com.example.bean.GroupFansBean;
+import com.example.bean.GroupFansPeopleBean;
 import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
-import com.example.entity.GroupFansBean;
 import com.example.group_fans.adapter.GroupFansRvAdapter;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
@@ -29,6 +30,7 @@ import okhttp3.ResponseBody;
 public class GroupFansPresenter extends BasePresenter<GroupFansView> {
     private List<UserInfoBean> dataList = new ArrayList<>();
     private GroupFansRvAdapter adapter;
+    private int pages;
 
 
     public GroupFansPresenter(Context context) {
@@ -40,23 +42,24 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
 
     }
 
-    public void loadData(final int page) {
-        Map map = MapUtil.getInstance().addParms("level", "0").addParms("current", page).addParms("size", 2).build();
-        LogUtil.e("token:" + SPUtil.getToken());
+    public void loadData(final int page, String content) {
+        Map map = MapUtil.getInstance().addParms("current", page).addParms("search", content).build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.GROUP_FANS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                List<UserInfoBean> userInfoBeans = JSON.parseArray(result, UserInfoBean.class);
+                GroupFansBean groupFansBean = JSON.parseObject(result, GroupFansBean.class);
+                pages = groupFansBean.getPages();
+
                 LogUtil.e("团队粉丝：" + result);
                 if (page == 1) {
                     dataList.clear();
                 }
-                dataList.addAll(userInfoBeans);
+                dataList.addAll(groupFansBean.getRecords());
                 if (adapter == null) {
                     adapter = new GroupFansRvAdapter(mContext, dataList, R.layout.rv_group_fans);
                     if (getView() != null) {
-                        getView().loadUI(adapter);
+                        getView().loadUI(adapter, groupFansBean.getPages(), groupFansBean.getTotal());
                     }
                 } else {
                     adapter.notifyDataSetChanged();
@@ -70,7 +73,25 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
             }
         }));
 
+    }
 
+    public void loadCount() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GROUP_FANS_POPPLE, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("粉丝：" + result);
+                GroupFansPeopleBean groupFansPeopleBean = JSON.parseObject(result, GroupFansPeopleBean.class);
+                if (getView() != null) {
+                    getView().loadCount(groupFansPeopleBean);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     public boolean isShouldHideInput(View v, MotionEvent ev) {

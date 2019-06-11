@@ -39,6 +39,8 @@ public class UpdatePasswordActivity extends BaseActivity<UpdatePasswordView, Upd
     ImageView imgNew;
     @BindView(R2.id.password_new_second_img)
     ImageView imgNewSecond;
+    @BindView(R2.id.password_temp1)
+    View mTemp1;
 
     private boolean firstShow = false;
     private boolean secondShow = false;
@@ -54,6 +56,13 @@ public class UpdatePasswordActivity extends BaseActivity<UpdatePasswordView, Upd
         includeTitle.setText(getResources().getString(R.string.update_password));
         Intent intent = getIntent();
         bean = (UserInfoBean) intent.getSerializableExtra("bean");
+        if ("".equals(bean.getPassword()) || bean.getPassword() == null) {
+            passwordOld.setVisibility(View.GONE);
+            mTemp1.setVisibility(View.GONE);
+        } else {
+            passwordOld.setVisibility(View.VISIBLE);
+            mTemp1.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

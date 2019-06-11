@@ -22,6 +22,10 @@ allprojects {
         jcenter()
         //xbanner等
         maven { url 'https://jitpack.io' }
+        //支付宝支付
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 

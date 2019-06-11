@@ -137,7 +137,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void loadData() {
-        LogUtil.e("--->" + SPUtil.getToken());
+        LogUtil.e("token--->" + SPUtil.getToken());
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -153,6 +153,7 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e(errorCode + "---------" + errorMsg);
+                SPUtil.addParm(CommonResource.TOKEN, "");
                 if ("2".equals(errorCode)) {
                     if (getView() != null) {
                         getView().onError();

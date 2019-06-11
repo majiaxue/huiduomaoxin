@@ -4,27 +4,23 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.InAndOutBean;
 import com.example.entity.MessageListBean;
 import com.example.module_mine.R;
 
 import java.util.List;
 
-public class IncomeAdapter extends MyRecyclerAdapter<MessageListBean> {
+public class IncomeAdapter extends MyRecyclerAdapter<InAndOutBean.RecordsBean> {
     private int flag;
 
-    public IncomeAdapter(Context context, List<MessageListBean> mList, int mLayoutId) {
+    public IncomeAdapter(Context context, List<InAndOutBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
-    }
-
-    public IncomeAdapter(Context context, List<MessageListBean> mList, int mLayoutId, int flag) {
-        super(context, mList, mLayoutId);
-        this.flag = flag;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, MessageListBean data, int position) {
-        holder.setText(R.id.rv_income_title, data.getTitle())
-                .setText(R.id.rv_income_time, data.getTime())
-                .setText(R.id.rv_income_money, flag == 0 ? "+" + data.getContent() : "-" + data.getContent());
+    public void convert(RecyclerViewHolder holder, InAndOutBean.RecordsBean data, int position) {
+        holder.setText(R.id.rv_income_title, data.getNote())
+                .setText(R.id.rv_income_time, data.getCreateTime())
+                .setText(R.id.rv_income_money, data.getType() == 0 ? "+" + data.getPrice() : "-" + data.getPrice());
     }
 }

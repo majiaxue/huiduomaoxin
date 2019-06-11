@@ -27,6 +27,8 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
     @BindView(R2.id.cashout_btn)
     TextView cashoutBtn;
 
+    private String balance;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_cashout;
@@ -35,6 +37,7 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
     @Override
     public void initData() {
         includeTitle.setText("提现");
+        presenter.loadData();
     }
 
     @Override
@@ -49,14 +52,15 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
         cashoutAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                cashoutEdit.setText(balance);
+                cashoutEdit.setSelection(balance.length());
             }
         });
 
         cashoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presenter.tixian(cashoutEdit.getText().toString());
             }
         });
 
@@ -73,9 +77,18 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s != null && s.toString().equals("00")) {
+                    cashoutEdit.setText("0");
+                    cashoutEdit.setSelection(cashoutEdit.getText().length());
+                }
             }
         });
+    }
+
+    @Override
+    public void loadBalance(String balance) {
+        this.balance = balance;
+        cashoutBalance.setText("余额￥" + balance);
     }
 
     @Override

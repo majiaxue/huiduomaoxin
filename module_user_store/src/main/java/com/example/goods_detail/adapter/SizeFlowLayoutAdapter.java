@@ -7,9 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.bean.UserGoodsDetail;
-import com.example.entity.ChooseGoodsBean;
 import com.example.user_store.R;
-import com.example.utils.LogUtil;
+import com.example.utils.OnFlowClickListener;
 import com.example.utils.OnFlowSelectListener;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagAdapter;
@@ -17,15 +16,19 @@ import com.example.view.flowLayout.TagAdapter;
 import java.util.List;
 
 public class SizeFlowLayoutAdapter extends TagAdapter<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> {
-    private OnFlowSelectListener listener;
+    private TextView price;
     private LayoutInflater inflater;
+    private OnFlowSelectListener listener;
+    private List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> data;
 
     public SizeFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> datas) {
         super(datas);
     }
 
-    public SizeFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> datas, Context context, OnFlowSelectListener listener) {
+    public SizeFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> datas, Context context, TextView price, OnFlowSelectListener listener) {
         super(datas);
+        this.price = price;
+        data = datas;
         this.listener = listener;
         inflater = LayoutInflater.from(context);
     }
@@ -46,6 +49,7 @@ public class SizeFlowLayoutAdapter extends TagAdapter<UserGoodsDetail.StoInfoBea
     @Override
     public void onSelected(int position, View view) {
         view.setBackgroundResource(R.drawable.goods_5_99fd3c15);
+        price.setText("￥" + data.get(position).getPrice());
         listener.setOnFlowSelect(position);
     }
 

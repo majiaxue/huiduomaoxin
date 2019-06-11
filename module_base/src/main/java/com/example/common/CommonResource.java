@@ -17,6 +17,7 @@ public class CommonResource {
     public static final String GETREGISTERCODE = "/rest/register";      //获取注册验证码
     public static final String PHONEREGISTER = "/rest/register/phone";      //手机号注册
     public static final String WXLOGIN_PHONE = "/rest/wx/save";       //微信登陆后绑定手机号
+    public static final String WXLOGIN_GETCODE = "/rest/wx";        //微信登陆后获取手机验证码
     public static final String GETUSERINFO = "/rest/user/info";     //获取个人信息
     public static final String LOGIN_PHONE = "/rest/login";         //手机号密码登录----获取登录/忘记密码验证码
     public static final String LOGIN_CODE = "/rest/login/code";     //手机验证码登录
@@ -27,6 +28,16 @@ public class CommonResource {
     public static final String REVISEPHONE = "/rest/phone";         //修改手机号
     public static final String LOGOUT = "/rest/logout";             //退出登录
     public static final String GROUP_FANS = "/rest/user/fans";    //获取团队粉丝
+    public static final String GROUP_FANS_POPPLE = "/rest/user/fans/detail";    //团队粉丝--一级粉丝数、今日新增
+    public static final String MOREN_ADDRESS = "/rest/address/default";     //获取默认收货地址
+    public static final String GET_YUNGEI = "/rest/goods/queryFeight";      //获取运费
+    public static final String GETBALANCE = "/rest/user/balance";       //查询余额
+    public static final String COMMIT_ORDER = "/rest/order/nowPlace";      //提交订单
+    public static final String IN_OUT = "/rest/user/incomeAndExpend";       //收入和支出(余额)---get:参数 type 0收入 1 支出
+    public static final String TOPAY = "/alipay/signOrder";             //支付宝支付
+    public static final String SUGGESSTION = "/rest/user/feedback";     //提交意见反馈
+    public static final String QUERYSUGGESSTION = "/rest/user/feedback/all";    //查询意见反馈列表
+
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏

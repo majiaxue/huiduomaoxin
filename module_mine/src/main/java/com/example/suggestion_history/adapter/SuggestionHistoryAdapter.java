@@ -1,6 +1,7 @@
 package com.example.suggestion_history.adapter;
 
 import android.content.Context;
+import android.widget.RelativeLayout;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
@@ -20,5 +21,6 @@ public class SuggestionHistoryAdapter extends MyRecyclerAdapter<SuggestionBean> 
                 .setText(R.id.rv_suggestion_history_feedback_time, data.getFeedBackTime())
                 .setText(R.id.rv_suggestion_history_reply_content, data.getReplyContent())
                 .setText(R.id.rv_suggestion_history_reply_time, data.getReplyTime());
+        RelativeLayout rela = holder.getView(R.id.rv_suggestion_history_rela);
     }
 }

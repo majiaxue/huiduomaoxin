@@ -1,10 +1,12 @@
 package com.example.payment;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.bean.SubmitOrderBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -28,6 +30,7 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     TextView paymentBtn;
 
     private boolean isWeChat = true;
+    private SubmitOrderBean submitOrderBean;
 
     @Override
     public int getLayoutId() {
@@ -36,7 +39,9 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
 
     @Override
     public void initData() {
-
+        Intent intent = getIntent();
+        submitOrderBean = (SubmitOrderBean) intent.getSerializableExtra("bean");
+        paymentMoney.setText("￥" + submitOrderBean.getTotalAmount());
     }
 
     @Override
@@ -67,7 +72,7 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
         paymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presenter.pay(isWeChat,submitOrderBean);
             }
         });
     }

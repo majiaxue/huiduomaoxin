@@ -69,6 +69,11 @@ public class BalanceActivity extends BaseFragmentActivity<BalanceView, BalancePr
     }
 
     @Override
+    public void loadBalance(String balance) {
+        balanceTotalMoney.setText(balance);
+    }
+
+    @Override
     public BalanceView createView() {
         return this;
     }

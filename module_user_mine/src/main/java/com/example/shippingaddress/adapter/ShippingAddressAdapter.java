@@ -1,12 +1,11 @@
 package com.example.shippingaddress.adapter;
 
 import android.content.Context;
-import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.module_user_mine.R;
-import com.example.shippingaddress.bean.ShippingAddressBean;
+import com.example.bean.ShippingAddressBean;
 
 import java.util.List;
 

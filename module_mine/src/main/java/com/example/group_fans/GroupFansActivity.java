@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.bean.GroupFansPeopleBean;
 import com.example.group_fans.adapter.GroupFansRvAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
@@ -41,6 +42,8 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     ImageView includeBack;
     @BindView(R2.id.include_title)
     TextView includeTitle;
+    @BindView(R2.id.group_fans_total)
+    TextView groupFansTotal;
     @BindView(R2.id.group_fans_edit)
     EditText groupFansEdit;
     @BindView(R2.id.group_fans_search)
@@ -58,7 +61,9 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     @BindView(R2.id.group_fans_refresh)
     SmartRefreshLayout groupFansRefresh;
 
+    private int totalPage = 1;
     private int page = 1;
+    private boolean isSearch = false;
 
     @Override
     public int getLayoutId() {
@@ -68,7 +73,8 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     @Override
     public void initData() {
         includeTitle.setText("团队粉丝");
-        presenter.loadData(page);
+        presenter.loadData(page, "");
+        presenter.loadCount();
 
         KeyboardStateObserver.getKeyboardStateObserver(this).setKeyboardVisibilityListener(new KeyboardStateObserver.OnKeyboardVisibilityListener() {
             @Override
@@ -92,14 +98,26 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page);
+                if (isSearch) {
+                    presenter.loadData(page, groupFansEdit.getText().toString());
+                } else {
+                    presenter.loadData(page, "");
+                }
             }
         });
         groupFansRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page);
+                if (page <= totalPage) {
+                    if (isSearch) {
+                        presenter.loadData(page, groupFansEdit.getText().toString());
+                    } else {
+                        presenter.loadData(page, "");
+                    }
+                } else {
+                    groupFansRefresh.finishLoadMore();
+                }
             }
         });
     }
@@ -147,7 +165,9 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
                 groupFansEdit.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
+                isSearch = true;
+                page = 1;
+                presenter.loadData(page, groupFansEdit.getText().toString());
             }
         });
     }
@@ -179,12 +199,22 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     }
 
     @Override
-    public void loadUI(GroupFansRvAdapter adapter) {
+    public void loadUI(GroupFansRvAdapter adapter, int totalPage, int totalFans) {
+        this.totalPage = totalPage;
+        groupFansTotal.setText(totalFans + "");
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         groupFansRv.setLayoutManager(layoutManager);
         groupFansRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_7)));
         groupFansRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadCount(GroupFansPeopleBean peopleBean) {
+        groupFansZhitui.setText(peopleBean.getFirstFans() + "");
+        groupFansXinzeng.setText(peopleBean.getTodayFans() + "");
+        groupFansTuijianren.setText("我的推荐人：" + peopleBean.getParent());
     }
 
     @Override

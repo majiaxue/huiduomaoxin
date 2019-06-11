@@ -1,5 +1,6 @@
 package com.example.mvp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -27,6 +28,12 @@ public abstract class BaseFragmentActivity<V extends IView, P extends BasePresen
         }
         initData();
         initClick();
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
     }
 
     public abstract int getLayoutId();
