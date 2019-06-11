@@ -64,7 +64,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
     }
 
     public void initShopCollectRec(final SlideRecyclerView shopCollectRec) {
-        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.SELLERPAGE);
+        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.SELLERPAGE,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(final String result, String msg) {

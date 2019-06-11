@@ -113,7 +113,10 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             @Override
                                             public void onItemClick(RecyclerView parent, View view, int position) {
                                                 long goods_id = baseRecBeanList.get(position).getGoods_id();
-                                                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withLong("goods_id", goods_id).navigation();
+                                                ARouter.getInstance()
+                                                        .build("/module_classify/CommodityDetailsActivity")
+                                                        .withLong("goods_id", goods_id)
+                                                        .withString("type",type).navigation();
                                             }
                                         });
 
@@ -123,11 +126,17 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 view.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                                                        long goods_id = baseRecBeanList.get(index).getGoods_id();
+                                                        ARouter.getInstance()
+                                                                .build("/module_classify/CommodityDetailsActivity")
+                                                                .withLong("goods_id", goods_id)
+                                                                .withString("type",type)
+                                                                .navigation();
                                                     }
                                                 });
                                             }
                                         });
+
                                     } else {
                                         getView().noGoods(true);
                                         LogUtil.e("尚无数据");
@@ -219,7 +228,13 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                            long goods_id = baseRecBeanList.get(position).getGoods_id();
+                            ARouter.getInstance()
+                                    .build("/module_classify/CommodityDetailsActivity")
+                                    .withLong("goods_id", goods_id)
+                                    .withString("type",type)
+                                    .navigation();
+
                         }
                     });
 
@@ -229,7 +244,12 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             view.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                                    long goods_id = baseRecBeanList.get(index).getGoods_id();
+                                    ARouter.getInstance()
+                                            .build("/module_classify/CommodityDetailsActivity")
+                                            .withLong("goods_id", goods_id)
+                                            .withString("type",type)
+                                            .navigation();
                                 }
                             });
                         }

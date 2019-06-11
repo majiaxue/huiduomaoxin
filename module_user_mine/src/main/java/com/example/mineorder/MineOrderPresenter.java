@@ -49,6 +49,17 @@ public class MineOrderPresenter extends BasePresenter<MineOrderView> {
         fragmentList.add(new StayDeliveryGoodsFragment());
         fragmentList.add(new StayAppraiseFragment());
 
+        initTabIndicator(mineOrderTab);
+
+    }
+
+
+    public void initViewPager(FragmentManager fm) {
+        BaseVPAdapter baseVPAdapter = new BaseVPAdapter(fm, fragmentList, titleArr);
+        getView().updateVp(baseVPAdapter);
+    }
+
+    private void initTabIndicator(final TabLayout mineOrderTab) {
         mineOrderTab.post(new Runnable() {
             @Override
             public void run() {
@@ -91,11 +102,7 @@ public class MineOrderPresenter extends BasePresenter<MineOrderView> {
                 }
             }
         });
-
     }
 
-    public void initViewPager(FragmentManager fm) {
-        BaseVPAdapter baseVPAdapter = new BaseVPAdapter(fm, fragmentList, titleArr);
-        getView().updateVp(baseVPAdapter);
-    }
+
 }

@@ -48,7 +48,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     }
 
     public void browsingHistoryRec(final RecyclerView browsingHistoryRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.HISTORYALL);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.HISTORYALL,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -8,21 +8,35 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.common.CommonResource;
 import com.example.logisticsinformation.LogisticsInformationActivity;
 import com.example.mineorder.adapter.MineOrderAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
 public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsView> {
+
+    private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
 
     public StayDeliveryGoodsPresenter(Context context) {
         super(context);
@@ -33,48 +47,60 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
 
     }
 
-    public void stayDeliveryGoodsRec(RecyclerView stayDeliveryGoodsRec){
-        List<MineOrderBean> list = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            list.add(new MineOrderBean("维纳塔旗舰店", R.drawable.img_104,"买家已付款","【女王价】学生适用清爽护肤纯露保湿水俩件套","保湿水80ml [送两包试用装]","￥163.0","x1","共2件商品  合计：￥163.0"));
-            list.add(new MineOrderBean("维纳塔旗舰店", R.drawable.img_105,"买家已付款","【女王价】学生适用清爽护肤纯露保湿水俩件套","保湿水80ml [送两包试用装]","￥163.0","x1","共2件商品  合计：￥163.0"));
-        }
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        stayDeliveryGoodsRec.setLayoutManager(linearLayoutManager);
-        MineOrderAdapter mineOrderAdapter = new MineOrderAdapter(mContext, list, R.layout.item_order_rec);
-        stayDeliveryGoodsRec.setAdapter(mineOrderAdapter);
-        mineOrderAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+    public void stayDeliveryGoodsRec(final RecyclerView stayDeliveryGoodsRec) {
+        Map map = MapUtil.getInstance().addParms("status", 8).build();
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
-                //去店铺
-                view1.setOnClickListener(new View.OnClickListener() {
+            public void onSuccess(String result, String msg) {
+                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<com.example.mineorder.bean.MineOrderBean>() {
+                }.getType());
+                listBeans.clear();
+                listBeans.addAll(MineOrderBean.getOrderList());
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                stayDeliveryGoodsRec.setLayoutManager(linearLayoutManager);
+                MineOrderAdapter mineOrderAdapter = new MineOrderAdapter(mContext, listBeans, R.layout.item_order_rec);
+                stayDeliveryGoodsRec.setAdapter(mineOrderAdapter);
+                mineOrderAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                    public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                        //去店铺
+                        view1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        //申请退款
+                        view2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
+                            }
+                        });
+                        //发货
+                        view3.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
-                //申请退款
-                view2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
-                    }
-                });
-                //发货
-                view3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
 
-        mineOrderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+                mineOrderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+                    }
+                });
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+
     }
 }

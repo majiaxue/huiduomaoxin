@@ -2,9 +2,9 @@ package com.example.common;
 
 public class CommonResource {
     public static final String BASEURL = "http://192.168.1.30:9001";
-    public static final String BASEURL2 = "http://192.168.1.23:9005";
-    public static final String BASEURL4 = "http://192.168.1.2:4001";
-    public static final String BASEURLCART= "http://192.168.1.30:9004";
+    public static final String BASEURL2 = "http://192.168.1.4:9001";
+    public static final String BASEURL4 = "http://192.168.1.27:4001";
+    public static final String BASEURLCART = "http://192.168.1.30:9004";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -33,6 +33,9 @@ public class CommonResource {
     public static final String HISTORYALL = "/rest/user/history/all";   //浏览历史
     public static final String PDDGOODS = "/rest/pdd/goods/pddgoods";   //pdd获取商品列表
     public static final String GOODSCATS = "/rest/pdd/goods/goodscats/0";   //pdd获取商品标准类目接口
+    public static final String PDDGOODSDETAIL = "/rest/pdd/goods/detail";   //pdd获取商品详情信息
+
+
     public static final String FAVORITEDELETE = "/rest/user/favorite/delete";   //删除收藏商品,取消关注商家
     public static final String HISTORYDELETE = "/rest/user/history/delete";   //浏览历史记录删除
     public static final String CARTLIST = "/rest/order/list";   //购物车
@@ -40,9 +43,8 @@ public class CommonResource {
     public static final String ADDRESSDEFAULT = "/rest/address/default";   //设置默认收货地址
     public static final String DELETEADDRESS = "/rest/address";   //删除收货地址
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
-
-
-
+    public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
+    public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
 
 
 

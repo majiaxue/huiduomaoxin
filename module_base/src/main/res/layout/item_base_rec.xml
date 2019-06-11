@@ -75,6 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:text="到手价"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
@@ -92,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
+                    android:layout_gravity="bottom"
                     android:text="￥89"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />

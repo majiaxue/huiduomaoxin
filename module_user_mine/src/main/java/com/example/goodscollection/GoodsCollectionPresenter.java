@@ -61,7 +61,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     public void setGoodsCollectionRec(final RecyclerView goodsCollectionRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.GOODSCOLLECTION);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
