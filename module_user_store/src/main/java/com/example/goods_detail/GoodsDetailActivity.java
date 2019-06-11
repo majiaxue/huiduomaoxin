@@ -309,9 +309,10 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     public void loadUI(UserGoodsDetail data) {
         goodsDetailName.setText(data.getName());
         goodsDetailPrice.setText(data.getPrice() + "");
-        mTotalSpecs.setText("共" + data.getStoInfo().getRecords().size() + "种颜色可选");
+        mTotalSpecs.setText("共" + data.getStoInfo().getRecords().size() + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
         Glide.with(this).load(data.getSellerLogo()).into(goodsDetailShopImg);
         goodsDetailShopName.setText(data.getSellerName());
+        mTxt.setText("选择" + data.getXsProductAttributes().get(0).getName() + "、" + data.getXsProductAttributes().get(1).getName());
     }
 
     @Override

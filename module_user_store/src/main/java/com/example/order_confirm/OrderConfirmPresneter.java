@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.bean.OrderConfirmBean;
 import com.example.bean.PostageBean;
 import com.example.bean.ShippingAddressBean;
+import com.example.bean.SubmitOrderBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -23,6 +24,8 @@ import com.example.utils.SPUtil;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
@@ -58,7 +61,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                if ("1".equals(errorCode) && getView() != null) {
+                LogUtil.e("dizhi:" + errorCode + "-------" + errorMsg);
+                if (getView() != null) {
                     getView().noAddress();
                 }
             }
@@ -93,8 +97,26 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         ARouter.getInstance().build("/module_user_mine/ShippingAddressActivity").navigation((Activity) mContext, 123);
     }
 
-    public void submit(String content) {
-        Intent intent = new Intent(mContext, PaymentActivity.class);
-        mContext.startActivity(intent);
+    public void submit(final OrderConfirmBean bean) {
+        String jsonString = JSON.toJSONString(bean);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi5(mContext).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("提交订单：" + result);
+                SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
+                submitOrderBean.setProductName(bean.getGoodsName());
+                Intent intent = new Intent(mContext, PaymentActivity.class);
+                intent.putExtra("bean", submitOrderBean);
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------" + errorMsg);
+            }
+        }));
+
     }
 }

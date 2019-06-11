@@ -1,6 +1,5 @@
 package com.example.bean;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class UserGoodsDetail {
@@ -113,10 +112,19 @@ public class UserGoodsDetail {
     private String is_favorite;
     private Object path;
     private StoInfoBean stoInfo;
+    private List<Attributes> xsProductAttributes;
     private List productLadderList;
     private List productFullReductionList;
     private List memberPriceList;
     private List productAttributeValueList;
+
+    public List<Attributes> getXsProductAttributes() {
+        return xsProductAttributes;
+    }
+
+    public void setXsProductAttributes(List<Attributes> xsProductAttributes) {
+        this.xsProductAttributes = xsProductAttributes;
+    }
 
     public String getSellerLogo() {
         return sellerLogo;
@@ -558,6 +566,151 @@ public class UserGoodsDetail {
         this.productAttributeValueList = productAttributeValueList;
     }
 
+    public static class Attributes {
+
+        /**
+         * id : 1
+         * productAttributeCategoryId : 1
+         * name : 尺寸
+         * selectType : 2
+         * inputType : 1
+         * inputList : s,m,l,xl,xxl,xxxl
+         * sort : 0
+         * filterType : 0
+         * searchType : 0
+         * relatedStatus : 0
+         * handAddStatus : 0
+         * type : 0
+         */
+
+        private int id;
+        private int productAttributeCategoryId;
+        private String name;
+        private int selectType;
+        private int inputType;
+        private String inputList;
+        private int sort;
+        private int filterType;
+        private int searchType;
+        private int relatedStatus;
+        private int handAddStatus;
+        private int type;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getProductAttributeCategoryId() {
+            return productAttributeCategoryId;
+        }
+
+        public void setProductAttributeCategoryId(int productAttributeCategoryId) {
+            this.productAttributeCategoryId = productAttributeCategoryId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getSelectType() {
+            return selectType;
+        }
+
+        public void setSelectType(int selectType) {
+            this.selectType = selectType;
+        }
+
+        public int getInputType() {
+            return inputType;
+        }
+
+        public void setInputType(int inputType) {
+            this.inputType = inputType;
+        }
+
+        public String getInputList() {
+            return inputList;
+        }
+
+        public void setInputList(String inputList) {
+            this.inputList = inputList;
+        }
+
+        public int getSort() {
+            return sort;
+        }
+
+        public void setSort(int sort) {
+            this.sort = sort;
+        }
+
+        public int getFilterType() {
+            return filterType;
+        }
+
+        public void setFilterType(int filterType) {
+            this.filterType = filterType;
+        }
+
+        public int getSearchType() {
+            return searchType;
+        }
+
+        public void setSearchType(int searchType) {
+            this.searchType = searchType;
+        }
+
+        public int getRelatedStatus() {
+            return relatedStatus;
+        }
+
+        public void setRelatedStatus(int relatedStatus) {
+            this.relatedStatus = relatedStatus;
+        }
+
+        public int getHandAddStatus() {
+            return handAddStatus;
+        }
+
+        public void setHandAddStatus(int handAddStatus) {
+            this.handAddStatus = handAddStatus;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return "Attributes{" +
+                    "id=" + id +
+                    ", productAttributeCategoryId=" + productAttributeCategoryId +
+                    ", name='" + name + '\'' +
+                    ", selectType=" + selectType +
+                    ", inputType=" + inputType +
+                    ", inputList='" + inputList + '\'' +
+                    ", sort=" + sort +
+                    ", filterType=" + filterType +
+                    ", searchType=" + searchType +
+                    ", relatedStatus=" + relatedStatus +
+                    ", handAddStatus=" + handAddStatus +
+                    ", type=" + type +
+                    '}';
+        }
+    }
+
     public static class StoInfoBean {
         private List<RecordsBean> records;
 
@@ -812,6 +965,7 @@ public class UserGoodsDetail {
                 ", is_favorite='" + is_favorite + '\'' +
                 ", path=" + path +
                 ", stoInfo=" + stoInfo +
+                ", xsProductAttributes=" + xsProductAttributes +
                 ", productLadderList=" + productLadderList +
                 ", productFullReductionList=" + productFullReductionList +
                 ", memberPriceList=" + memberPriceList +

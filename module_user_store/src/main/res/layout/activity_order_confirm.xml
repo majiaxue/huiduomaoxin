@@ -515,7 +515,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_toRightOf="@id/order_confirm_temp2"
-            android:text="49.00"
             android:textColor="@color/codeText"
             android:textSize="@dimen/sp_16" />
 

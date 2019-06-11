@@ -60,7 +60,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_20"
             android:includeFontPadding="false"
-            android:text="88"
             android:textColor="#d6a7d3"
             android:textSize="@dimen/sp_40" />
 
@@ -91,7 +90,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="8"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_18" />
 
@@ -117,7 +115,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="8"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_18" />
 
@@ -140,7 +137,6 @@
         android:layout_marginLeft="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_13"
         android:includeFontPadding="false"
-        android:text="我的推荐人：李老师"
         android:textColor="#222222"
         android:textSize="@dimen/sp_12" />
 

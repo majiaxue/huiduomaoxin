@@ -73,5 +73,4 @@ dependencies {
     implementation project(':module_other')
     implementation project(':module_user_store')
     implementation project(':module_user_mine')
-    implementation (name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
 }

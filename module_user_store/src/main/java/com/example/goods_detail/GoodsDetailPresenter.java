@@ -24,7 +24,6 @@ import com.example.bean.HotSaleBean;
 import com.example.bean.OrderConfirmBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
-import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.AssessBean;
 import com.example.entity.CouponBean;
 import com.example.entity.ParmsBean;
@@ -42,7 +41,6 @@ import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
-import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnFlowSelectListener;
@@ -101,6 +99,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 if (getView() != null) {
                     getView().loadUI(userGoodsDetail);
                 }
+
                 dataList = userGoodsDetail.getStoInfo().getRecords();
 
                 //规格缩略图
@@ -243,6 +242,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
         final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
         TextView price = view.findViewById(R.id.pop_choose_goods_price);
+        TextView type = view.findViewById(R.id.pop_choose_goods_type);
         ImageView cancel = view.findViewById(R.id.pop_choose_goods_cancel);
         flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
         flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
@@ -251,6 +251,9 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         final TextView count = view.findViewById(R.id.pop_choose_goods_count);
         TextView shopCart = view.findViewById(R.id.pop_choose_goods_cart);
         TextView buy = view.findViewById(R.id.pop_choose_goods_buy);
+        TextView title1 = view.findViewById(R.id.pop_choose_goods_title1);
+        TextView title2 = view.findViewById(R.id.pop_choose_goods_title2);
+
 
         final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -273,10 +276,15 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             }
         });
 
+        Glide.with(mContext).load(userGoodsDetail.getPic()).into(img);
+        type.setText("选择" + userGoodsDetail.getXsProductAttributes().get(0).getName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName());
+        title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
+        title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
         count.setText("" + quantity);
+        sizeList.clear();
         sizeList.addAll(dataList.get(0).getList());
 
-        final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, new OnFlowSelectListener() {
+        final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, price, new OnFlowSelectListener() {
             @Override
             public void setOnFlowSelect(int position) {
                 sizePosition = position;
@@ -296,6 +304,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         }));
 
         flow2.setAdapter(sizeFlowLayoutAdapter);
+
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,7 +395,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             orderConfirmBean.setPrice(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPrice());
             orderConfirmBean.setSourceType(1);
             orderConfirmBean.setPic(userGoodsDetail.getPic());
-            orderConfirmBean.setPrice(userGoodsDetail.getPrice());
             orderConfirmBean.setGoodsName(userGoodsDetail.getName());
             orderConfirmBean.setFeightTemplateId(userGoodsDetail.getFeightTemplateId());
             orderConfirmBean.setStock(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getStock());

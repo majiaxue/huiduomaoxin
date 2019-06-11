@@ -43,7 +43,7 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
     }
 
     public void loadData(final int page, String content) {
-        Map map = MapUtil.getInstance().addParms("current", page).addParms("search", content).addParms("size", 2).build();
+        Map map = MapUtil.getInstance().addParms("current", page).addParms("search", content).build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.GROUP_FANS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

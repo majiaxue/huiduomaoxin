@@ -2,8 +2,8 @@ package com.example.common;
 
 public class CommonResource {
     public static final String BASEURL = "http://192.168.1.30:9001";
-    public static final String BASEURL2 = "http://192.168.1.23:9005";
-    public static final String BASEURL4 = "http://192.168.1.2:4001";
+    public static final String BASEURL2 = "http://192.168.1.4:9005";
+    public static final String BASEURL4 = "http://192.168.1.27:4001";
     public static final String BASEURLCART = "http://192.168.1.30:9004";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
@@ -31,6 +31,12 @@ public class CommonResource {
     public static final String GROUP_FANS_POPPLE = "/rest/user/fans/detail";    //团队粉丝--一级粉丝数、今日新增
     public static final String MOREN_ADDRESS = "/rest/address/default";     //获取默认收货地址
     public static final String GET_YUNGEI = "/rest/goods/queryFeight";      //获取运费
+    public static final String GETBALANCE = "/rest/user/balance";       //查询余额
+    public static final String COMMIT_ORDER = "/rest/order/nowPlace";      //提交订单
+    public static final String IN_OUT = "/rest/user/incomeAndExpend";       //收入和支出(余额)---get:参数 type 0收入 1 支出
+    public static final String TOPAY = "/alipay/signOrder";             //支付宝支付
+    public static final String SUGGESSTION = "/rest/user/feedback";     //提交意见反馈
+    public static final String QUERYSUGGESSTION = "/rest/user/feedback/all";    //查询意见反馈列表
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //商品收藏
@@ -45,8 +51,6 @@ public class CommonResource {
     public static final String ADDRESSDEFAULT = "/rest/address/default";   //设置默认收货地址
     public static final String DELETEADDRESS = "/rest/address";   //删除收货地址
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
-
-
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

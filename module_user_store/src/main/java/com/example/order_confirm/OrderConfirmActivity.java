@@ -94,7 +94,6 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     public void initData() {
         Intent intent = getIntent();
         confirmBean = (OrderConfirmBean) intent.getSerializableExtra("order");
-        LogUtil.e("确认：" + confirmBean);
         includeTitle.setText("确认订单");
         orderConfirmShopName.setText(confirmBean.getSellerName());
         Glide.with(this).load(confirmBean.getPic()).into(orderConfirmImg);
@@ -162,7 +161,8 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.submit(orderConfirmEdit.getText().toString());
+                confirmBean.setRemark(orderConfirmEdit.getText().toString());
+                presenter.submit(confirmBean);
             }
         });
     }
@@ -206,7 +206,8 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             orderConfirmDeliveryTxt2.setText("+￥" + postageBean.getFeight());
         }
         confirmBean.setFreightAmount(postageBean.getFeight());
-        orderConfirmFinalPrice.setText("￥" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), postageBean.getFeight()));
+        LogUtil.e("-------" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), postageBean.getFeight()));
+        orderConfirmFinalPrice.setText("" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), postageBean.getFeight()));
     }
 
     private void reviseCount() {

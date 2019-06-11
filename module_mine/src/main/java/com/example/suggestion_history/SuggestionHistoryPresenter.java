@@ -2,13 +2,24 @@ package com.example.suggestion_history;
 
 import android.content.Context;
 
+import com.alibaba.fastjson.JSON;
+import com.example.bean.FeedBackHistoryBean;
+import com.example.common.CommonResource;
 import com.example.entity.SuggestionBean;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.suggestion_history.adapter.SuggestionHistoryAdapter;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class SuggestionHistoryPresenter extends BasePresenter<SuggestionHistoryView> {
     public SuggestionHistoryPresenter(Context context) {
@@ -21,6 +32,20 @@ public class SuggestionHistoryPresenter extends BasePresenter<SuggestionHistoryV
     }
 
     public void loadData() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.QUERYSUGGESSTION, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("反馈历史：" + result);
+                List<FeedBackHistoryBean> dataList = JSON.parseArray(result, FeedBackHistoryBean.class);
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
         List<SuggestionBean> dataList = new ArrayList<>();
         dataList.add(new SuggestionBean("无法提现！！", "7月03日 10:35", "系统繁忙，请稍后重试", "7月03日 10:35"));
         dataList.add(new SuggestionBean("无法提现！！", "7月03日 10:35", "系统繁忙，请稍后重试", "7月03日 10:35"));

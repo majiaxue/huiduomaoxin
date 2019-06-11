@@ -6,4 +6,6 @@ import com.example.mvp.IView;
 public interface IncomeView extends IView {
 
     void loadRv(IncomeAdapter adapter);
+
+    void loadFinish();
 }
