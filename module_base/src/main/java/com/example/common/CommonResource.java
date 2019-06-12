@@ -38,6 +38,9 @@ public class CommonResource {
     public static final String SUGGESSTION = "/rest/user/feedback";     //提交意见反馈
     public static final String QUERYSUGGESSTION = "/rest/user/feedback/all";    //查询意见反馈列表
     public static final String COLLECT = "/rest/user/product";      //商品收藏
+    public static final String SUGGESTION = "/rest/user/feedback";     //提交意见反馈
+    public static final String QUERYSUGGESTION = "/rest/user/feedback/all";    //查询意见反馈列表
+    public static final String PAYSUCCESS = "/rest/order/modifyOrder";      //支付成功 修改订单状态
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏

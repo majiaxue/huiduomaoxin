@@ -100,10 +100,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmGoods.setText(confirmBean.getGoodsName());
         orderConfirmColor.setText("颜色：" + confirmBean.getSp1() + "，" + "尺码：" + confirmBean.getSp2());
         orderConfirmPrice.setText(confirmBean.getPrice() + "");
-        orderConfirmCount.setText(confirmBean.getQuantity() + "");
-        orderConfirmGoodsCount.setText("共" + confirmBean.getQuantity() + "件");
-        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
-        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
+
 
         presenter.loadData();
     }
@@ -143,7 +140,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             public void onClick(View v) {
                 if (confirmBean.getQuantity() > 1) {
                     confirmBean.setQuantity(confirmBean.getQuantity() - 1);
-                    reviseCount();
+                    presenter.getPostage(confirmBean);
                 }
             }
         });
@@ -153,7 +150,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             public void onClick(View v) {
                 if (confirmBean.getQuantity() < confirmBean.getStock()) {
                     confirmBean.setQuantity(confirmBean.getQuantity() + 1);
-                    reviseCount();
+                    presenter.getPostage(confirmBean);
                 }
             }
         });
@@ -199,15 +196,19 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
 
     @Override
     public void loadPostage(PostageBean postageBean) {
+        confirmBean.setFreightAmount(postageBean.getFeight());
+
         orderConfirmTotalYunfei.setText("+￥" + postageBean.getFeight());
         if (postageBean.getIsPinkage() == 0) {
             orderConfirmDeliveryTxt2.setText("包邮");
         } else {
-            orderConfirmDeliveryTxt2.setText("+￥" + postageBean.getFeight());
+            orderConfirmDeliveryTxt2.setText("￥" + postageBean.getFeight());
         }
-        confirmBean.setFreightAmount(postageBean.getFeight());
-        LogUtil.e("-------" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), postageBean.getFeight()));
-        orderConfirmFinalPrice.setText("" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), postageBean.getFeight()));
+        orderConfirmCount.setText(postageBean.getQuantity() + "");
+        orderConfirmGoodsCount.setText("共" + postageBean.getQuantity() + "件");
+        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), postageBean.getQuantity()));
+        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), postageBean.getQuantity()));
+        orderConfirmFinalPrice.setText("" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), postageBean.getQuantity()), postageBean.getFeight()));
     }
 
     private void reviseCount() {

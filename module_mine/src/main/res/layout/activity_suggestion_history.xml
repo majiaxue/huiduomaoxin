@@ -8,8 +8,7 @@
 
     <include layout="@layout/page_top" />
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/suggestion_history_refresh"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -35,5 +34,5 @@
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_10" />
         </LinearLayout>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

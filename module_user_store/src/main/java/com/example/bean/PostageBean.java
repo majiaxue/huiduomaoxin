@@ -10,7 +10,16 @@ public class PostageBean {
 
     private double total;
     private double feight;
+    private Integer quantity;
     private int isPinkage;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public double getTotal() {
         return total;
@@ -34,5 +43,15 @@ public class PostageBean {
 
     public void setIsPinkage(int isPinkage) {
         this.isPinkage = isPinkage;
+    }
+
+    @Override
+    public String toString() {
+        return "PostageBean{" +
+                "total=" + total +
+                ", feight=" + feight +
+                ", quantity='" + quantity + '\'' +
+                ", isPinkage=" + isPinkage +
+                '}';
     }
 }

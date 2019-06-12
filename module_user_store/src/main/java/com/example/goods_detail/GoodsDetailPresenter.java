@@ -45,6 +45,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
+import com.example.utils.SPUtil;
 import com.example.view.flowLayout.TagFlowLayout;
 
 import java.util.ArrayList;
@@ -202,13 +203,24 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void toAttention() {
-        if (isAttention) {
-            isAttention = false;
-            getView().cancelAttention();
-        } else {
-            isAttention = true;
-            getView().attention();
-        }
+        Map map = MapUtil.getInstance().addParms("productId", userGoodsDetail.getId()).addParms("type", 0).build();
+        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("收藏：" + result);
+                if ("true".equals(result)) {
+                    getView().attention();
+                } else {
+                    getView().cancelAttention();
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     public void lingquan() {
