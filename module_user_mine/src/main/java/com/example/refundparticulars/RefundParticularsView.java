@@ -1,10 +1,14 @@
 package com.example.refundparticulars;
 
+import com.example.alteration.bean.AlterationBean;
 import com.example.mvp.IView;
+
+import java.util.List;
 
 /**
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
 public interface RefundParticularsView extends IView {
+    void initView(List<AlterationBean> list);
 }

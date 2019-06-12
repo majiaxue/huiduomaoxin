@@ -178,7 +178,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "点击了收藏", Toast.LENGTH_SHORT).show();
-                presenter.goodsCollect(commodityCollectImage,detailsBeanList);
+                presenter.goodsCollect(commodityCollectImage, detailsBeanList);
             }
         });
     }
@@ -225,9 +225,14 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         this.detailsBeanList = beanList;
         commodityName.setText(beanList.get(0).getGoods_name());//名字
-        commodityPreferentialPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1));//优惠价
+        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
+        commodityPreferentialPrice.setText("￥" + div);//优惠价
         commodityOriginalPrice.setText("原价：￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));//原价
-        commodityEarnings.setText("预估收益：￥" + ArithUtil.div(beanList.get(0).getPromotion_rate(), 100, 1));//收益
+        double userPromotion = ArithUtil.div(beanList.get(0).getUser_promotion_rate(), 100, 1);
+        double promotion = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);
+        double mul = ArithUtil.mul(div, promotion);
+        double earnings = ArithUtil.mul(mul, userPromotion);
+        commodityEarnings.setText("预估收益：￥" + earnings);//收益
         commodityNumberSold.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
         commodityShopName.setText(beanList.get(0).getMall_name());
         shopDescribeScore.setText("" + ArithUtil.div(beanList.get(0).getAvg_desc(), 100, 1));
@@ -238,6 +243,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         //商品详情图片
         presenter.setShopParticulars(shopParticulars, beanList);
         //收藏状态
-        presenter.isCollect(commodityCollectImage,beanList);
+        presenter.isCollect(commodityCollectImage, beanList);
     }
 }

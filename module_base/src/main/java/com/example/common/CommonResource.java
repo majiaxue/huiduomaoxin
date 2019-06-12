@@ -60,7 +60,8 @@ public class CommonResource {
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
     public static final String FAVORITESTATUS = "/rest/user/favorite/status";   //查询收藏状态
-    public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后
+    public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后列表
+    public static final String ADDRESSADD = "/rest/address/add";   //新增收货地址
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

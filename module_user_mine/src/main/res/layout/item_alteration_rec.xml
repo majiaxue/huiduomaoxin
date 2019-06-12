@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -65,43 +65,45 @@
             android:textSize="@dimen/sp_12" />
 
         <LinearLayout
-            android:layout_width="@dimen/dp_145"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_21"
             android:layout_below="@id/alteration_rec_count"
             android:layout_alignLeft="@id/alteration_rec_name"
             android:background="@drawable/bg_linear5f5"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="颜色："
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="颜色："-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="@dimen/sp_12" />-->
 
             <TextView
-                android:id="@+id/alteration_rec_colour"
+                android:id="@+id/alteration_rec_Attr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:text="白色"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_12" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="，尺码："
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="，尺码："-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="@dimen/sp_12" />-->
 
-            <TextView
-                android:id="@+id/alteration_rec_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXL"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
+            <!--<TextView-->
+                <!--android:id="@+id/alteration_rec_size"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="XXXL"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="@dimen/sp_12" />-->
         </LinearLayout>
 
 

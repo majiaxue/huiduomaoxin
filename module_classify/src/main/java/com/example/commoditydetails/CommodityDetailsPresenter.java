@@ -64,7 +64,8 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     }
 
     public void initView(long goods_id) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.PDDGOODSDETAIL + "/" + goods_id);
+        Map map = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode() + "").build();
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi2(mContext).getData(CommonResource.PDDGOODSDETAIL + "/" + goods_id, map);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnPddCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -175,7 +176,10 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     //是否收藏
     public void isCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+        LogUtil.e("id------------->"+beanList.get(0).getGoods_id());
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id(), SPUtil.getToken());
+        LogUtil.e("path------------>"+"http://192.168.1.27:4001"+CommonResource.FAVORITESTATUS+"/"+beanList.get(0).getGoods_id());
+
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

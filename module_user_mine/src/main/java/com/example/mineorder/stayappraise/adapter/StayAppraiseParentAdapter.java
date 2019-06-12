@@ -30,9 +30,7 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
     public void convert(RecyclerViewHolder holder, MineOrderBean.OrderListBean data, int position) {
         if(data.getStatus() == 3) {
             //3待评论
-            holder.setText(R.id.mine_order_parent_status, "交易成功");
-            holder.setText(R.id.mine_order_parent_btn_left, "再次购买");
-            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+            holder.setText(R.id.stay_appraise_parent_status, "交易成功");
         }
         holder.setText(R.id.stay_appraise_parent_shop, data.getSellerName());
 

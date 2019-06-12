@@ -20,6 +20,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
@@ -53,6 +54,7 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("stayAppraiseResult------->"+result);
                 MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
                 }.getType());
                 listBeans.clear();
@@ -72,14 +74,14 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
                 stayAppraiseParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+
                     }
                 });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("stayAppraiseErrorMsg------->"+errorMsg);
             }
         }));
     }
