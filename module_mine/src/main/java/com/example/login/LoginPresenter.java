@@ -125,6 +125,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     }.getType());
                     LogUtil.e("登录：" + userInfoBean);
                     SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
+                    SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

@@ -37,16 +37,16 @@ public class CommonResource {
     public static final String TOPAY = "/alipay/signOrder";             //支付宝支付
     public static final String SUGGESSTION = "/rest/user/feedback";     //提交意见反馈
     public static final String QUERYSUGGESSTION = "/rest/user/feedback/all";    //查询意见反馈列表
+    public static final String COLLECT = "/rest/user/product";      //商品收藏
 
-
-    public static final String GOODSCOLLECTION = "/rest/user/product/all";   //商品收藏
+    public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏
     public static final String HISTORYALL = "/rest/user/history/all";   //浏览历史
     public static final String PDDGOODS = "/rest/pdd/goods/pddgoods";   //pdd获取商品列表
     public static final String GOODSCATS = "/rest/pdd/goods/goodscats/0";   //pdd获取商品标准类目接口
     public static final String PDDGOODSDETAIL = "/rest/pdd/goods/detail";   //pdd获取商品详情信息
-
-
+    public static final String TOPGOODS = "/rest/pdd/goods/topgoods";   //pdd获取获取爆款商品
+    public static final String GOODSCOUPON = "/rest/pdd/goods/coupon";   //pdd跳转至拼多多->获取优惠券->下单
     public static final String FAVORITEDELETE = "/rest/user/favorite/delete";   //删除收藏商品,取消关注商家
     public static final String HISTORYDELETE = "/rest/user/history/delete";   //浏览历史记录删除
     public static final String CARTLIST = "/rest/order/list";   //购物车
@@ -56,7 +56,8 @@ public class CommonResource {
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
-
+    public static final String FAVORITESTATUS = "/rest/user/favorite/status";   //查询收藏状态
+    public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";
@@ -67,4 +68,5 @@ public class CommonResource {
     public static final String JUMP_CLASSIFY = "JUMP_CLASSIFY";
     public static final String JUMP_CART = "JUMP_CART";
     public static final String TOKEN = "token";
+    public static final String USERCODE = "userCode";
 }

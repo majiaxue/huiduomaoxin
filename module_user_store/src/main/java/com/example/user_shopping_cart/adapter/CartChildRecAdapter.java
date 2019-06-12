@@ -1,11 +1,15 @@
 package com.example.user_shopping_cart.adapter;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.user_shopping_cart.bean.CartBean;
 import com.example.user_store.R;
+import com.example.view.AddAndSubView;
 
 import java.util.List;
 
@@ -15,17 +19,52 @@ import java.util.List;
  */
 public class CartChildRecAdapter extends MyRecyclerAdapter<CartBean.RecordsBean.ItemsBean> {
 
+    private ImageView cartChildCheck;
+
     public CartChildRecAdapter(Context context, List<CartBean.RecordsBean.ItemsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, CartBean.RecordsBean.ItemsBean data, int position) {
+    public void convert(RecyclerViewHolder holder, final CartBean.RecordsBean.ItemsBean data, final int position) {
+        cartChildCheck = holder.getView(R.id.cart_child_check);
+        if (data.getChecked() == 0) {
+            //选中
+            cartChildCheck.setImageResource(R.drawable.icon_xuanzhong);
+        } else {
+            //未选中
+            cartChildCheck.setImageResource(R.drawable.icon_weixuanzhong);
+        }
+
         holder.setImageFresco(R.id.cart_child_image, data.getProductPic());
         holder.setText(R.id.cart_child_name, data.getProductName());
         holder.setText(R.id.cart_child_colour, data.getSp1() + "，");
         holder.setText(R.id.cart_child_size, data.getSp2());
         holder.setText(R.id.cart_child_price, "￥" + data.getPrice());
+        AddAndSubView addAndSub = holder.getView(R.id.cart_child_add_and_sub);
+        addAndSub.setNumber(data.getQuantity());
+        addAndSub.setOnNumberChangeListener(new AddAndSubView.OnNumberChangeListener() {
+            @Override
+            public void onNumberChange(int num) {
+                onCartListChangeListener.onProductNumberChange(position, data.getQuantity());
+            }
+        });
+
+//        viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.cart_child_check), holder.getView(R.id.cart_child_add_and_sub), position);
+        viewOnClickListener.ViewOnClick(holder.getView(R.id.cart_child_check), position);
+    }
+
+
+    OnCartListChangeListener onCartListChangeListener;
+
+    public void setOnCartListChangeListener(OnCartListChangeListener onCartListChangeListener) {
+        this.onCartListChangeListener = onCartListChangeListener;
+    }
+
+    public interface OnCartListChangeListener {
+
+        //加减器接口回调
+        void onProductNumberChange(int childPosition, int number);
 
     }
 }

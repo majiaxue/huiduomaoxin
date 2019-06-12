@@ -1,6 +1,8 @@
 package com.example.commoditydetails;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,27 +13,32 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.BaseRecAdapter;
-import com.example.bean.BannerBean;
+import com.example.adapter.MyRecyclerAdapter;
+import com.example.commoditydetails.adapter.CommodityDetailsPddRecAdapter;
+import com.example.commoditydetails.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.bean.CommodityDetailsBean;
-import com.example.commoditydetails.bean.CommodityXBannerBean;
+import com.example.commoditydetails.bean.CommodityDetailsPddRecBean;
+import com.example.commoditydetails.bean.LedSecuritiesBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecBean;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
 import com.example.net.OnPddCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.example.utils.MapUtil;
+import com.example.utils.SPUtil;
+import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -44,6 +51,8 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     private List<BaseRecBean> baseRecBeanList;
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList = new ArrayList<>();
+    private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
+    private List<LedSecuritiesBean.GoodsPromotionUrlGenerateResponseBean.GoodsPromotionUrlListBean> ledList = new ArrayList<>();
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -59,7 +68,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnPddCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("CommodityDetailsResult------------>" + result);
+                LogUtil.e("CommodityDetailsResult详情------------>" + result);
                 CommodityDetailsBean commodityDetailsBean = JSON.parseObject(result, new TypeReference<CommodityDetailsBean>() {
                 }.getType());
                 beanList.clear();
@@ -71,11 +80,12 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("CommodityDetailsErrorMsg------------>" + errorMsg);
+                LogUtil.e("CommodityDetailsErrorMsg详情------------>" + errorMsg);
             }
         }));
     }
 
+    //商品轮播图
     public void setXBanner(XBanner commodityXbanner, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         final List<String> images = beanList.get(0).getGoods_gallery_urls();
 
@@ -103,37 +113,137 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         });
     }
 
-    //推荐
-    public void setRecommendRec(RecyclerView shopRecommendRec) {
+    //商品详情图
+    public void setShopParticulars(RecyclerView shopParticulars, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+        final List<String> images = beanList.get(0).getGoods_gallery_urls();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        shopRecommendRec.setLayoutManager(linearLayoutManager);
-        baseRecBeanList = new ArrayList<>();
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        baseRecBeanList.add(new BaseRecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-        BaseRecAdapter baseRecAdapter = new BaseRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
-        shopRecommendRec.setAdapter(baseRecAdapter);
+        CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, images, R.layout.itme_commodity_details_rec);
+        shopParticulars.setLayoutManager(linearLayoutManager);
+//        shopParticulars.setNestedScrollingEnabled(false);
+        shopParticulars.setAdapter(commodityDetailsRecAdapter);
+    }
 
-        baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+    public void goodsCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+        Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).build();
+        Observable head = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("CommodityDetailsResult点击收藏----->" + result);
+                if (result.equals("true")) {
+                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
+                } else {
+                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+                }
             }
-        });
 
-        baseRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
-            public void ViewOnClick(View view, final int index) {
-                view.setOnClickListener(new View.OnClickListener() {
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("CommodityDetailsErrorMsg点击收藏----->" + errorMsg);
+
+            }
+        }));
+    }
+
+    //领劵
+    public void ledSecurities(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
+        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnPddCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("CommodityDetailsResult领劵------------>" + result);
+                LedSecuritiesBean ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
+                }.getType());
+                ledList.clear();
+                ledList.addAll(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list());
+
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(ledList.get(0).getMobile_url());
+                intent.setData(content_url);
+                mContext.startActivity(intent);
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("CommodityDetailsErrorMsg领劵------------>" + errorMsg);
+            }
+        }));
+    }
+
+    //是否收藏
+    public void isCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id(), SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("CommodityDetailsIsCollectResult是否收藏------->" + result);
+                if (result.equals("true")) {
+                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
+                } else {
+                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("CommodityDetailsIsCollectErrorMsg收藏------------>" + errorMsg);
+            }
+        }));
+    }
+
+    //推荐
+    public void setRecommendRec(final RecyclerView shopRecommendRec) {
+
+        Map map = MapUtil.getInstance().addParms("limit", 20).build();
+        Observable data = RetrofitUtil.getInstance().getApi2(mContext).getData(CommonResource.TOPGOODS, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnPddCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("CommodityDetailsResult推荐----->" + result);
+//                CommodityDetailsPddRecBean commodityDetailsPddRecBean = JSON.parseObject(result, new TypeReference<CommodityDetailsPddRecBean>() {
+//                }.getType());
+                CommodityDetailsPddRecBean commodityDetailsPddRecBean = new Gson().fromJson(result, CommodityDetailsPddRecBean.class);
+                LogUtil.e("CommodityDetailsResult推荐Bean" + commodityDetailsPddRecBean);
+                topGoodsList.clear();
+                topGoodsList.addAll(commodityDetailsPddRecBean.getTop_goods_list_get_response().getList());
+                for (int i = topGoodsList.size() - 1; i >= 0; i--) {
+                    if (topGoodsList.get(i).getCoupon_discount() == 0) {
+                        topGoodsList.remove(i);
+                    }
+                }
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                shopRecommendRec.setLayoutManager(linearLayoutManager);
+                CommodityDetailsPddRecAdapter pddRecAdapter = new CommodityDetailsPddRecAdapter(mContext, topGoodsList, R.layout.item_base_rec);
+                shopRecommendRec.setAdapter(pddRecAdapter);
+
+                pddRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+//                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                    }
+                });
+
+                pddRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                    @Override
+                    public void ViewOnClick(View view, final int index) {
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                            }
+                        });
                     }
                 });
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("CommodityDetailsErrorMsg推荐----->" + errorMsg);
+            }
+        }));
 
 
     }

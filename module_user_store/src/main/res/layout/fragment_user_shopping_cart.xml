@@ -120,14 +120,14 @@
         android:layout_alignParentBottom="true"
         android:background="#ffffff">
 
-        <CheckBox
+        <ImageView
             android:id="@+id/shopping_cart_check_all"
-            android:layout_width="@dimen/dp_19"
-            android:layout_height="@dimen/dp_19"
+            android:layout_width="@dimen/dp_29"
+            android:layout_height="@dimen/dp_29"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:background="@drawable/checkbox_selector"
-            android:button="@null"/>
+            android:layout_marginLeft="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            android:src="@drawable/icon_weixuanzhong" />
 
         <LinearLayout
             android:id="@+id/shopping_cart_hide"

@@ -19,9 +19,11 @@ import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
+import com.example.utils.ArithUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -87,6 +89,9 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @Autowired(name = "type")
     String type;
 
+    private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> detailsBeanList = new ArrayList<>();
+
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_commodity_details;
@@ -96,14 +101,11 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        if (type.equals("1")){
+        if (type.equals("1")) {
             commodityIntoShop.setVisibility(View.INVISIBLE);
         }
         //加载视图
         presenter.initView(goods_id);
-
-//        //详情轮播图
-//        presenter.setXBanner(commodityXbanner);
 
         //推荐recycler
         presenter.setRecommendRec(shopRecommendRec);
@@ -160,21 +162,23 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CommodityDetailsActivity.this, "点击了分享", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
             }
         });
         //领劵
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
+                presenter.ledSecurities(detailsBeanList);
             }
         });
         //收藏
         commodityCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CommodityDetailsActivity.this, "点击了收藏", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CommodityDetailsActivity.this, "点击了收藏", Toast.LENGTH_SHORT).show();
+                presenter.goodsCollect(commodityCollectImage,detailsBeanList);
             }
         });
     }
@@ -219,17 +223,21 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
     @Override
     public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-
+        this.detailsBeanList = beanList;
         commodityName.setText(beanList.get(0).getGoods_name());//名字
-        commodityPreferentialPrice.setText("￥" + (Double.valueOf(beanList.get(0).getMin_group_price()) / 100 - Double.valueOf(beanList.get(0).getCoupon_discount()) / 100));//优惠价
-        commodityOriginalPrice.setText("原价：￥" + Double.valueOf(beanList.get(0).getMin_group_price()) / 100);//原价
-        commodityEarnings.setText("预估收益：￥" + Double.valueOf(beanList.get(0).getPromotion_rate()) / 100);//收益
+        commodityPreferentialPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1));//优惠价
+        commodityOriginalPrice.setText("原价：￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));//原价
+        commodityEarnings.setText("预估收益：￥" + ArithUtil.div(beanList.get(0).getPromotion_rate(), 100, 1));//收益
         commodityNumberSold.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
         commodityShopName.setText(beanList.get(0).getMall_name());
-        shopDescribeScore.setText("" + Double.valueOf(beanList.get(0).getAvg_desc()) / 100);
-        shopServiceScore.setText("" + Double.valueOf(beanList.get(0).getAvg_serv()) / 100);
-        shopLogisticsScore.setText("" + Double.valueOf(beanList.get(0).getAvg_lgst()) / 100);
+        shopDescribeScore.setText("" + ArithUtil.div(beanList.get(0).getAvg_desc(), 100, 1));
+        shopServiceScore.setText("" + ArithUtil.div(beanList.get(0).getAvg_serv(), 100, 1));
+        shopLogisticsScore.setText("" + ArithUtil.div(beanList.get(0).getAvg_lgst(), 100, 1));
         //详情轮播图
         presenter.setXBanner(commodityXbanner, beanList);
+        //商品详情图片
+        presenter.setShopParticulars(shopParticulars, beanList);
+        //收藏状态
+        presenter.isCollect(commodityCollectImage,beanList);
     }
 }

@@ -49,8 +49,13 @@ import okhttp3.ResponseBody;
 public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
+    private CartParentRecAdapter cartParentRecAdapter;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
     private List<CartBean.RecordsBean> dataBeanList = new ArrayList<>();
+    private boolean flag = true;
+    private boolean isCheckAllParentAll;
+    double totalPrice = 0;
+
 
     public ShoppingCartPresenter(Context context) {
         super(context);
@@ -65,6 +70,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "两件套").build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+
             @Override
             public void onSuccess(String result, String msg) {
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
@@ -73,7 +79,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                 commendList.addAll(hotSaleBean.getData());
                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                 //添加间距
-                SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
+                spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
                 if (shoppingCartRecommendRec.getItemDecorationCount() == 0) {
                     shoppingCartRecommendRec.addItemDecoration(spaceItemDecorationLeftAndRight);
                 }
@@ -110,9 +116,10 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void setShoppingCartRec(final RecyclerView shoppingCartRec) {
-        Map map = MapUtil.getInstance().addParms("id", 1).addParms("flag", 1).build();
-        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi5(mContext).getData(CommonResource.CARTLIST,map);
+//        Map map = MapUtil.getInstance().addParms("id", 1).addParms("flag", 1).build();
+        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi5(mContext).getDataWithout(CommonResource.CARTLIST + "/" + 1 + "/" + 1);
         RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
+
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("cart------>" + result);
@@ -129,8 +136,44 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                     getView().isHide(false);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     shoppingCartRec.setLayoutManager(linearLayoutManager);
-                    CartParentRecAdapter cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent);
+                    cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent);
                     shoppingCartRec.setAdapter(cartParentRecAdapter);
+                    cartParentRecAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
+                        @Override
+                        public void ViewTwoOnClick(View view1, View view2, final int position) {
+                            view1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    flag = true;
+                                    checkAll(position);
+                                }
+                            });
+
+                            view2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                        }
+                    });
+
+
+                    for (int i = 0; i < dataBeanList.size(); i++) {
+                        CartBean.RecordsBean recordsBean = dataBeanList.get(i);
+                        List<CartBean.RecordsBean.ItemsBean> items = recordsBean.getItems();
+                        for (int j = 0; j < items.size(); j++) {
+                            if (items.get(j).getChecked() == 0){
+                                double price = (double)items.get(j).getPrice();
+                                int quantity = items.get(j).getQuantity();
+                                totalPrice += price * quantity;
+                            }
+                        }
+                    }
+
+                    if (getView()!=null){
+                        getView().totalPrice(totalPrice);
+                    }
 
                 }
 
@@ -142,6 +185,49 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
             }
         }));
 
+
+    }
+
+    //选中商家
+    private void checkAll(int position) {
+        if (dataBeanList.get(position).isCheck()) {
+            dataBeanList.get(position).setCheck(false);
+            cartParentRecAdapter.checkAll(position, true);
+        } else {
+            dataBeanList.get(position).setCheck(true);
+            cartParentRecAdapter.checkAll(position, false);
+        }
+
+        cartParentRecAdapter.notifyDataSetChanged();
+
+        for (int i = 0; i < dataBeanList.size(); i++) {
+            if (!dataBeanList.get(i).isCheck()) {
+                isCheckAllParentAll = false;
+                flag = false;
+            }
+        }
+
+        if (getView() != null) {
+            getView().isCheckAll(flag);
+        }
+    }
+
+    //选中parent全部的checkbox
+    public void checkAllParent(boolean isCheckAllParent) {
+        this.isCheckAllParentAll = isCheckAllParent;
+        if (isCheckAllParent) {
+            for (int i = 0; i < dataBeanList.size(); i++) {
+                dataBeanList.get(i).setCheck(false);
+                cartParentRecAdapter.checkAll(i, true);
+            }
+        } else {
+            for (int i = 0; i < dataBeanList.size(); i++) {
+                dataBeanList.get(i).setCheck(true);
+                cartParentRecAdapter.checkAll(i, false);
+            }
+        }
+
+        cartParentRecAdapter.notifyDataSetChanged();
 
     }
 
