@@ -19,6 +19,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.AssessActivity;
+import com.example.bean.AddCartBean;
 import com.example.bean.BannerBean;
 import com.example.bean.HotSaleBean;
 import com.example.bean.OrderConfirmBean;
@@ -53,6 +54,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
@@ -90,7 +93,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadData(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.GETGOODSDETAIL + "/" + "39");
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.GETGOODSDETAIL + "/" + id);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -172,7 +175,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadCommend(String keyWords) {
-        Map map = MapUtil.getInstance().addParms("searchInfo", keyWords).build();
+        Map map = MapUtil.getInstance().addParms("categoryId", keyWords).build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -251,136 +254,140 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void chooseGoodsPop() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
-        final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
-        TextView price = view.findViewById(R.id.pop_choose_goods_price);
-        TextView type = view.findViewById(R.id.pop_choose_goods_type);
-        ImageView cancel = view.findViewById(R.id.pop_choose_goods_cancel);
-        flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
-        flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
-        TextView minus = view.findViewById(R.id.pop_choose_goods_minus);
-        TextView add = view.findViewById(R.id.pop_choose_goods_add);
-        final TextView count = view.findViewById(R.id.pop_choose_goods_count);
-        TextView shopCart = view.findViewById(R.id.pop_choose_goods_cart);
-        TextView buy = view.findViewById(R.id.pop_choose_goods_buy);
-        TextView title1 = view.findViewById(R.id.pop_choose_goods_title1);
-        TextView title2 = view.findViewById(R.id.pop_choose_goods_title2);
+        if (userGoodsDetail.getXsProductAttributes().size() > 0 && userGoodsDetail.getStoInfo().getRecords().size() > 0) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
+            final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
+            TextView price = view.findViewById(R.id.pop_choose_goods_price);
+            TextView type = view.findViewById(R.id.pop_choose_goods_type);
+            ImageView cancel = view.findViewById(R.id.pop_choose_goods_cancel);
+            flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
+            flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
+            TextView minus = view.findViewById(R.id.pop_choose_goods_minus);
+            TextView add = view.findViewById(R.id.pop_choose_goods_add);
+            final TextView count = view.findViewById(R.id.pop_choose_goods_count);
+            TextView shopCart = view.findViewById(R.id.pop_choose_goods_cart);
+            TextView buy = view.findViewById(R.id.pop_choose_goods_buy);
+            TextView title1 = view.findViewById(R.id.pop_choose_goods_title1);
+            TextView title2 = view.findViewById(R.id.pop_choose_goods_title2);
 
 
-        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
-        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+            final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
+            popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
 
-        PopUtil.setTransparency(mContext, 0.3f);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                PopUtil.setTransparency(mContext, 1f);
-                if (colorPosition != -1 && sizePosition != -1) {
-                    isChoose = true;
-                    getView().yixuanze(dataList.get(colorPosition).getSkuName(), dataList.get(colorPosition).getList().get(sizePosition).getSp2());
-                } else {
-                    isChoose = false;
-                    getView().weixuanze();
-                }
-            }
-        });
-
-        Glide.with(mContext).load(userGoodsDetail.getPic()).into(img);
-        type.setText("选择" + userGoodsDetail.getXsProductAttributes().get(0).getName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName());
-        title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
-        title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
-        count.setText("" + quantity);
-        sizeList.clear();
-        sizeList.addAll(dataList.get(0).getList());
-
-        final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, price, new OnFlowSelectListener() {
-            @Override
-            public void setOnFlowSelect(int position) {
-                sizePosition = position;
-            }
-        });
-
-        flow1.setAdapter(new ColorFlowLayoutAdapter(dataList, mContext, new OnFlowSelectListener() {
-            @Override
-            public void setOnFlowSelect(int position) {
-                colorPosition = position;
-                Glide.with(mContext).load(dataList.get(position).getList().get(0).getPic()).into(img);
-                sizeList.clear();
-                sizePosition = -1;
-                initSizeList(position);
-                sizeFlowLayoutAdapter.notifyDataChanged();
-            }
-        }));
-
-        flow2.setAdapter(sizeFlowLayoutAdapter);
-
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (quantity <= 1) {
-                    quantity = 1;
-                } else {
-                    quantity--;
-                    count.setText(Integer.valueOf(count.getText().toString()) - 1 + "");
-                }
-                count.setText("" + quantity);
-            }
-        });
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (sizePosition == -1) {
-                    Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (quantity >= dataList.get(colorPosition).getList().get(sizePosition).getStock()) {
-
-                        quantity = dataList.get(0).getList().get(0).getStock();
+            PopUtil.setTransparency(mContext, 0.3f);
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    PopUtil.setTransparency(mContext, 1f);
+                    if (colorPosition != -1 && sizePosition != -1) {
+                        isChoose = true;
+                        getView().yixuanze(dataList.get(colorPosition).getSkuName(), dataList.get(colorPosition).getList().get(sizePosition).getSp2());
                     } else {
-                        quantity++;
+                        isChoose = false;
+                        getView().weixuanze(userGoodsDetail.getXsProductAttributes().get(0).getName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName());
+                    }
+                }
+            });
+
+            Glide.with(mContext).load(userGoodsDetail.getPic()).into(img);
+            type.setText("选择" + userGoodsDetail.getXsProductAttributes().get(0).getName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName());
+            title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
+            title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
+            count.setText("" + quantity);
+            sizeList.clear();
+            sizeList.addAll(dataList.get(0).getList());
+
+            final SizeFlowLayoutAdapter sizeFlowLayoutAdapter = new SizeFlowLayoutAdapter(sizeList, mContext, price, new OnFlowSelectListener() {
+                @Override
+                public void setOnFlowSelect(int position) {
+                    sizePosition = position;
+                }
+            });
+
+            flow1.setAdapter(new ColorFlowLayoutAdapter(dataList, mContext, new OnFlowSelectListener() {
+                @Override
+                public void setOnFlowSelect(int position) {
+                    colorPosition = position;
+                    Glide.with(mContext).load(dataList.get(position).getList().get(0).getPic()).into(img);
+                    sizeList.clear();
+                    sizePosition = -1;
+                    initSizeList(position);
+                    sizeFlowLayoutAdapter.notifyDataChanged();
+                }
+            }));
+
+            flow2.setAdapter(sizeFlowLayoutAdapter);
+
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+
+            minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (quantity <= 1) {
+                        quantity = 1;
+                    } else {
+                        quantity--;
+                        count.setText(Integer.valueOf(count.getText().toString()) - 1 + "");
                     }
                     count.setText("" + quantity);
                 }
-            }
-        });
+            });
 
-        shopCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorPosition == -1 || sizePosition == -1) {
-                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-                } else {
-                    popupWindow.dismiss();
-                }
-            }
-        });
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (sizePosition == -1) {
+                        Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (quantity >= dataList.get(colorPosition).getList().get(sizePosition).getStock()) {
 
-        buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorPosition == -1 || sizePosition == -1) {
-                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-                } else {
-                    popupWindow.dismiss();
-                    chooseOrJump();
+                            quantity = dataList.get(0).getList().get(0).getStock();
+                        } else {
+                            quantity++;
+                        }
+                        count.setText("" + quantity);
+                    }
                 }
-            }
-        });
+            });
+
+            shopCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (colorPosition == -1 || sizePosition == -1) {
+                        Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                    } else {
+                        popupWindow.dismiss();
+                        chooseOrAddCart();
+
+                    }
+                }
+            });
+
+            buy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (colorPosition == -1 || sizePosition == -1) {
+                        Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                    } else {
+                        popupWindow.dismiss();
+                        chooseOrJump();
+                    }
+                }
+            });
+        }
     }
 
     private void initSizeList(int position) {
-        for (int i = 0; i < dataList.size(); i++) {
+        for (int i = 0; i < dataList.get(position).getList().size(); i++) {
             if (dataList.get(position).getList().get(i).getStock() > 0) {
                 sizeList.add(dataList.get(position).getList().get(i));
             }
@@ -407,13 +414,59 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             orderConfirmBean.setPrice(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPrice());
             orderConfirmBean.setSourceType(1);
             orderConfirmBean.setPic(userGoodsDetail.getPic());
-            orderConfirmBean.setGoodsName(userGoodsDetail.getName());
+            orderConfirmBean.setProductName(userGoodsDetail.getName());
             orderConfirmBean.setFeightTemplateId(userGoodsDetail.getFeightTemplateId());
             orderConfirmBean.setStock(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getStock());
             orderConfirmBean.setProductId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getProductId());
+            orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId());
+            orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+            orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+            orderConfirmBean.setPromotionPrice(userGoodsDetail.getPromotionPrice());
+            orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getSkuName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
+
             Intent intent = new Intent(mContext, OrderConfirmActivity.class);
             intent.putExtra("order", orderConfirmBean);
             mContext.startActivity(intent);
+        } else {
+            chooseGoodsPop();
+        }
+    }
+
+    public void chooseOrAddCart() {
+        if (isChoose) {
+            AddCartBean cartBean = new AddCartBean();
+            cartBean.setChecked(0);
+            cartBean.setPrice(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPrice());
+            cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getSkuName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
+            cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId());
+            cartBean.setProductId(userGoodsDetail.getId());
+            cartBean.setProductSkuId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getId());
+            cartBean.setProductName(userGoodsDetail.getName());
+            cartBean.setProductPic(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPic());
+            cartBean.setProductSn(userGoodsDetail.getProductSn());
+            cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+            cartBean.setQuantity((int) quantity);
+            cartBean.setSellerId(userGoodsDetail.getSellerId());
+            cartBean.setSellerName(userGoodsDetail.getSellerName());
+            cartBean.setSp1(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp1());
+            cartBean.setSp2(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
+            cartBean.setSp3(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp3());
+
+            String jsonString = JSON.toJSONString(cartBean);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi5(mContext).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("添加购物车：" + result);
+                    Toast.makeText(mContext, "添加成功，可前往购物车查看", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+
+                }
+            }));
         } else {
             chooseGoodsPop();
         }

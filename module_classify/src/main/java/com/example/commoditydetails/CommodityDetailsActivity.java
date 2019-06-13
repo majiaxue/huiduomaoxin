@@ -96,7 +96,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        if (type.equals("1")){
+        if ("1".equals(type)){
             commodityIntoShop.setVisibility(View.INVISIBLE);
         }
         //加载视图

@@ -5,25 +5,27 @@ import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.MyCollectBean;
 import com.example.entity.BaseRecBean;
 import com.example.module_mine.R;
+import com.example.utils.ArithUtil;
 
 import java.util.List;
 
-public class CollectionAdapter extends MyRecyclerAdapter<BaseRecBean> {
+public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean.GoodsSearchResponseBean.GoodsListBean> {
     private boolean isEdit;
 
-    public CollectionAdapter(Context context, List<BaseRecBean> mList, int mLayoutId) {
+    public CollectionAdapter(Context context, List<MyCollectBean.GoodsSearchResponseBean.GoodsListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public CollectionAdapter(Context context, List<BaseRecBean> mList, int mLayoutId, boolean isEdit) {
+    public CollectionAdapter(Context context, List<MyCollectBean.GoodsSearchResponseBean.GoodsListBean> mList, int mLayoutId, boolean isEdit) {
         super(context, mList, mLayoutId);
         this.isEdit = isEdit;
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, BaseRecBean data, int position) {
+    public void convert(RecyclerViewHolder holder, MyCollectBean.GoodsSearchResponseBean.GoodsListBean data, int position) {
         if (isEdit) {
             holder.getView(R.id.rv_collection_check).setVisibility(View.VISIBLE);
             holder.getView(R.id.rv_collection_immediately_grab).setVisibility(View.GONE);
@@ -39,14 +41,13 @@ public class CollectionAdapter extends MyRecyclerAdapter<BaseRecBean> {
         } else {
             holder.setImageResource(R.id.rv_collection_check, R.drawable.vghfgdg);
         }
-        holder.setText(R.id.rv_collection_name, data.getName())
-                .setText(R.id.rv_collection_reduce_price, data.getReduce_price())
-                .setText(R.id.rv_collection_preferential_price, "￥" + data.getPreferential_price())
-                .setText(R.id.rv_collection_original_price, data.getOriginal_price())
-                .setText(R.id.rv_collection_number, "已抢" + data.getNumber() + "件")
+        holder.setText(R.id.rv_collection_name, data.getGoods_name())
+                .setText(R.id.rv_collection_reduce_price, "领券减" + ArithUtil.exact(ArithUtil.sub(data.getMin_normal_price() * 0.01, data.getMin_group_price() * 0.01), 0) + "元")
+                .setText(R.id.rv_collection_preferential_price, "￥" + ArithUtil.exact(data.getMin_group_price() * 0.01, 1))
+                .setText(R.id.rv_collection_original_price, ArithUtil.exact(data.getMin_normal_price() * 0.01, 1) + "")
+                .setText(R.id.rv_collection_number, "已抢" + data.getSold_quantity() + "件")
                 .setTextLine(R.id.rv_collection_original_price)
-                .setProgressBar(R.id.rv_collection_progress, (int) (100.0 * Integer.valueOf(data.getNumber()) / Integer.valueOf(data.getTotalCount())))
-                .setImageFresco(R.id.rv_collection_image, data.getImgUrl());
+                .setImageFresco(R.id.rv_collection_image, data.getGoods_image_url());
     }
 
     public void setEdit(boolean edit) {

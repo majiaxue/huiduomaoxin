@@ -32,6 +32,8 @@ public class BrowseRecordActivity extends BaseActivity<BrowseRecordView, BrowseR
     @BindView(R2.id.browse_record_refresh)
     SmartRefreshLayout browseRecordRefresh;
 
+    private int page = 1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_browse_record;
@@ -43,28 +45,13 @@ public class BrowseRecordActivity extends BaseActivity<BrowseRecordView, BrowseR
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         browseRecordRv.setLayoutManager(layoutManager);
-        presenter.loadData();
+        presenter.loadData(page);
 
         //设置 Header 为 官方主题 样式
         browseRecordRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 默认 样式
         browseRecordRefresh.setRefreshFooter(new ClassicsFooter(this));
 
-        //********************设置上拉刷新下拉加载
-        browseRecordRefresh.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-                refreshLayout.finishRefresh();
-            }
-        });
-        browseRecordRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-                refreshLayout.finishLoadMore();
-            }
-        });
     }
 
     @Override
@@ -75,11 +62,34 @@ public class BrowseRecordActivity extends BaseActivity<BrowseRecordView, BrowseR
                 finish();
             }
         });
+
+        //********************设置上拉刷新下拉加载
+        browseRecordRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                presenter.loadData(page);
+            }
+        });
+        browseRecordRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                presenter.loadData(page);
+            }
+        });
     }
 
     @Override
     public void loadUI(BrowseRecordAdapter adapter) {
         browseRecordRv.setAdapter(adapter);
+        presenter.click();
+    }
+
+    @Override
+    public void loadFinish() {
+        browseRecordRefresh.finishRefresh();
+        browseRecordRefresh.finishLoadMore();
     }
 
     @Override

@@ -47,7 +47,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         mContext.startActivity(intent);
     }
 
-    public void loadData() {
+    public void getAddress() {
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -106,7 +106,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("提交订单：" + result);
                 SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
-                submitOrderBean.setProductName(bean.getGoodsName());
+                submitOrderBean.setProductName(bean.getProductName());
+                submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
                 Intent intent = new Intent(mContext, PaymentActivity.class);
                 intent.putExtra("bean", submitOrderBean);
                 mContext.startActivity(intent);

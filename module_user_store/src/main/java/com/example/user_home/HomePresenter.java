@@ -75,7 +75,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                            intent.putExtra("id", saleHotList.get(position).getId());
+                            intent.putExtra("id", saleHotList.get(position).getId() + "");
+                            intent.putExtra("commendId", saleHotList.get(position).getProductCategoryId() + "");
                             mContext.startActivity(intent);
                         }
                     });
@@ -126,7 +127,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void jumpToGoodsDetail(int position) {
         Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-        intent.putExtra("id", commendList.get(position).getId());
+        intent.putExtra("id", commendList.get(position).getId() + "");
+        intent.putExtra("commendId", commendList.get(position).getProductCategoryId() + "");
         mContext.startActivity(intent);
     }
 

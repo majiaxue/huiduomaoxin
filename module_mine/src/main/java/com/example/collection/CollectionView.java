@@ -14,4 +14,6 @@ public interface CollectionView extends IView {
     void notAllCheck();
 
     void loadUI(CollectionAdapter adapter);
+
+    void loadFinish();
 }

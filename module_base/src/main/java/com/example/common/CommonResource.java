@@ -34,11 +34,16 @@ public class CommonResource {
     public static final String GETBALANCE = "/rest/user/balance";       //查询余额
     public static final String COMMIT_ORDER = "/rest/order/nowPlace";      //提交订单
     public static final String IN_OUT = "/rest/user/incomeAndExpend";       //收入和支出(余额)---get:参数 type 0收入 1 支出
-    public static final String TOPAY = "/alipay/signOrder";             //支付宝支付
+    public static final String TOPAY = "/rest/alipay/signOrder";             //支付宝支付
     public static final String SUGGESTION = "/rest/user/feedback";     //提交意见反馈
     public static final String QUERYSUGGESTION = "/rest/user/feedback/all";    //查询意见反馈列表
     public static final String COLLECT = "/rest/user/product";      //商品收藏
     public static final String PAYSUCCESS = "/rest/order/modifyOrder";      //支付成功 修改订单状态
+    public static final String COLLECT_LIST = "/rest/user/product/all";     //收藏列表---淘宝客
+    public static final String BROWSE_LIST = "/rest/user/history/all ";     //浏览记录
+    public static final String ORDER_DETAIL = "/rest/order/viewOrderInfo";     //订单详情
+    public static final String ADD_CART = "/rest/order/addCar";         //添加商品到购物车
+
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //商品收藏
@@ -58,7 +63,6 @@ public class CommonResource {
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
-
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

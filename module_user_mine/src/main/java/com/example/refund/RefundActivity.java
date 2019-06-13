@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.bean.OrderDetailBean;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -53,6 +55,8 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     private final int TAKE_PHOTO_CODE = 0x111;
     private final int PHOTO_ALBUM_CODE = 0x222;
     private final int CROP_CODE = 0x333;
+    @Autowired(name = "bean")
+    public OrderDetailBean bean;
 
     @Override
     public int getLayoutId() {
@@ -61,7 +65,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
     @Override
     public void initData() {
-
+        ARouter.getInstance().inject(this);
     }
 
     @Override

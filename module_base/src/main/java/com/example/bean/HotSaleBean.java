@@ -29,6 +29,14 @@ public class HotSaleBean implements Serializable {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "HotSaleBean{" +
+                "total=" + total +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean {
         /**
          * id : 38
@@ -91,7 +99,7 @@ public class HotSaleBean implements Serializable {
         private int recommandStatus;
         private int verifyStatus;
         private int sort;
-        private int sale;
+        private long sale;
         private double price;
         private double promotionPrice;
         private int giftGrowth;
@@ -100,8 +108,8 @@ public class HotSaleBean implements Serializable {
         private String subTitle;
         private String description;
         private double originalPrice;
-        private int stock;
-        private int lowStock;
+        private long stock;
+        private long lowStock;
         private String unit;
         private double weight;
         private int previewStatus;
@@ -121,7 +129,7 @@ public class HotSaleBean implements Serializable {
         private String productCategoryName;
         private Object supplyId;
         private Object createTime;
-        private int sellerId;
+        private String sellerId;
         private String sellerName;
         private String goodReputation;
 
@@ -237,11 +245,11 @@ public class HotSaleBean implements Serializable {
             this.sort = sort;
         }
 
-        public int getSale() {
+        public long getSale() {
             return sale;
         }
 
-        public void setSale(int sale) {
+        public void setSale(long sale) {
             this.sale = sale;
         }
 
@@ -309,19 +317,19 @@ public class HotSaleBean implements Serializable {
             this.originalPrice = originalPrice;
         }
 
-        public int getStock() {
+        public long getStock() {
             return stock;
         }
 
-        public void setStock(int stock) {
+        public void setStock(long stock) {
             this.stock = stock;
         }
 
-        public int getLowStock() {
+        public long getLowStock() {
             return lowStock;
         }
 
-        public void setLowStock(int lowStock) {
+        public void setLowStock(long lowStock) {
             this.lowStock = lowStock;
         }
 
@@ -477,11 +485,11 @@ public class HotSaleBean implements Serializable {
             this.createTime = createTime;
         }
 
-        public int getSellerId() {
+        public String getSellerId() {
             return sellerId;
         }
 
-        public void setSellerId(int sellerId) {
+        public void setSellerId(String sellerId) {
             this.sellerId = sellerId;
         }
 
@@ -491,6 +499,58 @@ public class HotSaleBean implements Serializable {
 
         public void setGoodReputation(String goodReputation) {
             this.goodReputation = goodReputation;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id=" + id +
+                    ", productCategoryId=" + productCategoryId +
+                    ", feightTemplateId=" + feightTemplateId +
+                    ", productAttributeCategoryId=" + productAttributeCategoryId +
+                    ", name='" + name + '\'' +
+                    ", pic='" + pic + '\'' +
+                    ", productSn='" + productSn + '\'' +
+                    ", deleteStatus=" + deleteStatus +
+                    ", publishStatus=" + publishStatus +
+                    ", newStatus=" + newStatus +
+                    ", recommandStatus=" + recommandStatus +
+                    ", verifyStatus=" + verifyStatus +
+                    ", sort=" + sort +
+                    ", sale=" + sale +
+                    ", price=" + price +
+                    ", promotionPrice=" + promotionPrice +
+                    ", giftGrowth=" + giftGrowth +
+                    ", giftPoint=" + giftPoint +
+                    ", usePointLimit=" + usePointLimit +
+                    ", subTitle='" + subTitle + '\'' +
+                    ", description='" + description + '\'' +
+                    ", originalPrice=" + originalPrice +
+                    ", stock=" + stock +
+                    ", lowStock=" + lowStock +
+                    ", unit='" + unit + '\'' +
+                    ", weight=" + weight +
+                    ", previewStatus=" + previewStatus +
+                    ", serviceIds='" + serviceIds + '\'' +
+                    ", keywords='" + keywords + '\'' +
+                    ", note='" + note + '\'' +
+                    ", albumPics='" + albumPics + '\'' +
+                    ", detailTitle='" + detailTitle + '\'' +
+                    ", detailDesc='" + detailDesc + '\'' +
+                    ", detailHtml='" + detailHtml + '\'' +
+                    ", detailMobileHtml='" + detailMobileHtml + '\'' +
+                    ", promotionStartTime=" + promotionStartTime +
+                    ", promotionEndTime=" + promotionEndTime +
+                    ", promotionPerLimit=" + promotionPerLimit +
+                    ", promotionType=" + promotionType +
+                    ", brandName='" + brandName + '\'' +
+                    ", productCategoryName='" + productCategoryName + '\'' +
+                    ", supplyId=" + supplyId +
+                    ", createTime=" + createTime +
+                    ", sellerId=" + sellerId +
+                    ", sellerName='" + sellerName + '\'' +
+                    ", goodReputation='" + goodReputation + '\'' +
+                    '}';
         }
     }
 }

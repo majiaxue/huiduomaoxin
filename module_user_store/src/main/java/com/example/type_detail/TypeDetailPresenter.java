@@ -141,7 +141,10 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+                intent.putExtra("id", dataList.get(position).getId() + "");
+                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
+                mContext.startActivity(intent);
             }
         }).setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
@@ -158,7 +161,10 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+                intent.putExtra("id", dataList.get(position).getId() + "");
+                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
+                mContext.startActivity(intent);
             }
         }).setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override

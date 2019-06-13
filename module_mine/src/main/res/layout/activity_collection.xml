@@ -48,13 +48,18 @@
         android:layout_below="@id/collection_top"
         android:background="#eeeeee" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/collection_rv"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/collection_refresh"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
-        android:layout_below="@id/collection_temp"
-        android:layout_weight="1"
-        android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/collection_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <LinearLayout
         android:id="@+id/collection_bottom"

@@ -144,7 +144,7 @@ public class MinePresenter extends BasePresenter<MineView> {
             public void onSuccess(String result, String msg) {
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
-                LogUtil.e("个人信息：" + userInfoBean);
+                LogUtil.e("个人信息：" + result);
                 if (getView() != null) {
                     getView().loginSuccess(userInfoBean);
                 }

@@ -109,9 +109,10 @@ public class UserGoodsDetail {
     private String sellerLogo;
     private Object skuStockList;
     private String cateParentId;
-    private String is_favorite;
     private Object path;
+    private String isFavorite;
     private StoInfoBean stoInfo;
+    private long sellerFavoriteNum;
     private List<Attributes> xsProductAttributes;
     private List productLadderList;
     private List productFullReductionList;
@@ -124,6 +125,22 @@ public class UserGoodsDetail {
 
     public void setXsProductAttributes(List<Attributes> xsProductAttributes) {
         this.xsProductAttributes = xsProductAttributes;
+    }
+
+    public long getSellerFavoriteNum() {
+        return sellerFavoriteNum;
+    }
+
+    public void setSellerFavoriteNum(long sellerFavoriteNum) {
+        this.sellerFavoriteNum = sellerFavoriteNum;
+    }
+
+    public String getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(String isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
     public String getSellerLogo() {
@@ -508,14 +525,6 @@ public class UserGoodsDetail {
 
     public void setCateParentId(String cateParentId) {
         this.cateParentId = cateParentId;
-    }
-
-    public String getIs_favorite() {
-        return is_favorite;
-    }
-
-    public void setIs_favorite(String is_favorite) {
-        this.is_favorite = is_favorite;
     }
 
     public Object getPath() {
@@ -962,9 +971,10 @@ public class UserGoodsDetail {
                 ", sellerLogo='" + sellerLogo + '\'' +
                 ", skuStockList=" + skuStockList +
                 ", cateParentId='" + cateParentId + '\'' +
-                ", is_favorite='" + is_favorite + '\'' +
                 ", path=" + path +
+                ", isFavorite='" + isFavorite + '\'' +
                 ", stoInfo=" + stoInfo +
+                ", sellerFavoriteNum='" + sellerFavoriteNum + '\'' +
                 ", xsProductAttributes=" + xsProductAttributes +
                 ", productLadderList=" + productLadderList +
                 ", productFullReductionList=" + productFullReductionList +

@@ -61,4 +61,9 @@ public class ArithUtil {
         //默认保留两位会有错误，这里设置保留小数点后4位
         return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
+
+    public static double exact(double value, int scale) {
+        BigDecimal bigDecimal = new BigDecimal(value);
+        return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
 }

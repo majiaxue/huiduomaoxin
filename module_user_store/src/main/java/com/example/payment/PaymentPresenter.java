@@ -56,6 +56,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                     Intent intent = new Intent(mContext, PaySuccessActivity.class);
                     intent.putExtra("bean", submitOrderBean);
                     mContext.startActivity(intent);
+                    ((Activity) mContext).finish();
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "支付失败", Toast.LENGTH_SHORT).show();
