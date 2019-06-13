@@ -51,10 +51,10 @@ public class ArithUtil {
      * @return 两个参数的商
      * @throws IllegalAccessException
      */
-    public static double div(double value1, double value2, int scale) throws IllegalAccessException {
+    public static double div(double value1, double value2, int scale) {
         //如果精确范围小于0，抛出异常信息
         if (scale < 0) {
-            throw new IllegalAccessException("精确度不能小于0");
+            return scale;
         }
         BigDecimal b1 = new BigDecimal(Double.toString(value1));
         BigDecimal b2 = new BigDecimal(Double.toString(value2));

@@ -179,7 +179,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+//                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
     }
@@ -203,7 +203,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+//                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
             }
         });
 
@@ -213,7 +213,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
                     }
                 });
             }

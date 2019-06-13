@@ -4,17 +4,24 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.alteration.adapter.AlterationAdapter;
 import com.example.alteration.bean.AlterationBean;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/27
@@ -31,27 +38,41 @@ public class AlterationPresenter extends BasePresenter<AlterationView> {
 
     }
 
-    public void alterationRec(RecyclerView alterationRec) {
-        List<AlterationBean> list = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            list.add(new AlterationBean("private简约男装", R.drawable.img_108, "原宿潮牌短袖T恤男夏季新款休闲欧美bf风青少年韩版宽松大码T恤", "白色", "XL", "X1", "仅退款", "退款成功"));
-            list.add(new AlterationBean("private简约男装", R.drawable.img_109, "原宿潮牌短袖T恤男夏季新款休闲欧美bf风青少年韩版宽松大码T恤", "白色", "XL", "X1", "仅退款", "退款成功"));
-        }
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        alterationRec.setLayoutManager(linearLayoutManager);
-        AlterationAdapter alterationAdapter = new AlterationAdapter(mContext, list, R.layout.item_alteration_rec);
-        alterationRec.setAdapter(alterationAdapter);
-        alterationAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+    public void alterationRec(final RecyclerView alterationRec) {
+        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi5(mContext).postDataWithout(CommonResource.RETURNTABLE);
+        RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+
             @Override
-            public void ViewOnClick(View view, final int position) {
-                view.setOnClickListener(new View.OnClickListener() {
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("AlterationResult------->" + result);
+                final List<AlterationBean> dataList = JSON.parseArray(result, AlterationBean.class);
+//                Gson gson = new Gson();
+////                List<AlterationBean> dataList = gson.fromJson(result, new TypeToken<List<AlterationBean>>() {
+////                }.getType());
+                LogUtil.e("AlterationList------->" + dataList);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                alterationRec.setLayoutManager(linearLayoutManager);
+                AlterationAdapter alterationAdapter = new AlterationAdapter(mContext, dataList, R.layout.item_alteration_rec);
+                alterationRec.setAdapter(alterationAdapter);
+                alterationAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        //查看详情
-                        ARouter.getInstance().build("/module_user_mine/RefundParticularsActivity").navigation();
+                    public void ViewOnClick(View view, final int position) {
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //查看详情
+                                ARouter.getInstance().build("/module_user_mine/RefundParticularsActivity").withString("returnId",dataList.get(position).getId()).navigation();
+                            }
+                        });
                     }
                 });
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("AlterationErrorMsg------->" + errorMsg);
+            }
+        }));
+
     }
 }

@@ -44,7 +44,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     @BindView(R2.id.shopping_cart_smart_refresh)
     SmartRefreshLayout shoppingCartSmartRefresh;
     @BindView(R2.id.shopping_cart_check_all)
-    CheckBox shoppingCartCheckAll;
+    ImageView shoppingCartCheckAll;
     @BindView(R2.id.shopping_cart_total)
     TextView shoppingCartTotal;
     @BindView(R2.id.shopping_cart_hide)
@@ -52,6 +52,9 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     @BindView(R2.id.shopping_cart_close_account_and_delete)
     TextView shoppingCartCloseAccountAndDelete;
     private boolean compileStatus = true;
+    //全选初始状态
+    private boolean isCheckAllParent = false;
+
 
     @Override
     public int getLayoutId() {
@@ -100,6 +103,20 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
             }
         });
+        //全选
+        shoppingCartCheckAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCheckAllParent) {
+                    shoppingCartCheckAll.setImageResource(R.drawable.icon_xuanzhong);
+                    isCheckAllParent = false;
+                } else {
+                    shoppingCartCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
+                    isCheckAllParent = true;
+                }
+                presenter.checkAllParent(isCheckAllParent);
+            }
+        });
 
     }
 
@@ -118,7 +135,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         super.onHiddenChanged(hidden);
         if (!hidden) {
           //显示
-            LogUtil.e("cart----->加载数据");
             presenter.setShoppingCartRec(shoppingCartRec);
         }
     }
@@ -140,5 +156,21 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         }else{
             shoppingCartEmpty.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void isCheckAll(boolean isCheckAll) {
+        if (isCheckAll){
+            shoppingCartCheckAll.setImageResource(R.drawable.icon_xuanzhong);
+            isCheckAllParent = false;
+        }else{
+            shoppingCartCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
+            isCheckAllParent = true;
+        }
+    }
+
+    @Override
+    public void totalPrice(double price) {
+        shoppingCartTotal.setText(""+price);
     }
 }

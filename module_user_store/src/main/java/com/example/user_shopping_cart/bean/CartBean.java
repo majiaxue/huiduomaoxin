@@ -28,6 +28,16 @@ public class CartBean {
 
         private int sellerId;
         private String sellerName;
+        private boolean isCheck;
+
+        public boolean isCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(boolean check) {
+            isCheck = check;
+        }
+
         private List<ItemsBean> items;
 
         public int getSellerId() {

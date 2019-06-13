@@ -30,7 +30,7 @@ public class AlterationActivity extends BaseActivity<AlterationView, AlterationP
 
     @Override
     public void initData() {
-
+        presenter.alterationRec(alterationRec);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AlterationActivity extends BaseActivity<AlterationView, AlterationP
                 finish();
             }
         });
-        presenter.alterationRec(alterationRec);
+
     }
 
     @Override

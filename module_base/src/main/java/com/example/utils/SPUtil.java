@@ -52,6 +52,10 @@ public class SPUtil {
         return userSP.getString(CommonResource.TOKEN, "");
     }
 
+    public static String getUserCode() {
+        return userSP.getString(CommonResource.USERCODE, "");
+    }
+
     /**
      * 清除用户数据,退出登录
      *

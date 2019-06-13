@@ -98,7 +98,8 @@ public class CommodityDetailsBean {
             private int coupon_remain_quantity;
             private int coupon_start_time;
             private int coupon_end_time;
-            private int promotion_rate;
+            private double promotion_rate;
+            private double user_promotion_rate;
             private double goods_eval_score;
             private int goods_eval_count;
             private int avg_desc;
@@ -112,6 +113,13 @@ public class CommodityDetailsBean {
             private List<Integer> opt_ids;
             private List<Integer> cat_ids;
 
+            public double getUser_promotion_rate() {
+                return user_promotion_rate;
+            }
+
+            public void setUser_promotion_rate(double user_promotion_rate) {
+                this.user_promotion_rate = user_promotion_rate;
+            }
             public int getMall_coupon_id() {
                 return mall_coupon_id;
             }
@@ -304,11 +312,11 @@ public class CommodityDetailsBean {
                 this.coupon_end_time = coupon_end_time;
             }
 
-            public int getPromotion_rate() {
+            public double getPromotion_rate() {
                 return promotion_rate;
             }
 
-            public void setPromotion_rate(int promotion_rate) {
+            public void setPromotion_rate(double promotion_rate) {
                 this.promotion_rate = promotion_rate;
             }
 

@@ -21,14 +21,33 @@ public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, AlterationBean data, int position) {
-        holder.setText(R.id.alteration_rec_shop_name, data.getShopName());
-        holder.setImageResource(R.id.alteration_rec_image, data.getImage());
-        holder.setText(R.id.alteration_rec_name, data.getName());
-        holder.setText(R.id.alteration_rec_count, data.getCount());
-        holder.setText(R.id.alteration_rec_colour, data.getColour());
-        holder.setText(R.id.alteration_rec_size, data.getSize());
-        holder.setText(R.id.alteration_rec_type, data.getAlterationType());
-        holder.setText(R.id.alteration_rec_status, data.getAlterationStatus());
+        holder.setText(R.id.alteration_rec_shop_name, data.getSellerName());
+        holder.setImageFresco(R.id.alteration_rec_image, data.getProductPic());
+        holder.setText(R.id.alteration_rec_name, data.getProductName());
+        holder.setText(R.id.alteration_rec_count, "X" + data.getProductCount());
+        holder.setText(R.id.alteration_rec_Attr, data.getProductAttr());
+//        holder.setText(R.id.alteration_rec_size, data.getSize());
+        if (data.getReturnType().equals("0")) {
+            //退货退款
+            holder.setText(R.id.alteration_rec_type, "退货退款");
+        } else if (data.getReturnType().equals("1")) {
+            //未收货
+            holder.setText(R.id.alteration_rec_type, "未收货");
+        } else {
+            //只退款
+            holder.setText(R.id.alteration_rec_type, "只退款");
+        }
+        //申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
+        if (data.getStatus() == 0) {
+            holder.setText(R.id.alteration_rec_status, "等待商家处理");
+        } else if (data.getStatus() == 1) {
+            holder.setText(R.id.alteration_rec_status, "处理中");
+        } else if (data.getStatus() == 2) {
+            holder.setText(R.id.alteration_rec_status, "退款成功");
+        } else {
+            holder.setText(R.id.alteration_rec_status, "商家已拒绝");
+        }
+
         viewOnClickListener.ViewOnClick(holder.getView(R.id.alteration_rec_view_details), position);
     }
 }

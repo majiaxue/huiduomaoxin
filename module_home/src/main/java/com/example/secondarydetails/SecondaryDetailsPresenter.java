@@ -267,65 +267,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
         }));
     }
-//rec
-//    public void secondaryDetailsRec(final RecyclerView secondaryDetailsRec, final String type) {
-//        if (type.equals("1")) {
-//            //拼多多
-//            PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
-//            pddGoodsSearchVo.setPage(1);
-//            pddGoodsSearchVo.setCatId((long) 239);
-//            String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
-//            LogUtil.e("SecondaryDetailsJson----------->" + pddGoodsSearchVoStr);
-//            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), pddGoodsSearchVoStr);
-//            Observable pddGoods = RetrofitUtil.getInstance().getApi2(mContext).postDataWithBody(CommonResource.PDDGOODS, body);
-//            RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnPddCallBack(new OnDataListener() {
-//                @Override
-//                public void onSuccess(String result, String msg) {
-//                    LogUtil.e("SecondaryDetailsResult----------->" + result);
-//                    SecondaryPddRecBean secondaryPddRecBean = JSON.parseObject(result, new TypeReference<SecondaryPddRecBean>() {
-//                    }.getType());
-//
-//                    baseRecBeanList.clear();
-//                    baseRecBeanList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
-//
-//                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//                    secondaryDetailsRec.setLayoutManager(linearLayoutManager);
-//                    SecondaryPddRecAdapter baseRecAdapter = new SecondaryPddRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec, type);
-//
-//                    if (getView() != null) {
-//                        getView().lodeRec(baseRecAdapter);
-//                    }
-//
-//                    baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(RecyclerView parent, View view, int position) {
-//                            ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
-//                        }
-//                    });
-//
-//                    baseRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-//                        @Override
-//                        public void ViewOnClick(View view, final int index) {
-//                            view.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
-//                                }
-//                            });
-//                        }
-//                    });
-//                }
-//
-//                @Override
-//                public void onError(String errorCode, String errorMsg) {
-//                    LogUtil.e("SecondaryDetailsError----------->" + errorMsg);
-//                }
-//
-//            }));
-//        }
-//
-//
-//    }
+
 
     //设置tablayout指示器与文字一样宽
     private void initTabIndicator(final TabLayout secondaryDetailsTab) {

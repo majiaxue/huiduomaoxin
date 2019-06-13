@@ -8,4 +8,8 @@ import com.example.mvp.IView;
  */
 public interface ShoppingCartView extends IView {
     void isHide(boolean isHide);
+
+    void isCheckAll(boolean isCheckAll);
+
+    void totalPrice(double price);
 }

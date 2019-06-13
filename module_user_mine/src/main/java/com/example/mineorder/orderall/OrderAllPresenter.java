@@ -11,7 +11,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
-import com.example.mineorder.adapter.MineOrderAdapter;
+import com.example.mineorder.adapter.MineOrderChildAdapter;
+import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
@@ -50,7 +51,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("OrderAllPresenterResult-------->" + result);
-                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<com.example.mineorder.bean.MineOrderBean>() {
+                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
                 }.getType());
                 LogUtil.e("OrderAllPresenterMineOrderBean-------->" + MineOrderBean.getOrderList());
                 listBeans.clear();
@@ -58,17 +59,17 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 orderAllRec.setLayoutManager(linearLayoutManager);
-                MineOrderAdapter mineOrderAdapter = new MineOrderAdapter(mContext, listBeans, R.layout.item_order_rec);
-                orderAllRec.setAdapter(mineOrderAdapter);
+                MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                orderAllRec.setAdapter(mineOrderParentAdapter);
 
-                mineOrderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
                         Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                mineOrderAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+                mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                     @Override
                     public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
                         //去店铺

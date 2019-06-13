@@ -13,14 +13,14 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
 import com.example.logisticsinformation.LogisticsInformationActivity;
-import com.example.mineorder.adapter.MineOrderAdapter;
+import com.example.mineorder.adapter.MineOrderChildAdapter;
+import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.obligation.ObligationActivity;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
@@ -54,15 +54,15 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<com.example.mineorder.bean.MineOrderBean>() {
+                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
                 }.getType());
                 listBeans.clear();
                 listBeans.addAll(MineOrderBean.getOrderList());
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 stayObligationRec.setLayoutManager(linearLayoutManager);
-                MineOrderAdapter mineOrderAdapter = new MineOrderAdapter(mContext, listBeans, R.layout.item_order_rec);
-                stayObligationRec.setAdapter(mineOrderAdapter);
-                mineOrderAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+                MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                stayObligationRec.setAdapter(mineOrderParentAdapter);
+                mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                     @Override
                     public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
                         //去店铺
@@ -89,7 +89,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
                     }
                 });
 
-                mineOrderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
                         mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
