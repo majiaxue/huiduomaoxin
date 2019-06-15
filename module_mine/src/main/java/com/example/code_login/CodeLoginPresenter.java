@@ -70,6 +70,7 @@ public class CodeLoginPresenter extends BasePresenter<CodeLoginView> {
                     UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                     }.getType());
                     SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
+                    SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

@@ -144,6 +144,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                 intent.putExtra("id", dataList.get(position).getId() + "");
                 intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
+                intent.putExtra("sellerId", dataList.get(position).getSellerId());
                 mContext.startActivity(intent);
             }
         }).setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
@@ -164,6 +165,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                 intent.putExtra("id", dataList.get(position).getId() + "");
                 intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
+                intent.putExtra("sellerId", dataList.get(position).getSellerId());
                 mContext.startActivity(intent);
             }
         }).setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {

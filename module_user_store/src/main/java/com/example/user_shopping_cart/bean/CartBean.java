@@ -19,6 +19,13 @@ public class CartBean {
         this.records = records;
     }
 
+    @Override
+    public String toString() {
+        return "CartBean{" +
+                "records=" + records +
+                '}';
+    }
+
     public static class RecordsBean {
         /**
          * sellerId : 1
@@ -29,6 +36,34 @@ public class CartBean {
         private int sellerId;
         private String sellerName;
         private boolean isCheck;
+        private double totalFeight; //运费
+        private double totalPrice;  //小计金额
+        private double disAmount;   //优惠金额
+        private List<ItemsBean> items;
+
+        public double getTotalPrice() {
+            return totalPrice;
+        }
+
+        public void setTotalPrice(double totalPrice) {
+            this.totalPrice = totalPrice;
+        }
+
+        public double getDisAmount() {
+            return disAmount;
+        }
+
+        public void setDisAmount(double disAmount) {
+            this.disAmount = disAmount;
+        }
+
+        public double getTotalFeight() {
+            return totalFeight;
+        }
+
+        public void setTotalFeight(double totalFeight) {
+            this.totalFeight = totalFeight;
+        }
 
         public boolean isCheck() {
             return isCheck;
@@ -37,8 +72,6 @@ public class CartBean {
         public void setCheck(boolean check) {
             isCheck = check;
         }
-
-        private List<ItemsBean> items;
 
         public int getSellerId() {
             return sellerId;
@@ -62,6 +95,19 @@ public class CartBean {
 
         public void setItems(List<ItemsBean> items) {
             this.items = items;
+        }
+
+        @Override
+        public String toString() {
+            return "RecordsBean{" +
+                    "sellerId=" + sellerId +
+                    ", sellerName='" + sellerName + '\'' +
+                    ", isCheck=" + isCheck +
+                    ", totalFeight=" + totalFeight +
+                    ", totalPrice=" + totalPrice +
+                    ", disAmount=" + disAmount +
+                    ", items=" + items +
+                    '}';
         }
 
         public static class ItemsBean {
@@ -112,6 +158,15 @@ public class CartBean {
             private int checked;
             private int sellerId;
             private String sellerName;
+            private double feight;
+
+            public double getFeight() {
+                return feight;
+            }
+
+            public void setFeight(double feight) {
+                this.feight = feight;
+            }
 
             public int getId() {
                 return id;
@@ -287,6 +342,35 @@ public class CartBean {
 
             public void setSellerName(String sellerName) {
                 this.sellerName = sellerName;
+            }
+
+            @Override
+            public String toString() {
+                return "ItemsBean{" +
+                        "id=" + id +
+                        ", productId=" + productId +
+                        ", productSkuId=" + productSkuId +
+                        ", userId=" + userId +
+                        ", quantity=" + quantity +
+                        ", price=" + price +
+                        ", sp1='" + sp1 + '\'' +
+                        ", sp2='" + sp2 + '\'' +
+                        ", sp3='" + sp3 + '\'' +
+                        ", productPic='" + productPic + '\'' +
+                        ", productName='" + productName + '\'' +
+                        ", productSubTitle='" + productSubTitle + '\'' +
+                        ", memberNickname='" + memberNickname + '\'' +
+                        ", createDate='" + createDate + '\'' +
+                        ", modifyDate='" + modifyDate + '\'' +
+                        ", productCategoryId=" + productCategoryId +
+                        ", productBrand='" + productBrand + '\'' +
+                        ", productSn='" + productSn + '\'' +
+                        ", productAttr='" + productAttr + '\'' +
+                        ", checked=" + checked +
+                        ", sellerId=" + sellerId +
+                        ", sellerName='" + sellerName + '\'' +
+                        ", feight=" + feight +
+                        '}';
             }
         }
     }

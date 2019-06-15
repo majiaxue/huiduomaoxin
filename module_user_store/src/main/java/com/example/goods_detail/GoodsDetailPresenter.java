@@ -23,10 +23,10 @@ import com.example.bean.AddCartBean;
 import com.example.bean.BannerBean;
 import com.example.bean.HotSaleBean;
 import com.example.bean.OrderConfirmBean;
+import com.example.bean.UserCouponBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
 import com.example.entity.AssessBean;
-import com.example.entity.CouponBean;
 import com.example.entity.ParmsBean;
 import com.example.goods_detail.adapter.ColorFlowLayoutAdapter;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
@@ -59,8 +59,6 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
-    //是否关注
-    private boolean isAttention = false;
     //选择商品列表
     private List<UserGoodsDetail.StoInfoBean.RecordsBean> dataList;
     //流式布局--颜色
@@ -82,6 +80,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     //为你推荐
     List<HotSaleBean.DataBean> commendList = new ArrayList<>();
     private UserGoodsDetail userGoodsDetail;
+    private List<UserCouponBean> couponBeanList;
 
     public GoodsDetailPresenter(Context context) {
         super(context);
@@ -93,7 +92,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadData(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.GETGOODSDETAIL + "/" + id);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL).getHeadWithout(CommonResource.GETGOODSDETAIL + "/" + id, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -139,22 +138,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             }
         }));
 
-        //优惠券
-        List couponList = new ArrayList();
-        couponList.add("满50减5");
-        couponList.add("满1500减100");
-        GoodsCouponAdapter goodsCouponAdapter = new GoodsCouponAdapter(mContext, couponList, R.layout.rv_goods_coupon);
-
-        goodsCouponAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                lingquan();
-            }
-        });
-        if (getView() != null) {
-            getView().loadCoupon(goodsCouponAdapter);
-        }
-
         //评论
         List<AssessBean> assessList = new ArrayList<>();
         assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
@@ -174,9 +157,24 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         }
     }
 
+    public void loadAssess(String id) {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETASSESS + "/" + id, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("评论：" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
     public void loadCommend(String keyWords) {
         Map map = MapUtil.getInstance().addParms("categoryId", keyWords).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL).getHead(CommonResource.HOTNEWSEARCH, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -192,7 +190,9 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
                         Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                        intent.putExtra("id", commendList.get(position).getId());
+                        intent.putExtra("id", commendList.get(position).getId() + "");
+                        intent.putExtra("commendId", commendList.get(position).getProductCategoryId() + "");
+                        intent.putExtra("sellerId", commendList.get(position).getSellerId());
                         mContext.startActivity(intent);
                     }
                 });
@@ -207,7 +207,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void toAttention() {
         Map map = MapUtil.getInstance().addParms("productId", userGoodsDetail.getId()).addParms("type", 0).build();
-        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL4).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -227,15 +227,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void lingquan() {
-        final List<CouponBean> dataList = new ArrayList<>();
-        dataList.add(new CouponBean("5", "满50元可使用", "2019/12/12", false));
-        dataList.add(new CouponBean("500", "满50000元可使用", "2019/12/12", false));
-        dataList.add(new CouponBean("50", "满500元可使用", "2019/12/12", false));
-        dataList.add(new CouponBean("5", "满50元可使用", "2019/12/12", false));
-        dataList.add(new CouponBean("5", "满50元可使用", "2019/12/12", false));
-        dataList.add(new CouponBean("5", "满50元可使用", "2019/12/12", false));
-        dataList.add(new CouponBean("5", "满50元可使用", "2019/12/12", false));
-        PopUtil.lingquanPop(mContext, dataList);
+        if (couponBeanList.size() > 0) {
+            PopUtil.lingquanPop(mContext, couponBeanList);
+        } else {
+            Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void ensure() {
@@ -451,6 +447,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             cartBean.setSp1(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp1());
             cartBean.setSp2(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
             cartBean.setSp3(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp3());
+            cartBean.setUserId(SPUtil.getUserCode());
 
             String jsonString = JSON.toJSONString(cartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
@@ -476,5 +473,33 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         Intent intent = new Intent(mContext, UserActivity.class);
         intent.putExtra("key", CommonResource.JUMP_CART);
         mContext.startActivity(intent);
+    }
+
+    public void loadCoupon(String id, String sellerId) {
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("goodsId", id).build();
+        Observable observable = RetrofitUtil.getInstance().getApi7().getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("优惠券：" + result);
+                couponBeanList = JSON.parseArray(result, UserCouponBean.class);
+                GoodsCouponAdapter goodsCouponAdapter = new GoodsCouponAdapter(mContext, couponBeanList, R.layout.rv_goods_coupon);
+
+                goodsCouponAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        lingquan();
+                    }
+                });
+                if (getView() != null) {
+                    getView().loadCoupon(goodsCouponAdapter);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 }

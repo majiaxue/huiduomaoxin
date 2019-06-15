@@ -23,6 +23,8 @@ public class RetrofitUtil {
     private volatile ApiService mApiService3;
     private volatile ApiService mApiService4;
     private volatile ApiService mApiService5;
+    private volatile ApiService mApiService6;
+    private volatile ApiService mApiService7;
     /**
      * 请求失败重连次数
      */
@@ -45,6 +47,16 @@ public class RetrofitUtil {
             }
         }
         return mInstance;
+    }
+
+    public ApiService getApi(String baseUrl) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(ApiService.class);
     }
 
     public ApiService getApi1(Context context) {
@@ -113,6 +125,40 @@ public class RetrofitUtil {
             }
         }
         return mApiService5;
+    }
+
+    public ApiService getApi6() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURL6)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService6 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService6 == null) {
+                    mApiService6 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService6;
+    }
+
+    public ApiService getApi7() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURL7)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService7 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService7 == null) {
+                    mApiService7 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService7;
     }
 
     /**

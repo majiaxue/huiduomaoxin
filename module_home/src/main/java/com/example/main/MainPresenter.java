@@ -13,6 +13,7 @@ import com.example.mvp.BasePresenter;
 import com.example.classify.ClassifyFragment;
 import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 public class MainPresenter extends BasePresenter<MainView> {
@@ -72,18 +73,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(mineFragment)
                     .commit();
             position = 1;
-        } else if (resId == R.id.main_hairring) {
-            if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
-                Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
-            } else {
-                transaction.show(hairRingFragment)
-                        .hide(homeFragment)
-                        .hide(superBrandFragment)
-                        .hide(classifyFragment)
-                        .hide(mineFragment)
-                        .commit();
-                position = 3;
-            }
         } else if (resId == R.id.main_mine) {
             transaction.show(mineFragment)
                     .hide(hairRingFragment)

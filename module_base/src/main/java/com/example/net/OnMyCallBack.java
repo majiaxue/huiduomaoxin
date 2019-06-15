@@ -56,7 +56,8 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
             if (CommonResource.CODE_SUCCESS.equals(code)) {
                 listener.onSuccess(data, msg);
             } else if (CommonResource.TOKEN_EXPIRE.equals(code)) {
-                SPUtil.addParm(CommonResource.TOKEN, "");
+//                SPUtil.addParm(CommonResource.TOKEN, "");
+                SPUtil.clear();
                 listener.onError(code, msg);
             } else {
                 listener.onError(code, msg);
@@ -79,12 +80,13 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
             } else if (e instanceof SSLHandshakeException) {//安全证书异常
                 listener.onError(CommonResource.ERROR, "安全证书异常");
             } else {
-                listener.onError(CommonResource.ERROR, "error");
+
             }
         } catch (Exception e2) {
             e2.printStackTrace();
         } finally {
             LogUtil.e("onError---->" + e.getMessage());
+            listener.onError(CommonResource.ERROR, "error");
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,6 +20,7 @@ import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,8 +76,11 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         mainUserMall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, "我是多用户商城", Toast.LENGTH_SHORT).show();
-                ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
+                if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
+                    Toast.makeText(MainActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
+                }
             }
         });
     }

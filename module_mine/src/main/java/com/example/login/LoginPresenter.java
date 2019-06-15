@@ -85,12 +85,14 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     public void sendCode() {
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getData(CommonResource.WXLOGIN_CODE, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi6().getData(CommonResource.WXLOGIN_CODE, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
+                LogUtil.e("denglu:"+result);
+                SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
                 if (userInfoBean.getPhone() == null || "".equals(userInfoBean.getPhone())) {
                     Intent intent = new Intent(mContext, LoginWeChatActivity.class);
                     intent.putExtra("bean", userInfoBean);
@@ -117,7 +119,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("password", password).build();
-            Observable observable = RetrofitUtil.getInstance().getApi4(mContext).postData(CommonResource.LOGIN_PHONE, map);
+            Observable observable = RetrofitUtil.getInstance().getApi6().postData(CommonResource.LOGIN_PHONE, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

@@ -1,10 +1,14 @@
 package com.example.operator;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.entity.YysFactorBean;
 import com.example.entity.YysQuanyiBean;
@@ -12,6 +16,7 @@ import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.operator.adapter.YysFactorAdapter;
 import com.example.operator.adapter.YysQuanyiAdapter;
+import com.example.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +66,27 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
             @Override
             public void ViewOnClick(View view, int index) {
 
+            }
+        });
+    }
+
+    public void login() {
+
+        final AlibcLogin alibcLogin = AlibcLogin.getInstance();
+
+        alibcLogin.showLogin((Activity) mContext, new AlibcLoginCallback() {
+
+            @Override
+            public void onSuccess() {
+
+                LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
+
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                Toast.makeText(mContext, "登录失败 " + code + "-----" + msg,
+                        Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -160,9 +160,12 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailScroll.setOnScrollChangeListener(this);
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        String sellerId = intent.getStringExtra("sellerId");
         String commendId = intent.getStringExtra("commendId");
         presenter.loadData(id);
         presenter.loadCommend(commendId);
+        presenter.loadCoupon(id, sellerId);
+        presenter.loadAssess(id);
     }
 
     @Override

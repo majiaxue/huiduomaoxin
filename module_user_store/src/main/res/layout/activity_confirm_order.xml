@@ -31,7 +31,6 @@
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_22"
                     android:includeFontPadding="false"
-                    android:text="施工方"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_15" />
 
@@ -43,18 +42,17 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_toRightOf="@id/confirm_order_name"
                     android:includeFontPadding="false"
-                    android:text="132****5918"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_15" />
 
                 <TextView
+                    android:id="@+id/confirm_order_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/confirm_order_name"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="@dimen/dp_29"
                     android:includeFontPadding="false"
-                    android:text="时代噶杀啥的噶似的搞定撒噶"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
 
@@ -230,18 +228,17 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_toRightOf="@id/confirm_order_temp2"
-            android:text="49.00"
             android:textColor="@color/codeText"
             android:textSize="@dimen/sp_16" />
 
         <TextView
+            android:id="@+id/confirm_order_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/confirm_order_temp1"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_toRightOf="@id/confirm_order_final_price"
             android:includeFontPadding="false"
-            android:text="共5件"
             android:textColor="#666666"
             android:textSize="@dimen/sp_11" />
 

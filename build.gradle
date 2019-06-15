@@ -26,6 +26,9 @@ allprojects {
         flatDir {
             dirs 'libs'
         }
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
     }
 }
 

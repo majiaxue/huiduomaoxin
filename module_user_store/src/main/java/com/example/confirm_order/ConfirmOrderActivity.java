@@ -1,5 +1,6 @@
 package com.example.confirm_order;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,11 +9,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.fastjson.JSON;
+import com.example.bean.PostageBean;
+import com.example.bean.ShippingAddressBean;
 import com.example.confirm_order.adapter.ConfirmOrderAdapter;
 import com.example.mvp.BaseActivity;
+import com.example.user_shopping_cart.bean.CartBean;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -29,6 +38,8 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     TextView confirmOrderName;
     @BindView(R2.id.confirm_order_phone)
     TextView confirmOrderPhone;
+    @BindView(R2.id.confirm_order_detail)
+    TextView mDetail;
     @BindView(R2.id.confirm_order_choose_address)
     TextView confirmOrderChooseAddress;
     @BindView(R2.id.confirm_order_rela)
@@ -45,6 +56,8 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     TextView confirmOrderFinalPrice;
     @BindView(R2.id.confirm_order_submit)
     TextView confirmOrderSubmit;
+    @BindView(R2.id.confirm_order_count)
+    TextView mCount;
 
     @Override
     public int getLayoutId() {
@@ -54,13 +67,17 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     @Override
     public void initData() {
         includeTitle.setText("确认订单");
+        Intent intent = getIntent();
+        String bean = intent.getStringExtra("bean");
+        List<CartBean.RecordsBean> beanList = JSON.parseArray(bean, CartBean.RecordsBean.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         confirmOrderRv.setLayoutManager(layoutManager);
         if (confirmOrderRv.getItemDecorationCount() < 1) {
             confirmOrderRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_10)));
         }
-        presenter.loadData();
+        presenter.loadData(beanList);
+        presenter.getAddress();
     }
 
     @Override
@@ -78,6 +95,27 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
                 presenter.jumpToPayment();
             }
         });
+    }
+
+    @Override
+    public void loadAddress(ShippingAddressBean addressBean) {
+        confirmOrderName.setText(addressBean.getAddressName());
+        confirmOrderPhone.setText(addressBean.getAddressPhone());
+        mDetail.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
+        presenter.getPostage(addressBean.getAddressProvince());
+    }
+
+    @Override
+    public void loadPostage(double feight, double price, int number) {
+        confirmOrderTotalYunfei.setText("+￥" + feight);
+        confirmOrderTotalPrice.setText("￥" + price);
+        confirmOrderFinalPrice.setText("" + ArithUtil.add(feight, price));
+        mCount.setText("共" + number + "件");
+    }
+
+    @Override
+    public void noAddress() {
+        confirmOrderChooseAddress.setVisibility(View.VISIBLE);
     }
 
     @Override

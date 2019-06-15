@@ -1,10 +1,13 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL = "http://192.168.1.30:9001";
-    public static final String BASEURL2 = "http://192.168.1.4:9001";
-    public static final String BASEURL4 = "http://192.168.1.27:4001";
-    public static final String BASEURLCART = "http://192.168.1.30:9004";
+    public static final String LOCATIONURL = "http://47.99.93.123:4001";
+    public static final String BASEURL = "http://47.99.93.123:9001";
+    public static final String BASEURL2 = "http://47.99.93.123:9005";
+    public static final String BASEURL4 = "http://47.99.93.123:4001";
+    public static final String BASEURL6 = "http://47.99.93.123:4001";
+    public static final String BASEURL7 = "http://47.99.93.123:5003";
+    public static final String BASEURLCART = "http://47.99.93.123:9004";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -43,6 +46,16 @@ public class CommonResource {
     public static final String BROWSE_LIST = "/rest/user/history/all ";     //浏览记录
     public static final String ORDER_DETAIL = "/rest/order/viewOrderInfo";     //订单详情
     public static final String ADD_CART = "/rest/order/addCar";         //添加商品到购物车
+    public static final String REVISE_CART_ITEM = "/rest/order/updateCarItem";  //修改购物车条目状态
+    public static final String DELETE_CART = "/rest/order/removeCartByIds";     //删除购物车条目
+    public static final String CART_SUBMIT_ORDER = "/rest/order/carSub";        //购物车提交订单
+    public static final String PAY_CART = "/rest/goods/queryFeight";              //购物车结算
+    public static final String QUERY_PDD_ORDER = "/rest/user/platform/order";        //查询拼多多订单----get  参数 int status  订单状态（0：已付款 1：已结算 2：已失效） 参数要是不传 默认是查询所有
+    public static final String QUERY_FANS_ORDER = "/rest/user/order/fans/status";   //查询粉丝拼多多订单 get   currentPage 当前页  pageSize每页显示
+    public static final String QUERY_BILI = "/rest/pdd/goods/backmoney";            //查询返佣比例
+    public static final String FANS_TOTAL_MONEY = "/rest/user/fans/totalMoney";     //查询粉丝订单成交金额
+    public static final String COUPON_KELING = "/rest/seller/goods-coupons";        //可领优惠券
+    public static final String GETASSESS = "/rest/comment";                    //获取商品评论
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

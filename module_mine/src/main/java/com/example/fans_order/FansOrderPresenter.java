@@ -8,20 +8,35 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.example.bean.FansOrderCensusBean;
+import com.example.common.CommonResource;
+import com.example.fans_order.fragment_all.FansAllOrderFragment;
+import com.example.fans_order.fragment_lose.FansLoseOrderFragment;
+import com.example.fans_order.fragment_pay.FansPayOrderFragment;
+import com.example.fans_order.fragment_settle.FansSettleOrderFragment;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.order.adapter.OrderVPAdapter;
-import com.example.order.fragment_all.AllOrderFragment;
-import com.example.order.fragment_lose.LoseOrderFragment;
-import com.example.order.fragment_pay.PayOrderFragment;
-import com.example.order.fragment_settle.SettleOrderFragment;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+
 public class FansOrderPresenter extends BasePresenter<FansOrderView> {
     private String[] titleArr = {"全部订单", "已付款", "已结算", "已失效"};
     private List<Fragment> fragmentList = new ArrayList<>();
+    private FansAllOrderFragment fansAllOrderFragment;
+    private FansLoseOrderFragment fansLoseOrderFragment;
+    private FansSettleOrderFragment fansSettleOrderFragment;
+    private FansPayOrderFragment fansPayOrderFragment;
 
     public FansOrderPresenter(Context context) {
         super(context);
@@ -33,10 +48,14 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
     }
 
     public void initTabLayout(final TabLayout orderTab) {
-        fragmentList.add(AllOrderFragment.getInstance("fans"));
-        fragmentList.add(PayOrderFragment.getInstance("fans"));
-        fragmentList.add(SettleOrderFragment.getInstance("fans"));
-        fragmentList.add(LoseOrderFragment.getInstance("fans"));
+        fansAllOrderFragment = FansAllOrderFragment.getInstance();
+        fansPayOrderFragment = FansPayOrderFragment.getInstance();
+        fansSettleOrderFragment = FansSettleOrderFragment.getInstance();
+        fansLoseOrderFragment = FansLoseOrderFragment.getInstance();
+        fragmentList.add(fansAllOrderFragment);
+        fragmentList.add(fansPayOrderFragment);
+        fragmentList.add(fansSettleOrderFragment);
+        fragmentList.add(fansLoseOrderFragment);
 
         orderTab.post(new Runnable() {
             @Override
@@ -89,5 +108,23 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
 
     public void change(int i) {
         getView().typeChanged(i);
+    }
+
+    public void loadData() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi6().getHeadWithout(CommonResource.FANS_TOTAL_MONEY, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                FansOrderCensusBean fansOrderCensusBean = JSON.parseObject(result, FansOrderCensusBean.class);
+                if (getView() != null) {
+                    getView().loadCensus(fansOrderCensusBean);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 }

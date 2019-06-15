@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.SubmitOrderBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
@@ -44,10 +45,15 @@ public class PaySuccessPresenter extends BasePresenter<PaySuccessView> {
     }
 
     public void jumpToOrder(SubmitOrderBean bean) {
-        Intent intent = new Intent(mContext, OrderDetailActivity.class);
-        intent.putExtra("bean", bean);
-        mContext.startActivity(intent);
-        ((Activity) mContext).finish();
+        if ("goods".equals(bean.getProductName())) {
+            Intent intent = new Intent(mContext, OrderDetailActivity.class);
+            intent.putExtra("bean", bean);
+            mContext.startActivity(intent);
+            ((Activity) mContext).finish();
+        } else if ("cart".equals(bean.getProductName())) {
+            ARouter.getInstance().build("/module_user_mine/MineOrderActivity").navigation();
+            ((Activity) mContext).finish();
+        }
     }
 
     public void jumpToHome() {

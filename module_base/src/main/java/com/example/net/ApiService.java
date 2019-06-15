@@ -68,4 +68,7 @@ public interface ApiService {
 
     @POST
     Observable<ResponseBody> postHeadWithBody(@Url String url, @Body RequestBody body, @Header("Authorization") String token);
+
+    @POST
+    Observable<ResponseBody> postHeadWithList(@Url String url, @Body List list, @Header("Authorization") String token);
 }

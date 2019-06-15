@@ -20,6 +20,7 @@ import java.util.List;
 public class CartChildRecAdapter extends MyRecyclerAdapter<CartBean.RecordsBean.ItemsBean> {
 
     private ImageView cartChildCheck;
+    public boolean isEdit = false;
 
     public CartChildRecAdapter(Context context, List<CartBean.RecordsBean.ItemsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
@@ -36,26 +37,36 @@ public class CartChildRecAdapter extends MyRecyclerAdapter<CartBean.RecordsBean.
             cartChildCheck.setImageResource(R.drawable.icon_weixuanzhong);
         }
 
+
         holder.setImageFresco(R.id.cart_child_image, data.getProductPic());
         holder.setText(R.id.cart_child_name, data.getProductName());
         holder.setText(R.id.cart_child_colour, data.getSp1() + "，");
         holder.setText(R.id.cart_child_size, data.getSp2());
         holder.setText(R.id.cart_child_price, "￥" + data.getPrice());
-        AddAndSubView addAndSub = holder.getView(R.id.cart_child_add_and_sub);
+        final AddAndSubView addAndSub = holder.getView(R.id.cart_child_add_and_sub);
         addAndSub.setNumber(data.getQuantity());
         addAndSub.setOnNumberChangeListener(new AddAndSubView.OnNumberChangeListener() {
             @Override
             public void onNumberChange(int num) {
-                onCartListChangeListener.onProductNumberChange(position, data.getQuantity());
+                onCartListChangeListener.onProductNumberChange(position, addAndSub.getNumber());
             }
         });
 
+        if (isEdit) {
+            addAndSub.setVisibility(View.GONE);
+        } else {
+            addAndSub.setVisibility(View.VISIBLE);
+        }
 //        viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.cart_child_check), holder.getView(R.id.cart_child_add_and_sub), position);
         viewOnClickListener.ViewOnClick(holder.getView(R.id.cart_child_check), position);
     }
 
+    public void setIsEdit(boolean boo) {
+        isEdit = boo;
+        notifyDataSetChanged();
+    }
 
-    OnCartListChangeListener onCartListChangeListener;
+    private OnCartListChangeListener onCartListChangeListener;
 
     public void setOnCartListChangeListener(OnCartListChangeListener onCartListChangeListener) {
         this.onCartListChangeListener = onCartListChangeListener;

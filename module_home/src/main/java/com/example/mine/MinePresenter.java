@@ -29,7 +29,7 @@ import okhttp3.ResponseBody;
 
 public class MinePresenter extends BasePresenter<MineView> {
 
-
+    private int temp = 0;
     private MyToolAdapter myToolAdapter;
 
     public MinePresenter(Context context) {
@@ -95,7 +95,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void jumpToLogin() {
-        if ("".equals(SPUtil.getToken())) {
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
             ARouter.getInstance().build("/mine/login").navigation();
         } else {
             ARouter.getInstance().build("/mine/setting").navigation();
@@ -109,7 +109,11 @@ public class MinePresenter extends BasePresenter<MineView> {
 
 
     public void jumpToSetting() {
-        ARouter.getInstance().build("/mine/setting").navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/setting").navigation();
+        }
     }
 
     public void jumpToPredict() {
@@ -138,12 +142,18 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi6().getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
+                SPUtil.addParm("head", userInfoBean.getIcon());
+                SPUtil.addParm("name", userInfoBean.getNickname());
+                if (temp == 0) {
+                    getBackBili();
+                }
+                temp += 1;
                 LogUtil.e("个人信息：" + result);
                 if (getView() != null) {
                     getView().loginSuccess(userInfoBean);
@@ -159,6 +169,23 @@ public class MinePresenter extends BasePresenter<MineView> {
                         getView().onError();
                     }
                 }
+            }
+        }));
+    }
+
+    private void getBackBili() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.QUERY_BILI + "/" + SPUtil.getUserCode());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("返佣比例：" + result);
+                Float valueOf = Float.valueOf(result) / 100;
+                SPUtil.addParm("back", valueOf);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
             }
         }));
     }

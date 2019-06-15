@@ -77,6 +77,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                             Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                             intent.putExtra("id", saleHotList.get(position).getId() + "");
                             intent.putExtra("commendId", saleHotList.get(position).getProductCategoryId() + "");
+                            intent.putExtra("sellerId", saleHotList.get(position).getSellerId());
                             mContext.startActivity(intent);
                         }
                     });
@@ -129,6 +130,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         Intent intent = new Intent(mContext, GoodsDetailActivity.class);
         intent.putExtra("id", commendList.get(position).getId() + "");
         intent.putExtra("commendId", commendList.get(position).getProductCategoryId() + "");
+        intent.putExtra("sellerId", commendList.get(position).getSellerId());
         mContext.startActivity(intent);
     }
 

@@ -12,6 +12,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PhoneNumUtil;
 import com.example.utils.SPUtil;
@@ -76,6 +77,7 @@ public class LoginWeChatPresenter extends BasePresenter<LoginWeChatView> {
                     UserInfoBean userInfoBean1 = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                     }.getType());
                     SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean1.getToken());
+                    SPUtil.addParm(CommonResource.USERCODE, userInfoBean1.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

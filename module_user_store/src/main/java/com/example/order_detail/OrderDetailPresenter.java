@@ -71,7 +71,9 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailView> {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
                         Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                        intent.putExtra("id", hotSaleBean.getData().get(position).getId());
+                        intent.putExtra("id", hotSaleBean.getData().get(position).getId()+"");
+                        intent.putExtra("commendId", hotSaleBean.getData().get(position).getProductCategoryId()+"");
+                        intent.putExtra("sellerId", hotSaleBean.getData().get(position).getSellerId());
                         mContext.startActivity(intent);
                     }
                 });

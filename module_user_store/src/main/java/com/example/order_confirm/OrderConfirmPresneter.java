@@ -21,6 +21,8 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -77,13 +79,17 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
                 .addParms("skuId", order.getProductSkuId())
                 .addParms("productId", order.getProductId())
                 .build();
-        Observable observable = RetrofitUtil.getInstance().getApi1(mContext).postHead(CommonResource.GET_YUNGEI, map, SPUtil.getToken());
+        List<Map> list = new ArrayList<>();
+        list.add(map);
+        String jsonString = JSON.toJSONString(list);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+        Observable observable = RetrofitUtil.getInstance().getApi1(mContext).postHeadWithBody(CommonResource.GET_YUNGEI, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("运费：" + result);
-                PostageBean postageBean = JSON.parseObject(result, PostageBean.class);
-                getView().loadPostage(postageBean);
+                List<PostageBean> postageBean = JSON.parseArray(result, PostageBean.class);
+                getView().loadPostage(postageBean.get(0));
             }
 
             @Override
@@ -106,7 +112,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("提交订单：" + result);
                 SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
-                submitOrderBean.setProductName(bean.getProductName());
+                submitOrderBean.setProductName("goods");
                 submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
                 Intent intent = new Intent(mContext, PaymentActivity.class);
                 intent.putExtra("bean", submitOrderBean);

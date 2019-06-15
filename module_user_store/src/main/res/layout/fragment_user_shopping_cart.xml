@@ -180,7 +180,7 @@
             android:background="@drawable/button_jiesuan"
             android:gravity="center"
             android:padding="@dimen/dp_5"
-            android:text="去结算(2)"
+            android:text="去结算"
             android:textColor="#fefefe"
             android:textSize="@dimen/sp_14" />
 

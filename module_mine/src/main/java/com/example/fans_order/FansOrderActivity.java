@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.bean.FansOrderCensusBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragmentActivity;
@@ -49,6 +50,7 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
         presenter.initTabLayout(fansOrderTab);
         presenter.initViewPager(getSupportFragmentManager());
         fansOrderViewpager.setOffscreenPageLimit(3);
+        presenter.loadData();
     }
 
     @Override
@@ -105,6 +107,13 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
         fansOrderPdd.setBackgroundResource(position == 1 ? R.drawable.predict_xuan : 0);
         fansOrderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan : 0);
         fansOrderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
+    }
+
+    @Override
+    public void loadCensus(FansOrderCensusBean bean) {
+        fansOrderTxt1.setText(bean.getTotalCount() + "");
+        fansOrderTxt2.setText(bean.getTotalAmount() + "");
+        fansOrderTxt3.setText(bean.getTotalBackMoney() + "");
     }
 
     @Override
