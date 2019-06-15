@@ -30,7 +30,7 @@ public class SuggestionHistoryPresenter extends BasePresenter<SuggestionHistoryV
     }
 
     public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.QUERYSUGGESTION, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.QUERYSUGGESTION, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

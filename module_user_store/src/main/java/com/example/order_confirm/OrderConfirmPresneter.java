@@ -50,7 +50,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     }
 
     public void getAddress() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -83,7 +83,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         list.add(map);
         String jsonString = JSON.toJSONString(list);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-        Observable observable = RetrofitUtil.getInstance().getApi1(mContext).postHeadWithBody(CommonResource.GET_YUNGEI, requestBody, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).postHeadWithBody(CommonResource.GET_YUNGEI, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -106,7 +106,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     public void submit(final OrderConfirmBean bean) {
         String jsonString = JSON.toJSONString(bean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi5(mContext).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

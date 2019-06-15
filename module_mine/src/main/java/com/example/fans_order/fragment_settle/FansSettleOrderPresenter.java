@@ -3,7 +3,6 @@ package com.example.fans_order.fragment_settle;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.bean.FansOrderBean;
 import com.example.common.CommonResource;
 import com.example.fans_order.adapter.FansOrderRvAdapter;
@@ -37,7 +36,7 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
 
     public void loadData(final int page) {
         Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").build();
-        Observable observable = RetrofitUtil.getInstance().getApi6().getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

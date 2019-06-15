@@ -36,7 +36,7 @@ public class CodeLoginPresenter extends BasePresenter<CodeLoginView> {
 
     public void getCode(String string) {
         if (PhoneNumUtil.isMobileNO(string)) {
-            Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.LOGIN_PHONE + "/" + string);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getDataWithout(CommonResource.LOGIN_PHONE + "/" + string);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -62,7 +62,7 @@ public class CodeLoginPresenter extends BasePresenter<CodeLoginView> {
             Toast.makeText(mContext, "请阅读用户协议", Toast.LENGTH_SHORT).show();
         } else {
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("checkCode", code).build();
-            Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getData(CommonResource.LOGIN_CODE, map);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getData(CommonResource.LOGIN_CODE, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

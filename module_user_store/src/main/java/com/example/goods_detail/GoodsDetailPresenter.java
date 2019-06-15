@@ -26,7 +26,7 @@ import com.example.bean.OrderConfirmBean;
 import com.example.bean.UserCouponBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
-import com.example.entity.AssessBean;
+import com.example.bean.AssessBean;
 import com.example.entity.ParmsBean;
 import com.example.goods_detail.adapter.ColorFlowLayoutAdapter;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
@@ -79,6 +79,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private List imgList = new ArrayList();
     //为你推荐
     List<HotSaleBean.DataBean> commendList = new ArrayList<>();
+
     private UserGoodsDetail userGoodsDetail;
     private List<UserCouponBean> couponBeanList;
 
@@ -92,7 +93,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadData(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL).getHeadWithout(CommonResource.GETGOODSDETAIL + "/" + id, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getHeadWithout(CommonResource.GETGOODSDETAIL + "/" + id, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -138,31 +139,27 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             }
         }));
 
-        //评论
-        List<AssessBean> assessList = new ArrayList<>();
-        assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
-        assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
-        assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
-        assessList.add(new AssessBean("http://e.hiphotos.baidu.com/image/pic/item/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg", "上帝发誓", "衣服包装很好，薄款适中，款式好看"));
-        GoodsAssessAdapter goodsAssessAdapter = new GoodsAssessAdapter(mContext, assessList, R.layout.rv_goods_assess);
-
-        goodsAssessAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                jumpToAssess();
-            }
-        });
-        if (getView() != null) {
-            getView().loadAssess(goodsAssessAdapter);
-        }
     }
 
-    public void loadAssess(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETASSESS + "/" + id, SPUtil.getToken());
+    public void loadAssess(final String id) {
+        Map map = MapUtil.getInstance().addParms("page", 1).addParms("pageSize", 2).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.GETASSESS+"/"+id, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("评论：" + result);
+                AssessBean assessBean = JSON.parseObject(result, AssessBean.class);
+                GoodsAssessAdapter goodsAssessAdapter = new GoodsAssessAdapter(mContext, assessBean.getRecords(), R.layout.rv_goods_assess);
+
+                goodsAssessAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        jumpToAssess(id);
+                    }
+                });
+                if (getView() != null) {
+                    getView().loadAssess(goodsAssessAdapter);
+                }
             }
 
             @Override
@@ -174,7 +171,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadCommend(String keyWords) {
         Map map = MapUtil.getInstance().addParms("categoryId", keyWords).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL).getHead(CommonResource.HOTNEWSEARCH, map, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getHead(CommonResource.HOTNEWSEARCH, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -207,7 +204,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void toAttention() {
         Map map = MapUtil.getInstance().addParms("productId", userGoodsDetail.getId()).addParms("type", 0).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL4).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -390,8 +387,10 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         }
     }
 
-    public void jumpToAssess() {
-        mContext.startActivity(new Intent(mContext, AssessActivity.class));
+    public void jumpToAssess(String id) {
+        Intent intent = new Intent(mContext, AssessActivity.class);
+        intent.putExtra("id", id);
+        mContext.startActivity(intent);
     }
 
     public void jumpToShop() {
@@ -451,7 +450,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
             String jsonString = JSON.toJSONString(cartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi5(mContext).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -477,7 +476,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadCoupon(String id, String sellerId) {
         Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("goodsId", id).build();
-        Observable observable = RetrofitUtil.getInstance().getApi7().getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_5003).getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

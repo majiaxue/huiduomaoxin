@@ -425,7 +425,7 @@
             <LinearLayout
                 android:id="@+id/goods_detail_see_all"
                 android:layout_width="@dimen/dp_345"
-                android:layout_height="@dimen/dp_146"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/pop_clear_cache"
                 android:descendantFocusability="blocksDescendants"
@@ -467,15 +467,11 @@
                         android:src="@drawable/icon_gengduo2" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="@dimen/dp_0"
-                    android:layout_weight="1" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/goods_detail_rv_assess"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
 
             <RelativeLayout

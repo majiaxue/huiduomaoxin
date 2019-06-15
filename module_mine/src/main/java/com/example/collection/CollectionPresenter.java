@@ -11,7 +11,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.MyCollectBean;
 import com.example.collection.adapter.CollectionAdapter;
 import com.example.common.CommonResource;
-import com.example.entity.BaseRecBean;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -45,7 +44,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
 
     public void loadData(final int page) {
         Map map = MapUtil.getInstance().addParms("type", "2").addParms("currentPage", page).build();
-        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COLLECT_LIST, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.COLLECT_LIST, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -109,7 +108,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                 deleteList.add(Integer.valueOf(dataList.get(i).getGoods_id()));
             }
         }
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

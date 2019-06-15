@@ -1,7 +1,6 @@
 package com.example.mineorder.stayappraise;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,8 +10,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
-import com.example.logisticsinformation.LogisticsInformationActivity;
-import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.mineorder.stayappraise.adapter.StayAppraiseParentAdapter;
 import com.example.module_user_mine.R;
@@ -50,7 +47,7 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
     public void stayAppraiseRec(final RecyclerView stayAppraiseRec) {
         Map map = MapUtil.getInstance().addParms("status", 3).build();
-        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

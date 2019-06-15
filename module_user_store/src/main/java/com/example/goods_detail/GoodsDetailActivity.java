@@ -117,6 +117,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     TextView mTotalSpecs;
     @BindView(R2.id.goods_detail_webview)
     WebView mWebView;
+    private String id;
 
     @Override
     public int getLayoutId() {
@@ -159,7 +160,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
         goodsDetailScroll.setOnScrollChangeListener(this);
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
         String sellerId = intent.getStringExtra("sellerId");
         String commendId = intent.getStringExtra("commendId");
         presenter.loadData(id);
@@ -223,7 +224,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToAssess();
+                presenter.jumpToAssess(id);
             }
         });
 

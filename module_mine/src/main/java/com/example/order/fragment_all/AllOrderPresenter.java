@@ -33,7 +33,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
     }
 
     public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi6().getHeadWithout(CommonResource.QUERY_PDD_ORDER, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHeadWithout(CommonResource.QUERY_PDD_ORDER, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

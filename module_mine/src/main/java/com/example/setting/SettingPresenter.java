@@ -186,7 +186,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
             userInfoBean.setIcon(base64);
             String jsonString = JSON.toJSONString(userInfoBean);
             Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
-            Observable observable = RetrofitUtil.getInstance().getApi4(mContext).putData(CommonResource.REVISEHEADER, map, SPUtil.getToken());
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).putData(CommonResource.REVISEHEADER, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -218,7 +218,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         userInfoBean.setPersonalizedSignature(sign);
         String jsonString = JSON.toJSONString(userInfoBean);
         Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
-        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).putData(CommonResource.REVISEINFO, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).putData(CommonResource.REVISEINFO, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -234,7 +234,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -264,7 +264,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void logout() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).deleteDataWithout(CommonResource.LOGOUT, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).deleteDataWithout(CommonResource.LOGOUT, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

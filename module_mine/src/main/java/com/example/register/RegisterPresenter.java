@@ -23,8 +23,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class RegisterPresenter extends BasePresenter<RegisterView> {
@@ -51,7 +49,7 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
 
     public void getCodeNum(String phone) {
         if (PhoneNumUtil.isMobileNO(phone)) {
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.GETREGISTERCODE + "/" + phone);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getDataWithout(CommonResource.GETREGISTERCODE + "/" + phone);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -77,7 +75,7 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
         }
         String jsonString = JSON.toJSONString(registerBean);
         Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postData(CommonResource.PHONEREGISTER, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postData(CommonResource.PHONEREGISTER, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -21,9 +21,6 @@ import com.example.pay_success.PaySuccessActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
-import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.Map;
 
@@ -72,7 +69,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {
-            Observable observable = RetrofitUtil.getInstance().getApi5(mContext).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

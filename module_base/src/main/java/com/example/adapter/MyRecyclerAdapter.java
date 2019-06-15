@@ -24,6 +24,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public OnFiveViewClickListener fiveViewClickListener;
     public OnTwoViewClickListener twoViewClickListener;
     public ViewFourOnClickListener viewFourOnClickListener;
+    public OnViewIndexClickListener viewIndexClickListener;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -154,5 +155,13 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public void setOnTwoViewClickListener(OnTwoViewClickListener listener) {
         this.twoViewClickListener = listener;
+    }
+
+    public interface OnViewIndexClickListener {
+        void viewIndexClick(View view, List<String> list, int index);
+    }
+
+    public void setOnViewIndexClickListener(OnViewIndexClickListener listener) {
+        this.viewIndexClickListener = listener;
     }
 }

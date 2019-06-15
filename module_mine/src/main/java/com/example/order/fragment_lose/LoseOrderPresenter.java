@@ -5,7 +5,6 @@ import android.content.Context;
 import com.alibaba.fastjson.JSON;
 import com.example.bean.MyOrderBean;
 import com.example.common.CommonResource;
-import com.example.fans_order.adapter.FansOrderRvAdapter;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -16,7 +15,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +35,7 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
 
     public void loadData() {
         Map map = MapUtil.getInstance().addParms("status", 2).build();
-        Observable observable = RetrofitUtil.getInstance().getApi6().getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.example.bean.UserInfoBean;
 import com.example.code_login.CodeLoginActivity;
 import com.example.common.CommonResource;
@@ -17,7 +16,6 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.net.orderAddress;
 import com.example.register.RegisterActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
@@ -33,8 +31,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class LoginPresenter extends BasePresenter<LoginView> {
@@ -85,7 +81,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     public void sendCode() {
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi6().getData(CommonResource.WXLOGIN_CODE, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getData(CommonResource.WXLOGIN_CODE, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -119,7 +115,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("password", password).build();
-            Observable observable = RetrofitUtil.getInstance().getApi6().postData(CommonResource.LOGIN_PHONE, map);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).postData(CommonResource.LOGIN_PHONE, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

@@ -18,7 +18,6 @@
         android:layout_marginLeft="@dimen/dp_45"
         android:layout_marginTop="@dimen/dp_16"
         android:includeFontPadding="false"
-        android:text="胜多负少"
         android:textColor="#666666"
         android:textSize="@dimen/sp_12" />
 
@@ -29,7 +28,6 @@
         android:layout_marginLeft="@dimen/dp_45"
         android:layout_marginTop="@dimen/dp_36"
         android:includeFontPadding="false"
-        android:text="十分士大夫士大夫"
         android:textColor="#666666"
         android:textSize="@dimen/sp_11" />
 </RelativeLayout>

@@ -142,7 +142,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi6().getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -174,7 +174,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     private void getBackBili() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.QUERY_BILI + "/" + SPUtil.getUserCode());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9001).getDataWithout(CommonResource.QUERY_BILI + "/" + SPUtil.getUserCode());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

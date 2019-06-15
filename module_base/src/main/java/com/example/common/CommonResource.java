@@ -1,13 +1,18 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String LOCATIONURL = "http://47.99.93.123:4001";
-    public static final String BASEURL = "http://47.99.93.123:9001";
-    public static final String BASEURL2 = "http://47.99.93.123:9005";
-    public static final String BASEURL4 = "http://47.99.93.123:4001";
-    public static final String BASEURL6 = "http://47.99.93.123:4001";
-    public static final String BASEURL7 = "http://47.99.93.123:5003";
-    public static final String BASEURLCART = "http://47.99.93.123:9004";
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";
+    public static final String BASEURL_5003 = "http://47.99.93.123:5003";
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";
+
+    public static final String URL_30_9001 = "http://192.168.1.30:9001";
+    public static final String URL_4_9001 = "http://192.168.1.4:9001";
+    public static final String URL_4_4001 = "http://192.168.1.4:4001";
+    public static final String URL_27_4001 = "http://192.168.1.27:4001";
+    public static final String URL_4_5003 = "http://192.168.1.4:5003";
+    public static final String URL_30_9004 = "http://192.168.1.30:9004";
+    public static final String URL_4_9005 = "http://192.168.1.4:9005";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情

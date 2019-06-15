@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.bean.OrderDetailBean;
@@ -40,7 +39,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailView> {
     }
 
     public void loadOrder(String masterNo) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi5(mContext).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + masterNo, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + masterNo, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -60,7 +59,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailView> {
 
     public void loadCommend(String productCategoryId) {
         Map map = MapUtil.getInstance().addParms("pageNum", "1").addParms("categoryId", productCategoryId).build();
-        Observable observable = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

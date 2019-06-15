@@ -13,7 +13,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
 import com.example.logisticsinformation.LogisticsInformationActivity;
-import com.example.mineorder.adapter.MineOrderChildAdapter;
 import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
@@ -50,7 +49,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
 
     public void stayDeliveryGoodsRec(final RecyclerView stayDeliveryGoodsRec) {
         Map map = MapUtil.getInstance().addParms("status", 8).build();
-        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

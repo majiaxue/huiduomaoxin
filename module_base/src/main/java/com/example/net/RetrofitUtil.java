@@ -18,13 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitUtil {
     private static RetrofitUtil mInstance;
-    private volatile ApiService mApiService;
-    private volatile ApiService mApiService2;
-    private volatile ApiService mApiService3;
-    private volatile ApiService mApiService4;
-    private volatile ApiService mApiService5;
-    private volatile ApiService mApiService6;
-    private volatile ApiService mApiService7;
+
     /**
      * 请求失败重连次数
      */
@@ -57,108 +51,6 @@ public class RetrofitUtil {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(ApiService.class);
-    }
-
-    public ApiService getApi1(Context context) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CommonResource.BASEURL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        if (mApiService == null) {
-            synchronized (ApiService.class) {
-                if (mApiService == null) {
-                    mApiService = retrofit.create(ApiService.class);
-                }
-            }
-        }
-        return mApiService;
-    }
-
-    public ApiService getApi2(Context context) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CommonResource.BASEURL2)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        if (mApiService2 == null) {
-            synchronized (ApiService.class) {
-                if (mApiService2 == null) {
-                    mApiService2 = retrofit.create(ApiService.class);
-                }
-            }
-        }
-        return mApiService2;
-    }
-
-    public ApiService getApi4(Context context) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CommonResource.BASEURL4)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        if (mApiService4 == null) {
-            synchronized (ApiService.class) {
-                if (mApiService4 == null) {
-                    mApiService4 = retrofit.create(ApiService.class);
-                }
-            }
-        }
-        return mApiService4;
-    }
-
-    public ApiService getApi5(Context context) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CommonResource.BASEURLCART)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        if (mApiService5 == null) {
-            synchronized (ApiService.class) {
-                if (mApiService5 == null) {
-                    mApiService5 = retrofit.create(ApiService.class);
-                }
-            }
-        }
-        return mApiService5;
-    }
-
-    public ApiService getApi6() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CommonResource.BASEURL6)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        if (mApiService6 == null) {
-            synchronized (ApiService.class) {
-                if (mApiService6 == null) {
-                    mApiService6 = retrofit.create(ApiService.class);
-                }
-            }
-        }
-        return mApiService6;
-    }
-
-    public ApiService getApi7() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CommonResource.BASEURL7)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        if (mApiService7 == null) {
-            synchronized (ApiService.class) {
-                if (mApiService7 == null) {
-                    mApiService7 = retrofit.create(ApiService.class);
-                }
-            }
-        }
-        return mApiService7;
     }
 
     /**
