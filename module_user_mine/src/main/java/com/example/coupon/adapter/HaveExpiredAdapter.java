@@ -10,7 +10,7 @@ import com.example.module_user_mine.R;
 import java.util.List;
 
 /**
- * Created by cuihaohao on 2019/5/25
+ * Created by cuihaohao on 2019/6/13
  * Describe:
  */
 public class HaveExpiredAdapter extends MyRecyclerAdapter<CouponBean> {
@@ -21,11 +21,11 @@ public class HaveExpiredAdapter extends MyRecyclerAdapter<CouponBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, CouponBean data, int position) {
-        holder.setText(R.id.have_expired_rec_shop_name, data.getShopName());
-        holder.setImageResource(R.id.have_expired_rec_image, data.getImage());
-        holder.setText(R.id.have_expired_rec_qian, data.getQian());
-        holder.setText(R.id.have_expired_rec_total_usage_amount, data.getTotalUsageAmount());
-        holder.setText(R.id.have_expired_rec_valid_time, data.getValidTime());
-        viewOnClickListener.ViewOnClick(holder.getView(R.id.have_expired_rec_go_shop),position);
+        holder.setText(R.id.have_expired_rec_shop_name, data.getSellerName());
+        holder.setImageResource(R.id.have_expired_rec_image, R.drawable.img_104);
+        holder.setText(R.id.have_expired_rec_qian, data.getAmount() + "");
+        holder.setText(R.id.have_expired_rec_total_usage_amount, "满" + data.getMinPoint() + "50元可使用");
+        holder.setText(R.id.have_expired_rec_valid_time, data.getEndTime());
+        viewOnClickListener.ViewOnClick(holder.getView(R.id.have_expired_rec_go_shop), position);
     }
 }

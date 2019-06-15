@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 /**
  * 二级详情
  */
+@Route(path = "/module_home/SecondaryDetailsActivity")
 public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView, SecondaryDetailsPresenter> implements SecondaryDetailsView {
 
 
@@ -41,6 +43,7 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     ImageView secondaryDetailsNoGoods;
     @BindView(R2.id.secondary_details_smart_refresh)
     SmartRefreshLayout secondaryDetailsSmartRefresh;
+    //    private String type;
     @Autowired(name = "type")
     String type;
 
@@ -53,7 +56,8 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
 //        Intent intent = getIntent();
-//        String type = intent.getStringExtra("type");
+//        type = intent.getStringExtra("type");
+
         presenter.initView(secondaryDetailsTab, secondaryDetailsRec, secondaryDetailsSmartRefresh, type);
         secondaryDetailsSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 球脉冲 样式

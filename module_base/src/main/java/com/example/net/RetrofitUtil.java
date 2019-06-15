@@ -23,6 +23,7 @@ public class RetrofitUtil {
     private volatile ApiService mApiService3;
     private volatile ApiService mApiService4;
     private volatile ApiService mApiService5;
+    private volatile ApiService mApiService6;
     /**
      * 请求失败重连次数
      */
@@ -81,6 +82,23 @@ public class RetrofitUtil {
         return mApiService2;
     }
 
+    public ApiService getApi3(Context context) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURL3)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService3 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService3 == null) {
+                    mApiService3 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService3;
+    }
+
     public ApiService getApi4(Context context) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CommonResource.BASEURL4)
@@ -113,6 +131,23 @@ public class RetrofitUtil {
             }
         }
         return mApiService5;
+    }
+
+    public ApiService getApi6(Context context) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(CommonResource.BASEURL6)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (mApiService6 == null) {
+            synchronized (ApiService.class) {
+                if (mApiService6 == null) {
+                    mApiService6 = retrofit.create(ApiService.class);
+                }
+            }
+        }
+        return mApiService6;
     }
 
     /**

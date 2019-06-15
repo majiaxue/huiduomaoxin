@@ -132,7 +132,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setXBanner() {
         //轮播图
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.USERSBANNER);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi3(mContext).getDataWithout(CommonResource.USERSBANNER);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -1,6 +1,6 @@
-package com.example.commoditydetails;
+package com.example.commoditydetails.pdd;
 
-import com.example.commoditydetails.bean.CommodityDetailsBean;
+import com.example.commoditydetails.pdd.bean.CommodityDetailsBean;
 import com.example.mvp.IView;
 
 import java.util.List;

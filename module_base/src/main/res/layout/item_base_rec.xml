@@ -52,12 +52,14 @@
 
             <TextView
                 android:id="@+id/base_reduce_price"
-                android:layout_width="@dimen/dp_81"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_22"
                 android:layout_below="@id/base_linear"
                 android:layout_marginTop="@dimen/dp_11"
                 android:background="@drawable/bg_text_led_securities"
                 android:gravity="center"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
                 android:text="领券减50元"
                 android:textColor="#222222"
                 android:textSize="@dimen/sp_12" />
@@ -92,8 +94,8 @@
                     android:id="@+id/base_original_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_8"
                     android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/dp_8"
                     android:text="￥89"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />

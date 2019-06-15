@@ -3,8 +3,10 @@ package com.example.common;
 public class CommonResource {
     public static final String BASEURL = "http://192.168.1.30:9001";
     public static final String BASEURL2 = "http://192.168.1.4:9001";
-    public static final String BASEURL4 = "http://192.168.1.27:4001";
-    public static final String BASEURLCART = "http://192.168.1.30:9004";
+    public static final String BASEURL3 = "http://192.168.1.4:9005";//轮播图
+    public static final String BASEURL6 = "http://192.168.1.4:5003";//商家申请
+    public static final String BASEURL4 = "http://192.168.1.27:4001";//用户
+    public static final String BASEURLCART = "http://192.168.1.30:9004";//购物车
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -59,9 +61,22 @@ public class CommonResource {
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
-    public static final String FAVORITESTATUS = "/rest/user/favorite/status";   //查询收藏状态
+    public static final String FAVORITESTATUS = "/rest/user/favorite";   //查询收藏状态
     public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后列表
     public static final String ADDRESSADD = "/rest/address/add";   //新增收货地址
+    public static final String ADDRESSSELECT = "/rest/address/city";   //三级地址选择
+    public static final String COUPONSTATUS = "/rest/user/coupon/status";//根据状态查询优惠券
+    public static final String SELLERINFO = "/rest/seller/info";//根据状态查询优惠券
+    public static final String TBKGOODSPRODUCTS = "/rest/tbk/goods/products";//淘宝客推荐
+    public static final String TBKGOODSITEMDETAIL = "/rest/tbk/goods/itemdetail";//商品详情接口功能（店铺信息/产品介绍/主图视频/SKU）
+    public static final String TBKGOODSGETGYURLBYALL = "/rest/tbk/goods/getgyurlbyall";//转链接API
+    public static final String TBKGOODSTBCATEGOTY = "/rest/tbk/goods/tbcategoty";//tb分类
+    public static final String TBKGOODSSELLERTBKLIST = "/rest/tbk/goods/sellerTbkList";//获取全网淘客商品API
+    public static final String TBKGOODSGETTBKSHOP = "/rest/tbk/goods/gettbkshop";//全网搜索淘宝店铺列表
+
+
+
+
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

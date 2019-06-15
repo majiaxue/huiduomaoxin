@@ -122,16 +122,33 @@
             android:textSize="@dimen/sp_12" />
 
         <TextView
-            android:id="@+id/address_where_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="省市区县、乡镇等"
-            android:paddingTop="@dimen/dp_10"
-            android:paddingBottom="@dimen/dp_10"
-            android:textColorHint="#666666"
+            android:id="@+id/address_province"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="省市区县、乡镇等"
+            android:textColor="#666666"
             android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/address_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/address_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_12" />
+
+        <View
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_1"
+            android:layout_weight="1" />
 
         <ImageView
             android:layout_width="@dimen/dp_7"

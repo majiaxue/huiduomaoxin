@@ -1,8 +1,10 @@
 package com.example.shippingaddress.amendaddress;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
+import com.example.bean.ShippingAddressBean;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
@@ -18,7 +21,6 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.shippingaddress.amendaddress.bean.AmendAddressBean;
-import com.example.bean.ShippingAddressBean;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
@@ -27,6 +29,7 @@ import com.example.view.SelfDialog;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -47,8 +50,6 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
     EditText amendAddressName;
     @BindView(R2.id.amend_address_phone)
     EditText amendAddressPhone;
-    @BindView(R2.id.amend_address_where)
-    TextView amendAddressWhere;
     @BindView(R2.id.amend_address_detailed)
     EditText amendAddressDetailed;
     @BindView(R2.id.amend_address_home)
@@ -63,6 +64,15 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
     Switch amendAddressSwitch;
     @BindView(R2.id.amend_address_save)
     TextView amendAddressSave;
+    @BindView(R2.id.amend_address_province)
+    TextView amendAddressProvince;
+    @BindView(R2.id.amend_address_city)
+    TextView amendAddressCity;
+    @BindView(R2.id.amend_address_area)
+    TextView amendAddressArea;
+    @BindView(R2.id.amend_address_where)
+    LinearLayout amendAddressWhere;
+
     private List<ShippingAddressBean> shippingAddressBeanList;
     private int position;
 
@@ -77,7 +87,9 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         shippingAddressBeanList = (List<ShippingAddressBean>) getIntent().getSerializableExtra("shippingAddressBeanList");
         amendAddressName.setText(shippingAddressBeanList.get(position).getAddressName());
         amendAddressPhone.setText(shippingAddressBeanList.get(position).getAddressPhone());
-        amendAddressWhere.setText(shippingAddressBeanList.get(position).getAddressProvince() + shippingAddressBeanList.get(position).getAddressCity() + shippingAddressBeanList.get(position).getAddressArea());
+        amendAddressProvince.setText(shippingAddressBeanList.get(position).getAddressProvince());
+        amendAddressCity.setText(shippingAddressBeanList.get(position).getAddressCity());
+        amendAddressArea.setText(shippingAddressBeanList.get(position).getAddressArea());
         amendAddressDetailed.setText(shippingAddressBeanList.get(position).getAddressDetail());
 
         if (shippingAddressBeanList.get(position).getAddressTips() == 1) {
@@ -105,6 +117,14 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
                 finish();
             }
         });
+
+        amendAddressWhere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.popupAddressWhere(amendAddressProvince,amendAddressCity,amendAddressArea);
+            }
+        });
+
         //删除
         amendAddressDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,12 +173,12 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
                 AmendAddressBean amendAddressBean = new AmendAddressBean();
                 amendAddressBean.setId(shippingAddressBeanList.get(position).getId());
                 amendAddressBean.setUserCode(shippingAddressBeanList.get(position).getUserCode());
-                LogUtil.e("userCode------>"+shippingAddressBeanList.get(position).getUserCode());
+                LogUtil.e("userCode------>" + shippingAddressBeanList.get(position).getUserCode());
                 amendAddressBean.setAddressName(amendAddressName.getText().toString());
                 amendAddressBean.setAddressPhone(amendAddressPhone.getText().toString());
-                amendAddressBean.setAddressProvince(shippingAddressBeanList.get(position).getAddressProvince());
-                amendAddressBean.setAddressCity(shippingAddressBeanList.get(position).getAddressCity());
-                amendAddressBean.setAddressArea(shippingAddressBeanList.get(position).getAddressArea());
+                amendAddressBean.setAddressProvince(amendAddressProvince.getText().toString());
+                amendAddressBean.setAddressCity(amendAddressCity.getText().toString());
+                amendAddressBean.setAddressArea(amendAddressArea.getText().toString());
                 amendAddressBean.setAddressDetail(amendAddressDetailed.getText().toString());
                 if (amendAddressHome.isChecked()) {
                     amendAddressBean.setAddressTips(1);
@@ -185,7 +205,7 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        LogUtil.e("AmendAddressActivityErrorMsg----------->"+errorMsg);
+                        LogUtil.e("AmendAddressActivityErrorMsg----------->" + errorMsg);
                     }
                 }));
 
@@ -203,4 +223,10 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         return new AmendAddressPresenter(this);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

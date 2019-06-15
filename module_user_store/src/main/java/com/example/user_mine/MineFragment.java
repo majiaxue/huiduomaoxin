@@ -16,6 +16,7 @@ import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,7 +75,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initData() {
-
+        userMineName.setText(SPUtil.getUserCode());
     }
 
     @Override

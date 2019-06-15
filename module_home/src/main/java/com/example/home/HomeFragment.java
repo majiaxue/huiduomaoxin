@@ -123,6 +123,16 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             Log.d("HomeFragment", "hidden:" + hidden);
             homeMarquee.startFlipping();
             homeXbanner.startAutoPlay();
+//            //跑马灯
+//            presenter.setViewSingleLine();
+            //xBanner
+            presenter.setXBanner(homeXbanner, homeTopBg);
+//            //topRec
+//            presenter.setRec(homeTopRec);
+            //优选recycler
+            presenter.setGoodChoiceRec(homeGoodChoiceRec);
+            //推荐recycler
+            presenter.setBottomRec(homeBottomRec);
         }
     }
 

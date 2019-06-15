@@ -1,8 +1,5 @@
 package com.example.net;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.example.bean.BaseEntity;
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
 
@@ -19,7 +16,7 @@ import okhttp3.ResponseBody;
  * Created by cuihaohao on 2019/6/6
  * Describe:
  */
-public class OnPddCallBack extends DisposableObserver<ResponseBody> {
+public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     private OnDataListener listener;
 
@@ -27,7 +24,7 @@ public class OnPddCallBack extends DisposableObserver<ResponseBody> {
     /**
      * @param listener 回调监听
      */
-    public OnPddCallBack(OnDataListener listener) {
+    public OnTripartiteCallBack(OnDataListener listener) {
         this.listener = listener;
     }
 
@@ -36,11 +33,17 @@ public class OnPddCallBack extends DisposableObserver<ResponseBody> {
         try {
             String string = responseBody.string();
             if (string.indexOf("error_response") != -1) {
-                //包含
-                listener.onError("失败",string);
+                //包含error_response
+                listener.onError("失败", string);
+            } else if (string.indexOf("error:6001") != -1) {
+                //包含error
+                listener.onError("失败", string);
+            } else if (string.indexOf("code:-1") != -1) {
+                //包含error
+                listener.onError("失败", string);
             } else {
                 //不包含
-                listener.onSuccess(string,"成功");
+                listener.onSuccess(string, "成功");
             }
         } catch (IOException e) {
             e.printStackTrace();

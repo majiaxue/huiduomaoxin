@@ -1,4 +1,4 @@
-package com.example.commoditydetails.bean;
+package com.example.commoditydetails.pdd.bean;
 
 import com.stx.xhb.xbanner.entity.SimpleBannerInfo;
 

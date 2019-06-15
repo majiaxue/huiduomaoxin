@@ -5,6 +5,8 @@ import android.net.Uri;
 
 import com.example.mvp.IView;
 
+import java.io.FileNotFoundException;
+
 /**
  * Created by cuihaohao on 2019/5/25
  * Describe:
@@ -18,5 +20,4 @@ public interface BusinessApplicationView extends IView {
 
     void showHeader(String base64);
 
-    void clearSuccess();
 }

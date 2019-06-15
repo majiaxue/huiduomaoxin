@@ -10,7 +10,7 @@ public class BannerBean extends SimpleBannerInfo implements Serializable {
     private String name;
     private int type;
     private String picUrl;
-    private Object picBackUrl;
+    private String picBackUrl;
     private Object startTime;
     private Object endTime;
     private int status;
@@ -60,11 +60,11 @@ public class BannerBean extends SimpleBannerInfo implements Serializable {
         this.picUrl = picUrl;
     }
 
-    public Object getPicBackUrl() {
+    public String getPicBackUrl() {
         return picBackUrl;
     }
 
-    public void setPicBackUrl(Object picBackUrl) {
+    public void setPicBackUrl(String picBackUrl) {
         this.picBackUrl = picBackUrl;
     }
 

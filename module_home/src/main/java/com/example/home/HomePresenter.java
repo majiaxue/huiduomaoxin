@@ -2,6 +2,7 @@ package com.example.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,24 +15,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.BaseRecAdapter;
+import com.example.bean.BannerBean;
+import com.example.bean.Records;
+import com.example.common.CommonResource;
 import com.example.entity.BaseRecBean;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.TopBannerBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
+import com.example.home.adapter.GoodsRecommendAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
 import com.example.home.bean.GoodChoiceBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.OnTripartiteCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.secondarydetails.SecondaryDetailsActivity;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import okio.ForwardingTimeout;
 
 public class HomePresenter extends BasePresenter<HomeView> {
@@ -41,8 +60,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<View> views = new ArrayList<>();
     private List<TopBannerBean> images;
     private List<BaseRecImageAndTextBean> strings;
-    private List<GoodChoiceBean> goodList;
+    private List<GoodChoiceBean.DataBean> goodList = new ArrayList<>();
     private List<BaseRecBean> baseRecBeanList;
+    private List<BannerBean> beanList;
 
     public HomePresenter(Context context) {
         super(context);
@@ -78,58 +98,74 @@ public class HomePresenter extends BasePresenter<HomeView> {
         }
     }
 
-    public void setXBanner(XBanner homeXbanner, final ImageView homeTopBg) {
-        images = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            images.add(new TopBannerBean(R.drawable.banner11));
-        }
-
-//        homeXbanner.setData(images, null);
-        homeXbanner.setBannerData(R.layout.image_fresco, images);
-        homeXbanner.loadImage(new XBanner.XBannerAdapter() {
+    public void setXBanner(final XBanner homeXbanner, final ImageView homeTopBg) {
+        //轮播图
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi3(mContext).getDataWithout(CommonResource.USERSBANNER);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void loadBanner(XBanner banner, Object model, View view, int position) {
-                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
-                bannerImage.setImageResource((int) images.get(position).getXBannerUrl());
-            }
-        });
-        // 设置XBanner的页面切换特效
-        homeXbanner.setPageTransformer(Transformer.Default);
-        // 设置XBanner页面切换的时间，即动画时长
-        homeXbanner.setPageChangeDuration(1000);
+            public void onSuccess(String result, String msg) {
+                LogUtil.e(result);
+                Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
+                }.getType());
+                beanList = records.getRecords();
 
-        //banner切换image也切换
-        homeXbanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//              homeXbanner.setData(images, null);
+//                homeXbanner.setBannerData(R.layout.image_fresco,beanList);
+                homeXbanner.setBannerData(beanList);
+                Glide.with(mContext).load(beanList.get(0).getPicBackUrl()).into(homeTopBg);
+                homeXbanner.loadImage(new XBanner.XBannerAdapter() {
+                    @Override
+                    public void loadBanner(XBanner banner, Object model, View view, int position) {
+//                        SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
+//                        bannerImage.setImageURI(((BannerBean)model).getXBannerUrl());
+                        RequestOptions requestOptions = RequestOptions.centerCropTransform();
+                        Glide.with(mContext).load(((BannerBean) model).getXBannerUrl())
+                                .apply(requestOptions)
+                                .transform(new RoundedCorners((int) mContext.getResources().getDimension(R.dimen.dp_10)))
+                                .into((ImageView) view);
+
+                    }
+                });
+                // 设置XBanner的页面切换特效
+                homeXbanner.setPageTransformer(Transformer.Default);
+                // 设置XBanner页面切换的时间，即动画时长
+                homeXbanner.setPageChangeDuration(1000);
+
+                //banner切换image也切换
+                homeXbanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i1) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+//                        homeTopBg.setImageURI(Uri.parse(beanList.get(i).getPicBackUrl()));
+                        Glide.with(mContext).load(beanList.get(i).getPicBackUrl()).into(homeTopBg);
+
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+
+                    }
+                });
+                //监听广告 item 的单击事件
+                homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(XBanner banner, Object model, View view, int position) {
+                        Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
+            public void onError(String errorCode, String errorMsg) {
 
             }
+        }));
 
-            @Override
-            public void onPageSelected(int i) {
-                if (i == 0) {
-                    homeTopBg.setImageResource(R.drawable.image1);
-                } else if (i == 1) {
-                    homeTopBg.setImageResource(R.drawable.image2);
-                } else if (i == 2) {
-                    homeTopBg.setImageResource(R.drawable.image3);
-                } else {
-                    homeTopBg.setImageResource(R.drawable.image4);
-                }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-        //监听广告 item 的单击事件
-        homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
-            @Override
-            public void onItemClick(XBanner banner, Object model, View view, int position) {
-                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     //店铺
@@ -150,9 +186,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(mContext, SecondaryDetailsActivity.class);
-                intent.putExtra("type", "" + position);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, SecondaryDetailsActivity.class);
+//                intent.putExtra("type", "" + position);
+//                mContext.startActivity(intent);
+                ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
+                        .withString("type", position + "")
+                        .navigation();
             }
         });
 
@@ -160,64 +199,90 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     //优选
-    public void setGoodChoiceRec(RecyclerView homeGoodChoiceRec) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
-        homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+    public void setGoodChoiceRec(final RecyclerView homeGoodChoiceRec) {
 
-        goodList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            goodList.add(new GoodChoiceBean(R.drawable.rec1, "稙优泉化妆品买...", "39.90", "95.50"));
-            goodList.add(new GoodChoiceBean(R.drawable.rec2, "有机护肤化妆品...", "12.88", "26.50"));
-            goodList.add(new GoodChoiceBean(R.drawable.rec3, "美容美妆教学...", "19.90", "42.80"));
-
-        }
-
-        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
-        homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
-
-        goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        Map map = MapUtil.getInstance().addParms("page", 1).addParms("pagesize", 10).build();
+        Observable data = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSPRODUCTS, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-//                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+            public void onSuccess(String result, String msg) {
+                GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                }.getType());
+                goodList.clear();
+                if (GoodChoiceBean.getData() == null) {
+                    LogUtil.e("数据为空");
+                } else {
+                    goodList.addAll(GoodChoiceBean.getData());
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+                    homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+                    GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
+                    homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
+                    goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", goodList.get(position).getItem_id())
+                                    .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+                        }
+                    });
+                }
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+
+
     }
 
     //推荐
-    public void setBottomRec(RecyclerView homeBottomRec) {
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        homeBottomRec.setLayoutManager(linearLayoutManager);
-        baseRecBeanList = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            baseRecBeanList.add(new BaseRecBean(R.drawable.reco1, "稙优泉化妆品买...", "领券减50元", "95.50", "123", "已抢64120件"));
-            baseRecBeanList.add(new BaseRecBean(R.drawable.reco2, "有机护肤化妆品...", "领券减50元", "26.50", "123", "已抢64120件"));
-            baseRecBeanList.add(new BaseRecBean(R.drawable.reco3, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-            baseRecBeanList.add(new BaseRecBean(R.drawable.reco4, "美容美妆教学...", "领券减50元", "42.80", "123", "已抢64120件"));
-
-        }
-        BaseRecAdapter baseRecAdapter = new BaseRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
-        homeBottomRec.setAdapter(baseRecAdapter);
-
-        baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+    public void setBottomRec(final RecyclerView homeBottomRec) {
+        Map map = MapUtil.getInstance().addParms("page", 5).addParms("pagesize", 20).build();
+        Observable data = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSPRODUCTS, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-//                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
-            }
-        });
+            public void onSuccess(String result, String msg) {
+                GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                }.getType());
+                goodList.clear();
+                goodList.addAll(GoodChoiceBean.getData());
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                homeBottomRec.setLayoutManager(linearLayoutManager);
+                GoodsRecommendAdapter goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
+                homeBottomRec.setAdapter(goodsRecommendAdapter);
 
-        baseRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-            @Override
-            public void ViewOnClick(View view, final int index) {
-                view.setOnClickListener(new View.OnClickListener() {
+                goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onClick(View v) {
-//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").navigation();
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                .withString("para", goodList.get(position).getItem_id())
+                                .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+                    }
+                });
+
+                goodsRecommendAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                    @Override
+                    public void ViewOnClick(View view, final int index) {
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", goodList.get(index).getItem_id())
+                                        .withString("shoptype", goodList.get(index).getUser_type()).navigation();
+                            }
+                        });
                     }
                 });
             }
-        });
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+
     }
 
 }
