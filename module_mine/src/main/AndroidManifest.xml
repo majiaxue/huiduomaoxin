@@ -23,8 +23,8 @@
 
         <activity
             android:name="com.example.setting.SettingActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.example.update_password.UpdatePasswordActivity"
@@ -121,6 +121,10 @@
 
         <activity
             android:name="com.example.invite_friends.InviteFriendsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.TempActivity"
             android:screenOrientation="portrait" />
 
         <provider

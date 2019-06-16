@@ -52,6 +52,10 @@
         <activity
             android:name="com.example.pay_success.PaySuccessActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.order_detail.OrderDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

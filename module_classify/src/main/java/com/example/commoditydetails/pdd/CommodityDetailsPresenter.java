@@ -49,7 +49,6 @@ import okhttp3.ResponseBody;
  */
 public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsView> {
 
-    private List<BaseRecBean> baseRecBeanList;
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList = new ArrayList<>();
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
     private List<LedSecuritiesBean.GoodsPromotionUrlGenerateResponseBean.GoodsPromotionUrlListBean> ledList = new ArrayList<>();
@@ -65,7 +64,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     public void initView(long goods_id) {
         Map map = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode() + "").build();
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi2(mContext).getData(CommonResource.PDDGOODSDETAIL + "/" + goods_id, map);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.PDDGOODSDETAIL + "/" + goods_id, map);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -127,7 +126,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     public void goodsCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).build();
-        Observable head = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -149,7 +148,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     //领劵
     public void ledSecurities(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -181,8 +180,8 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     //是否收藏
     public void isCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         LogUtil.e("id------------->" + beanList.get(0).getGoods_id());
-        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id(), SPUtil.getToken());
-        LogUtil.e("path------------>" + "http://192.168.1.27:4001" + CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id());
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id(), SPUtil.getToken());
+        LogUtil.e("path------------>"+"http://192.168.1.27:4001"+CommonResource.FAVORITESTATUS+"/"+beanList.get(0).getGoods_id());
 
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -206,7 +205,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     public void setRecommendRec(final RecyclerView shopRecommendRec) {
 
         Map map = MapUtil.getInstance().addParms("limit", 20).build();
-        Observable data = RetrofitUtil.getInstance().getApi2(mContext).getData(CommonResource.TOPGOODS, map);
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TOPGOODS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

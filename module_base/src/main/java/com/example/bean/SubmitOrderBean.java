@@ -14,6 +14,18 @@ public class SubmitOrderBean implements Serializable {
     private double totalAmount;
     private String masterNo;
     private String productName;
+    /**
+     * 分类id
+     */
+    private String productCategoryId;
+
+    public String getProductCategoryId() {
+        return productCategoryId;
+    }
+
+    public void setProductCategoryId(String productCategoryId) {
+        this.productCategoryId = productCategoryId;
+    }
 
     public String getProductName() {
         return productName;
@@ -54,6 +66,7 @@ public class SubmitOrderBean implements Serializable {
                 ", totalAmount=" + totalAmount +
                 ", masterNo='" + masterNo + '\'' +
                 ", productName='" + productName + '\'' +
+                ", productCategoryId='" + productCategoryId + '\'' +
                 '}';
     }
 }

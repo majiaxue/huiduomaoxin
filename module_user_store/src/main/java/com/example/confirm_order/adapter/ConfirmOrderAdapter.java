@@ -7,18 +7,22 @@ import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.user_shopping_cart.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
 
-public class ConfirmOrderAdapter extends MyRecyclerAdapter<List<Integer>> {
-    public ConfirmOrderAdapter(Context context, List<List<Integer>> mList, int mLayoutId) {
+public class ConfirmOrderAdapter extends MyRecyclerAdapter<CartBean.RecordsBean> {
+    public ConfirmOrderAdapter(Context context, List<CartBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, List<Integer> data, final int position) {
+    public void convert(RecyclerViewHolder holder, CartBean.RecordsBean data, final int position) {
+        holder.setText(R.id.confirm_order_shop_name, data.getSellerName())
+                .setText(R.id.confirm_order_delivery_txt2, data.getTotalFeight() + "")
+                .setText(R.id.confirm_order_xiaoji, "￥" + data.getTotalPrice());
         RecyclerView rv = holder.getView(R.id.confirm_order_inside_rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -26,7 +30,7 @@ public class ConfirmOrderAdapter extends MyRecyclerAdapter<List<Integer>> {
         if (rv.getItemDecorationCount() < 1) {
             rv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) context.getResources().getDimension(R.dimen.dp_10)));
         }
-        ConfirmOrderInsideAdapter insideAdapter = new ConfirmOrderInsideAdapter(context, data, R.layout.rv_inside_confirm_order);
+        ConfirmOrderInsideAdapter insideAdapter = new ConfirmOrderInsideAdapter(context, data.getItems(), R.layout.rv_inside_confirm_order);
         rv.setAdapter(insideAdapter);
 
         insideAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {

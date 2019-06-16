@@ -7,6 +7,4 @@ import com.example.order.adapter.RvListAdapter;
 public interface AllOrderView extends IView {
 
     void loadMineRv(RvListAdapter adapter);
-
-    void loadFansRv(FansOrderRvAdapter adapter);
 }

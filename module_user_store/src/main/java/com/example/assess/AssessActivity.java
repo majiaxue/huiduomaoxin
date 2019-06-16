@@ -1,5 +1,6 @@
 package com.example.assess;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +41,9 @@ public class AssessActivity extends BaseActivity<AssessView, AssessPresenter> im
     @BindView(R2.id.assess_rv)
     RecyclerView assessRv;
 
+    private int page = 1;
+    private String id;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_assess;
@@ -48,6 +52,8 @@ public class AssessActivity extends BaseActivity<AssessView, AssessPresenter> im
     @Override
     public void initData() {
         includeTitle.setText("宝贝评价");
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         includeRight.setImageResource(R.drawable.icon_fenxiang11);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         assessTitle.setLayoutManager(gridLayoutManager);
@@ -57,7 +63,7 @@ public class AssessActivity extends BaseActivity<AssessView, AssessPresenter> im
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         assessRv.setLayoutManager(linearLayoutManager);
 
-        presenter.loadData();
+        presenter.loadData(page,id);
     }
 
     @Override

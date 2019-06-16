@@ -2,17 +2,10 @@ package com.example.commoditydetails.taobao;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -22,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
-import com.example.commoditydetails.pdd.bean.CommodityDetailsBean;
 import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
 import com.example.commoditydetails.taobao.bean.TBBean;
 import com.example.commoditydetails.taobao.bean.TBGoodChoiceBean;
@@ -77,7 +69,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }
         Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("para", para).addParms("shoptype", type).build();
         LogUtil.e("赋值" + 1 + "    " + para + "    " + type);
-        Observable data = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSITEMDETAIL, map);
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -146,7 +138,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //是否收藏
     public void isCollect(final ImageView commodityCollectImage, String id) {
         LogUtil.e("id------------->" + id);
-        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + id, SPUtil.getToken());
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + id, SPUtil.getToken());
 
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -169,7 +161,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //收藏商品
     public void goodsCollect(final ImageView commodityCollectImage, String id) {
         Map map = MapUtil.getInstance().addParms("productId", id).addParms("type", 4).build();
-        Observable head = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -192,7 +184,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //领劵
     public void ledSecurities(String para) {
         Map map = MapUtil.getInstance().addParms("para", para).build();
-        final Observable data = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSGETGYURLBYALL, map);
+        final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETGYURLBYALL, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -216,11 +208,12 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     public void setRecommendRec(final RecyclerView shopRecommendRec) {
-        Map map = MapUtil.getInstance().addParms("page", 12).addParms("pagesize", 20).build();
-        Observable data1 = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSPRODUCTS, map);
+        Map map = MapUtil.getInstance().addParms("page", 1).addParms("pagesize", 20).build();
+        Observable data1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSPRODUCTS, map);
         RetrofitUtil.getInstance().toSubscribe(data1, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("TBCommodityDetailsResult推荐------------>"+result);
                 TBGoodChoiceBean tbGoodChoiceBean = JSON.parseObject(result, new TypeReference<TBGoodChoiceBean>() {
                 }.getType());
 
@@ -261,7 +254,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("TBCommodityDetailsErrorMsg推荐------------>"+errorMsg);
             }
         }));
     }

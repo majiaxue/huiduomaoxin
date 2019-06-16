@@ -28,7 +28,6 @@
             android:drawableRight="@drawable/icon_hongjiantou"
             android:drawablePadding="@dimen/dp_8"
             android:includeFontPadding="false"
-            android:text="private简约男装"
             android:textColor="@color/codeText"
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
@@ -75,7 +74,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="快递 免邮"
             android:textColor="#666666"
             android:textSize="@dimen/sp_12" />
 
@@ -110,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_27"
             android:includeFontPadding="false"
-            android:text="优惠￥10.00元"
+            android:text="优惠￥0.00元"
             android:textColor="#666666"
             android:textSize="@dimen/sp_12" />
 
@@ -171,7 +169,7 @@
             android:id="@+id/confirm_order_goos_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="共2件"
+            android:text="共0件"
             android:textColor="#666666"
             android:textSize="@dimen/sp_10" />
 
@@ -187,7 +185,7 @@
             android:id="@+id/confirm_order_xiaoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="￥100"
+            android:text="￥0.00"
             android:textColor="@color/codeText"
             android:textSize="@dimen/sp_11" />
     </LinearLayout>

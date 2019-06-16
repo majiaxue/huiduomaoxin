@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.UserCouponBean;
 import com.example.entity.CouponBean;
 import com.example.entity.ParmsBean;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
@@ -41,7 +42,7 @@ public class PopUtil {
         window.setAttributes(params);
     }
 
-    public static void lingquanPop(final Context context, final List<CouponBean> dataList) {
+    public static void lingquanPop(final Context context, final List<UserCouponBean> dataList) {
         View view = LayoutInflater.from(context).inflate(R.layout.pop_lingquan, null);
         RecyclerView rv = view.findViewById(R.id.pop_lingquan_rv);
         TextView btn = view.findViewById(R.id.pop_lingquan_btn);

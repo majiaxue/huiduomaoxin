@@ -21,9 +21,6 @@ import com.example.pay_success.PaySuccessActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
-import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.Map;
 
@@ -56,6 +53,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                     Intent intent = new Intent(mContext, PaySuccessActivity.class);
                     intent.putExtra("bean", submitOrderBean);
                     mContext.startActivity(intent);
+                    ((Activity) mContext).finish();
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "支付失败", Toast.LENGTH_SHORT).show();
@@ -67,11 +65,11 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
     public void pay(boolean isWeChat, SubmitOrderBean submitOrderBean) {
         this.submitOrderBean = submitOrderBean;
-        Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", submitOrderBean.getProductName()).build();
+        Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").build();
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {
-            Observable observable = RetrofitUtil.getInstance().getApi5(mContext).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

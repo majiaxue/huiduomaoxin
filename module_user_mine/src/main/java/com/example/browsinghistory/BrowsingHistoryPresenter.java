@@ -21,10 +21,8 @@ import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import io.reactivex.Observable;
-import io.reactivex.internal.operators.flowable.FlowableLastMaybe;
 import okhttp3.ResponseBody;
 
 /**
@@ -48,7 +46,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     }
 
     public void browsingHistoryRec(final RecyclerView browsingHistoryRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.HISTORYALL,SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.HISTORYALL,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -169,7 +167,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE,deleteList, SPUtil.getToken());
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.HISTORYDELETE,deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

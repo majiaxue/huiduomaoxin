@@ -45,14 +45,14 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessView, PaySuccessP
         includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder(bean.getMasterNo());
+                presenter.jumpToOrder(bean);
             }
         });
 
         paySuccessOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder(bean.getMasterNo());
+                presenter.jumpToOrder(bean);
             }
         });
 
@@ -67,7 +67,7 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessView, PaySuccessP
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            presenter.jumpToOrder(bean.getMasterNo());
+            presenter.jumpToOrder(bean);
         }
         return true;
     }

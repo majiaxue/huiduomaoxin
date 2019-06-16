@@ -11,7 +11,6 @@ import com.example.bean.BannerBean;
 import com.example.bean.ClassifyBean;
 import com.example.bean.Records;
 import com.example.common.CommonResource;
-import com.example.entity.TopBannerBean;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -19,7 +18,6 @@ import com.example.net.RetrofitUtil;
 import com.example.user_classify.adapter.UserLeftRvAdapter;
 import com.example.user_classify.adapter.UserRightRecAdapter;
 import com.example.user_store.R;
-import com.example.utils.LogUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -51,7 +49,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     }
 
     public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.ALLCATEGORT);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.ALLCATEGORT);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -97,7 +95,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     }
 
     public void setXBanner() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.USERSBANNER);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.USERSBANNER);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

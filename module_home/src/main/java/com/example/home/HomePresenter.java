@@ -100,11 +100,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setXBanner(final XBanner homeXbanner, final ImageView homeTopBg) {
         //轮播图
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi3(mContext).getDataWithout(CommonResource.USERSBANNER);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.USERSBANNER);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e(result);
+                LogUtil.e("homePresenterResult---------->"+result);
                 Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
                 }.getType());
                 beanList = records.getRecords();
@@ -161,7 +161,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("homePresenterErrorMsg---------->"+errorMsg);
             }
         }));
 
@@ -202,10 +202,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
     public void setGoodChoiceRec(final RecyclerView homeGoodChoiceRec) {
 
         Map map = MapUtil.getInstance().addParms("page", 1).addParms("pagesize", 10).build();
-        Observable data = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSPRODUCTS, map);
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSPRODUCTS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("homePresenterResult---------->"+result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
                 goodList.clear();
@@ -230,7 +231,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("homePresenterErrorMsg---------->"+errorMsg);
             }
         }));
 
@@ -240,10 +241,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
     //推荐
     public void setBottomRec(final RecyclerView homeBottomRec) {
         Map map = MapUtil.getInstance().addParms("page", 5).addParms("pagesize", 20).build();
-        Observable data = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSPRODUCTS, map);
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSPRODUCTS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("homePresenterResult---------->"+result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
                 goodList.clear();
@@ -279,7 +281,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("homePresenterErrorMsg---------->"+errorMsg);
             }
         }));
 

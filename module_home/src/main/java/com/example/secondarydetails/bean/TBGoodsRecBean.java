@@ -142,8 +142,6 @@ public class TBGoodsRecBean {
         private String zk_final_price;
         private int quanlimit;
         private int youhuiquan;
-        @SerializedName("item_description")
-        private List<?> item_descriptionX;
 
         public String getCategory_id() {
             return category_id;
@@ -479,14 +477,6 @@ public class TBGoodsRecBean {
 
         public void setYouhuiquan(int youhuiquan) {
             this.youhuiquan = youhuiquan;
-        }
-
-        public List<?> getItem_descriptionX() {
-            return item_descriptionX;
-        }
-
-        public void setItem_descriptionX(List<?> item_descriptionX) {
-            this.item_descriptionX = item_descriptionX;
         }
 
         public static class SmallImagesBean {

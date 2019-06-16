@@ -17,7 +17,6 @@ import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -97,12 +96,13 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         includeTitle.setText("确认订单");
         orderConfirmShopName.setText(confirmBean.getSellerName());
         Glide.with(this).load(confirmBean.getPic()).into(orderConfirmImg);
-        orderConfirmGoods.setText(confirmBean.getGoodsName());
-        orderConfirmColor.setText("颜色：" + confirmBean.getSp1() + "，" + "尺码：" + confirmBean.getSp2());
+        orderConfirmGoods.setText(confirmBean.getProductName());
+        orderConfirmColor.setText(confirmBean.getProductAttr());
         orderConfirmPrice.setText(confirmBean.getPrice() + "");
 
 
-        presenter.loadData();
+
+        presenter.getAddress();
     }
 
     @Override

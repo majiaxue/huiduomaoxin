@@ -36,6 +36,10 @@ public class SPUtil {
         userSP.edit().putInt(key, value).commit();
     }
 
+    public static void addParm(String key, float value) {
+        userSP.edit().putFloat(key, value).commit();
+    }
+
     public static String getStringValue(String key) {
         return userSP.getString(key, "");
     }
@@ -48,12 +52,20 @@ public class SPUtil {
         return userSP.getBoolean(key, false);
     }
 
+    public static float getFloatValue(String key) {
+        return userSP.getFloat(key, 0);
+    }
+
     public static String getToken() {
         return userSP.getString(CommonResource.TOKEN, "");
     }
 
     public static String getUserCode() {
         return userSP.getString(CommonResource.USERCODE, "");
+    }
+
+    public static void clear() {
+        userSP.edit().clear().commit();
     }
 
     /**

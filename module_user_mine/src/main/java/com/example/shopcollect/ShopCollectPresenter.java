@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
-import com.example.entity.BaseStaggeredRecBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -25,18 +23,14 @@ import com.example.shopcollect.adapter.ShopCollectAdapter;
 import com.example.shopcollect.bean.ShopCollectBean;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.view.SelfDialog;
 import com.example.view.SlideRecyclerView;
 
-import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -64,7 +58,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
     }
 
     public void initShopCollectRec(final SlideRecyclerView shopCollectRec) {
-        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.SELLERPAGE,SPUtil.getToken());
+        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SELLERPAGE,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(final String result, String msg) {
@@ -108,7 +102,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                         List<Integer> integers = new ArrayList<>();
                                         integers.add(favoriteId);
                                         LogUtil.e("shopCollect--------->" + favoriteId);
-                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                             @Override
                                             public void onSuccess(String result, String msg) {
@@ -157,7 +151,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
 
     public void shopCollectBottomRec(final RecyclerView shopCollectBottomRec) {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -12,13 +12,11 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.commoditydetails.pdd.CommodityDetailsActivity;
 import com.example.commoditydetails.taobao.bean.TBBean;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
-import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
@@ -30,7 +28,7 @@ import butterknife.BindView;
 
 /**
  * Created by cuihaohao on 2019/6/14
- * Describe:
+ * Describe:淘宝商品详情
  */
 @Route(path = "/module_classify/TBCommodityDetailsActivity")
 public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsView, TBCommodityDetailsPresenter> implements TBCommodityDetailsView, NestedScrollView.OnScrollChangeListener {
@@ -133,27 +131,27 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 AppManager.getInstance().finishGoodsActivity();
             }
         });
-        //进入店铺
-        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
-        //进入店铺
-        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
-        //进入店铺
-        commodityShopName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
+//        //进入店铺
+//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
         //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override

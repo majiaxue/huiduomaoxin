@@ -1,6 +1,7 @@
 package com.example.user_shopping_cart;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
+import com.example.net.RetrofitUtil;
+import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.LogUtil;
@@ -51,9 +54,10 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     LinearLayout shoppingCartHide;
     @BindView(R2.id.shopping_cart_close_account_and_delete)
     TextView shoppingCartCloseAccountAndDelete;
-    private boolean compileStatus = true;
+    public boolean compileStatus = true;
     //全选初始状态
     private boolean isCheckAllParent = false;
+    private int totalCount = 0;
 
 
     @Override
@@ -63,6 +67,8 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
     @Override
     public void initData() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        shoppingCartRec.setLayoutManager(linearLayoutManager);
         //商品
 //        presenter.setShoppingCartExpandableList(shoppingCartExpandableList);
         //推荐
@@ -80,12 +86,13 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
                 if (compileStatus) {
                     shoppingCartCompile.setText("完成");
                     shoppingCartHide.setVisibility(View.INVISIBLE);
-                    shoppingCartCloseAccountAndDelete.setText("删除");
+                    shoppingCartCloseAccountAndDelete.setText("删除(" + totalCount + ")");
                     compileStatus = false;
+                    presenter.editOrDelete(compileStatus);
                 } else {
                     shoppingCartCompile.setText("编辑");
                     shoppingCartHide.setVisibility(View.VISIBLE);
-                    shoppingCartCloseAccountAndDelete.setText("去结算(0)");
+                    shoppingCartCloseAccountAndDelete.setText("去结算(" + totalCount + ")");
                     compileStatus = true;
                 }
             }
@@ -95,10 +102,10 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         shoppingCartCloseAccountAndDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shoppingCartCloseAccountAndDelete.getText().equals("删除")) {
+                if (!compileStatus) {
                     presenter.popupDelete();
                 } else {
-                    startActivity(new Intent(getActivity(), ConfirmOrderActivity.class));
+                    presenter.jiesuan();
                 }
 
             }
@@ -134,8 +141,8 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-          //显示
-            presenter.setShoppingCartRec(shoppingCartRec);
+            //显示
+            presenter.setShoppingCartRec();
         }
     }
 
@@ -145,25 +152,50 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     }
 
     @Override
+    public void deleteSuccess() {
+        shoppingCartCompile.setText("编辑");
+        shoppingCartHide.setVisibility(View.VISIBLE);
+        compileStatus = true;
+        shoppingCartCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
+        isCheckAllParent = true;
+    }
+
+    @Override
     public ShoppingCartPresenter createPresenter() {
         return new ShoppingCartPresenter(getContext());
     }
 
     @Override
     public void isHide(boolean isHide) {
-        if (isHide){
+        if (isHide) {
             shoppingCartEmpty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             shoppingCartEmpty.setVisibility(View.GONE);
         }
     }
 
     @Override
+    public void updateCount(int count) {
+        totalCount = count;
+        if (compileStatus) {
+            shoppingCartCloseAccountAndDelete.setText("去结算(" + count + ")");
+        } else {
+            shoppingCartCloseAccountAndDelete.setText("删除(" + count + ")");
+        }
+    }
+
+    @Override
+    public void loadCartRv(CartParentRecAdapter adapter) {
+        shoppingCartRec.setAdapter(adapter);
+        presenter.click();
+    }
+
+    @Override
     public void isCheckAll(boolean isCheckAll) {
-        if (isCheckAll){
+        if (isCheckAll) {
             shoppingCartCheckAll.setImageResource(R.drawable.icon_xuanzhong);
             isCheckAllParent = false;
-        }else{
+        } else {
             shoppingCartCheckAll.setImageResource(R.drawable.icon_weixuanzhong);
             isCheckAllParent = true;
         }
@@ -171,6 +203,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
     @Override
     public void totalPrice(double price) {
-        shoppingCartTotal.setText(""+price);
+        shoppingCartTotal.setText("" + price);
     }
 }

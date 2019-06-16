@@ -1,13 +1,10 @@
 package com.example.goodscollection;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -16,7 +13,6 @@ import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
-import com.example.entity.BaseStaggeredRecBean;
 import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
 import com.example.goodscollection.bean.GoodsCollectionRecBean;
 import com.example.module_user_mine.R;
@@ -26,16 +22,13 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
 
 /**
@@ -61,7 +54,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     public void setGoodsCollectionRec(final RecyclerView goodsCollectionRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -131,7 +124,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     public void setGoodsCollectionBottomRec(final RecyclerView goodsCollectionBottomRec) {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "两件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -253,7 +246,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi4(mContext).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

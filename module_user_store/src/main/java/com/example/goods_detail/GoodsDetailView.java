@@ -28,7 +28,7 @@ public interface GoodsDetailView extends IView {
 
     void yixuanze(String color, String size);
 
-    void weixuanze();
+    void weixuanze(String str);
 
     void loadUI(UserGoodsDetail data);
 }

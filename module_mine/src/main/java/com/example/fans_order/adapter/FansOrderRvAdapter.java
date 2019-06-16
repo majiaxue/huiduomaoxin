@@ -1,22 +1,27 @@
 package com.example.fans_order.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.FansOrderBean;
 import com.example.module_mine.R;
+import com.example.utils.MyTimeUtil;
 
 import java.util.List;
 
-public class FansOrderRvAdapter extends MyRecyclerAdapter {
-    public FansOrderRvAdapter(Context context, List mList, int mLayoutId) {
+public class FansOrderRvAdapter extends MyRecyclerAdapter<FansOrderBean> {
+    public FansOrderRvAdapter(Context context, List<FansOrderBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, Object data, int position) {
-        holder.setText(R.id.fans_order_list_shop, (String) data);
+    public void convert(RecyclerViewHolder holder, FansOrderBean data, int position) {
+        holder.setText(R.id.fans_order_list_name, data.getGoodsName())
+                .setImageUrl(R.id.fans_order_list_img, data.getGoodsThumbnailUrl())
+                .setText(R.id.fans_order_list_price, "￥" + data.getGoodsPrice())
+                .setText(R.id.fans_order_list_count, "x" + data.getGoodsQuantity())
+                .setText(R.id.fans_order_list_total, "共" + data.getGoodsQuantity() + "件商品  合计：￥" + data.getGoodsPrice())
+                .setText(R.id.fans_order_list_time, "购买时间：" + MyTimeUtil.date2String(data.getOrderCreateTime()));
     }
 }

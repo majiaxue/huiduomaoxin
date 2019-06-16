@@ -45,7 +45,7 @@ public class AllPresenter extends BasePresenter<AllView> {
 
     public void allRec(final RecyclerView allRec){
         Map status = MapUtil.getInstance().addParms("status", 0).build();
-        Observable head = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.COUPONSTATUS, status, SPUtil.getToken());
+        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COUPONSTATUS, status, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(head,new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

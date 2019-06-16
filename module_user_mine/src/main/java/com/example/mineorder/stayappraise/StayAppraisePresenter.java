@@ -1,7 +1,6 @@
 package com.example.mineorder.stayappraise;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,8 +10,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
-import com.example.logisticsinformation.LogisticsInformationActivity;
-import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.mineorder.stayappraise.adapter.StayAppraiseParentAdapter;
 import com.example.module_user_mine.R;
@@ -50,38 +47,40 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
     public void stayAppraiseRec(final RecyclerView stayAppraiseRec) {
         Map map = MapUtil.getInstance().addParms("status", 3).build();
-        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("stayAppraiseResult------->"+result);
+                LogUtil.e("stayAppraiseResult------->" + result);
                 MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
                 }.getType());
-                listBeans.clear();
-                listBeans.addAll(MineOrderBean.getOrderList());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                stayAppraiseRec.setLayoutManager(linearLayoutManager);
-                StayAppraiseParentAdapter stayAppraiseParentAdapter = new StayAppraiseParentAdapter(mContext, listBeans, R.layout.item_stay_appraise_parent);
-                stayAppraiseRec.setAdapter(stayAppraiseParentAdapter);
+                if (MineOrderBean != null) {
+                    listBeans.clear();
+                    listBeans.addAll(MineOrderBean.getOrderList());
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    stayAppraiseRec.setLayoutManager(linearLayoutManager);
+                    StayAppraiseParentAdapter stayAppraiseParentAdapter = new StayAppraiseParentAdapter(mContext, listBeans, R.layout.item_stay_appraise_parent);
+                    stayAppraiseRec.setAdapter(stayAppraiseParentAdapter);
 
-                stayAppraiseParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, int index) {
-                        Toast.makeText(mContext, "去店铺" + index, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    stayAppraiseParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                        @Override
+                        public void ViewOnClick(View view, int index) {
+                            Toast.makeText(mContext, "去店铺" + index, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                stayAppraiseParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
+                    stayAppraiseParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("stayAppraiseErrorMsg------->"+errorMsg);
+                LogUtil.e("stayAppraiseErrorMsg------->" + errorMsg);
             }
         }));
     }

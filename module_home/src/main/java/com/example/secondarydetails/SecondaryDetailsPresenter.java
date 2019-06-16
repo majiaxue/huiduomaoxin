@@ -14,8 +14,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
+import com.example.secondarydetails.adapter.SecondaryJDRecAdapter;
 import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
 import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
+import com.example.bean.JDGoodsRecBean;
+import com.example.secondarydetails.bean.JDTabBean;
 import com.example.secondarydetails.bean.PddGoodsSearchVo;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
@@ -33,6 +36,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +58,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     private List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> baseRecBeanList = new ArrayList<>();
     private List<TBGoodsSearchBean> TBGoodsSearchBeans = new ArrayList<>();
     private List<TBGoodsRecBean.DataBean> tbGoodsList = new ArrayList<>();
+    private List<JDTabBean.DataBean> jdTabList = new ArrayList<>();
+    private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
+
 
     public SecondaryDetailsPresenter(Context context) {
         super(context);
@@ -67,7 +74,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     public void initView(final TabLayout secondaryDetailsTab, final RecyclerView secondaryDetailsRec, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
         if (type.equals("1")) {
             //拼多多
-            Observable data = RetrofitUtil.getInstance().getApi2(mContext).getDataWithout(CommonResource.GOODSCATS);
+            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -95,7 +102,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
                             LogUtil.e("SecondaryDetailsJson----------->" + pddGoodsSearchVoStr);
                             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), pddGoodsSearchVoStr);
-                            Observable pddGoods = RetrofitUtil.getInstance().getApi2(mContext).postDataWithBody(CommonResource.PDDGOODS, body);
+                            Observable pddGoods = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithBody(CommonResource.PDDGOODS, body);
                             RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnTripartiteCallBack(new OnDataListener() {
                                 @Override
                                 public void onSuccess(String result, String msg) {
@@ -170,7 +177,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
                     });
 
-                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans);
+                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
 
 
                 }
@@ -182,7 +189,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             }));
         } else if (type.equals("0") || type.equals("3")) {
             //淘宝
-            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.TBKGOODSTBCATEGOTY);
+            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.TBKGOODSTBCATEGOTY);
             RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -211,7 +218,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             String cat_name = TBGoodsSearchBeans.get(tab.getPosition()).getCat_name();
                             Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
                             Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
-                            Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
+                            Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
                             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
                                 @Override
                                 public void onSuccess(String result, String msg) {
@@ -273,7 +280,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
                     });
 
-                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans);
+                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
 
                 }
 
@@ -283,13 +290,116 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 }
             }));
 
+        } else {
+            //京东
+            final Map map = MapUtil.getInstance().addParms("grade", 0).addParms("parentId", 0).build();
+            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGETCATEGORY, map);
+            RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("SecondaryDetailsResult京东--------------->" + result);
+                    JDTabBean jdTabBeans = JSON.parseObject(result, new TypeReference<JDTabBean>() {
+                    }.getType());
+                    jdTabList.clear();
+                    jdTabList.addAll(jdTabBeans.getData());
+                    for (int i = 0; i < jdTabList.size(); i++) {
+                        secondaryDetailsTab.addTab(secondaryDetailsTab.newTab().setText(jdTabList.get(i).getName()));
+                    }
+
+                    initTabIndicator(secondaryDetailsTab);
+
+                    secondaryDetailsTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                        @Override
+                        public void onTabSelected(TabLayout.Tab tab) {
+                            String name = jdTabList.get(tab.getPosition()).getName();
+                            Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", 1).addParms("pageSize", 20).addParms("keyword", name).build();
+                            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
+                            RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+                                @Override
+                                public void onSuccess(String result, String msg) {
+                                    LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
+                                    final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
+                                    }.getType());
+
+                                    if (jDGoodsRecBean.getCode().equals("-1")) {
+                                        getView().noGoods(true);
+                                    } else {
+                                        getView().noGoods(false);
+
+                                        listsBeanList.clear();
+                                        listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
+                                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                                        SecondaryJDRecAdapter secondaryJDRecAdapter = new SecondaryJDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
+                                        secondaryDetailsRec.setLayoutManager(linearLayoutManager);
+                                        secondaryDetailsRec.setAdapter(secondaryJDRecAdapter);
+
+                                        secondaryJDRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                                ARouter.getInstance()
+                                                        .build("/module_classify/JDCommodityDetailsActivity")
+                                                        .withString("skuid", listsBeanList.get(position).getSkuId())
+                                                        .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
+                                                        .withInt("position",position)
+                                                        .navigation();
+                                            }
+                                        });
+
+                                        secondaryJDRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                                            @Override
+                                            public void ViewOnClick(View view, final int index) {
+                                                view.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        ARouter.getInstance()
+                                                                .build("/module_classify/JDCommodityDetailsActivity")
+                                                                .withString("skuid", listsBeanList.get(index).getSkuId())
+                                                                .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
+                                                                .withInt("position",index)
+                                                                .navigation();
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onError(String errorCode, String errorMsg) {
+                                    LogUtil.e("SecondaryDetailsErrorMsg京东商品--------------->" + errorMsg);
+                                }
+                            }));
+                        }
+
+                        @Override
+                        public void onTabUnselected(TabLayout.Tab tab) {
+
+                        }
+
+                        @Override
+                        public void onTabReselected(TabLayout.Tab tab) {
+
+                        }
+                    });
+
+                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
+
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("SecondaryDetailsErrorMsg京东--------------->" + errorMsg);
+                }
+            }));
         }
 
         secondaryDetailsSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 page = 1;
-                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans);
+                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
 //                            refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 refreshlayout.finishRefresh();
             }
@@ -298,14 +408,15 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 page++;
-                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans);
+                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
 //                            refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 refreshlayout.finishLoadMore();
             }
         });
     }
+    //京东
 
-    private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, final RecyclerView secondaryDetailsRec, final String type, int page, List<TBGoodsSearchBean> TBGoodsSearchBeans) {
+    private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, final RecyclerView secondaryDetailsRec, final String type, int page, List<TBGoodsSearchBean> TBGoodsSearchBeans,List<JDTabBean.DataBean> jdTabList) {
         //0淘宝 1 拼多多  2京东 3天猫
         if (type.equals("1")) {
             PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
@@ -316,7 +427,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
             LogUtil.e("SecondaryDetailsJson----------->" + pddGoodsSearchVoStr);
             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), pddGoodsSearchVoStr);
-            Observable pddGoods = RetrofitUtil.getInstance().getApi2(mContext).postDataWithBody(CommonResource.PDDGOODS, body);
+            Observable pddGoods = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithBody(CommonResource.PDDGOODS, body);
             RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -381,14 +492,14 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             String cat_name = TBGoodsSearchBeans.get(0).getCat_name();
             Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
             Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
-            Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
+            Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     TBGoodsRecBean tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
                     }.getType());
-                    tbGoodsList.clear();
+//                    tbGoodsList.clear();
                     tbGoodsList.addAll(tbGoodsRecBean.getData());
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -428,7 +539,67 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
+        }else{
+            String name = jdTabList.get(0).getName();
+            Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", page).addParms("pageSize", 20).addParms("keyword", name).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
+                    final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
+                    }.getType());
+
+                    if (jDGoodsRecBean.getCode().equals("-1")) {
+                        getView().noGoods(true);
+                    } else {
+                        getView().noGoods(false);
+                        listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        SecondaryJDRecAdapter secondaryJDRecAdapter = new SecondaryJDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
+                        secondaryDetailsRec.setLayoutManager(linearLayoutManager);
+                        secondaryDetailsRec.setAdapter(secondaryJDRecAdapter);
+
+                        secondaryJDRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance()
+                                        .build("/module_classify/JDCommodityDetailsActivity")
+                                        .withString("skuid", listsBeanList.get(position).getSkuId())
+                                        .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
+                                        .withInt("position",position)
+                                        .navigation();
+                            }
+                        });
+
+                        secondaryJDRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                            @Override
+                            public void ViewOnClick(View view, final int index) {
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ARouter.getInstance()
+                                                .build("/module_classify/JDCommodityDetailsActivity")
+                                                .withString("skuid", listsBeanList.get(index).getSkuId())
+                                                .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
+                                                .withInt("position",index)
+                                                .navigation();
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("SecondaryDetailsErrorMsg京东商品--------------->" + errorMsg);
+                }
+            }));
         }
+
     }
 
 

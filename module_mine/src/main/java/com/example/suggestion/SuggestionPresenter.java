@@ -35,7 +35,7 @@ public class SuggestionPresenter extends BasePresenter<SuggestionView> {
 
     public void submit(String content) {
         Map map = MapUtil.getInstance().addParms("message", content).build();
-        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).postHead(CommonResource.SUGGESTION, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHead(CommonResource.SUGGESTION, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

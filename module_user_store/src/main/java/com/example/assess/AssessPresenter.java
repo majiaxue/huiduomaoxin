@@ -6,21 +6,34 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.adapter.AssessAdapter;
 import com.example.assess.adapter.AssessTitleAdapter;
 import com.example.assess_detail.AssessDetailActivity;
-import com.example.entity.AssessBean;
+import com.example.bean.AssessBean;
+import com.example.common.CommonResource;
 import com.example.entity.AssessTitleBean;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.PopUtil;
+import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 public class AssessPresenter extends BasePresenter<AssessView> {
+    private List<AssessBean.RecordsBean> assessList = new ArrayList<>();
+    private AssessAdapter assessAdapter;
+
     public AssessPresenter(Context context) {
         super(context);
     }
@@ -30,12 +43,11 @@ public class AssessPresenter extends BasePresenter<AssessView> {
 
     }
 
-    public void loadData() {
+    public void loadData(final int page, String id) {
         final List<AssessTitleBean> titleList = new ArrayList<>();
         titleList.add(new AssessTitleBean("全部", true));
         titleList.add(new AssessTitleBean("最新", false));
         titleList.add(new AssessTitleBean("有图", false));
-        titleList.add(new AssessTitleBean("追评", false));
         final AssessTitleAdapter titleAdapter = new AssessTitleAdapter(mContext, titleList, R.layout.rv_assess_title);
         if (getView() != null) {
             getView().loadTitle(titleAdapter);
@@ -59,54 +71,39 @@ public class AssessPresenter extends BasePresenter<AssessView> {
             }
         });
 
-        final List<String> urlList = new ArrayList<>();
-        urlList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1937445174,2133528823&fm=26&gp=0.jpg");
-        urlList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1937445174,2133528823&fm=26&gp=0.jpg");
-        urlList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1937445174,2133528823&fm=26&gp=0.jpg");
-        final List<AssessBean> assessList = new ArrayList<>();
-        assessList.add(new AssessBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558787958399&di=a3a500512493cb2f450d521248dd379b&imgtype=0&src=http%3A%2F%2Fatt.bbs.duowan.com%2Fforum%2F201904%2F04%2F222944joyex4t9xy44j4r1.jpeg", "山豆根山", "啊手动阀撒根深蒂固的师傅给对手犯规得分", 4, "2018年10月12日", "XXL", "白色", 100, 100, false, urlList));
-        assessList.add(new AssessBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558787958399&di=a3a500512493cb2f450d521248dd379b&imgtype=0&src=http%3A%2F%2Fatt.bbs.duowan.com%2Fforum%2F201904%2F04%2F222944joyex4t9xy44j4r1.jpeg", "山豆根山", "啊手动阀撒根深蒂固的师傅给对手犯规得分", 4, "2018年10月12日", "XXL", "白色", 100, 110, false, urlList));
-        assessList.add(new AssessBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558787958399&di=a3a500512493cb2f450d521248dd379b&imgtype=0&src=http%3A%2F%2Fatt.bbs.duowan.com%2Fforum%2F201904%2F04%2F222944joyex4t9xy44j4r1.jpeg", "山豆根山", "啊手动阀撒根深蒂固的师傅给对手犯规得分", 4, "2018年10月12日", "XXL", "白色", 10, 20, false, urlList));
-        assessList.add(new AssessBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558787958399&di=a3a500512493cb2f450d521248dd379b&imgtype=0&src=http%3A%2F%2Fatt.bbs.duowan.com%2Fforum%2F201904%2F04%2F222944joyex4t9xy44j4r1.jpeg", "山豆根山", "啊手动阀撒根深蒂固的师傅给对手犯规得分", 4, "2018年10月12日", "XXL", "白色", 24, 500, false, urlList));
-        AssessAdapter assessAdapter = new AssessAdapter(mContext, assessList, R.layout.rv_assess_content);
-        if (getView() != null) {
-            getView().loadAssess(assessAdapter);
-        }
-        assessAdapter.setOnFiveViewClickListener(new MyRecyclerAdapter.OnFiveViewClickListener() {
+        Map map = MapUtil.getInstance().addParms("page", page).addParms("pageSize", "10").build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETASSESS + "/" + id, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void fiveViewClick(final TextView zanCount, final ImageView zanImg, TextView assessCount, ImageView assessImg, final int groupPosition, ImageView img, final int position) {
-                zanImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (assessList.get(groupPosition).isZan()) {
-                            assessList.get(groupPosition).setZan(false);
-                            assessList.get(groupPosition).setZanCount(assessList.get(groupPosition).getZanCount() - 1);
-                            zanCount.setText(assessList.get(groupPosition).getZanCount() + "");
-                            zanImg.setImageResource(R.drawable.icon_dianzan1);
-                        } else {
-                            assessList.get(groupPosition).setZan(true);
-                            assessList.get(groupPosition).setZanCount(assessList.get(groupPosition).getZanCount() + 1);
-                            zanCount.setText(assessList.get(groupPosition).getZanCount() + "");
-                            zanImg.setImageResource(R.drawable.icon_dianzan);
-                        }
-                    }
-                });
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("评论列表：" + result);
+                AssessBean assessBean = JSON.parseObject(result, AssessBean.class);
+                if (page == 1) {
+                    assessList.clear();
+                }
+                assessList.addAll(assessBean.getRecords());
+                assessAdapter = new AssessAdapter(mContext, assessList, R.layout.rv_assess_content);
 
-                assessImg.setOnClickListener(new View.OnClickListener() {
+                assessAdapter.setOnViewIndexClickListener(new MyRecyclerAdapter.OnViewIndexClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mContext.startActivity(new Intent(mContext, AssessDetailActivity.class));
+                    public void viewIndexClick(View view, final List<String> list, final int index) {
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                PopUtil.popAssessBigPic(mContext, list, index);
+                            }
+                        });
                     }
                 });
+                if (getView() != null) {
+                    getView().loadAssess(assessAdapter);
+                }
+            }
 
-                img.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        PopUtil.popAssessBigPic(mContext, urlList, position);
-                    }
-                });
+            @Override
+            public void onError(String errorCode, String errorMsg) {
 
             }
-        });
+        }));
     }
 }

@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 淘宝客商品详情
+ * 拼多多商品详情
  */
 @Route(path = "/module_classify/CommodityDetailsActivity")
 public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView, CommodityDetailsPresenter> implements CommodityDetailsView, NestedScrollView.OnScrollChangeListener {
@@ -135,27 +135,27 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
                 AppManager.getInstance().finishGoodsActivity();
             }
         });
-        //进入店铺
-        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
-        //进入店铺
-        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
-        //进入店铺
-        commodityShopName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
+//        //进入店铺
+//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
         //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override

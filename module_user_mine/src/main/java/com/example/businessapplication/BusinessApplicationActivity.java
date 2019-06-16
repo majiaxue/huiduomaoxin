@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.example.businessapplication.bean.BusinessApplicationBean;
 import com.example.businessapplication.bean.SellerVo;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
@@ -136,7 +138,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     Toast.makeText(BusinessApplicationActivity.this, "请选择地址!", Toast.LENGTH_SHORT).show();
                 } else {
                     SellerVo sellerVo = new SellerVo();
-                    sellerVo.setUserCode(SPUtil.getUserCode());
+                    sellerVo.setUserCode(SPUtil.getUserCode());//SPUtil.getUserCode()"297881222686703616"
                     sellerVo.setSellerLogo(map.get("0"));
                     sellerVo.setSellerIdPositiveCardUrl(map.get("1"));
                     sellerVo.setSellerIdBackCardUrl(map.get("2"));
@@ -153,19 +155,21 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     LogUtil.e("SecondaryDetailsJson----------->" + sellerVoJson);
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
-                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi6(BusinessApplicationActivity.this).postDataWithBody(CommonResource.SELLERINFO, body);
+                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_5003).postDataWithBody(CommonResource.SELLERINFO, body);
                     RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
                         @Override
                         public void onSuccess(String result, String msg) {
-//                            LogUtil.e("BusinessApplicationResult----------->" + result);
-//                            Gson gson = new Gson();
-//                            Map map = gson.fromJson(result, Map.class);
-//
-//                            if (msg.equals("success")) {
-//                                finish();
-//                            } else {
-//                                Toast.makeText(BusinessApplicationActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                            }
+                            LogUtil.e("BusinessApplicationResult----------->" + result);
+
+                            BusinessApplicationBean businessApplicationBean = JSON.parseObject(result, new TypeReference<BusinessApplicationBean>() {
+                            }.getType());
+
+                            String msg1 = businessApplicationBean.getMsg();
+                            if (msg1.equals("success")) {
+                                finish();
+                            }else{
+                                Toast.makeText(BusinessApplicationActivity.this, msg1, Toast.LENGTH_SHORT).show();
+                            }
 
                         }
 

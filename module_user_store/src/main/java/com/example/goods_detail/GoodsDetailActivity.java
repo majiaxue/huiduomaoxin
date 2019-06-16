@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +27,7 @@ import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
+import com.example.utils.TxtUtil;
 import com.stx.xhb.xbanner.XBanner;
 
 import java.util.List;
@@ -112,6 +115,9 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     TextView mTxt;
     @BindView(R2.id.goods_detail_total_specs)
     TextView mTotalSpecs;
+    @BindView(R2.id.goods_detail_webview)
+    WebView mWebView;
+    private String id;
 
     @Override
     public int getLayoutId() {
@@ -120,6 +126,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
     @Override
     public void initData() {
+        mWebView.getSettings().setJavaScriptEnabled(true);
         //优惠券
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -153,9 +160,13 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
         goodsDetailScroll.setOnScrollChangeListener(this);
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
+        String sellerId = intent.getStringExtra("sellerId");
+        String commendId = intent.getStringExtra("commendId");
         presenter.loadData(id);
-        presenter.loadCommend("两件套");
+        presenter.loadCommend(commendId);
+        presenter.loadCoupon(id, sellerId);
+        presenter.loadAssess(id);
     }
 
     @Override
@@ -213,7 +224,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToAssess();
+                presenter.jumpToAssess(id);
             }
         });
 
@@ -234,7 +245,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.chooseOrJump();
+                presenter.chooseOrAddCart();
             }
         });
 
@@ -249,6 +260,14 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
             @Override
             public void onClick(View v) {
                 presenter.jumpToCart();
+            }
+        });
+
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
             }
         });
     }
@@ -308,11 +327,22 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     @Override
     public void loadUI(UserGoodsDetail data) {
         goodsDetailName.setText(data.getName());
-        goodsDetailPrice.setText(data.getPrice() + "");
+        goodsDetailPrice.setText(data.getPromotionPrice() + "");
         mTotalSpecs.setText("共" + data.getStoInfo().getRecords().size() + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
         Glide.with(this).load(data.getSellerLogo()).into(goodsDetailShopImg);
         goodsDetailShopName.setText(data.getSellerName());
+        goodsDetailShopAttention.setText("店铺关注  " + TxtUtil.parse(data.getSellerFavoriteNum()));
         mTxt.setText("选择" + data.getXsProductAttributes().get(0).getName() + "、" + data.getXsProductAttributes().get(1).getName());
+        if ("1".equals(data.getIsFavorite())) {
+            attention();
+        } else {
+            cancelAttention();
+        }
+
+        String detailHtml = data.getDetailHtml();
+        String varjs = "<script type='text/javascript'> \nwindow.onload = function()\n{var $img = document.getElementsByTagName('img');for(var p in  $img){$img[p].style.width = '100%'; $img[p].style.height ='auto'}}</script>";
+        //替换img属性
+        mWebView.loadData(varjs + detailHtml, "text/html", "UTF-8");
     }
 
     @Override
@@ -356,8 +386,8 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
-    public void weixuanze() {
-        mTxt.setText("选择颜色、尺码");
+    public void weixuanze(String str) {
+        mTxt.setText("选择" + str);
     }
 
     @Override

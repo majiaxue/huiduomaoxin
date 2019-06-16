@@ -21,6 +21,8 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -47,8 +49,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         mContext.startActivity(intent);
     }
 
-    public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
+    public void getAddress() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -77,13 +79,17 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
                 .addParms("skuId", order.getProductSkuId())
                 .addParms("productId", order.getProductId())
                 .build();
-        Observable observable = RetrofitUtil.getInstance().getApi1(mContext).postHead(CommonResource.GET_YUNGEI, map, SPUtil.getToken());
+        List<Map> list = new ArrayList<>();
+        list.add(map);
+        String jsonString = JSON.toJSONString(list);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHeadWithBody(CommonResource.GET_YUNGEI, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("运费：" + result);
-                PostageBean postageBean = JSON.parseObject(result, PostageBean.class);
-                getView().loadPostage(postageBean);
+                List<PostageBean> postageBean = JSON.parseArray(result, PostageBean.class);
+                getView().loadPostage(postageBean.get(0));
             }
 
             @Override
@@ -100,13 +106,14 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     public void submit(final OrderConfirmBean bean) {
         String jsonString = JSON.toJSONString(bean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi5(mContext).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("提交订单：" + result);
                 SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
-                submitOrderBean.setProductName(bean.getGoodsName());
+                submitOrderBean.setProductName("goods");
+                submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
                 Intent intent = new Intent(mContext, PaymentActivity.class);
                 intent.putExtra("bean", submitOrderBean);
                 mContext.startActivity(intent);

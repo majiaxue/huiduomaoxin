@@ -137,7 +137,7 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                     @Override
                     public void onYesClick() {
-                        Observable observable = RetrofitUtil.getInstance().getApi4(AmendAddressActivity.this).deleteDataWithout(CommonResource.DELETEADDRESS + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
+                        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).deleteDataWithout(CommonResource.DELETEADDRESS + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                             @Override
                             public void onSuccess(String result, String msg) {
@@ -195,7 +195,7 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
                 String amendAddressJson = JSON.toJSONString(amendAddressBean);
                 LogUtil.e("AmendAddressActivityJson----------->" + amendAddressJson);
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), amendAddressJson);
-                Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi4(AmendAddressActivity.this).putDataBody(CommonResource.AMENDADDRESS, body, SPUtil.getToken());
+                Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putDataBody(CommonResource.AMENDADDRESS, body, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
@@ -223,10 +223,4 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         return new AmendAddressPresenter(this);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

@@ -198,7 +198,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     }
 
     private void city1(final AddressSelector addressSelector, int cityId) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.ADDRESSSELECT + "/" + cityId);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getDataWithout(CommonResource.ADDRESSSELECT + "/" + cityId);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -218,7 +218,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     }
 
     private void city2(final AddressSelector addressSelector, int cityId) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.ADDRESSSELECT + "/" + cityId);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getDataWithout(CommonResource.ADDRESSSELECT + "/" + cityId);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -236,7 +236,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     }
 
     private void city3(final AddressSelector addressSelector, int cityId) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi4(mContext).getDataWithout(CommonResource.ADDRESSSELECT + "/" + cityId);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getDataWithout(CommonResource.ADDRESSSELECT + "/" + cityId);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

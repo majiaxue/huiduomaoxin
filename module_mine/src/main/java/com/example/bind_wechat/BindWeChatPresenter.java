@@ -1,23 +1,16 @@
 package com.example.bind_wechat;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
-import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.setting.SettingActivity;
-import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -54,7 +47,7 @@ public class BindWeChatPresenter extends BasePresenter<BindWeChatView> {
     public void bindWX() {
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
-        Observable observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.WXBIND_CODE, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.WXBIND_CODE, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

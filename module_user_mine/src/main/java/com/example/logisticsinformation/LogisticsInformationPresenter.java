@@ -13,7 +13,6 @@ import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
-import com.example.entity.BaseStaggeredRecBean;
 import com.example.logisticsinformation.adapter.LogisticsInforMationAdapter;
 import com.example.logisticsinformation.bean.LogisticsInforMationBean;
 import com.example.module_user_mine.R;
@@ -23,12 +22,10 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -72,7 +69,7 @@ public class LogisticsInformationPresenter extends BasePresenter<LogisticsInform
     //推荐
     public void logisticsInformationRec(final RecyclerView logisticsInformationRec){
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

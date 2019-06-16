@@ -43,8 +43,8 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
     }
 
     public void loadData(final int page, String content) {
-        Map map = MapUtil.getInstance().addParms("current", page).addParms("search", content).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHead(CommonResource.GROUP_FANS, map, SPUtil.getToken());
+        Map map = MapUtil.getInstance().addParms("current", page).addParms("search", content).addParms("level","1").build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GROUP_FANS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -76,7 +76,7 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
     }
 
     public void loadCount() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi4(mContext).getHeadWithout(CommonResource.GROUP_FANS_POPPLE, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GROUP_FANS_POPPLE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

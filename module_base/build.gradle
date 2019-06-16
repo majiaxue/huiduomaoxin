@@ -73,4 +73,13 @@ dependencies {
     //微信开发工具包（登陆、分享、支付等）
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     api 'com.alibaba:fastjson:1.1.71.android'
+
+    //登陆
+    api 'com.ali.auth.sdk:alibabauth_core:1.1.4@jar'
+    api 'com.ali.auth.sdk:alibabauth_ui:1.1.4@aar'
+    api 'com.ali.auth.sdk:alibabauth_ext:1.1.4@jar'
+    //安全基础
+    api 'com.taobao.android:securityguardaar3:5.1.81@aar'
+    //电商SDK
+    api 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
 }

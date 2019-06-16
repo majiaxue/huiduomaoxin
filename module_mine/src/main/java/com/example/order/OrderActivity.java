@@ -16,6 +16,7 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.order.adapter.OrderVPAdapter;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import butterknife.BindView;
 
@@ -52,7 +53,6 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
         orderViewpager.setOffscreenPageLimit(3);
         orderViewpager.setCurrentItem(type);
         orderTab.getTabAt(type).select();
-
     }
 
     @Override

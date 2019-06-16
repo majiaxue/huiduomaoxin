@@ -58,7 +58,7 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
     public void initView(final TabLayout superBrandTab, final RecyclerView superBrandRec) {
 
         //淘宝
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi1(mContext).getDataWithout(CommonResource.TBKGOODSTBCATEGOTY);
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.TBKGOODSTBCATEGOTY);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -81,9 +81,9 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
                         String cat_name = tbGoodsSearchBeans.get(tab.getPosition()).getCat_name();
-                        Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
                         Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
-                        Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
+                        Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
                         RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
                             @Override
                             public void onSuccess(String result, String msg) {
@@ -141,7 +141,7 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
         String cat_name = tbGoodsSearchBeans.get(0).getCat_name();
         Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
         Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
-        Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi1(mContext).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
+        Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
         RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -158,7 +158,12 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                 superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        String shop_url = listsBeans.get(position).getShop_url();
+                        LogUtil.e("shop_url---------->"+shop_url);
+                        ARouter.getInstance()
+                                .build("/module_classify/tshop_home")
+                                .withString("url", shop_url)
+                                .navigation();
                     }
                 });
             }

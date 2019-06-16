@@ -22,6 +22,10 @@ import java.util.List;
 public class OrderPresenter extends BasePresenter<OrderView> {
     private String[] titleArr = {"全部订单", "已付款", "已结算", "已失效"};
     private List<Fragment> fragmentList = new ArrayList<>();
+    private AllOrderFragment allOrderFragment;
+    private PayOrderFragment payOrderFragment;
+    private SettleOrderFragment settleOrderFragment;
+    private LoseOrderFragment loseOrderFragment;
 
     public OrderPresenter(Context context) {
         super(context);
@@ -33,13 +37,17 @@ public class OrderPresenter extends BasePresenter<OrderView> {
     }
 
     public void initTabLayout(final TabLayout orderTab) {
+        allOrderFragment = AllOrderFragment.getInstance();
+        payOrderFragment = PayOrderFragment.getInstance();
+        settleOrderFragment = SettleOrderFragment.getInstance();
+        loseOrderFragment = LoseOrderFragment.getInstance();
         for (String title : titleArr) {
             orderTab.addTab(orderTab.newTab().setText(title));
         }
-        fragmentList.add(AllOrderFragment.getInstance("mine"));
-        fragmentList.add(PayOrderFragment.getInstance("mine"));
-        fragmentList.add(SettleOrderFragment.getInstance("mine"));
-        fragmentList.add(LoseOrderFragment.getInstance("mine"));
+        fragmentList.add(allOrderFragment);
+        fragmentList.add(payOrderFragment);
+        fragmentList.add(settleOrderFragment);
+        fragmentList.add(loseOrderFragment);
 
         orderTab.post(new Runnable() {
             @Override

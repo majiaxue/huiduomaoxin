@@ -1,5 +1,6 @@
 package com.example.operator;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ali.auth.third.ui.context.CallbackContext;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.TempActivity;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -127,7 +131,8 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
         operatorInviteFans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                ARouter.getInstance().build("/module_classify/tshop_home").navigation();
+                presenter.login();
             }
         });
     }
@@ -143,6 +148,11 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
             operatorBack.setImageResource(R.drawable.icon_fanhui);
             mTitle.setTextColor(Color.parseColor("#333333"));
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        CallbackContext.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

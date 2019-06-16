@@ -1,7 +1,6 @@
 package com.example.bean;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class OrderConfirmBean implements Serializable {
     /**
@@ -71,7 +70,7 @@ public class OrderConfirmBean implements Serializable {
      */
     private Integer quantity;
 
-
+    private String productAttr;
     /**
      * 属性1
      */
@@ -93,9 +92,9 @@ public class OrderConfirmBean implements Serializable {
     /**
      * 商品名称
      */
-    private String goodsName;
+    private String productName;
     /**
-     * 商品价格
+     * 商品实际价格
      */
     private double price;
     /**
@@ -103,7 +102,66 @@ public class OrderConfirmBean implements Serializable {
      */
     private Long stock;
 
+    /**
+     * 商品id
+     */
     private String productId;
+    /**
+     * 分类id
+     */
+    private String productCategoryId;
+    /**
+     * 货号
+     */
+    private String productSn;
+    /**
+     * 折扣价格
+     */
+    private double promotionPrice;
+    /**
+     * 商品价格
+     */
+    private double productPrice;
+
+    public double getPromotionPrice() {
+        return promotionPrice;
+    }
+
+    public void setPromotionPrice(double promotionPrice) {
+        this.promotionPrice = promotionPrice;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductSn() {
+        return productSn;
+    }
+
+    public void setProductSn(String productSn) {
+        this.productSn = productSn;
+    }
+
+    public String getProductCategoryId() {
+        return productCategoryId;
+    }
+
+    public void setProductCategoryId(String productCategoryId) {
+        this.productCategoryId = productCategoryId;
+    }
+
+    public String getProductAttr() {
+        return productAttr;
+    }
+
+    public void setProductAttr(String productAttr) {
+        this.productAttr = productAttr;
+    }
 
     public String getProductId() {
         return productId;
@@ -137,12 +195,12 @@ public class OrderConfirmBean implements Serializable {
         this.pic = pic;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getSellerId() {
@@ -307,14 +365,19 @@ public class OrderConfirmBean implements Serializable {
                 ", couponId='" + couponId + '\'' +
                 ", couponAmount=" + couponAmount +
                 ", quantity=" + quantity +
+                ", productAttr='" + productAttr + '\'' +
                 ", sp1='" + sp1 + '\'' +
                 ", sp2='" + sp2 + '\'' +
                 ", sourceType=" + sourceType +
                 ", pic='" + pic + '\'' +
-                ", goodsName='" + goodsName + '\'' +
+                ", productName='" + productName + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
-                ", productId=" + productId +
+                ", productId='" + productId + '\'' +
+                ", productCategoryId='" + productCategoryId + '\'' +
+                ", productSn='" + productSn + '\'' +
+                ", promotionPrice=" + promotionPrice +
+                ", productPrice=" + productPrice +
                 '}';
     }
 }
