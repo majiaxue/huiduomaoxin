@@ -66,10 +66,10 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setViewSingleLine() {
         data = new ArrayList<>();
-        data.add("git常用命令");
-        data.add("Git配置SSH访问GitHub(window)");
-        data.add("关于java的抽象和接口");
-        data.add("阿里HotFix2.0升级详解 畅谈热修复领域那些事");
+        data.add("王**获得了24元佣金");
+        data.add("玉**获得了50元佣金");
+        data.add("张**获得了11元佣金");
+        data.add("王**获得了30元佣金");
         views.clear();
         for (int i = 0; i < data.size(); i++) {
             final int position = i;

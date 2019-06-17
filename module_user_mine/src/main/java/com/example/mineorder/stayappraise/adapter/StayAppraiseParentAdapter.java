@@ -58,7 +58,7 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
                         //再次购买
                         ARouter.getInstance()
                                 .build("/module_user_store/GoodsDetailActivity")
-                                .withString("id", data.getOrderItems().get(position).getId() + "")
+                                .withString("id", data.getOrderItems().get(position).getProductId() + "")
                                 .withString("sellerId", data.getSellerId())
                                 .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
                                 .navigation();

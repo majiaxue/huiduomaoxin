@@ -40,7 +40,6 @@ import butterknife.BindView;
 
 /**
  * 多用户商城商品详情
- *
  */
 @Route(path = "/module_user_store/GoodsDetailActivity")
 public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDetailPresenter> implements GoodsDetailView, NestedScrollView.OnScrollChangeListener {
@@ -144,6 +143,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     public void initData() {
         ARouter.getInstance().inject(this);
         mWebView.getSettings().setJavaScriptEnabled(true);
+        LogUtil.e("id----->" + id + "++++++" + sellerId + "+++++++" + commendId);
         //优惠券
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

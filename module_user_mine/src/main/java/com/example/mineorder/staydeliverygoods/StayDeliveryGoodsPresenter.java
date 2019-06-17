@@ -118,7 +118,10 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                     mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-//                            mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+                            ARouter.getInstance()
+                                    .build("/module_user_mine/OrderDetailsActivity")
+                                    .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
+                                    .navigation();
                         }
                     });
                 }

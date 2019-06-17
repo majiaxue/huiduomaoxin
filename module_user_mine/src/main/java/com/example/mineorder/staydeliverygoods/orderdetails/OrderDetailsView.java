@@ -1,5 +1,6 @@
 package com.example.mineorder.staydeliverygoods.orderdetails;
 
+import com.example.bean.OrderDetailBean;
 import com.example.mvp.IView;
 
 /**
@@ -7,4 +8,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface OrderDetailsView extends IView {
+    void loadData(OrderDetailBean orderDetailBean);
 }

@@ -1,6 +1,7 @@
 package com.example.obligation;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -13,12 +14,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
+import com.example.bean.OrderDetailBean;
 import com.example.common.CommonResource;
+import com.example.mineorder.staydeliverygoods.orderdetails.adapter.OrderDetailsAdapter;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -26,13 +30,16 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.utils.TxtUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -44,6 +51,7 @@ import okhttp3.ResponseBody;
 public class ObligationPresenter extends BasePresenter<ObligationView> {
 
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
+    private OrderDetailBean orderDetailBean;
 
     public ObligationPresenter(Context context) {
         super(context);
@@ -51,6 +59,34 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
 
     @Override
     protected void onViewDestroy() {
+
+    }
+
+    public void initView(String orderSn) {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + orderSn, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("订单详情：" + result);
+                orderDetailBean = JSON.parseObject(result, OrderDetailBean.class);
+                if (getView() != null) {
+                    getView().loadData(orderDetailBean);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
+    public void items(List<OrderDetailBean.ItemsBean> items, RecyclerView orderDetailsGoodsRec) {
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        OrderDetailsAdapter orderDetailsAdapter = new OrderDetailsAdapter(mContext, items, R.layout.item_order_details_rec);
+        orderDetailsGoodsRec.setLayoutManager(linearLayoutManager);
+        orderDetailsGoodsRec.setAdapter(orderDetailsAdapter);
 
     }
 
@@ -77,7 +113,12 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
                 baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", commendList.get(position).getId() + "")
+                                .withString("sellerId", commendList.get(position).getSellerId())
+                                .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
                 baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
@@ -86,7 +127,7 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -96,12 +137,12 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("errorMsg------->"+errorMsg);
+                LogUtil.e("errorMsg------->" + errorMsg);
             }
         }));
     }
 
-    public void popupCancellationOrder(){
+    public void popupCancellationOrder() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.popup_cancellation_order, null);
         TextView text = view.findViewById(R.id.popup_cancellation_order_text);
         TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
@@ -123,25 +164,49 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
                     }
                 });
 
+//                submit.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (but1.isChecked()){
+//                            Toast.makeText(mContext, but1.getText().toString(), Toast.LENGTH_SHORT).show();
+//                            pop.dismiss();
+//                        }else if (but2.isChecked()){
+//                            Toast.makeText(mContext, but2.getText().toString(), Toast.LENGTH_SHORT).show();
+//                            pop.dismiss();
+//                        }else if (but3.isChecked()){
+//                            Toast.makeText(mContext, but3.getText().toString(), Toast.LENGTH_SHORT).show();
+//                            pop.dismiss();
+//                        }else if (but4.isChecked()){
+//                            Toast.makeText(mContext, but4.getText().toString(), Toast.LENGTH_SHORT).show();
+//                            pop.dismiss();
+//                        }else if (but5.isChecked()){
+//                            Toast.makeText(mContext, but5.getText().toString(), Toast.LENGTH_SHORT).show();
+//                            pop.dismiss();
+//                        }
+//                    }
+//                });
+
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (but1.isChecked()){
-                            Toast.makeText(mContext, but1.getText().toString(), Toast.LENGTH_SHORT).show();
-                            pop.dismiss();
-                        }else if (but2.isChecked()){
-                            Toast.makeText(mContext, but2.getText().toString(), Toast.LENGTH_SHORT).show();
-                            pop.dismiss();
-                        }else if (but3.isChecked()){
-                            Toast.makeText(mContext, but3.getText().toString(), Toast.LENGTH_SHORT).show();
-                            pop.dismiss();
-                        }else if (but4.isChecked()){
-                            Toast.makeText(mContext, but4.getText().toString(), Toast.LENGTH_SHORT).show();
-                            pop.dismiss();
-                        }else if (but5.isChecked()){
-                            Toast.makeText(mContext, but5.getText().toString(), Toast.LENGTH_SHORT).show();
-                            pop.dismiss();
-                        }
+                        Map build = MapUtil.getInstance().addParms("orderId", orderDetailBean.getItems().get(0).getOrderId()).build();
+                        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERREMOVE, build, SPUtil.getToken());
+                        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+                            @Override
+                            public void onSuccess(String result, String msg) {
+                                LogUtil.e("删除---------->" + result);
+                                if ("true".equals(result)) {
+                                    if (getView() != null) {
+                                        getView().isDelete(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(String errorCode, String errorMsg) {
+                                LogUtil.e("删除---------->" + errorMsg);
+                            }
+                        }));
                     }
                 });
 

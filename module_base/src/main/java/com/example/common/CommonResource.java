@@ -1,16 +1,16 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.1.30:9001";   //商品
-    public static final String BASEURL_4001 = "http://192.168.1.30:4001";   //用户
-    public static final String BASEURL_5003 = "http://192.168.1.30:5003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.1.30:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.1.30:9005";   //参数
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_5003 = "http://47.99.93.123:5003";   //商家
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
+    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
     public static final String URL_4_4001 = "http://192.168.1.4:4001";
-    public static final String URL_9_4001 = "http://192.168.1.30:4001";
+    public static final String URL_9_4001 = "http://47.99.93.123:4001";
     public static final String URL_4_5003 = "http://192.168.1.4:5003";
     public static final String URL_30_9004 = "http://192.168.1.30:9004";
     public static final String URL_4_9005 = "http://192.168.1.4:9005";

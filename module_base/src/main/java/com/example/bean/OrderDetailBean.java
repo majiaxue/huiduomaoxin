@@ -1,8 +1,9 @@
 package com.example.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class OrderDetailBean {
+public class OrderDetailBean implements Serializable {
 
     /**
      * id : 51
@@ -548,7 +549,7 @@ public class OrderDetailBean {
         this.items = items;
     }
 
-    public static class ItemsBean {
+    public static class ItemsBean implements Serializable{
         /**
          * id : 14
          * orderId : 51

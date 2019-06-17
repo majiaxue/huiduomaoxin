@@ -1,5 +1,6 @@
 package com.example.obligation;
 
+import com.example.bean.OrderDetailBean;
 import com.example.mvp.IView;
 
 /**
@@ -7,4 +8,7 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface ObligationView extends IView {
+    void loadData(OrderDetailBean orderDetailBean);
+
+    void isDelete(boolean isDelete);
 }

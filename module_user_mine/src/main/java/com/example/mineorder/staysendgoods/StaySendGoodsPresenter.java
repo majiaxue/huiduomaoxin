@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.BaseRefundBean;
 import com.example.common.CommonResource;
 import com.example.logisticsinformation.LogisticsInformationActivity;
 import com.example.mineorder.adapter.MineOrderParentAdapter;
@@ -81,9 +82,11 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+
                                     ARouter.getInstance()
                                             .build("/module_user_mine/RefundActivity")
                                             .withSerializable("mineOrderBean", mineOrderBean)
+                                            .withString("type", "1")
                                             .withInt("position", position)
                                             .navigation();
                                 }
@@ -101,7 +104,10 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                     mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-//                            mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+                            ARouter.getInstance()
+                                    .build("/module_user_mine/OrderDetailsActivity")
+                                    .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
+                                    .navigation();
                         }
                     });
                 }

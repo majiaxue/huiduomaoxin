@@ -21,6 +21,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 
@@ -74,7 +75,23 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                     mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                            if (listBeans.get(position).getStatus() == 1) {
+                                ARouter.getInstance()
+                                        .build("/module_user_mine/OrderDetailsActivity")
+                                        .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
+                                        .navigation();
+                            } else if (listBeans.get(position).getStatus() == 2) {
+                                ARouter.getInstance()
+                                        .build("/module_user_mine/OrderDetailsActivity")
+                                        .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
+                                        .navigation();
+                            }else if (listBeans.get(position).getStatus() == 6){
+                                //待付款
+                                ARouter.getInstance()
+                                        .build("/module_user_mine/ObligationActivity")
+                                        .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
+                                        .navigation();
+                            }
                         }
                     });
 
@@ -117,17 +134,24 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                     @Override
                                     public void onClick(View v) {
                                         Toast.makeText(mContext, "再次购买", Toast.LENGTH_SHORT).show();
+                                        //再次购买
+                                        ARouter.getInstance()
+                                                .build("/module_user_store/GoodsDetailActivity")
+                                                .withString("id", listBeans.get(0).getOrderItems().get(position).getProductId() + "")
+                                                .withString("sellerId", listBeans.get(0).getSellerId())
+                                                .withString("commendId", listBeans.get(0).getOrderItems().get(position).getProductCategoryId() + "")
+                                                .navigation();
                                     }
                                 });
                                 //立即评价
                                 view3.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-//                                        ARouter.getInstance()
-//                                                .build("/module_user_mine/OrderAssessActivity")
-//                                                .withSerializable("beanList", listBeans.get(position))
-//                                                .withInt("position", position)
-//                                                .navigation();
+                                        ARouter.getInstance()
+                                                .build("/module_user_mine/OrderAssessActivity")
+                                                .withSerializable("beanList", listBeans.get(position))
+                                                .withInt("position", position)
+                                                .navigation();
                                     }
                                 });
                             } else if (status == 6) {
@@ -175,7 +199,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                         ARouter.getInstance()
                                                 .build("/module_user_mine/LogisticsInformationActivity")
                                                 .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
-                                                .withString("goodsImage",listBeans.get(position).getOrderItems().get(0).getProductPic())
+                                                .withString("goodsImage", listBeans.get(position).getOrderItems().get(0).getProductPic())
                                                 .navigation();
                                     }
                                 });
@@ -230,7 +254,12 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                 view3.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(mContext, "再次购买", Toast.LENGTH_SHORT).show();
+                                        ARouter.getInstance()
+                                                .build("/module_user_store/GoodsDetailActivity")
+                                                .withString("id", listBeans.get(0).getOrderItems().get(position).getProductId() + "")
+                                                .withString("sellerId", listBeans.get(0).getSellerId())
+                                                .withString("commendId", listBeans.get(0).getOrderItems().get(position).getProductCategoryId() + "")
+                                                .navigation();
                                     }
                                 });
                             }

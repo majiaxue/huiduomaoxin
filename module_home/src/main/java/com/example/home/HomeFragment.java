@@ -85,17 +85,26 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             }
         });
 
+        homeMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
+            }
+        });
+
         homeSeeMoreTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
             }
         });
 
         homeSeeMoreBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").navigation();
             }
         });
     }

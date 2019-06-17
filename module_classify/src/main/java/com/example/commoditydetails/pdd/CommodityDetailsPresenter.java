@@ -144,38 +144,43 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     }
 
     public void goodsCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-        Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).build();
-        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("CommodityDetailsResult点击收藏----->" + result);
-                if (result.equals("true")) {
-                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
-                } else {
-                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+        if (!SPUtil.getToken().equals("")) {
+            Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).build();
+            Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("CommodityDetailsResult点击收藏----->" + result);
+                    if (result.equals("true")) {
+                        commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
+                    } else {
+                        commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("CommodityDetailsErrorMsg点击收藏----->" + errorMsg);
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("CommodityDetailsErrorMsg点击收藏----->" + errorMsg);
 
-            }
-        }));
+                }
+            }));
+        } else {
+            Toast.makeText(mContext, "请先登陆", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //领劵
     public void ledSecurities(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
-        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("CommodityDetailsResult领劵------------>" + result);
-                LedSecuritiesBean ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
-                }.getType());
-                ledList.clear();
-                ledList.addAll(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list());
+        if (!SPUtil.getToken().equals("")) {
+            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
+            RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("CommodityDetailsResult领劵------------>" + result);
+                    LedSecuritiesBean ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
+                    }.getType());
+                    ledList.clear();
+                    ledList.addAll(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list());
 
 //                Intent intent = new Intent();
 //                intent.setAction("android.intent.action.VIEW");
@@ -183,17 +188,20 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 //                intent.setData(content_url);
 //                mContext.startActivity(intent);
 
-                Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url", ledList.get(0).getWe_app_web_view_url());
-                mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, WebViewActivity.class);
+                    intent.putExtra("url", ledList.get(0).getWe_app_web_view_url());
+                    mContext.startActivity(intent);
 
-            }
+                }
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("CommodityDetailsErrorMsg领劵------------>" + errorMsg);
-            }
-        }));
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("CommodityDetailsErrorMsg领劵------------>" + errorMsg);
+                }
+            }));
+        } else {
+            Toast.makeText(mContext, "请先登陆", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //是否收藏
