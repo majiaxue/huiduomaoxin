@@ -15,9 +15,7 @@ public class SPUtil {
     }
 
     /**
-     * 获取用户登录状态
-     *
-     * @return
+     *判断用户是否第一次启动app
      */
     public static boolean isFirstIn() {
         boolean firstInStatus = userSP.getBoolean("isFirstIn", false);

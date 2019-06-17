@@ -13,10 +13,11 @@
             android:name="com.example.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Main"/>
+            android:theme="@style/AppTheme.Main" />
         <activity android:name="com.example.search.SearchActivity" />
+        <activity android:name="com.example.main.GuideActivity" />
         <activity
-            android:name="com.example.main.StartPageActivity"
+            android:name="com.example.main.WelcomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

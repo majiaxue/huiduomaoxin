@@ -98,6 +98,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable1, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("导航----->"+result);
                 NavBarBean navBarBean = JSON.parseObject(result, new TypeReference<NavBarBean>() {
                 }.getType());
                 if (navBarBean != null) {

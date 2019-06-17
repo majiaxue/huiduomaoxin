@@ -231,10 +231,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void lingquan() {
-        if (couponBeanList.size() > 0) {
-            PopUtil.lingquanPop(mContext, couponBeanList);
-        } else {
-            Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
+        if (couponBeanList != null) {
+            if (couponBeanList.size() > 0) {
+                PopUtil.lingquanPop(mContext, couponBeanList);
+            } else {
+                Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            LogUtil.e("无数据");
         }
     }
 

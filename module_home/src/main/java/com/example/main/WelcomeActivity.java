@@ -2,18 +2,20 @@ package com.example.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 
 import com.example.module_home.R;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 /**
  * 启动页
  */
 public class WelcomeActivity extends Activity {
-    private boolean isFirstIn;
+    private boolean isFirstIn = false;
     private static final int TIME = 3000;
     private static final int GO_HOME = 1000;
     private static final int GO_GUIDE = 1001;
@@ -37,17 +39,23 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
+        SharedPreferences preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
+        isFirstIn = preferences.getBoolean("isFirstIn", false);
         init();
     }
 
     private void init() {
-        SPUtil.getInstance(WelcomeActivity.this);
-        isFirstIn = SPUtil.isFirstIn();
+
+
+        LogUtil.e("第一次" + isFirstIn);
         if (isFirstIn) {
             handler.sendEmptyMessageDelayed(GO_HOME, TIME);
         } else {
+            SharedPreferences preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isFirstIn", true);
+            editor.commit();
             handler.sendEmptyMessageDelayed(GO_GUIDE, TIME);
-            SPUtil.addParm("isFirstIn",true);
         }
     }
 

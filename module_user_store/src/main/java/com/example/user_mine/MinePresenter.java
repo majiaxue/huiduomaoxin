@@ -36,7 +36,7 @@ import okhttp3.ResponseBody;
  */
 public class MinePresenter extends BasePresenter<MineView> {
 
-    private List<BrowsingBean.RecordsBean> recordsBeanList = new ArrayList<>();
+    private List<BrowsingBean.RecordsBean.ItemBean> recordsBeanList = new ArrayList<>();
     private List<ShopCollectCountBean.RecordsBean> shopCollectList = new ArrayList<>();
     private List<GoodsCollectCountBean.RecordsBean> goodsCountList = new ArrayList<>();
 
@@ -127,7 +127,7 @@ public class MinePresenter extends BasePresenter<MineView> {
                 }.getType());
                 if (browsingBean != null) {
                     recordsBeanList.clear();
-                    recordsBeanList.addAll(browsingBean.getRecords());
+                    recordsBeanList.addAll(browsingBean.getRecords().get(0).getItem());
                     if (getView() != null) {
                         getView().browsingHistoryCount(recordsBeanList.size());
                     }

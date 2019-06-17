@@ -130,7 +130,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     Toast.makeText(BusinessApplicationActivity.this, "请选择分类!", Toast.LENGTH_SHORT).show();
                 } else if (businessApplicationName.getText().toString().equals("")) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入姓名!", Toast.LENGTH_SHORT).show();
-                } else if (businessApplicationPhone.getText().equals("")) {
+                } else if ("".equals(businessApplicationPhone.getText().toString()) || !PhoneNumUtil.isMobileNO(businessApplicationPhone.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入手机号!", Toast.LENGTH_SHORT).show();
                 } else if (PhoneNumUtil.isMobileNO(businessApplicationPhone.getText().toString())) {
 
