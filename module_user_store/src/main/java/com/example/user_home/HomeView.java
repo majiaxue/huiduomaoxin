@@ -20,7 +20,7 @@ public interface HomeView extends IView {
 
     void loadCommend(CommendAdapter adapter);
 
-    void loadBanner(List<BannerBean> beanList);
+    void loadBanner(List<BannerBean.RecordsBean> beanList);
 
     void refreshSuccess();
 }

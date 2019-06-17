@@ -39,6 +39,8 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
     @Autowired(name = "type")
     int type;
 
+    private int index = 1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_order;
@@ -67,28 +69,36 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
         orderTb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(0);
+                index = 1;
+                presenter.change(0, index);
+                orderTab.getTabAt(0).select();
             }
         });
 
         orderPdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(1);
+                index = 3;
+                presenter.change(1, index);
+                orderTab.getTabAt(0).select();
             }
         });
 
         orderJd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(2);
+                index = 2;
+                presenter.change(2, index);
+                orderTab.getTabAt(0).select();
             }
         });
 
         orderSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(3);
+                index = 0;
+                presenter.change(3, index);
+                orderTab.getTabAt(0).select();
             }
         });
 

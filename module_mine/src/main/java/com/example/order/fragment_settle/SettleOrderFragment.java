@@ -16,6 +16,7 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
     RecyclerView orderListRv;
 
     private static SettleOrderFragment fragment;
+    private int index = 1;
 
     public static SettleOrderFragment getInstance() {
         if (fragment == null) {
@@ -48,7 +49,8 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
 
     }
 
-    public void setOrign(String orign) {
+    public void setOrign(int index) {
+        this.index = index;
         presenter.loadData();
     }
 

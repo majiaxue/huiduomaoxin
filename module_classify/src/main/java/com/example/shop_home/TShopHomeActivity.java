@@ -15,6 +15,7 @@ import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
 import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.AlibcTaokeParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.model.TradeResult;
 import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
@@ -35,9 +36,10 @@ import butterknife.BindView;
 public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePresenter> implements TShopHomeView {
     @BindView(R2.id.tshop_home_webview)
     com.ali.auth.third.ui.webview.TaeWebView webView;
-    @Autowired(name = "url")
-    String url;
+    @Autowired(name = "shopId")
+    String shopId;
 
+    private String goodsId = "";
     private boolean isJump = false;
 
     @Override
@@ -67,16 +69,32 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 LogUtil.e("==========>" + url);
-                if (url.contains("id=")) {
-                    LogUtil.e("2222222222222");
+                String id = "";
+                if (url.contains("?id=")) {
                     String[] split = url.split("&");
                     String[] split1 = split[0].split("=");
-                    long id = Long.valueOf(split1[1]);
-                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                            .withString("type", "0")
-                            .withLong("goods_id", id)
-                            .navigation();
+                    id = split1[1];
+                    if (goodsId.equals(id)) {
+                        return false;
+                    }
+                    goodsId = id;
+                } else if (url.contains("&id=")) {
+                    String[] split = url.split("&id=");
+                    if (split[1].contains("&")) {
+                        String[] split1 = split[1].split("&");
+                        id = split1[0];
+                    } else {
+                        id = split[1];
+                    }
+                    if (goodsId.equals(id)) {
+                        return false;
+                    }
+                    goodsId = id;
                 }
+                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                        .withString("shoptype", "0")
+                        .withString("para", id)
+                        .navigation();
                 try {
                     if (!url.startsWith("https://")) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -97,27 +115,23 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
         webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
 
+        AlibcTaokeParams alibcTaokeParams = new AlibcTaokeParams("57328044", "mm_26632322_6858406_23810104", "mm_26632322_6858406_23810104");
+
         //提供给三方传递配置参数
         Map<String, String> exParams = new HashMap<>();
         exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
-        //商品详情page
-        AlibcBasePage detailPage = new AlibcDetailPage("590610816397");
-
         //实例化店铺打开page
-        AlibcBasePage shopPage = new AlibcShopPage("656546043");
-
-        //实例化URL打开page
-        AlibcBasePage page = new AlibcPage("");
+        AlibcBasePage shopPage = new AlibcShopPage(shopId);
 
         //设置页面打开方式
         AlibcShowParams showParams = new AlibcShowParams(OpenType.H5, false);
 
         //使用百川sdk提供默认的Activity打开detail
-        AlibcTrade.show(this, webView, webViewClient, webChromeClient, shopPage, showParams, null, exParams, new AlibcTradeCallback() {
+        AlibcTrade.show(this, webView, webViewClient, webChromeClient, shopPage, showParams, alibcTaokeParams, exParams, new AlibcTradeCallback() {
             @Override
             public void onTradeSuccess(TradeResult tradeResult) {
-                LogUtil.e("------>"+tradeResult.toString());
+                LogUtil.e("------>" + tradeResult.toString());
             }
 
             @Override

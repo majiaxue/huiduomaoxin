@@ -12,7 +12,8 @@
         <activity
             android:name="com.example.main.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Main"/>
         <activity android:name="com.example.search.SearchActivity" />
         <activity
             android:name="com.example.main.StartPageActivity"

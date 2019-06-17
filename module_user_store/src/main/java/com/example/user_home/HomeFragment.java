@@ -29,6 +29,7 @@ import com.example.user_home.adapter.NavBarAdapter;
 import com.example.user_home.adapter.SaleHotAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.CustomHeader;
@@ -189,14 +190,14 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     }
 
     @Override
-    public void loadBanner(final List<BannerBean> beanList) {
+    public void loadBanner(final List<BannerBean.RecordsBean> beanList) {
         userHomeXbanner.setBannerData(beanList);
         Glide.with(getContext()).load(beanList.get(0).getPicBackUrl()).into(userHomeTopImg);
         userHomeXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
                 RequestOptions requestOptions = RequestOptions.centerCropTransform();
-                Glide.with(getContext()).load(((BannerBean) model).getXBannerUrl()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(R.dimen.dp_10))).into((ImageView) view);
+                Glide.with(getContext()).load(((BannerBean.RecordsBean) model).getXBannerUrl()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(R.dimen.dp_10))).into((ImageView) view);
             }
         });
 

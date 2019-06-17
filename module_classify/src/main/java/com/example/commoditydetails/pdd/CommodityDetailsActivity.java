@@ -83,7 +83,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @BindView(R2.id.commodity_into_shop)
     TextView commodityIntoShop;
     @Autowired(name = "goods_id")
-    long goods_id;
+    String goods_id;
 
     @Autowired(name = "type")
     String type;
@@ -100,9 +100,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        if ("1".equals(type)) {
-            commodityIntoShop.setVisibility(View.INVISIBLE);
-        }
+        commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
         presenter.initView(goods_id);
 
@@ -224,7 +222,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @Override
     public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList, String earnings) {
         this.detailsBeanList = beanList;
-        LogUtil.e("收益1-------->"+earnings);
+        LogUtil.e("收益1-------->" + earnings);
         double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
         double promotionRate = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);//佣金比例
         double mul = ArithUtil.mul(div, promotionRate);//到手价乘佣金

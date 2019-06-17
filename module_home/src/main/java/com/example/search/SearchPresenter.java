@@ -37,30 +37,28 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     public void searchFlowLayout(FlowLayout searchFlowLayout) {
-        mVals.add("渔夫帽");
-        mVals.add("渔夫帽蓝色");
-        mVals.add("V20");
-        mVals.add("华为mate20");
-        mVals.add("儿童大礼包");
-
-        for (int i = 0; i < mVals.size(); i++) {
-            searchTextView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.search_text_view, searchFlowLayout, false);
-            searchTextView.setText(mVals.get(i));
-            final int finalI = i;
-            searchTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "i:" + mVals.get(finalI), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            searchFlowLayout.addView(searchTextView);
-        }
+//        mVals.add("渔夫帽");
+//        mVals.add("渔夫帽蓝色");
+//        mVals.add("V20");
+//        mVals.add("华为mate20");
+//        mVals.add("儿童大礼包");
+//
+//        for (int i = 0; i < mVals.size(); i++) {
+//            searchTextView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.search_text_view, searchFlowLayout, false);
+//            searchTextView.setText(mVals.get(i));
+//            final int finalI = i;
+//            searchTextView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(mContext, "i:" + mVals.get(finalI), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//            searchFlowLayout.addView(searchTextView);
+//        }
     }
 
-    public void searchEdit(String content, String from) {
-        if ("users".equals(from)) {
-            ARouter.getInstance().build("/module_user_store/typeDetail").withString("search", content).navigation();
-        }
+    public void searchEdit(String content, int position) {
+        ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", position).withString("searchContent", content).navigation();
     }
 }

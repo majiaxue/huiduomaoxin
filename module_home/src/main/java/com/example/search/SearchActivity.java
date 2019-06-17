@@ -1,9 +1,11 @@
 package com.example.search;
 
+import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,8 @@ import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 import com.example.view.FlowLayout;
+
+import java.lang.reflect.Field;
 
 import butterknife.BindView;
 
@@ -34,9 +38,11 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     ImageView searchDelete;
     @BindView(R2.id.search_flow_layout)
     FlowLayout searchFlowLayout;
-    @Autowired(name = "from")
-    String from;
+    @BindView(R2.id.search_tab)
+    TabLayout mTabLayout;
 
+    private int position;
+    private String[] titleArr = {"淘宝", "拼多多", "京东"};
 
     @Override
     public int getLayoutId() {
@@ -46,8 +52,53 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        mTabLayout.addTab(mTabLayout.newTab().setText(titleArr[0]));
+        mTabLayout.addTab(mTabLayout.newTab().setText(titleArr[1]));
+        mTabLayout.addTab(mTabLayout.newTab().setText(titleArr[2]));
         presenter.searchFlowLayout(searchFlowLayout);
 
+        mTabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //了解源码得知 线的宽度是根据 tabView的宽度来设置的
+                    LinearLayout mTabStrip = (LinearLayout) mTabLayout.getChildAt(0);
+
+                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+                        View tabView = mTabStrip.getChildAt(i);
+
+                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
+                        Field mTextViewField =
+                                tabView.getClass().getDeclaredField("mTextView");
+                        mTextViewField.setAccessible(true);
+
+                        TextView mTextView = (TextView) mTextViewField.get(tabView);
+
+                        tabView.setPadding(0, 0, 0, 0);
+
+                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
+                        int width = 0;
+                        width = mTextView.getWidth();
+                        if (width == 0) {
+                            mTextView.measure(0, 0);
+                            width = mTextView.getMeasuredWidth();
+                        }
+
+                        //设置tab左右间距为10dp  注意这里不能使用Padding
+                        // 因为源码中线的宽度是根据 tabView的宽度来设置的
+                        LinearLayout.LayoutParams params =
+                                (LinearLayout.LayoutParams) tabView.getLayoutParams();
+                        params.width = width;
+                        tabView.setLayoutParams(params);
+
+                        tabView.invalidate();
+                    }
+
+                } catch (Exception e) {
+
+                }
+            }
+        });
     }
 
     @Override
@@ -61,7 +112,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.searchEdit(searchEdit.getText().toString(), from);
+                presenter.searchEdit(searchEdit.getText().toString(), position);
 
             }
         });
@@ -70,6 +121,29 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
             @Override
             public void onClick(View v) {
                 searchFlowLayout.removeAllViews();
+            }
+        });
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    position = 0;
+                } else if (tab.getPosition() == 1) {
+                    position = 1;
+                } else if (tab.getPosition() == 2) {
+                    position = 2;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
     }

@@ -39,6 +39,8 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
     @BindView(R2.id.fans_order_viewpager)
     ViewPager fansOrderViewpager;
 
+    private int index = 1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_fans_order;
@@ -50,7 +52,7 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
         presenter.initTabLayout(fansOrderTab);
         presenter.initViewPager(getSupportFragmentManager());
         fansOrderViewpager.setOffscreenPageLimit(3);
-        presenter.loadData();
+        presenter.loadData(index);
     }
 
     @Override
@@ -65,28 +67,36 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
         fansOrderTb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(0);
+                index = 1;
+                presenter.change(0, index);
+                fansOrderTab.getTabAt(0).select();
             }
         });
 
         fansOrderPdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(1);
+                index = 3;
+                presenter.change(1, index);
+                fansOrderTab.getTabAt(0).select();
             }
         });
 
         fansOrderJd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(2);
+                index = 2;
+                presenter.change(2, index);
+                fansOrderTab.getTabAt(0).select();
             }
         });
 
         fansOrderSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.change(3);
+                index = 0;
+                presenter.change(3, index);
+                fansOrderTab.getTabAt(0).select();
             }
         });
     }

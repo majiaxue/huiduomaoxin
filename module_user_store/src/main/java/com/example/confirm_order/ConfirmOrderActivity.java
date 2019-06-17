@@ -95,6 +95,29 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
                 presenter.jumpToPayment();
             }
         });
+
+        confirmOrderRela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToShippingAddress();
+            }
+        });
+
+        confirmOrderChooseAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToShippingAddress();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
+            loadAddress(addressBean);
+        }
     }
 
     @Override

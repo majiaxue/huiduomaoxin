@@ -3,9 +3,7 @@ package com.example.invite_friends;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.bean.BannerBean;
-import com.example.bean.Records;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -19,7 +17,7 @@ import okhttp3.ResponseBody;
 
 public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
 
-    private List<BannerBean> beanList;
+    private List<BannerBean.RecordsBean> beanList;
 
     public InviteFriendsPresenter(Context context) {
         super(context);
@@ -36,8 +34,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
-                }.getType());
+                BannerBean records = JSON.parseObject(result, BannerBean.class);
                 beanList = records.getRecords();
                 if (getView() != null) {
                     getView().loadBanner(beanList);

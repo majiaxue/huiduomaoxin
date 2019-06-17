@@ -6,8 +6,7 @@ import android.widget.TextView;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.module_home.R;
-import com.example.secondarydetails.bean.SecondaryPddRecBean;
-import com.example.secondarydetails.bean.TBGoodsRecBean;
+import com.example.bean.TBGoodsRecBean;
 import com.example.utils.ArithUtil;
 
 import java.util.List;

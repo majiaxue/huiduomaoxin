@@ -20,11 +20,14 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.order.adapter.OrderVPAdapter;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -105,15 +108,35 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
         getView().updateVP(vpAdapter);
     }
 
-    public void change(int i) {
+    public void change(int i, int index) {
         getView().typeChanged(i);
+        switch (index) {
+            case 0:
+                fansAllOrderFragment.setOrigin(index);
+                loadData(index);
+                break;
+            case 1:
+                fansAllOrderFragment.setOrigin(index);
+                loadData(index);
+                break;
+            case 2:
+                fansAllOrderFragment.setOrigin(index);
+                loadData(index);
+                break;
+            case 3:
+                fansAllOrderFragment.setOrigin(index);
+                loadData(index);
+                break;
+        }
     }
 
-    public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.FANS_TOTAL_MONEY, SPUtil.getToken());
+    public void loadData(int index) {
+        Map map = MapUtil.getInstance().addParms("type", index).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_9_4001).getHead(CommonResource.FANS_TOTAL_MONEY, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("title:" + result);
                 FansOrderCensusBean fansOrderCensusBean = JSON.parseObject(result, FansOrderCensusBean.class);
                 if (getView() != null) {
                     getView().loadCensus(fansOrderCensusBean);
@@ -122,7 +145,7 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e(errorCode + "--------" + errorMsg);
             }
         }));
     }

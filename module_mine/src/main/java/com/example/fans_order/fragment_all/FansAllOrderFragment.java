@@ -27,6 +27,7 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
 
     private static FansAllOrderFragment fragment;
     private int page = 1;
+    private int index = 1;
 
     public static FansAllOrderFragment getInstance() {
         if (fragment == null) {
@@ -50,17 +51,19 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData(page);
 
         //设置 Header 为 官方主题 样式
         orderListRefresh.setRefreshHeader(new MaterialHeader(getActivity()));
         //设置 Footer 为 默认 样式
         orderListRefresh.setRefreshFooter(new ClassicsFooter(getActivity()));
 
+        presenter.loadData(page, index);
     }
 
-    public void setOrigin(String origin) {
-
+    public void setOrigin(int index) {
+        this.index = index;
+        page = 1;
+        presenter.loadData(page, index);
     }
 
     @Override
@@ -70,14 +73,14 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page);
+                presenter.loadData(page, index);
             }
         });
         orderListRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page);
+                presenter.loadData(page, index);
             }
         });
     }

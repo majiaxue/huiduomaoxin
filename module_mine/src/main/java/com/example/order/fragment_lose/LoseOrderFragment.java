@@ -16,6 +16,7 @@ public class LoseOrderFragment extends BaseFragment<LoseOrderView, LoseOrderPres
     RecyclerView orderListRv;
 
     private static LoseOrderFragment fragment;
+    private int index = 1;
 
     public static LoseOrderFragment getInstance() {
         if (fragment == null) {
@@ -48,7 +49,8 @@ public class LoseOrderFragment extends BaseFragment<LoseOrderView, LoseOrderPres
 
     }
 
-    public void setOrign(String orign) {
+    public void setOrign(int index) {
+        this.index = index;
         presenter.loadData();
     }
 

@@ -1,8 +1,12 @@
 package com.example.order.fragment_settle;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.MyOrderBean;
 import com.example.common.CommonResource;
 import com.example.module_mine.R;
@@ -49,6 +53,14 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
                 } else {
                     adapter.notifyDataSetChanged();
                 }
+                adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                .withString("goods_id", dataList.get(position).getGoodsId() + "")
+                                .navigation();
+                    }
+                });
             }
 
             @Override

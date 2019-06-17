@@ -5,11 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.ClassifyBean;
-import com.example.bean.Records;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -36,7 +34,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     private List<ClassifyBean.Records.RecordsSecond> rightList = new ArrayList<>();
     private UserLeftRvAdapter leftRvAdapter;
     private UserRightRecAdapter rightAdapter;
-    private List<BannerBean> bannerBeanList;
+    private List<BannerBean.RecordsBean> bannerBeanList;
 
 
     public ClassifyPresenter(Context context) {
@@ -99,8 +97,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
-                }.getType());
+                BannerBean records = JSON.parseObject(result, BannerBean.class);
                 bannerBeanList = records.getRecords();
 //                String data = result;
 //                BaseEntityList<BannerBean> baseEntity = new Gson().fromJson(data, new TypeToken<BaseEntityList<BannerBean>>() {

@@ -17,6 +17,7 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
     RecyclerView orderListRv;
 
     private static PayOrderFragment fragment;
+    private int index = 1;
 
 
     public static PayOrderFragment getInstance() {
@@ -50,7 +51,8 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
 
     }
 
-    public void setOrign(String orign) {
+    public void setOrign(int index) {
+        this.index = index;
         presenter.loadData();
     }
 

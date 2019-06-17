@@ -115,13 +115,13 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
     }
 
     @Override
-    public void loadBanner(final List<BannerBean> list) {
+    public void loadBanner(final List<BannerBean.RecordsBean> list) {
         userClassifyXBanner.setBannerData(list);
         userClassifyXBanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
                 RequestOptions requestOptions = RequestOptions.centerCropTransform();
-                Glide.with(getContext()).load(((BannerBean) model).getXBannerUrl()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(R.dimen.dp_10))).into((ImageView) view);
+                Glide.with(getContext()).load(((BannerBean.RecordsBean) model).getXBannerUrl()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(R.dimen.dp_10))).into((ImageView) view);
             }
         });
         // 设置XBanner的页面切换特效

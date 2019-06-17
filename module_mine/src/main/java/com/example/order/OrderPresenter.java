@@ -115,7 +115,21 @@ public class OrderPresenter extends BasePresenter<OrderView> {
         }
     }
 
-    public void change(int i) {
+    public void change(int i, int index) {
         getView().typeChanged(i);
+        switch (index) {
+            case 0:
+                allOrderFragment.setOrign(index);
+                break;
+            case 1:
+                allOrderFragment.setOrign(index);
+                break;
+            case 2:
+                allOrderFragment.setOrign(index);
+                break;
+            case 3:
+                allOrderFragment.setOrign(index);
+                break;
+        }
     }
 }

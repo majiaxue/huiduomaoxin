@@ -63,15 +63,15 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //收益
-    public void earnings(){
+    public void earnings() {
 
         Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
-        RetrofitUtil.getInstance().toSubscribe(data,new OnMyCallBack(new OnDataListener() {
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("收益-------->"+result);
-                if (!result.equals("")){
+                LogUtil.e("收益-------->" + result);
+                if (!result.equals("")) {
                     if (getView() != null) {
                         getView().earnings(result);
                     }
@@ -177,19 +177,19 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //领劵
-    public void ledSecurities(String url,String couponUrl) {
-        Map map = MapUtil.getInstance().addParms("materialId",url ).addParms("userCode",SPUtil.getUserCode()).addParms("couponUrl",couponUrl).build();
+    public void ledSecurities(String url, String couponUrl) {
+        Map map = MapUtil.getInstance().addParms("materialId", url).addParms("userCode", SPUtil.getUserCode()).addParms("couponUrl", couponUrl).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postData(CommonResource.JDGETGOODSMARKETLINK, map);
-        RetrofitUtil.getInstance().toSubscribe(data,new OnTripartiteCallBack(new OnDataListener() {
+        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
                 }.getType());
                 String clickURL = jdLedSecuritiesBean.getData().getClickURL();
-                LogUtil.e("url---------->"+clickURL);
+                LogUtil.e("url---------->" + clickURL);
 
                 Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url",clickURL);
+                intent.putExtra("url", clickURL);
                 mContext.startActivity(intent);
 
             }
@@ -202,8 +202,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
 
-    public void setRecommendRec(final RecyclerView shopRecommendRec,String name) {
-        Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", 1).addParms("pageSize", 20).addParms("isHot", 1).addParms("keyword",name).build();
+    public void setRecommendRec(final RecyclerView shopRecommendRec, String name) {
+        Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", 1).addParms("pageSize", 20).addParms("isHot", 1).addParms("keyword", name).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override

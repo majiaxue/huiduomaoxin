@@ -20,7 +20,7 @@ public interface GoodsDetailView extends IView {
 
     void loadCommend(CommendAdapter adapter);
 
-    void loadBanner(List<BannerBean> list);
+    void loadBanner(List<BannerBean.RecordsBean> list);
 
     void attention();
 

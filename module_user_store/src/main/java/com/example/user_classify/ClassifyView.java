@@ -15,7 +15,7 @@ public interface ClassifyView extends IView {
 
     void loadRv(UserLeftRvAdapter leftAdapter, UserRightRecAdapter rightAdapter);
 
-    void loadBanner(List<BannerBean> list);
+    void loadBanner(List<BannerBean.RecordsBean> list);
 
     void showBanner();
 

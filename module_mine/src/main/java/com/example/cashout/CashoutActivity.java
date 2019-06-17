@@ -26,6 +26,10 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
     TextView cashoutAll;
     @BindView(R2.id.cashout_btn)
     TextView cashoutBtn;
+    @BindView(R2.id.cashout_zfb)
+    EditText cashoutZFB;
+    @BindView(R2.id.cashout_name)
+    EditText cashoutName;
 
     private String balance;
 
@@ -60,7 +64,7 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
         cashoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.tixian(cashoutEdit.getText().toString());
+                presenter.tixian(cashoutEdit.getText().toString(), cashoutZFB.getText().toString(), cashoutName.getText().toString());
             }
         });
 
@@ -88,7 +92,7 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
     @Override
     public void loadBalance(String balance) {
         this.balance = balance;
-        cashoutBalance.setText("余额￥" + balance);
+        cashoutBalance.setText("余额￥" + balance+"，");
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.example.mvp.BaseActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.TxtUtil;
@@ -154,7 +155,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(GoodsDetailActivity.this).load(((BannerBean) model).getXBannerUrl()).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
+                Glide.with(GoodsDetailActivity.this).load(((BannerBean.RecordsBean) model).getXBannerUrl()).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
             }
         });
 
@@ -366,7 +367,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
-    public void loadBanner(List<BannerBean> list) {
+    public void loadBanner(List<BannerBean.RecordsBean> list) {
         goodsDetailXbanner.setBannerData(list);
     }
 

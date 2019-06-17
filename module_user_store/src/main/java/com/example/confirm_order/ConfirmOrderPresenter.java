@@ -1,9 +1,11 @@
 package com.example.confirm_order;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.ConfirmOrderBean;
@@ -112,9 +114,9 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                 SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
                 submitOrderBean.setProductCategoryId(dataList.get(0).getItems().get(0).getProductCategoryId() + "");
                 submitOrderBean.setProductName("cart");
-                Intent intent = new Intent(mContext, PaymentActivity.class);
-                intent.putExtra("bean", submitOrderBean);
-                mContext.startActivity(intent);
+                ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                        .withSerializable("submitOrderBean", submitOrderBean)
+                        .navigation();
             }
 
             @Override
@@ -202,5 +204,9 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         if (getView() != null) {
             getView().loadPostage(ArithUtil.exact(totalFeight, 2), ArithUtil.exact(totalFeight, 2), postageBean.size());
         }
+    }
+
+    public void jumpToShippingAddress() {
+        ARouter.getInstance().build("/module_user_mine/ShippingAddressActivity").navigation((Activity) mContext, 456);
     }
 }

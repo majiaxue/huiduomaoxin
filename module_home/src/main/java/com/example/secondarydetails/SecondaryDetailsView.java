@@ -1,7 +1,7 @@
 package com.example.secondarydetails;
 
 import com.example.mvp.IView;
-import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
+import com.example.adapter.SecondaryPddRecAdapter;
 
 /**
  * Created by cuihaohao on 2019/5/31

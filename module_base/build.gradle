@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
+def dbflow_version = "4.0.3"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -113,5 +114,11 @@ dependencies {
 
     //电商SDK
     api 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
-    implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1072_43646_sharewithdownloadwithfile_withoutGame_obfs_20190429_175122.jar')
+
+    //dbflow
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    api "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    api "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    // sql-cipher database encyrption (optional)
+    api "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
 }

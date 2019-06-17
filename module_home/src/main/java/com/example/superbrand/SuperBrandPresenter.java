@@ -20,8 +20,6 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
-import com.example.secondarydetails.bean.TBGoodsRecBean;
 import com.example.bean.TBGoodsSearchBean;
 import com.example.superbrand.adapter.SuperBrandRecAdapter;
 import com.example.superbrand.bean.SuperBrandBean;

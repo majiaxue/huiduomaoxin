@@ -51,12 +51,12 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
     }
 
     @Override
-    public void loadBanner(List<BannerBean> beanList) {
+    public void loadBanner(List<BannerBean.RecordsBean> beanList) {
         inviteFriendsBanner.setBannerData(beanList);
         inviteFriendsBanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(InviteFriendsActivity.this).load(((BannerBean) model).getXBannerUrl()).into((ImageView) view);
+                Glide.with(InviteFriendsActivity.this).load(((BannerBean.RecordsBean) model).getXBannerUrl()).into((ImageView) view);
             }
         });
     }

@@ -16,6 +16,7 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
     RecyclerView orderListRv;
 
     private static AllOrderFragment fragment;
+    private int index = 1;
 
     public static AllOrderFragment getInstance() {
         if (fragment == null) {
@@ -39,7 +40,7 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData();
+        presenter.loadData(index);
 
     }
 
@@ -48,8 +49,9 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
 
     }
 
-    public void setOrign(String orign) {
-        presenter.loadData();
+    public void setOrign(int index) {
+        this.index = index;
+        presenter.loadData(index);
     }
 
     @Override

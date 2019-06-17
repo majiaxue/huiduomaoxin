@@ -27,6 +27,7 @@ public class FansLoseOrderFragment extends BaseFragment<FansLoseOrderView, FansL
 
     private static FansLoseOrderFragment fragment;
     private int page = 1;
+    private int index = 1;
 
     public static FansLoseOrderFragment getInstance() {
         if (fragment == null) {
@@ -50,7 +51,7 @@ public class FansLoseOrderFragment extends BaseFragment<FansLoseOrderView, FansL
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData(page);
+        presenter.loadData(page, index);
 
         //设置 Header 为 官方主题 样式
         orderListRefresh.setRefreshHeader(new MaterialHeader(getActivity()));
@@ -62,14 +63,14 @@ public class FansLoseOrderFragment extends BaseFragment<FansLoseOrderView, FansL
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page);
+                presenter.loadData(page, index);
             }
         });
         orderListRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page);
+                presenter.loadData(page, index);
             }
         });
     }
@@ -77,6 +78,12 @@ public class FansLoseOrderFragment extends BaseFragment<FansLoseOrderView, FansL
     @Override
     public void initClick() {
 
+    }
+
+    public void setOrigin(int index) {
+        this.index = index;
+        page = 1;
+        presenter.loadData(page, index);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.example.secondarydetails;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,14 +14,13 @@ import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.search.SearchActivity;
-import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
+import com.example.adapter.SecondaryPddRecAdapter;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 二级详情

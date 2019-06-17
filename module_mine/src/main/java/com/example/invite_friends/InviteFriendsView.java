@@ -6,5 +6,5 @@ import com.example.mvp.IView;
 import java.util.List;
 
 public interface InviteFriendsView extends IView {
-    void loadBanner(List<BannerBean> beanList);
+    void loadBanner(List<BannerBean.RecordsBean> beanList);
 }

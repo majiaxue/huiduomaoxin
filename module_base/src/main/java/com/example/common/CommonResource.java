@@ -10,7 +10,7 @@ public class CommonResource {
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
     public static final String URL_4_4001 = "http://192.168.1.4:4001";
-    public static final String URL_27_4001 = "http://192.168.1.27:4001";
+    public static final String URL_9_4001 = "http://192.168.1.9:4001";
     public static final String URL_4_5003 = "http://192.168.1.4:5003";
     public static final String URL_30_9004 = "http://192.168.1.30:9004";
     public static final String URL_4_9005 = "http://192.168.1.4:9005";
@@ -65,6 +65,10 @@ public class CommonResource {
     public static final String GETPREDICT = "/rest/user/settlement";            //预估收益
     public static final String HOME_PREDICT = "/rest/user/settlement/total";    //首页获取预估数据
     public static final String GETOPER = "/rest/user/getOperLevel";             //获取运营商等级列表
+    public static final String SEARCHTBGOODS = "/rest/tbk/goods/sellerTbkList"; //搜索淘宝商品
+    public static final String SEARCHPDDGOODS = "/rest/pdd/goods/pddgoods";      //搜索拼多多商品
+    public static final String SEARCHJDGOODS = "/rest/jd/goodsList";            //搜索京东商品
+    public static final String TIXIAN = "/rest/user/cashOut/aliPay  ";          //提现
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -106,7 +110,6 @@ public class CommonResource {
     public static final String REFUNDAPPLY = "/rest/order/refundApply";//退款申请
 
 
-
     public static final String WXAPPID = "wxf08fd2965ac9ac30";
     public static final String CODE_SUCCESS = "0";  //联网成功
     public static final String TOKEN_EXPIRE = "2";    //token过期
@@ -116,4 +119,5 @@ public class CommonResource {
     public static final String JUMP_CART = "JUMP_CART";
     public static final String TOKEN = "token";
     public static final String USERCODE = "userCode";
+    public static final String TABABLE_NAME = "HISTORY";
 }

@@ -52,4 +52,6 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
+
+    <style name="AppTheme.Main" parent="AppTheme" />
 </resources>

@@ -42,7 +42,7 @@ import okhttp3.ResponseBody;
  * Describe:
  */
 public class HomePresenter extends BasePresenter<HomeView> {
-    private List<BannerBean> beanList = new ArrayList<>();
+    private List<BannerBean.RecordsBean> beanList = new ArrayList<>();
     private List<NavBarBean.RecordsBean> navbarList = new ArrayList<>();
     private List<HotSaleBean.DataBean> saleHotList = new ArrayList<>();
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
@@ -65,7 +65,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("热销商品: "+result);
+                LogUtil.e("热销商品: " + result);
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
                 if (hotSaleBean != null) {
@@ -89,7 +89,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("热销商品: "+errorMsg);
+                LogUtil.e("热销商品: " + errorMsg);
             }
         }));
 
@@ -140,9 +140,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e(result);
-                Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
-                }.getType());
+                LogUtil.e("轮播图：" + result);
+                BannerBean records = JSON.parseObject(result, BannerBean.class);
+                LogUtil.e("解析后："+records);
                 beanList = records.getRecords();
                 if (getView() != null) {
                     getView().loadBanner(beanList);

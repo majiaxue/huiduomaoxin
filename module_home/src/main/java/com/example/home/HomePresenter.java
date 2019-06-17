@@ -62,7 +62,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodChoiceBean.DataBean> goodList = new ArrayList<>();
     private List<BaseRecBean> baseRecBeanList;
-    private List<BannerBean> beanList;
+    private List<BannerBean.RecordsBean> beanList;
 
     public HomePresenter(Context context) {
         super(context);
@@ -105,8 +105,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("homePresenterResult---------->"+result);
-                Records<BannerBean> records = JSON.parseObject(result, new TypeReference<Records<BannerBean>>() {
-                }.getType());
+                BannerBean records = JSON.parseObject(result, BannerBean.class);
                 beanList = records.getRecords();
 
 //              homeXbanner.setData(images, null);
@@ -119,7 +118,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 //                        SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
 //                        bannerImage.setImageURI(((BannerBean)model).getXBannerUrl());
                         RequestOptions requestOptions = RequestOptions.centerCropTransform();
-                        Glide.with(mContext).load(((BannerBean) model).getXBannerUrl())
+                        Glide.with(mContext).load(((BannerBean.RecordsBean) model).getXBannerUrl())
                                 .apply(requestOptions)
                                 .transform(new RoundedCorners((int) mContext.getResources().getDimension(R.dimen.dp_10)))
                                 .into((ImageView) view);

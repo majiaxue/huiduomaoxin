@@ -27,6 +27,7 @@ public class FansPayOrderFragment extends BaseFragment<FansPayOrderView, FansPay
 
     private static FansPayOrderFragment fragment;
     private int page = 1;
+    private int index = 1;
 
     public static FansPayOrderFragment getInstance() {
         if (fragment == null) {
@@ -50,7 +51,7 @@ public class FansPayOrderFragment extends BaseFragment<FansPayOrderView, FansPay
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData(page);
+        presenter.loadData(page, index);
 
         //设置 Header 为 官方主题 样式
         orderListRefresh.setRefreshHeader(new MaterialHeader(getActivity()));
@@ -67,16 +68,22 @@ public class FansPayOrderFragment extends BaseFragment<FansPayOrderView, FansPay
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page);
+                presenter.loadData(page, index);
             }
         });
         orderListRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page);
+                presenter.loadData(page, index);
             }
         });
+    }
+
+    public void setOrigin(int index) {
+        this.index = index;
+        page = 1;
+        presenter.loadData(page, index);
     }
 
     @Override

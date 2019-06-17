@@ -1,8 +1,12 @@
 package com.example.fans_order.fragment_settle;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.FansOrderBean;
 import com.example.common.CommonResource;
 import com.example.fans_order.adapter.FansOrderRvAdapter;
@@ -22,8 +26,8 @@ import java.util.Map;
 import io.reactivex.Observable;
 
 public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView> {
-    private List<FansOrderBean> fansList = new ArrayList();
-    private FansOrderRvAdapter fansAdapter;
+    private List<FansOrderBean> pddList = new ArrayList();
+    private FansOrderRvAdapter pddAdapter;
 
     public FansSettleOrderPresenter(Context context) {
         super(context);
@@ -34,8 +38,21 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
 
     }
 
-    public void loadData(final int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").build();
+    public void loadData(final int page, int index) {
+        if (index == 0) {
+            scOrder(page, index);
+        } else if (index == 1) {
+            tbOrder(page, index);
+        } else if (index == 2) {
+            jdOrder(page, index);
+        } else if (index == 3) {
+            pddOrder(page, index);
+        }
+
+    }
+
+    private void pddOrder(final int page, int index) {
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", index).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -43,20 +60,77 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
                 LogUtil.e("粉丝订单jiesuan：" + result);
                 List<FansOrderBean> baseEntity = JSON.parseArray(result, FansOrderBean.class);
                 if (page == 1) {
-                    fansList.clear();
+                    pddList.clear();
                 }
-                fansList.addAll(baseEntity);
-                if (fansAdapter == null) {
-                    fansAdapter = new FansOrderRvAdapter(mContext, fansList, R.layout.rv_fans_order_list);
+                pddList.addAll(baseEntity);
+                if (pddAdapter == null) {
+                    pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
                     if (getView() != null) {
-                        getView().loadFansRv(fansAdapter);
+                        getView().loadFansRv(pddAdapter);
                     }
                 } else {
-                    fansAdapter.notifyDataSetChanged();
+                    pddAdapter.notifyDataSetChanged();
                     if (getView() != null) {
                         getView().loadSuccess();
                     }
                 }
+                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
+    private void jdOrder(int page, int index) {
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", index).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("粉丝订单jiesuan：" + result);
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
+    private void tbOrder(int page, int index) {
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", index).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("粉丝订单jiesuan：" + result);
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
+    private void scOrder(int page, int index) {
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", index).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("粉丝订单jiesuan：" + result);
+
             }
 
             @Override

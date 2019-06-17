@@ -1,22 +1,36 @@
 package com.example.classificationdetails;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.adapter.BaseRecAdapter;
+import com.example.adapter.SecondaryJDRecAdapter;
+import com.example.adapter.SecondaryPddRecAdapter;
+import com.example.classificationdetails.adapter.ClassificationRecAdapter;
+import com.example.classificationdetails.adapter.JdWaterfallAdapter;
+import com.example.classificationdetails.adapter.PddWaterAdapter;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.DisplayUtil;
+import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 
@@ -25,7 +39,6 @@ import butterknife.BindView;
  */
 @Route(path = "/module_classify/ClassificationDetailsActivity")
 public class ClassificationDetailsActivity extends BaseActivity<ClassificationDetailsView, ClassificationDetailsPresenter> implements ClassificationDetailsView, View.OnClickListener {
-
 
     @BindView(R2.id.classification_back)
     ImageView classificationBack;
@@ -63,10 +76,21 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     TextView classificationText;
     @BindView(R2.id.classification_tab)
     TabLayout classificationTab;
-    private boolean state = true;
+    @BindView(R2.id.classification_refresh)
+    SmartRefreshLayout mRefresh;
+
     private boolean salesvolume = true;
     private boolean price = true;
     private boolean credit = true;
+    @Autowired(name = "searchContent")
+    String searchContent;
+    @Autowired(name = "position")
+    int position;
+
+    private int page = 1;
+    private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
+    private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
 
 
     @Override
@@ -76,17 +100,29 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        //添加间距
+        spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(this, 15), DisplayUtil.dip2px(this, 15));
+
         //初始化tablayout
         presenter.initTabLayout(classificationTab);
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        String text = extras.getString("text");
-        if (text != null && !text.equals("")) {
-            classificationText.setText(text);
+        if (searchContent != null && !"" .equals(searchContent)) {
+            classificationText.setText(searchContent);
         }
-        presenter.setClassifyRec(classificationRec, classificationSwitchover);
+        classificationTab.getTabAt(position).select();
+        if (position == 0) presenter.searchTB(searchContent, page, position);
+        else if (position == 1) {
+            presenter.searchPDD(searchContent, page);
+        } else if (position == 2) {
+            presenter.searchJD(searchContent, page);
+        }
 
+        //设置 Header 为 官方主题 样式
+        mRefresh.setRefreshHeader(new MaterialHeader(this));
+        //设置 Footer 为 默认 样式
+        mRefresh.setRefreshFooter(new ClassicsFooter(this));
     }
 
     @Override
@@ -110,20 +146,72 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
         classificationSwitchover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (state) {
-                    presenter.setClassifyGridRec(classificationRec, classificationSwitchover);
-                    state = false;
-                } else {
-                    //切换布局条形
-                    presenter.setClassifyRec(classificationRec, classificationSwitchover);
-                    state = true;
-                }
+                presenter.ChangeShow(position);
             }
         });
 
         classificationSalesVolume.setOnClickListener(this);
         classificationPrice.setOnClickListener(this);
         classificationCredit.setOnClickListener(this);
+
+        classificationTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        position = 0;
+                        page = 1;
+                        presenter.searchTB(searchContent, page, 0);
+                        break;
+                    case 1:
+                        position = 1;
+                        page = 1;
+                        presenter.searchPDD(searchContent, page);
+                        break;
+                    case 2:
+                        position = 2;
+                        page = 1;
+                        presenter.searchJD(searchContent, page);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        //********************设置上拉刷新下拉加载
+        mRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                if (position == 0) presenter.searchTB(searchContent, page, position);
+                else if (position == 1) {
+                    presenter.searchPDD(searchContent, page);
+                } else if (position == 2) {
+                    presenter.searchJD(searchContent, page);
+                }
+            }
+        });
+        mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                if (position == 0) presenter.searchTB(searchContent, page, position);
+                else if (position == 1) {
+                    presenter.searchPDD(searchContent, page);
+                } else if (position == 2) {
+                    presenter.searchJD(searchContent, page);
+                }
+            }
+        });
     }
 
     @Override
@@ -134,6 +222,60 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     public ClassificationDetailsPresenter createPresenter() {
         return new ClassificationDetailsPresenter(this);
+    }
+
+    @Override
+    public void loadFinish() {
+        mRefresh.finishRefresh();
+        mRefresh.finishLoadMore();
+    }
+
+    @Override
+    public void loadTBLstRv(BaseRecAdapter adapter) {
+        classificationSwitchover.setImageResource(R.drawable.xfxfgvx);
+        classificationRec.setLayoutManager(linearLayoutManager);
+        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        classificationRec.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadTBWaterfallRv(ClassificationRecAdapter adapter) {
+        classificationSwitchover.setImageResource(R.drawable.fghfghfg);
+        classificationRec.setLayoutManager(gridLayoutManager);
+        classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        classificationRec.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadPDDLstRv(SecondaryPddRecAdapter adapter) {
+        classificationSwitchover.setImageResource(R.drawable.xfxfgvx);
+        classificationRec.setLayoutManager(linearLayoutManager);
+        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        classificationRec.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadPDDWaterfallRv(PddWaterAdapter adapter) {
+        classificationSwitchover.setImageResource(R.drawable.fghfghfg);
+        classificationRec.setLayoutManager(gridLayoutManager);
+        classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        classificationRec.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadJDLstRv(SecondaryJDRecAdapter adapter) {
+        classificationSwitchover.setImageResource(R.drawable.xfxfgvx);
+        classificationRec.setLayoutManager(linearLayoutManager);
+        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        classificationRec.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadJDWaterfallRv(JdWaterfallAdapter adapter) {
+        classificationSwitchover.setImageResource(R.drawable.fghfghfg);
+        classificationRec.setLayoutManager(gridLayoutManager);
+        classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        classificationRec.setAdapter(adapter);
     }
 
     @Override

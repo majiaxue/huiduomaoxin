@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +51,7 @@ public class WebViewActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
+                LogUtil.e("========>"+url);
                 return true;
             }
         });

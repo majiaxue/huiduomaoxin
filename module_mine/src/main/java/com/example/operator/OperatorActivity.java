@@ -73,8 +73,6 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/module_classify/tshop_home").navigation();
-//                presenter.login();
-//                presenter.test();
             }
         });
     }

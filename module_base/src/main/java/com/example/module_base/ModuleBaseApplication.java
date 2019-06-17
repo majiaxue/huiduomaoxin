@@ -11,6 +11,7 @@ import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -28,6 +29,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         }
         ARouter.init(this);
         SPUtil.getInstance(this);
+        FlowManager.init(this);
 
         wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
         wxapi.registerApp(CommonResource.WXAPPID);

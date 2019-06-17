@@ -123,10 +123,10 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
                 //轮播图
                 String albumPics = userGoodsDetail.getAlbumPics();
-                List<BannerBean> bannerList = new ArrayList<>();
+                List<BannerBean.RecordsBean> bannerList = new ArrayList<>();
                 String[] split = albumPics.split(",");
                 for (int i = 0; i < split.length; i++) {
-                    bannerList.add(new BannerBean(split[i]));
+                    bannerList.add(new BannerBean.RecordsBean(split[i]));
                 }
                 if (getView() != null) {
                     getView().loadBanner(bannerList);
@@ -135,7 +135,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("详情：" + errorCode + "------" + errorMsg);
             }
         }));
 
@@ -143,7 +143,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadAssess(final String id) {
         Map map = MapUtil.getInstance().addParms("page", 1).addParms("pageSize", 2).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETASSESS+"/"+id, map, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETASSESS + "/" + id, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -209,7 +209,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("收藏：" + result);
-                if ("true".equals(result)) {
+                if ("true" .equals(result)) {
                     getView().attention();
                 } else {
                     getView().cancelAttention();
