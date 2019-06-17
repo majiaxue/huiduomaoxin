@@ -65,7 +65,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         } else {
             map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).build();
         }
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -206,7 +206,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         for (Object value : map.values()) {
             LogUtil.e("value:" + value);
         }
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -101,7 +101,6 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmPrice.setText(confirmBean.getPrice() + "");
 
 
-
         presenter.getAddress();
     }
 
@@ -160,6 +159,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             public void onClick(View v) {
                 confirmBean.setRemark(orderConfirmEdit.getText().toString());
                 presenter.submit(confirmBean);
+                orderConfirmSubmit.setEnabled(false);
             }
         });
     }
@@ -171,6 +171,11 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
             loadAddress(addressBean);
         }
+    }
+
+    @Override
+    public void payFail() {
+        orderConfirmSubmit.setEnabled(true);
     }
 
     @Override

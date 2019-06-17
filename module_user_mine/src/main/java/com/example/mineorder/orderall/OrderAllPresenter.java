@@ -45,7 +45,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
     }
 
     public void orderAllRec(final RecyclerView orderAllRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

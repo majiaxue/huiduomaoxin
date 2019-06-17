@@ -81,7 +81,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     public void sendCode() {
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getData(CommonResource.WXLOGIN_CODE, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.WXLOGIN_CODE, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -115,7 +115,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("password", password).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).postData(CommonResource.LOGIN_PHONE, map);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.LOGIN_PHONE, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

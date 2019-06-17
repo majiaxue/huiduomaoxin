@@ -71,7 +71,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     public void setShoppingCartRecommendRec(final RecyclerView shoppingCartRecommendRec) {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "两件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
 
             @Override
@@ -119,14 +119,13 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void setShoppingCartRec() {
-        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
+        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
         RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("cart------>" + result);
-                CartBean cartBean = JSON.parseObject(result, new TypeReference<CartBean>() {
-                }.getType());
+                CartBean cartBean = JSON.parseObject(result, CartBean.class);
 
                 dataBeanList.clear();
                 dataBeanList.addAll(cartBean.getRecords());
@@ -257,7 +256,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     private void reviseStutas() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHeadWithList(CommonResource.REVISE_CART_ITEM, updateList, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithList(CommonResource.REVISE_CART_ITEM, updateList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -278,7 +277,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     private void delete() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHeadWithout(CommonResource.DELETE_CART, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.DELETE_CART, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -355,6 +354,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
         for (int i = 0; i < dataBeanList.size(); i++) {
             List<CartBean.RecordsBean.ItemsBean> list = new ArrayList<>();
             for (int j = 0; j < dataBeanList.get(i).getItems().size(); j++) {
+
                 if (0 == dataBeanList.get(i).getItems().get(j).getChecked()) {
                     list.add(dataBeanList.get(i).getItems().get(j));
                     if (sellId != dataBeanList.get(i).getSellerId()) {

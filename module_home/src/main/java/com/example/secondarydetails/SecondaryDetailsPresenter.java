@@ -58,7 +58,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
     public void initView(final TabLayout secondaryDetailsTab, final RecyclerView secondaryDetailsRec, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
         if (type.equals("1")) {
-            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9001).getDataWithout(CommonResource.GOODSCATS);
+            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
             RetrofitUtil.getInstance().toSubscribe(data, new OnPddCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -86,7 +86,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
                             LogUtil.e("SecondaryDetailsJson----------->" + pddGoodsSearchVoStr);
                             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), pddGoodsSearchVoStr);
-                            Observable pddGoods = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9001).postDataWithBody(CommonResource.PDDGOODS, body);
+                            Observable pddGoods = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithBody(CommonResource.PDDGOODS, body);
                             RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnPddCallBack(new OnDataListener() {
                                 @Override
                                 public void onSuccess(String result, String msg) {
@@ -203,7 +203,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
         String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
         LogUtil.e("SecondaryDetailsJson----------->" + pddGoodsSearchVoStr);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), pddGoodsSearchVoStr);
-        Observable pddGoods = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9001).postDataWithBody(CommonResource.PDDGOODS, body);
+        Observable pddGoods = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithBody(CommonResource.PDDGOODS, body);
         RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnPddCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -46,7 +46,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
     }
 
     public void browsingHistoryRec(final RecyclerView browsingHistoryRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.HISTORYALL,SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.HISTORYALL,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -167,7 +167,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postDelete(CommonResource.HISTORYDELETE,deleteList, SPUtil.getToken());
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.HISTORYDELETE,deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

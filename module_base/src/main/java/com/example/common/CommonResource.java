@@ -1,10 +1,11 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";
-    public static final String BASEURL_5003 = "http://47.99.93.123:5003";
-    public static final String BASEURL_9004 = "http://47.99.93.123:9004";
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_5003 = "http://47.99.93.123:5003";   //商家
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
+    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -61,6 +62,9 @@ public class CommonResource {
     public static final String FANS_TOTAL_MONEY = "/rest/user/fans/totalMoney";     //查询粉丝订单成交金额
     public static final String COUPON_KELING = "/rest/seller/goods-coupons";        //可领优惠券
     public static final String GETASSESS = "/rest/comment";                    //获取商品评论
+    public static final String GETPREDICT = "/rest/user/settlement";            //预估收益
+    public static final String HOME_PREDICT = "/rest/user/settlement/total";    //首页获取预估数据
+    public static final String GETOPER = "/rest/user/getOperLevel";             //获取运营商等级列表
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

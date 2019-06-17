@@ -6,6 +6,4 @@ import com.example.operator.adapter.YysQuanyiAdapter;
 
 public interface OperatorView extends IView {
     void loadFactor(YysFactorAdapter adapter);
-
-    void loadQuanyi(YysQuanyiAdapter adapter);
 }

@@ -93,7 +93,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadData(String id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getHeadWithout(CommonResource.GETGOODSDETAIL + "/" + id, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHeadWithout(CommonResource.GETGOODSDETAIL + "/" + id, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -143,7 +143,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadAssess(final String id) {
         Map map = MapUtil.getInstance().addParms("page", 1).addParms("pageSize", 2).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.GETASSESS+"/"+id, map, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETASSESS+"/"+id, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -171,7 +171,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadCommend(String keyWords) {
         Map map = MapUtil.getInstance().addParms("categoryId", keyWords).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getHead(CommonResource.HOTNEWSEARCH, map, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.HOTNEWSEARCH, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -204,7 +204,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void toAttention() {
         Map map = MapUtil.getInstance().addParms("productId", userGoodsDetail.getId()).addParms("type", 0).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -450,7 +450,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
             String jsonString = JSON.toJSONString(cartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -476,7 +476,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadCoupon(String id, String sellerId) {
         Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("goodsId", id).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_5003).getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_5003).getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

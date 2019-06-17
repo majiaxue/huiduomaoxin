@@ -141,7 +141,7 @@ public class CartBean {
             private int productSkuId;
             private int userId;
             private int quantity;
-            private int price;
+            private double price;
             private String sp1;
             private String sp2;
             private String sp3;
@@ -208,11 +208,11 @@ public class CartBean {
                 this.quantity = quantity;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return price;
             }
 
-            public void setPrice(int price) {
+            public void setPrice(double price) {
                 this.price = price;
             }
 

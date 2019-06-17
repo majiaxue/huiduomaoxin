@@ -69,7 +69,7 @@ public class LogisticsInformationPresenter extends BasePresenter<LogisticsInform
     //推荐
     public void logisticsInformationRec(final RecyclerView logisticsInformationRec){
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -17,6 +17,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_home.adapter.SaleHotAdapter;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
@@ -39,7 +40,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailView> {
     }
 
     public void loadOrder(String masterNo) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + masterNo, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + masterNo, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -59,25 +60,25 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailView> {
 
     public void loadCommend(String productCategoryId) {
         Map map = MapUtil.getInstance().addParms("pageNum", "1").addParms("categoryId", productCategoryId).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("推荐：" + result);
                 final HotSaleBean hotSaleBean = JSON.parseObject(result, HotSaleBean.class);
-                SaleHotAdapter saleHotAdapter = new SaleHotAdapter(mContext, hotSaleBean.getData(), R.layout.rv_hot);
-                saleHotAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                CommendAdapter commendAdapter = new CommendAdapter(mContext, hotSaleBean.getData(), R.layout.rv_commend);
+                commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
                         Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                        intent.putExtra("id", hotSaleBean.getData().get(position).getId()+"");
-                        intent.putExtra("commendId", hotSaleBean.getData().get(position).getProductCategoryId()+"");
+                        intent.putExtra("id", hotSaleBean.getData().get(position).getId() + "");
+                        intent.putExtra("commendId", hotSaleBean.getData().get(position).getProductCategoryId() + "");
                         intent.putExtra("sellerId", hotSaleBean.getData().get(position).getSellerId());
                         mContext.startActivity(intent);
                     }
                 });
                 if (getView() != null) {
-                    getView().loadCommend(saleHotAdapter);
+                    getView().loadCommend(commendAdapter);
                 }
             }
 

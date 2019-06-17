@@ -49,7 +49,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     }
 
     public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getDataWithout(CommonResource.ALLCATEGORT);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.ALLCATEGORT);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -95,7 +95,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     }
 
     public void setXBanner() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9005).getDataWithout(CommonResource.USERSBANNER);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.USERSBANNER);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

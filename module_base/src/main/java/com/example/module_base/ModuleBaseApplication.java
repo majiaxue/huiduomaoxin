@@ -5,6 +5,8 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
+import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
@@ -32,6 +34,18 @@ public class ModuleBaseApplication extends MultiDexApplication {
 
         Fresco.initialize(this);
         context = getApplicationContext();
+
+        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
+            @Override
+            public void onSuccess() {
+                LogUtil.e("阿里百川初始化成功");
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                LogUtil.e("阿里百川：" + code + "-------" + msg);
+            }
+        });
     }
 
     public static Context getContext() {

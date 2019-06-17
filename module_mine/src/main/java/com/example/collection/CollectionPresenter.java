@@ -44,7 +44,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
 
     public void loadData(final int page) {
         Map map = MapUtil.getInstance().addParms("type", "2").addParms("currentPage", page).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.COLLECT_LIST, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT_LIST, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -108,7 +108,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                 deleteList.add(Integer.valueOf(dataList.get(i).getGoods_id()));
             }
         }
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

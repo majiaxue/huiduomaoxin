@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.bean.OrderDetailBean;
 import com.example.bean.SubmitOrderBean;
 import com.example.mvp.BaseActivity;
-import com.example.user_home.adapter.SaleHotAdapter;
+import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.RvItemDecoration;
@@ -123,7 +123,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailView, OrderDeta
     }
 
     @Override
-    public void loadCommend(SaleHotAdapter adapter) {
+    public void loadCommend(CommendAdapter adapter) {
         orderDetailCommend.setAdapter(adapter);
     }
 

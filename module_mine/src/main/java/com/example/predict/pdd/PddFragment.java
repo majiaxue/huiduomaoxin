@@ -3,6 +3,7 @@ package com.example.predict.pdd;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.bean.PredictBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -44,7 +45,7 @@ public class PddFragment extends BaseFragment<PddView, PddPresenter> implements 
 
     @Override
     public void initData() {
-        predictTotalMoney.setText("1000");
+        presenter.loadData();
     }
 
     @Override
@@ -53,12 +54,25 @@ public class PddFragment extends BaseFragment<PddView, PddPresenter> implements 
     }
 
     @Override
+    public void loadUI(PredictBean predictBean) {
+        predictTotalMoney.setText(predictBean.getTotalAmount());
+        predictBenJiesuan.setText(predictBean.getSettleCurrentMonth());
+        predictShangJiesuan.setText(predictBean.getSettleLastMonth());
+        predictBenFukuan.setText(predictBean.getWaitCurrentMonth());
+        predictShangFukuan.setText(predictBean.getWaitLastMonth());
+        predictFukuanshuJin.setText(predictBean.getTodayPayCount());
+        predictFukuanshuZuo.setText(predictBean.getLastDayPayCount());
+        predictYongjinJin.setText(predictBean.getTodayMoney());
+        predictYongjinZuo.setText(predictBean.getLastDayMoney());
+    }
+
+    @Override
     public PddView createView() {
-        return null;
+        return this;
     }
 
     @Override
     public PddPresenter createPresenter() {
-        return null;
+        return new PddPresenter(getContext());
     }
 }

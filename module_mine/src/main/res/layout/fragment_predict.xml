@@ -17,7 +17,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_27"
             android:includeFontPadding="false"
-            android:text="288"
             android:textColor="#ffffff"
             android:textSize="@dimen/sp_36"
             android:textStyle="bold" />
@@ -46,7 +45,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_18"
             android:includeFontPadding="false"
-            android:text="结算预估收入"
+            android:text="结算收入"
             android:textColor="#222222"
             android:textSize="@dimen/sp_12" />
 
@@ -68,7 +67,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="￥200"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -78,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_9"
                     android:includeFontPadding="false"
-                    android:text="本月结算预估"
+                    android:text="本月结算"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
@@ -96,7 +94,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="￥200"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -106,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_9"
                     android:includeFontPadding="false"
-                    android:text="上月结算预估"
+                    android:text="上月结算"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
@@ -126,7 +123,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_17"
             android:includeFontPadding="false"
-            android:text="付款预估收入"
+            android:text="预估收入"
             android:textColor="#222222"
             android:textSize="@dimen/sp_12" />
 
@@ -148,7 +145,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="￥200"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -158,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_9"
                     android:includeFontPadding="false"
-                    android:text="本月付款预估"
+                    android:text="本月预估"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
@@ -176,7 +172,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="￥200"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -186,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_9"
                     android:includeFontPadding="false"
-                    android:text="上月付款预估"
+                    android:text="上月预估"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
@@ -236,7 +231,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
-                    android:text="100"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -267,7 +261,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
-                    android:text="￥100"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -325,7 +318,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
-                    android:text="100"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />
@@ -356,7 +348,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
-                    android:text="￥100"
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold" />

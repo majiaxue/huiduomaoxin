@@ -1,16 +1,12 @@
 package com.example.assess;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.adapter.AssessAdapter;
 import com.example.assess.adapter.AssessTitleAdapter;
-import com.example.assess_detail.AssessDetailActivity;
 import com.example.bean.AssessBean;
 import com.example.common.CommonResource;
 import com.example.entity.AssessTitleBean;
@@ -72,7 +68,7 @@ public class AssessPresenter extends BasePresenter<AssessView> {
         });
 
         Map map = MapUtil.getInstance().addParms("page", page).addParms("pageSize", "10").build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.GETASSESS + "/" + id, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETASSESS + "/" + id, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

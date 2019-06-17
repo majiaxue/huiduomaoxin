@@ -34,7 +34,7 @@ public class ReplacePhonePresenter extends BasePresenter<ReplacePhoneView> {
 
     public void getCodeNum(String string) {
         if (PhoneNumUtil.isMobileNO(string)) {
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getDataWithout(CommonResource.GETREGISTERCODE + "/" + string);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getDataWithout(CommonResource.GETREGISTERCODE + "/" + string);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -62,7 +62,7 @@ public class ReplacePhonePresenter extends BasePresenter<ReplacePhoneView> {
             userInfoBean.setCheckCode(code);
             String jsonString = JSON.toJSONString(userInfoBean);
             Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).putData(CommonResource.REVISEPHONE, map, SPUtil.getToken());
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putData(CommonResource.REVISEPHONE, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

@@ -58,7 +58,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
     }
 
     public void initShopCollectRec(final SlideRecyclerView shopCollectRec) {
-        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.SELLERPAGE,SPUtil.getToken());
+        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SELLERPAGE,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(final String result, String msg) {
@@ -102,7 +102,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                         List<Integer> integers = new ArrayList<>();
                                         integers.add(favoriteId);
                                         LogUtil.e("shopCollect--------->" + favoriteId);
-                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                             @Override
                                             public void onSuccess(String result, String msg) {
@@ -151,7 +151,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
 
     public void shopCollectBottomRec(final RecyclerView shopCollectBottomRec) {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

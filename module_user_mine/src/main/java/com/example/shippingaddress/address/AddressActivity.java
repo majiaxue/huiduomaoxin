@@ -111,7 +111,7 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
                 String jsonString = JSON.toJSONString(addressInfo);
                 LogUtil.e("SecondaryDetailsJson----------->" + jsonString);
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-                final Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHeadWithBody(CommonResource.ADDRESSADD, body, SPUtil.getToken());
+                final Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHeadWithBody(CommonResource.ADDRESSADD, body, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {

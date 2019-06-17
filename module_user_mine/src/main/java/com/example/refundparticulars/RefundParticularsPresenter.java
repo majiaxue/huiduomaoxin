@@ -34,7 +34,7 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
 
     public void initView(String returnId){
         Map map = MapUtil.getInstance().addParms("returnId", returnId).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postData(CommonResource.RETURNTABLE, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.RETURNTABLE, map);
         RetrofitUtil.getInstance().toSubscribe(observable,new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

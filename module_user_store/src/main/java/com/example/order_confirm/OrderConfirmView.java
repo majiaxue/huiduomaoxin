@@ -12,4 +12,6 @@ public interface OrderConfirmView extends IView {
     void loadAddress(ShippingAddressBean addressBean);
 
     void loadPostage(PostageBean postageBean);
+
+    void payFail();
 }

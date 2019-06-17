@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.bean.HomePredictBean;
 import com.example.bean.UserInfoBean;
 import com.example.entity.EventBusBean;
 import com.example.mine.adapter.MyToolAdapter;
@@ -71,14 +72,14 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     NestedScrollView mineParent;
     @BindView(R2.id.mine_rela)
     RelativeLayout mineRela;
-    @BindView(R2.id.mine_predict)
-    LinearLayout minePredict;
     @BindView(R2.id.mine_benri)
     TextView mBenri;
     @BindView(R2.id.mine_benyue)
     TextView mBenyue;
     @BindView(R2.id.mine_shangyue)
     TextView mShangyue;
+
+    private UserInfoBean userInfo;
 
     @Override
     public int getLayoutId() {
@@ -184,10 +185,10 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             }
         });
 
-        minePredict.setOnClickListener(new View.OnClickListener() {
+        mineCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToPredict();
+                presenter.setClipboard(userInfo.getInviteCode());
             }
         });
     }
@@ -200,7 +201,23 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && !"".equals(SPUtil.getToken())) {
+            presenter.getPredict();
+        }
+    }
+
+    @Override
+    public void loadPredict(HomePredictBean homePredictBean) {
+        mBenri.setText(homePredictBean.getWaitCurrentMonth());
+        mBenyue.setText(homePredictBean.getSettleCurrentMonth());
+        mShangyue.setText(homePredictBean.getSettleLastMonth());
+    }
+
+    @Override
     public void loginSuccess(UserInfoBean userInfo) {
+        this.userInfo = userInfo;
         mineName.setText(userInfo.getNickname());
         Glide.with(getContext()).load(userInfo.getIcon()).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(mineHeader);
         mineCode.setText(userInfo.getInviteCode());

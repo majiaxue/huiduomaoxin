@@ -39,7 +39,7 @@ public class AlterationPresenter extends BasePresenter<AlterationView> {
     }
 
     public void alterationRec(final RecyclerView alterationRec) {
-        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postDataWithout(CommonResource.RETURNTABLE);
+        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDataWithout(CommonResource.RETURNTABLE);
         RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
 
             @Override

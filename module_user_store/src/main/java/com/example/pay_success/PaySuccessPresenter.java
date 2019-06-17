@@ -30,7 +30,7 @@ public class PaySuccessPresenter extends BasePresenter<PaySuccessView> {
     }
 
     public void loadData(String masterNo) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.PAYSUCCESS + "/" + masterNo, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getHeadWithout(CommonResource.PAYSUCCESS + "/" + masterNo, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.bean.PredictBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -48,21 +49,32 @@ public class TBFragment extends BaseFragment<TBView, TBPresenter> implements TBV
 
     @Override
     public void initData() {
-        predictTotalMoney.setText("3000");
+        presenter.loadData();
     }
 
     @Override
     public void initClick() {
 
     }
-
+    @Override
+    public void loadUI(PredictBean predictBean) {
+        predictTotalMoney.setText(predictBean.getTotalAmount());
+        predictBenJiesuan.setText(predictBean.getSettleCurrentMonth());
+        predictShangJiesuan.setText(predictBean.getSettleLastMonth());
+        predictBenFukuan.setText(predictBean.getWaitCurrentMonth());
+        predictShangFukuan.setText(predictBean.getWaitLastMonth());
+        predictFukuanshuJin.setText(predictBean.getTodayPayCount());
+        predictFukuanshuZuo.setText(predictBean.getLastDayPayCount());
+        predictYongjinJin.setText(predictBean.getTodayMoney());
+        predictYongjinZuo.setText(predictBean.getLastDayMoney());
+    }
     @Override
     public TBView createView() {
-        return null;
+        return this;
     }
 
     @Override
     public TBPresenter createPresenter() {
-        return null;
+        return new TBPresenter(getContext());
     }
 }

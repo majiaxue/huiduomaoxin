@@ -49,7 +49,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
 
     public void stayObligationRec(final RecyclerView stayObligationRec) {
         Map map = MapUtil.getInstance().addParms("status", 6).build();
-        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
+        Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -41,7 +41,7 @@ public class UpdatePasswordPresenter extends BasePresenter<UpdatePasswordView> {
                 bean.setNewPassword(second);
                 String s = JSON.toJSONString(bean);
                 Map map = MapUtil.getInstance().addParms("memberStr", s).build();
-                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHead(CommonResource.REVISEPASSWORD, map, SPUtil.getToken());
+                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHead(CommonResource.REVISEPASSWORD, map, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
@@ -67,7 +67,7 @@ public class UpdatePasswordPresenter extends BasePresenter<UpdatePasswordView> {
                 bean.setNewPassword(second);
                 String s = JSON.toJSONString(bean);
                 Map map = MapUtil.getInstance().addParms("memberStr", s).build();
-                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postHead(CommonResource.REVISEPASSWORD, map, SPUtil.getToken());
+                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHead(CommonResource.REVISEPASSWORD, map, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {

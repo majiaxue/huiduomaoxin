@@ -1,10 +1,15 @@
 package com.example.mine;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.HomePredictBean;
 import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
@@ -142,7 +147,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -174,7 +179,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     private void getBackBili() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9001).getDataWithout(CommonResource.QUERY_BILI + "/" + SPUtil.getUserCode());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.QUERY_BILI + "/" + SPUtil.getUserCode());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -186,6 +191,35 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
 
+            }
+        }));
+    }
+
+    public void setClipboard(String content) {
+        //获取剪贴板管理器：
+        ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        // 创建普通字符型ClipData
+        ClipData mClipData = ClipData.newPlainText("Label", content);
+        // 将ClipData内容放到系统剪贴板里。
+        cm.setPrimaryClip(mClipData);
+        Toast.makeText(mContext, "复制成功", Toast.LENGTH_SHORT).show();
+    }
+
+    public void getPredict() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.HOME_PREDICT, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("预估：" + result);
+                HomePredictBean homePredictBean = JSON.parseObject(result, HomePredictBean.class);
+                if (getView() != null) {
+                    getView().loadPredict(homePredictBean);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("~~~~~"+errorMsg);
             }
         }));
     }

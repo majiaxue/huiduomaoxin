@@ -54,7 +54,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     public void setGoodsCollectionRec(final RecyclerView goodsCollectionRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -124,7 +124,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     public void setGoodsCollectionBottomRec(final RecyclerView goodsCollectionBottomRec) {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "两件套").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -246,7 +246,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

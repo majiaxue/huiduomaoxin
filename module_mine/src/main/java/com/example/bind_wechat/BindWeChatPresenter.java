@@ -47,7 +47,7 @@ public class BindWeChatPresenter extends BasePresenter<BindWeChatView> {
     public void bindWX() {
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.WXBIND_CODE, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.WXBIND_CODE, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

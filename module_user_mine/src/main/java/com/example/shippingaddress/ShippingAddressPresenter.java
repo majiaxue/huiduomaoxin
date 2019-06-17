@@ -49,7 +49,7 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
     }
 
     public void setShippingAddressRec(final RecyclerView shippingAddressRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.ADDRESSSHOW, SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ADDRESSSHOW, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
 
 
@@ -83,7 +83,7 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
                         view1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHeadWithout(CommonResource.ADDRESSDEFAULT + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
+                                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ADDRESSDEFAULT + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
                                 RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                     @Override
                                     public void onSuccess(String result, String msg) {
@@ -127,7 +127,7 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
                                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                                     @Override
                                     public void onYesClick() {
-                                        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).deleteDataWithout(CommonResource.DELETEADDRESS + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
+                                        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).deleteDataWithout(CommonResource.DELETEADDRESS + "/" + shippingAddressBeanList.get(position).getId(), SPUtil.getToken());
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                             @Override
                                             public void onSuccess(String result, String msg) {

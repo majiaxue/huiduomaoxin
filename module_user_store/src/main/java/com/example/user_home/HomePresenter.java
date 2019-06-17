@@ -61,7 +61,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     public void loadData(int hotSaleIndex) {
         //热销
         Map map = MapUtil.getInstance().addParms("pageNum", hotSaleIndex + "").addParms("saleDesc", "1").build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -93,7 +93,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         }));
 
         //导航栏
-        Observable<ResponseBody> observable1 = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getDataWithout(CommonResource.TYPENAVBAR);
+        Observable<ResponseBody> observable1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.TYPENAVBAR);
         RetrofitUtil.getInstance().toSubscribe(observable1, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -135,7 +135,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setXBanner() {
         //轮播图
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_9005).getDataWithout(CommonResource.USERSBANNER);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.USERSBANNER);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -162,7 +162,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     public void getNewRecommend(final int newGoodsIndex) {
         //新品推荐
         Map map = MapUtil.getInstance().addParms("pageNum", newGoodsIndex + "").addParms("saleDesc", "1").build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_30_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

@@ -45,7 +45,7 @@ public class ForgetPresneter extends BasePresenter<ForgetView> {
             String jsonString = JSON.toJSONString(userInfoBean);
             Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
 
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).postData(CommonResource.FORGET, map);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.FORGET, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -62,7 +62,7 @@ public class ForgetPresneter extends BasePresenter<ForgetView> {
 
     public void getCodeNum(String phone) {
         if (PhoneNumUtil.isMobileNO(phone)) {
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getDataWithout(CommonResource.LOGIN_PHONE + "/" + phone);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getDataWithout(CommonResource.LOGIN_PHONE + "/" + phone);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {

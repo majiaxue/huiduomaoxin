@@ -110,7 +110,7 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
     }
 
     public void loadData() {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHeadWithout(CommonResource.FANS_TOTAL_MONEY, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.FANS_TOTAL_MONEY, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

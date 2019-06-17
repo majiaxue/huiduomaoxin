@@ -36,7 +36,7 @@ public class IncomePresenter extends BasePresenter<IncomeView> {
 
     public void loadData(final int page) {
         Map map = MapUtil.getInstance().addParms("type", "0").addParms("current", page).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_4_4001).getHead(CommonResource.IN_OUT, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.IN_OUT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

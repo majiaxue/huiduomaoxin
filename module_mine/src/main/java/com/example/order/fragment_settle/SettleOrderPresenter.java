@@ -35,7 +35,7 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
 
     public void loadData() {
         Map map = MapUtil.getInstance().addParms("status", 1).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_27_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
