@@ -52,48 +52,51 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                 LogUtil.e("OrderAllPresenterResult-------->" + result);
                 MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
                 }.getType());
-                LogUtil.e("OrderAllPresenterMineOrderBean-------->" + MineOrderBean.getOrderList());
-                listBeans.clear();
-                listBeans.addAll(MineOrderBean.getOrderList());
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                orderAllRec.setLayoutManager(linearLayoutManager);
-                MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                orderAllRec.setAdapter(mineOrderParentAdapter);
+                if (MineOrderBean != null) {
+                    LogUtil.e("OrderAllPresenterMineOrderBean-------->" + MineOrderBean.getOrderList());
+                    listBeans.clear();
+                    listBeans.addAll(MineOrderBean.getOrderList());
 
-                mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    orderAllRec.setLayoutManager(linearLayoutManager);
+                    MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                    orderAllRec.setAdapter(mineOrderParentAdapter);
 
-                mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
-                    @Override
-                    public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
-                        //去店铺
-                        view1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        //申请退款
-                        view2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
-                            }
-                        });
-                        //发货
-                        view3.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
+                    mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+                        @Override
+                        public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                            //去店铺
+                            view1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            //申请退款
+                            view2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
+                                }
+                            });
+                            //发货
+                            view3.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                }
             }
 
             @Override

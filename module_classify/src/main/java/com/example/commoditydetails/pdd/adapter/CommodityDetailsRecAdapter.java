@@ -1,4 +1,4 @@
-package com.example.commoditydetails.adapter;
+package com.example.commoditydetails.pdd.adapter;
 
 import android.content.Context;
 

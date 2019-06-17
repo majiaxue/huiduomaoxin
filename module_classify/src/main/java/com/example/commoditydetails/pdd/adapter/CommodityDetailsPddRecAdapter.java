@@ -1,11 +1,11 @@
-package com.example.commoditydetails.adapter;
+package com.example.commoditydetails.pdd.adapter;
 
 import android.content.Context;
 import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.commoditydetails.bean.CommodityDetailsPddRecBean;
+import com.example.commoditydetails.pdd.bean.CommodityDetailsPddRecBean;
 import com.example.module_classify.R;
 import com.example.utils.ArithUtil;
 

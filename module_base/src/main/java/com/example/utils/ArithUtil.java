@@ -26,7 +26,7 @@ public class ArithUtil {
     public static double sub(double value1, double value2) {
         BigDecimal b1 = new BigDecimal(Double.valueOf(value1));
         BigDecimal b2 = new BigDecimal(Double.valueOf(value2));
-        return b1.subtract(b2).doubleValue();
+        return b1.subtract(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**

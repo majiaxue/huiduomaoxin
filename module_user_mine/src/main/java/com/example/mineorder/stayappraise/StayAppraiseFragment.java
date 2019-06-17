@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -17,6 +18,7 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
     @BindView(R2.id.stay_appraise_rec)
     RecyclerView stayAppraiseRec;
 
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_stay_appraise;
@@ -24,6 +26,7 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
 
     @Override
     public void initData() {
+        LogUtil.e("-------->onCreate");
         presenter.stayAppraiseRec(stayAppraiseRec);
     }
 
@@ -40,6 +43,14 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
     @Override
     public StayAppraisePresenter createPresenter() {
         return new StayAppraisePresenter(getContext());
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("setUserVisibleHint-------->onResume");
     }
 
 }

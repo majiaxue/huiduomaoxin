@@ -236,4 +236,16 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     public HomePresenter createPresenter() {
         return new HomePresenter(getContext());
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+            //隐藏
+            userHomeXbanner.stopAutoPlay();
+        }else{
+            //显示
+            userHomeXbanner.startAutoPlay();
+        }
+    }
 }

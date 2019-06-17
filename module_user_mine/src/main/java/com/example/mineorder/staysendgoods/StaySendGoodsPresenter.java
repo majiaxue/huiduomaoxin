@@ -47,7 +47,7 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
 
     }
 
-    public void staySendGoodsRec(final RecyclerView staySendGoodsRec){
+    public void staySendGoodsRec(final RecyclerView staySendGoodsRec) {
         Map map = MapUtil.getInstance().addParms("status", 1).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
@@ -55,45 +55,47 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
             public void onSuccess(String result, String msg) {
                 MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
                 }.getType());
-                listBeans.clear();
-                listBeans.addAll(MineOrderBean.getOrderList());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                staySendGoodsRec.setLayoutManager(linearLayoutManager);
-                MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                staySendGoodsRec.setAdapter(mineOrderParentAdapter);
-                mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
-                    @Override
-                    public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
-                        //去店铺
-                        view1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        //申请退款
-                        view2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
-                            }
-                        });
-                        //发货
-                        view3.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
+                if (MineOrderBean != null) {
+                    listBeans.clear();
+                    listBeans.addAll(MineOrderBean.getOrderList());
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    staySendGoodsRec.setLayoutManager(linearLayoutManager);
+                    MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                    staySendGoodsRec.setAdapter(mineOrderParentAdapter);
+                    mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+                        @Override
+                        public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                            //去店铺
+                            view1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            //申请退款
+                            view2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
+                                }
+                            });
+                            //发货
+                            view3.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
 
-                mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
-                    }
-                });
+                    mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+                        }
+                    });
+                }
             }
 
             @Override

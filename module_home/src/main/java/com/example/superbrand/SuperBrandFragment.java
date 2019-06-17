@@ -25,9 +25,9 @@ public class SuperBrandFragment extends BaseFragment<SuperBrandView, SuperBrandP
 
     @Override
     public void initData() {
-        presenter.initTabLayout(superBrandTab);
+        presenter.initView(superBrandTab,superBrandRec);
         //recycler
-        presenter.setSuperBrandRec(superBrandRec);
+//        presenter.setSuperBrandRec(superBrandRec);
     }
 
     @Override

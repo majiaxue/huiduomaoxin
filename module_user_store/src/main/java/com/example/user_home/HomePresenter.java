@@ -65,6 +65,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("热销商品: "+result);
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
                 if (hotSaleBean != null) {
@@ -88,7 +89,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("热销商品: "+errorMsg);
             }
         }));
 

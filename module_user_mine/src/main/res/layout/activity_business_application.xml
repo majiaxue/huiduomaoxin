@@ -196,11 +196,27 @@
                     android:textSize="@dimen/sp_14" />
 
                 <TextView
-                    android:id="@+id/business_application_shop_address_text"
+                    android:id="@+id/business_application_address_province"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点击选择"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/business_application_address_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/business_application_address_area"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_10"
-                    android:text="点击选择"
+                    android:text=""
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
 
@@ -269,9 +285,9 @@
                         android:id="@+id/business_application_front_photo"
                         android:layout_width="@dimen/dp_160"
                         android:layout_height="@dimen/dp_105"
-                        app:roundedCornerRadius="@dimen/dp_5"
                         app:placeholderImage="@drawable/icon_shenfenzheng"
-                        app:placeholderImageScaleType="fitCenter"/>
+                        app:placeholderImageScaleType="fitCenter"
+                        app:roundedCornerRadius="@dimen/dp_5" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -297,14 +313,14 @@
                         android:id="@+id/business_application_verso_photo"
                         android:layout_width="@dimen/dp_160"
                         android:layout_height="@dimen/dp_105"
-                        app:roundedCornerRadius="@dimen/dp_5"
                         app:placeholderImage="@drawable/icon_shenfenfan"
-                        app:placeholderImageScaleType="fitCenter"/>
+                        app:placeholderImageScaleType="fitCenter"
+                        app:roundedCornerRadius="@dimen/dp_5" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="点击上传正面照"
+                        android:text="点击上传反面照"
                         android:textColor="#999999"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
@@ -327,9 +343,9 @@
                         android:id="@+id/business_application_business_license"
                         android:layout_width="@dimen/dp_160"
                         android:layout_height="@dimen/dp_105"
-                        app:roundedCornerRadius="@dimen/dp_5"
                         app:placeholderImage="@drawable/icon_yingyezhizhao"
-                        app:placeholderImageScaleType="fitCenter"/>
+                        app:placeholderImageScaleType="fitCenter"
+                        app:roundedCornerRadius="@dimen/dp_5" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -355,9 +371,9 @@
                         android:id="@+id/business_application_food_safety_permit"
                         android:layout_width="@dimen/dp_160"
                         android:layout_height="@dimen/dp_105"
-                        app:roundedCornerRadius="@dimen/dp_5"
                         app:placeholderImage="@drawable/icon_shipianquan"
-                        app:placeholderImageScaleType="fitCenter"/>
+                        app:placeholderImageScaleType="fitCenter"
+                        app:roundedCornerRadius="@dimen/dp_5" />
 
                     <TextView
                         android:layout_width="wrap_content"

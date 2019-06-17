@@ -1,5 +1,6 @@
 package com.example.shippingaddress.address;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -42,8 +44,6 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
     EditText addressPhone;
     @BindView(R2.id.address_where)
     LinearLayout addressWhere;
-    @BindView(R2.id.address_where_text)
-    TextView addressWhereText;
     @BindView(R2.id.address_detailed)
     EditText addressDetailed;
     @BindView(R2.id.address_home)
@@ -58,6 +58,12 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
     Switch addressSwitch;
     @BindView(R2.id.address_save)
     TextView addressSave;
+    @BindView(R2.id.address_province)
+    TextView addressProvince;
+    @BindView(R2.id.address_city)
+    TextView addressCity;
+    @BindView(R2.id.address_area)
+    TextView addressArea;
 
     @Override
     public int getLayoutId() {
@@ -81,7 +87,7 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
         addressWhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupAddressWhere(addressWhereText);
+                presenter.popupAddressWhere(addressProvince,addressCity,addressArea);
             }
         });
         //保存
@@ -91,7 +97,9 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
                 AddressInfo addressInfo = new AddressInfo();
                 addressInfo.setAddressName(addressName.getText().toString());
                 addressInfo.setAddressPhone(addressPhone.getText().toString());
-                addressInfo.setAddressProvince("郑州金水");
+                addressInfo.setAddressProvince(addressProvince.getText().toString());
+                addressInfo.setAddressCity(addressCity.getText().toString());
+                addressInfo.setAddressArea(addressArea.getText().toString());
                 addressInfo.setAddressDetail(addressDetailed.getText().toString());
                 if (addressHome.isChecked()) {
                     addressInfo.setAddressTips("1");
@@ -116,7 +124,7 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
                     @Override
                     public void onSuccess(String result, String msg) {
                         LogUtil.e("AddressResult---------------->" + result);
-                        if (result.equals("true")){
+                        if (result.equals("true")) {
                             finish();
                         }
                     }

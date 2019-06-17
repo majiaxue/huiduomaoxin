@@ -84,9 +84,25 @@ public class CommonResource {
     public static final String AMENDADDRESS = "/rest/address";   //修改收货人地址
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
-    public static final String FAVORITESTATUS = "/rest/user/favorite/status";   //查询收藏状态
+    public static final String FAVORITESTATUS = "/rest/user/favorite";   //查询收藏状态
     public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后列表
     public static final String ADDRESSADD = "/rest/address/add";   //新增收货地址
+    public static final String ADDRESSSELECT = "/rest/address/city";   //三级地址选择
+    public static final String COUPONSTATUS = "/rest/user/coupon/status";//根据状态查询优惠券
+    public static final String SELLERINFO = "/rest/seller/info";//商家入驻
+    public static final String TBKGOODSPRODUCTS = "/rest/tbk/goods/products";//淘宝客推荐
+    public static final String TBKGOODSITEMDETAIL = "/rest/tbk/goods/itemdetail";//商品详情接口功能（店铺信息/产品介绍/主图视频/SKU）
+    public static final String TBKGOODSGETGYURLBYALL = "/rest/tbk/goods/getgyurlbyall";//转链接API
+    public static final String TBKGOODSTBCATEGOTY = "/rest/tbk/goods/tbcategoty";//tb分类
+    public static final String TBKGOODSSELLERTBKLIST = "/rest/tbk/goods/sellerTbkList";//获取全网淘客商品API
+    public static final String TBKGOODSGETTBKSHOP = "/rest/tbk/goods/gettbkshop";//全网搜索淘宝店铺列表
+    public static final String JDGETCATEGORY = "/rest/jd/getCategory";//获取京东商品类目
+    public static final String JDGETGOODSDETAIL = "/rest/jd/getGoodsDetail";//获取京东商品详情
+    public static final String JDGETGOODSMARKETLINK = "/rest/jd/getGoodsMarketLink";//获取京东商品推广链接
+    public static final String JDGOODSLIST = "/rest/jd/goodsList";//获取京东带优惠券的商品API
+    public static final String SELLERSTATE = "/rest/seller/seller-state";//判断商家是否已经入驻
+
+
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

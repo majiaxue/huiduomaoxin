@@ -8,20 +8,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.user_mine.bean.ApplicationBean;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/16
@@ -74,7 +88,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initData() {
-
+        userMineName.setText(SPUtil.getUserCode());
     }
 
     @Override
@@ -110,7 +124,29 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         userMineBusinessApplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
+                Map build = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
+                Observable<ResponseBody> data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_5003).getData(CommonResource.SELLERSTATE, build);
+                RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+                    @Override
+                    public void onSuccess(String result, String msg) {
+                        LogUtil.e("mineFragmentResult--------------->" + result);
+                        ApplicationBean applicationBean = JSON.parseObject(result, new TypeReference<ApplicationBean>() {
+                        }.getType());
+                        String data1 = applicationBean.getData();
+                        LogUtil.e("mineFragment" + data1);
+                        if (data1.equals("2") || data1.equals("3")) {
+                            ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
+                        } else {
+                            Toast.makeText(getContext(), "您已经是商家了无需申请!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        LogUtil.e("mineFragmentErrorMsg--------------->" + errorMsg);
+                    }
+                }));
             }
         });
         //消息通知

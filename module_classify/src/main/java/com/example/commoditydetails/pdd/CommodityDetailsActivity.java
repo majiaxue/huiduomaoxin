@@ -1,7 +1,6 @@
-package com.example.commoditydetails;
+package com.example.commoditydetails.pdd;
 
 
-import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +13,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.commoditydetails.bean.CommodityDetailsBean;
+import com.example.commoditydetails.pdd.bean.CommodityDetailsBean;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -27,10 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
- * 淘宝客商品详情
+ * 拼多多商品详情
  */
 @Route(path = "/module_classify/CommodityDetailsActivity")
 public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView, CommodityDetailsPresenter> implements CommodityDetailsView, NestedScrollView.OnScrollChangeListener {
@@ -137,27 +135,27 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
                 AppManager.getInstance().finishGoodsActivity();
             }
         });
-        //进入店铺
-        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
-        //进入店铺
-        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
-        //进入店铺
-        commodityShopName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-            }
-        });
+//        //进入店铺
+//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
+//            }
+//        });
         //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,8 +9,7 @@
         android:id="@+id/home_top_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_195"
-        android:scaleType="centerCrop"
-        android:src="@drawable/image1" />
+        android:scaleType="centerCrop" />
 
 
     <RelativeLayout

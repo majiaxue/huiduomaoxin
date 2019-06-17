@@ -1,4 +1,4 @@
-package com.example.commoditydetails.bean;
+package com.example.commoditydetails.pdd.bean;
 
 import java.util.List;
 
