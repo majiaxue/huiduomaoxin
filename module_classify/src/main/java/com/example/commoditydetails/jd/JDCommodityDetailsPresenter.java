@@ -62,6 +62,29 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
 
     }
 
+    //收益
+    public void earnings(){
+
+        Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
+        RetrofitUtil.getInstance().toSubscribe(data,new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("收益-------->"+result);
+                if (!result.equals("")){
+                    if (getView() != null) {
+                        getView().earnings(result);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
     //商品轮播图
     public void setXBanner(XBanner commodityXbanner, final List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList, int position) {
         List<JDGoodsRecBean.DataBean.ListsBean.ImageInfoBean.ImageListBean> imageList = listsBeanList.get(position).getImageInfo().getImageList();

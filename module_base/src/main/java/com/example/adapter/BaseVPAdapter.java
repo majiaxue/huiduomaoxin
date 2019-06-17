@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-public class BaseVPAdapter extends FragmentStatePagerAdapter {
+public class BaseVPAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList;
     private String[] dataList;
 

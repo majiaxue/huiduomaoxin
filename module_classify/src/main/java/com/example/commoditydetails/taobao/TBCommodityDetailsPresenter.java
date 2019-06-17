@@ -78,9 +78,27 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 }.getType());
                 tbBeanList.clear();
                 tbBeanList.add(tbBean.getData());
-                if (getView() != null) {
-                    getView().tbBeanList(tbBeanList);
-                }
+
+                Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
+                Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
+                RetrofitUtil.getInstance().toSubscribe(data,new OnMyCallBack(new OnDataListener() {
+                    @Override
+                    public void onSuccess(String result, String msg) {
+                        LogUtil.e("收益-------->"+result);
+                        if (!result.equals("")){
+                            if (getView() != null) {
+                                getView().tbBeanList(tbBeanList,result);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+
+                    }
+                }));
+
+
 
             }
 

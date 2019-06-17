@@ -7,4 +7,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface JDCommodityDetailsView extends IView {
+    void earnings(String earnings);
 }

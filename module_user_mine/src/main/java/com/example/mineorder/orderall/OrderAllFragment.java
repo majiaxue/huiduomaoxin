@@ -48,7 +48,7 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
     public void onResume() {
         super.onResume();
         LogUtil.e("setUserVisibleHint-------->当前可见");
-
+        presenter.orderAllRec(orderAllRec);
     }
 
 

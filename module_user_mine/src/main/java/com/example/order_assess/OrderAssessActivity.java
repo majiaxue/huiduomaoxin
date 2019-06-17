@@ -1,6 +1,7 @@
 package com.example.order_assess;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -23,6 +25,10 @@ import com.example.view.RatingBarView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 订单立即评价
+ */
+@Route(path = "/module_user_mine/OrderAssessActivity")
 public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAssessPresenter> implements OrderAssessView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
@@ -135,6 +141,11 @@ public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAsse
     @Override
     public void photoAlbum(Intent intent) {
         startActivityForResult(intent, PHOTO_ALBUM_CODE);
+    }
+
+    @Override
+    public void imageUri(Uri uri) {
+
     }
 
     @Override

@@ -10,5 +10,6 @@ import java.util.List;
  * Describe:
  */
 public interface CommodityDetailsView extends IView {
-    void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList);
+    void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList,String earnings);
+
 }

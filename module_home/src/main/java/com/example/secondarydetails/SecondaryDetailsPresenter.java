@@ -7,28 +7,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.common.CommonResource;
-import com.example.secondarydetails.adapter.SecondaryJDRecAdapter;
-import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
-import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
 import com.example.bean.JDGoodsRecBean;
-import com.example.secondarydetails.bean.JDTabBean;
-import com.example.secondarydetails.bean.PddGoodsSearchVo;
+import com.example.bean.TBGoodsSearchBean;
+import com.example.common.CommonResource;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.secondarydetails.adapter.SecondaryJDRecAdapter;
+import com.example.secondarydetails.adapter.SecondaryPddRecAdapter;
+import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
+import com.example.secondarydetails.bean.JDTabBean;
+import com.example.secondarydetails.bean.PddGoodsSearchVo;
 import com.example.secondarydetails.bean.SecondaryPddRecBean;
 import com.example.secondarydetails.bean.SecondaryTabBean;
 import com.example.secondarydetails.bean.TBGoodsRecBean;
-import com.example.bean.TBGoodsSearchBean;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -36,7 +35,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +93,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                             long cat_id = catsListBeans.get(tab.getPosition()).getCat_id();
-                            Toast.makeText(mContext, "cat_id:" + cat_id, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(mContext, "cat_id:" + cat_id, Toast.LENGTH_SHORT).show();
                             PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
                             pddGoodsSearchVo.setPage(page);
                             pddGoodsSearchVo.setCatId(cat_id);
@@ -216,7 +214,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                             String cat_name = TBGoodsSearchBeans.get(tab.getPosition()).getCat_name();
-                            Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
                             Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
                             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
                             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
@@ -490,7 +488,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             }));
         } else if (type.equals("0") || type.equals("3")) {
             String cat_name = TBGoodsSearchBeans.get(0).getCat_name();
-            Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
             Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {

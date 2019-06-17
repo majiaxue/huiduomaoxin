@@ -114,10 +114,12 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
                 SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
                 submitOrderBean.setProductName("goods");
                 submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
-                Intent intent = new Intent(mContext, PaymentActivity.class);
-                intent.putExtra("bean", submitOrderBean);
-                mContext.startActivity(intent);
-                ((Activity) mContext).finish();
+//                Intent intent = new Intent(mContext, PaymentActivity.class);
+//                intent.putExtra("bean", submitOrderBean);
+//                mContext.startActivity(intent);
+                ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                        .withSerializable("submitOrderBean",submitOrderBean)
+                        .navigation();
             }
 
             @Override

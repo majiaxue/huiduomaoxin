@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.common.CommonResource;
+import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
@@ -80,6 +81,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     LinearLayout userMineShippingAddress;
     @BindView(R2.id.user_mine_message_notification)
     LinearLayout userMineMessageNotification;
+    @BindView(R2.id.goods_collection_count)
+    TextView goodsCollectionCount;
+    @BindView(R2.id.shop_collect_count)
+    TextView shopCollectCount;
+    @BindView(R2.id.browsing_history_count)
+    TextView browsingHistoryCount;
+
 
     @Override
     public int getLayoutId() {
@@ -124,29 +132,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         userMineBusinessApplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map build = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
-                Observable<ResponseBody> data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_5003).getData(CommonResource.SELLERSTATE, build);
-                RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-                    @Override
-                    public void onSuccess(String result, String msg) {
-                        LogUtil.e("mineFragmentResult--------------->" + result);
-                        ApplicationBean applicationBean = JSON.parseObject(result, new TypeReference<ApplicationBean>() {
-                        }.getType());
-                        String data1 = applicationBean.getData();
-                        LogUtil.e("mineFragment" + data1);
-                        if (data1.equals("2") || data1.equals("3")) {
-                            ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
-                        } else {
-                            Toast.makeText(getContext(), "您已经是商家了无需申请!", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        LogUtil.e("mineFragmentErrorMsg--------------->" + errorMsg);
-                    }
-                }));
+                presenter.businessApplication();
             }
         });
         //消息通知
@@ -224,4 +210,32 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         return new MinePresenter(getContext());
     }
 
+    @Override
+    public void browsingHistoryCount(int count) {
+        if (count > 99) {
+            browsingHistoryCount.setText(count + "+");
+        } else {
+            browsingHistoryCount.setText(count + "");
+        }
+    }
+
+    @Override
+    public void shopCollectCount(int count) {
+        shopCollectCount.setText(count + "");
+    }
+
+    @Override
+    public void goodsCollectionCount(int count) {
+        goodsCollectionCount.setText(count + "");
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            presenter.goodsCollectionCount();
+            presenter.shopCollectCount();
+            presenter.browsingHistoryCount();
+        }
+    }
 }

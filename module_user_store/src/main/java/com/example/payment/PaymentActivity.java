@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.SubmitOrderBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
@@ -13,6 +16,10 @@ import com.example.user_store.R2;
 
 import butterknife.BindView;
 
+/**
+ *确认支付
+ */
+@Route(path = "/module_user_store/PaymentActivity")
 public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter> implements PaymentView {
     @BindView(R2.id.payment_back)
     ImageView paymentBack;
@@ -29,8 +36,10 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     @BindView(R2.id.payment_btn)
     TextView paymentBtn;
 
+    @Autowired(name = "submitOrderBean")
+    SubmitOrderBean submitOrderBean;
+
     private boolean isWeChat = true;
-    private SubmitOrderBean submitOrderBean;
 
     @Override
     public int getLayoutId() {
@@ -39,8 +48,9 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
 
     @Override
     public void initData() {
-        Intent intent = getIntent();
-        submitOrderBean = (SubmitOrderBean) intent.getSerializableExtra("bean");
+        ARouter.getInstance().inject(this);
+//        Intent intent = getIntent();
+//        submitOrderBean = (SubmitOrderBean) intent.getSerializableExtra("bean");
         paymentMoney.setText("￥" + submitOrderBean.getTotalAmount());
     }
 

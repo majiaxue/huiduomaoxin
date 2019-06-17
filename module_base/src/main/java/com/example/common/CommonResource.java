@@ -101,7 +101,9 @@ public class CommonResource {
     public static final String JDGETGOODSMARKETLINK = "/rest/jd/getGoodsMarketLink";//获取京东商品推广链接
     public static final String JDGOODSLIST = "/rest/jd/goodsList";//获取京东带优惠券的商品API
     public static final String SELLERSTATE = "/rest/seller/seller-state";//判断商家是否已经入驻
-
+    public static final String ESTIMATEEARN = "/rest/estimateEarn";//第三方商品预估赚接口调用---预估赚
+    public static final String ORDERREMOVE = "/rest/user/order/remove";//逻辑删除多用户商城用户订单
+    public static final String REFUNDAPPLY = "/rest/order/refundApply";//退款申请
 
 
 

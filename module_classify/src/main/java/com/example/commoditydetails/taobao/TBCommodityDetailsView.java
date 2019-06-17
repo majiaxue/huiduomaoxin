@@ -10,5 +10,5 @@ import java.util.List;
  * Describe:
  */
 public interface TBCommodityDetailsView extends IView {
-    void tbBeanList(List<TBBean.DataBean> tbBeanList);
+    void tbBeanList(List<TBBean.DataBean> tbBeanList,String earnings);
 }

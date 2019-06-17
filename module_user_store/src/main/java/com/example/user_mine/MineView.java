@@ -7,4 +7,7 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface MineView extends IView {
+    void browsingHistoryCount(int count);
+    void shopCollectCount(int count);
+    void goodsCollectionCount(int count);
 }
