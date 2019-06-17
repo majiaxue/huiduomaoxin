@@ -19,6 +19,7 @@ import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -107,6 +108,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
         //推荐recycler
         presenter.setRecommendRec(shopRecommendRec);
+
     }
 
     @Override
@@ -220,17 +222,19 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     }
 
     @Override
-    public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
+    public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList, String earnings) {
         this.detailsBeanList = beanList;
+        LogUtil.e("收益1-------->"+earnings);
+        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
+        double promotionRate = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);//佣金比例
+        double mul = ArithUtil.mul(div, promotionRate);//到手价乘佣金
+        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);//用户佣金比例
+        double mul1 = ArithUtil.mul(mul, earnings1);//收益
+
         commodityName.setText(beanList.get(0).getGoods_name());//名字
-        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
         commodityPreferentialPrice.setText("￥" + div);//优惠价
         commodityOriginalPrice.setText("原价：￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));//原价
-        double userPromotion = ArithUtil.div(beanList.get(0).getUser_promotion_rate(), 100, 1);
-        double promotion = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);
-        double mul = ArithUtil.mul(div, promotion);
-        double earnings = ArithUtil.mul(mul, userPromotion);
-        commodityEarnings.setText("预估收益：￥" + earnings);//收益
+        commodityEarnings.setText("预估收益：￥" + mul1);//收益
         commodityNumberSold.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
         commodityShopName.setText(beanList.get(0).getMall_name());
         shopDescribeScore.setText("" + ArithUtil.div(beanList.get(0).getAvg_desc(), 100, 1));
@@ -243,4 +247,5 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         //收藏状态
         presenter.isCollect(commodityCollectImage, beanList);
     }
+
 }

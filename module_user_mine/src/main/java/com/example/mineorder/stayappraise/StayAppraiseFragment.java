@@ -51,6 +51,7 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
     public void onResume() {
         super.onResume();
         LogUtil.e("setUserVisibleHint-------->onResume");
+        presenter.stayAppraiseRec(stayAppraiseRec);
     }
 
 }

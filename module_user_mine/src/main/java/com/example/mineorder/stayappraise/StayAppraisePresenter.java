@@ -20,6 +20,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/27
- * Describe:
+ * Describe:待评价
  */
 public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
@@ -51,12 +52,14 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("stayAppraiseResult------->" + result);
-                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
-                }.getType());
-                if (MineOrderBean != null) {
+                LogUtil.e("stayAppraiseRec" + result);
+//                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
+//                }.getType());
+//                LogUtil.e("MineOrderBean" + mineOrderBean.getOrderList());
+                MineOrderBean mineOrderBean = new Gson().fromJson(result, MineOrderBean.class);
+                if (mineOrderBean != null) {
                     listBeans.clear();
-                    listBeans.addAll(MineOrderBean.getOrderList());
+                    listBeans.addAll(mineOrderBean.getOrderList());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     stayAppraiseRec.setLayoutManager(linearLayoutManager);
                     StayAppraiseParentAdapter stayAppraiseParentAdapter = new StayAppraiseParentAdapter(mContext, listBeans, R.layout.item_stay_appraise_parent);
@@ -65,7 +68,7 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
                     stayAppraiseParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                         @Override
                         public void ViewOnClick(View view, int index) {
-                            Toast.makeText(mContext, "去店铺" + index, Toast.LENGTH_SHORT).show();
+
                         }
                     });
 

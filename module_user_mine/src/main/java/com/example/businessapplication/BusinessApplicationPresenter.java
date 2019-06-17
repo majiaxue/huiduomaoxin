@@ -65,6 +65,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
 
     private Uri fileUri;//相册
     private Uri imagePathUri;//相机
+    private String filePath = Environment.getExternalStorageDirectory() + "/fltk/image";
     private List<CityBean> cities1 = new ArrayList<>();
     private List<CityBean> cities2 = new ArrayList<>();
     private List<CityBean> cities3 = new ArrayList<>();
@@ -330,22 +331,23 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
 //        }
 //        getView().selectPhoto(imagePathUri);
 //        getView().takePhoto(captureIntent);
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
-        long time = System.currentTimeMillis();
-        String imageName = timeFormatter.format(new Date(time));
-        String fileName = Environment.getExternalStorageDirectory() + File.separator + imageName + ".webp";
-        File file = new File(fileName);
+        File file0 = new File(filePath);
+        if (!file0.exists()) {
+            file0.mkdirs();
+        }
+        File file = new File(filePath, System.currentTimeMillis() + ".jpg");
+
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            imagePathUri = FileProvider.getUriForFile(mContext.getApplicationContext(), "com.lxy.taobaoke.provider", file);
+            fileUri = FileProvider.getUriForFile(mContext.getApplicationContext(), "com.lxy.taobaoke.provider", file);
             captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         } else {
-            imagePathUri = Uri.fromFile(file);
+            fileUri = Uri.fromFile(file);
         }
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePathUri);
-        getView().selectPhoto(imagePathUri);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        getView().selectPhoto(fileUri);
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(imagePathUri));
+            Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(fileUri));
             String base64 = ImageUtil.bitmapToBase64(bitmap);
             getView().showHeader(base64);
         } catch (FileNotFoundException e) {

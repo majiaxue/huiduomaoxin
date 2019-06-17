@@ -38,7 +38,6 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
     private ConfirmOrderAdapter orderAdapter;
     private ShippingAddressBean addressBean;
     private List<CartBean.RecordsBean> dataList = new ArrayList<>();
-    ;
 
     public ConfirmOrderPresenter(Context context) {
         super(context);

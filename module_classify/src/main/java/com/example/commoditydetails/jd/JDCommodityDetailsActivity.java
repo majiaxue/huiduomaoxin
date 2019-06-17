@@ -112,6 +112,9 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
         LogUtil.e("京东+++++++++++++" + skuid + "             " + jDGoodsRecBean);
 
+        //收益
+        presenter.earnings();
+
         //详情轮播图
         presenter.setXBanner(commodityXbanner, listsBeanList, position);
 
@@ -121,7 +124,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityName.setText(listsBeanList.get(position).getSkuName());//名字
         commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()), Double.valueOf(listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getDiscount())));//优惠价
         commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()));//原价
-//        commodityEarnings.setText("预估收益：￥" + earnings);//收益
         commodityNumberSold.setText("已售" + listsBeanList.get(0).getInOrderCount30Days() + "件");//已售
 
         commodityShopName.setText(listsBeanList.get(position).getShopInfo().getShopName());//商家名
@@ -138,7 +140,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         presenter.isCollect(commodityCollectImage, skuid);
 
         //推荐
-        presenter.setRecommendRec(shopRecommendRec,listsBeanList.get(position).getCategoryInfo().getCid1Name());
+        presenter.setRecommendRec(shopRecommendRec, listsBeanList.get(position).getCategoryInfo().getCid1Name());
 
     }
 
@@ -201,7 +203,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
-                presenter.ledSecurities(listsBeanList.get(position).getMaterialUrl(),listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getLink());
+                presenter.ledSecurities(listsBeanList.get(position).getMaterialUrl(), listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getLink());
             }
         });
         //收藏
@@ -236,5 +238,14 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             //隐藏
             commodityStick.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void earnings(String earnings) {
+        Double commission = Double.valueOf(listsBeanList.get(position).getCommissionInfo().getCommission());
+        Double aDouble = Double.valueOf(earnings);
+
+        double mul = ArithUtil.mul(commission, ArithUtil.div(aDouble, 100, 2));
+        commodityEarnings.setText("预估收益：￥" + mul);//收益
     }
 }

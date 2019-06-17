@@ -107,6 +107,7 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
             fileUri = Uri.fromFile(file);
         }
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        getView().imageUri(fileUri);
         getView().takePhoto(captureIntent);
     }
 
@@ -148,6 +149,7 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
                 }
             }
         }
+        getView().imageUri(fileUri);
         updateList();
     }
 

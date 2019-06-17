@@ -139,7 +139,7 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
 
     private void initList(List<TBGoodsSearchBean> tbGoodsSearchBeans, final RecyclerView superBrandRec) {
         String cat_name = tbGoodsSearchBeans.get(0).getCat_name();
-        Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
         Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
         Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
         RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {

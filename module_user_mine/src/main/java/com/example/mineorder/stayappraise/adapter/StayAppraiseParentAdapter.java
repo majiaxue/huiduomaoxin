@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.mineorder.bean.MineOrderBean;
@@ -28,13 +30,13 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
 
     @Override
     public void convert(RecyclerViewHolder holder, MineOrderBean.OrderListBean data, int position) {
-        if(data.getStatus() == 3) {
+        if (data.getStatus() == 3) {
             //3待评论
             holder.setText(R.id.stay_appraise_parent_status, "交易成功");
         }
         holder.setText(R.id.stay_appraise_parent_shop, data.getSellerName());
 
-        viewOnClickListener.ViewOnClick(holder.getView(R.id.stay_appraise_parent_shop),position);
+        viewOnClickListener.ViewOnClick(holder.getView(R.id.stay_appraise_parent_shop), position);
 
         stayAppraiseChildRec = holder.getView(R.id.stay_appraise_child_rec);
         linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -45,7 +47,22 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
         stayAppraiseChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
             @Override
             public void ViewTwoOnClick(View view1, View view2, int position) {
+                view1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //再次购买
+                        Toast.makeText(context, "再次购买", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+                view2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //立即评价
+                        ARouter.getInstance().build("/module_user_mine/OrderAssessActivity").navigation();
+
+                    }
+                });
             }
         });
     }

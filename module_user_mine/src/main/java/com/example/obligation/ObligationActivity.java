@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -17,7 +18,7 @@ import butterknife.BindView;
 /**
  * 等待付款
  */
-
+@Route(path = "/module_user_mine/ObligationActivity")
 public class ObligationActivity extends BaseActivity<ObligationView, ObligationPresenter> implements ObligationView {
 
 
@@ -31,20 +32,6 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
     TextView obligationAddress;
     @BindView(R2.id.obligation_relative)
     RelativeLayout obligationRelative;
-    @BindView(R2.id.obligation_shop_name)
-    TextView obligationShopName;
-    @BindView(R2.id.obligation_image)
-    SimpleDraweeView obligationImage;
-    @BindView(R2.id.obligation_goods_name)
-    TextView obligationGoodsName;
-    @BindView(R2.id.obligation_colour)
-    TextView obligationColour;
-    @BindView(R2.id.obligation_size)
-    TextView obligationSize;
-    @BindView(R2.id.obligation_price)
-    TextView obligationPrice;
-    @BindView(R2.id.obligation_add_and_sub)
-    AddAndSubView obligationAddAndSub;
     @BindView(R2.id.obligation_goods_money)
     TextView obligationGoodsMoney;
     @BindView(R2.id.obligation_freight)
@@ -61,6 +48,8 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
     TextView obligationPayment;
     @BindView(R2.id.obligation_rec)
     RecyclerView obligationRec;
+    @BindView(R2.id.obligation_goods_rec)
+    RecyclerView obligationGoodsRec;
 
     @Override
     public int getLayoutId() {

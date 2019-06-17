@@ -1,13 +1,13 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";
-    public static final String BASEURL_5003 = "http://47.99.93.123:5003";
-    public static final String BASEURL_9004 = "http://47.99.93.123:9004";
-    public static final String BASEURL_9005 = "http://47.99.93.123:9005";
+    public static final String BASEURL_9001 = "http://192.168.1.13:9001";//47.99.93.123
+    public static final String BASEURL_4001 = "http://192.168.1.13:4001";
+    public static final String BASEURL_5003 = "http://192.168.1.13:5003";
+    public static final String BASEURL_9004 = "http://192.168.1.13:9004";
+    public static final String BASEURL_9005 = "http://192.168.1.13:9005";
 
-    public static final String URL_22_9001 = "http://192.168.1.22:9001";
+    public static final String URL_22_9001 = "http://192.168.1.13:9001";
 //    public static final String URL_4_9001 = "http://192.168.1.4:9001";
 //    public static final String BASEURL_4001 = "http://192.168.1.4:4001";
 //    public static final String BASEURL_4001 = "http://192.168.1.27:4001";
@@ -43,7 +43,7 @@ public class CommonResource {
     public static final String GETBALANCE = "/rest/user/balance";       //查询余额
     public static final String COMMIT_ORDER = "/rest/order/nowPlace";      //提交订单
     public static final String IN_OUT = "/rest/user/incomeAndExpend";       //收入和支出(余额)---get:参数 type 0收入 1 支出
-    public static final String TOPAY = "/alipay/signOrder";             //支付宝支付
+    public static final String TOPAY = "/rest/alipay/signOrder";             //支付宝支付
     public static final String SUGGESSTION = "/rest/user/feedback";     //提交意见反馈
     public static final String QUERYSUGGESSTION = "/rest/user/feedback/all";    //查询意见反馈列表
     public static final String COLLECT = "/rest/user/product";      //商品收藏
@@ -100,7 +100,9 @@ public class CommonResource {
     public static final String JDGETGOODSMARKETLINK = "/rest/jd/getGoodsMarketLink";//获取京东商品推广链接
     public static final String JDGOODSLIST = "/rest/jd/goodsList";//获取京东带优惠券的商品API
     public static final String SELLERSTATE = "/rest/seller/seller-state";//判断商家是否已经入驻
-
+    public static final String ESTIMATEEARN = "/rest/estimateEarn";//第三方商品预估赚接口调用---预估赚
+    public static final String ORDERREMOVE = "/rest/user/order/remove";//逻辑删除多用户商城用户订单
+    public static final String REFUNDAPPLY = "/rest/order/refundApply";//退款申请
 
 
 

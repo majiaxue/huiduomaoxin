@@ -17,6 +17,7 @@ import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
@@ -203,13 +204,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
     //详情回调
     @Override
-    public void tbBeanList(List<TBBean.DataBean> tbBeanList) {
+    public void tbBeanList(List<TBBean.DataBean> tbBeanList, String earnings) {
         this.list = tbBeanList;
-//        LogUtil.e("listTbBeanList------>" + tbBeanList.get(0));
-//        LogUtil.e("listTbBeanImage------>" + tbBeanList.get(0).getImages());
-//        LogUtil.e("listTbBeanItem------>" + tbBeanList.get(0).getItem_detail());
-//        LogUtil.e("listTbBeanSeller------>" + tbBeanList.get(0).getSeller());
-//        LogUtil.e("listTbBeanSellerEvaluates------>" + tbBeanList.get(0).getSeller().getEvaluates());
+        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
 
         commodityName.setText(tbBeanList.get(0).getTitle());//名字
         commodityPreferentialPrice.setText("￥" + tbBeanList.get(0).getZk_final_price());//优惠价
@@ -236,4 +233,5 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         presenter.isCollect(commodityCollectImage, para);
 
     }
+
 }

@@ -96,10 +96,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/goods_collection_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="2"
+                    android:text=""
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_18" />
 
@@ -129,10 +130,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/shop_collect_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="2"
+                    android:text=""
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_18" />
 
@@ -162,10 +164,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/browsing_history_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="99+"
+                    android:text=""
                     android:textColor="@color/codeText"
                     android:textSize="@dimen/sp_18" />
 

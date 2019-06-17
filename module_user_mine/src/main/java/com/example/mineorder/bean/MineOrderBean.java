@@ -1,12 +1,13 @@
 package com.example.mineorder.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
-public class MineOrderBean {
+public class MineOrderBean implements Serializable {
 
 
     private List<OrderListBean> orderList;
@@ -19,7 +20,7 @@ public class MineOrderBean {
         this.orderList = orderList;
     }
 
-    public static class OrderListBean {
+    public static class OrderListBean implements Serializable {
         /**
          * orderId : 37
          * sellerName : Allisjoy/舞悦时节
@@ -32,9 +33,9 @@ public class MineOrderBean {
 
         private int orderId;
         private String sellerName;
-        private Object goodsName;
+        private String goodsName;
         private int status;
-        private int totalAmount;
+        private double totalAmount;
         private int totalCount;
         private List<OrderItemsBean> orderItems;
 
@@ -58,7 +59,7 @@ public class MineOrderBean {
             return goodsName;
         }
 
-        public void setGoodsName(Object goodsName) {
+        public void setGoodsName(String goodsName) {
             this.goodsName = goodsName;
         }
 
@@ -70,7 +71,7 @@ public class MineOrderBean {
             this.status = status;
         }
 
-        public int getTotalAmount() {
+        public double getTotalAmount() {
             return totalAmount;
         }
 
@@ -94,7 +95,7 @@ public class MineOrderBean {
             this.orderItems = orderItems;
         }
 
-        public static class OrderItemsBean {
+        public static class OrderItemsBean implements Serializable {
             /**
              * id : 1
              * orderId : 37
@@ -133,7 +134,7 @@ public class MineOrderBean {
             private String productName;
             private String productBrand;
             private String productSn;
-            private int productPrice;
+            private double productPrice;
             private int productQuantity;
             private int productSkuId;
             private String productSkuCode;
@@ -217,7 +218,7 @@ public class MineOrderBean {
                 this.productSn = productSn;
             }
 
-            public int getProductPrice() {
+            public double getProductPrice() {
                 return productPrice;
             }
 

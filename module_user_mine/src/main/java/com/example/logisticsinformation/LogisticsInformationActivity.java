@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 /**
  * 物流信息
  */
+@Route(path = "/module_user_mine/LogisticsInformationActivity")
 public class LogisticsInformationActivity extends BaseActivity<LogisticsInformationView, LogisticsInformationPresenter> implements LogisticsInformationView {
 
 

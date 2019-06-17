@@ -52,6 +52,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList = new ArrayList<>();
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
     private List<LedSecuritiesBean.GoodsPromotionUrlGenerateResponseBean.GoodsPromotionUrlListBean> ledList = new ArrayList<>();
+    private String earnings;
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -73,9 +74,27 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                 }.getType());
                 beanList.clear();
                 beanList.addAll(commodityDetailsBean.getGoods_detail_response().getGoods_details());
-                if (getView() != null) {
-                    getView().CommodityDetailsList(beanList);
-                }
+
+                Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
+                Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
+                RetrofitUtil.getInstance().toSubscribe(data,new OnMyCallBack(new OnDataListener() {
+                    @Override
+                    public void onSuccess(String result, String msg) {
+                        LogUtil.e("收益-------->"+result);
+                        if (!result.equals("")){
+                            if (getView() != null) {
+                                getView().CommodityDetailsList(beanList,result);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+
+                    }
+                }));
+
+
             }
 
             @Override
@@ -262,5 +281,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
 
     }
+
 
 }

@@ -20,9 +20,12 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +35,7 @@ import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/27
- * Describe:
+ * Describe:待发货
  */
 public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
 
@@ -53,11 +56,13 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
-                }.getType());
-                if (MineOrderBean != null) {
+                LogUtil.e("StaySendGoodsResult-------->" + result);
+//                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
+//                }.getType());
+                final MineOrderBean mineOrderBean = new Gson().fromJson(result, MineOrderBean.class);
+                if (mineOrderBean != null) {
                     listBeans.clear();
-                    listBeans.addAll(MineOrderBean.getOrderList());
+                    listBeans.addAll(mineOrderBean.getOrderList());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     staySendGoodsRec.setLayoutManager(linearLayoutManager);
                     MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
@@ -76,10 +81,14 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
+                                    ARouter.getInstance()
+                                            .build("/module_user_mine/RefundActivity")
+                                            .withSerializable("mineOrderBean", mineOrderBean)
+                                            .withInt("position", position)
+                                            .navigation();
                                 }
                             });
-                            //发货
+                            //提醒发货
                             view3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

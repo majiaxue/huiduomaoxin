@@ -20,8 +20,10 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/27
- * Describe:
+ * Describe:待收货
  */
 public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsView> {
 
@@ -52,12 +54,15 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void onSuccess(String result, String msg) {
-                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
-                }.getType());
-                if (MineOrderBean != null) {
+            public void onSuccess(final String result, String msg) {
+                LogUtil.e("stayDeliveryGoodsResult" + result);
+//                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
+//                }.getType());
+//                LogUtil.e("MineOrderBean" + mineOrderBean.getOrderList());
+                MineOrderBean mineOrderBean = new Gson().fromJson(result, MineOrderBean.class);
+                if (mineOrderBean != null) {
                     listBeans.clear();
-                    listBeans.addAll(MineOrderBean.getOrderList());
+                    listBeans.addAll(mineOrderBean.getOrderList());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     stayDeliveryGoodsRec.setLayoutManager(linearLayoutManager);
                     MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
@@ -72,14 +77,14 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                                     Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            //申请退款
+                            //查看物流
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ARouter.getInstance().build("/module_user_mine/RefundActivity").navigation();
+                                    ARouter.getInstance().build("/module_user_mine/LogisticsInformationActivity").navigation();
                                 }
                             });
-                            //发货
+                            //确认收货
                             view3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

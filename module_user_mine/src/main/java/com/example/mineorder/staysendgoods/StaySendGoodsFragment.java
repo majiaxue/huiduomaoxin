@@ -48,8 +48,8 @@ public class StaySendGoodsFragment extends BaseFragment<StaySendGoodsView, StayS
     public void onResume() {
         super.onResume();
         LogUtil.e("setUserVisibleHint-------->当前可见");
+        presenter.staySendGoodsRec(staySendGoodsRec);
+
     }
-
-
 
 }

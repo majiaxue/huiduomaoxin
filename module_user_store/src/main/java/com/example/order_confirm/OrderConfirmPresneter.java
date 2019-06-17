@@ -106,7 +106,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     public void submit(final OrderConfirmBean bean) {
         String jsonString = JSON.toJSONString(bean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -114,9 +114,12 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
                 SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
                 submitOrderBean.setProductName("goods");
                 submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
-                Intent intent = new Intent(mContext, PaymentActivity.class);
-                intent.putExtra("bean", submitOrderBean);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, PaymentActivity.class);
+//                intent.putExtra("bean", submitOrderBean);
+//                mContext.startActivity(intent);
+                ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                        .withSerializable("submitOrderBean",submitOrderBean)
+                        .navigation();
             }
 
             @Override
