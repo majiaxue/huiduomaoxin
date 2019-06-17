@@ -97,6 +97,9 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void initData() {
         userMineName.setText(SPUtil.getUserCode());
+        presenter.goodsCollectionCount();
+        presenter.shopCollectCount();
+        presenter.browsingHistoryCount();
     }
 
     @Override

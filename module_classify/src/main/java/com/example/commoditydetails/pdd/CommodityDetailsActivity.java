@@ -82,6 +82,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     LinearLayout commodityLinear;
     @BindView(R2.id.commodity_into_shop)
     TextView commodityIntoShop;
+
     @Autowired(name = "goods_id")
     String goods_id;
 
@@ -100,6 +101,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
+        LogUtil.e("goods_id" + goods_id + type);
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
         presenter.initView(goods_id);

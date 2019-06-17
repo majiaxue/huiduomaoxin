@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
@@ -136,11 +137,17 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                intent.putExtra("id", dataList.get(position).getId() + "");
-                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
-                intent.putExtra("sellerId", dataList.get(position).getSellerId());
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+//                intent.putExtra("id", dataList.get(position).getId() + "");
+//                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
+//                intent.putExtra("sellerId", dataList.get(position).getSellerId());
+//                mContext.startActivity(intent);
+                ARouter.getInstance()
+                        .build("/module_user_store/GoodsDetailActivity")
+                        .withString("id", dataList.get(position).getId() + "")
+                        .withString("sellerId", dataList.get(position).getSellerId())
+                        .withString("commendId", dataList.get(position).getProductCategoryId() + "")
+                        .navigation();
             }
         }).setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
@@ -157,11 +164,17 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                intent.putExtra("id", dataList.get(position).getId() + "");
-                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
-                intent.putExtra("sellerId", dataList.get(position).getSellerId());
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+//                intent.putExtra("id", dataList.get(position).getId() + "");
+//                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
+//                intent.putExtra("sellerId", dataList.get(position).getSellerId());
+//                mContext.startActivity(intent);
+                ARouter.getInstance()
+                        .build("/module_user_store/GoodsDetailActivity")
+                        .withString("id", dataList.get(position).getId() + "")
+                        .withString("sellerId", dataList.get(position).getSellerId())
+                        .withString("commendId", dataList.get(position).getProductCategoryId() + "")
+                        .navigation();
             }
         }).setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override

@@ -37,17 +37,17 @@ public class ModuleBaseApplication extends MultiDexApplication {
         Fresco.initialize(this);
         context = getApplicationContext();
 
-        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
-            @Override
-            public void onSuccess() {
-                LogUtil.e("阿里百川初始化成功");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                LogUtil.e("阿里百川：" + code + "-------" + msg);
-            }
-        });
+//        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
+//            @Override
+//            public void onSuccess() {
+//                LogUtil.e("阿里百川初始化成功");
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String msg) {
+//                LogUtil.e("阿里百川：" + code + "-------" + msg);
+//            }
+//        });
     }
 
     public static Context getContext() {

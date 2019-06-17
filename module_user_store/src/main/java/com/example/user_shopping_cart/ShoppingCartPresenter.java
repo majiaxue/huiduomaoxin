@@ -14,6 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
@@ -78,36 +79,43 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
             public void onSuccess(String result, String msg) {
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
-                commendList.clear();
-                commendList.addAll(hotSaleBean.getData());
-                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                //添加间距
-                spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
-                if (shoppingCartRecommendRec.getItemDecorationCount() == 0) {
-                    shoppingCartRecommendRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+                if (hotSaleBean != null) {
+
+                    commendList.clear();
+                    commendList.addAll(hotSaleBean.getData());
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                    //添加间距
+                    spaceItemDecorationLeftAndRight = new SpaceItemDecorationLeftAndRight(DisplayUtil.dip2px(mContext, 15), DisplayUtil.dip2px(mContext, 15));
+                    if (shoppingCartRecommendRec.getItemDecorationCount() == 0) {
+                        shoppingCartRecommendRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+                    }
+                    shoppingCartRecommendRec.setLayoutManager(staggeredGridLayoutManager);
+                    BaseRecStaggeredAdapter baseRecStaggeredAdapter = new BaseRecStaggeredAdapter(mContext, commendList, R.layout.item_base_rec_staggered_grid);
+                    shoppingCartRecommendRec.setAdapter(baseRecStaggeredAdapter);
+
+                    baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance()
+                                    .build("/module_user_store/GoodsDetailActivity")
+                                    .withString("id", commendList.get(position).getId() + "")
+                                    .withString("sellerId", commendList.get(position).getSellerId())
+                                    .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                    .navigation();
+                        }
+                    });
+                    baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                        @Override
+                        public void ViewOnClick(View view, final int index) {
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
                 }
-                shoppingCartRecommendRec.setLayoutManager(staggeredGridLayoutManager);
-                BaseRecStaggeredAdapter baseRecStaggeredAdapter = new BaseRecStaggeredAdapter(mContext, commendList, R.layout.item_base_rec_staggered_grid);
-                shoppingCartRecommendRec.setAdapter(baseRecStaggeredAdapter);
-
-                baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + index, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-
             }
 
             @Override
@@ -119,49 +127,50 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void setShoppingCartRec() {
-        Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
+        final Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
         RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("cart------>" + result);
                 CartBean cartBean = JSON.parseObject(result, CartBean.class);
-
-                dataBeanList.clear();
-                dataBeanList.addAll(cartBean.getRecords());
+                if (cartBean != null) {
+                    dataBeanList.clear();
+                    dataBeanList.addAll(cartBean.getRecords());
 //                updateIsAll();
-                totalPrice();
-                if (dataBeanList.size() == 0) {
-                    getView().isHide(true);
+                    totalPrice();
+                    if (dataBeanList.size() == 0) {
+                        getView().isHide(true);
 
-                } else {
-                    getView().isHide(false);
-                    if (cartParentRecAdapter == null) {
-                        cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent, new OnSelectViewListener() {
-                            @Override
-                            public void setOnSelectViewListener(boolean isAllCheck, int parentPos, int childPos) {
-                                updateList.clear();
-                                updateList.add(dataBeanList.get(parentPos).getItems().get(childPos));
-                                reviseStutas();
-                                if (getView() != null) {
-                                    getView().isCheckAll(isAllCheck);
-                                }
-                            }
-                        }, new OnCountChangeListener() {
-                            @Override
-                            public void setOnCountChangedListener(int parentPos, int childPos, int count) {
-                                dataBeanList.get(parentPos).getItems().get(childPos).setQuantity(count);
-                                updateList.clear();
-                                updateList.add(dataBeanList.get(parentPos).getItems().get(childPos));
-                                reviseStutas();
-                            }
-                        });
                     } else {
-                        cartParentRecAdapter.notifyDataSetChanged();
-                    }
-                    if (getView() != null) {
-                        getView().loadCartRv(cartParentRecAdapter);
+                        getView().isHide(false);
+                        if (cartParentRecAdapter == null) {
+                            cartParentRecAdapter = new CartParentRecAdapter(mContext, dataBeanList, R.layout.item_cart_parent, new OnSelectViewListener() {
+                                @Override
+                                public void setOnSelectViewListener(boolean isAllCheck, int parentPos, int childPos) {
+                                    updateList.clear();
+                                    updateList.add(dataBeanList.get(parentPos).getItems().get(childPos));
+                                    reviseStutas();
+                                    if (getView() != null) {
+                                        getView().isCheckAll(isAllCheck);
+                                    }
+                                }
+                            }, new OnCountChangeListener() {
+                                @Override
+                                public void setOnCountChangedListener(int parentPos, int childPos, int count) {
+                                    dataBeanList.get(parentPos).getItems().get(childPos).setQuantity(count);
+                                    updateList.clear();
+                                    updateList.add(dataBeanList.get(parentPos).getItems().get(childPos));
+                                    reviseStutas();
+                                }
+                            });
+                        } else {
+                            cartParentRecAdapter.notifyDataSetChanged();
+                        }
+                        if (getView() != null) {
+                            getView().loadCartRv(cartParentRecAdapter);
 //                        getView().totalPrice(totalPrice);
+                        }
                     }
                 }
 

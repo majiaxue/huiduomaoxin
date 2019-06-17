@@ -24,8 +24,8 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
 
     @Override
     public void initData() {
-        LogUtil.e("setUserVisibleHint-------->初始化布局");
-        presenter.orderAllRec(orderAllRec);
+//        LogUtil.e("setUserVisibleHint-------->初始化布局");
+//        presenter.orderAllRec(orderAllRec);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("setUserVisibleHint-------->当前可见");
+        LogUtil.e("setUserVisibleHint-------->全部订单当前可见");
         presenter.orderAllRec(orderAllRec);
     }
 

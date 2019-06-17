@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
@@ -54,7 +55,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     public void setGoodsCollectionRec(final RecyclerView goodsCollectionRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -148,7 +149,12 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                 baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", commendList.get(position).getId() + "")
+                                .withString("sellerId", commendList.get(position).getSellerId())
+                                .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
                 baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
@@ -201,7 +207,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     //编辑
     public void compile() {
-        if (recBeanList.size()==0){
+        if (recBeanList.size() == 0) {
             if (isCompile) {
                 isCompile = false;
                 getView().isCompile(isCompile);
@@ -209,7 +215,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                 isCompile = true;
                 getView().isCompile(isCompile);
             }
-        }else{
+        } else {
             if (isCompile) {
                 isCompile = false;
                 getView().isCompile(isCompile);
@@ -246,7 +252,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

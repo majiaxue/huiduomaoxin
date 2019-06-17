@@ -70,11 +70,17 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailView> {
                 commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                        intent.putExtra("id", hotSaleBean.getData().get(position).getId() + "");
-                        intent.putExtra("commendId", hotSaleBean.getData().get(position).getProductCategoryId() + "");
-                        intent.putExtra("sellerId", hotSaleBean.getData().get(position).getSellerId());
-                        mContext.startActivity(intent);
+//                        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+//                        intent.putExtra("id", hotSaleBean.getData().get(position).getId() + "");
+//                        intent.putExtra("commendId", hotSaleBean.getData().get(position).getProductCategoryId() + "");
+//                        intent.putExtra("sellerId", hotSaleBean.getData().get(position).getSellerId());
+//                        mContext.startActivity(intent);
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", hotSaleBean.getData().get(position).getId() + "")
+                                .withString("sellerId", hotSaleBean.getData().get(position).getSellerId())
+                                .withString("commendId", hotSaleBean.getData().get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
                 if (getView() != null) {

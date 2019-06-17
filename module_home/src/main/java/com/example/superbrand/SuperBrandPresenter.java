@@ -146,24 +146,26 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                 LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                 SuperBrandBean SuperBrandBean = JSON.parseObject(result, new TypeReference<SuperBrandBean>() {
                 }.getType());
-                listsBeans.clear();
-                listsBeans.addAll(SuperBrandBean.getData().getLists());
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4, LinearLayoutManager.VERTICAL, false);
-                superBrandRec.setLayoutManager(gridLayoutManager);
-                SuperBrandRecAdapter superBrandRecAdapter = new SuperBrandRecAdapter(mContext, listsBeans, R.layout.item_super_brand_rec);
-                superBrandRec.setAdapter(superBrandRecAdapter);
+                if (SuperBrandBean != null) {
+                    listsBeans.clear();
+                    listsBeans.addAll(SuperBrandBean.getData().getLists());
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4, LinearLayoutManager.VERTICAL, false);
+                    superBrandRec.setLayoutManager(gridLayoutManager);
+                    SuperBrandRecAdapter superBrandRecAdapter = new SuperBrandRecAdapter(mContext, listsBeans, R.layout.item_super_brand_rec);
+                    superBrandRec.setAdapter(superBrandRecAdapter);
 
-                superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        String shop_url = listsBeans.get(position).getShop_url();
-                        LogUtil.e("shop_url---------->"+shop_url);
-                        ARouter.getInstance()
-                                .build("/module_classify/tshop_home")
-                                .withString("url", shop_url)
-                                .navigation();
-                    }
-                });
+                    superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            String shop_url = listsBeans.get(position).getShop_url();
+                            LogUtil.e("shop_url---------->" + shop_url);
+                            ARouter.getInstance()
+                                    .build("/module_classify/tshop_home")
+                                    .withString("url", shop_url)
+                                    .navigation();
+                        }
+                    });
+                }
             }
 
             @Override

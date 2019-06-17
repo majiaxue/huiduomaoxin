@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
@@ -35,6 +38,11 @@ import java.util.List;
 
 import butterknife.BindView;
 
+/**
+ * 多用户商城商品详情
+ *
+ */
+@Route(path = "/module_user_store/GoodsDetailActivity")
 public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDetailPresenter> implements GoodsDetailView, NestedScrollView.OnScrollChangeListener {
     @BindView(R2.id.goods_detail_xbanner)
     XBanner goodsDetailXbanner;
@@ -118,7 +126,14 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     TextView mTotalSpecs;
     @BindView(R2.id.goods_detail_webview)
     WebView mWebView;
-    private String id;
+
+    @Autowired(name = "id")
+    String id;
+    @Autowired(name = "sellerId")
+    String sellerId;
+    @Autowired(name = "commendId")
+    String commendId;
+
 
     @Override
     public int getLayoutId() {
@@ -127,6 +142,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         mWebView.getSettings().setJavaScriptEnabled(true);
         //优惠券
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -161,9 +177,9 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
         goodsDetailScroll.setOnScrollChangeListener(this);
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        String sellerId = intent.getStringExtra("sellerId");
-        String commendId = intent.getStringExtra("commendId");
+//        id = intent.getStringExtra("id");
+//        String sellerId = intent.getStringExtra("sellerId");
+//        String commendId = intent.getStringExtra("commendId");
         presenter.loadData(id);
         presenter.loadCommend(commendId);
         presenter.loadCoupon(id, sellerId);

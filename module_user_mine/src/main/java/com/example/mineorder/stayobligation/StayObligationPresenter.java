@@ -122,7 +122,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
                     mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+//                            mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
                         }
                     });
                 }

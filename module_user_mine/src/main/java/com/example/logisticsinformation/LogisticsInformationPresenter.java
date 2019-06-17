@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
@@ -23,8 +24,10 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -38,6 +41,9 @@ public class LogisticsInformationPresenter extends BasePresenter<LogisticsInform
 
     private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
+    private List<LogisticsInforMationBean.TracesBean> inforMationBeanList = new ArrayList<>();
+
+
     public LogisticsInformationPresenter(Context context) {
         super(context);
     }
@@ -46,28 +52,46 @@ public class LogisticsInformationPresenter extends BasePresenter<LogisticsInform
     protected void onViewDestroy() {
 
     }
-    //物流信息
-    public void logisticsInformationMessageRec(RecyclerView logisticsInformationMessageRec){
-        List<LogisticsInforMationBean> list = new ArrayList<>();
-        list.add(new LogisticsInforMationBean("[收货地址]河南省郑州市金水区金成国际广场3号楼204室"));
-        list.add(new LogisticsInforMationBean("【温州市】快件已从温州市中转部发出；发往郑州中转"));
-        list.add(new LogisticsInforMationBean("【温州市】快件已到达温州中转"));
-        list.add(new LogisticsInforMationBean("【温州市】快件已从平阳发出"));
-        list.add(new LogisticsInforMationBean("【温州市】贵州平阳公司 已揽收"));
-        list.add(new LogisticsInforMationBean("包裹正在等待揽收"));
-        list.add(new LogisticsInforMationBean("您的包裹已出库"));
-        list.add(new LogisticsInforMationBean("您的订单处理中"));
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        logisticsInformationMessageRec.setLayoutManager(linearLayoutManager);
-        LogisticsInforMationAdapter logisticsInforMationAdapter = new LogisticsInforMationAdapter(mContext, list, R.layout.item_logistics_information_rec);
-        logisticsInformationMessageRec.setAdapter(logisticsInforMationAdapter);
+    //物流信息
+    public void logisticsInformationMessageRec(final RecyclerView logisticsInformationMessageRec, String orderSn) {
+
+        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.GETORDERTRACESBYJSON + "/" + orderSn);
+        RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("物流信息----->" + result);
+                if (!"".equals(result)) {
+                    LogisticsInforMationBean logisticsInforMationBean = new Gson().fromJson(result, LogisticsInforMationBean.class);
+                    if (logisticsInforMationBean != null) {
+                        inforMationBeanList.clear();
+                        inforMationBeanList.addAll(logisticsInforMationBean.getTraces());
+                        Collections.reverse(inforMationBeanList);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        logisticsInformationMessageRec.setLayoutManager(linearLayoutManager);
+                        LogisticsInforMationAdapter logisticsInforMationAdapter = new LogisticsInforMationAdapter(mContext, inforMationBeanList, R.layout.item_logistics_information_rec);
+                        logisticsInformationMessageRec.setAdapter(logisticsInforMationAdapter);
+
+                        if (getView()!=null){
+                            getView().traces(logisticsInforMationBean,inforMationBeanList.size());
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
 
 
 
     }
+
     //推荐
-    public void logisticsInformationRec(final RecyclerView logisticsInformationRec){
+    public void logisticsInformationRec(final RecyclerView logisticsInformationRec) {
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "俩件套").build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -90,7 +114,12 @@ public class LogisticsInformationPresenter extends BasePresenter<LogisticsInform
                 baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", commendList.get(position).getId() + "")
+                                .withString("sellerId", commendList.get(position).getSellerId())
+                                .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
                 baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
@@ -109,7 +138,7 @@ public class LogisticsInformationPresenter extends BasePresenter<LogisticsInform
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("errorMsg------->"+errorMsg);
+                LogUtil.e("errorMsg------->" + errorMsg);
             }
         }));
 

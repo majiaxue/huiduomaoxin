@@ -38,11 +38,16 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             holder.setText(R.id.mine_order_parent_status, "等待买家付款");
             holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
             holder.setText(R.id.mine_order_parent_btn_right, "付款");
-        } else if (data.getStatus() == 8) {
-            //8待收货
+        } else if (data.getStatus() == 2) {
+            //2待收货
             holder.setText(R.id.mine_order_parent_status, "卖家已发货");
             holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
             holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+        } else if (data.getStatus() == 4 || data.getStatus() == 5) {
+            //45 已失效
+            holder.setText(R.id.mine_order_parent_status, "已失效");
+            holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
+            holder.setText(R.id.mine_order_parent_btn_right, "再次购买");
         }
 
         holder.setText(R.id.mine_order_parent_shop, data.getSellerName());

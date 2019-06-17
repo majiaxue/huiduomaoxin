@@ -124,11 +124,11 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(RecyclerView parent, View view, int position) {
-                                                long goods_id = baseRecBeanList.get(position).getGoods_id();
                                                 ARouter.getInstance()
                                                         .build("/module_classify/CommodityDetailsActivity")
-                                                        .withLong("goods_id", goods_id)
-                                                        .withString("type", type).navigation();
+                                                        .withString("goods_id", baseRecBeanList.get(position).getGoods_id() + "")
+                                                        .withString("type", type)
+                                                        .navigation();
                                             }
                                         });
 
@@ -141,7 +141,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                         long goods_id = baseRecBeanList.get(index).getGoods_id();
                                                         ARouter.getInstance()
                                                                 .build("/module_classify/CommodityDetailsActivity")
-                                                                .withLong("goods_id", goods_id)
+                                                                .withString("goods_id", goods_id + "")
                                                                 .withString("type", type)
                                                                 .navigation();
                                                     }
@@ -175,7 +175,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
                     });
 
-                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
+                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans, jdTabList);
 
 
                 }
@@ -278,7 +278,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
                     });
 
-                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
+                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans, jdTabList);
 
                 }
 
@@ -338,7 +338,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                         .build("/module_classify/JDCommodityDetailsActivity")
                                                         .withString("skuid", listsBeanList.get(position).getSkuId())
                                                         .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                        .withInt("position",position)
+                                                        .withInt("position", position)
                                                         .navigation();
                                             }
                                         });
@@ -353,7 +353,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                                 .build("/module_classify/JDCommodityDetailsActivity")
                                                                 .withString("skuid", listsBeanList.get(index).getSkuId())
                                                                 .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                                .withInt("position",index)
+                                                                .withInt("position", index)
                                                                 .navigation();
                                                     }
                                                 });
@@ -382,7 +382,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
                     });
 
-                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
+                    initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans, jdTabList);
 
                 }
 
@@ -397,7 +397,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 page = 1;
-                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
+                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans, jdTabList);
 //                            refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 refreshlayout.finishRefresh();
             }
@@ -406,7 +406,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 page++;
-                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans,jdTabList);
+                initList(catsListBeans, secondaryDetailsRec, type, page, TBGoodsSearchBeans, jdTabList);
 //                            refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 refreshlayout.finishLoadMore();
             }
@@ -414,7 +414,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     }
     //京东
 
-    private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, final RecyclerView secondaryDetailsRec, final String type, int page, List<TBGoodsSearchBean> TBGoodsSearchBeans,List<JDTabBean.DataBean> jdTabList) {
+    private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, final RecyclerView secondaryDetailsRec, final String type, int page, List<TBGoodsSearchBean> TBGoodsSearchBeans, List<JDTabBean.DataBean> jdTabList) {
         //0淘宝 1 拼多多  2京东 3天猫
         if (type.equals("1")) {
             PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
@@ -451,7 +451,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 long goods_id = baseRecBeanList.get(position).getGoods_id();
                                 ARouter.getInstance()
                                         .build("/module_classify/CommodityDetailsActivity")
-                                        .withLong("goods_id", goods_id)
+                                        .withString("goods_id", goods_id+"")
                                         .withString("type", type)
                                         .navigation();
 
@@ -467,7 +467,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         long goods_id = baseRecBeanList.get(index).getGoods_id();
                                         ARouter.getInstance()
                                                 .build("/module_classify/CommodityDetailsActivity")
-                                                .withLong("goods_id", goods_id)
+                                                .withString("goods_id", goods_id+"")
                                                 .withString("type", type)
                                                 .navigation();
                                     }
@@ -537,7 +537,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
-        }else{
+        } else {
             String name = jdTabList.get(0).getName();
             Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", page).addParms("pageSize", 20).addParms("keyword", name).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
@@ -565,7 +565,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         .build("/module_classify/JDCommodityDetailsActivity")
                                         .withString("skuid", listsBeanList.get(position).getSkuId())
                                         .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                        .withInt("position",position)
+                                        .withInt("position", position)
                                         .navigation();
                             }
                         });
@@ -580,7 +580,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 .build("/module_classify/JDCommodityDetailsActivity")
                                                 .withString("skuid", listsBeanList.get(index).getSkuId())
                                                 .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                .withInt("position",index)
+                                                .withInt("position", index)
                                                 .navigation();
                                     }
                                 });

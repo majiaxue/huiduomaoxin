@@ -26,8 +26,8 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
 
     @Override
     public void initData() {
-        LogUtil.e("-------->onCreate");
-        presenter.stayAppraiseRec(stayAppraiseRec);
+//        LogUtil.e("-------->onCreate");
+//        presenter.stayAppraiseRec(stayAppraiseRec);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("setUserVisibleHint-------->onResume");
+        LogUtil.e("setUserVisibleHint-------->待评价当前可见");
         presenter.stayAppraiseRec(stayAppraiseRec);
     }
 

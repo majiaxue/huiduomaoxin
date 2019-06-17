@@ -1,8 +1,6 @@
 package com.example.home;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.adapter.BaseRecAdapter;
 import com.example.bean.BannerBean;
-import com.example.bean.Records;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecBean;
 import com.example.entity.BaseRecImageAndTextBean;
@@ -38,10 +34,8 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.secondarydetails.SecondaryDetailsActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
@@ -51,17 +45,14 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import okio.ForwardingTimeout;
 
 public class HomePresenter extends BasePresenter<HomeView> {
 
 
     private List<String> data;
     private List<View> views = new ArrayList<>();
-    private List<TopBannerBean> images;
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodChoiceBean.DataBean> goodList = new ArrayList<>();
-    private List<BaseRecBean> baseRecBeanList;
     private List<BannerBean.RecordsBean> beanList;
 
     public HomePresenter(Context context) {
@@ -104,7 +95,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("homePresenterResult---------->"+result);
+                LogUtil.e("homePresenterResult---------->" + result);
                 BannerBean records = JSON.parseObject(result, BannerBean.class);
                 beanList = records.getRecords();
 
@@ -160,7 +151,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("homePresenterErrorMsg---------->"+errorMsg);
+                LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
             }
         }));
 
@@ -205,7 +196,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("homePresenterResult---------->"+result);
+                LogUtil.e("homePresenterResult---------->" + result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
                 goodList.clear();
@@ -230,7 +221,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("homePresenterErrorMsg---------->"+errorMsg);
+                LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
             }
         }));
 
@@ -244,7 +235,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("homePresenterResult---------->"+result);
+                LogUtil.e("homePresenterResult---------->" + result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
                 goodList.clear();
@@ -280,7 +271,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("homePresenterErrorMsg---------->"+errorMsg);
+                LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
             }
         }));
 
