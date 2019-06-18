@@ -132,7 +132,7 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
 
     public void loadData(int index) {
         Map map = MapUtil.getInstance().addParms("type", index).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.URL_9_4001).getHead(CommonResource.FANS_TOTAL_MONEY, map, SPUtil.getToken());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.FANS_TOTAL_MONEY, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

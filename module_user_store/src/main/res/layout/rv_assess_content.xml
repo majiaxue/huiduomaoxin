@@ -84,7 +84,6 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/rv_assess_count_zan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
@@ -94,7 +93,6 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/rv_assess_zan"
             android:layout_width="@dimen/dp_25"
             android:layout_height="@dimen/dp_25"
             android:padding="@dimen/dp_5"
@@ -102,7 +100,6 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/rv_assess_count_assess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_5"
@@ -113,7 +110,6 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/rv_assess_toassess"
             android:layout_width="@dimen/dp_25"
             android:layout_height="@dimen/dp_25"
             android:padding="@dimen/dp_5"

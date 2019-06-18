@@ -50,7 +50,7 @@ public interface ApiService {
     Observable<ResponseBody> deleteDataWithout(@Url String url, @Header("Authorization") String token);
 
     @HTTP(method = "DELETE", hasBody = true)
-    Observable<ResponseBody> postDelete(@Url String url, @Body List<Integer> list, @Header("Authorization") String token);
+    Observable<ResponseBody> postDelete(@Url String url, @Body List<String> list, @Header("Authorization") String token);
 
     @FormUrlEncoded
     @POST

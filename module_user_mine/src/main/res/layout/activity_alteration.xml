@@ -6,28 +6,7 @@
     android:orientation="vertical"
     tools:context="com.example.alteration.AlterationActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50">
-
-        <ImageView
-            android:id="@+id/alteration_back"
-            android:layout_width="@dimen/dp_36"
-            android:layout_height="@dimen/dp_44"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/dp_14"
-            android:src="@drawable/icon_fanhui" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:includeFontPadding="false"
-            android:text="退货/售后"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_17" />
-
-    </RelativeLayout>
+    <include layout="@layout/page_top" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/alteration_rec"

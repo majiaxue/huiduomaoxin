@@ -44,7 +44,6 @@
                 android:textSize="@dimen/sp_12" />
 
             <LinearLayout
-                android:id="@+id/cart_child_specification"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_21"
                 android:layout_below="@id/cart_child_name"

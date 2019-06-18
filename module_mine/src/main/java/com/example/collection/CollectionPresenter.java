@@ -28,7 +28,7 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 public class CollectionPresenter extends BasePresenter<CollectionView> {
-    private List<MyCollectBean.GoodsSearchResponseBean.GoodsListBean> dataList = new ArrayList<>();
+    private List<MyCollectBean> dataList = new ArrayList<>();
     private boolean isEdit = false;
     private boolean isAllCheck = false;
     private CollectionAdapter collectionAdapter;
@@ -50,11 +50,10 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("收藏列表：" + result);
                 if (result != null) {
-                    MyCollectBean list = JSON.parseObject(result, MyCollectBean.class);
                     if (page == 1) {
                         dataList.clear();
                     }
-                    dataList.addAll(list.getGoods_search_response().getGoods_list());
+                    dataList.addAll(JSON.parseArray(result, MyCollectBean.class));
 
                     if (collectionAdapter == null) {
                         collectionAdapter = new CollectionAdapter(mContext, dataList, R.layout.rv_collection);
@@ -102,10 +101,10 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
     }
 
     public void deleteList() {
-        List<Integer> deleteList = new ArrayList<>();
+        List<String> deleteList = new ArrayList<>();
         for (int i = dataList.size() - 1; i >= 0; i--) {
             if (dataList.get(i).isCheck()) {
-                deleteList.add(Integer.valueOf(dataList.get(i).getGoods_id()));
+                deleteList.add(dataList.get(i).getGoodsId() + "");
             }
         }
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
@@ -139,14 +138,14 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
 
     public void allCheck() {
         if (isAllCheck) {
-            for (MyCollectBean.GoodsSearchResponseBean.GoodsListBean data : dataList) {
+            for (MyCollectBean data : dataList) {
                 data.setCheck(false);
             }
             collectionAdapter.notifyDataSetChanged();
             isAllCheck = false;
             getView().notAllCheck();
         } else {
-            for (MyCollectBean.GoodsSearchResponseBean.GoodsListBean data : dataList) {
+            for (MyCollectBean data : dataList) {
                 data.setCheck(true);
             }
             collectionAdapter.notifyDataSetChanged();
@@ -162,7 +161,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                 if (isEdit) {
                     check(position);
                 } else {
-                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoods_id()).withString("type", "1").navigation();
+                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId() + "").navigation();
                 }
             }
         });

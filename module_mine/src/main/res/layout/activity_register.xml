@@ -8,6 +8,7 @@
         android:id="@+id/register_back"
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_46"
+        android:layout_marginTop="@dimen/dp_25"
         android:padding="@dimen/dp_14"
         android:src="@drawable/icon_fanhui" />
 

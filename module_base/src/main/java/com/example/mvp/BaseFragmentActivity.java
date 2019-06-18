@@ -1,12 +1,12 @@
 package com.example.mvp;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.example.utils.AppManager;
-
-import org.greenrobot.eventbus.EventBus;
+import com.example.utils.StatusBarUtils;
 
 import butterknife.ButterKnife;
 
@@ -20,14 +20,23 @@ public abstract class BaseFragmentActivity<V extends IView, P extends BasePresen
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         AppManager.getInstance().addActivity(this);
+
         //创建presenter
         presenter = createPresenter();
         if (presenter != null) {
             //将View层注册到Presenter中
             presenter.registerView(createView());
         }
+        changeStatus();
         initData();
         initClick();
+    }
+
+    private void changeStatus() {
+        StatusBarUtils.setStatusTheme(this, true, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(StatusBarUtils.STATUS_COLOR);
+        }
     }
 
     @SuppressLint("MissingSuperCall")

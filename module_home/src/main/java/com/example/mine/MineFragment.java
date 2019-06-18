@@ -1,5 +1,6 @@
 package com.example.mine;
 
+import android.app.Activity;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.example.mvp.BaseFragment;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
+import com.example.utils.StatusBarUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -32,7 +34,7 @@ import butterknife.BindView;
 /**
  * 个人中心
  */
-public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
+public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView, NestedScrollView.OnScrollChangeListener {
 
     @BindView(R2.id.mine_setting)
     ImageView mineSetting;
@@ -90,6 +92,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     public void initData() {
         EventBus.getDefault().register(this);
         presenter.loadRec();
+        mineParent.setOnScrollChangeListener(this);
     }
 
     @Override
@@ -191,12 +194,25 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 presenter.setClipboard(userInfo.getInviteCode());
             }
         });
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
         if ("login".equals(eventBusBean.getMsg())) {
             presenter.loadData();
+        }
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        int[] loction = new int[2];
+        mineRela.getLocationOnScreen(loction);
+        int y = loction[1];
+        if (y <= getContext().getResources().getDimension(R.dimen.dp_35)) {
+            StatusBarUtils.setStatusTheme(getActivity(), false, true);
+        } else {
+            StatusBarUtils.setStatusTheme(getActivity(), true, true);
         }
     }
 

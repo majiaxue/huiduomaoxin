@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     @BindView(R2.id.operator_scroll)
     NestedScrollView mScorll;
     @BindView(R2.id.operator_top)
-    RelativeLayout mTop;
+    LinearLayout mTop;
     @BindView(R2.id.operator_title)
     TextView mTitle;
 

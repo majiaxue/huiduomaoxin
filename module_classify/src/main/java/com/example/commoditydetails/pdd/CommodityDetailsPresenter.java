@@ -115,7 +115,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
             public void loadBanner(XBanner banner, Object model, View view, int position) {
 //                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
 //                bannerImage.setImageResource((int) images.get(position).getXBannerUrl());
-                Glide.with(mContext).load(images.get(position)).apply(RequestOptions.centerInsideTransform()).into((ImageView) view);
+                Glide.with(mContext).load(images.get(position)).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
             }
         });
         // 设置XBanner的页面切换特效

@@ -69,6 +69,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("搜索：" + result);
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
                 dataList.addAll(hotSaleBean.getData());

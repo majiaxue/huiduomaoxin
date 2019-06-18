@@ -118,8 +118,9 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 //                intent.putExtra("bean", submitOrderBean);
 //                mContext.startActivity(intent);
                 ARouter.getInstance().build("/module_user_store/PaymentActivity")
-                        .withSerializable("submitOrderBean",submitOrderBean)
+                        .withSerializable("submitOrderBean", submitOrderBean)
                         .navigation();
+                ((Activity) mContext).finish();
             }
 
             @Override

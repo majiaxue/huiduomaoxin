@@ -1,9 +1,11 @@
 package com.example.mineorder;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -14,22 +16,24 @@ import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragmentActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 我的订单页面
  */
 @Route(path = "/module_user_mine/MineOrderActivity")
 public class MineOrderActivity extends BaseFragmentActivity<MineOrderView, MineOrderPresenter> implements MineOrderView {
-
-
-    @BindView(R2.id.mine_order_back)
-    ImageView mineOrderBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.mine_order_tab)
     TabLayout mineOrderTab;
     @BindView(R2.id.mine_order_vp)
     ViewPager mineOrderVp;
     @Autowired(name = "type")
     int type;
+
 
     @Override
     public int getLayoutId() {
@@ -39,6 +43,7 @@ public class MineOrderActivity extends BaseFragmentActivity<MineOrderView, MineO
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        includeTitle.setText("我的订单");
         //初始化tablayout
         presenter.initTabLayout(mineOrderTab);
         presenter.initViewPager(getSupportFragmentManager());
@@ -54,7 +59,7 @@ public class MineOrderActivity extends BaseFragmentActivity<MineOrderView, MineO
 
     @Override
     public void initClick() {
-        mineOrderBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

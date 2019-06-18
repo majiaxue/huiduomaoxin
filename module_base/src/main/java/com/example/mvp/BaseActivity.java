@@ -2,10 +2,12 @@ package com.example.mvp;
 
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.entity.EventBusBean;
 import com.example.utils.AppManager;
+import com.example.utils.StatusBarUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -28,8 +30,17 @@ public abstract class BaseActivity<V extends IView, P extends BasePresenter> ext
             //将View层注册到Presenter中
             presenter.registerView(createView());
         }
+        changeStatus();
         initData();
         initClick();
+    }
+
+    private void changeStatus() {
+        // 设置状态栏
+        StatusBarUtils.setStatusTheme(this, true, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(StatusBarUtils.STATUS_COLOR);
+        }
     }
 
     public abstract int getLayoutId();

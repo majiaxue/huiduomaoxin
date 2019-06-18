@@ -14,12 +14,10 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/fans_order_list_fans_img"
             android:layout_width="@dimen/dp_17"
             android:layout_height="@dimen/dp_17" />
 
         <TextView
-            android:id="@+id/fans_order_list_fans_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_7"
@@ -36,7 +34,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/fans_order_list_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -124,7 +121,6 @@
         android:textSize="@dimen/sp_10" />
 
     <TextView
-        android:id="@+id/fans_order_list_predict"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_19"
         android:layout_alignParentRight="true"

@@ -48,12 +48,6 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     public void initData() {
         EventBus.getDefault().register(this);
         presenter.loadData(getSupportFragmentManager(), R.id.user_frame);
-        Intent intent = getIntent();
-        String key = intent.getStringExtra("key");
-        if (CommonResource.JUMP_CART.equals(key)) {
-            userShoppingCart.setChecked(true);
-            presenter.click(R.id.user_shopping_cart);
-        }
     }
 
     @Override
@@ -64,6 +58,16 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
                 presenter.click(checkedId);
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String key = intent.getStringExtra("key");
+        if (CommonResource.JUMP_CART.equals(key)) {
+            userShoppingCart.setChecked(true);
+            presenter.click(R.id.user_shopping_cart);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

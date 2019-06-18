@@ -1,8 +1,11 @@
 package com.example.suggestion;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +23,7 @@ public class SuggestionActivity extends BaseActivity<SuggestionView, SuggestionP
     ImageView includeBack;
     @BindView(R2.id.include_title)
     TextView includeTitle;
-    @BindView(R2.id.suggestion_history)
+    @BindView(R2.id.include_right_btn)
     TextView suggestionHistory;
     @BindView(R2.id.suggestion_edit)
     EditText suggestionEdit;
@@ -37,6 +40,8 @@ public class SuggestionActivity extends BaseActivity<SuggestionView, SuggestionP
     @Override
     public void initData() {
         includeTitle.setText("意见反馈");
+        suggestionHistory.setText("反馈历史");
+        suggestionHistory.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -89,6 +94,26 @@ public class SuggestionActivity extends BaseActivity<SuggestionView, SuggestionP
                 presenter.submit(suggestionEdit.getText().toString());
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (presenter.isShouldHideInput(v, ev)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+
     }
 
     @Override

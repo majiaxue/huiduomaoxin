@@ -1,14 +1,8 @@
 package com.example.shippingaddress.address;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -16,8 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.CityBean;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
@@ -25,18 +17,15 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.shippingaddress.adapter.PopupRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
 import com.example.view.addressselect.AddressSelector;
 import com.example.view.addressselect.CityInterface;
 import com.example.view.addressselect.OnItemClickListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

@@ -58,7 +58,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
     }
 
     public void initShopCollectRec(final SlideRecyclerView shopCollectRec) {
-        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SELLERPAGE,SPUtil.getToken());
+        final Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SELLERPAGE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(final String result, String msg) {
@@ -99,8 +99,8 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                     @Override
                                     public void onYesClick() {
                                         int favoriteId = dataBeanList.get(position).getFavoriteId();
-                                        List<Integer> integers = new ArrayList<>();
-                                        integers.add(favoriteId);
+                                        List<String> integers = new ArrayList<>();
+                                        integers.add(favoriteId + "");
                                         LogUtil.e("shopCollect--------->" + favoriteId);
                                         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

@@ -26,7 +26,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 
 public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
-    private List<MyCollectBean.GoodsSearchResponseBean.GoodsListBean> dataList = new ArrayList<>();
+    private List<MyCollectBean> dataList = new ArrayList<>();
     private BrowseRecordAdapter recordAdapter;
 
     public BrowseRecordPresenter(Context context) {
@@ -46,11 +46,10 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("浏览记录：" + result);
                 if (result != null) {
-                    MyCollectBean list = JSON.parseObject(result, MyCollectBean.class);
                     if (page == 1) {
                         dataList.clear();
                     }
-                    dataList.addAll(list.getGoods_search_response().getGoods_list());
+                    dataList.addAll(JSON.parseArray(result, MyCollectBean.class));
                     if (recordAdapter == null) {
                         recordAdapter = new BrowseRecordAdapter(mContext, dataList, R.layout.item_base_rec);
                         if (getView() != null) {
@@ -78,7 +77,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
         recordAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoods_id()).withString("type", "1").navigation();
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId()+"").navigation();
             }
         });
     }

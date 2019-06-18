@@ -2,12 +2,14 @@ package com.example.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 
 import com.example.module_home.R;
 import com.example.utils.SPUtil;
+import com.example.utils.StatusBarUtils;
 
 /**
  * 启动页
@@ -37,7 +39,15 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
+        changeStatus();
         init();
+    }
+
+    private void changeStatus() {
+        StatusBarUtils.setStatusTheme(this, true, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(StatusBarUtils.STATUS_COLOR);
+        }
     }
 
     private void init() {
@@ -47,7 +57,7 @@ public class WelcomeActivity extends Activity {
             handler.sendEmptyMessageDelayed(GO_HOME, TIME);
         } else {
             handler.sendEmptyMessageDelayed(GO_GUIDE, TIME);
-            SPUtil.addParm("isFirstIn",true);
+            SPUtil.addParm("isFirstIn", true);
         }
     }
 

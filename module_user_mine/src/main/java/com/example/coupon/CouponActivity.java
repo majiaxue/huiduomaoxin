@@ -1,9 +1,11 @@
 package com.example.coupon;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.adapter.BaseVPAdapter;
@@ -12,6 +14,7 @@ import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragmentActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 优惠劵
@@ -19,13 +22,14 @@ import butterknife.BindView;
 @Route(path = "/module_user_mine/CouponActivity")
 public class CouponActivity extends BaseFragmentActivity<CouponView, CouponPresenter> implements CouponView {
 
-
-    @BindView(R2.id.coupon_back)
-    ImageView couponBack;
     @BindView(R2.id.coupon_tab)
     TabLayout couponTab;
     @BindView(R2.id.coupon_vp)
     ViewPager couponVp;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
 
     @Override
     public int getLayoutId() {
@@ -34,6 +38,7 @@ public class CouponActivity extends BaseFragmentActivity<CouponView, CouponPrese
 
     @Override
     public void initData() {
+        includeTitle.setText("优惠券");
         //初始化tablayout
         presenter.initTabLayout(couponTab);
         presenter.initViewPager(getSupportFragmentManager());
@@ -45,7 +50,7 @@ public class CouponActivity extends BaseFragmentActivity<CouponView, CouponPrese
 
     @Override
     public void initClick() {
-        couponBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

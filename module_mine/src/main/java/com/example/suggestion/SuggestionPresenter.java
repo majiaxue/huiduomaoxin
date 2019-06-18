@@ -3,6 +3,9 @@ package com.example.suggestion;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.common.CommonResource;
@@ -49,5 +52,25 @@ public class SuggestionPresenter extends BasePresenter<SuggestionView> {
 
             }
         }));
+    }
+
+    public boolean isShouldHideInput(View v, MotionEvent ev) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = {0, 0};
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (ev.getX() > left && ev.getX() < right
+                    && ev.getY() > top && ev.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }

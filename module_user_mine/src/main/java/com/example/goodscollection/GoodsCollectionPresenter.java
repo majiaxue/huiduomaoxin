@@ -54,7 +54,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     public void setGoodsCollectionRec(final RecyclerView goodsCollectionRec) {
-        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION,SPUtil.getToken());
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -201,7 +201,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     //编辑
     public void compile() {
-        if (recBeanList.size()==0){
+        if (recBeanList.size() == 0) {
             if (isCompile) {
                 isCompile = false;
                 getView().isCompile(isCompile);
@@ -209,7 +209,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                 isCompile = true;
                 getView().isCompile(isCompile);
             }
-        }else{
+        } else {
             if (isCompile) {
                 isCompile = false;
                 getView().isCompile(isCompile);
@@ -239,14 +239,14 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
 
     //删除
     public void deleteList() {
-        List<Integer> deleteList = new ArrayList<>();
+        List<String> deleteList = new ArrayList<>();
         for (int i = 0; i < recBeanList.size(); i++) {
             if (recBeanList.get(i).isCheck()) {
-                deleteList.add(recBeanList.get(i).getFavoriteId());
+                deleteList.add(recBeanList.get(i).getFavoriteId() + "");
             }
         }
 
-        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE,deleteList, SPUtil.getToken());
+        Observable<ResponseBody> deleteGoodsCollection = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(deleteGoodsCollection, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

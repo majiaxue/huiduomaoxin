@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,19 +24,13 @@ import com.example.mvp.BaseActivity;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.PhoneNumUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -52,10 +45,10 @@ import okhttp3.ResponseBody;
  */
 @Route(path = "/module_user_mine/BusinessApplicationActivity")
 public class BusinessApplicationActivity extends BaseActivity<BusinessApplicationView, BusinessApplicationPresenter> implements BusinessApplicationView {
-
-
-    @BindView(R2.id.business_application_back)
-    ImageView businessApplicationBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.business_application_icon)
     SimpleDraweeView businessApplicationIcon;
     @BindView(R2.id.business_application_shop_name)
@@ -95,6 +88,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     private final int PHOTO_ALBUM_CODE = 0x222;
     private final int CROP_CODE = 0x333;
 
+
     private int type;
     private String base64;
     private Map<String, String> map = new HashMap<>();
@@ -106,13 +100,13 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
     @Override
     public void initData() {
-
+        includeTitle.setText("商家申请");
     }
 
     @Override
     public void initClick() {
         //返回
-        businessApplicationBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -167,7 +161,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                             String msg1 = businessApplicationBean.getMsg();
                             if (msg1.equals("success")) {
                                 finish();
-                            }else{
+                            } else {
                                 Toast.makeText(BusinessApplicationActivity.this, msg1, Toast.LENGTH_SHORT).show();
                             }
 
@@ -348,5 +342,4 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                 break;
         }
     }
-
 }

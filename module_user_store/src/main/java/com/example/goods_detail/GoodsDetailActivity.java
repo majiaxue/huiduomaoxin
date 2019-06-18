@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
@@ -118,7 +120,12 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     TextView mTotalSpecs;
     @BindView(R2.id.goods_detail_webview)
     WebView mWebView;
-    private String id;
+    @Autowired(name = "id")
+    String id;
+    @Autowired(name = "sellerId")
+    String sellerId;
+    @Autowired(name = "commendId")
+    String commendId;
 
     @Override
     public int getLayoutId() {
@@ -127,6 +134,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         mWebView.getSettings().setJavaScriptEnabled(true);
         //优惠券
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -160,10 +168,12 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         });
 
         goodsDetailScroll.setOnScrollChangeListener(this);
-        Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        String sellerId = intent.getStringExtra("sellerId");
-        String commendId = intent.getStringExtra("commendId");
+        if (id == null) {
+            Intent intent = getIntent();
+            id = intent.getStringExtra("id");
+            sellerId = intent.getStringExtra("sellerId");
+            commendId = intent.getStringExtra("commendId");
+        }
         presenter.loadData(id);
         presenter.loadCommend(commendId);
         presenter.loadCoupon(id, sellerId);
@@ -207,56 +217,56 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
                 presenter.ensure();
             }
         });
-
+        //详细参数
         goodsDetailParms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.detailParms();
             }
         });
-
+        //选择商品弹窗
         goodsDetailChooseGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.chooseGoodsPop();
             }
         });
-
+        //跳转评论
         goodsDetailSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToAssess(id);
             }
         });
-
+        //进入店铺
         goodsDetailShopGoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToShop();
             }
         });
-
+        //购买
         goodsDetailBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.chooseOrJump();
             }
         });
-
+        //加入购物车
         goodsDetailAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.chooseOrAddCart();
             }
         });
-
+        //进入店铺
         goodsDetailBottomShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToShop();
             }
         });
-
+        //跳转购入车
         goodsDetailBottomCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

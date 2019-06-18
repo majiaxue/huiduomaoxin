@@ -4,16 +4,9 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorOrange">#fbeadb</color>
-    <color name="colorLightOrange">#fc6615</color>
     <color name="codeText">#fd3c15</color>
-    <color name="lightText">#99fd3c15</color>
-    <color name="color222">#222222</color>
     <color name="color333">#333333</color>
-    <color name="coloreee">#eeeeee</color>
-    <color name="colordedede">#dedede</color>
     <color name="color999">#999999</color>
-    <color name="colorf5f5f5">#f5f5f5</color>
     <color name="white">#ffffff</color>
 
     <color name="colorTransparency">#00FFFFFF</color>

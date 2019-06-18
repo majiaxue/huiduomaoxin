@@ -3,6 +3,7 @@ package com.example.main;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PixelFormat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
@@ -57,6 +58,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
         if ("login".equals(type)) {

@@ -1,5 +1,6 @@
 package com.example.browsinghistory;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 浏览历史
@@ -20,11 +22,6 @@ import butterknife.BindView;
 @Route(path = "/module_user_mine/BrowsingHistoryActivity")
 public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, BrowsingHistoryPresenter> implements BrowsingHistoryView {
 
-
-    @BindView(R2.id.browsing_history_back)
-    ImageView browsingHistoryBack;
-    @BindView(R2.id.browsing_history_state)
-    TextView browsingHistoryState;
     @BindView(R2.id.browsing_history_rec)
     RecyclerView browsingHistoryRec;
     @BindView(R2.id.browsing_history_check_all)
@@ -33,6 +30,12 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
     TextView browsingHistoryDelete;
     @BindView(R2.id.browsing_history_bottom)
     LinearLayout browsingHistoryBottom;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
+    @BindView(R2.id.include_right_btn)
+    TextView includeRightBtn;
     //全选初始状态
     private boolean isCheckAllParent = false;
 //    //编辑初始状态
@@ -45,19 +48,22 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
 
     @Override
     public void initData() {
+        includeRightBtn.setText("编辑");
+        includeTitle.setText("浏览记录");
+        includeRightBtn.setVisibility(View.VISIBLE);
         presenter.browsingHistoryRec(browsingHistoryRec);
     }
 
     @Override
     public void initClick() {
-        browsingHistoryBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
         //编辑
-        browsingHistoryState.setOnClickListener(new View.OnClickListener() {
+        includeRightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if (isCompile) {
@@ -109,10 +115,10 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
     @Override
     public void isCompile(boolean isCompile) {
         if (isCompile) {
-            browsingHistoryState.setText("完成");
+            includeRightBtn.setText("完成");
             browsingHistoryBottom.setVisibility(View.VISIBLE);
         } else {
-            browsingHistoryState.setText("编辑");
+            includeRightBtn.setText("编辑");
             browsingHistoryBottom.setVisibility(View.GONE);
         }
     }

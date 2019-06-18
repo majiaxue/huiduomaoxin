@@ -30,7 +30,6 @@
                 android:src="@drawable/icon_weixuanzhong" />
 
             <ImageView
-                android:id="@+id/cart_parent_dian_pu"
                 android:layout_width="@dimen/dp_14"
                 android:layout_height="@dimen/dp_13"
                 android:layout_marginLeft="@dimen/dp_22"

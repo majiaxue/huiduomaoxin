@@ -36,8 +36,6 @@ import okhttp3.ResponseBody;
 @Route(path = "/module_user_mine/AddressActivity")
 public class AddressActivity extends BaseActivity<AddressView, AddressPresenter> implements AddressView {
 
-    @BindView(R2.id.address_image_back)
-    ImageView addressImageBack;
     @BindView(R2.id.address_name)
     EditText addressName;
     @BindView(R2.id.address_phone)
@@ -64,6 +62,10 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
     TextView addressCity;
     @BindView(R2.id.address_area)
     TextView addressArea;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
 
     @Override
     public int getLayoutId() {
@@ -72,12 +74,12 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
 
     @Override
     public void initData() {
-
+        includeTitle.setText("新建收货地址");
     }
 
     @Override
     public void initClick() {
-        addressImageBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -87,7 +89,7 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
         addressWhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupAddressWhere(addressProvince,addressCity,addressArea);
+                presenter.popupAddressWhere(addressProvince, addressCity, addressArea);
             }
         });
         //保存
@@ -151,4 +153,10 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
         return new AddressPresenter(this);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

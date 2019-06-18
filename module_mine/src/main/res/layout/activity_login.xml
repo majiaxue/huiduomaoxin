@@ -7,7 +7,6 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/login_temp"
         android:layout_width="@dimen/dp_309"
         android:layout_height="@dimen/dp_291"
         android:layout_centerHorizontal="true"

@@ -98,7 +98,6 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        LogUtil.e("44444444444" + mineOrderBean1);
         list.add(mineOrderBean1);
         refundSumText.setText(list.get(0).getOrderList().get(position).getTotalAmount() + "");
         refundImage.setImageURI(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductPic());

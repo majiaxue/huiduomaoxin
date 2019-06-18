@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.bean.UserGoodsDetail;
-import com.example.entity.ChooseGoodsBean;
 import com.example.user_store.R;
 import com.example.utils.OnFlowSelectListener;
 import com.example.view.flowLayout.FlowLayout;
