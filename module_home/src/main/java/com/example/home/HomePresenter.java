@@ -97,62 +97,72 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("homePresenterResult---------->" + result);
                 BannerBean records = JSON.parseObject(result, BannerBean.class);
-                beanList = records.getRecords();
 
-//              homeXbanner.setData(images, null);
-//                homeXbanner.setBannerData(R.layout.image_fresco,beanList);
-                homeXbanner.setBannerData(beanList);
-                Glide.with(mContext).load(beanList.get(0).getPicBackUrl()).into(homeTopBg);
-                homeXbanner.loadImage(new XBanner.XBannerAdapter() {
-                    @Override
-                    public void loadBanner(XBanner banner, Object model, View view, int position) {
+                if (records != null) {
+                    if (records.getRecords() != null) {
+                        beanList = records.getRecords();
+//                      homeXbanner.setData(images, null);
+//                      homeXbanner.setBannerData(R.layout.image_fresco,beanList);
+                        homeXbanner.setBannerData(beanList);
+                        Glide.with(mContext).load(beanList.get(0).getPicBackUrl()).into(homeTopBg);
+                        homeXbanner.loadImage(new XBanner.XBannerAdapter() {
+                            @Override
+                            public void loadBanner(XBanner banner, Object model, View view, int position) {
 //                        SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
 //                        bannerImage.setImageURI(((BannerBean)model).getXBannerUrl());
-                        RequestOptions requestOptions = RequestOptions.centerCropTransform();
-                        Glide.with(mContext).load(((BannerBean.RecordsBean) model).getXBannerUrl())
-                                .apply(requestOptions)
-                                .transform(new RoundedCorners((int) mContext.getResources().getDimension(R.dimen.dp_10)))
-                                .into((ImageView) view);
+                                RequestOptions requestOptions = RequestOptions.centerCropTransform();
+                                Glide.with(mContext).load(((BannerBean.RecordsBean) model).getXBannerUrl())
+                                        .apply(requestOptions)
+                                        .transform(new RoundedCorners((int) mContext.getResources().getDimension(R.dimen.dp_10)))
+                                        .into((ImageView) view);
 
-                    }
-                });
-                // 设置XBanner的页面切换特效
-                homeXbanner.setPageTransformer(Transformer.Default);
-                // 设置XBanner页面切换的时间，即动画时长
-                homeXbanner.setPageChangeDuration(1000);
+                            }
+                        });
+                        // 设置XBanner的页面切换特效
+                        homeXbanner.setPageTransformer(Transformer.Default);
+                        // 设置XBanner页面切换的时间，即动画时长
+                        homeXbanner.setPageChangeDuration(1000);
 
-                //banner切换image也切换
-                homeXbanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int i, float v, int i1) {
+                        //banner切换image也切换
+                        homeXbanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int i, float v, int i1) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onPageSelected(int i) {
+                            @Override
+                            public void onPageSelected(int i) {
 //                        homeTopBg.setImageURI(Uri.parse(beanList.get(i).getPicBackUrl()));
-                        Glide.with(mContext).load(beanList.get(i).getPicBackUrl()).into(homeTopBg);
+                                Glide.with(mContext).load(beanList.get(i).getPicBackUrl()).into(homeTopBg);
 
+                            }
+
+                            @Override
+                            public void onPageScrollStateChanged(int i) {
+
+                            }
+                        });
+                        //监听广告 item 的单击事件
+                        homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(XBanner banner, Object model, View view, int position) {
+                                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        LogUtil.e("数据为空");
                     }
 
-                    @Override
-                    public void onPageScrollStateChanged(int i) {
-
-                    }
-                });
-                //监听广告 item 的单击事件
-                homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(XBanner banner, Object model, View view, int position) {
-                        Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                } else {
+                    LogUtil.e("数据为空");
+                }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
             }
+
         }));
 
 
@@ -199,23 +209,30 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 LogUtil.e("homePresenterResult---------->" + result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
-                goodList.clear();
-                if (GoodChoiceBean.getData() == null) {
-                    LogUtil.e("数据为空");
+
+                if (GoodChoiceBean != null) {
+
+                    if (GoodChoiceBean.getData() != null) {
+                        goodList.clear();
+                        goodList.addAll(GoodChoiceBean.getData());
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+                        homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+                        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
+                        homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
+                        goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", goodList.get(position).getItem_id())
+                                        .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+                            }
+                        });
+                    } else {
+                        LogUtil.e("数据为空");
+                    }
+
                 } else {
-                    goodList.addAll(GoodChoiceBean.getData());
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
-                    homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
-                    GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
-                    homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
-                    goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", goodList.get(position).getItem_id())
-                                    .withString("shoptype", goodList.get(position).getUser_type()).navigation();
-                        }
-                    });
+                    LogUtil.e("数据为空");
                 }
             }
 
@@ -238,35 +255,44 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 LogUtil.e("homePresenterResult---------->" + result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
-                goodList.clear();
-                goodList.addAll(GoodChoiceBean.getData());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                homeBottomRec.setLayoutManager(linearLayoutManager);
-                GoodsRecommendAdapter goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
-                homeBottomRec.setAdapter(goodsRecommendAdapter);
+                if (GoodChoiceBean != null) {
+                    if (GoodChoiceBean.getData() != null) {
+                        goodList.clear();
+                        goodList.addAll(GoodChoiceBean.getData());
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        homeBottomRec.setLayoutManager(linearLayoutManager);
+                        GoodsRecommendAdapter goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
+                        homeBottomRec.setAdapter(goodsRecommendAdapter);
 
-                goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", goodList.get(position).getItem_id())
-                                .withString("shoptype", goodList.get(position).getUser_type()).navigation();
-                    }
-                });
-
-                goodsRecommendAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
+                        goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onItemClick(RecyclerView parent, View view, int position) {
                                 ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                        .withString("para", goodList.get(index).getItem_id())
-                                        .withString("shoptype", goodList.get(index).getUser_type()).navigation();
+                                        .withString("para", goodList.get(position).getItem_id())
+                                        .withString("shoptype", goodList.get(position).getUser_type()).navigation();
                             }
                         });
+
+                        goodsRecommendAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                            @Override
+                            public void ViewOnClick(View view, final int index) {
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                                .withString("para", goodList.get(index).getItem_id())
+                                                .withString("shoptype", goodList.get(index).getUser_type()).navigation();
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        LogUtil.e("数据为空");
                     }
-                });
+
+                } else {
+                    LogUtil.e("数据为空");
+                }
             }
 
             @Override

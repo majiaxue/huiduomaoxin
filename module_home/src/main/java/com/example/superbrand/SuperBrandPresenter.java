@@ -63,67 +63,75 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                 LogUtil.e("SecondaryDetailsResult淘宝--------------->" + result);
                 tbGoodsSearchBeans = JSON.parseArray(result, TBGoodsSearchBean.class);
 
-                for (int i = tbGoodsSearchBeans.size() - 1; i >= 0; i--) {
-                    if (tbGoodsSearchBeans.get(i).getCat_name().equals("文娱车品")) {
-                        tbGoodsSearchBeans.remove(i);
-                    }
-                }
+                if (tbGoodsSearchBeans != null) {
+                    if (tbGoodsSearchBeans.size() != 0) {
+//                        for (int i = tbGoodsSearchBeans.size() - 1; i >= 0; i--) {
+//                            if (tbGoodsSearchBeans.get(i).getCat_name().equals("文娱车品")) {
+//                                tbGoodsSearchBeans.remove(i);
+//                            }
+//                        }
 
-                for (int i = 0; i < tbGoodsSearchBeans.size(); i++) {
-                    superBrandTab.addTab(superBrandTab.newTab().setText(tbGoodsSearchBeans.get(i).getCat_name()));
-                }
+                        for (int i = 0; i < tbGoodsSearchBeans.size(); i++) {
+                            superBrandTab.addTab(superBrandTab.newTab().setText(tbGoodsSearchBeans.get(i).getCat_name()));
+                        }
 
-                initIndicator(superBrandTab);
+                        initIndicator(superBrandTab);
 
-                superBrandTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        String cat_name = tbGoodsSearchBeans.get(tab.getPosition()).getCat_name();
+                        superBrandTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                            @Override
+                            public void onTabSelected(TabLayout.Tab tab) {
+                                String cat_name = tbGoodsSearchBeans.get(tab.getPosition()).getCat_name();
 //                        Toast.makeText(mContext, "cat_name:" + cat_name, Toast.LENGTH_SHORT).show();
-                        Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
-                        Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
-                        RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
-                            @Override
-                            public void onSuccess(String result, String msg) {
-                                LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
-                                SuperBrandBean SuperBrandBean = JSON.parseObject(result, new TypeReference<SuperBrandBean>() {
-                                }.getType());
-                                listsBeans.clear();
-                                listsBeans.addAll(SuperBrandBean.getData().getLists());
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4, LinearLayoutManager.VERTICAL, false);
-                                superBrandRec.setLayoutManager(gridLayoutManager);
-                                SuperBrandRecAdapter superBrandRecAdapter = new SuperBrandRecAdapter(mContext, listsBeans, R.layout.item_super_brand_rec);
-                                superBrandRec.setAdapter(superBrandRecAdapter);
-
-                                superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                Map map = MapUtil.getInstance().addParms("keyword", cat_name).addParms("pageno", 1).build();
+                                Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETTBKSHOP, map);
+                                RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
                                     @Override
-                                    public void onItemClick(RecyclerView parent, View view, int position) {
-                                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                    public void onSuccess(String result, String msg) {
+                                        LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
+                                        SuperBrandBean SuperBrandBean = JSON.parseObject(result, new TypeReference<SuperBrandBean>() {
+                                        }.getType());
+                                        listsBeans.clear();
+                                        listsBeans.addAll(SuperBrandBean.getData().getLists());
+                                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4, LinearLayoutManager.VERTICAL, false);
+                                        superBrandRec.setLayoutManager(gridLayoutManager);
+                                        SuperBrandRecAdapter superBrandRecAdapter = new SuperBrandRecAdapter(mContext, listsBeans, R.layout.item_super_brand_rec);
+                                        superBrandRec.setAdapter(superBrandRecAdapter);
+
+                                        superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
-                                });
+
+                                    @Override
+                                    public void onError(String errorCode, String errorMsg) {
+                                        LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
+                                    }
+                                }));
+
                             }
 
                             @Override
-                            public void onError(String errorCode, String errorMsg) {
-                                LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
+                            public void onTabUnselected(TabLayout.Tab tab) {
+
                             }
-                        }));
 
+                            @Override
+                            public void onTabReselected(TabLayout.Tab tab) {
+
+                            }
+                        });
+
+                        initList(tbGoodsSearchBeans, superBrandRec);
+                    } else {
+                        LogUtil.e("无数据");
                     }
 
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-
-                    }
-                });
-
-                initList(tbGoodsSearchBeans, superBrandRec);
-
+                } else {
+                    LogUtil.e("无数据");
+                }
             }
 
             @Override
