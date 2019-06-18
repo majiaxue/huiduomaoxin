@@ -3,7 +3,9 @@ package com.example.mineorder.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.mineorder.bean.MineOrderBean;
@@ -22,7 +24,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, MineOrderBean.OrderListBean data, int position) {
+    public void convert(RecyclerViewHolder holder, final MineOrderBean.OrderListBean data, int position) {
         if (data.getStatus() == 1) {
             //1待发货
             holder.setText(R.id.mine_order_parent_status, "买家已付款");
@@ -38,11 +40,16 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             holder.setText(R.id.mine_order_parent_status, "等待买家付款");
             holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
             holder.setText(R.id.mine_order_parent_btn_right, "付款");
-        } else if (data.getStatus() == 8) {
-            //8待收货
+        } else if (data.getStatus() == 2) {
+            //2待收货
             holder.setText(R.id.mine_order_parent_status, "卖家已发货");
             holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
             holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+        } else if (data.getStatus() == 4 || data.getStatus() == 5) {
+            //45 已失效
+            holder.setText(R.id.mine_order_parent_status, "已失效");
+            holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
+            holder.setText(R.id.mine_order_parent_btn_right, "再次购买");
         }
 
         holder.setText(R.id.mine_order_parent_shop, data.getSellerName());
@@ -57,6 +64,40 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
         MineOrderChildAdapter mineOrderChildAdapter = new MineOrderChildAdapter(context, data.getOrderItems(), R.layout.item_mine_order_child_rec);
         childRec.setLayoutManager(linearLayoutManager);
         childRec.setAdapter(mineOrderChildAdapter);
+        if (data.getStatus() == 1) {
+            //待发货
+            mineOrderChildAdapter.setOnItemClick(new OnItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/OrderDetailsActivity")
+                            .withString("orderSn", data.getOrderItems().get(position).getOrderSn())
+                            .navigation();
+                }
+            });
+        } else if (data.getStatus() == 2) {
+            //待收货
+            mineOrderChildAdapter.setOnItemClick(new OnItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/OrderDetailsActivity")
+                            .withString("orderSn", data.getOrderItems().get(position).getOrderSn())
+                            .navigation();
+                }
+            });
+        }else if (data.getStatus() == 6){
+            //待付款
+            mineOrderChildAdapter.setOnItemClick(new OnItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/ObligationActivity")
+                            .withString("orderSn", data.getOrderItems().get(position).getOrderSn())
+                            .navigation();
+                }
+            });
+        }
 
     }
 }

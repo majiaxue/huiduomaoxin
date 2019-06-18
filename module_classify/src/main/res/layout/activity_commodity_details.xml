@@ -293,6 +293,7 @@
                     android:visibility="gone"/>
 
                 <LinearLayout
+                    android:id="@+id/shop_no_goods"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginTop="@dimen/dp_5"

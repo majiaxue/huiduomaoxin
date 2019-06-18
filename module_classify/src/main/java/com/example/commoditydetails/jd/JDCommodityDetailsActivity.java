@@ -87,6 +87,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     TextView shopText2;
     @BindView(R2.id.shop_text3)
     TextView shopText3;
+    @BindView(R2.id.shop_no_goods)
+    LinearLayout shopNoGoods;
 
     @Autowired(name = "skuid")
     String skuid;
@@ -247,5 +249,14 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
         double mul = ArithUtil.mul(commission, ArithUtil.div(aDouble, 100, 2));
         commodityEarnings.setText("预估收益：￥" + mul);//收益
+    }
+
+    @Override
+    public void isNoGoods(boolean isNoGoods) {
+        if (isNoGoods){
+            shopNoGoods.setVisibility(View.GONE);
+        }else{
+            shopNoGoods.setVisibility(View.VISIBLE);
+        }
     }
 }

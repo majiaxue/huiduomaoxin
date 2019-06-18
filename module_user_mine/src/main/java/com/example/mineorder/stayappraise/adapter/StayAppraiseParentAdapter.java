@@ -12,24 +12,27 @@ import com.example.adapter.RecyclerViewHolder;
 import com.example.mineorder.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by cuihaohao on 2019/5/30
- * Describe:
+ * Describe:待评价
  */
 public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.OrderListBean> {
 
     private RecyclerView stayAppraiseChildRec;
     private LinearLayoutManager linearLayoutManager;
     private StayAppraiseChildAdapter stayAppraiseChildAdapter;
+//    private List<MineOrderBean.OrderListBean.OrderItemsBean> beanList = new ArrayList<>();
 
     public StayAppraiseParentAdapter(Context context, List<MineOrderBean.OrderListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, MineOrderBean.OrderListBean data, int position) {
+    public void convert(RecyclerViewHolder holder, final MineOrderBean.OrderListBean data, int position) {
         if (data.getStatus() == 3) {
             //3待评论
             holder.setText(R.id.stay_appraise_parent_status, "交易成功");
@@ -37,6 +40,8 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
         holder.setText(R.id.stay_appraise_parent_shop, data.getSellerName());
 
         viewOnClickListener.ViewOnClick(holder.getView(R.id.stay_appraise_parent_shop), position);
+
+//        beanList.addAll(data.getOrderItems());
 
         stayAppraiseChildRec = holder.getView(R.id.stay_appraise_child_rec);
         linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -46,12 +51,17 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
 
         stayAppraiseChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
             @Override
-            public void ViewTwoOnClick(View view1, View view2, int position) {
+            public void ViewTwoOnClick(View view1, View view2, final int position) {
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //再次购买
-                        Toast.makeText(context, "再次购买", Toast.LENGTH_SHORT).show();
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", data.getOrderItems().get(position).getProductId() + "")
+                                .withString("sellerId", data.getSellerId())
+                                .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
 
@@ -59,7 +69,11 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
                     @Override
                     public void onClick(View v) {
                         //立即评价
-                        ARouter.getInstance().build("/module_user_mine/OrderAssessActivity").navigation();
+                        ARouter.getInstance()
+                                .build("/module_user_mine/OrderAssessActivity")
+                                .withInt("position", position)
+                                .withSerializable("beanList", data)
+                                .navigation();
 
                     }
                 });

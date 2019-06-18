@@ -26,7 +26,7 @@ public class StaySendGoodsFragment extends BaseFragment<StaySendGoodsView, StayS
 
     @Override
     public void initData() {
-        presenter.staySendGoodsRec(staySendGoodsRec);
+//        presenter.staySendGoodsRec(staySendGoodsRec);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class StaySendGoodsFragment extends BaseFragment<StaySendGoodsView, StayS
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("setUserVisibleHint-------->当前可见");
+        LogUtil.e("setUserVisibleHint-------->待发货当前可见");
         presenter.staySendGoodsRec(staySendGoodsRec);
 
     }

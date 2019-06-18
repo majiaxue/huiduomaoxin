@@ -50,7 +50,7 @@ public class AllPresenter extends BasePresenter<AllView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("AllResult-------->"+result);
-                List<CouponBean> couponBeans = JSON.parseArray(result, CouponBean.class);
+                final List<CouponBean> couponBeans = JSON.parseArray(result, CouponBean.class);
 
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 allRec.setLayoutManager(linearLayoutManager);
@@ -63,7 +63,6 @@ public class AllPresenter extends BasePresenter<AllView> {
                         view1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
 //                        ARouter.getInstance().build("").navigation();
                             }
                         });
@@ -71,7 +70,7 @@ public class AllPresenter extends BasePresenter<AllView> {
                         view2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+
                             }
                         });
                     }

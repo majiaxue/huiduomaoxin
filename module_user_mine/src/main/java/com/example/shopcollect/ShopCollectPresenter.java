@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
@@ -172,7 +173,12 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                 baseRecStaggeredAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", commendList.get(position).getId() + "")
+                                .withString("sellerId", commendList.get(position).getSellerId())
+                                .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
                 baseRecStaggeredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {

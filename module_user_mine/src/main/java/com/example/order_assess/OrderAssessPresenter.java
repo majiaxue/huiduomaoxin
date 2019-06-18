@@ -107,7 +107,7 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
             fileUri = Uri.fromFile(file);
         }
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        getView().imageUri(fileUri);
+
         getView().takePhoto(captureIntent);
     }
 
@@ -155,6 +155,7 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
 
     public void updateList() {
         uriList.add(fileUri);
+        getView().imageUri(fileUri);
         fileUri = null;
         adapter.notifyDataSetChanged();
         isSHowAdd();

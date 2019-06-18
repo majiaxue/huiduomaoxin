@@ -39,6 +39,7 @@ import okhttp3.ResponseBody;
 public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
+    private MineOrderParentAdapter mineOrderParentAdapter;
 
     public StayDeliveryGoodsPresenter(Context context) {
         super(context);
@@ -50,7 +51,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
     }
 
     public void stayDeliveryGoodsRec(final RecyclerView stayDeliveryGoodsRec) {
-        Map map = MapUtil.getInstance().addParms("status", 8).build();
+        Map map = MapUtil.getInstance().addParms("status", 2).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -65,7 +66,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                     listBeans.addAll(mineOrderBean.getOrderList());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     stayDeliveryGoodsRec.setLayoutManager(linearLayoutManager);
-                    MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                    mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
                     stayDeliveryGoodsRec.setAdapter(mineOrderParentAdapter);
                     mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                         @Override
@@ -81,14 +82,34 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ARouter.getInstance().build("/module_user_mine/LogisticsInformationActivity").navigation();
+                                    ARouter.getInstance()
+                                            .build("/module_user_mine/LogisticsInformationActivity")
+                                            .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
+                                            .withString("goodsImage",listBeans.get(position).getOrderItems().get(0).getProductPic())
+                                            .navigation();
                                 }
                             });
                             //确认收货
                             view3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+
+                                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.ORDERCONFIRM + "/" + listBeans.get(position).getOrderId(), SPUtil.getToken());
+                                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                                        @Override
+                                        public void onSuccess(String result, String msg) {
+                                            LogUtil.e("确认收货---->" + result);
+                                            if ("true".equals(result)) {
+                                                listBeans.remove(position);
+                                                mineOrderParentAdapter.notifyDataSetChanged();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(String errorCode, String errorMsg) {
+                                            LogUtil.e("确认收货error---->" + errorMsg);
+                                        }
+                                    }));
                                 }
                             });
                         }
@@ -97,7 +118,10 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                     mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            mContext.startActivity(new Intent(mContext, LogisticsInformationActivity.class));
+                            ARouter.getInstance()
+                                    .build("/module_user_mine/OrderDetailsActivity")
+                                    .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
+                                    .navigation();
                         }
                     });
                 }
@@ -105,7 +129,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("stayDeliveryGoodsErrorMsg" + errorMsg);
             }
         }));
 

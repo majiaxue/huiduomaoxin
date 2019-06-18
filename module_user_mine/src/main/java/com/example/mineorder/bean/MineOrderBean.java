@@ -37,6 +37,7 @@ public class MineOrderBean implements Serializable {
         private int status;
         private double totalAmount;
         private int totalCount;
+        private String sellerId;
         private List<OrderItemsBean> orderItems;
 
         public int getOrderId() {
@@ -75,16 +76,24 @@ public class MineOrderBean implements Serializable {
             return totalAmount;
         }
 
-        public void setTotalAmount(int totalAmount) {
-            this.totalAmount = totalAmount;
-        }
-
         public int getTotalCount() {
             return totalCount;
         }
 
         public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
+        }
+
+        public void setTotalAmount(double totalAmount) {
+            this.totalAmount = totalAmount;
+        }
+
+        public String getSellerId() {
+            return sellerId;
+        }
+
+        public void setSellerId(String sellerId) {
+            this.sellerId = sellerId;
         }
 
         public List<OrderItemsBean> getOrderItems() {

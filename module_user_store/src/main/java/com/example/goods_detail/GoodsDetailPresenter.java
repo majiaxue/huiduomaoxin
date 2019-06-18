@@ -14,6 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
@@ -135,7 +136,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("详情：" + errorCode + "------" + errorMsg);
+
             }
         }));
 
@@ -186,11 +187,17 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-                        intent.putExtra("id", commendList.get(position).getId() + "");
-                        intent.putExtra("commendId", commendList.get(position).getProductCategoryId() + "");
-                        intent.putExtra("sellerId", commendList.get(position).getSellerId());
-                        mContext.startActivity(intent);
+//                        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+//                        intent.putExtra("id", commendList.get(position).getId() + "");
+//                        intent.putExtra("commendId", commendList.get(position).getProductCategoryId() + "");
+//                        intent.putExtra("sellerId", commendList.get(position).getSellerId());
+//                        mContext.startActivity(intent);
+                        ARouter.getInstance()
+                                .build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", commendList.get(position).getId() + "")
+                                .withString("sellerId", commendList.get(position).getSellerId())
+                                .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                .navigation();
                     }
                 });
             }
@@ -209,7 +216,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("收藏：" + result);
-                if ("true" .equals(result)) {
+                if ("true".equals(result)) {
                     getView().attention();
                 } else {
                     getView().cancelAttention();
@@ -224,10 +231,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void lingquan() {
-        if (couponBeanList.size() > 0) {
-            PopUtil.lingquanPop(mContext, couponBeanList);
-        } else {
-            Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
+        if (couponBeanList != null) {
+            if (couponBeanList.size() > 0) {
+                PopUtil.lingquanPop(mContext, couponBeanList);
+            } else {
+                Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            LogUtil.e("无数据");
         }
     }
 

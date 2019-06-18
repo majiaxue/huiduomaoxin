@@ -8,14 +8,33 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.bean.OrderDetailBean;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
+/**
+ * 多用户订单详情
+ */
+@Route(path = "/module_user_mine/OrderDetailsActivity")
 public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDetailsPresenter> implements OrderDetailsView {
 
 
@@ -51,8 +70,14 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
     RecyclerView orderDetailsRecommendRec;
     @BindView(R2.id.order_details_left)
     TextView orderDetailsLeft;
+    @BindView(R2.id.order_details_refund)
+    TextView orderDetailsRefund;
     @BindView(R2.id.order_details_right)
     TextView orderDetailsRight;
+
+    @Autowired(name = "orderSn")
+    String orderSn;
+
 
     @Override
     public int getLayoutId() {
@@ -61,24 +86,36 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
+        presenter.initView(orderSn);
 
+        presenter.orderDetailsRecommendRec(orderDetailsRecommendRec);
     }
 
     @Override
     public void initClick() {
-        orderDetailsLeft.setOnClickListener(new View.OnClickListener() {
+
+        orderDetailsImageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        orderDetailsContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 call("18818814558");
             }
         });
 
-        orderDetailsRight.setOnClickListener(new View.OnClickListener() {
+        orderDetailsConsultCustomerService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 call("40083312345");
             }
         });
+
     }
 
     @Override
@@ -97,6 +134,108 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //开启系统拨号器
         startActivity(intent);
+
+    }
+
+    @Override
+    public void loadData(final OrderDetailBean orderDetailBean) {
+
+        final String orderSn1 = orderDetailBean.getOrderSn();
+        final String productPic = orderDetailBean.getItems().get(0).getProductPic();
+
+        if (orderDetailBean.getStatus() == 1) {
+            //待发货
+            orderDetailsStatus.setText("购买成功（待发货）");
+            orderDetailsSubhead.setVisibility(View.GONE);
+            orderDetailsRefund.setVisibility(View.GONE);
+            orderDetailsLeft.setText("申请退款");
+            orderDetailsRight.setText("提醒发货");
+            //申请退款
+            orderDetailsLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/RefundActivity")
+                            .withSerializable("orderDetailBean", orderDetailBean)
+                            .withString("type", "2")
+                            .navigation();
+                }
+            });
+            //提醒发货
+            orderDetailsRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(OrderDetailsActivity.this, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        } else if (orderDetailBean.getStatus() == 2) {
+            //待收货
+            orderDetailsStatus.setText("卖家已发货");
+            orderDetailsSubhead.setVisibility(View.VISIBLE);
+            orderDetailsRefund.setVisibility(View.VISIBLE);
+            orderDetailsRefund.setText("申请退款");
+            orderDetailsLeft.setText("查看物流");
+            orderDetailsRight.setText("确认收货");
+
+            //申请退款
+            orderDetailsRefund.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/RefundActivity")
+                            .withSerializable("orderDetailBean", orderDetailBean)
+                            .withString("type", "2")
+                            .navigation();
+                }
+            });
+
+            //查看物流
+            orderDetailsLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/LogisticsInformationActivity")
+                            .withString("orderSn", orderSn1)
+                            .withString("goodsImage", productPic)
+                            .navigation();
+//
+                }
+            });
+            //确认收货
+            orderDetailsRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.ORDERCONFIRM + "/" + orderDetailBean.getItems().get(0).getOrderId(), SPUtil.getToken());
+                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                        @Override
+                        public void onSuccess(String result, String msg) {
+                            LogUtil.e("确认收货---->" + result);
+                            if ("true".equals(result)) {
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorCode, String errorMsg) {
+                            LogUtil.e("确认收货error---->" + errorMsg);
+                        }
+                    }));
+                }
+            });
+        }
+        orderDetailsName.setText(orderDetailBean.getReceiverName());
+        orderDetailsPhone.setText(orderDetailBean.getReceiverPhone());
+        orderDetailsAddress.setText(orderDetailBean.getReceiverRegion() + orderDetailBean.getReceiverCity() + orderDetailBean.getReceiverProvince() + orderDetailBean.getOrderAddress());
+        orderDetailsName.setText(orderDetailBean.getReceiverName());
+        orderDetailsGoodsPrice.setText("￥" + orderDetailBean.getTotalAmount());
+        orderDetailsFreight.setText("￥" + orderDetailBean.getFreightAmount());
+        orderDetailsCoupon.setText("￥" + orderDetailBean.getCouponAmount());
+        orderDetailsActualPayment.setText("￥" + orderDetailBean.getPayAmount());
+
+        List<OrderDetailBean.ItemsBean> items = orderDetailBean.getItems();
+
+        presenter.items(items, orderDetailsGoodsRec);
 
     }
 }

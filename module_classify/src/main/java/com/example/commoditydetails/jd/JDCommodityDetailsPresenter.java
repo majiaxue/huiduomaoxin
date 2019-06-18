@@ -211,43 +211,51 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                 LogUtil.e("TBCommodityDetailsResult京东推荐商品--------------->" + result);
                 final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
                 }.getType());
+                if (jDGoodsRecBean != null) {
+                    if (jDGoodsRecBean.getData() != null && jDGoodsRecBean.getData().getLists() != null && jDGoodsRecBean.getData().getLists().size() != 0) {
+                        getView().isNoGoods(false);
+                        listsBeanList.clear();
+                        listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        JDRecAdapter jdRecAdapter = new JDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
+                        shopRecommendRec.setLayoutManager(linearLayoutManager);
+                        shopRecommendRec.setAdapter(jdRecAdapter);
 
-
-                listsBeanList.clear();
-                listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                JDRecAdapter jdRecAdapter = new JDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
-                shopRecommendRec.setLayoutManager(linearLayoutManager);
-                shopRecommendRec.setAdapter(jdRecAdapter);
-
-                jdRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance()
-                                .build("/module_classify/JDCommodityDetailsActivity")
-                                .withString("skuid", listsBeanList.get(position).getSkuId())
-                                .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                .withInt("position", position)
-                                .navigation();
-                    }
-                });
-
-                jdRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
+                        jdRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onItemClick(RecyclerView parent, View view, int position) {
                                 ARouter.getInstance()
                                         .build("/module_classify/JDCommodityDetailsActivity")
-                                        .withString("skuid", listsBeanList.get(index).getSkuId())
+                                        .withString("skuid", listsBeanList.get(position).getSkuId())
                                         .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                        .withInt("position", index)
+                                        .withInt("position", position)
                                         .navigation();
                             }
                         });
+
+                        jdRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                            @Override
+                            public void ViewOnClick(View view, final int index) {
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ARouter.getInstance()
+                                                .build("/module_classify/JDCommodityDetailsActivity")
+                                                .withString("skuid", listsBeanList.get(index).getSkuId())
+                                                .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
+                                                .withInt("position", index)
+                                                .navigation();
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        getView().isNoGoods(true);
                     }
-                });
+
+                } else {
+                    LogUtil.e("空");
+                }
             }
 
 

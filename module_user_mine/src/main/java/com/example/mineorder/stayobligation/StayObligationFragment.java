@@ -25,7 +25,7 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
 
     @Override
     public void initData() {
-        presenter.stayObligationRec(stayObligationRec);
+//        presenter.stayObligationRec(stayObligationRec);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("setUserVisibleHint-------->当前可见");
+        LogUtil.e("setUserVisibleHint-------->待付款当前可见");
         presenter.stayObligationRec(stayObligationRec);
     }
 
