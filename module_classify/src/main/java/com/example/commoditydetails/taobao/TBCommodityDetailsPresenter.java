@@ -220,10 +220,10 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
                 TBLedSecuritiesBean tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
                 }.getType());
-//                jumpToTB(tbLedSecuritiesBean.getData().getCoupon_click_url());
-                Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url", tbLedSecuritiesBean.getData().getCoupon_click_url());
-                mContext.startActivity(intent);
+                jumpToTB(tbLedSecuritiesBean.getData().getCoupon_click_url());
+//                Intent intent = new Intent(mContext, WebViewActivity.class);
+//                intent.putExtra("url", tbLedSecuritiesBean.getData().getCoupon_click_url());
+//                mContext.startActivity(intent);
             }
 
             @Override

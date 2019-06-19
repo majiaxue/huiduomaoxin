@@ -69,6 +69,7 @@ public class CommonResource {
     public static final String SEARCHPDDGOODS = "/rest/pdd/goods/pddgoods";      //搜索拼多多商品
     public static final String SEARCHJDGOODS = "/rest/jd/goodsList";            //搜索京东商品
     public static final String TIXIAN = "/rest/user/cashOut/aliPay  ";          //提现
+    public static final String MESSAGELIST = "/rest/user/message";             //消息列表
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -111,7 +112,6 @@ public class CommonResource {
     public static final String ORDERCONFIRM = "/rest/order/confirm";//确定收货
     public static final String USERCOMMENT = "/rest/user/comment";//立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
-
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

@@ -32,6 +32,8 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
     @BindView(R2.id.message_center_refresh)
     SmartRefreshLayout refreshLayout;
 
+    private int page = 1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_message_center;
@@ -40,28 +42,13 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
     @Override
     public void initData() {
         includeTitle.setText("消息中心");
-        presenter.loadData();
+        presenter.loadData(page);
 
         //设置 Header 为 官方主题 样式
         refreshLayout.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 默认 样式
         refreshLayout.setRefreshFooter(new ClassicsFooter(this));
 
-        //********************设置上拉刷新下拉加载
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-                refreshLayout.finishRefresh();
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-                refreshLayout.finishLoadMore();
-            }
-        });
     }
 
     @Override
@@ -77,6 +64,22 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 presenter.jumpToDetail(position);
+            }
+        });
+
+        //********************设置上拉刷新下拉加载
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+                refreshLayout.finishRefresh();
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+                refreshLayout.finishLoadMore();
             }
         });
     }

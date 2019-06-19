@@ -2,13 +2,22 @@ package com.example.message_list;
 
 import android.content.Context;
 
+import com.example.common.CommonResource;
 import com.example.entity.MessageListBean;
 import com.example.message_list.adapter.MessageListAdapter;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class MessageListPresenter extends BasePresenter<MessageListView> {
 

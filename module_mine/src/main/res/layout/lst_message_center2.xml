@@ -15,7 +15,6 @@
             android:layout_height="@dimen/dp_39"
             android:layout_marginLeft="@dimen/dp_18"
             android:gravity="center"
-            android:text="安全险"
             android:textColor="#333333"
             android:textSize="@dimen/sp_14" />
 
@@ -26,7 +25,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_23"
             android:gravity="center"
-            android:text="系统消息"
             android:textColor="#999999"
             android:textSize="@dimen/sp_14" />
 
@@ -42,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_19"
             android:layout_marginTop="@dimen/dp_53"
-            android:text="账户安全险免费续保"
             android:textColor="#333333"
             android:textSize="@dimen/sp_16" />
 
@@ -55,7 +52,6 @@
             android:layout_marginTop="@dimen/dp_14"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="投保成功"
             android:textColor="#999999"
             android:textSize="@dimen/sp_13" />
 

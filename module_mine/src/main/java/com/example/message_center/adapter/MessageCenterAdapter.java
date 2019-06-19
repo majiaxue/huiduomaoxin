@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.entity.MessageCenterBean;
+import com.example.bean.MessageCenterBean;
 import com.example.module_mine.R;
 
 import java.util.List;
@@ -65,12 +65,11 @@ public class MessageCenterAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
         holder.title.setText(dataList.get(position).getTitle());
-        holder.messageType.setText(dataList.get(position).getMessageType());
-        holder.content.setText(dataList.get(position).getContent());
-        holder.status.setText(dataList.get(position).getStatus());
+//        holder.messageType.setText(dataList.get(position).getMessageType());
+        holder.content.setText(dataList.get(position).getMessage());
+//        holder.status.setText(dataList.get(position).getStatus());
         if ("0".equals(dataList.get(position).getFlag())) {
-            holder.express.setText(dataList.get(position).getExpress() + "：" + dataList.get(position).getExpressNum());
-            Glide.with(context).load(dataList.get(position).getImgUrl()).apply(RequestOptions.bitmapTransform(new RoundedCorners((int) context.getResources().getDimension(R.dimen.dp_5)))).into(holder.img);
+            Glide.with(context).load(dataList.get(position).getGoodsUrl()).apply(RequestOptions.bitmapTransform(new RoundedCorners((int) context.getResources().getDimension(R.dimen.dp_5)))).into(holder.img);
         }
         return convertView;
     }
