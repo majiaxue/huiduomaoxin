@@ -1,7 +1,7 @@
 package com.example.goodscollection;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,9 +15,8 @@ import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
 
-import java.security.cert.Certificate;
-
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 商品收藏
@@ -25,11 +24,6 @@ import butterknife.BindView;
 @Route(path = "/module_user_mine/GoodsCollectionActivity")
 public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, GoodsCollectionPresenter> implements GoodsCollectionView {
 
-
-    @BindView(R2.id.goods_collection_back)
-    ImageView goodsCollectionBack;
-    @BindView(R2.id.goods_collection_state)
-    TextView goodsCollectionState;
     @BindView(R2.id.goods_collection_go)
     TextView goodsCollectionGo;
     @BindView(R2.id.goods_collection_empty)
@@ -46,6 +40,12 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     TextView goodsCollectionDelete;
     @BindView(R2.id.goods_collection_bottom)
     LinearLayout goodsCollectionBottom;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
+    @BindView(R2.id.include_right_btn)
+    TextView includeRightBtn;
     //全选初始状态
     private boolean checkAll = false;
     //编辑初始状态
@@ -58,6 +58,9 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
 
     @Override
     public void initData() {
+        includeTitle.setText("商品收藏");
+        includeRightBtn.setText("编辑");
+        includeRightBtn.setVisibility(View.VISIBLE);
         presenter.setGoodsCollectionRec(goodsCollectionRec);
 
         //为您推荐
@@ -66,7 +69,7 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
 
     @Override
     public void initClick() {
-        goodsCollectionBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -80,7 +83,7 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
             }
         });
         //编辑
-        goodsCollectionState.setOnClickListener(new View.OnClickListener() {
+        includeRightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.compile();
@@ -123,10 +126,10 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     @Override
     public void isCompile(boolean isCompile) {
         if (isCompile) {
-            goodsCollectionState.setText("完成");
+            includeRightBtn.setText("完成");
             goodsCollectionBottom.setVisibility(View.VISIBLE);
         } else {
-            goodsCollectionState.setText("编辑");
+            includeRightBtn.setText("编辑");
             goodsCollectionBottom.setVisibility(View.GONE);
         }
     }
@@ -160,6 +163,4 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     public void loadCommend(BaseRecStaggeredAdapter adapter) {
         goodsCollectionBottomRec.setAdapter(adapter);
     }
-
-
 }

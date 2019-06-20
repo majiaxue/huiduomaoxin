@@ -25,6 +25,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public OnTwoViewClickListener twoViewClickListener;
     public ViewFourOnClickListener viewFourOnClickListener;
     public OnViewIndexClickListener viewIndexClickListener;
+    public OnPopChooseListener popChooseListener;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -163,5 +164,13 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public void setOnViewIndexClickListener(OnViewIndexClickListener listener) {
         this.viewIndexClickListener = listener;
+    }
+
+    public interface OnPopChooseListener {
+        void onPopChoose(int parentPos, int childPos);
+    }
+
+    public void setOnPopChooseListener(OnPopChooseListener listener) {
+        this.popChooseListener = listener;
     }
 }

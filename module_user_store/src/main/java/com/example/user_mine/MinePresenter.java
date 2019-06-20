@@ -1,15 +1,11 @@
 package com.example.user_mine;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -149,7 +145,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     //查询商家申请
     public void businessApplication() {
         Map build = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
-        Observable<ResponseBody> data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_5003).getData(CommonResource.SELLERSTATE, build);
+        Observable<ResponseBody> data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERSTATE, build);
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

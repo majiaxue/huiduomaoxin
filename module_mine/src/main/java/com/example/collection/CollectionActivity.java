@@ -1,5 +1,6 @@
 package com.example.collection;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,13 +22,10 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 @Route(path = "/mine/collection")
 public class CollectionActivity extends BaseActivity<CollectionView, CollectionPresenter> implements CollectionView {
-    @BindView(R2.id.collection_back)
-    ImageView collectionBack;
-    @BindView(R2.id.collection_editor)
-    TextView collectionEditor;
     @BindView(R2.id.collection_rv)
     RecyclerView collectionRv;
     @BindView(R2.id.collection_all_check)
@@ -38,6 +36,12 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
     LinearLayout collectionBottom;
     @BindView(R2.id.collection_refresh)
     SmartRefreshLayout mRefresh;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
+    @BindView(R2.id.include_right_btn)
+    TextView includeRightBtn;
 
     private int page = 1;
 
@@ -48,6 +52,9 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
 
     @Override
     public void initData() {
+        includeTitle.setText("我的收藏");
+        includeRightBtn.setText("编辑");
+        includeRightBtn.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         collectionRv.setLayoutManager(layoutManager);
@@ -62,14 +69,14 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
 
     @Override
     public void initClick() {
-        collectionBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
 
-        collectionEditor.setOnClickListener(new View.OnClickListener() {
+        includeRightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.edit();
@@ -115,13 +122,13 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
 
     @Override
     public void toEdit() {
-        collectionEditor.setText("完成");
+        includeRightBtn.setText("完成");
         collectionBottom.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void toFinish() {
-        collectionEditor.setText("编辑");
+        includeRightBtn.setText("编辑");
         collectionBottom.setVisibility(View.GONE);
     }
 

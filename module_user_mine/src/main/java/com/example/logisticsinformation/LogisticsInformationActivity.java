@@ -22,8 +22,6 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,9 +30,10 @@ import butterknife.ButterKnife;
  */
 @Route(path = "/module_user_mine/LogisticsInformationActivity")
 public class LogisticsInformationActivity extends BaseActivity<LogisticsInformationView, LogisticsInformationPresenter> implements LogisticsInformationView {
-
-    @BindView(R2.id.logistics_information_back)
-    ImageView logisticsInformationBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.logistics_information_image)
     SimpleDraweeView logisticsInformationImage;
     @BindView(R2.id.logistics_information_status)
@@ -69,6 +68,7 @@ public class LogisticsInformationActivity extends BaseActivity<LogisticsInformat
 
     @Override
     public void initData() {
+        includeTitle.setText("物流信息");
         ARouter.getInstance().inject(this);
 
         logisticsInformationImage.setImageURI(goodsImage);
@@ -81,7 +81,7 @@ public class LogisticsInformationActivity extends BaseActivity<LogisticsInformat
 
     @Override
     public void initClick() {
-        logisticsInformationBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -124,7 +124,7 @@ public class LogisticsInformationActivity extends BaseActivity<LogisticsInformat
         LogUtil.e("信息" + acceptStation);
         if (acceptStation.indexOf("已签收") != -1) {
             logisticsInformationStatus.setText("已签收");
-        }else {
+        } else {
             logisticsInformationStatus.setText("运输中");
         }
 

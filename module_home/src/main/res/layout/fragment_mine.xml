@@ -21,12 +21,16 @@
             android:scaleType="fitXY"
             android:src="@drawable/hgfghf" />
 
+        <include
+            android:id="@+id/mine_status"
+            layout="@layout/include_status" />
+
         <ImageView
             android:id="@+id/mine_setting"
             android:layout_width="@dimen/dp_41"
             android:layout_height="@dimen/dp_41"
+            android:layout_below="@id/mine_status"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/dp_22"
             android:layout_marginRight="@dimen/dp_5"
             android:padding="@dimen/dp_10"
             android:src="@drawable/shezhi" />
@@ -35,8 +39,9 @@
             android:id="@+id/mine_rela"
             android:layout_width="@dimen/dp_345"
             android:layout_height="@dimen/dp_176"
+            android:layout_below="@id/mine_status"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_66"
+            android:layout_marginTop="@dimen/dp_45"
             android:background="@drawable/bg_mine_top"
             android:clipChildren="false"
             android:clipToPadding="false"

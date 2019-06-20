@@ -28,9 +28,10 @@ import butterknife.ButterKnife;
 @Route(path = "/module_user_mine/RefundParticularsActivity")
 public class RefundParticularsActivity extends BaseActivity<RefundParticularsView, RefundParticularsPresenter> implements RefundParticularsView {
 
-
-    @BindView(R2.id.refund_particulars_back)
-    ImageView refundParticularsBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.refund_particulars_status)
     TextView refundParticularsStatus;
     @BindView(R2.id.refund_particulars_time)
@@ -81,6 +82,7 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     @Autowired(name = "returnId")
     String returnId;
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_refund_particulars;
@@ -88,13 +90,14 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
 
     @Override
     public void initData() {
+        includeTitle.setText("退款详情");
         ARouter.getInstance().inject(this);
         presenter.initView(returnId);
     }
 
     @Override
     public void initClick() {
-        refundParticularsBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

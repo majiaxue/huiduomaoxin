@@ -4,19 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <com.example.view.WindowInsetsFrameLayout
         android:id="@+id/user_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"></FrameLayout>
+        android:layout_weight="1"></com.example.view.WindowInsetsFrameLayout>
 
     <RadioGroup
         android:id="@+id/user_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_47"
+        android:background="#FFFFFF"
         android:clipChildren="false"
-        android:orientation="horizontal"
-        android:background="#FFFFFF">
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/user_home"

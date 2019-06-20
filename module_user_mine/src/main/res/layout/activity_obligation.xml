@@ -7,28 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.obligation.ObligationActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45">
-
-        <ImageView
-            android:id="@+id/obligation_image_back"
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_36"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:padding="@dimen/dp_10"
-            android:src="@drawable/icon_fanhui" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="等待付款"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_20" />
-
-    </RelativeLayout>
+    <include layout="@layout/page_top" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

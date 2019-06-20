@@ -1,8 +1,8 @@
 package com.example.goods_detail;
 
+import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
-import com.example.entity.TopBannerBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
@@ -16,7 +16,7 @@ public interface GoodsDetailView extends IView {
 
     void loadImage(GoodsImageAdapter adapter);
 
-    void loadAssess(GoodsAssessAdapter adapter);
+    void loadAssess(GoodsAssessAdapter adapter, AssessBean assessBean);
 
     void loadCommend(CommendAdapter adapter);
 
@@ -30,5 +30,5 @@ public interface GoodsDetailView extends IView {
 
     void weixuanze(String str);
 
-    void loadUI(UserGoodsDetail data);
+    void loadUI(UserGoodsDetail data, int size);
 }

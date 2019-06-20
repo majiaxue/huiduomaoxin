@@ -2,6 +2,7 @@ package com.example.operator;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.operator.adapter.YysFactorAdapter;
 import com.example.utils.SpaceItemDecoration;
+import com.example.utils.StatusBarUtils;
 
 import butterknife.BindView;
 
@@ -35,9 +37,11 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     @BindView(R2.id.operator_scroll)
     NestedScrollView mScorll;
     @BindView(R2.id.operator_top)
-    LinearLayout mTop;
+    RelativeLayout mTop;
     @BindView(R2.id.operator_title)
     TextView mTitle;
+    @BindView(R2.id.operator_status)
+    LinearLayout mStatus;
 
     @Override
     public int getLayoutId() {
@@ -84,10 +88,12 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
             mTop.setBackgroundColor(Color.TRANSPARENT);
             operatorBack.setImageResource(R.drawable.icon_fanhui_bai);
             mTitle.setTextColor(Color.parseColor("#ffffff"));
+            mStatus.setBackgroundColor(Color.TRANSPARENT);
         } else {
             mTop.setBackgroundColor(Color.WHITE);
             operatorBack.setImageResource(R.drawable.icon_fanhui);
             mTitle.setTextColor(Color.parseColor("#333333"));
+            mStatus.setBackgroundColor(Color.WHITE);
         }
     }
 

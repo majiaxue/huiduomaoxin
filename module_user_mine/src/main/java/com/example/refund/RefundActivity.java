@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -44,9 +46,10 @@ import okhttp3.ResponseBody;
 @Route(path = "/module_user_mine/RefundActivity")
 public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> implements RefundView {
 
-
-    @BindView(R2.id.refund_image_back)
-    ImageView refundImageBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.refund_image)
     SimpleDraweeView refundImage;
     @BindView(R2.id.refund_goods_name)
@@ -89,6 +92,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     @Autowired(name = "type")
     String type;
 
+
     private String Base64;
     private List<MineOrderBean> list = new ArrayList<>();
     private List<String> images = new ArrayList<>();
@@ -100,6 +104,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
     @Override
     public void initData() {
+        includeTitle.setText("退款申请");
         ARouter.getInstance().inject(this);
         LogUtil.e("beanList退款申请" + mineOrderBean1);
         list.add(mineOrderBean1);
@@ -122,7 +127,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     @Override
     public void initClick() {
         //返回
-        refundImageBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -153,7 +158,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
         refundSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(type)){
+                if ("1".equals(type)) {
                     RefundApplyVo refundApplyVo = new RefundApplyVo();
                     refundApplyVo.setOrderId(list.get(0).getOrderList().get(position).getOrderId() + "");
                     refundApplyVo.setProductId(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductId() + "");
@@ -183,7 +188,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         }
                     }));
 
-                }else{
+                } else {
                     RefundApplyVo refundApplyVo = new RefundApplyVo();
                     refundApplyVo.setOrderId(orderDetailBean.getItems().get(0).getOrderId() + "");
                     refundApplyVo.setProductId(orderDetailBean.getItems().get(0).getProductId() + "");

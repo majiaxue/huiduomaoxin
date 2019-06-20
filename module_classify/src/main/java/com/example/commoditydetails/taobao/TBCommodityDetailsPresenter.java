@@ -74,7 +74,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     //初始化视图
     public void initView(String para, String shopType) {
-        if ("0" .equals(shopType)) {
+        if ("0".equals(shopType)) {
             type = "C";
         } else {
             type = "B";
@@ -212,6 +212,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     //领劵
     public void ledSecurities(String para) {
+        LogUtil.e("----------------------->" + para);
         Map map = MapUtil.getInstance().addParms("para", para).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETGYURLBYALL, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {

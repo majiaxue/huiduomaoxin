@@ -236,7 +236,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         this.userInfo = userInfo;
         mineName.setText(userInfo.getNickname());
         Glide.with(getContext()).load(userInfo.getIcon()).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(mineHeader);
-        mineCode.setText(userInfo.getInviteCode());
+        mineCode.setText("邀请码："+userInfo.getInviteCode());
         mineTemp.setVisibility(View.VISIBLE);
         if (userInfo.getLevel() != null) {
             mineLv.setVisibility(View.VISIBLE);
