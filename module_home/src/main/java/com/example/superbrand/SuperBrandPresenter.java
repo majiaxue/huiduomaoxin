@@ -65,12 +65,6 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
 
                 if (tbGoodsSearchBeans != null) {
                     if (tbGoodsSearchBeans.size() != 0) {
-//                        for (int i = tbGoodsSearchBeans.size() - 1; i >= 0; i--) {
-//                            if (tbGoodsSearchBeans.get(i).getCat_name().equals("文娱车品")) {
-//                                tbGoodsSearchBeans.remove(i);
-//                            }
-//                        }
-
                         for (int i = 0; i < tbGoodsSearchBeans.size(); i++) {
                             superBrandTab.addTab(superBrandTab.newTab().setText(tbGoodsSearchBeans.get(i).getCat_name()));
                         }

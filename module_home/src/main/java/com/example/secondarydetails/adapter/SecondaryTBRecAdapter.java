@@ -36,8 +36,8 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
 
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getPict_url());
         holder.setText(com.example.module_base.R.id.base_name, data.getTitle());
-        holder.setText(com.example.module_base.R.id.base_reduce_price, "领劵减" + data.getCoupon_amount() + "元");
-        holder.setText(com.example.module_base.R.id.base_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getZk_final_price()), Double.valueOf(data.getCoupon_amount())));
+        holder.setText(com.example.module_base.R.id.base_reduce_price, data.getCoupon_info());
+        holder.setText(com.example.module_base.R.id.base_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getZk_final_price()), Double.valueOf(data.getYouhuiquan())));
         holder.setText(com.example.module_base.R.id.base_original_price, data.getZk_final_price());
         holder.setText(com.example.module_base.R.id.base_number, "已抢" + data.getVolume() + "件");
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿

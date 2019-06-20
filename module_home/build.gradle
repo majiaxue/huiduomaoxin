@@ -43,5 +43,4 @@ dependencies {
         exclude group: 'com.android.support'
     }
     annotationProcessor("com.alibaba:arouter-compiler:$rootProject.arouterCompiler")
-
 }

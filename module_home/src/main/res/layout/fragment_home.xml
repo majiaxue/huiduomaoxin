@@ -14,8 +14,7 @@
 
     <RelativeLayout
         android:id="@+id/relative"
-        android:fitsSystemWindows="true"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_25"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

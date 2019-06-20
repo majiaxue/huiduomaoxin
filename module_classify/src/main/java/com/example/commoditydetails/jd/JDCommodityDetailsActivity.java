@@ -1,6 +1,5 @@
 package com.example.commoditydetails.jd;
 
-import android.net.Uri;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

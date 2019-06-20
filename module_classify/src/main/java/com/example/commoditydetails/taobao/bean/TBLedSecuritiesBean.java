@@ -1,7 +1,5 @@
 package com.example.commoditydetails.taobao.bean;
 
-import java.util.List;
-
 /**
  * Created by cuihaohao on 2019/6/14
  * Describe:
@@ -9,29 +7,19 @@ import java.util.List;
 public class TBLedSecuritiesBean {
 
     /**
-     * error : 0
-     * msg : 免授权转链成功（仅适用有券商品）
-     * data : {"commission_rate":"30.01","coupon_click_url":"https://uland.taobao.com/coupon/edetail?e=MuZqyM6qMA8GQASttHIRqZ5D%2BF1mDDhxerZPTvWZOckYXB958FVfbPZJc8WjgU7f9AxYqVsfaZMaYrfYX9%2FN1mJXtP%2FursSvm4VLH9mslwyUQJ9RRUWmftd1yHO7fNodRidv9CsSAArAbUHw%2FIMRSt8%2FjWnuLO%2FPbTFatlyBSza1glM%2BZNWQP8HVq%2Fdxq%2FDATJnbK5InWznIDQGvV%2Bk%2B%2FUMuxoRQ3C%2BHES9NubPg2COie%2FpBy9wBFg%3D%3D&traceId=0b82d96815604973096611317e","coupon_end_time":"2019-06-15","coupon_info":"满39元减25元","coupon_remain_count":"46000","coupon_start_time":"2019-06-13","coupon_total_count":"100000","num_iid":"592742347679","tbk_pwd":"￥VokeY4LJViY￥","coupon_short_url":"https://s.click.taobao.com/nMMoo7w","category_id":"21","coupon_type":3,"small_images":[]}
+     * result : 1
+     * data : {"category_id":"50011699","coupon_click_url":"https://uland.taobao.com/coupon/edetail?e=mOPGPex50NcGQASttHIRqYYzbcwEPG6Joyp1YhheLQnCVuV6PTdZTaIDAQqCw2YCY2jaHdQ%2B97p2J38b%2BUDP3CZlFJKZKYIuIJ1GtccYOa7CKbsAbM2TPPsnwWZGSCD41ug731VBEQm0m3Ckm6GN2CwynAdGnOngkM20EQQvoa4HDL30JIKBNCmksDiqwPnW&traceId=0b83523115609350306525284e&union_lens=lensId:0b153bbd_0bf6_16b6efa5fa4_ea4f&xId=7HuJ4Il4Zg2FIqTAj5wcnv0h9VITzujaQVeCLRNPOCf16JoVRLAaZ6ybgbcHcHwpjJtMAq1iVwBlSrhlKrLyfv","coupon_end_time":"2019-06-23","coupon_info":"满25元减5元","coupon_remain_count":"74403","coupon_start_time":"2019-05-02","coupon_total_count":"100000","coupon_type":"1","commission_rate":"3.00","num_iid":"548439393628","tbk_pwd":"￥iPckYU1rGLh￥","coupon_short_url":"https://s.click.taobao.com/dPzsP7w"}
      */
 
-    private String error;
-    private String msg;
+    private int result;
     private DataBean data;
 
-    public String getError() {
-        return error;
+    public int getResult() {
+        return result;
     }
 
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setResult(int result) {
+        this.result = result;
     }
 
     public DataBean getData() {
@@ -44,41 +32,39 @@ public class TBLedSecuritiesBean {
 
     public static class DataBean {
         /**
-         * commission_rate : 30.01
-         * coupon_click_url : https://uland.taobao.com/coupon/edetail?e=MuZqyM6qMA8GQASttHIRqZ5D%2BF1mDDhxerZPTvWZOckYXB958FVfbPZJc8WjgU7f9AxYqVsfaZMaYrfYX9%2FN1mJXtP%2FursSvm4VLH9mslwyUQJ9RRUWmftd1yHO7fNodRidv9CsSAArAbUHw%2FIMRSt8%2FjWnuLO%2FPbTFatlyBSza1glM%2BZNWQP8HVq%2Fdxq%2FDATJnbK5InWznIDQGvV%2Bk%2B%2FUMuxoRQ3C%2BHES9NubPg2COie%2FpBy9wBFg%3D%3D&traceId=0b82d96815604973096611317e
-         * coupon_end_time : 2019-06-15
-         * coupon_info : 满39元减25元
-         * coupon_remain_count : 46000
-         * coupon_start_time : 2019-06-13
+         * category_id : 50011699
+         * coupon_click_url : https://uland.taobao.com/coupon/edetail?e=mOPGPex50NcGQASttHIRqYYzbcwEPG6Joyp1YhheLQnCVuV6PTdZTaIDAQqCw2YCY2jaHdQ%2B97p2J38b%2BUDP3CZlFJKZKYIuIJ1GtccYOa7CKbsAbM2TPPsnwWZGSCD41ug731VBEQm0m3Ckm6GN2CwynAdGnOngkM20EQQvoa4HDL30JIKBNCmksDiqwPnW&traceId=0b83523115609350306525284e&union_lens=lensId:0b153bbd_0bf6_16b6efa5fa4_ea4f&xId=7HuJ4Il4Zg2FIqTAj5wcnv0h9VITzujaQVeCLRNPOCf16JoVRLAaZ6ybgbcHcHwpjJtMAq1iVwBlSrhlKrLyfv
+         * coupon_end_time : 2019-06-23
+         * coupon_info : 满25元减5元
+         * coupon_remain_count : 74403
+         * coupon_start_time : 2019-05-02
          * coupon_total_count : 100000
-         * num_iid : 592742347679
-         * tbk_pwd : ￥VokeY4LJViY￥
-         * coupon_short_url : https://s.click.taobao.com/nMMoo7w
-         * category_id : 21
-         * coupon_type : 3
-         * small_images : []
+         * coupon_type : 1
+         * commission_rate : 3.00
+         * num_iid : 548439393628
+         * tbk_pwd : ￥iPckYU1rGLh￥
+         * coupon_short_url : https://s.click.taobao.com/dPzsP7w
          */
 
-        private String commission_rate;
+        private String category_id;
         private String coupon_click_url;
         private String coupon_end_time;
         private String coupon_info;
         private String coupon_remain_count;
         private String coupon_start_time;
         private String coupon_total_count;
+        private String coupon_type;
+        private String commission_rate;
         private String num_iid;
         private String tbk_pwd;
         private String coupon_short_url;
-        private String category_id;
-        private int coupon_type;
-        private List<?> small_images;
 
-        public String getCommission_rate() {
-            return commission_rate;
+        public String getCategory_id() {
+            return category_id;
         }
 
-        public void setCommission_rate(String commission_rate) {
-            this.commission_rate = commission_rate;
+        public void setCategory_id(String category_id) {
+            this.category_id = category_id;
         }
 
         public String getCoupon_click_url() {
@@ -129,6 +115,22 @@ public class TBLedSecuritiesBean {
             this.coupon_total_count = coupon_total_count;
         }
 
+        public String getCoupon_type() {
+            return coupon_type;
+        }
+
+        public void setCoupon_type(String coupon_type) {
+            this.coupon_type = coupon_type;
+        }
+
+        public String getCommission_rate() {
+            return commission_rate;
+        }
+
+        public void setCommission_rate(String commission_rate) {
+            this.commission_rate = commission_rate;
+        }
+
         public String getNum_iid() {
             return num_iid;
         }
@@ -151,30 +153,6 @@ public class TBLedSecuritiesBean {
 
         public void setCoupon_short_url(String coupon_short_url) {
             this.coupon_short_url = coupon_short_url;
-        }
-
-        public String getCategory_id() {
-            return category_id;
-        }
-
-        public void setCategory_id(String category_id) {
-            this.category_id = category_id;
-        }
-
-        public int getCoupon_type() {
-            return coupon_type;
-        }
-
-        public void setCoupon_type(int coupon_type) {
-            this.coupon_type = coupon_type;
-        }
-
-        public List<?> getSmall_images() {
-            return small_images;
-        }
-
-        public void setSmall_images(List<?> small_images) {
-            this.small_images = small_images;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.commoditydetails.taobao;
 
 import com.example.commoditydetails.taobao.bean.TBBean;
+import com.example.commoditydetails.taobao.bean.TBLedSecuritiesBean;
 import com.example.mvp.IView;
 
 import java.util.List;
@@ -10,5 +11,9 @@ import java.util.List;
  * Describe:
  */
 public interface TBCommodityDetailsView extends IView {
-    void tbBeanList(List<TBBean.DataBean> tbBeanList,String earnings);
+    void tbBeanList(TBBean tbBeanList);
+
+    void ledSecurities(TBLedSecuritiesBean tbLedSecuritiesBean);
+
+    void earnings(String earnings);
 }
