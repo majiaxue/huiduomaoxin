@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
@@ -28,7 +29,6 @@ import com.example.mvp.BaseActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.TxtUtil;
@@ -141,7 +141,6 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     public void initData() {
         ARouter.getInstance().inject(this);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        LogUtil.e("id----->" + id + "++++++" + sellerId + "+++++++" + commendId);
         //优惠券
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -342,15 +341,15 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
-    public void loadUI(UserGoodsDetail data) {
+    public void loadUI(UserGoodsDetail data, int size) {
         goodsDetailName.setText(data.getName());
         goodsDetailPrice.setText(data.getPromotionPrice() + "");
-        mTotalSpecs.setText("共" + data.getStoInfo().getRecords().size() + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
+        mTotalSpecs.setText("共" + size + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
         Glide.with(this).load(data.getSellerLogo()).into(goodsDetailShopImg);
         goodsDetailShopName.setText(data.getSellerName());
         goodsDetailShopAttention.setText("店铺关注  " + TxtUtil.parse(data.getSellerFavoriteNum()));
         mTxt.setText("选择" + data.getXsProductAttributes().get(0).getName() + "、" + data.getXsProductAttributes().get(1).getName());
-        if ("1".equals(data.getIsFavorite())) {
+        if (data.getIsfavorite() == 1) {
             attention();
         } else {
             cancelAttention();
@@ -373,8 +372,9 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
-    public void loadAssess(GoodsAssessAdapter adapter) {
+    public void loadAssess(GoodsAssessAdapter adapter, AssessBean assessBean) {
         goodsDetailRvAssess.setAdapter(adapter);
+        goodsDetailAssessCount.setText("评价(" + assessBean.getTotal() + ")");
     }
 
     @Override

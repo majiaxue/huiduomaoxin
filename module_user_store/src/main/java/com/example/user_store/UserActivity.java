@@ -12,6 +12,7 @@ import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.user_classify.ClassifyFragment;
+import com.example.view.WindowInsetsFrameLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,7 +28,7 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
 
 
     @BindView(R2.id.user_frame)
-    FrameLayout userFrame;
+    WindowInsetsFrameLayout userFrame;
     @BindView(R2.id.user_home)
     RadioButton userHome;
     @BindView(R2.id.user_classify)

@@ -96,8 +96,8 @@ public class CommodityDetailsBean {
             private int coupon_discount;
             private int coupon_total_quantity;
             private int coupon_remain_quantity;
-            private int coupon_start_time;
-            private int coupon_end_time;
+            private long coupon_start_time;
+            private long coupon_end_time;
             private double promotion_rate;
             private double user_promotion_rate;
             private double goods_eval_score;
@@ -296,19 +296,19 @@ public class CommodityDetailsBean {
                 this.coupon_remain_quantity = coupon_remain_quantity;
             }
 
-            public int getCoupon_start_time() {
+            public long getCoupon_start_time() {
                 return coupon_start_time;
             }
 
-            public void setCoupon_start_time(int coupon_start_time) {
+            public void setCoupon_start_time(long coupon_start_time) {
                 this.coupon_start_time = coupon_start_time;
             }
 
-            public int getCoupon_end_time() {
+            public long getCoupon_end_time() {
                 return coupon_end_time;
             }
 
-            public void setCoupon_end_time(int coupon_end_time) {
+            public void setCoupon_end_time(long coupon_end_time) {
                 this.coupon_end_time = coupon_end_time;
             }
 

@@ -132,7 +132,7 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
         webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
 
-        AlibcTaokeParams alibcTaokeParams = new AlibcTaokeParams("57328044", "mm_26632322_6858406_23810104", "mm_26632322_6858406_23810104");
+//        AlibcTaokeParams alibcTaokeParams = new AlibcTaokeParams("57328044", "mm_26632322_6858406_23810104", "mm_26632322_6858406_23810104");
 
         //提供给三方传递配置参数
         Map<String, String> exParams = new HashMap<>();
@@ -147,7 +147,7 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
         AlibcShowParams showParams = new AlibcShowParams(OpenType.H5, false);
 
         //使用百川sdk提供默认的Activity打开detail
-        AlibcTrade.show(this, webView, webViewClient, webChromeClient, page, showParams, alibcTaokeParams, exParams, new AlibcTradeCallback() {
+        AlibcTrade.show(this, webView, webViewClient, webChromeClient, page, showParams, null, exParams, new AlibcTradeCallback() {
             @Override
             public void onTradeSuccess(TradeResult tradeResult) {
                 LogUtil.e("------>" + tradeResult.toString());

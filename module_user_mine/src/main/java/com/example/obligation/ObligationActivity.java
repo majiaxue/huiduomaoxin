@@ -1,5 +1,6 @@
 package com.example.obligation;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,27 +10,16 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.android.arouter.routes.ARouter$$Group$$module_user_mine;
 import com.example.bean.OrderDetailBean;
 import com.example.bean.SubmitOrderBean;
-import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
-import com.example.net.OnDataListener;
-import com.example.net.OnMyCallBack;
-import com.example.net.RetrofitUtil;
-import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
-import com.example.utils.SPUtil;
-import com.example.view.AddAndSubView;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
-import io.reactivex.Observable;
+import butterknife.ButterKnife;
 
 /**
  * 等待付款
@@ -37,9 +27,10 @@ import io.reactivex.Observable;
 @Route(path = "/module_user_mine/ObligationActivity")
 public class ObligationActivity extends BaseActivity<ObligationView, ObligationPresenter> implements ObligationView {
 
-
-    @BindView(R2.id.obligation_image_back)
-    ImageView obligationImageBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.obligation_name)
     TextView obligationName;
     @BindView(R2.id.obligation_phone)
@@ -70,6 +61,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
     @Autowired(name = "orderSn")
     String orderSn;
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_obligation;
@@ -77,6 +69,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
 
     @Override
     public void initData() {
+        includeTitle.setText("等待付款");
         ARouter.getInstance().inject(this);
         presenter.initView(orderSn);
         presenter.obligationRec(obligationRec);
@@ -85,7 +78,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
     @Override
     public void initClick() {
 
-        obligationImageBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -165,7 +158,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
 
     @Override
     public void isDelete(boolean isDelete) {
-        if (isDelete){
+        if (isDelete) {
             finish();
         }
     }

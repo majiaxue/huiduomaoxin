@@ -12,7 +12,7 @@ public class MyTimeUtil {
     public static String date2String(String time) {
         Long value = Long.valueOf(time);
         Date date = new Date(value);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return format.format(date);
     }
 

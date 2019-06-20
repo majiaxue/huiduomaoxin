@@ -7,28 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.refundparticulars.RefundParticularsActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45">
-
-        <ImageView
-            android:id="@+id/refund_particulars_back"
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_36"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_4"
-            android:padding="@dimen/dp_10"
-            android:src="@drawable/icon_fanhui" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="退款详情"
-            android:textColor="#222222"
-            android:textSize="@dimen/sp_17" />
-
-    </RelativeLayout>
+    <include layout="@layout/page_top" />
 
     <LinearLayout
         android:layout_width="match_parent"

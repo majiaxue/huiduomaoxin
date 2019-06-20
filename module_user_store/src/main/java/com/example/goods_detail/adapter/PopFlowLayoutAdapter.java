@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.bean.ChooseInsideBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.user_store.R;
 import com.example.utils.OnFlowSelectListener;
@@ -16,27 +17,32 @@ import com.example.view.flowLayout.TagAdapter;
 
 import java.util.List;
 
-public class ColorFlowLayoutAdapter extends TagAdapter<UserGoodsDetail.StoInfoBean.RecordsBean> {
+public class PopFlowLayoutAdapter extends TagAdapter<ChooseInsideBean> {
     private Context context;
     private OnFlowSelectListener listener;
 
-    public ColorFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean> datas) {
+    public PopFlowLayoutAdapter(List<ChooseInsideBean> datas) {
         super(datas);
     }
 
-    public ColorFlowLayoutAdapter(List<UserGoodsDetail.StoInfoBean.RecordsBean> datas, Context context, OnFlowSelectListener listener) {
+    public PopFlowLayoutAdapter(List<ChooseInsideBean> datas, Context context, OnFlowSelectListener listener) {
         super(datas);
         this.context = context;
         this.listener = listener;
     }
 
     @Override
-    public View getView(FlowLayout parent, int position, UserGoodsDetail.StoInfoBean.RecordsBean chooseGoodsBean) {
+    public View getView(FlowLayout parent, int position, ChooseInsideBean chooseGoodsBean) {
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_choose_goods_color, parent, false);
         ImageView img = inflate.findViewById(R.id.flow_goods_color_img);
         TextView txt = inflate.findViewById(R.id.flow_goods_color_content);
-        Glide.with(context).load(chooseGoodsBean.getList().get(0).getPic()).into(img);
-        txt.setText(chooseGoodsBean.getSkuName());
+        if (chooseGoodsBean.getPicUrl() == null || "".equals(chooseGoodsBean.getPicUrl())) {
+            img.setVisibility(View.GONE);
+        } else {
+            img.setVisibility(View.VISIBLE);
+            Glide.with(context).load(chooseGoodsBean.getPicUrl()).into(img);
+        }
+        txt.setText(chooseGoodsBean.getContent() + "");
         return inflate;
     }
 

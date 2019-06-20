@@ -22,7 +22,7 @@ public class RetrofitUtil {
     /**
      * 请求失败重连次数
      */
-    private int RETRY_COUNT = 0;
+    private int RETRY_COUNT = 5;
 
     private RetrofitUtil() {
     }

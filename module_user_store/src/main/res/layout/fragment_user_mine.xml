@@ -12,12 +12,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/hgfghf" />
 
+    <include
+        android:id="@+id/user_mine_status"
+        layout="@layout/include_status" />
+
     <ImageView
         android:id="@+id/user_mine_image_back"
         android:layout_width="@dimen/dp_29"
         android:layout_height="@dimen/dp_38"
+        android:layout_below="@id/user_mine_status"
         android:layout_marginLeft="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_20"
         android:padding="@dimen/dp_10"
         android:src="@drawable/icon_fanhui_bai" />
 
@@ -25,8 +29,9 @@
         android:id="@+id/user_mine_rela"
         android:layout_width="@dimen/dp_345"
         android:layout_height="@dimen/dp_176"
+        android:layout_below="@id/user_mine_status"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_70"
+        android:layout_marginTop="@dimen/dp_50"
         android:background="@drawable/bg_mine_top"
         android:elevation="@dimen/dp_6"
         android:orientation="vertical">

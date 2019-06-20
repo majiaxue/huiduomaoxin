@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +30,7 @@ import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.example.view.RVNestedScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -78,7 +80,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @BindView(R2.id.shop_recommend_rec)
     RecyclerView shopRecommendRec;
     @BindView(R2.id.commodity_nested_scroll)
-    NestedScrollView commodityNestedScroll;
+    RVNestedScrollView commodityNestedScroll;
     @BindView(R2.id.commodity_stick)
     ImageView commodityStick;
     @BindView(R2.id.commodity_go_home)
@@ -111,6 +113,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     private String commission_rate;
     private String price;
     private String earnings;
+    private TBBean tbBeanList;
 
     @Override
     public int getLayoutId() {
@@ -122,10 +125,10 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
         LogUtil.e("123456              " + para + "        " + shopType);
-        //用户收益
-        presenter.earnings();
         //优惠券
         presenter.ledSecurities(para);
+        //用户收益
+        presenter.earnings();
         //加载视图
         presenter.initView(para, shopType);
         //字体加中划线
@@ -162,27 +165,31 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 AppManager.getInstance().finishGoodsActivity();
             }
         });
-//        //进入店铺
-//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        //进入店铺
+        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+                presenter.jumpToShop(tbBeanList.getData().getSeller().getShopId());
+            }
+        });
+        //进入店铺
+        commodityShopImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+                presenter.jumpToShop(tbBeanList.getData().getSeller().getShopId());
+
+            }
+        });
+        //进入店铺
+        commodityShopName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
+                presenter.jumpToShop(tbBeanList.getData().getSeller().getShopId());
+            }
+        });
         //分享
         //立即领取
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
@@ -242,41 +249,47 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     //详情回调
     @Override
     public void tbBeanList(TBBean tbBeanList) {
-
+        this.tbBeanList = tbBeanList;
         String zkFinalPrice = tbBeanList.getData().getZk_final_price();
-        if (zkFinalPrice.indexOf("-")!=1){
-            String[] split = zkFinalPrice.split("-");
-            double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-            double div = ArithUtil.div(Double.valueOf(commission_rate.trim()), 1000, 2);
-            double mul = ArithUtil.mul(div, Double.valueOf(split[0]));
-            LogUtil.e("返回值    price:"+price+"     earnings:"+earnings+"commission_rate:"+commission_rate);
-            commodityName.setText(tbBeanList.getData().getTitle());//名字
-            commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]),Double.valueOf(price)));//优惠价
-            commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-            commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
-            commodityNumberSold.setText("已售" + tbBeanList.getData().getSellCount() + "件");//已售
-            commodityShopName.setText(tbBeanList.getData().getSeller().getSellerNick() + "");//商家名
-            commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
-            shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
-            shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
-            shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
-        }else{
-            double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-            double div = ArithUtil.div(Double.valueOf(commission_rate), 1000, 2);
-            double mul = ArithUtil.mul(div, Double.valueOf(zkFinalPrice));
-            LogUtil.e("返回值    price:"+price+"     earnings:"+earnings+"commission_rate:"+commission_rate);
-            commodityName.setText(tbBeanList.getData().getTitle());//名字
-            commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice),Double.valueOf(price)));//优惠价
-            commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-            commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
-            commodityNumberSold.setText("已售" + tbBeanList.getData().getSellCount() + "件");//已售
-            commodityShopName.setText(tbBeanList.getData().getSeller().getSellerNick() + "");//商家名
-            commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
-            shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
-            shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
-            shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
-
+        if (!TextUtils.isEmpty(zkFinalPrice)){
+            if (zkFinalPrice.contains("-")) {
+                if (!TextUtils.isEmpty(commission_rate)) {
+                    String[] split = zkFinalPrice.split("-");
+                    double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
+                    double div = ArithUtil.div(Double.valueOf(commission_rate.trim()), 1000, 2);
+                    double mul = ArithUtil.mul(div, Double.valueOf(split[0]));
+                    LogUtil.e("返回值    price:" + price + "     earnings:" + earnings + "commission_rate:" + commission_rate);
+                    commodityName.setText(tbBeanList.getData().getTitle());//名字
+                    commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price)));//优惠价
+                    commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
+                    commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
+                    commodityNumberSold.setText("已售" + tbBeanList.getData().getSellCount() + "件");//已售
+                    commodityShopName.setText(tbBeanList.getData().getSeller().getSellerNick() + "");//商家名
+                    commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
+                    shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
+                    shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
+                    shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
+                }
+            } else {
+                if (!TextUtils.isEmpty(commission_rate)) {
+                    double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
+                    double div = ArithUtil.div(Double.valueOf(commission_rate.trim()), 1000, 2);
+                    double mul = ArithUtil.mul(div, Double.valueOf(zkFinalPrice));
+                    LogUtil.e("返回值    price:" + price + "     earnings:" + earnings + "commission_rate:" + commission_rate);
+                    commodityName.setText(tbBeanList.getData().getTitle());//名字
+                    commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price)));//优惠价
+                    commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                    commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
+                    commodityNumberSold.setText("已售" + tbBeanList.getData().getSellCount() + "件");//已售
+                    commodityShopName.setText(tbBeanList.getData().getSeller().getSellerNick() + "");//商家名
+                    commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
+                    shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
+                    shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
+                    shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
+                }
+            }
         }
+
 
         //详情轮播图
         List<String> images = tbBeanList.getData().getImages();
@@ -284,14 +297,15 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
         //商品详情图片
         List<String> itemDetail = tbBeanList.getData().getItem_detail();
-        if (itemDetail.size()!=0){
+        if (itemDetail.size() != 0) {
             presenter.setShopParticulars(shopParticulars, itemDetail);
-        }else{
+        } else {
             presenter.setShopParticulars(shopParticulars, images);
         }
 
         //收藏状态
         presenter.isCollect(commodityCollectImage, para);
+
 
     }
 

@@ -157,15 +157,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     public void setShopParticulars(RecyclerView shopParticulars, List<String> itemDetail) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//        {
-//            @Override
-//            public boolean canScrollVertically() {
-//                return false && super.canScrollVertically();
-//            }
-//        };
         CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
-//        shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+//        shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 
@@ -217,6 +213,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     //领劵
     public void ledSecurities(String para) {
+        LogUtil.e("----------------------->" + para);
         Map map = MapUtil.getInstance().addParms("para", para).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETGYURLBYALL, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -316,6 +313,34 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     });
         }
 
+    }
+
+    public void jumpToShop(String shopId){
+        //提供给三方传递配置参数
+        Map<String, String> exParams = new HashMap<>();
+        exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
+
+        //打开指定页面
+        AlibcBasePage detailPage = new AlibcDetailPage(shopId);
+        LogUtil.e("GotoTB"+ shopId);
+        //设置页面打开方式
+        AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+
+        //使用百川sdk提供默认的Activity打开detail
+        AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
+                new AlibcTradeCallback() {
+                    @Override
+                    public void onTradeSuccess(TradeResult tradeResult) {
+                        //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
+                        LogUtil.e(tradeResult.toString());
+                    }
+
+                    @Override
+                    public void onFailure(int code, String msg) {
+                        //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                        LogUtil.e("阿里百川" + code + "         " + msg);
+                    }
+                });
     }
 
     public void setRecommendRec(final RecyclerView shopRecommendRec) {

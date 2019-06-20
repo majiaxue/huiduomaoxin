@@ -37,9 +37,10 @@ import okhttp3.ResponseBody;
 @Route(path = "/module_user_mine/OrderDetailsActivity")
 public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDetailsPresenter> implements OrderDetailsView {
 
-
-    @BindView(R2.id.order_details_image_back)
-    ImageView orderDetailsImageBack;
+    @BindView(R2.id.include_back)
+    ImageView includeBack;
+    @BindView(R2.id.include_title)
+    TextView includeTitle;
     @BindView(R2.id.order_details_status)
     TextView orderDetailsStatus;
     @BindView(R2.id.order_details_subhead)
@@ -86,6 +87,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
     @Override
     public void initData() {
+        includeTitle.setText("订单详情");
         ARouter.getInstance().inject(this);
         presenter.initView(orderSn);
 
@@ -95,7 +97,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
     @Override
     public void initClick() {
 
-        orderDetailsImageBack.setOnClickListener(new View.OnClickListener() {
+        includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -237,5 +239,12 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
         presenter.items(items, orderDetailsGoodsRec);
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
