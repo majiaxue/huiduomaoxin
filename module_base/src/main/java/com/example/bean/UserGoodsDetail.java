@@ -573,7 +573,7 @@ public class UserGoodsDetail {
         private long lowStock;
         private String sp1;
         private String sp2;
-        private Object sp3;
+        private String sp3;
         private String pic;
         private long sale;
         private double promotionPrice;
@@ -643,11 +643,11 @@ public class UserGoodsDetail {
             this.sp2 = sp2;
         }
 
-        public Object getSp3() {
+        public String getSp3() {
             return sp3;
         }
 
-        public void setSp3(Object sp3) {
+        public void setSp3(String sp3) {
             this.sp3 = sp3;
         }
 

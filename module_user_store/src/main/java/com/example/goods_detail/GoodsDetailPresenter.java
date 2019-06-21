@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import com.example.assess.AssessActivity;
 import com.example.bean.AddCartBean;
 import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
-import com.example.bean.ChooseGoodsBean;
 import com.example.bean.ChooseInsideBean;
 import com.example.bean.HotSaleBean;
 import com.example.bean.OrderConfirmBean;
@@ -35,7 +33,9 @@ import com.example.entity.ParmsBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
-import com.example.goods_detail.adapter.PopChooseAdapter;
+import com.example.goods_detail.adapter.PopFlowLayoutAdapter;
+import com.example.goods_detail.adapter.SecondFlowAdapter;
+import com.example.goods_detail.adapter.ThirdFlowAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -47,8 +47,10 @@ import com.example.user_store.R;
 import com.example.user_store.UserActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
 import com.example.utils.SPUtil;
+import com.example.view.flowLayout.TagAdapter;
 import com.example.view.flowLayout.TagFlowLayout;
 
 import java.util.ArrayList;
@@ -67,11 +69,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private TagFlowLayout flow1;
     //流式布局--尺码
     private TagFlowLayout flow2;
-    //颜色选中下标
-    private int colorPosition = -1;
-    //尺码选中下标
-    private int sizePosition = -1;
 
+    private TagFlowLayout flow3;
+    //颜色选中下标
+    private int sp1Position = -1;
+    //尺码选中下标
+    private int sp2Position = -1;
+
+    private int sp3Position = -1;
 
     private long quantity = 1;
 
@@ -83,13 +88,16 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private List<ChooseInsideBean> sp1List = new ArrayList<>();
     private List<ChooseInsideBean> sp2List = new ArrayList<>();
     private List<ChooseInsideBean> sp3List = new ArrayList<>();
-    private List<ChooseGoodsBean> popList = new ArrayList<>();
+
     //为你推荐
     List<HotSaleBean.DataBean> commendList = new ArrayList<>();
 
     private UserGoodsDetail userGoodsDetail;
     private List<UserCouponBean> couponBeanList;
-    private PopChooseAdapter popChooseAdapter;
+    private PopFlowLayoutAdapter sp1Adapter;
+    private SecondFlowAdapter sp2Adapter;
+    private ThirdFlowAdapter sp3Adapter;
+
 
     public GoodsDetailPresenter(Context context) {
         super(context);
@@ -118,31 +126,22 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     if (dataList.get(i).getSp1() != null && !imgTemp.equals(dataList.get(i).getSp1())) {
                         imgList.add(dataList.get(i).getPic());
                         imgTemp = dataList.get(i).getSp1();
-                        sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), false, dataList.get(i).getPrice()));
+                        sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice()));
                     }
                 }
 
-                popList.add(new ChooseGoodsBean(userGoodsDetail.getXsProductAttributes().get(0).getName(), sp1List));
-                for (int i = 1; i < userGoodsDetail.getXsProductAttributes().size(); i++) {
-                    List<ChooseInsideBean> spList = new ArrayList<>();
-                    String[] split = userGoodsDetail.getXsProductAttributes().get(i).getInputList().split(",");
-                    for (int j = 0; j < split.length; j++) {
-                        spList.add(new ChooseInsideBean(split[j], false));
+                if (dataList.size() > 0 && userGoodsDetail.getXsProductAttributes().size() > 1) {
+                    String[] split = userGoodsDetail.getXsProductAttributes().get(1).getInputList().split(",");
+                    for (int i = 0; i < split.length; i++) {
+                        sp2List.add(new ChooseInsideBean(split[i]));
                     }
-                    popList.add(new ChooseGoodsBean(userGoodsDetail.getXsProductAttributes().get(i).getName(), spList));
                 }
-//                if (dataList.size() > 0 && dataList.get(0).getSp2() != null) {
-//                    totalNum = 2;
-//                    String[] split = userGoodsDetail.getXsProductAttributes().get(1).getInputList().split(",");
-//                    for (int i = 0; i < split.length; i++) {
-//                        sp2List.add(new ChooseInsideBean(split[i], false));
-//                    }
-//                }
-//                if (dataList.size() > 0 && dataList.get(0).getSp3() != null) {
-//                    totalNum = 3;
-//
-//                    sp3List.add(new ChooseInsideBean(dataList.get(i).getSp3(), false, dataList.get(i).getPrice()));
-//                }
+                if (dataList.size() > 0 && userGoodsDetail.getXsProductAttributes().size() > 2) {
+                    String[] split = userGoodsDetail.getXsProductAttributes().get(2).getInputList().split(",");
+                    for (int i = 0; i < split.length; i++) {
+                        sp3List.add(new ChooseInsideBean(split[i]));
+                    }
+                }
                 GoodsImageAdapter goodsImageAdapter = new GoodsImageAdapter(mContext, imgList, R.layout.rv_goods_choose_image);
                 goodsImageAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
@@ -155,18 +154,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     getView().loadImage(goodsImageAdapter);
                     getView().loadUI(userGoodsDetail, sp1List.size());
                 }
-
-//                for (int i = 0; i < userGoodsDetail.getXsProductAttributes().size(); i++) {
-//                    if (sp1List.size() > 0 && i == 0) {
-//                        popList.add(new ChooseGoodsBean(userGoodsDetail.getXsProductAttributes().get(i).getName(), sp1List));
-//                    }
-//                    if (sp2List.size() > 0 && i == 1) {
-//                        popList.add(new ChooseGoodsBean(userGoodsDetail.getXsProductAttributes().get(i).getName(), sp2List));
-//                    }
-//                    if (sp3List.size() > 0 && i == 2) {
-//                        popList.add(new ChooseGoodsBean(userGoodsDetail.getXsProductAttributes().get(i).getName(), sp3List));
-//                    }
-//                }
 
                 //轮播图
                 String albumPics = userGoodsDetail.getAlbumPics();
@@ -304,24 +291,102 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void chooseGoodsPop() {
-        if (userGoodsDetail != null && userGoodsDetail.getXsProductAttributes().size() > 0 && popList.size() > 0) {
+        if (userGoodsDetail != null && userGoodsDetail.getXsProductAttributes().size() > 0 && dataList.size() > 0) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
             final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
-            TextView price = view.findViewById(R.id.pop_choose_goods_price);
-            TextView type = view.findViewById(R.id.pop_choose_goods_type);
+            final TextView price = view.findViewById(R.id.pop_choose_goods_price);
+            final TextView type = view.findViewById(R.id.pop_choose_goods_type);
             ImageView cancel = view.findViewById(R.id.pop_choose_goods_cancel);
-//            flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
-//            flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
+            flow1 = view.findViewById(R.id.pop_choose_goods_flow1);
+            flow2 = view.findViewById(R.id.pop_choose_goods_flow2);
+            flow3 = view.findViewById(R.id.pop_choose_goods_flow3);
             TextView minus = view.findViewById(R.id.pop_choose_goods_minus);
             TextView add = view.findViewById(R.id.pop_choose_goods_add);
             final TextView count = view.findViewById(R.id.pop_choose_goods_count);
             TextView shopCart = view.findViewById(R.id.pop_choose_goods_cart);
             TextView buy = view.findViewById(R.id.pop_choose_goods_buy);
-//            TextView title1 = view.findViewById(R.id.pop_choose_goods_title1);
-//            TextView title2 = view.findViewById(R.id.pop_choose_goods_title2);
-            RecyclerView rv = view.findViewById(R.id.pop_choose_goods_rv);
+            TextView title1 = view.findViewById(R.id.pop_choose_goods_title1);
+            TextView title2 = view.findViewById(R.id.pop_choose_goods_title2);
+            TextView title3 = view.findViewById(R.id.pop_choose_goods_title3);
+//            RecyclerView rv = view.findViewById(R.id.pop_choose_goods_rv);
 
+            if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                title2.setVisibility(View.GONE);
+                title3.setVisibility(View.GONE);
+                flow2.setVisibility(View.GONE);
+                flow3.setVisibility(View.GONE);
+                title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
+            } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                title3.setVisibility(View.GONE);
+                flow3.setVisibility(View.GONE);
+                title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
+                title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
+            }
 
+            sp1Adapter = new PopFlowLayoutAdapter(sp1List, mContext, new OnFlowSelectListener() {
+                @Override
+                public void setOnFlowSelect(int position) {
+                    sp1Position = position;
+                    type.setText("已选择：" + sp1List.get(sp1Position).getContent());
+                    if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        price.setText("￥" + sp1List.get(sp1Position).getPrice());
+                        isChoose = true;
+                    } else if (userGoodsDetail.getXsProductAttributes().size() > 1) {
+                        initSizeList(position);
+                    }
+                }
+            });
+            flow1.setAdapter(sp1Adapter);
+
+            if (userGoodsDetail.getXsProductAttributes().size() > 1) {
+                sp2Adapter = new SecondFlowAdapter(sp2List, mContext, new OnFlowSelectListener() {
+                    @Override
+                    public void setOnFlowSelect(int position) {
+                        sp2Position = position;
+                        if (userGoodsDetail.getXsProductAttributes().size() == 2 && sp1Position != -1) {
+                            isChoose = true;
+                            price.setText("￥" + sp2List.get(position).getPrice());
+                            type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
+                        } else if (userGoodsDetail.getXsProductAttributes().size() == 3 && sp1Position != -1) {
+                            initThirdList(position);
+                        }
+                    }
+                });
+                flow2.setAdapter(sp2Adapter);
+            }
+            if (userGoodsDetail.getXsProductAttributes().size() > 2) {
+                sp3Adapter = new ThirdFlowAdapter(sp3List, mContext, new OnFlowSelectListener() {
+                    @Override
+                    public void setOnFlowSelect(int position) {
+                        if (sp1Position != -1 && sp2Position != -1) {
+                            isChoose = true;
+                            sp3Position = position;
+                            type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent() + "、" + sp3List.get(sp3Position).getContent());
+                            price.setText("￥" + sp3List.get(position).getPrice());
+                        }
+                    }
+                });
+                flow3.setAdapter(sp3Adapter);
+            }
+
+            if (isChoose) {
+                if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                    sp1Adapter.setSelectedList(sp1Position);
+                    type.setText("已选择：" + sp1List.get(sp1Position).getContent());
+                    price.setText("￥" + sp1List.get(sp1Position).getPrice());
+                } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                    sp1Adapter.setSelectedList(sp1Position);
+                    sp2Adapter.setSelectedList(sp2Position);
+                    price.setText("￥" + sp2List.get(sp2Position).getPrice());
+                    type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
+                } else {
+                    sp1Adapter.setSelectedList(sp1Position);
+                    sp2Adapter.setSelectedList(sp2Position);
+                    sp3Adapter.setSelectedList(sp3Position);
+                    type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent() + "、" + sp3List.get(sp3Position).getContent());
+                    price.setText("￥" + sp3List.get(sp3Position).getPrice());
+                }
+            }
             final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
             popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             popupWindow.setOutsideTouchable(true);
@@ -341,99 +406,184 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 @Override
                 public void onDismiss() {
                     PopUtil.setTransparency(mContext, 1f);
-                    if (colorPosition != -1 && sizePosition != -1) {
-                        isChoose = true;
-//                        getView().yixuanze(popList.get(colorPosition).getType(),popList.get(sizePosition).getType());
+                    if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (sp1Position == -1) {
+                            getView().weixuanze(sb.toString().replace("请选择", ""));
+                        } else {
+                            getView().yixuanze(type.getText().toString());
+                        }
+                    } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        if (sp1Position == -1 || sp2Position == -1) {
+                            getView().weixuanze(sb.toString().replace("请选择", ""));
+                        } else {
+                            getView().yixuanze(type.getText().toString());
+                        }
                     } else {
-                        isChoose = false;
-                        getView().weixuanze(sb.toString().replace("请选择", ""));
+                        if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
+                            getView().weixuanze(sb.toString().replace("请选择", ""));
+                        } else {
+                            getView().yixuanze(type.getText().toString());
+                        }
                     }
                 }
             });
 
             Glide.with(mContext).load(userGoodsDetail.getPic()).into(img);
-
-//            title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
-//            title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
             count.setText("" + quantity);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            rv.setLayoutManager(layoutManager);
-            popChooseAdapter = new PopChooseAdapter(mContext, popList, R.layout.pop_rv_choose);
-            rv.setAdapter(popChooseAdapter);
 
-            popChooseAdapter.setOnPopChooseListener(new MyRecyclerAdapter.OnPopChooseListener() {
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onPopChoose(int parentPos, int childPos) {
-                    if (parentPos == 0) {
-                        colorPosition = childPos;
-                        if (userGoodsDetail.getXsProductAttributes().size() > 1) {
-                            initSizeList(parentPos, childPos);
-                            popChooseAdapter.notifyDataSetChanged();
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (sp1Position == -1) {
+                            Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (quantity >= dataList.get(sp1Position).getStock()) {
+                                quantity = dataList.get(sp1Position).getStock();
+                            } else {
+                                quantity++;
+                            }
+                        }
+                    } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        if (sp1Position == -1 || sp2Position == -1) {
+                            Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (quantity >= stock1(sp1List.get(sp1Position).getContent(), sp2Position).getStock()) {
+                                quantity = stock1(sp1List.get(sp1Position).getContent(), sp2Position).getStock();
+                            } else {
+                                quantity++;
+                            }
+                        }
+                    } else {
+                        if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
+                            Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (quantity >= stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getStock()) {
+                                quantity = stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getStock();
+                            } else {
+                                quantity++;
+                            }
                         }
                     }
-                    if (colorPosition != -1 && parentPos == 1) {
-                        sizePosition = childPos;
-                        if (userGoodsDetail.getXsProductAttributes().size() > 2) {
-                            initSizeList(parentPos, childPos);
-                            popChooseAdapter.notifyDataSetChanged();
+                    count.setText("" + quantity);
+                }
+            });
+
+            minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (quantity <= 1) {
+                        quantity = 1;
+                    } else {
+                        quantity--;
+                    }
+                }
+            });
+
+            shopCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (sp1Position == -1) {
+                            Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            popupWindow.dismiss();
+                            chooseOrAddCart();
+                        }
+                    } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        if (sp1Position == -1 || sp2Position == -1) {
+                            Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            popupWindow.dismiss();
+                            chooseOrAddCart();
+                        }
+                    } else {
+                        if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
+                            Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            popupWindow.dismiss();
+                            chooseOrAddCart();
                         }
                     }
                 }
             });
 
-//            add.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (sizePosition == -1 || colorPosition == -1) {
-//                        Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        if (quantity >= userGoodsDetail.getSkuStockList().get().getList().get(sizePosition).getStock()) {
-//
-//                            quantity = dataList.get(0).getList().get(0).getStock();
-//                        } else {
-//                            quantity++;
-//                        }
-//                        count.setText("" + quantity);
-//                    }
-//                }
-//            });
-//
-//            shopCart.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (colorPosition == -1 || sizePosition == -1) {
-//                        Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        popupWindow.dismiss();
-//                        chooseOrAddCart();
-//
-//                    }
-//                }
-//            });
-
-//            buy.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (colorPosition == -1 || sizePosition == -1) {
-//                        Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        popupWindow.dismiss();
-//                        chooseOrJump();
-//                    }
-//                }
-//            });
+            buy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (sp1Position == -1) {
+                            Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            popupWindow.dismiss();
+                            chooseOrJump();
+                        }
+                    } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        if (sp1Position == -1 || sp2Position == -1) {
+                            Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            popupWindow.dismiss();
+                            chooseOrJump();
+                        }
+                    } else {
+                        if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
+                            Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                        } else {
+                            popupWindow.dismiss();
+                            chooseOrJump();
+                        }
+                    }
+                }
+            });
         }
     }
 
-    private void initSizeList(int parentPos, int childPos) {
-        List<ChooseInsideBean> list = new ArrayList<>();
-        for (int j = 0; j < dataList.size(); j++) {
-            if (sp1List.get(childPos).equals(dataList.get(j).getSp1()) && dataList.get(j).getStock() > 0) {
-                list.add(new ChooseInsideBean(dataList.get(j).getSp2(), false, dataList.get(j).getPrice()));
+    private UserGoodsDetail.SkuStockListBean stock1(String str, int position) {
+        List<UserGoodsDetail.SkuStockListBean> list = new ArrayList<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            if (str.equals(dataList.get(i).getSp1())) {
+                list.add(dataList.get(i));
             }
         }
-        popList.get(parentPos + 1).setList(list);
+        return list.get(position);
+    }
+
+    private UserGoodsDetail.SkuStockListBean stock2(String str, String str2, int position) {
+        List<UserGoodsDetail.SkuStockListBean> list = new ArrayList<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            if (str.equals(dataList.get(i).getSp1()) && str2.equals(dataList.get(i).getSp2())) {
+                list.add(dataList.get(i));
+            }
+        }
+        return list.get(position);
+    }
+
+    private void initSizeList(int position) {
+        sp2Position = -1;
+        sp2List.clear();
+        for (int i = 0; i < dataList.size(); i++) {
+            if (sp1List.get(position).getContent().equals(dataList.get(i).getSp1()) && dataList.get(i).getStock() > 0) {
+                sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPrice()));
+            }
+        }
+        sp2Adapter.notifyDataChanged();
+    }
+
+    private void initThirdList(int position) {
+        sp3List.clear();
+        for (int i = 0; i < dataList.size(); i++) {
+            if (sp1List.get(sp1Position).getContent().equals(dataList.get(i).getSp1()) && sp2List.get(position).getContent().equals(dataList.get(i).getSp2()) && dataList.get(i).getStock() > 0) {
+                sp3List.add(new ChooseInsideBean(dataList.get(i).getSp3(), dataList.get(i).getPrice()));
+            }
+        }
+        sp3Adapter.notifyDataChanged();
     }
 
     public void jumpToAssess(String id) {
@@ -448,29 +598,73 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void chooseOrJump() {
         if (isChoose) {
-//            OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
-//            orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
-//            orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
-//            orderConfirmBean.setProductSkuId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getId());
-//            orderConfirmBean.setQuantity((int) quantity);
-//            orderConfirmBean.setSp1(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp1());
-//            orderConfirmBean.setSp2(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
-//            orderConfirmBean.setPrice(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPrice());
-//            orderConfirmBean.setSourceType(1);
-//            orderConfirmBean.setPic(userGoodsDetail.getPic());
-//            orderConfirmBean.setProductName(userGoodsDetail.getName());
-//            orderConfirmBean.setFeightTemplateId(userGoodsDetail.getFeightTemplateId());
-//            orderConfirmBean.setStock(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getStock());
-//            orderConfirmBean.setProductId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getProductId());
-//            orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId());
-//            orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
-//            orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
-//            orderConfirmBean.setPromotionPrice(userGoodsDetail.getPromotionPrice());
-//            orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getSkuName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
-//
-//            Intent intent = new Intent(mContext, OrderConfirmActivity.class);
-//            intent.putExtra("order", orderConfirmBean);
-//            mContext.startActivity(intent);
+            OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
+
+            if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+                orderConfirmBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
+                orderConfirmBean.setQuantity((int) quantity);
+                orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
+                orderConfirmBean.setPrice(sp1List.get(sp1Position).getPrice());
+                orderConfirmBean.setSourceType(1);
+                orderConfirmBean.setPic(userGoodsDetail.getPic());
+                orderConfirmBean.setProductName(userGoodsDetail.getName());
+                orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
+                orderConfirmBean.setStock(dataList.get(sp1Position).getStock());
+                orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
+                orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+                orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+                orderConfirmBean.setPromotionPrice(sp1List.get(sp1Position).getPrice());
+                orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
+
+            } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+                orderConfirmBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
+                orderConfirmBean.setQuantity((int) quantity);
+                orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
+                orderConfirmBean.setSp2(sp2List.get(sp2Position).getContent());
+                orderConfirmBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                orderConfirmBean.setSourceType(1);
+                orderConfirmBean.setPic(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPic());
+                orderConfirmBean.setProductName(userGoodsDetail.getName());
+                orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
+                orderConfirmBean.setStock(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getStock());
+                orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
+                orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+                orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+                orderConfirmBean.setPromotionPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
+
+            } else {
+                orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+                orderConfirmBean.setProductSkuId(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getId() + "");
+                orderConfirmBean.setQuantity((int) quantity);
+                orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
+                orderConfirmBean.setSp2(sp2List.get(sp2Position).getContent());
+                orderConfirmBean.setSp2(sp3List.get(sp3Position).getContent());
+                orderConfirmBean.setPrice(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
+                orderConfirmBean.setSourceType(1);
+                orderConfirmBean.setPic(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPic());
+                orderConfirmBean.setProductName(userGoodsDetail.getName());
+                orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
+                orderConfirmBean.setStock(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getStock());
+                orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
+                orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+                orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+                orderConfirmBean.setPromotionPrice(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
+                orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position) + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(2).getName() + ":" + sp3List.get(sp3Position).getContent());
+
+            }
+
+            Intent intent = new Intent(mContext, OrderConfirmActivity.class);
+            intent.putExtra("order", orderConfirmBean);
+            mContext.startActivity(intent);
         } else {
             chooseGoodsPop();
         }
@@ -478,40 +672,75 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void chooseOrAddCart() {
         if (isChoose) {
-//            AddCartBean cartBean = new AddCartBean();
-//            cartBean.setChecked(0);
-//            cartBean.setPrice(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPrice());
-//            cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getSkuName() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
-//            cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId());
-//            cartBean.setProductId(userGoodsDetail.getId());
-//            cartBean.setProductSkuId(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getId());
-//            cartBean.setProductName(userGoodsDetail.getName());
-//            cartBean.setProductPic(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getPic());
-//            cartBean.setProductSn(userGoodsDetail.getProductSn());
-//            cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
-//            cartBean.setQuantity((int) quantity);
-//            cartBean.setSellerId(userGoodsDetail.getSellerId());
-//            cartBean.setSellerName(userGoodsDetail.getSellerName());
-//            cartBean.setSp1(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp1());
-//            cartBean.setSp2(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp2());
-//            cartBean.setSp3(userGoodsDetail.getStoInfo().getRecords().get(colorPosition).getList().get(sizePosition).getSp3());
-//            cartBean.setUserId(SPUtil.getUserCode());
-//
-//            String jsonString = JSON.toJSONString(cartBean);
-//            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-//            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
-//            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-//                @Override
-//                public void onSuccess(String result, String msg) {
-//                    LogUtil.e("添加购物车：" + result);
-//                    Toast.makeText(mContext, "添加成功，可前往购物车查看", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                @Override
-//                public void onError(String errorCode, String errorMsg) {
-//
-//                }
-//            }));
+            AddCartBean cartBean = new AddCartBean();
+
+            if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                cartBean.setChecked(0);
+                cartBean.setPrice(sp1List.get(sp1Position).getPrice());
+                cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
+                cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                cartBean.setProductId(userGoodsDetail.getId() + "");
+                cartBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
+                cartBean.setProductName(userGoodsDetail.getName());
+                cartBean.setProductPic(dataList.get(sp1Position).getPic());
+                cartBean.setProductSn(userGoodsDetail.getProductSn());
+                cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+                cartBean.setQuantity((int) quantity);
+                cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                cartBean.setSellerName(userGoodsDetail.getSellerName());
+                cartBean.setSp1(sp1List.get(sp1Position).getContent());
+                cartBean.setUserId(SPUtil.getUserCode());
+            } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                cartBean.setChecked(0);
+                cartBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
+                cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                cartBean.setProductId(userGoodsDetail.getId() + "");
+                cartBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
+                cartBean.setProductName(userGoodsDetail.getName());
+                cartBean.setProductPic(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPic());
+                cartBean.setProductSn(userGoodsDetail.getProductSn());
+                cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+                cartBean.setQuantity((int) quantity);
+                cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                cartBean.setSellerName(userGoodsDetail.getSellerName());
+                cartBean.setSp1(sp1List.get(sp1Position).getContent());
+                cartBean.setSp2(sp2List.get(sp2Position).getContent());
+                cartBean.setUserId(SPUtil.getUserCode());
+            } else {
+                cartBean.setChecked(0);
+                cartBean.setPrice(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
+                cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position) + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(2).getName() + ":" + sp3List.get(sp3Position).getContent());
+                cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                cartBean.setProductId(userGoodsDetail.getId() + "");
+                cartBean.setProductSkuId(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getId() + "");
+                cartBean.setProductName(userGoodsDetail.getName());
+                cartBean.setProductPic(stock2(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPic());
+                cartBean.setProductSn(userGoodsDetail.getProductSn());
+                cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+                cartBean.setQuantity((int) quantity);
+                cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                cartBean.setSellerName(userGoodsDetail.getSellerName());
+                cartBean.setSp1(sp1List.get(sp1Position).getContent());
+                cartBean.setSp2(sp2List.get(sp2Position).getContent());
+                cartBean.setSp3(sp3List.get(sp3Position).getContent());
+                cartBean.setUserId(SPUtil.getUserCode());
+            }
+
+            String jsonString = JSON.toJSONString(cartBean);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    Toast.makeText(mContext, "添加成功，可前往购物车查看", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+
+                }
+            }));
         } else {
             chooseGoodsPop();
         }

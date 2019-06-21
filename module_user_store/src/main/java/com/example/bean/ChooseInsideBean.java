@@ -1,33 +1,50 @@
 package com.example.bean;
 
 public class ChooseInsideBean {
-    private Object content;
+    private String content;
     private String picUrl;
     private double price;
-    private boolean isCheck;
+    private long stock;
+    private boolean isCheck = false;
+    private boolean canClick = true;
 
-    public ChooseInsideBean(Object content, String picUrl, boolean isCheck, double price) {
+    public ChooseInsideBean(String content, String picUrl, double price) {
         this.content = content;
         this.picUrl = picUrl;
-        this.isCheck = isCheck;
         this.price = price;
     }
 
-    public ChooseInsideBean(Object content, boolean isCheck, double price) {
+    public ChooseInsideBean(String content, double price) {
         this.content = content;
-        this.isCheck = isCheck;
         this.price = price;
     }
 
-    public ChooseInsideBean(Object content, String picUrl, boolean isCheck) {
-        this.content = content;
-        this.picUrl = picUrl;
-        this.isCheck = isCheck;
+    public boolean isCanClick() {
+        return canClick;
     }
 
-    public ChooseInsideBean(Object content, boolean isCheck) {
+    public void setCanClick(boolean canClick) {
+        this.canClick = canClick;
+    }
+
+    public long getStock() {
+        return stock;
+    }
+
+    public void setStock(long stock) {
+        this.stock = stock;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
+    public ChooseInsideBean(String content) {
         this.content = content;
-        this.isCheck = isCheck;
     }
 
     public double getPrice() {
@@ -46,29 +63,23 @@ public class ChooseInsideBean {
         this.picUrl = picUrl;
     }
 
-    public Object getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(Object content) {
+    public void setContent(String content) {
         this.content = content;
-    }
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setCheck(boolean check) {
-        isCheck = check;
     }
 
     @Override
     public String toString() {
         return "ChooseInsideBean{" +
-                "content=" + content +
+                "content='" + content + '\'' +
                 ", picUrl='" + picUrl + '\'' +
                 ", price=" + price +
+                ", stock=" + stock +
                 ", isCheck=" + isCheck +
+                ", canClick=" + canClick +
                 '}';
     }
 }

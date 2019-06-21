@@ -2,6 +2,7 @@ package com.example.user_store;
 
 
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -71,6 +72,15 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            presenter.setBack();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean2 eventBusBean2) {
         if (CommonResource.USER_BACK.equals(eventBusBean2.getMsg())) {
@@ -80,6 +90,11 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
             userClassify.setChecked(true);
             presenter.click(R.id.user_classify);
         }
+    }
+
+    @Override
+    public void toHome() {
+        userHome.setChecked(true);
     }
 
     @Override

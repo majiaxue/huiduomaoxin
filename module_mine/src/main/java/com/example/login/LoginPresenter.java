@@ -44,14 +44,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         EventBus.getDefault().unregister(mContext);
     }
 
-    public void showWeiXin() {
-        getView().showWeiXin();
-    }
-
-    public void hideWeiXin() {
-        getView().hideWeiXin();
-    }
-
     public void toRegister() {
         mContext.startActivity(new Intent(mContext, RegisterActivity.class));
     }
@@ -87,8 +79,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             public void onSuccess(String result, String msg) {
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
-                LogUtil.e("denglu:"+result);
-                SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
+                LogUtil.e("denglu:" + result);
                 if (userInfoBean.getPhone() == null || "".equals(userInfoBean.getPhone())) {
                     Intent intent = new Intent(mContext, LoginWeChatActivity.class);
                     intent.putExtra("bean", userInfoBean);
@@ -96,6 +87,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     ((Activity) mContext).finish();
                 } else {
                     SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
+                    SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
+                    SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
+                    SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
+                    SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }
@@ -124,6 +119,9 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     LogUtil.e("登录：" + userInfoBean);
                     SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
                     SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
+                    SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
+                    SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
+                    SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

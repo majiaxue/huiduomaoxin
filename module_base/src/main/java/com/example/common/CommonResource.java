@@ -123,5 +123,8 @@ public class CommonResource {
     public static final String JUMP_CART = "JUMP_CART";
     public static final String TOKEN = "token";
     public static final String USERCODE = "userCode";
+    public static final String USER_NAME = "userName";
+    public static final String USER_PIC = "userPic";
+    public static final String USER_INVITE = "userInvite";
     public static final String TABABLE_NAME = "HISTORY";
 }

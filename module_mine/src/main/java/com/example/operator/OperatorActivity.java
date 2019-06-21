@@ -77,7 +77,7 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
         operatorInviteFans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_classify/tshop_home").navigation();
+
             }
         });
     }

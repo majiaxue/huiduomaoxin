@@ -32,8 +32,8 @@ public class PopFlowLayoutAdapter extends TagAdapter<ChooseInsideBean> {
     }
 
     @Override
-    public View getView(FlowLayout parent, int position, ChooseInsideBean chooseGoodsBean) {
-        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_choose_goods_color, parent, false);
+    public View getView(FlowLayout parent, int position, final ChooseInsideBean chooseGoodsBean) {
+        final View inflate = LayoutInflater.from(context).inflate(R.layout.pop_choose_goods_color, parent, false);
         ImageView img = inflate.findViewById(R.id.flow_goods_color_img);
         TextView txt = inflate.findViewById(R.id.flow_goods_color_content);
         if (chooseGoodsBean.getPicUrl() == null || "".equals(chooseGoodsBean.getPicUrl())) {
@@ -43,6 +43,10 @@ public class PopFlowLayoutAdapter extends TagAdapter<ChooseInsideBean> {
             Glide.with(context).load(chooseGoodsBean.getPicUrl()).into(img);
         }
         txt.setText(chooseGoodsBean.getContent() + "");
+
+        if (flowClickListener != null) {
+            flowClickListener.onFlowClickListener(inflate, position);
+        }
         return inflate;
     }
 

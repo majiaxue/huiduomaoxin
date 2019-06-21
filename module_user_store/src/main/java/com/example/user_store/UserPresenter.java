@@ -1,5 +1,6 @@
 package com.example.user_store;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +24,8 @@ public class UserPresenter extends BasePresenter<UserView> {
     private ClassifyFragment classifyFragment;
     private ShoppingCartFragment shoppingCartFragment;
     private MineFragment mineFragment;
+
+    private boolean isHomeShow = true;
 
     public UserPresenter(Context context) {
         super(context);
@@ -50,7 +53,6 @@ public class UserPresenter extends BasePresenter<UserView> {
                 .hide(shoppingCartFragment)
                 .hide(mineFragment)
                 .commit();
-
     }
 
     public void click(int resId) {
@@ -61,24 +63,37 @@ public class UserPresenter extends BasePresenter<UserView> {
                     .hide(shoppingCartFragment)
                     .hide(mineFragment)
                     .commit();
+            isHomeShow = true;
         } else if (resId == R.id.user_classify) {
             transaction.show(classifyFragment)
                     .hide(homeFragment)
                     .hide(shoppingCartFragment)
                     .hide(mineFragment)
                     .commit();
+            isHomeShow = false;
         } else if (resId == R.id.user_shopping_cart) {
             transaction.show(shoppingCartFragment)
                     .hide(homeFragment)
                     .hide(classifyFragment)
                     .hide(mineFragment)
                     .commit();
+            isHomeShow = false;
         } else if (resId == R.id.user_mine) {
             transaction.show(mineFragment)
                     .hide(homeFragment)
                     .hide(classifyFragment)
                     .hide(shoppingCartFragment)
                     .commit();
+            isHomeShow = false;
+        }
+    }
+
+    public void setBack() {
+        if (isHomeShow) {
+            ((Activity) mContext).finish();
+        } else {
+            click(R.id.user_home);
+            getView().toHome();
         }
     }
 }

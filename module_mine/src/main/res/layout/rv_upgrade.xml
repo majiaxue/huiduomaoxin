@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="@dimen/dp_346"
-        android:layout_height="@dimen/dp_220"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_25"
         android:background="@drawable/bg_mine_top">
@@ -41,59 +41,67 @@
             android:textColor="#e20707"
             android:textSize="@dimen/sp_15" />
 
-        <TextView
-            android:id="@+id/rv_upgrade_shoufei"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_upgrade_rv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_21"
-            android:layout_marginTop="@dimen/dp_104"
-            android:includeFontPadding="false"
-            android:text="收费金额达到：200 元"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_14" />
+            android:layout_marginTop="@dimen/dp_104" />
+        <!--<TextView-->
+        <!--android:id="@+id/rv_upgrade_shoufei"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="@dimen/dp_21"-->
+        <!--android:layout_marginTop="@dimen/dp_104"-->
+        <!--android:includeFontPadding="false"-->
+        <!--android:text="收费金额达到：200 元"-->
+        <!--android:textColor="#333333"-->
+        <!--android:textSize="@dimen/sp_14" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/rv_upgrade_zigou"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/rv_upgrade_shoufei"-->
+        <!--android:layout_alignLeft="@id/rv_upgrade_shoufei"-->
+        <!--android:layout_marginTop="@dimen/dp_5"-->
+        <!--android:includeFontPadding="false"-->
+        <!--android:text="自购订单达到：10 单"-->
+        <!--android:textColor="#333333"-->
+        <!--android:textSize="@dimen/sp_14" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/rv_upgrade_yaoqing"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/rv_upgrade_zigou"-->
+        <!--android:layout_alignLeft="@id/rv_upgrade_zigou"-->
+        <!--android:layout_marginTop="@dimen/dp_5"-->
+        <!--android:includeFontPadding="false"-->
+        <!--android:text="邀请粉丝达到：10 人"-->
+        <!--android:textColor="#333333"-->
+        <!--android:textSize="@dimen/sp_14" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/rv_upgrade_yugu"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/rv_upgrade_yaoqing"-->
+        <!--android:layout_alignLeft="@id/rv_upgrade_yaoqing"-->
+        <!--android:layout_marginTop="@dimen/dp_5"-->
+        <!--android:includeFontPadding="false"-->
+        <!--android:text="预估佣金达到：888 元"-->
+        <!--android:textColor="#333333"-->
+        <!--android:textSize="@dimen/sp_14" />-->
 
         <TextView
-            android:id="@+id/rv_upgrade_zigou"
+            android:id="@+id/rv_upgrade_remark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rv_upgrade_shoufei"
-            android:layout_alignLeft="@id/rv_upgrade_shoufei"
-            android:layout_marginTop="@dimen/dp_5"
-            android:includeFontPadding="false"
-            android:text="自购订单达到：10 单"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_14" />
-
-        <TextView
-            android:id="@+id/rv_upgrade_yaoqing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rv_upgrade_zigou"
-            android:layout_alignLeft="@id/rv_upgrade_zigou"
-            android:layout_marginTop="@dimen/dp_5"
-            android:includeFontPadding="false"
-            android:text="邀请粉丝达到：10 人"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_14" />
-
-        <TextView
-            android:id="@+id/rv_upgrade_yugu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rv_upgrade_yaoqing"
-            android:layout_alignLeft="@id/rv_upgrade_yaoqing"
-            android:layout_marginTop="@dimen/dp_5"
-            android:includeFontPadding="false"
-            android:text="预估佣金达到：888 元"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_14" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rv_upgrade_yugu"
+            android:layout_below="@id/rv_upgrade_rv"
             android:layout_marginLeft="@dimen/dp_21"
             android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
             android:includeFontPadding="false"
             android:text="备注：上述条件满足任意一条即可升级"
             android:textColor="#999999"

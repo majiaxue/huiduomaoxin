@@ -190,7 +190,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
 
     @Override
     public void clearSuccess() {
-        settingCacheTxt.setText(CacheUtil.getTotalCacheSize(this));
+        totalCache = CacheUtil.getTotalCacheSize(this);
+        settingCacheTxt.setText(totalCache);
     }
 
     @Override
