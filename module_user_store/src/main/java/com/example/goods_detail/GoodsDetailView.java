@@ -26,7 +26,7 @@ public interface GoodsDetailView extends IView {
 
     void cancelAttention();
 
-    void yixuanze(String color, String size);
+    void yixuanze(String attr);
 
     void weixuanze(String str);
 

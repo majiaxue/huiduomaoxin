@@ -76,17 +76,17 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
         presenter.loadData(page, "");
         presenter.loadCount();
 
-        KeyboardStateObserver.getKeyboardStateObserver(this).setKeyboardVisibilityListener(new KeyboardStateObserver.OnKeyboardVisibilityListener() {
-            @Override
-            public void onKeyboardShow() {
-
-            }
-
-            @Override
-            public void onKeyboardHide() {
-                groupFansEdit.clearFocus();
-            }
-        });
+//        KeyboardStateObserver.getKeyboardStateObserver(this).setKeyboardVisibilityListener(new KeyboardStateObserver.OnKeyboardVisibilityListener() {
+//            @Override
+//            public void onKeyboardShow() {
+//
+//            }
+//
+//            @Override
+//            public void onKeyboardHide() {
+//                groupFansEdit.clearFocus();
+//            }
+//        });
 
         //设置 Header 为 官方主题 样式
         groupFansRefresh.setRefreshHeader(new MaterialHeader(this));
@@ -139,23 +139,6 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
                 } else {
                     groupFansSearch.setVisibility(View.INVISIBLE);
                 }
-            }
-        });
-
-        groupFansEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -214,7 +197,11 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     public void loadCount(GroupFansPeopleBean peopleBean) {
         groupFansZhitui.setText(peopleBean.getFirstFans() + "");
         groupFansXinzeng.setText(peopleBean.getTodayFans() + "");
-        groupFansTuijianren.setText("我的推荐人：" + peopleBean.getParent());
+        if (peopleBean.getParent() == null || "".equals(peopleBean.getParent())) {
+            groupFansTuijianren.setText("我的推荐人：无");
+        } else {
+            groupFansTuijianren.setText("我的推荐人：" + peopleBean.getParent());
+        }
     }
 
     @Override

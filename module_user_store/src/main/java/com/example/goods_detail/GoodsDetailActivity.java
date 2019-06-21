@@ -398,8 +398,8 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     }
 
     @Override
-    public void yixuanze(String color, String size) {
-        mTxt.setText("已选:\"" + color + "\"\"" + size + "\"");
+    public void yixuanze(String attr) {
+        mTxt.setText(attr);
     }
 
     @Override

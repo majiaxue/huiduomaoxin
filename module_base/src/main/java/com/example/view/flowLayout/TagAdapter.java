@@ -12,6 +12,8 @@ import java.util.Set;
 public abstract class TagAdapter<T> {
     public List<T> mTagDatas;
     private OnDataChangedListener mOnDataChangedListener;
+    public OnFlowClickListener flowClickListener;
+
     @Deprecated
     private HashSet<Integer> mCheckedPosList = new HashSet<Integer>();
 
@@ -72,17 +74,23 @@ public abstract class TagAdapter<T> {
     public abstract View getView(FlowLayout parent, int position, T t);
 
 
-    public void onSelected(int position, View view){
-        Log.d("zhy","onSelected " + position);
+    public void onSelected(int position, View view) {
+        Log.d("zhy", "onSelected " + position);
     }
 
-    public void unSelected(int position, View view){
-        Log.d("zhy","unSelected " + position);
+    public void unSelected(int position, View view) {
+        Log.d("zhy", "unSelected " + position);
     }
 
     public boolean setSelected(int position, T t) {
         return false;
     }
 
+    public interface OnFlowClickListener {
+        void onFlowClickListener(View view, int position);
+    }
 
+    public void setOnFlowClickListener(OnFlowClickListener listener) {
+        this.flowClickListener = listener;
+    }
 }

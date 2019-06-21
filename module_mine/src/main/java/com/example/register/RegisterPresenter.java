@@ -84,6 +84,9 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
                 }.getType());
                 SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
                 SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
+                SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
+                SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
+                SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                 ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                 ((Activity) mContext).finish();
             }

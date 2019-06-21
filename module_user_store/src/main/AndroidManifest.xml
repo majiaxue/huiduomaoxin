@@ -28,6 +28,7 @@
 
         <activity
             android:name="com.example.type_detail.TypeDetailActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
@@ -40,6 +41,7 @@
 
         <activity
             android:name="com.example.search.UserSearchActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
