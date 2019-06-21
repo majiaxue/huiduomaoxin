@@ -480,13 +480,13 @@ public class TBGoodsRecBean {
         }
 
         public static class SmallImagesBean {
-            private List<String> string;
+            private List<Object> string;
 
-            public List<String> getString() {
+            public List<Object> getString() {
                 return string;
             }
 
-            public void setString(List<String> string) {
+            public void setString(List<Object> string) {
                 this.string = string;
             }
         }

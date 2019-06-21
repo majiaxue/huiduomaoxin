@@ -64,207 +64,210 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                 final MineOrderBean mineOrderBean = new Gson().fromJson(result, MineOrderBean.class);
                 LogUtil.e("MineOrderBean1" + mineOrderBean);
                 if (mineOrderBean != null) {
-                    listBeans.clear();
-                    listBeans.addAll(mineOrderBean.getOrderList());
 
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                    orderAllRec.setLayoutManager(linearLayoutManager);
-                    mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                    orderAllRec.setAdapter(mineOrderParentAdapter);
+                    if (mineOrderBean.getOrderList() != null && mineOrderBean.getOrderList().size() != 0) {
+                        listBeans.clear();
+                        listBeans.addAll(mineOrderBean.getOrderList());
 
-                    mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            if (listBeans.get(position).getStatus() == 1) {
-                                ARouter.getInstance()
-                                        .build("/module_user_mine/OrderDetailsActivity")
-                                        .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
-                                        .navigation();
-                            } else if (listBeans.get(position).getStatus() == 2) {
-                                ARouter.getInstance()
-                                        .build("/module_user_mine/OrderDetailsActivity")
-                                        .withString("orderSn", listBeans.get(0).getOrderItems().get(position).getOrderSn())
-                                        .navigation();
-                            }else if (listBeans.get(position).getStatus() == 6){
-                                //待付款
-                                ARouter.getInstance()
-                                        .build("/module_user_mine/ObligationActivity")
-                                        .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
-                                        .navigation();
-                            }
-                        }
-                    });
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        orderAllRec.setLayoutManager(linearLayoutManager);
+                        mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                        orderAllRec.setAdapter(mineOrderParentAdapter);
 
-                    mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
-                        @Override
-                        public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
-                            //去店铺
-                            view1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-//                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                        mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                if (listBeans.get(position).getStatus() == 1) {
+                                    ARouter.getInstance()
+                                            .build("/module_user_mine/OrderDetailsActivity")
+                                            .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
+                                            .navigation();
+                                } else if (listBeans.get(position).getStatus() == 2) {
+                                    ARouter.getInstance()
+                                            .build("/module_user_mine/OrderDetailsActivity")
+                                            .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
+                                            .navigation();
+                                } else if (listBeans.get(position).getStatus() == 6) {
+                                    //待付款
+                                    ARouter.getInstance()
+                                            .build("/module_user_mine/ObligationActivity")
+                                            .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
+                                            .navigation();
                                 }
-                            });
-                            int status = listBeans.get(position).getStatus();
-                            if (status == 1) {
-                                //1待发货
-                                //申请退款
-                                view2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(mContext, "申请退款", Toast.LENGTH_SHORT).show();
-                                        ARouter.getInstance()
-                                                .build("/module_user_mine/RefundActivity")
-                                                .withSerializable("mineOrderBean", mineOrderBean)
-                                                .withInt("position", position)
-                                                .navigation();
-                                    }
-                                });
-                                //提醒发货
-                                view3.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(mContext, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else if (status == 3) {
-                                //3待评论
-                                //再次购买
-                                view2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(mContext, "再次购买", Toast.LENGTH_SHORT).show();
-                                        //再次购买
-                                        ARouter.getInstance()
-                                                .build("/module_user_store/GoodsDetailActivity")
-                                                .withString("id", listBeans.get(0).getOrderItems().get(position).getProductId() + "")
-                                                .withString("sellerId", listBeans.get(0).getSellerId())
-                                                .withString("commendId", listBeans.get(0).getOrderItems().get(position).getProductCategoryId() + "")
-                                                .navigation();
-                                    }
-                                });
-                                //立即评价
-                                view3.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ARouter.getInstance()
-                                                .build("/module_user_mine/OrderAssessActivity")
-                                                .withSerializable("beanList", listBeans.get(position))
-                                                .withInt("position", position)
-                                                .navigation();
-                                    }
-                                });
-                            } else if (status == 6) {
-                                //6待付款
-                                //删除订单
-                                view2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Map build = MapUtil.getInstance().addParms("orderId", listBeans.get(position).getOrderId()).build();
-                                        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERREMOVE, build, SPUtil.getToken());
-                                        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-                                            @Override
-                                            public void onSuccess(String result, String msg) {
-                                                if ("true".equals(result)) {
-                                                    listBeans.remove(position);
-                                                    mineOrderParentAdapter.notifyDataSetChanged();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(String errorCode, String errorMsg) {
-                                                LogUtil.e("删除errorMsg---------->" + errorMsg);
-                                            }
-                                        }));
-                                    }
-                                });
-                                //付款
-                                view3.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        SubmitOrderBean submitOrderBean = new SubmitOrderBean();
-                                        submitOrderBean.setTotalAmount(listBeans.get(position).getTotalAmount());
-                                        submitOrderBean.setMasterNo(listBeans.get(position).getOrderItems().get(0).getOrderSn());
-                                        ARouter.getInstance().build("/module_user_store/PaymentActivity")
-                                                .withSerializable("submitOrderBean", submitOrderBean)
-                                                .navigation();
-                                    }
-                                });
-                            } else if (status == 2) {
-                                //2待收货
-                                //查看物流
-                                view2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ARouter.getInstance()
-                                                .build("/module_user_mine/LogisticsInformationActivity")
-                                                .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
-                                                .withString("goodsImage", listBeans.get(position).getOrderItems().get(0).getProductPic())
-                                                .navigation();
-                                    }
-                                });
-                                //确认收货
-                                view3.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.ORDERCONFIRM + "/" + listBeans.get(position).getOrderId(), SPUtil.getToken());
-                                        RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
-                                            @Override
-                                            public void onSuccess(String result, String msg) {
-                                                LogUtil.e("确认收货---->" + result);
-                                                if ("true".equals(result)) {
-                                                    listBeans.remove(position);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(String errorCode, String errorMsg) {
-                                                LogUtil.e("确认收货error---->" + errorMsg);
-                                            }
-                                        }));
-
-                                    }
-                                });
-                            } else if (status == 4 || status == 5) {
-                                //45 已失效
-                                //删除订单
-                                view2.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Map build = MapUtil.getInstance().addParms("orderId", listBeans.get(position).getOrderId()).build();
-                                        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERREMOVE, build, SPUtil.getToken());
-                                        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-                                            @Override
-                                            public void onSuccess(String result, String msg) {
-                                                if ("true".equals(result)) {
-                                                    listBeans.remove(position);
-                                                    mineOrderParentAdapter.notifyDataSetChanged();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(String errorCode, String errorMsg) {
-                                                LogUtil.e("删除errorMsg---------->" + errorMsg);
-                                            }
-                                        }));
-
-                                    }
-                                });
-                                //再次购买
-                                view3.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ARouter.getInstance()
-                                                .build("/module_user_store/GoodsDetailActivity")
-                                                .withString("id", listBeans.get(0).getOrderItems().get(position).getProductId() + "")
-                                                .withString("sellerId", listBeans.get(0).getSellerId())
-                                                .withString("commendId", listBeans.get(0).getOrderItems().get(position).getProductCategoryId() + "")
-                                                .navigation();
-                                    }
-                                });
                             }
-                        }
-                    });
+                        });
+
+                        mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+                            @Override
+                            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                                //去店铺
+                                view1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+//                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                int status = listBeans.get(position).getStatus();
+                                if (status == 1) {
+                                    //1待发货
+                                    //申请退款
+                                    view2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(mContext, "申请退款", Toast.LENGTH_SHORT).show();
+                                            ARouter.getInstance()
+                                                    .build("/module_user_mine/RefundActivity")
+                                                    .withSerializable("mineOrderBean", mineOrderBean)
+                                                    .withInt("position", position)
+                                                    .navigation();
+                                        }
+                                    });
+                                    //提醒发货
+                                    view3.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(mContext, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else if (status == 3) {
+                                    //3待评论
+                                    //再次购买
+                                    view2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(mContext, "再次购买", Toast.LENGTH_SHORT).show();
+                                            //再次购买
+                                            ARouter.getInstance()
+                                                    .build("/module_user_store/GoodsDetailActivity")
+                                                    .withString("id", listBeans.get(position).getOrderItems().get(0).getProductId() + "")
+                                                    .withString("sellerId", listBeans.get(position).getSellerId())
+                                                    .withString("commendId", listBeans.get(position).getOrderItems().get(0).getProductCategoryId() + "")
+                                                    .navigation();
+                                        }
+                                    });
+                                    //立即评价
+                                    view3.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            ARouter.getInstance()
+                                                    .build("/module_user_mine/OrderAssessActivity")
+                                                    .withSerializable("beanList", listBeans.get(position))
+                                                    .withInt("position", position)
+                                                    .navigation();
+                                        }
+                                    });
+                                } else if (status == 6) {
+                                    //6待付款
+                                    //删除订单
+                                    view2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Map build = MapUtil.getInstance().addParms("orderId", listBeans.get(position).getOrderId()).build();
+                                            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERREMOVE, build, SPUtil.getToken());
+                                            RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+                                                @Override
+                                                public void onSuccess(String result, String msg) {
+                                                    if ("true".equals(result)) {
+                                                        listBeans.remove(position);
+                                                        mineOrderParentAdapter.notifyDataSetChanged();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(String errorCode, String errorMsg) {
+                                                    LogUtil.e("删除errorMsg---------->" + errorMsg);
+                                                }
+                                            }));
+                                        }
+                                    });
+                                    //付款
+                                    view3.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            SubmitOrderBean submitOrderBean = new SubmitOrderBean();
+                                            submitOrderBean.setTotalAmount(listBeans.get(position).getTotalAmount());
+                                            submitOrderBean.setMasterNo(listBeans.get(position).getOrderItems().get(0).getOrderSn());
+                                            ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                                                    .withSerializable("submitOrderBean", submitOrderBean)
+                                                    .navigation();
+                                        }
+                                    });
+                                } else if (status == 2) {
+                                    //2待收货
+                                    //查看物流
+                                    view2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            ARouter.getInstance()
+                                                    .build("/module_user_mine/LogisticsInformationActivity")
+                                                    .withString("orderSn", listBeans.get(position).getOrderItems().get(0).getOrderSn())
+                                                    .withString("goodsImage", listBeans.get(position).getOrderItems().get(0).getProductPic())
+                                                    .navigation();
+                                        }
+                                    });
+                                    //确认收货
+                                    view3.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.ORDERCONFIRM + "/" + listBeans.get(position).getOrderId(), SPUtil.getToken());
+                                            RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                                                @Override
+                                                public void onSuccess(String result, String msg) {
+                                                    LogUtil.e("确认收货---->" + result);
+                                                    if ("true".equals(result)) {
+                                                        listBeans.remove(position);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(String errorCode, String errorMsg) {
+                                                    LogUtil.e("确认收货error---->" + errorMsg);
+                                                }
+                                            }));
+
+                                        }
+                                    });
+                                } else if (status == 4 || status == 5) {
+                                    //45 已失效
+                                    //删除订单
+                                    view2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Map build = MapUtil.getInstance().addParms("orderId", listBeans.get(position).getOrderId()).build();
+                                            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERREMOVE, build, SPUtil.getToken());
+                                            RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+                                                @Override
+                                                public void onSuccess(String result, String msg) {
+                                                    if ("true".equals(result)) {
+                                                        listBeans.remove(position);
+                                                        mineOrderParentAdapter.notifyDataSetChanged();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(String errorCode, String errorMsg) {
+                                                    LogUtil.e("删除errorMsg---------->" + errorMsg);
+                                                }
+                                            }));
+
+                                        }
+                                    });
+                                    //再次购买
+                                    view3.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            ARouter.getInstance()
+                                                    .build("/module_user_store/GoodsDetailActivity")
+                                                    .withString("id", listBeans.get(position).getOrderItems().get(0).getProductId() + "")
+                                                    .withString("sellerId", listBeans.get(position).getSellerId())
+                                                    .withString("commendId", listBeans.get(position).getOrderItems().get(0).getProductCategoryId() + "")
+                                                    .navigation();
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
                 }
             }
 

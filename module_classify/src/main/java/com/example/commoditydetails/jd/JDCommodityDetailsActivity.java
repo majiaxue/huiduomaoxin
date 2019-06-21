@@ -1,6 +1,6 @@
 package com.example.commoditydetails.jd;
 
-import android.net.Uri;
+import android.graphics.Paint;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +19,8 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MyTimeUtil;
+import com.example.view.RVNestedScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -64,7 +66,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     @BindView(R2.id.shop_recommend_rec)
     RecyclerView shopRecommendRec;
     @BindView(R2.id.commodity_nested_scroll)
-    NestedScrollView commodityNestedScroll;
+    RVNestedScrollView commodityNestedScroll;
     @BindView(R2.id.commodity_stick)
     ImageView commodityStick;
     @BindView(R2.id.commodity_go_home)
@@ -89,6 +91,14 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     TextView shopText3;
     @BindView(R2.id.shop_no_goods)
     LinearLayout shopNoGoods;
+    @BindView(R2.id.commodity_coupon_price)
+    TextView commodityCouponPrice;
+    @BindView(R2.id.commodity_time)
+    TextView commodityTime;
+    @BindView(R2.id.commodity_immediately_receive)
+    TextView commodityImmediatelyReceive;
+    @BindView(R2.id.commodity_led_securities_text)
+    TextView commodityLedSecuritiesText;
 
     @Autowired(name = "skuid")
     String skuid;
@@ -101,6 +111,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
 
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
+    private double sub;
 
     @Override
     public int getLayoutId() {
@@ -113,7 +124,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         AppManager.getInstance().addGoodsActivity(this);
         listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
         LogUtil.e("京东+++++++++++++" + skuid + "             " + jDGoodsRecBean);
-
+        //字体加中划线
+        commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //收益
         presenter.earnings();
 
@@ -122,12 +134,16 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
         //商品详情图片
         presenter.setShopParticulars(shopParticulars, listsBeanList, position);
+        sub = ArithUtil.sub(Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()), Double.valueOf(listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getDiscount()));
 
         commodityName.setText(listsBeanList.get(position).getSkuName());//名字
-        commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()), Double.valueOf(listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getDiscount())));//优惠价
+        commodityPreferentialPrice.setText("￥" + sub);//优惠价
         commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()));//原价
         commodityNumberSold.setText("已售" + listsBeanList.get(0).getInOrderCount30Days() + "件");//已售
-
+        commodityCouponPrice.setText(ArithUtil.sub(Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()), sub) + "元优惠劵");
+        String startTime = MyTimeUtil.date2String("" + listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getUseStartTime());
+        String endTime = MyTimeUtil.date2String("" + listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getUseEndTime());
+        commodityTime.setText("有效期：" + startTime + "~" + endTime);
         commodityShopName.setText(listsBeanList.get(position).getShopInfo().getShopName());//商家名
 //        commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.get(0).getSeller().getShopIcon()));//商家icon
 //        LogUtil.e("icon---->" + tbBeanList.get(0).getSeller().getShopIcon());
@@ -246,16 +262,16 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void earnings(String earnings) {
         Double commission = Double.valueOf(listsBeanList.get(position).getCommissionInfo().getCommission());
         Double aDouble = Double.valueOf(earnings);
-
-        double mul = ArithUtil.mul(commission, ArithUtil.div(aDouble, 100, 2));
+        double mul1 = ArithUtil.mul(sub, ArithUtil.div(commission, 100, 2));
+        double mul = ArithUtil.mul(mul1, ArithUtil.div(aDouble, 100, 2));
         commodityEarnings.setText("预估收益：￥" + mul);//收益
     }
 
     @Override
     public void isNoGoods(boolean isNoGoods) {
-        if (isNoGoods){
+        if (isNoGoods) {
             shopNoGoods.setVisibility(View.GONE);
-        }else{
+        } else {
             shopNoGoods.setVisibility(View.VISIBLE);
         }
     }

@@ -204,14 +204,14 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     tBGoodsSearchBeans = JSON.parseArray(result, TBGoodsSearchBean.class);
                     if (tBGoodsSearchBeans != null) {
                         if (tBGoodsSearchBeans != null && tBGoodsSearchBeans.size() != 0) {
-//                    for (int i = tBGoodsSearchBeans.size() - 1; i >= 0; i--) {
-//                        if (tBGoodsSearchBeans.get(i).getCat_name().equals("数码家电")) {
-//                            tBGoodsSearchBeans.remove(i);
-//                        }
-//                        if (tBGoodsSearchBeans.get(i).getCat_name().equals("箱包")) {
-//                            tBGoodsSearchBeans.remove(i);
-//                        }
-//                    }
+                            for (int i = tBGoodsSearchBeans.size() - 1; i >= 0; i--) {
+                                if (tBGoodsSearchBeans.get(i).getCat_name().equals("数码家电")) {
+                                    tBGoodsSearchBeans.remove(i);
+                                }
+                                if (tBGoodsSearchBeans.get(i).getCat_name().equals("箱包")) {
+                                    tBGoodsSearchBeans.remove(i);
+                                }
+                            }
                             getView().noGoods(false);
                             for (int i = 0; i < tBGoodsSearchBeans.size(); i++) {
                                 secondaryDetailsTab.addTab(secondaryDetailsTab.newTab().setText(tBGoodsSearchBeans.get(i).getCat_name()));

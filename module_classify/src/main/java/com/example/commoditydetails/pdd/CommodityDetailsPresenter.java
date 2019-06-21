@@ -208,8 +208,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     public void isCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         LogUtil.e("id------------->" + beanList.get(0).getGoods_id());
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id(), SPUtil.getToken());
-        LogUtil.e("path------------>" + "http://192.168.1.27:4001" + CommonResource.FAVORITESTATUS + "/" + beanList.get(0).getGoods_id());
-
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

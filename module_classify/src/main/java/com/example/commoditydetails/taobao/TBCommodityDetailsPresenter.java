@@ -41,6 +41,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
@@ -59,9 +60,10 @@ import okhttp3.ResponseBody;
 public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetailsView> {
 
     private String type;
-    private List<TBBean.DataBean> tbBeanList = new ArrayList<>();
-    private List<TBLedSecuritiesBean.DataBean> dataBeanList = new ArrayList<>();
     private List<TBGoodChoiceBean.DataBean> tbRecommendList = new ArrayList<>();
+    private TBLedSecuritiesBean tbLedSecuritiesBean;
+    private String num_iid;
+    private int flag = 0;
 
     public TBCommodityDetailsPresenter(Context context) {
         super(context);
@@ -86,31 +88,13 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult---------------->" + result);
-                TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
+                final TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
                 }.getType());
-                tbBeanList.clear();
-                tbBeanList.add(tbBean.getData());
-
-                Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
-                Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
-                RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-                    @Override
-                    public void onSuccess(String result, String msg) {
-                        LogUtil.e("收益-------->" + result);
-                        if (!result.equals("")) {
-                            if (getView() != null) {
-                                getView().tbBeanList(tbBeanList, result);
-                            }
-                        }
+                if (tbBean != null && tbBean.getData() != null) {
+                    if (getView() != null) {
+                        getView().tbBeanList(tbBean);
                     }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-
-                    }
-                }));
-
-
+                }
             }
 
             @Override
@@ -120,6 +104,27 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }));
     }
 
+    //用户收益
+    public void earnings() {
+        Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("收益-------->" + result);
+                if (!"".equals(result)) {
+                    if (getView() != null) {
+                        getView().earnings(result);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
 
     //商品轮播图
     public void setXBanner(XBanner commodityXbanner, final List<String> images) {
@@ -152,15 +157,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     public void setShopParticulars(RecyclerView shopParticulars, List<String> itemDetail) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//        {
-//            @Override
-//            public boolean canScrollVertically() {
-//                return false && super.canScrollVertically();
-//            }
-//        };
         CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
-//        shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+//        shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 
@@ -216,15 +217,36 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         Map map = MapUtil.getInstance().addParms("para", para).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETGYURLBYALL, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
+
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
-                TBLedSecuritiesBean tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
-                }.getType());
-                jumpToTB(tbLedSecuritiesBean.getData().getCoupon_click_url());
-//                Intent intent = new Intent(mContext, WebViewActivity.class);
-//                intent.putExtra("url", tbLedSecuritiesBean.getData().getCoupon_click_url());
-//                mContext.startActivity(intent);
+
+                if (result.indexOf("error:15") != -1) {
+                    Map errorMap = new Gson().fromJson(result, Map.class);
+                    num_iid = (String) errorMap.get("num_iid");
+                    flag = 1;
+                } else {
+                    tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
+                    }.getType());
+                    flag = 2;
+                    if (tbLedSecuritiesBean != null && tbLedSecuritiesBean.getData() != null) {
+                        if (getView() != null) {
+                            LogUtil.e("成功");
+                            getView().ledSecurities(tbLedSecuritiesBean);
+                        }
+
+                    }
+
+                }
+
+
+//                if (result.indexOf("error:15") != -1) {
+//                    Map errorMap = new Gson().fromJson(result, Map.class);
+//                    num_iid = (String) errorMap.get("num_iid");
+//                    flag = 1;
+//                }
+
             }
 
             @Override
@@ -236,19 +258,76 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     }
 
-    private void jumpToTB(String url) {
+    public void jumpToTB() {
+        if (flag == 2) {
+            //提供给三方传递配置参数
+            Map<String, String> exParams = new HashMap<>();
+            exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
+
+            //打开指定页面
+            AlibcPage alibcPage = new AlibcPage(tbLedSecuritiesBean.getData().getCoupon_click_url());
+            LogUtil.e("GotoTB" + flag + "        " + tbLedSecuritiesBean.getData().getCoupon_click_url());
+            //设置页面打开方式
+            AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+
+            //使用百川sdk提供默认的Activity打开detail
+            AlibcTrade.show((Activity) mContext, alibcPage, showParams, null, exParams,
+                    new AlibcTradeCallback() {
+                        @Override
+                        public void onTradeSuccess(TradeResult tradeResult) {
+                            //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
+                            LogUtil.e(tradeResult.toString());
+                        }
+
+                        @Override
+                        public void onFailure(int code, String msg) {
+                            //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                            LogUtil.e("阿里百川" + code + "         " + msg);
+                        }
+                    });
+        } else if (flag == 1) {
+            //提供给三方传递配置参数
+            Map<String, String> exParams = new HashMap<>();
+            exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
+
+            //打开指定页面
+            AlibcBasePage detailPage = new AlibcDetailPage(num_iid);
+            LogUtil.e("GotoTB" + flag + "        " + num_iid);
+            //设置页面打开方式
+            AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+
+            //使用百川sdk提供默认的Activity打开detail
+            AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
+                    new AlibcTradeCallback() {
+                        @Override
+                        public void onTradeSuccess(TradeResult tradeResult) {
+                            //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
+                            LogUtil.e(tradeResult.toString());
+                        }
+
+                        @Override
+                        public void onFailure(int code, String msg) {
+                            //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                            LogUtil.e("阿里百川" + code + "         " + msg);
+                        }
+                    });
+        }
+
+    }
+
+    public void jumpToShop(String shopId){
         //提供给三方传递配置参数
         Map<String, String> exParams = new HashMap<>();
         exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
         //打开指定页面
-        AlibcPage alibcPage = new AlibcPage(url);
-
+        AlibcBasePage detailPage = new AlibcDetailPage(shopId);
+        LogUtil.e("GotoTB"+ shopId);
         //设置页面打开方式
         AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
 
         //使用百川sdk提供默认的Activity打开detail
-        AlibcTrade.show((Activity) mContext, alibcPage, showParams, null, exParams,
+        AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
                 new AlibcTradeCallback() {
                     @Override
                     public void onTradeSuccess(TradeResult tradeResult) {
@@ -259,6 +338,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     @Override
                     public void onFailure(int code, String msg) {
                         //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                        LogUtil.e("阿里百川" + code + "         " + msg);
                     }
                 });
     }
