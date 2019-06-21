@@ -7,40 +7,50 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
 public class RVNestedScrollView extends NestedScrollView {
-
-    private int mDownX;
-    private int mDownY;
-    private int mTouchSlop;
+    private int slop;
+    private int touch;
 
     public RVNestedScrollView(Context context) {
         super(context);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        setSlop(context);
     }
 
     public RVNestedScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        setSlop(context);
     }
 
     public RVNestedScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        setSlop(context);
     }
 
+    /**
+     * 是否intercept当前的触摸事件
+     * @param ev 触摸事件
+     * @return true：调用onMotionEvent()方法，并完成滑动操作
+     */
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent e) {
-        int action = e.getAction();
-        switch (action) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mDownX = (int) e.getRawX();
-                mDownY = (int) e.getRawY();
+                //  保存当前touch的纵坐标值
+                touch = (int) ev.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                int moveY = (int) e.getRawY();
-                if (Math.abs(moveY - mDownY) > mTouchSlop) {
-                    return true;
-                }
+                //  滑动距离大于slop值时，返回true
+                if (Math.abs((int) ev.getRawY() - touch) > slop) return true;
+                break;
         }
-        return super.onInterceptTouchEvent(e);
+
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    /**
+     * 获取相应context的touch slop值（即在用户滑动之前，能够滑动的以像素为单位的距离）
+     * @param context ScrollView对应的context
+     */
+    private void setSlop(Context context) {
+        slop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 }

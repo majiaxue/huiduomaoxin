@@ -1,6 +1,7 @@
 package com.example.user_mine;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -241,4 +242,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             presenter.browsingHistoryCount();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.goodsCollectionCount();
+        presenter.shopCollectCount();
+        presenter.browsingHistoryCount();
+    }
+
 }

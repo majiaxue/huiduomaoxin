@@ -16,4 +16,6 @@ public interface TBCommodityDetailsView extends IView {
     void ledSecurities(TBLedSecuritiesBean tbLedSecuritiesBean);
 
     void earnings(String earnings);
+
+    void tBDetails();
 }

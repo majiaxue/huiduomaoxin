@@ -112,15 +112,15 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
                             .navigation();
                 }
 
-//                try {
-//                    if (!url.startsWith("https://")) {
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                        startActivity(intent);
-//                        return false;
-//                    }
-//                } catch (Exception e) {
-//                    return false;
-//                }
+                try {
+                    if (!url.startsWith("https://")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                        return false;
+                    }
+                } catch (Exception e) {
+                    return false;
+                }
 
                 view.loadUrl(url);
                 return false;

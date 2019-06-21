@@ -64,7 +64,6 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
 
 
     private Uri fileUri;//相册
-    private Uri imagePathUri;//相机
     private String filePath = Environment.getExternalStorageDirectory() + "/fltk/image";
     private List<CityBean> cities1 = new ArrayList<>();
     private List<CityBean> cities2 = new ArrayList<>();
@@ -138,21 +137,21 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                     public void itemClick(AddressSelector addressSelector, CityInterface city, int tabPosition) {
                         switch (tabPosition) {
                             case 0:
-                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
                                 city2(addressSelector, city.getCityId());
                                 cityName1 = city.getCityName();
                                 addressProvince.setText(cityName1);
 //                                addressSelector.setCities(cities2);
                                 break;
                             case 1:
-                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
                                 city3(addressSelector, city.getCityId());
                                 cityName2 = city.getCityName();
                                 addressCity.setText(cityName2);
 //                                addressSelector.setCities(cities3);
                                 break;
                             case 2:
-                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
                                 cityName3 = city.getCityName();
                                 //关闭赋值
                                 addressArea.setText(cityName3);
@@ -319,18 +318,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     }
 
     private void openCamera() {
-//        imagePathUri = createImagePathUri(mContext);
-//        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePathUri);
-//        try {
-//            Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(imagePathUri));
-//            String base64 = ImageUtil.bitmapToBase64(bitmap);
-//            getView().showHeader(base64);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        getView().selectPhoto(imagePathUri);
-//        getView().takePhoto(captureIntent);
+
         File file0 = new File(filePath);
         if (!file0.exists()) {
             file0.mkdirs();
@@ -345,14 +333,6 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
             fileUri = Uri.fromFile(file);
         }
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        getView().selectPhoto(fileUri);
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(fileUri));
-            String base64 = ImageUtil.bitmapToBase64(bitmap);
-            getView().showHeader(base64);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         getView().takePhoto(captureIntent);
 
     }
@@ -391,6 +371,17 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                 }
             }
         }
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(fileUri));
+            String base64 = ImageUtil.bitmapToBase64(bitmap);
+            getView().showHeader(base64);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        getView().selectPhoto(fileUri);
+    }
+
+    public void takePhoto() {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(fileUri));
             String base64 = ImageUtil.bitmapToBase64(bitmap);

@@ -106,7 +106,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
         homeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
             @Override
             public void onItemClick(XBanner banner, Object model, View view, int position) {
-                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
     }

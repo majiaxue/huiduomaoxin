@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -93,6 +94,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 if (tbBean != null && tbBean.getData() != null) {
                     if (getView() != null) {
                         getView().tbBeanList(tbBean);
+                        getView().tBDetails();
                     }
                 }
             }
@@ -112,9 +114,10 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("收益-------->" + result);
-                if (!"".equals(result)) {
+                if (!TextUtils.isEmpty(result)) {
                     if (getView() != null) {
                         getView().earnings(result);
+                        getView().tBDetails();
                     }
                 }
             }
@@ -156,12 +159,16 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //商品详情图
     public void setShopParticulars(RecyclerView shopParticulars, List<String> itemDetail) {
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
-//        linearLayoutManager.setSmoothScrollbarEnabled(true);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
-//        shopParticulars.setHasFixedSize(true);
+        shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 
@@ -234,18 +241,12 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                         if (getView() != null) {
                             LogUtil.e("成功");
                             getView().ledSecurities(tbLedSecuritiesBean);
+                            getView().tBDetails();
                         }
 
                     }
 
                 }
-
-
-//                if (result.indexOf("error:15") != -1) {
-//                    Map errorMap = new Gson().fromJson(result, Map.class);
-//                    num_iid = (String) errorMap.get("num_iid");
-//                    flag = 1;
-//                }
 
             }
 
@@ -313,34 +314,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     });
         }
 
-    }
-
-    public void jumpToShop(String shopId){
-        //提供给三方传递配置参数
-        Map<String, String> exParams = new HashMap<>();
-        exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
-
-        //打开指定页面
-        AlibcBasePage detailPage = new AlibcDetailPage(shopId);
-        LogUtil.e("GotoTB"+ shopId);
-        //设置页面打开方式
-        AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
-
-        //使用百川sdk提供默认的Activity打开detail
-        AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
-                new AlibcTradeCallback() {
-                    @Override
-                    public void onTradeSuccess(TradeResult tradeResult) {
-                        //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                        LogUtil.e(tradeResult.toString());
-                    }
-
-                    @Override
-                    public void onFailure(int code, String msg) {
-                        //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                        LogUtil.e("阿里百川" + code + "         " + msg);
-                    }
-                });
     }
 
     public void setRecommendRec(final RecyclerView shopRecommendRec) {

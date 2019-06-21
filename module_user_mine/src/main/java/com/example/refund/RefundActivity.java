@@ -270,12 +270,12 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
         switch (requestCode) {
             case TAKE_PHOTO_CODE:
+                presenter.uploadPhoto();
                 break;
             case PHOTO_ALBUM_CODE:
                 presenter.parseUri(data);
                 break;
             case CROP_CODE:
-                presenter.uploadPhoto();
                 break;
         }
     }

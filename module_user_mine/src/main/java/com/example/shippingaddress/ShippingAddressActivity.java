@@ -55,7 +55,6 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
         shippingAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ShippingAddressActivity.this, "点击了我", Toast.LENGTH_SHORT).show();
                 ARouter.getInstance().build("/module_user_mine/AddressActivity").navigation();
             }
         });

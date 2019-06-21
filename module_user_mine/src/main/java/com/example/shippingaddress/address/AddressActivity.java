@@ -153,10 +153,4 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
         return new AddressPresenter(this);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

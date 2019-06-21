@@ -75,7 +75,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                             view1.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                                 }
                             });
                             //查看物流
