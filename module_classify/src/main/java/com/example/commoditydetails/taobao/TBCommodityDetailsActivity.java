@@ -169,16 +169,20 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityIntoShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-                presenter.jumpToShop(tbBeanList.getData().getSeller().getShopId());
+                ARouter.getInstance()
+                        .build("/module_classify/tshop_home")
+                        .withString("url", tbBeanList.getData().getSeller().getTaoShopUrl())
+                        .navigation();
             }
         });
         //进入店铺
         commodityShopImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-                presenter.jumpToShop(tbBeanList.getData().getSeller().getShopId());
+                ARouter.getInstance()
+                        .build("/module_classify/tshop_home")
+                        .withString("url", tbBeanList.getData().getSeller().getTaoShopUrl())
+                        .navigation();
 
             }
         });
@@ -186,8 +190,10 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityShopName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-                presenter.jumpToShop(tbBeanList.getData().getSeller().getShopId());
+                ARouter.getInstance()
+                        .build("/module_classify/tshop_home")
+                        .withString("url", tbBeanList.getData().getSeller().getTaoShopUrl())
+                        .navigation();
             }
         });
         //分享

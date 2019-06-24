@@ -3,6 +3,8 @@ package com.example.view.flowLayout;
 import android.util.Log;
 import android.view.View;
 
+import com.example.utils.LogUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,7 +14,6 @@ import java.util.Set;
 public abstract class TagAdapter<T> {
     public List<T> mTagDatas;
     private OnDataChangedListener mOnDataChangedListener;
-    public OnFlowClickListener flowClickListener;
 
     @Deprecated
     private HashSet<Integer> mCheckedPosList = new HashSet<Integer>();
@@ -90,7 +91,4 @@ public abstract class TagAdapter<T> {
         void onFlowClickListener(View view, int position);
     }
 
-    public void setOnFlowClickListener(OnFlowClickListener listener) {
-        this.flowClickListener = listener;
-    }
 }

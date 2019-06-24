@@ -58,11 +58,9 @@ dependencies {
     //轮播图
     api 'com.github.xiaohaibin:XBanner:1.6.+'
 
-    //解决65535
-    implementation 'com.android.support:multidex:1.0.2'
-
     //eventbus
     api 'org.greenrobot:eventbus:3.1.1'
+    //Gson
     api 'com.google.code.gson:gson:2.8.5'
 
     //图片加载框架
@@ -73,17 +71,11 @@ dependencies {
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-24'
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-24'
 
-    //没有使用特殊Header，可以不加这行
-
     //阿里的路由
     api("com.alibaba:arouter-api:$rootProject.arouterApi") {
         exclude group: 'com.android.support'
     }
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.arouterCompiler"
-
-    //自定义阴影
-    api 'com.github.dmytrodanylyk.shadow-layout:library:1.0.3'
-    implementation files('libs/BASE64.jar')
 
     //微信开发工具包（登陆、分享、支付等）
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
@@ -122,4 +114,5 @@ dependencies {
 
     // sql-cipher database encyrption (optional)
     api "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+
 }

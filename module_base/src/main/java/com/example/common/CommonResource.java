@@ -127,4 +127,5 @@ public class CommonResource {
     public static final String USER_PIC = "userPic";
     public static final String USER_INVITE = "userInvite";
     public static final String TABABLE_NAME = "HISTORY";
+    public static final String U_APPKEY = "5d0c57294ca35786440001c6";
 }

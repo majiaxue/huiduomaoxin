@@ -5,13 +5,26 @@ public class ChooseInsideBean {
     private String picUrl;
     private double price;
     private long stock;
-    private boolean isCheck = false;
+    //是否可点击   （库存为0不可点击）
     private boolean canClick = true;
+
+    public ChooseInsideBean(String content, String picUrl, double price, boolean canClick) {
+        this.content = content;
+        this.picUrl = picUrl;
+        this.price = price;
+        this.canClick = canClick;
+    }
 
     public ChooseInsideBean(String content, String picUrl, double price) {
         this.content = content;
         this.picUrl = picUrl;
         this.price = price;
+    }
+
+    public ChooseInsideBean(String content, double price, boolean canClick) {
+        this.content = content;
+        this.price = price;
+        this.canClick = canClick;
     }
 
     public ChooseInsideBean(String content, double price) {
@@ -33,14 +46,6 @@ public class ChooseInsideBean {
 
     public void setStock(long stock) {
         this.stock = stock;
-    }
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setCheck(boolean check) {
-        isCheck = check;
     }
 
     public ChooseInsideBean(String content) {
@@ -78,7 +83,6 @@ public class ChooseInsideBean {
                 ", picUrl='" + picUrl + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
-                ", isCheck=" + isCheck +
                 ", canClick=" + canClick +
                 '}';
     }

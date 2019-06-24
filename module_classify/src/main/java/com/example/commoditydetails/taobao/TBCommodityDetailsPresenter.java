@@ -321,7 +321,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
         //打开指定页面
-        AlibcBasePage detailPage = new AlibcDetailPage(shopId);
+        AlibcBasePage detailPage = new AlibcPage(shopId);
         LogUtil.e("GotoTB"+ shopId);
         //设置页面打开方式
         AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
