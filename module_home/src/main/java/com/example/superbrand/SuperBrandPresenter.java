@@ -94,7 +94,7 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                                         superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(RecyclerView parent, View view, int position) {
-                                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }

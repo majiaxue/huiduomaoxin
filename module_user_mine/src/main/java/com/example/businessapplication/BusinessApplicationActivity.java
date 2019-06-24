@@ -331,6 +331,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
         switch (requestCode) {
             case TAKE_PHOTO_CODE:
+                presenter.takePhoto();
                 break;
             case PHOTO_ALBUM_CODE:
                 presenter.parseUri(data);

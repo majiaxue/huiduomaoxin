@@ -81,7 +81,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }.getType());
                     if (secondaryTabBean != null) {
                         if (secondaryTabBean.getGoods_cats_get_response() != null && secondaryTabBean.getGoods_cats_get_response().getGoods_cats_list().size() != 0) {
-                            getView().noGoods(false);
                             catsListBeans.clear();
                             catsListBeans.addAll(secondaryTabBean.getGoods_cats_get_response().getGoods_cats_list());
 
@@ -111,7 +110,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             }.getType());
 
                                             if (!secondaryPddRecBean.getGoods_search_response().getTotal_count().equals("0")) {
-                                                getView().noGoods(false);
+                                                if (getView()!=null){
+                                                    getView().noGoods(false);
+                                                }
                                                 baseRecBeanList.clear();
                                                 baseRecBeanList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
 
@@ -152,7 +153,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 });
 
                                             } else {
-                                                getView().noGoods(true);
+                                                if (getView()!=null){
+                                                    getView().noGoods(true);
+                                                }
                                                 LogUtil.e("尚无数据");
                                             }
                                         }
@@ -179,11 +182,11 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                             initList(catsListBeans, secondaryDetailsRec, type, page, tBGoodsSearchBeans, jdTabList);
                         } else {
-                            getView().noGoods(true);
+                            LogUtil.e("数据为空");
                         }
 
                     } else {
-                        LogUtil.e("数据为空");
+
                     }
 
 
@@ -212,7 +215,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                     tBGoodsSearchBeans.remove(i);
                                 }
                             }
-                            getView().noGoods(false);
                             for (int i = 0; i < tBGoodsSearchBeans.size(); i++) {
                                 secondaryDetailsTab.addTab(secondaryDetailsTab.newTab().setText(tBGoodsSearchBeans.get(i).getCat_name()));
                             }
@@ -234,7 +236,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             }.getType());
                                             if (tbGoodsRecBean != null) {
                                                 if (tbGoodsRecBean.getData() != null && tbGoodsRecBean.getData().size() != 0) {
-                                                    getView().noGoods(false);
+                                                    if (getView()!=null){
+                                                        getView().noGoods(false);
+                                                    }
                                                     tbGoodsList.clear();
                                                     tbGoodsList.addAll(tbGoodsRecBean.getData());
 
@@ -269,7 +273,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                         }
                                                     });
                                                 } else {
-                                                    getView().noGoods(true);
+                                                    if (getView()!=null){
+                                                        getView().noGoods(true);
+                                                    }
                                                     LogUtil.e("数据为空");
                                                 }
 
@@ -301,7 +307,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                             initList(catsListBeans, secondaryDetailsRec, type, page, tBGoodsSearchBeans, jdTabList);
                         } else {
-                            getView().noGoods(true);
                             LogUtil.e("数据为空");
                         }
                     } else {
@@ -327,7 +332,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }.getType());
                     if (jdTabBeans != null) {
                         if (jdTabBeans.getData() != null && jdTabBeans.getData().size() != 0) {
-                            getView().noGoods(false);
                             jdTabList.clear();
                             jdTabList.addAll(jdTabBeans.getData());
                             for (int i = 0; i < jdTabList.size(); i++) {
@@ -351,10 +355,14 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             if (jDGoodsRecBean != null) {
 
                                                 if (jDGoodsRecBean.getCode().equals("-1") || jDGoodsRecBean.getData().getLists() == null && jDGoodsRecBean.getData().getLists().size() == 0) {
-                                                    getView().noGoods(true);
+                                                    if (getView()!=null){
+                                                        getView().noGoods(true);
+                                                    }
                                                 } else {
-                                                    getView().noGoods(false);
+                                                    if (getView()!=null){
+                                                        getView().noGoods(false);
 
+                                                    }
                                                     listsBeanList.clear();
                                                     listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
                                                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -415,7 +423,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                             initList(catsListBeans, secondaryDetailsRec, type, page, tBGoodsSearchBeans, jdTabList);
                         } else {
-                            getView().noGoods(true);
+                            LogUtil.e("空");
                         }
 
                     } else {
@@ -471,7 +479,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }.getType());
                     if (secondaryPddRecBean != null) {
                         if (!secondaryPddRecBean.getGoods_search_response().getTotal_count().equals("0")) {
-                            getView().noGoods(false);
+                            if (getView()!=null){
+                                getView().noGoods(false);
+                            }
 //                    baseRecBeanList.clear();
                             baseRecBeanList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
 
@@ -513,7 +523,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 }
                             });
                         } else {
-                            getView().noGoods(true);
+                            if (getView()!=null){
+                                getView().noGoods(true);
+                            }
                             LogUtil.e("尚无数据");
                         }
                     } else {
@@ -541,7 +553,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 //                    tbGoodsList.clear();
                     if (tbGoodsRecBean != null) {
                         if (tbGoodsRecBean.getData() != null && tbGoodsRecBean.getData().size() != 0) {
-                            getView().noGoods(false);
+                            if (getView()!=null){
+                                getView().noGoods(false);
+                            }
                             tbGoodsList.addAll(tbGoodsRecBean.getData());
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                             SecondaryTBRecAdapter secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
@@ -574,7 +588,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 }
                             });
                         } else {
-                            getView().noGoods(true);
+                            if (getView()!=null){
+                                getView().noGoods(true);
+                            }
                         }
 
                     } else {
@@ -601,9 +617,13 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                     if (jDGoodsRecBean != null) {
                         if (jDGoodsRecBean.getCode().equals("-1") || jDGoodsRecBean.getData().getLists() == null && jDGoodsRecBean.getData().getLists().size() == 0) {
-                            getView().noGoods(true);
+                            if (getView()!=null){
+                                getView().noGoods(true);
+                            }
                         } else {
-                            getView().noGoods(false);
+                            if (getView()!=null){
+                                getView().noGoods(false);
+                            }
                             listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                             SecondaryJDRecAdapter secondaryJDRecAdapter = new SecondaryJDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);

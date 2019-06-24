@@ -46,7 +46,7 @@ import java.util.Locale;
 public class RefundPresenter extends BasePresenter<RefundView> {
 
     private Uri fileUri;//相册
-    private Uri imagePathUri;//相机
+    private String filePath = Environment.getExternalStorageDirectory() + "/fltk/image";
 
     public RefundPresenter(Context context) {
         super(context);
@@ -207,10 +207,20 @@ public class RefundPresenter extends BasePresenter<RefundView> {
     }
 
     private void openCamera() {
-        imagePathUri = createImagePathUri(mContext);
+        File file0 = new File(filePath);
+        if (!file0.exists()) {
+            file0.mkdirs();
+        }
+        File file = new File(filePath, System.currentTimeMillis() + ".jpg");
+
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePathUri);
-        getView().selectPhoto(imagePathUri);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            fileUri = FileProvider.getUriForFile(mContext.getApplicationContext(), "com.lxy.taobaoke.provider", file);
+            captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
+            fileUri = Uri.fromFile(file);
+        }
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         getView().takePhoto(captureIntent);
     }
 
@@ -258,54 +268,6 @@ public class RefundPresenter extends BasePresenter<RefundView> {
             getView().showHeader(base64);
         } catch (Exception e) {
         }
-    }
-
-    /**
-     * 创建一条图片地址uri,用于保存拍照后的照片
-     *
-     * @param context
-     * @return 图片的uri
-     */
-    private static Uri createImagePathUri(final Context context) {
-        final Uri[] imageFilePath = {null};
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            imageFilePath[0] = Uri.parse("");
-        } else {
-            //拍照前保存一条uri的地址
-            String status = Environment.getExternalStorageState();
-            SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
-            long time = System.currentTimeMillis();
-            String imageName = timeFormatter.format(new Date(time));
-            String fileName;
-            String parentPath;
-
-            if (status.equals(Environment.MEDIA_MOUNTED)) {// 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
-                parentPath = Environment.getExternalStorageDirectory().getPath();
-            } else {
-                parentPath = context.getExternalCacheDir().getPath();
-            }
-
-            fileName = parentPath + File.separator + imageName + ".webp";
-//            imageFilePath[0] = Uri.fromFile(new File(fileName));
-            imageFilePath[0] = getUriForFile(context, new File(fileName));
-        }
-
-        Log.d("tag", "生成的照片输出路径：" + imageFilePath[0].toString());
-        return imageFilePath[0];
-    }
-    //解决android版本大于7的问题
-    private static Uri getUriForFile(Context context, File file) {
-        if (context == null || file == null) {
-            throw new NullPointerException();
-        }
-        Uri uri;
-        //判断是否是AndroidN以及更高的版本
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//如果SDK版本>=24，即：Build.VERSION.SDK_INT >= 24
-            uri = FileProvider.getUriForFile(context.getApplicationContext(), "com.lxy.taobaoke.provider", file);
-        } else {
-            uri = Uri.fromFile(file);
-        }
-        return uri;
+        getView().selectPhoto(fileUri);
     }
 }

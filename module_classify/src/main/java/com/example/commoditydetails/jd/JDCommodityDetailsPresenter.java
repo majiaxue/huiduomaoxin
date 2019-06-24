@@ -123,9 +123,16 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
             images.add(imageList.get(i).getUrl());
         }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, images, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
+        shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+        shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 
@@ -213,7 +220,9 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                 }.getType());
                 if (jDGoodsRecBean != null) {
                     if (jDGoodsRecBean.getData() != null && jDGoodsRecBean.getData().getLists() != null && jDGoodsRecBean.getData().getLists().size() != 0) {
-                        getView().isNoGoods(false);
+                        if (getView() != null) {
+                            getView().isNoGoods(false);
+                        }
                         listsBeanList.clear();
                         listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -250,7 +259,9 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                             }
                         });
                     } else {
-                        getView().isNoGoods(true);
+                        if (getView() != null) {
+                            getView().isNoGoods(true);
+                        }
                     }
 
                 } else {

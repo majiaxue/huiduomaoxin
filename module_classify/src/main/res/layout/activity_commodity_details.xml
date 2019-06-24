@@ -38,11 +38,10 @@
 
         </RelativeLayout>
 
-        <com.example.view.RVNestedScrollView
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/commodity_nested_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
             android:layout_below="@id/commodity_top">
 
             <LinearLayout
@@ -374,7 +373,7 @@
                     android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
-        </com.example.view.RVNestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
 
         <ImageView

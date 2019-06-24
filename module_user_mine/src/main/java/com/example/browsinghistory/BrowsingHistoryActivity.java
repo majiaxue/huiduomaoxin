@@ -96,7 +96,6 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
         browsingHistoryDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(BrowsingHistoryActivity.this, "删除", Toast.LENGTH_SHORT).show();
                 presenter.deleteList();
             }
         });

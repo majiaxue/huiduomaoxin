@@ -88,7 +88,6 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
                     @Override
                     public void onClick(View v) {
                         //选中
-                        Toast.makeText(context, "childPosition:" + position + childPosition, Toast.LENGTH_SHORT).show();
                         allCheck = true;
                         isAllCheck(position, childPosition);
                     }
@@ -97,7 +96,7 @@ public class BrowsingHistoryParentAdapter extends MyRecyclerAdapter<BrowsingHist
                 view2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "childPosition:" + childPosition, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "childPosition:" + childPosition, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

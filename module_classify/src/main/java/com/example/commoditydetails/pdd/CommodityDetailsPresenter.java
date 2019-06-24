@@ -136,10 +136,16 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     public void setShopParticulars(RecyclerView shopParticulars, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         final List<String> images = beanList.get(0).getGoods_gallery_urls();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, images, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
-//        shopParticulars.setNestedScrollingEnabled(false);
+        shopParticulars.setNestedScrollingEnabled(false);
+        shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 
@@ -239,44 +245,46 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 //                }.getType());
                 CommodityDetailsPddRecBean commodityDetailsPddRecBean = new Gson().fromJson(result, CommodityDetailsPddRecBean.class);
                 LogUtil.e("CommodityDetailsResult推荐Bean" + commodityDetailsPddRecBean);
-                topGoodsList.clear();
-                topGoodsList.addAll(commodityDetailsPddRecBean.getTop_goods_list_get_response().getList());
-                for (int i = topGoodsList.size() - 1; i >= 0; i--) {
-                    if (topGoodsList.get(i).getCoupon_discount() == 0) {
-                        topGoodsList.remove(i);
+                if (commodityDetailsPddRecBean != null && commodityDetailsPddRecBean.getTop_goods_list_get_response() != null) {
+                    topGoodsList.clear();
+                    topGoodsList.addAll(commodityDetailsPddRecBean.getTop_goods_list_get_response().getList());
+                    for (int i = topGoodsList.size() - 1; i >= 0; i--) {
+                        if (topGoodsList.get(i).getCoupon_discount() == 0) {
+                            topGoodsList.remove(i);
+                        }
                     }
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    shopRecommendRec.setLayoutManager(linearLayoutManager);
+                    CommodityDetailsPddRecAdapter pddRecAdapter = new CommodityDetailsPddRecAdapter(mContext, topGoodsList, R.layout.item_base_rec);
+                    shopRecommendRec.setAdapter(pddRecAdapter);
+
+                    pddRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance()
+                                    .build("/module_classify/CommodityDetailsActivity")
+                                    .withLong("goods_id", topGoodsList.get(position).getGoods_id())
+                                    .withString("type", "1")
+                                    .navigation();
+                        }
+                    });
+
+                    pddRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                        @Override
+                        public void ViewOnClick(View view, final int index) {
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ARouter.getInstance()
+                                            .build("/module_classify/CommodityDetailsActivity")
+                                            .withLong("goods_id", topGoodsList.get(index).getGoods_id())
+                                            .withString("type", "1")
+                                            .navigation();
+                                }
+                            });
+                        }
+                    });
                 }
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                shopRecommendRec.setLayoutManager(linearLayoutManager);
-                CommodityDetailsPddRecAdapter pddRecAdapter = new CommodityDetailsPddRecAdapter(mContext, topGoodsList, R.layout.item_base_rec);
-                shopRecommendRec.setAdapter(pddRecAdapter);
-
-                pddRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance()
-                                .build("/module_classify/CommodityDetailsActivity")
-                                .withLong("goods_id", topGoodsList.get(position).getGoods_id())
-                                .withString("type", "1")
-                                .navigation();
-                    }
-                });
-
-                pddRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ARouter.getInstance()
-                                        .build("/module_classify/CommodityDetailsActivity")
-                                        .withLong("goods_id", topGoodsList.get(index).getGoods_id())
-                                        .withString("type", "1")
-                                        .navigation();
-                            }
-                        });
-                    }
-                });
             }
 
             @Override

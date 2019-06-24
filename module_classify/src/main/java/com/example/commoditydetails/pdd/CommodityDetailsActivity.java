@@ -68,7 +68,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @BindView(R2.id.shop_recommend_rec)
     RecyclerView shopRecommendRec;
     @BindView(R2.id.commodity_nested_scroll)
-    RVNestedScrollView commodityNestedScroll;
+    NestedScrollView commodityNestedScroll;
     @BindView(R2.id.commodity_stick)
     ImageView commodityStick;
     @BindView(R2.id.commodity_go_home)
