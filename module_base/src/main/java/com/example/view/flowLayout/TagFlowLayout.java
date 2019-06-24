@@ -11,8 +11,10 @@ import android.view.View;
 
 import com.example.module_base.R;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,6 +31,12 @@ public class TagFlowLayout extends FlowLayout
 
     private OnSelectListener mOnSelectListener;
     private OnTagClickListener mOnTagClickListener;
+
+    private List<Integer> noCheckList = new ArrayList<>();
+
+    public void setNoCheckList(List<Integer> noCheckList) {
+        this.noCheckList = noCheckList;
+    }
 
     public interface OnSelectListener {
         void onSelected(Set<Integer> selectPosSet);
@@ -129,7 +137,15 @@ public class TagFlowLayout extends FlowLayout
             tagViewContainer.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    doSelect(finalTagViewContainer, position);
+                    boolean isCan = true;
+                    for (int j = 0; j < noCheckList.size(); j++) {
+                        if (position == noCheckList.get(j)) {
+                            isCan = false;
+                        }
+                    }
+                    if (isCan) {
+                        doSelect(finalTagViewContainer, position);
+                    }
                     if (mOnTagClickListener != null) {
                         mOnTagClickListener.onTagClick(finalTagViewContainer, position,
                                 TagFlowLayout.this);
@@ -169,6 +185,7 @@ public class TagFlowLayout extends FlowLayout
                 Iterator<Integer> iterator = mSelectedView.iterator();
                 Integer preIndex = iterator.next();
                 TagView pre = (TagView) getChildAt(preIndex);
+
                 setChildUnChecked(preIndex, pre);
                 setChildChecked(position, child);
 

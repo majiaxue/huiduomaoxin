@@ -348,7 +348,13 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         Glide.with(this).load(data.getSellerLogo()).into(goodsDetailShopImg);
         goodsDetailShopName.setText(data.getSellerName());
         goodsDetailShopAttention.setText("店铺关注  " + TxtUtil.parse(data.getSellerFavoriteNum()));
-        mTxt.setText("选择" + data.getXsProductAttributes().get(0).getName() + "、" + data.getXsProductAttributes().get(1).getName());
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("选择");
+        for (int i = 0; i < data.getXsProductAttributes().size(); i++) {
+            sb.append(data.getXsProductAttributes().get(i).getName() + "  ");
+        }
+        mTxt.setText(sb);
         if (data.getIsfavorite() == 1) {
             attention();
         } else {

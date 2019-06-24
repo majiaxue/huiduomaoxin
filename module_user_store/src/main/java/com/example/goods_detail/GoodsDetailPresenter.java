@@ -50,7 +50,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.OnFlowSelectListener;
 import com.example.utils.PopUtil;
 import com.example.utils.SPUtil;
-import com.example.view.flowLayout.TagAdapter;
+import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagFlowLayout;
 
 import java.util.ArrayList;
@@ -81,6 +81,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private long quantity = 1;
 
     private boolean isChoose = false;
+
+    private boolean isTan = false;
     //尺码列表
 //    private List<UserGoodsDetail.StoInfoBean.RecordsBean.ListBean> sp2List = new ArrayList<>();
     //缩略图
@@ -96,7 +98,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private List<UserCouponBean> couponBeanList;
     private PopFlowLayoutAdapter sp1Adapter;
     private SecondFlowAdapter sp2Adapter;
-    private ThirdFlowAdapter sp3Adapter;
+    private SecondFlowAdapter sp3Adapter;
 
 
     public GoodsDetailPresenter(Context context) {
@@ -126,7 +128,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     if (dataList.get(i).getSp1() != null && !imgTemp.equals(dataList.get(i).getSp1())) {
                         imgList.add(dataList.get(i).getPic());
                         imgTemp = dataList.get(i).getSp1();
-                        sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice()));
+                        if (dataList.get(i).getStock() > 0) {
+                            sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
+                        } else {
+                            sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), false));
+                        }
                     }
                 }
 
@@ -220,11 +226,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 commendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-//                        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-//                        intent.putExtra("id", commendList.get(position).getId() + "");
-//                        intent.putExtra("commendId", commendList.get(position).getProductCategoryId() + "");
-//                        intent.putExtra("sellerId", commendList.get(position).getSellerId());
-//                        mContext.startActivity(intent);
                         ARouter.getInstance()
                                 .build("/module_user_store/GoodsDetailActivity")
                                 .withString("id", commendList.get(position).getId() + "")
@@ -291,6 +292,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void chooseGoodsPop() {
+        isTan = true;
         if (userGoodsDetail != null && userGoodsDetail.getXsProductAttributes().size() > 0 && dataList.size() > 0) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.pop_choose_goods, null);
             final ImageView img = view.findViewById(R.id.pop_choose_goods_img);
@@ -315,61 +317,106 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 title3.setVisibility(View.GONE);
                 flow2.setVisibility(View.GONE);
                 flow3.setVisibility(View.GONE);
+                oneCanClick();
                 title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
             } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
                 title3.setVisibility(View.GONE);
                 flow3.setVisibility(View.GONE);
                 title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
                 title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
+            } else {
+                title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
+                title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
+                title3.setText(userGoodsDetail.getXsProductAttributes().get(2).getName());
             }
 
-            sp1Adapter = new PopFlowLayoutAdapter(sp1List, mContext, new OnFlowSelectListener() {
+            sp1Adapter = new PopFlowLayoutAdapter(sp1List, mContext);
+            flow1.setAdapter(sp1Adapter);
+            flow1.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                 @Override
-                public void setOnFlowSelect(int position) {
+                public boolean onTagClick(View view, int position, FlowLayout parent) {
                     sp1Position = position;
-                    type.setText("已选择：" + sp1List.get(sp1Position).getContent());
                     if (userGoodsDetail.getXsProductAttributes().size() == 1) {
                         price.setText("￥" + sp1List.get(sp1Position).getPrice());
                         isChoose = true;
-                    } else if (userGoodsDetail.getXsProductAttributes().size() > 1) {
-                        initSizeList(position);
-                    }
-                }
-            });
-            flow1.setAdapter(sp1Adapter);
-
-            if (userGoodsDetail.getXsProductAttributes().size() > 1) {
-                sp2Adapter = new SecondFlowAdapter(sp2List, mContext, new OnFlowSelectListener() {
-                    @Override
-                    public void setOnFlowSelect(int position) {
-                        sp2Position = position;
-                        if (userGoodsDetail.getXsProductAttributes().size() == 2 && sp1Position != -1) {
+                        type.setText("已选择：" + sp1List.get(sp1Position).getContent());
+                    } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        if (sp2Position == -1) {
+                            initSizeList(1);
+                            type.setText("已选择：" + sp1List.get(sp1Position).getContent());
+                        } else {
                             isChoose = true;
-                            price.setText("￥" + sp2List.get(position).getPrice());
+                            initSizeList(1);
+                            price.setText("￥" + stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
                             type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
-                        } else if (userGoodsDetail.getXsProductAttributes().size() == 3 && sp1Position != -1) {
-                            initThirdList(position);
+                        }
+                    } else {
+                        if (sp2Position != -1 && sp3Position == -1) {
+
                         }
                     }
-                });
+                    return false;
+                }
+            });
+
+            if (userGoodsDetail.getXsProductAttributes().size() > 1) {
+                sp2Adapter = new SecondFlowAdapter(sp2List, mContext);
                 flow2.setAdapter(sp2Adapter);
+                flow2.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                    @Override
+                    public boolean onTagClick(View view, int position, FlowLayout parent) {
+                        sp2Position = position;
+                        if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                            if (sp1Position == -1) {
+                                initSizeList(2);
+                                type.setText("已选择：" + sp2List.get(sp2Position).getContent());
+                            } else {
+                                isChoose = true;
+                                initSizeList(2);
+                                price.setText("￥" + stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                                type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
+                            }
+                        } else if (userGoodsDetail.getXsProductAttributes().size() == 3 && sp1Position != -1) {
+                            initThirdList(position);
+                            type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
+                        }
+                        return false;
+                    }
+                });
             }
             if (userGoodsDetail.getXsProductAttributes().size() > 2) {
-                sp3Adapter = new ThirdFlowAdapter(sp3List, mContext, new OnFlowSelectListener() {
+                sp3Adapter = new SecondFlowAdapter(sp3List, mContext);
+                flow3.setAdapter(sp3Adapter);
+                flow3.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                     @Override
-                    public void setOnFlowSelect(int position) {
+                    public boolean onTagClick(View view, int position, FlowLayout parent) {
                         if (sp1Position != -1 && sp2Position != -1) {
                             isChoose = true;
                             sp3Position = position;
                             type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent() + "、" + sp3List.get(sp3Position).getContent());
                             price.setText("￥" + sp3List.get(position).getPrice());
                         }
+                        return false;
                     }
                 });
-                flow3.setAdapter(sp3Adapter);
             }
 
+
+            final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
+            popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+
+            final StringBuffer sb = new StringBuffer();
+            sb.append("请选择");
+            for (int i = 0; i < userGoodsDetail.getXsProductAttributes().size(); i++) {
+                sb.append(userGoodsDetail.getXsProductAttributes().get(i).getName() + "  ");
+            }
+            type.setText(sb);
+
             if (isChoose) {
+                isTan = false;
                 if (userGoodsDetail.getXsProductAttributes().size() == 1) {
                     sp1Adapter.setSelectedList(sp1Position);
                     type.setText("已选择：" + sp1List.get(sp1Position).getContent());
@@ -386,20 +433,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent() + "、" + sp3List.get(sp3Position).getContent());
                     price.setText("￥" + sp3List.get(sp3Position).getPrice());
                 }
+                isTan = true;
             }
-            final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) mContext.getResources().getDimension(R.dimen.dp_444), true);
-            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
-            popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
-
-            final StringBuffer sb = new StringBuffer();
-            sb.append("请选择");
-            for (int i = 0; i < userGoodsDetail.getXsProductAttributes().size(); i++) {
-                sb.append(userGoodsDetail.getXsProductAttributes().get(i).getName() + "  ");
-            }
-            type.setText(sb);
-
 
             PopUtil.setTransparency(mContext, 0.3f);
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -565,25 +600,106 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         return list.get(position);
     }
 
-    private void initSizeList(int position) {
-        sp2Position = -1;
-        sp2List.clear();
-        for (int i = 0; i < dataList.size(); i++) {
-            if (sp1List.get(position).getContent().equals(dataList.get(i).getSp1()) && dataList.get(i).getStock() > 0) {
-                sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPrice()));
+    private void initSizeList(int clickPos) {
+        if (clickPos == 1) {
+            sp2List.clear();
+            List<Integer> list = new ArrayList<>();
+            int temp = 0;
+            for (int i = 0; i < dataList.size(); i++) {
+                if (sp1List.get(sp1Position).getContent().equals(dataList.get(i).getSp1())) {
+                    boolean isHas = false;
+                    for (int j = 0; j < sp2List.size(); j++) {
+                        if (sp2List.get(j).getContent().equals(dataList.get(i).getSp2())) {
+                            isHas = true;
+                        }
+                    }
+                    if (!isHas) {
+                        if (dataList.get(i).getStock() > 0) {
+                            sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPrice(), true));
+                        } else {
+                            list.add(temp);
+                            sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPrice(), false));
+                        }
+                        temp++;
+                    }
+                }
+            }
+
+            flow2.setNoCheckList(list);
+            sp2Adapter.notifyDataChanged();
+            if (sp2Position != -1) {
+                sp2Adapter.setSelectedList(sp2Position);
+            }
+        } else if (clickPos == 2) {
+            sp1List.clear();
+            List<Integer> list = new ArrayList<>();
+            int temp = 0;
+            for (int i = 0; i < dataList.size(); i++) {
+                if (dataList.get(i).getSp2().equals(sp2List.get(sp2Position).getContent())) {
+                    if (dataList.get(i).getStock() > 0) {
+                        sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
+                    } else {
+                        list.add(temp);
+                        sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), false));
+                    }
+                    temp++;
+                }
+            }
+
+            flow1.setNoCheckList(list);
+            sp1Adapter.notifyDataChanged();
+            if (sp1Position != -1) {
+                sp1Adapter.setSelectedList(sp1Position);
             }
         }
-        sp2Adapter.notifyDataChanged();
     }
 
-    private void initThirdList(int position) {
+    private void initThirdList(int clickPos) {
+        if (clickPos == 1) {
+            sp2List.clear();
+            sp3List.clear();
+            int temp2 = 0;
+            int temp3 = 0;
+            List<Integer> list2 = new ArrayList<>();
+            List<Integer> list3 = new ArrayList<>();
+            for (int i = 0; i < dataList.size(); i++) {
+                if (sp2Position == -1 && sp3Position == -1) {
+                    boolean isHas = false;
+                    boolean hasStock = false;
+                    if (dataList.get(i).getSp1().equals(sp1List.get(sp1Position).getContent())) {
+                        for (int j = 0; j < sp2List.size(); j++) {
+                            if (dataList.get(i).getSp2().equals(sp2List.get(j).getContent())) {
+                                isHas = true;
+                                break;
+                            }
+                        }
+                        if (!isHas){
+                            sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
+                        }
+                    }
+
+
+                }
+            }
+        }
         sp3List.clear();
         for (int i = 0; i < dataList.size(); i++) {
-            if (sp1List.get(sp1Position).getContent().equals(dataList.get(i).getSp1()) && sp2List.get(position).getContent().equals(dataList.get(i).getSp2()) && dataList.get(i).getStock() > 0) {
+            if (sp1List.get(sp1Position).getContent().equals(dataList.get(i).getSp1()) && sp2List.get(clickPos).getContent().equals(dataList.get(i).getSp2()) && dataList.get(i).getStock() > 0) {
                 sp3List.add(new ChooseInsideBean(dataList.get(i).getSp3(), dataList.get(i).getPrice()));
             }
         }
         sp3Adapter.notifyDataChanged();
+    }
+
+    private void oneCanClick() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < sp1List.size(); i++) {
+            if (dataList.get(i).getStock() <= 0) {
+                list.add(i);
+                sp1List.get(i).setCanClick(false);
+            }
+        }
+        flow1.setNoCheckList(list);
     }
 
     public void jumpToAssess(String id) {

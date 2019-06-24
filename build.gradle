@@ -23,12 +23,10 @@ allprojects {
         //xbanner等
         maven { url 'https://jitpack.io' }
         //支付宝支付
-        flatDir {
-            dirs 'libs'
-        }
-        maven {
-            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
-        }
+        flatDir { dirs 'libs' }
+        //阿里百川
+        maven { url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/" }
+
     }
 }
 

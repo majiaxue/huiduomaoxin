@@ -63,7 +63,7 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
         messageCenterLst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                presenter.jumpToDetail(position);
+//                presenter.jumpToDetail(position);
             }
         });
 

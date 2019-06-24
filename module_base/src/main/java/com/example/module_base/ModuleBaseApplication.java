@@ -1,8 +1,7 @@
 package com.example.module_base;
 
+import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
@@ -15,14 +14,13 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-public class ModuleBaseApplication extends MultiDexApplication {
+public class ModuleBaseApplication extends Application {
     private static Context context;
     public static IWXAPI wxapi;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        MultiDex.install(this);
         if (LogUtil.isDebug(this)) {
             ARouter.openLog();  //开启打印日志
             ARouter.openDebug();// 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
