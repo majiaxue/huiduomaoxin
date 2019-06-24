@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -51,7 +52,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList = new ArrayList<>();
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
-    private List<LedSecuritiesBean.GoodsPromotionUrlGenerateResponseBean.GoodsPromotionUrlListBean> ledList = new ArrayList<>();
     private String earnings;
 
     public CommodityDetailsPresenter(Context context) {
@@ -150,7 +150,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     }
 
     public void goodsCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-        if (!SPUtil.getToken().equals("")) {
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
             Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).build();
             Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
@@ -171,13 +171,13 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                 }
             }));
         } else {
-            Toast.makeText(mContext, "请先登陆", Toast.LENGTH_SHORT).show();
+            ARouter.getInstance().build("/mine/login").navigation();
         }
     }
 
     //领劵
     public void ledSecurities(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-        if (!SPUtil.getToken().equals("")) {
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
             Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
             RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
@@ -185,18 +185,17 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                     LogUtil.e("CommodityDetailsResult领劵------------>" + result);
                     LedSecuritiesBean ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
                     }.getType());
-                    ledList.clear();
-                    ledList.addAll(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list());
 
 //                Intent intent = new Intent();
 //                intent.setAction("android.intent.action.VIEW");
 //                Uri content_url = Uri.parse(ledList.get(0).getMobile_url());
 //                intent.setData(content_url);
 //                mContext.startActivity(intent);
-
-                    Intent intent = new Intent(mContext, WebViewActivity.class);
-                    intent.putExtra("url", ledList.get(0).getWe_app_web_view_url());
-                    mContext.startActivity(intent);
+                    if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
+                        Intent intent = new Intent(mContext, WebViewActivity.class);
+                        intent.putExtra("url", ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url());
+                        mContext.startActivity(intent);
+                    }
 
                 }
 
@@ -206,7 +205,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                 }
             }));
         } else {
-            Toast.makeText(mContext, "请先登陆", Toast.LENGTH_SHORT).show();
+            ARouter.getInstance().build("/mine/login").navigation();
         }
     }
 

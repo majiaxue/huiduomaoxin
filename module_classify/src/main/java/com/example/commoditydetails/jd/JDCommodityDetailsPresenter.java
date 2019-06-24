@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -162,50 +163,59 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
 
     //收藏商品
     public void goodsCollect(final ImageView commodityCollectImage, String skuid) {
-        Map map = MapUtil.getInstance().addParms("productId", skuid).addParms("type", 3).build();
-        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("TBCommodityDetailsResult点击收藏----->" + result);
-                if (result.equals("true")) {
-                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
-                } else {
-                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            Map map = MapUtil.getInstance().addParms("productId", skuid).addParms("type", 3).build();
+            Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("TBCommodityDetailsResult点击收藏----->" + result);
+                    if (result.equals("true")) {
+                        commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
+                    } else {
+                        commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("TBCommodityDetailsErrorMsg点击收藏----->" + errorMsg);
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("TBCommodityDetailsErrorMsg点击收藏----->" + errorMsg);
 
-            }
-        }));
+                }
+            }));
+        } else {
+            ARouter.getInstance().build("/mine/login").navigation();
+        }
     }
 
     //领劵
     public void ledSecurities(String url, String couponUrl) {
-        Map map = MapUtil.getInstance().addParms("materialId", url).addParms("userCode", SPUtil.getUserCode()).addParms("couponUrl", couponUrl).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postData(CommonResource.JDGETGOODSMARKETLINK, map);
-        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
-                }.getType());
-                String clickURL = jdLedSecuritiesBean.getData().getClickURL();
-                LogUtil.e("url---------->" + clickURL);
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            Map map = MapUtil.getInstance().addParms("materialId", url).addParms("userCode", SPUtil.getUserCode()).addParms("couponUrl", couponUrl).build();
+            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postData(CommonResource.JDGETGOODSMARKETLINK, map);
+            RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
+                    }.getType());
+                    if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
+                        String clickURL = jdLedSecuritiesBean.getData().getClickURL();
+                        LogUtil.e("url---------->" + clickURL);
 
-                Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("url", clickURL);
-                mContext.startActivity(intent);
+                        Intent intent = new Intent(mContext, WebViewActivity.class);
+                        intent.putExtra("url", clickURL);
+                        mContext.startActivity(intent);
+                    }
+                }
 
-            }
+                @Override
+                public void onError(String errorCode, String errorMsg) {
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-
-            }
-        }));
+                }
+            }));
+        } else {
+            ARouter.getInstance().build("/mine/login").navigation();
+        }
     }
 
 

@@ -10,5 +10,5 @@ import java.util.List;
  * Describe:
  */
 public interface RefundParticularsView extends IView {
-    void initView(List<AlterationBean> list);
+    void initView(List<AlterationBean.RBean> list);
 }

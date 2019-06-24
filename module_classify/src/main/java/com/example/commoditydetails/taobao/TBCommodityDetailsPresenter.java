@@ -197,25 +197,29 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     //收藏商品
     public void goodsCollect(final ImageView commodityCollectImage, String id) {
-        Map map = MapUtil.getInstance().addParms("productId", id).addParms("type", 4).build();
-        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("TBCommodityDetailsResult点击收藏----->" + result);
-                if (result.equals("true")) {
-                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
-                } else {
-                    commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            Map map = MapUtil.getInstance().addParms("productId", id).addParms("type", 4).build();
+            Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("TBCommodityDetailsResult点击收藏----->" + result);
+                    if (result.equals("true")) {
+                        commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
+                    } else {
+                        commodityCollectImage.setImageResource(R.drawable.icon_shoucang1);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("TBCommodityDetailsErrorMsg点击收藏----->" + errorMsg);
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("TBCommodityDetailsErrorMsg点击收藏----->" + errorMsg);
 
-            }
-        }));
+                }
+            }));
+        } else {
+            ARouter.getInstance().build("/mine/login").navigation();
+        }
     }
 
     //领劵
@@ -255,65 +259,67 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 LogUtil.e("TBCommodityDetailsErrorMsg领劵--------->" + errorMsg);
             }
         }));
-
-
     }
 
     public void jumpToTB() {
-        if (flag == 2) {
-            //提供给三方传递配置参数
-            Map<String, String> exParams = new HashMap<>();
-            exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
 
-            //打开指定页面
-            AlibcPage alibcPage = new AlibcPage(tbLedSecuritiesBean.getData().getCoupon_click_url());
-            LogUtil.e("GotoTB" + flag + "        " + tbLedSecuritiesBean.getData().getCoupon_click_url());
-            //设置页面打开方式
-            AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+            if (flag == 2) {
+                //提供给三方传递配置参数
+                Map<String, String> exParams = new HashMap<>();
+                exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
-            //使用百川sdk提供默认的Activity打开detail
-            AlibcTrade.show((Activity) mContext, alibcPage, showParams, null, exParams,
-                    new AlibcTradeCallback() {
-                        @Override
-                        public void onTradeSuccess(TradeResult tradeResult) {
-                            //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                            LogUtil.e(tradeResult.toString());
-                        }
+                //打开指定页面
+                AlibcPage alibcPage = new AlibcPage(tbLedSecuritiesBean.getData().getCoupon_click_url());
+                LogUtil.e("GotoTB" + flag + "        " + tbLedSecuritiesBean.getData().getCoupon_click_url());
+                //设置页面打开方式
+                AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
 
-                        @Override
-                        public void onFailure(int code, String msg) {
-                            //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                            LogUtil.e("阿里百川" + code + "         " + msg);
-                        }
-                    });
-        } else if (flag == 1) {
-            //提供给三方传递配置参数
-            Map<String, String> exParams = new HashMap<>();
-            exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
+                //使用百川sdk提供默认的Activity打开detail
+                AlibcTrade.show((Activity) mContext, alibcPage, showParams, null, exParams,
+                        new AlibcTradeCallback() {
+                            @Override
+                            public void onTradeSuccess(TradeResult tradeResult) {
+                                //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
+                                LogUtil.e(tradeResult.toString());
+                            }
 
-            //打开指定页面
-            AlibcBasePage detailPage = new AlibcDetailPage(num_iid);
-            LogUtil.e("GotoTB" + flag + "        " + num_iid);
-            //设置页面打开方式
-            AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+                            @Override
+                            public void onFailure(int code, String msg) {
+                                //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                                LogUtil.e("阿里百川" + code + "         " + msg);
+                            }
+                        });
+            } else if (flag == 1) {
+                //提供给三方传递配置参数
+                Map<String, String> exParams = new HashMap<>();
+                exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
-            //使用百川sdk提供默认的Activity打开detail
-            AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
-                    new AlibcTradeCallback() {
-                        @Override
-                        public void onTradeSuccess(TradeResult tradeResult) {
-                            //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                            LogUtil.e(tradeResult.toString());
-                        }
+                //打开指定页面
+                AlibcBasePage detailPage = new AlibcDetailPage(num_iid);
+                LogUtil.e("GotoTB" + flag + "        " + num_iid);
+                //设置页面打开方式
+                AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
 
-                        @Override
-                        public void onFailure(int code, String msg) {
-                            //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                            LogUtil.e("阿里百川" + code + "         " + msg);
-                        }
-                    });
+                //使用百川sdk提供默认的Activity打开detail
+                AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
+                        new AlibcTradeCallback() {
+                            @Override
+                            public void onTradeSuccess(TradeResult tradeResult) {
+                                //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
+                                LogUtil.e(tradeResult.toString());
+                            }
+
+                            @Override
+                            public void onFailure(int code, String msg) {
+                                //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
+                                LogUtil.e("阿里百川" + code + "         " + msg);
+                            }
+                        });
+            }
+        } else {
+            ARouter.getInstance().build("/mine/login").navigation();
         }
-
     }
 
     public void setRecommendRec(final RecyclerView shopRecommendRec) {
