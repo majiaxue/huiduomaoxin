@@ -73,7 +73,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     public void sendCode() {
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.WXLOGIN_CODE, map);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.WXLOGIN_CODE, map);//"http://192.168.1.9:4001"
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -91,6 +91,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
+                    SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }
@@ -122,6 +123,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
+                    SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

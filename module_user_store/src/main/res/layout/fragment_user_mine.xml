@@ -17,15 +17,6 @@
         android:id="@+id/user_mine_status"
         layout="@layout/include_status" />
 
-    <ImageView
-        android:id="@+id/user_mine_image_back"
-        android:layout_width="@dimen/dp_29"
-        android:layout_height="@dimen/dp_38"
-        android:layout_below="@id/user_mine_status"
-        android:layout_marginLeft="@dimen/dp_5"
-        android:padding="@dimen/dp_10"
-        android:src="@drawable/icon_fanhui_bai" />
-
     <RelativeLayout
         android:id="@+id/user_mine_rela"
         android:layout_width="@dimen/dp_345"

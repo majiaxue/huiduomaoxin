@@ -95,7 +95,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("homePresenterResult---------->" + result);
+//                LogUtil.e("homePresenterResult---------->" + result);
                 BannerBean records = JSON.parseObject(result, BannerBean.class);
 
                 if (records != null) {
@@ -206,7 +206,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("homePresenterResult---------->" + result);
+//                LogUtil.e("homePresenterResult---------->" + result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
 
@@ -252,7 +252,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("homePresenterResult---------->" + result);
+//                LogUtil.e("homePresenterResult---------->" + result);
                 GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
                 if (GoodChoiceBean != null) {

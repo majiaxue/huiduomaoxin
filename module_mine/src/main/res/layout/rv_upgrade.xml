@@ -8,7 +8,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_25"
-        android:background="@drawable/bg_mine_top">
+        android:background="@drawable/bg_mine_top"
+        android:paddingBottom="@dimen/dp_30">
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,71 +42,101 @@
             android:textColor="#e20707"
             android:textSize="@dimen/sp_15" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_upgrade_rv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_21"
-            android:layout_marginTop="@dimen/dp_104" />
-        <!--<TextView-->
-        <!--android:id="@+id/rv_upgrade_shoufei"-->
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rv_upgrade_rv"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_marginLeft="@dimen/dp_21"-->
-        <!--android:layout_marginTop="@dimen/dp_104"-->
-        <!--android:includeFontPadding="false"-->
-        <!--android:text="收费金额达到：200 元"-->
-        <!--android:textColor="#333333"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/rv_upgrade_zigou"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/rv_upgrade_shoufei"-->
-        <!--android:layout_alignLeft="@id/rv_upgrade_shoufei"-->
-        <!--android:layout_marginTop="@dimen/dp_5"-->
-        <!--android:includeFontPadding="false"-->
-        <!--android:text="自购订单达到：10 单"-->
-        <!--android:textColor="#333333"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/rv_upgrade_yaoqing"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/rv_upgrade_zigou"-->
-        <!--android:layout_alignLeft="@id/rv_upgrade_zigou"-->
-        <!--android:layout_marginTop="@dimen/dp_5"-->
-        <!--android:includeFontPadding="false"-->
-        <!--android:text="邀请粉丝达到：10 人"-->
-        <!--android:textColor="#333333"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/rv_upgrade_yugu"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/rv_upgrade_yaoqing"-->
-        <!--android:layout_alignLeft="@id/rv_upgrade_yaoqing"-->
-        <!--android:layout_marginTop="@dimen/dp_5"-->
-        <!--android:includeFontPadding="false"-->
-        <!--android:text="预估佣金达到：888 元"-->
-        <!--android:textColor="#333333"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-
-        <TextView
-            android:id="@+id/rv_upgrade_remark"
-            android:layout_width="wrap_content"
+        <!--android:layout_marginTop="@dimen/dp_104" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rv_upgrade_rv"
-            android:layout_marginLeft="@dimen/dp_21"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:includeFontPadding="false"
-            android:text="备注：上述条件满足任意一条即可升级"
-            android:textColor="#999999"
-            android:textSize="@dimen/sp_14" />
+            android:layout_marginTop="@dimen/dp_104"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/rv_upgrade_factor1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_12"
+                    android:layout_height="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:src="@drawable/ghf" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_13"
+                    android:text="条件一："
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/rv_upgrade_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/rv_upgrade_view"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_30" />
+
+            <LinearLayout
+                android:id="@+id/rv_upgrade_factor2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_upgrade_factor1"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_12"
+                    android:layout_height="@dimen/dp_12"
+                    android:src="@drawable/ghf" />
+
+                <TextView
+                    android:id="@+id/rv_upgrade_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_13"
+                    android:text="条件二："
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/rv_upgrade_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100元"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+                <View
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/rv_upgrade_topay"
+                    android:layout_width="@dimen/dp_55"
+                    android:layout_height="@dimen/dp_25"
+                    android:background="@drawable/bg_5_fb4619"
+                    android:gravity="center"
+                    android:text="支付"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/rv_upgrade_btn"

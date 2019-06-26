@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.SubmitOrderBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
@@ -13,6 +16,7 @@ import com.example.user_store.R2;
 
 import butterknife.BindView;
 
+@Route(path = "/module_user_store/pay_success")
 public class PaySuccessActivity extends BaseActivity<PaySuccessView, PaySuccessPresenter> implements PaySuccessView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
@@ -24,7 +28,9 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessView, PaySuccessP
     TextView paySuccessOrder;
     @BindView(R2.id.pay_success_home)
     TextView paySuccessHome;
-    private SubmitOrderBean bean;
+
+    @Autowired(name = "bean")
+    SubmitOrderBean bean;
 
     @Override
     public int getLayoutId() {
@@ -33,9 +39,10 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessView, PaySuccessP
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         includeTitle.setText("支付完成");
-        Intent intent = getIntent();
-        bean = (SubmitOrderBean) intent.getSerializableExtra("bean");
+//        Intent intent = getIntent();
+//        bean = (SubmitOrderBean) intent.getSerializableExtra("bean");
         paySuccessTxt.setText("支付成功￥" + bean.getTotalAmount());
         presenter.loadData(bean.getMasterNo());
     }

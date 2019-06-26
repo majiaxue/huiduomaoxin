@@ -6,49 +6,26 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.common.CommonResource;
-import com.example.confirm_order.ConfirmOrderActivity;
-import com.example.entity.EventBusBean;
-import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
-import com.example.net.OnDataListener;
-import com.example.net.OnMyCallBack;
-import com.example.net.RetrofitUtil;
-import com.example.user_mine.bean.ApplicationBean;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.Map;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 
 /**
  * Created by cuihaohao on 2019/5/16
  * Describe:商城我的页面
  */
 public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
-    @BindView(R2.id.user_mine_image_back)
-    ImageView userMineImageBack;
     @BindView(R2.id.mine_header)
     SimpleDraweeView mineHeader;
     @BindView(R2.id.user_mine_icon)
@@ -110,12 +87,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initClick() {
-        userMineImageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean2(CommonResource.USER_BACK, 0));
-            }
-        });
         //商品收藏
         userMineGoodsCollection.setOnClickListener(new View.OnClickListener() {
             @Override

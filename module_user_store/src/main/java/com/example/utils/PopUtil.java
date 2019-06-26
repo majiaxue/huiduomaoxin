@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.UserCouponBean;
@@ -174,6 +175,7 @@ public class PopUtil {
         msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
                 popupWindow.dismiss();
             }
         });

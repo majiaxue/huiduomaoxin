@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.example.mvp.BasePresenter;

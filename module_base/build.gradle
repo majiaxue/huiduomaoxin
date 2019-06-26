@@ -60,6 +60,7 @@ dependencies {
 
     //eventbus
     api 'org.greenrobot:eventbus:3.1.1'
+
     //Gson
     api 'com.google.code.gson:gson:2.8.5'
 
@@ -118,4 +119,11 @@ dependencies {
     //倒计时
     api 'com.github.iwgang:countdownview:2.1.6'
 
+    //友盟
+    api files('libs/umeng-common-2.0.2.jar')
+    api files('libs/umeng-share-core-6.9.4.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.4.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.4.jar')
+    api files('libs/umeng-shareboard-widget-6.9.4.jar')
+    api files('libs/umeng-sharetool-6.9.4.jar')
 }

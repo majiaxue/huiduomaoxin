@@ -52,6 +52,7 @@ public class UpGradeActivity extends BaseActivity<UpgradeView, UpgradePresenter>
         upgradeRv.setLayoutManager(layoutManager);
         upgradeRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_27)));
         upgradeRv.setAdapter(adapter);
+        presenter.click();
     }
 
     @Override

@@ -548,6 +548,66 @@ public class UserGoodsDetail {
         this.xsProductAttributes = xsProductAttributes;
     }
 
+    @Override
+    public String toString() {
+        return "UserGoodsDetail{" +
+                "id=" + id +
+                ", productCategoryId=" + productCategoryId +
+                ", feightTemplateId=" + feightTemplateId +
+                ", productAttributeCategoryId=" + productAttributeCategoryId +
+                ", name='" + name + '\'' +
+                ", pic='" + pic + '\'' +
+                ", productSn='" + productSn + '\'' +
+                ", deleteStatus=" + deleteStatus +
+                ", publishStatus=" + publishStatus +
+                ", newStatus=" + newStatus +
+                ", recommandStatus=" + recommandStatus +
+                ", verifyStatus=" + verifyStatus +
+                ", sort=" + sort +
+                ", sale=" + sale +
+                ", price=" + price +
+                ", promotionPrice=" + promotionPrice +
+                ", giftGrowth=" + giftGrowth +
+                ", giftPoint=" + giftPoint +
+                ", usePointLimit=" + usePointLimit +
+                ", subTitle='" + subTitle + '\'' +
+                ", description='" + description + '\'' +
+                ", originalPrice=" + originalPrice +
+                ", stock=" + stock +
+                ", lowStock=" + lowStock +
+                ", unit='" + unit + '\'' +
+                ", weight=" + weight +
+                ", previewStatus=" + previewStatus +
+                ", serviceIds='" + serviceIds + '\'' +
+                ", keywords='" + keywords + '\'' +
+                ", note='" + note + '\'' +
+                ", albumPics='" + albumPics + '\'' +
+                ", detailTitle='" + detailTitle + '\'' +
+                ", detailDesc='" + detailDesc + '\'' +
+                ", detailHtml='" + detailHtml + '\'' +
+                ", detailMobileHtml='" + detailMobileHtml + '\'' +
+                ", promotionStartTime='" + promotionStartTime + '\'' +
+                ", promotionEndTime='" + promotionEndTime + '\'' +
+                ", promotionPerLimit=" + promotionPerLimit +
+                ", promotionType=" + promotionType +
+                ", brandName='" + brandName + '\'' +
+                ", productCategoryName='" + productCategoryName + '\'' +
+                ", supplyId=" + supplyId +
+                ", createTime='" + createTime + '\'' +
+                ", sellerId=" + sellerId +
+                ", cateParentId=" + cateParentId +
+                ", isfavorite=" + isfavorite +
+                ", sellerFavoriteNum=" + sellerFavoriteNum +
+                ", path=" + path +
+                ", sellerName='" + sellerName + '\'' +
+                ", sellerLogo='" + sellerLogo + '\'' +
+                ", stoInfo=" + stoInfo +
+                ", skuStockList=" + skuStockList +
+                ", productAttributeValueList=" + productAttributeValueList +
+                ", xsProductAttributes=" + xsProductAttributes +
+                '}';
+    }
+
     public static class SkuStockListBean {
         /**
          * id : 396
@@ -682,6 +742,25 @@ public class UserGoodsDetail {
         public void setLockStock(long lockStock) {
             this.lockStock = lockStock;
         }
+
+        @Override
+        public String toString() {
+            return "SkuStockListBean{" +
+                    "id=" + id +
+                    ", productId=" + productId +
+                    ", skuCode='" + skuCode + '\'' +
+                    ", price=" + price +
+                    ", stock=" + stock +
+                    ", lowStock=" + lowStock +
+                    ", sp1='" + sp1 + '\'' +
+                    ", sp2='" + sp2 + '\'' +
+                    ", sp3='" + sp3 + '\'' +
+                    ", pic='" + pic + '\'' +
+                    ", sale=" + sale +
+                    ", promotionPrice=" + promotionPrice +
+                    ", lockStock=" + lockStock +
+                    '}';
+        }
     }
 
     public static class XsProductAttributesBean {
@@ -807,6 +886,24 @@ public class UserGoodsDetail {
 
         public void setType(int type) {
             this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return "XsProductAttributesBean{" +
+                    "id=" + id +
+                    ", productAttributeCategoryId=" + productAttributeCategoryId +
+                    ", name='" + name + '\'' +
+                    ", selectType=" + selectType +
+                    ", inputType=" + inputType +
+                    ", inputList='" + inputList + '\'' +
+                    ", sort=" + sort +
+                    ", filterType=" + filterType +
+                    ", searchType=" + searchType +
+                    ", relatedStatus=" + relatedStatus +
+                    ", handAddStatus=" + handAddStatus +
+                    ", type=" + type +
+                    '}';
         }
     }
 }

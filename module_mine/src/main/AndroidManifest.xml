@@ -124,6 +124,10 @@
             android:name="com.example.invite_friends.InviteFriendsActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.example.up_pay.UpPayActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.lxy.taobaoke.provider"

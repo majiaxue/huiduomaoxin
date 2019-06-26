@@ -46,8 +46,6 @@ public class WelcomeActivity extends Activity {
 
     private void init() {
 
-
-        LogUtil.e("第一次" + isFirstIn);
         if (isFirstIn) {
             handler.sendEmptyMessageDelayed(GO_HOME, TIME);
         } else {

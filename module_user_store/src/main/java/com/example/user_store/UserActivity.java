@@ -3,7 +3,9 @@ package com.example.user_store;
 
 import android.content.Intent;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -40,6 +42,8 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     RadioButton userMine;
     @BindView(R2.id.user_group)
     RadioGroup userGroup;
+    @BindView(R2.id.user_finish)
+    ImageView mFinish;
 
     @Override
     public int getLayoutId() {
@@ -58,6 +62,13 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 presenter.click(checkedId);
+            }
+        });
+
+        mFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
