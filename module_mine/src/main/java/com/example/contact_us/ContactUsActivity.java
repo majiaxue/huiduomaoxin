@@ -11,6 +11,9 @@ import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
 
+/**
+ * 联系客服
+ */
 @Route(path = "/mine/contactus")
 public class ContactUsActivity extends BaseActivity<ContactUsView, ContactUsPresenter> implements ContactUsView {
     @BindView(R2.id.include_back)
@@ -44,7 +47,7 @@ public class ContactUsActivity extends BaseActivity<ContactUsView, ContactUsPres
         contactUsCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.callPhone("400-111-222");
+                presenter.callPhone("18503735075");
             }
         });
     }

@@ -1,9 +1,14 @@
 package com.example.operator;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.OperatorBean;
@@ -40,15 +45,18 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("运营商：" + result);
-                List<OperatorBean> beanList = JSON.parseArray(result, OperatorBean.class);
+                final List<OperatorBean> beanList = JSON.parseArray(result, OperatorBean.class);
                 factorAdapter = new YysFactorAdapter(mContext, beanList, R.layout.rv_yys_factor);
                 factorAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                     @Override
-                    public void ViewOnClick(View view, int index) {
+                    public void ViewOnClick(View view, final int index) {
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(mContext, "开发中。。。", Toast.LENGTH_SHORT).show();
+                                ARouter.getInstance().build("/module_mine/up_pay")
+                                        .withString("money", beanList.get(index).getPrice())
+                                        .withString("type", "operator")
+                                        .navigation();
                             }
                         });
                     }
@@ -64,6 +72,10 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
 
             }
         }));
+    }
+
+    public void inviteFans() {
+
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.user_classify;
 
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,19 +13,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
-import com.example.common.CommonResource;
-import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
 import com.example.user_classify.adapter.UserLeftRvAdapter;
 import com.example.user_classify.adapter.UserRightRecAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -37,8 +30,6 @@ import butterknife.BindView;
  * Describe:商城分类
  */
 public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresenter> implements ClassifyView {
-    @BindView(R2.id.user_classify_back)
-    ImageView mBack;
     @BindView(R2.id.user_classify_search)
     TextView userClassifySearch;
     @BindView(R2.id.user_classify_msg_img)
@@ -74,13 +65,6 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
 
     @Override
     public void initClick() {
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean2(CommonResource.USER_BACK, 0));
-            }
-        });
-
         userClassifySearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

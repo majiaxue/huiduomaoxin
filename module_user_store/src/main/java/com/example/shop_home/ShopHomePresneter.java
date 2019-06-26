@@ -1,5 +1,6 @@
 package com.example.shop_home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,17 +10,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.shop_home.adapter.ShopHomeVPAdapter;
 import com.example.shop_home.first_page.ShopFirstFragment;
 import com.example.shop_home.treasure.ShopTreasureFragment;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtil;
+import com.example.utils.SPUtil;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
     private String[] titleArr = {"首页", "宝贝"};
@@ -102,10 +117,58 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        share();
                         pop.dismiss();
                     }
                 });
             }
         });
     }
+
+    public void collectShop(int shop_id) {
+        Map map = MapUtil.getInstance().addParms("sellerId", shop_id).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT_SHOP, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                Toast.makeText(mContext, "收藏成功", Toast.LENGTH_SHORT).show();
+                getView().collectSuccess();
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+            }
+        }));
+    }
+
+    private void share() {
+        new ShareAction((Activity)mContext)
+                .setPlatform(SHARE_MEDIA.QQ)//传入平台
+                .withText("hello")//分享内容
+                .setCallback(shareListener)//回调监听器
+                .share();
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LogUtil.e("start:" + share_media.toString());
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            LogUtil.e("result:" + share_media.toString());
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+
+        }
+    };
 }

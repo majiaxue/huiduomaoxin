@@ -9,23 +9,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_36"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/user_classify_back"
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_36"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:padding="@dimen/dp_10"
-            android:src="@drawable/icon_fanhui" />
 
         <TextView
             android:id="@+id/user_classify_search"
             android:layout_width="@dimen/dp_285"
             android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_7"
+            android:layout_marginLeft="@dimen/dp_40"
             android:background="@drawable/bg_edit"
             android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/dp_13"

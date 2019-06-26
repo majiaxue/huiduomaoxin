@@ -26,7 +26,6 @@
                 app:clipChildrenTopBottomMargin="@dimen/dp_18"
                 app:isAutoPlay="false"
                 app:isClipChildrenMode="true"
-                app:isHandLoop="true"
                 app:pointsVisibility="false"
                 app:viewPagerClipChildren="true"/>
 

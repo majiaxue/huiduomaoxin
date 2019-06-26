@@ -2,7 +2,6 @@ package com.example.operator;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +13,11 @@ import android.widget.TextView;
 
 import com.ali.auth.third.ui.context.CallbackContext;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.operator.adapter.YysFactorAdapter;
 import com.example.utils.SpaceItemDecoration;
-import com.example.utils.StatusBarUtils;
 
 import butterknife.BindView;
 
@@ -77,7 +74,7 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
         operatorInviteFans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presenter.inviteFans();
             }
         });
     }

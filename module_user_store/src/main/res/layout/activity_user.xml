@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.example.view.WindowInsetsFrameLayout
-        android:id="@+id/user_frame"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"></com.example.view.WindowInsetsFrameLayout>
 
     <RadioGroup
         android:id="@+id/user_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_47"
+        android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
         android:clipChildren="false"
         android:orientation="horizontal">
@@ -60,4 +55,19 @@
             android:paddingTop="@dimen/dp_7" />
     </RadioGroup>
 
-</LinearLayout>
+    <com.example.view.WindowInsetsFrameLayout
+        android:id="@+id/user_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/user_group" />
+
+    <ImageView
+        android:id="@+id/user_finish"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/dp_11"
+        android:layout_marginBottom="@dimen/dp_114"
+        android:src="@drawable/icon_xuanfushouye" />
+</RelativeLayout>

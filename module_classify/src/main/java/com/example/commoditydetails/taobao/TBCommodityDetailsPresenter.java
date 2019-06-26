@@ -368,4 +368,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }));
     }
 
+    public void share() {
+
+    }
 }

@@ -29,6 +29,7 @@ import com.example.mvp.BaseActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.TxtUtil;
@@ -286,6 +287,41 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
                 return true;
             }
         });
+
+        goodsDetailNavbarBaby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsDetailScroll.fullScroll(NestedScrollView.FOCUS_UP);
+            }
+        });
+
+        goodsDetailNavbarAssess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsDetailScroll.scrollTo(0, goodsDetailTitleAssess.getTop() - goodsDetailNavbar.getHeight());
+            }
+        });
+
+        goodsDetailNavbarDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsDetailScroll.scrollTo(0, goodsDetailTitleDetail.getTop() - goodsDetailNavbar.getHeight());
+            }
+        });
+
+        goodsDetailNavbarCommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsDetailScroll.scrollTo(0, goodsDetailTitleCommend.getTop() - goodsDetailNavbar.getHeight());
+            }
+        });
+
+        goodsDetailBottomServe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.callServe();
+            }
+        });
     }
 
     @Override
@@ -306,7 +342,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
             if (goodsDetailNavbar.getVisibility() != View.VISIBLE) {
                 goodsDetailNavbar.setVisibility(View.VISIBLE);
             }
-            goodsDetailNavbar.setAlpha(-(y_baby - goodsDetailNavbar.getHeight() - 400) * 1.0f / 400);
+//            goodsDetailNavbar.setAlpha(-(y_baby - goodsDetailNavbar.getHeight() - 400) * 1.0f / 400);
         } else if (y_baby - 400 >= goodsDetailNavbar.getHeight()) {
             goodsDetailNavbar.setVisibility(View.GONE);
         }

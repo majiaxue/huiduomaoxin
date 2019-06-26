@@ -48,6 +48,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
                 finish();
             }
         });
+
     }
 
     @Override
@@ -57,6 +58,20 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
                 Glide.with(InviteFriendsActivity.this).load(((BannerBean.RecordsBean) model).getXBannerUrl()).into((ImageView) view);
+            }
+        });
+
+        inviteFriendsLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.shareLink(inviteFriendsBanner.getBannerCurrentItem());
+            }
+        });
+
+        inviteFriendsBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.share(inviteFriendsBanner.getBannerCurrentItem());
             }
         });
     }

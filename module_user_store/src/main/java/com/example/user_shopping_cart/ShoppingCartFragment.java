@@ -34,8 +34,6 @@ import butterknife.BindView;
  * Describe:多用户商城购物车页面
  */
 public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, ShoppingCartPresenter> implements ShoppingCartView {
-    @BindView(R2.id.shopping_cart_image_back)
-    ImageView shoppingCartImageBack;
     @BindView(R2.id.shopping_cart_compile)
     TextView shoppingCartCompile;
     @BindView(R2.id.shopping_cart_empty)
@@ -129,12 +127,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
     @Override
     public void initClick() {
-        shoppingCartImageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new EventBusBean2(CommonResource.USER_BACK, 0));
-            }
-        });
+
     }
 
     @Override
@@ -169,8 +162,12 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     public void isHide(boolean isHide) {
         if (isHide) {
             shoppingCartEmpty.setVisibility(View.VISIBLE);
+            shoppingCartCompile.setVisibility(View.GONE);
+            shoppingCartCloseAccountAndDelete.setEnabled(false);
         } else {
             shoppingCartEmpty.setVisibility(View.GONE);
+            shoppingCartCompile.setVisibility(View.VISIBLE);
+            shoppingCartCloseAccountAndDelete.setEnabled(true);
         }
     }
 

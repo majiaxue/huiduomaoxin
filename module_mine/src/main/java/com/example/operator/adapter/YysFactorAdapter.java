@@ -41,19 +41,19 @@ public class YysFactorAdapter extends MyRecyclerAdapter<OperatorBean> {
     private String getFactor(OperatorBean data) {
         StringBuffer str = new StringBuffer();
         if (data.getDirectFansNum() != null) {
-            str.append("直推有效粉丝" + data.getDirectFansNum() + "人，");
+            str.append("直推有效粉丝" + data.getDirectFansNum() + "人\n");
         }
         if (data.getIndirectFansNum() != null) {
-            str.append("非直推有效粉丝" + data.getIndirectFansNum() + "人，");
+            str.append("非直推有效粉丝" + data.getIndirectFansNum() + "人\n");
         }
         if (data.getSelfOrderNum() != null) {
-            str.append("个人自购结算订单" + data.getSelfOrderNum() + "单，");
+            str.append("个人自购结算订单" + data.getSelfOrderNum() + "单\n");
         }
         if (data.getSelfCommission() != null) {
-            str.append("个人累计获得佣金" + data.getSelfCommission() + "元，");
+            str.append("个人累计获得佣金" + data.getSelfCommission() + "元\n");
         }
         if (data.getRecommendNum() != null) {
-            str.append("推荐运营商" + data.getRecommendNum() + "个，");
+            str.append("推荐运营商" + data.getRecommendNum() + "个\n");
         }
         return str.length() == 0 ? "" : str.toString().substring(0, str.length() - 1);
     }

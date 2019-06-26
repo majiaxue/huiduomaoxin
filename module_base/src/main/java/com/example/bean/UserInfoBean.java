@@ -5,33 +5,38 @@ import java.io.Serializable;
 public class UserInfoBean implements Serializable {
 
     /**
-     * id : 21
-     * userCode : 293644338167021568
-     * username : 13523565115
-     * password : $2a$10$l.wVKFaj5QNI2Nrem0V.c.KuKzgECkFkcwwmbMCSDdzmNA0LZ8s2u
-     * nickname : 张三
-     * phone : 13523565115
-     * status : null
-     * createTime : 2019-05-29 17:24:36
-     * icon : null
+     * id : 81
+     * userCode : 298242555449966592
+     * username : 13201835918
+     * password : $2a$10$MRQbFykd2savGuHv26dswu3lei4k2VtXzC5/uYy5qyRyupFvGZUhK
+     * nickname : 秋水共长天一色
+     * phone : 13201835918
+     * status : 1
+     * createTime : 2019-06-23 15:26:52
+     * icon : http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKcuyjey3VX1icqmdvMGOZficKbBF5OiaMVUicHugiagwUVD0YVeSYJVK8DvYW1EIVkgkibrp0ibIPGhcW3g/132
      * gender : null
      * birthday : null
      * city : null
      * job : null
-     * personalizedSignature : 6666666
+     * personalizedSignature : null
      * sourceType : null
-     * integration : null
+     * Stringegration : null
      * growth : null
      * luckeyCount : null
-     * historyIntegration : null
+     * historyStringegration : null
      * weixinOpenid : oC5Gu5k8hOSlrbXkYgh-YDHkva48
-     * inviteCode : Q5CJqOgb
-     * blance : null
-     * sellerId : null
-     * level : null
+     * inviteCode : VsVqWO
+     * blance : 1000
+     * levelId : 1
+     * backMoney : 0
      * checkCode : null
+     * oldPassword : null
      * newPassword : null
      * oldPhone : null
+     * token : null
+     * level : 铜牌
+     * tenantId : 1
+     * totalBackMoney : null
      */
 
     private String id;
@@ -49,20 +54,23 @@ public class UserInfoBean implements Serializable {
     private String job;
     private String personalizedSignature;
     private String sourceType;
-    private String integration;
+    private String Stringegration;
     private String growth;
     private String luckeyCount;
-    private String historyIntegration;
+    private String historyStringegration;
     private String weixinOpenid;
     private String inviteCode;
     private String blance;
-    private String sellerId;
-    private String level;
+    private String levelId;
+    private String backMoney;
     private String checkCode;
+    private String oldPassword;
     private String newPassword;
     private String oldPhone;
     private String token;
-    private String oldPassword;
+    private String level;
+    private String tenantId;
+    private String totalBackMoney;
 
     public String getId() {
         return id;
@@ -70,14 +78,6 @@ public class UserInfoBean implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getOldPassword() {
-        return oldPassword;
-    }
-
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
     }
 
     public String getUserCode() {
@@ -192,12 +192,12 @@ public class UserInfoBean implements Serializable {
         this.sourceType = sourceType;
     }
 
-    public String getIntegration() {
-        return integration;
+    public String getStringegration() {
+        return Stringegration;
     }
 
-    public void setIntegration(String integration) {
-        this.integration = integration;
+    public void setStringegration(String Stringegration) {
+        this.Stringegration = Stringegration;
     }
 
     public String getGrowth() {
@@ -216,12 +216,12 @@ public class UserInfoBean implements Serializable {
         this.luckeyCount = luckeyCount;
     }
 
-    public String getHistoryIntegration() {
-        return historyIntegration;
+    public String getHistoryStringegration() {
+        return historyStringegration;
     }
 
-    public void setHistoryIntegration(String historyIntegration) {
-        this.historyIntegration = historyIntegration;
+    public void setHistoryStringegration(String historyStringegration) {
+        this.historyStringegration = historyStringegration;
     }
 
     public String getWeixinOpenid() {
@@ -248,20 +248,20 @@ public class UserInfoBean implements Serializable {
         this.blance = blance;
     }
 
-    public String getSellerId() {
-        return sellerId;
+    public String getLevelId() {
+        return levelId;
     }
 
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
     }
 
-    public String getLevel() {
-        return level;
+    public String getBackMoney() {
+        return backMoney;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setBackMoney(String backMoney) {
+        this.backMoney = backMoney;
     }
 
     public String getCheckCode() {
@@ -270,6 +270,14 @@ public class UserInfoBean implements Serializable {
 
     public void setCheckCode(String checkCode) {
         this.checkCode = checkCode;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public String getNewPassword() {
@@ -296,39 +304,28 @@ public class UserInfoBean implements Serializable {
         this.token = token;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfoBean{" +
-                "id='" + id + '\'' +
-                ", userCode='" + userCode + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", phone='" + phone + '\'' +
-                ", status='" + status + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", icon='" + icon + '\'' +
-                ", gender='" + gender + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", city='" + city + '\'' +
-                ", job='" + job + '\'' +
-                ", personalizedSignature='" + personalizedSignature + '\'' +
-                ", sourceType='" + sourceType + '\'' +
-                ", integration='" + integration + '\'' +
-                ", growth='" + growth + '\'' +
-                ", luckeyCount='" + luckeyCount + '\'' +
-                ", historyIntegration='" + historyIntegration + '\'' +
-                ", weixinOpenid='" + weixinOpenid + '\'' +
-                ", inviteCode='" + inviteCode + '\'' +
-                ", blance='" + blance + '\'' +
-                ", sellerId='" + sellerId + '\'' +
-                ", level='" + level + '\'' +
-                ", checkCode='" + checkCode + '\'' +
-                ", newPassword='" + newPassword + '\'' +
-                ", oldPhone='" + oldPhone + '\'' +
-                ", token='" + token + '\'' +
-                ", oldPassword='" + oldPassword + '\'' +
-                '}';
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getTotalBackMoney() {
+        return totalBackMoney;
+    }
+
+    public void setTotalBackMoney(String totalBackMoney) {
+        this.totalBackMoney = totalBackMoney;
     }
 }
 

@@ -64,16 +64,16 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
         ARouter.getInstance().inject(this);
         includeTitle.setText("店铺详情");
 //        presenter.login();
-//        //声明WebSettings子类
-//        WebSettings webSettings = webView.getSettings();
-//
-//        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
-//        webSettings.setJavaScriptEnabled(true);
-//        // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
-//
-//        //设置自适应屏幕，两者合用
-//        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-//        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        //声明WebSettings子类
+        WebSettings webSettings = webView.getSettings();
+
+        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
+        webSettings.setJavaScriptEnabled(true);
+        // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
+
+        //设置自适应屏幕，两者合用
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
 
 //        webView.loadUrl(url);
 
@@ -112,15 +112,15 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
                             .navigation();
                 }
 
-                try {
-                    if (!url.startsWith("https://")) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                        return false;
-                    }
-                } catch (Exception e) {
-                    return false;
-                }
+//                try {
+//                    if (!url.startsWith("https://")) {
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        startActivity(intent);
+//                        return false;
+//                    }
+//                } catch (Exception e) {
+//                    return false;
+//                }
 
                 view.loadUrl(url);
                 return false;

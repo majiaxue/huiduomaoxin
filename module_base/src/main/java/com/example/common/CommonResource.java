@@ -3,7 +3,7 @@ package com.example.common;
 public class CommonResource {
     public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
     public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
-    public static final String BASEURL_9003 = "http://192.168.1.16:9003";   //商家
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
     public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
     public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
@@ -70,6 +70,10 @@ public class CommonResource {
     public static final String SEARCHJDGOODS = "/rest/jd/goodsList";            //搜索京东商品
     public static final String TIXIAN = "/rest/user/cashOut/aliPay  ";          //提现
     public static final String MESSAGELIST = "/rest/user/message";             //消息列表
+    public static final String COLLECT_SHOP = "/rest/user/seller";              //收藏店铺
+    public static final String IWANTUP = "/rest/user/level/info";               //我要升级
+    public static final String UP_PAY = "/rest/alipay/upLevelSign";             // 升级运营商/等级 支付
+    public static final String SHARE_TBPIC = "/rest/tbk/goods/weiYi";           //获取淘宝商品分享图片
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -108,9 +112,9 @@ public class CommonResource {
     public static final String SELLERSTATE = "/rest/seller/seller-state";//判断商家是否已经入驻
     public static final String ESTIMATEEARN = "/rest/estimateEarn";//第三方商品预估赚接口调用---预估赚
     public static final String ORDERREMOVE = "/rest/user/order/remove";//逻辑删除多用户商城用户订单
-    public static final String REFUNDAPPLY = "/rest/order/refundApply";//退款申请
-    public static final String ORDERCONFIRM = "/rest/order/confirm";//确定收货
-    public static final String USERCOMMENT = "/rest/user/comment";//立即评价
+    public static final String REFUNDAPPLY = "/rest/order/refundApply";     //退款申请
+    public static final String ORDERCONFIRM = "/rest/order/confirm";        //确定收货
+    public static final String USERCOMMENT = "/rest/user/comment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
 
 
@@ -126,6 +130,7 @@ public class CommonResource {
     public static final String USER_NAME = "userName";
     public static final String USER_PIC = "userPic";
     public static final String USER_INVITE = "userInvite";
+    public static final String LEVELID = "levelId";
     public static final String TABABLE_NAME = "HISTORY";
     public static final String U_APPKEY = "5d0c57294ca35786440001c6";
 }

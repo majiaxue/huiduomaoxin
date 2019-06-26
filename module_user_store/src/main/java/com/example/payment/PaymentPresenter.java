@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
 import com.example.bean.AliPayBean;
@@ -50,9 +51,12 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 String result = map.get("result");
                 String memo = map.get("memo");
                 if ("9000".equals(resultStatus)) {
-                    Intent intent = new Intent(mContext, PaySuccessActivity.class);
-                    intent.putExtra("bean", submitOrderBean);
-                    mContext.startActivity(intent);
+                    ARouter.getInstance().build("/module_user_store/pay_success")
+                            .withSerializable("bean", submitOrderBean)
+                            .navigation();
+//                    Intent intent = new Intent(mContext, PaySuccessActivity.class);
+//                    intent.putExtra("bean", submitOrderBean);
+//                    mContext.startActivity(intent);
                     ((Activity) mContext).finish();
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {

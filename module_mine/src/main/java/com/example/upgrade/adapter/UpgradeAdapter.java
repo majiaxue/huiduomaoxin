@@ -3,41 +3,64 @@ package com.example.upgrade.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.OperatorBean;
 import com.example.entity.UpgradeBean;
 import com.example.module_mine.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpgradeAdapter extends MyRecyclerAdapter<UpgradeBean> {
-    public UpgradeAdapter(Context context, List<UpgradeBean> mList, int mLayoutId) {
+public class UpgradeAdapter extends MyRecyclerAdapter<OperatorBean> {
+    public UpgradeAdapter(Context context, List<OperatorBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, UpgradeBean data, int position) {
-        String txt1 = "收费金额达到：<font color='#e20707'>" + data.getShoufei() + "</font> 元";
-        String txt2 = "自购订单达到：<font color='#e20707'>" + data.getZigou() + "</font> 单";
-        String txt3 = "邀请粉丝达到：<font color='#e20707'>" + data.getYaoqing() + "</font> 人";
-        String txt4 = "预估佣金达到：<font color='#e20707'>" + data.getYugu() + "</font> 元";
-        List list = new ArrayList();
-        list.add(txt1);
-        list.add(txt2);
-        list.add(txt3);
-        list.add(txt4);
-        holder.setText(R.id.rv_upgrade_title, data.getTitle())
-                .setText(R.id.rv_upgrade_description, data.getDescription());
-        RecyclerView rv = holder.getView(R.id.rv_upgrade_rv);
+    public void convert(RecyclerViewHolder holder, OperatorBean data, int position) {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        rv.setLayoutManager(layoutManager);
-        rv.setAdapter(new UpgradeInsideAdapter(context, list, R.layout.rv_upgrade_inside_rv));
+        holder.setText(R.id.rv_upgrade_title, data.getName())
+                .setText(R.id.rv_upgrade_description, data.getNote());
 
-        if (viewOnClickListener != null) {
-            viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_upgrade_btn), position);
+        if ("0".equals(data.getUpType())) {
+            holder.getView(R.id.rv_upgrade_factor1).setVisibility(View.GONE);
+            holder.getView(R.id.rv_upgrade_view).setVisibility(View.GONE);
+            holder.setText(R.id.rv_upgrade_txt, "条件一")
+                    .setText(R.id.rv_upgrade_price, data.getPrice() + "元");
+        } else if ("1".equals(data.getUpType())) {
+            holder.getView(R.id.rv_upgrade_factor2).setVisibility(View.GONE);
+            holder.getView(R.id.rv_upgrade_view).setVisibility(View.GONE);
+            holder.setText(R.id.rv_upgrade_content, getFactor(data));
+        } else if ("2".equals(data.getUpType())) {
+            holder.setText(R.id.rv_upgrade_content, getFactor(data))
+                    .setText(R.id.rv_upgrade_price, data.getPrice() + "元");
         }
+
+        if (viewTwoOnClickListener != null) {
+            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_upgrade_btn), holder.getView(R.id.rv_upgrade_topay), position);
+        }
+    }
+
+    private String getFactor(OperatorBean data) {
+        StringBuffer str = new StringBuffer();
+        if (data.getDirectFansNum() != null) {
+            str.append("直推有效粉丝" + data.getDirectFansNum() + "人\n");
+        }
+        if (data.getIndirectFansNum() != null) {
+            str.append("非直推有效粉丝" + data.getIndirectFansNum() + "人\n");
+        }
+        if (data.getSelfOrderNum() != null) {
+            str.append("个人自购结算订单" + data.getSelfOrderNum() + "单\n");
+        }
+        if (data.getSelfCommission() != null) {
+            str.append("个人累计获得佣金" + data.getSelfCommission() + "元\n");
+        }
+        if (data.getRecommendNum() != null) {
+            str.append("推荐运营商" + data.getRecommendNum() + "个\n");
+        }
+        return str.length() == 0 ? "" : str.toString().substring(0, str.length() - 1);
     }
 }

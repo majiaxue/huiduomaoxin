@@ -74,6 +74,7 @@ public class CodeLoginPresenter extends BasePresenter<CodeLoginView> {
                     SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
+                    SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

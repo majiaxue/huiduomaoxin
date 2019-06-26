@@ -51,7 +51,7 @@ import butterknife.BindView;
  * Created by cuihaohao on 2019/5/16
  * Describe:商城首页
  */
-public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView {
+public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView, NestedScrollView.OnScrollChangeListener {
     @BindView(R2.id.user_home_back)
     ImageView userHomeBack;
     @BindView(R2.id.user_home_top_img)
@@ -76,6 +76,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     SmartRefreshLayout userHomeRefresh;
     @BindView(R2.id.user_home_nescroll)
     NestedScrollView userHomeNescroll;
+    @BindView(R2.id.user_home_gotop)
+    ImageView mGoTop;
 
     private int newGoodsIndex = 1;
     private int hotSaleIndex = 1;
@@ -115,6 +117,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         userHomeRefresh.setRefreshHeader(customHeader);
 
+
+        userHomeNescroll.setOnScrollChangeListener(this);
     }
 
     @Override
@@ -168,6 +172,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/module_user_store/typeDetail").withBoolean("hotSale", true).navigation();
+            }
+        });
+
+        mGoTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userHomeNescroll.fullScroll(NestedScrollView.FOCUS_UP);
             }
         });
     }
@@ -241,12 +252,24 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
+        if (hidden) {
             //隐藏
             userHomeXbanner.stopAutoPlay();
-        }else{
+        } else {
             //显示
             userHomeXbanner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        int[] ints = new int[2];
+        userHomeRvGoods.getLocationOnScreen(ints);
+        int y = ints[1];
+        if (y <= 0) {
+            mGoTop.setVisibility(View.VISIBLE);
+        } else {
+            mGoTop.setVisibility(View.GONE);
         }
     }
 }
