@@ -126,4 +126,7 @@ dependencies {
     api files('libs/umeng-share-wechat-simplify-6.9.4.jar')
     api files('libs/umeng-shareboard-widget-6.9.4.jar')
     api files('libs/umeng-sharetool-6.9.4.jar')
+
+    //zxing二维码
+    api 'com.google.zxing:core:3.4.0'
 }

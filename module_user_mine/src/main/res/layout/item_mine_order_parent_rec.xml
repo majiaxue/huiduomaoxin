@@ -90,7 +90,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_get_code_clicked"
-            android:layout_marginRight="@dimen/dp_11"
             android:gravity="center"
             android:text="申请退款"
             android:textColor="#333333"
@@ -103,10 +102,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_get_code"
+            android:layout_marginLeft="@dimen/dp_11"
             android:gravity="center"
             android:text="提醒发货"
             android:textColor="#fc5917"
-            android:textSize="@dimen/sp_11" />
+            android:textSize="@dimen/sp_11"/>
 
     </LinearLayout>
 

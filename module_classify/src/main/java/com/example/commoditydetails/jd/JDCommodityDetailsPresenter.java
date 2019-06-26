@@ -1,7 +1,9 @@
 package com.example.commoditydetails.jd;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -36,6 +38,13 @@ import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -287,4 +296,44 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         }));
     }
 
+    //分享
+    public void share() {
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setTitleText("分享到")
+                .setTitleTextColor(Color.parseColor("#222222"))
+                .setMenuItemTextColor(Color.parseColor("#666666"))
+                .setMenuItemIconPressedColor(Color.parseColor("#000000"))
+//                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE,(int)mContext.getResources().getDimension(R.dimen.dp_20));
+//                .setCancelButtonText("您取消了分享");
+
+
+        new ShareAction((Activity) mContext)
+                .withMedia(new UMImage(mContext, R.drawable.no_goods))
+//                .withText("hello")
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setCallback(shareListener).open(config);
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LogUtil.e("start:" + share_media.toString());
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            LogUtil.e("result:" + share_media.toString());
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+
+        }
+    };
 }
