@@ -115,4 +115,7 @@ dependencies {
     // sql-cipher database encyrption (optional)
     api "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
 
+    //倒计时
+    api 'com.github.iwgang:countdownview:2.1.6'
+
 }

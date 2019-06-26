@@ -114,7 +114,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
         orderDetailsConsultCustomerService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call("40083312345");
+                call("18503735075");
             }
         });
 
@@ -239,12 +239,5 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
         presenter.items(items, orderDetailsGoodsRec);
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

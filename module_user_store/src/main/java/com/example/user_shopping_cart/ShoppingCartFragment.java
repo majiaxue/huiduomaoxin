@@ -169,10 +169,10 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     public void isHide(boolean isHide) {
         if (isHide) {
             shoppingCartEmpty.setVisibility(View.VISIBLE);
-            shoppingCartCompile.setVisibility(View.VISIBLE);
+            shoppingCartCompile.setVisibility(View.GONE);
         } else {
             shoppingCartEmpty.setVisibility(View.GONE);
-            shoppingCartCompile.setVisibility(View.GONE);
+            shoppingCartCompile.setVisibility(View.VISIBLE);
         }
     }
 
