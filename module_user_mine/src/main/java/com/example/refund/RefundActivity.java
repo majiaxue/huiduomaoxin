@@ -109,13 +109,13 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
         LogUtil.e("beanList退款申请" + mineOrderBean1);
         list.add(mineOrderBean1);
         if ("1".equals(type)) {
-            refundSumText.setText("￥" + list.get(0).getOrderList().get(position).getTotalAmount());
+            refundSumText.setText("" + list.get(0).getOrderList().get(position).getTotalAmount());
             refundImage.setImageURI(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductPic());
             refundGoodsName.setText(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductName());
             refundColour.setText(list.get(0).getOrderList().get(position).getOrderItems().get(0).getSp1());
             refundSize.setText(list.get(0).getOrderList().get(position).getOrderItems().get(0).getSp2());
         } else {
-            refundSumText.setText("￥" + orderDetailBean.getPayAmount());
+            refundSumText.setText("" + orderDetailBean.getPayAmount());
             refundImage.setImageURI(orderDetailBean.getItems().get(0).getProductPic());
             refundGoodsName.setText(orderDetailBean.getItems().get(0).getProductName());
             refundColour.setText(orderDetailBean.getItems().get(0).getSp1());
@@ -166,7 +166,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                     refundApplyVo.setOrderSn(list.get(0).getOrderList().get(position).getOrderItems().get(0).getOrderSn());
                     refundApplyVo.setProofPics(images);
                     refundApplyVo.setReason(refundCauseText.getText().toString());
-                    refundApplyVo.setMemberUsername(SPUtil.getUserCode());
+                    refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
                     refundApplyVo.setProductPrice(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductPrice());
                     refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
                     refundApplyVo.setSellerId("");
@@ -196,7 +196,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                     refundApplyVo.setOrderSn(orderDetailBean.getItems().get(0).getOrderSn());
                     refundApplyVo.setProofPics(images);
                     refundApplyVo.setReason(refundCauseText.getText().toString());
-                    refundApplyVo.setMemberUsername(SPUtil.getUserCode());
+                    refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
                     refundApplyVo.setProductPrice(orderDetailBean.getPayAmount());
                     refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
                     refundApplyVo.setSellerId("");

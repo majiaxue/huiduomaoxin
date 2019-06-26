@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f5f5"
@@ -35,14 +36,15 @@
             android:layout_marginTop="@dimen/dp_m_35"
             android:background="@drawable/bg_user_mine_icon">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/mine_header"
                 android:layout_width="@dimen/dp_65"
                 android:layout_height="@dimen/dp_65"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/dp_m_27"
-                android:scaleType="fitXY"
-                android:src="@drawable/vhjfg" />
+                app:placeholderImage="@drawable/vhjfg"
+                app:placeholderImageScaleType="fitXY"
+                app:roundAsCircle="true" />
         </RelativeLayout>
 
 

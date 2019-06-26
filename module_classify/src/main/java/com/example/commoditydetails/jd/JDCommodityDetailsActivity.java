@@ -216,6 +216,16 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
                 Toast.makeText(JDCommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //立即领取
+        commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.ledSecurities(listsBeanList.get(position).getMaterialUrl(), listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getLink());
+
+            }
+        });
+
         //领劵
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override

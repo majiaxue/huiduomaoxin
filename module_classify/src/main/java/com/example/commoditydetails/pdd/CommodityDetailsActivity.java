@@ -178,6 +178,13 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
                 Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
             }
         });
+        //立即领取
+        commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.ledSecurities(detailsBeanList);
+            }
+        });
         //领劵
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -94,7 +94,7 @@ public class CommonResource {
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
     public static final String FAVORITESTATUS = "/rest/user/favorite";   //查询收藏状态
-    public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后列表
+    public static final String RETURNTABLE = "/rest/order/returnInfo";   //退换售后列表
     public static final String ADDRESSADD = "/rest/address/add";   //新增收货地址
     public static final String ADDRESSSELECT = "/rest/address/city";   //三级地址选择
     public static final String COUPONSTATUS = "/rest/user/coupon/status";//根据状态查询优惠券

@@ -1,6 +1,9 @@
 package com.example.alteration.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
@@ -13,24 +16,19 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
-public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean> {
+public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean.RBean> {
 
-    public AlterationAdapter(Context context, List<AlterationBean> mList, int mLayoutId) {
+    public AlterationAdapter(Context context, List<AlterationBean.RBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, AlterationBean data, int position) {
+    public void convert(RecyclerViewHolder holder, AlterationBean.RBean data, int position) {
         holder.setText(R.id.alteration_rec_shop_name, data.getSellerName());
-        holder.setImageFresco(R.id.alteration_rec_image, data.getProductPic());
-        holder.setText(R.id.alteration_rec_name, data.getProductName());
-        holder.setText(R.id.alteration_rec_count, "X" + data.getProductCount());
-        holder.setText(R.id.alteration_rec_Attr, data.getProductAttr());
-//        holder.setText(R.id.alteration_rec_size, data.getSize());
-        if (data.getReturnType().equals("0")) {
+        if ("0".equals(data.getReturnType())) {
             //退货退款
             holder.setText(R.id.alteration_rec_type, "退货退款");
-        } else if (data.getReturnType().equals("1")) {
+        } else if ("1".equals(data.getReturnType())) {
             //未收货
             holder.setText(R.id.alteration_rec_type, "未收货");
         } else {
@@ -49,5 +47,12 @@ public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean> {
         }
 
         viewOnClickListener.ViewOnClick(holder.getView(R.id.alteration_rec_view_details), position);
+
+        RecyclerView alterationChildRec = holder.getView(R.id.alteration_child_rec);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        alterationChildRec.setLayoutManager(linearLayoutManager);
+        AlterationChildAdapter alterationChildAdapter = new AlterationChildAdapter(context, data.getItemlist(), R.layout.item_alteration_child_rec);
+        alterationChildRec.setAdapter(alterationChildAdapter);
+
     }
 }

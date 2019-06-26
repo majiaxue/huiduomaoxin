@@ -1,7 +1,6 @@
 package com.example.alteration;
 
 
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +12,6 @@ import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 退货/售后

@@ -1,5 +1,10 @@
 package com.example.user_mine;
 
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -7,10 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.common.CommonResource;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.SPUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 
@@ -20,7 +27,7 @@ import butterknife.BindView;
  */
 public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
     @BindView(R2.id.mine_header)
-    ImageView mineHeader;
+    SimpleDraweeView mineHeader;
     @BindView(R2.id.user_mine_icon)
     RelativeLayout userMineIcon;
     @BindView(R2.id.user_mine_name)
@@ -70,7 +77,9 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initData() {
-        userMineName.setText(SPUtil.getUserCode());
+        userMineName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
+        userMineId.setText("UID：" + SPUtil.getStringValue(CommonResource.USER_INVITE));
+        mineHeader.setImageURI(Uri.parse(SPUtil.getStringValue(CommonResource.USER_PIC)));
         presenter.goodsCollectionCount();
         presenter.shopCollectCount();
         presenter.browsingHistoryCount();

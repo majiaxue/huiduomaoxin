@@ -3,6 +3,7 @@ package com.example.refundparticulars;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,16 +57,6 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     LinearLayout refundSucceedPath;
     @BindView(R2.id.waiting_refund)
     LinearLayout waitingRefund;
-    @BindView(R2.id.refund_particulars_image)
-    SimpleDraweeView refundParticularsImage;
-    @BindView(R2.id.refund_particulars_goods_name)
-    TextView refundParticularsGoodsName;
-    @BindView(R2.id.refund_particulars_count)
-    TextView refundParticularsCount;
-    @BindView(R2.id.refund_particulars_productAttr)
-    TextView refundParticularsProductAttr;
-    @BindView(R2.id.refund_particulars_money)
-    TextView refundParticularsMoney;
     @BindView(R2.id.refund_particulars_reason)
     TextView refundParticularsReason;
     @BindView(R2.id.refund_particulars_amount)
@@ -78,9 +69,13 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     LinearLayout refundParticularsDial;
     @BindView(R2.id.refund_particulars_consult_customer_service)
     LinearLayout refundParticularsConsultCustomerService;
+    @BindView(R2.id.refund_particulars_rec)
+    RecyclerView refundParticularsRec;
 
-    @Autowired(name = "returnId")
-    String returnId;
+    @Autowired(name = "orderSn")
+    String orderSn;
+    @Autowired(name = "position")
+    int position;
 
 
     @Override
@@ -92,7 +87,7 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     public void initData() {
         includeTitle.setText("退款详情");
         ARouter.getInstance().inject(this);
-        presenter.initView(returnId);
+        presenter.initView(orderSn);
     }
 
     @Override
@@ -139,16 +134,16 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     }
 
     @Override
-    public void initView(List<AlterationBean> list) {
+    public void initView(List<AlterationBean.RBean> list) {
 
-        if (list.get(0).getStatus() == 0) {
+        if (list.get(position).getStatus() == 0) {
             refundParticularsStatus.setText("等待商家处理");
             refundSucceedTotal.setVisibility(View.GONE);
             refundSucceedPath.setVisibility(View.GONE);
             waitingRefund.setVisibility(View.VISIBLE);
-        } else if (list.get(0).getStatus() == 1) {
+        } else if (list.get(position).getStatus() == 1) {
             refundParticularsStatus.setText("处理中");
-        } else if (list.get(0).getStatus() == 2) {
+        } else if (list.get(position).getStatus() == 2) {
             refundParticularsStatus.setText("退款成功");
             refundSucceedTotal.setVisibility(View.VISIBLE);
             refundSucceedPath.setVisibility(View.VISIBLE);
@@ -157,20 +152,25 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
             refundParticularsStatus.setText("商家已拒绝");
 
         }
-        refundParticularsTime.setText(list.get(0).getReceiveTime());
-        refundParticularsName.setText(list.get(0).getReturnName());
-        refundParticularsPhone.setText(list.get(0).getReturnPhone());
-        refundParticularsAddress.setText(list.get(0).getReceiverRegion() + list.get(0).getReceiverCity() + list.get(0).getReceiverProvince() + list.get(0).getOrderAddress());
-        refundParticularsPrice.setText(list.get(0).getProductPrice());
-        refundParticularsPath.setText(list.get(0).getPayWay());
-        refundParticularsPrice1.setText(list.get(0).getProductPrice());
-        refundParticularsImage.setImageURI(list.get(0).getProductPic());
-        refundParticularsGoodsName.setText(list.get(0).getProductName());
-        refundParticularsCount.setText(list.get(0).getProductCount());
-        refundParticularsProductAttr.setText(list.get(0).getProductAttr());
-        refundParticularsMoney.setText(list.get(0).getProductPrice());
-        refundParticularsReason.setText(list.get(0).getReason());
-        refundParticularsAmount.setText(list.get(0).getProductPrice());
-        refundParticularsTimeApplication.setText(list.get(0).getCreateTime());
+
+        refundParticularsTime.setText(list.get(position).getReceiveTime());
+        refundParticularsName.setText(list.get(position).getReturnName());
+        refundParticularsPhone.setText(list.get(position).getReturnPhone());
+        refundParticularsAddress.setText(list.get(position).getReceiverRegion() + list.get(position).getReceiverCity() + list.get(position).getReceiverProvince() + list.get(position).getOrderAddress());
+        refundParticularsPrice.setText(list.get(position).getReturnAmount());
+        if (list.get(position).getPayWay() == 1) {
+            refundParticularsPath.setText("退回支付宝");
+        } else if (list.get(position).getPayWay() == 2) {
+            refundParticularsPath.setText("退回微信");
+        }
+
+        refundParticularsPrice1.setText(list.get(position).getReturnAmount());
+        refundParticularsReason.setText(list.get(position).getReason());
+        refundParticularsAmount.setText(list.get(position).getReturnAmount());
+        refundParticularsTimeApplication.setText(list.get(position).getCreateTime());
+
+        List<AlterationBean.RBean.ItemlistBean> itemList = list.get(position).getItemlist();
+        presenter.goodsList(refundParticularsRec, itemList);
+
     }
 }
