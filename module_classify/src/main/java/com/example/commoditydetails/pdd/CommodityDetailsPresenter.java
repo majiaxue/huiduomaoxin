@@ -1,13 +1,19 @@
 package com.example.commoditydetails.pdd;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -30,12 +36,23 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
+import com.example.utils.ViewToBitmap;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +69,9 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList = new ArrayList<>();
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
-    private String earnings;
+//    private String earnings;
+    private LedSecuritiesBean ledSecuritiesBean;
+    private String weAppWebViewUrl;
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -183,7 +202,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("CommodityDetailsResult领劵------------>" + result);
-                    LedSecuritiesBean ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
+                    ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
                     }.getType());
 
 //                Intent intent = new Intent();
@@ -192,8 +211,9 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 //                intent.setData(content_url);
 //                mContext.startActivity(intent);
                     if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
+                        weAppWebViewUrl = ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url();
                         Intent intent = new Intent(mContext, WebViewActivity.class);
-                        intent.putExtra("url", ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url());
+                        intent.putExtra("url", weAppWebViewUrl);
                         mContext.startActivity(intent);
                     }
 
@@ -292,8 +312,76 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
             }
         }));
 
-
     }
 
+
+    //分享
+    public void share() {
+        Bitmap bitmap = null;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+        ImageView image = view.findViewById(R.id.share_image);
+        TextView name = view.findViewById(R.id.share_name);
+        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
+        TextView originalPrice = view.findViewById(R.id.share_original_price);
+        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
+        TextView number = view.findViewById(R.id.share_number);
+        ImageView qRCode = view.findViewById(R.id.share_qr_code);
+
+        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
+//        image.setImageURI(Uri.parse(beanList.get(0).getGoods_image_url()));
+        LogUtil.e("uri---------->"+beanList.get(0).getGoods_image_url());
+        name.setText(beanList.get(0).getGoods_name());
+        preferentialPrice.setText("￥" + div);
+        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
+        couponPrice.setText("￥"+ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div)+"元");
+        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
+//        Bitmap qrImage = QRCode.createQRImage(weAppWebViewUrl, 157, 154);
+//        qRCode.setImageBitmap(qrImage);
+//        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(mContext.getContentResolver(), qrImage, null,null));
+        LogUtil.e("uri1---------->"+weAppWebViewUrl);
+
+        bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+
+//        Uri shareImage = Uri.parse(MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bitmap, null,null));
+
+
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setTitleText("分享到")
+                .setTitleTextColor(Color.parseColor("#222222"))
+                .setMenuItemTextColor(Color.parseColor("#666666"))
+                .setMenuItemIconPressedColor(Color.parseColor("#000000"))
+//                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE,(int)mContext.getResources().getDimension(R.dimen.dp_20));
+//                .setCancelButtonText("您取消了分享");
+
+
+        new ShareAction((Activity) mContext)
+                .withMedia(new UMImage(mContext, bitmap))
+                .withText("hello")
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setCallback(shareListener).open(config);
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LogUtil.e("start:" + share_media.toString());
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            LogUtil.e("result:" + share_media.toString());
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+
+        }
+    };
 
 }

@@ -82,6 +82,7 @@
         android:layout_below="@id/relative">
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/home_nested_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -268,5 +269,16 @@
 
         </android.support.v4.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <ImageView
+        android:id="@+id/home_gotop"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/dp_11"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:src="@drawable/icon_xuanfudingbu"
+        android:visibility="gone" />
 
 </RelativeLayout>

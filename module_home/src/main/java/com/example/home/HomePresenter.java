@@ -54,6 +54,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodChoiceBean.DataBean> goodList = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList;
+    private GoodsRecommendAdapter goodsRecommendAdapter;
 
     public HomePresenter(Context context) {
         super(context);
@@ -246,8 +247,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     //推荐
-    public void setBottomRec(final RecyclerView homeBottomRec) {
-        Map map = MapUtil.getInstance().addParms("page", 5).addParms("pagesize", 20).build();
+    public void setBottomRec(final int nextPage, final RecyclerView homeBottomRec) {
+        Map map = MapUtil.getInstance().addParms("page", nextPage).addParms("pagesize", 20).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSPRODUCTS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
@@ -257,12 +258,20 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 }.getType());
                 if (GoodChoiceBean != null) {
                     if (GoodChoiceBean.getData() != null) {
-                        goodList.clear();
+                        if (nextPage == 5) {
+                            goodList.clear();
+                        }
                         goodList.addAll(GoodChoiceBean.getData());
+
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                         homeBottomRec.setLayoutManager(linearLayoutManager);
-                        GoodsRecommendAdapter goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
-                        homeBottomRec.setAdapter(goodsRecommendAdapter);
+                        if (goodsRecommendAdapter == null) {
+                            goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
+                            homeBottomRec.setAdapter(goodsRecommendAdapter);
+                        } else {
+                            goodsRecommendAdapter.notifyDataSetChanged();
+                            getView().refreshSuccess();
+                        }
 
                         goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
@@ -298,6 +307,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
+                if (getView() != null) {
+                    getView().refreshSuccess();
+                }
             }
         }));
 

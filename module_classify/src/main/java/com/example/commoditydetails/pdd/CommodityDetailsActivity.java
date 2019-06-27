@@ -175,7 +175,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
+                presenter.share();
             }
         });
         //立即领取

@@ -1,5 +1,7 @@
 package com.example.home;
 
+import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,10 @@ import com.example.mvp.BaseFragment;
 import com.example.view.CustomHeader;
 import com.example.view.MarqueeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xhb.xbanner.XBanner;
 
 import java.util.List;
@@ -25,7 +31,7 @@ import butterknife.Unbinder;
 /**
  * 首页
  */
-public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView {
+public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView ,NestedScrollView.OnScrollChangeListener{
 
     @BindView(R2.id.home_top_bg)
     ImageView homeTopBg;
@@ -51,6 +57,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     RecyclerView homeBottomRec;
     @BindView(R2.id.home_smart_refresh)
     SmartRefreshLayout homeSmartRefresh;
+    @BindView(R2.id.home_gotop)
+    ImageView mGoTop;
+    @BindView(R2.id.home_nested_scroll)
+    NestedScrollView homeNestedScroll;
+
+    private int nextPage = 5;
+
 
     @Override
     public int getLayoutId() {
@@ -68,12 +81,15 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         //优选recycler
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
         //推荐recycler
-        presenter.setBottomRec(homeBottomRec);
+        presenter.setBottomRec(nextPage,homeBottomRec);
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         homeSmartRefresh.setRefreshHeader(customHeader);
+        homeSmartRefresh.setRefreshFooter(new ClassicsFooter(getContext()));
+
+
     }
 
     @Override
@@ -107,6 +123,31 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                 ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").navigation();
             }
         });
+
+        //设置上拉刷新下拉加载
+        homeSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                nextPage = 5;
+                presenter.setBottomRec(nextPage,homeBottomRec);
+            }
+        });
+        homeSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                nextPage++;
+                presenter.setBottomRec(nextPage,homeBottomRec);
+            }
+        });
+
+        homeNestedScroll.setOnScrollChangeListener(this);
+
+        mGoTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeNestedScroll.fullScroll(NestedScrollView.FOCUS_UP);
+            }
+        });
     }
 
     @Override
@@ -135,13 +176,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 //            //跑马灯
 //            presenter.setViewSingleLine();
             //xBanner
-            presenter.setXBanner(homeXbanner, homeTopBg);
+//            presenter.setXBanner(homeXbanner, homeTopBg);
 //            //topRec
 //            presenter.setRec(homeTopRec);
-            //优选recycler
-            presenter.setGoodChoiceRec(homeGoodChoiceRec);
-            //推荐recycler
-            presenter.setBottomRec(homeBottomRec);
+//            //优选recycler
+//            presenter.setGoodChoiceRec(homeGoodChoiceRec);
+//            //推荐recycler
+//            presenter.setBottomRec(nextPage,homeBottomRec);
         }
     }
 
@@ -166,4 +207,21 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeMarquee.setViews(views);
     }
 
+    @Override
+    public void refreshSuccess() {
+        homeSmartRefresh.finishLoadMore();
+        homeSmartRefresh.finishRefresh();
+    }
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        int[] ints = new int[2];
+        homeBottomRec.getLocationOnScreen(ints);
+        int y = ints[1];
+        if (y <= 0) {
+            mGoTop.setVisibility(View.VISIBLE);
+        } else {
+            mGoTop.setVisibility(View.GONE);
+        }
+    }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface HomeView extends IView {
     void lodeMarquee(List<View> views);
+
+    void refreshSuccess();
 }
