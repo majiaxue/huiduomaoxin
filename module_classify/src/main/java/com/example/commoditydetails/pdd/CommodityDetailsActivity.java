@@ -1,7 +1,18 @@
 package com.example.commoditydetails.pdd;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,22 +25,40 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.commoditydetails.pdd.bean.CommodityDetailsBean;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
+import com.example.utils.DisplayUtil;
+import com.example.utils.FrescoBitmapCallback;
+import com.example.utils.FrescoLoadUtil;
+import com.example.utils.FrescoUtils;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.view.RVNestedScrollView;
+import com.example.utils.QRCode;
+import com.example.utils.ViewToBitmap;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 拼多多商品详情
@@ -93,6 +122,10 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     TextView commodityImmediatelyReceive;
     @BindView(R2.id.commodity_led_securities_text)
     TextView commodityLedSecuritiesText;
+    @BindView(R2.id.commodity_bitmap)
+    ImageView commodityBitmap;
+    @BindView(R2.id.commodity_share_all)
+    LinearLayout commodityShareAll;
 
 
     @Autowired(name = "goods_id")
@@ -101,7 +134,31 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @Autowired(name = "type")
     String type;
 
+    @BindView(R2.id.share_image)
+    ImageView shareImage;
+    @BindView(R2.id.share_name)
+    TextView shareName;
+    @BindView(R2.id.share_preferential_price)
+    TextView sharePreferentialPrice;
+    @BindView(R2.id.share_original_price)
+    TextView shareOriginalPrice;
+    @BindView(R2.id.share_coupon_price)
+    TextView shareCouponPrice;
+    @BindView(R2.id.share_number)
+    TextView shareNumber;
+    @BindView(R2.id.share_qr_code)
+    ImageView shareQrCode;
+
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> detailsBeanList = new ArrayList<>();
+    private String imageUrl;
+    private int flag = 0;
+    private String earnings;
+    private double earnings1;
+    private double mul1;
+    private double mul;
+    private double div;
+    private double promotionRate;
+    private Bitmap bitmap;
 
 
     @Override
@@ -117,7 +174,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
         presenter.initView(goods_id);
-
+        //收益
+        presenter.earnings();
         //推荐recycler
         presenter.setRecommendRec(shopRecommendRec);
         //字体加中划线
@@ -172,18 +230,19 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 //            }
 //        });
         //分享
+        //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share();
+                presenter.share(bitmap);
             }
         });
         //立即领取
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.ledSecurities(detailsBeanList);
+                presenter.jumpToWeb(imageUrl);
             }
         });
         //领劵
@@ -191,7 +250,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
-                presenter.ledSecurities(detailsBeanList);
+                presenter.jumpToWeb(imageUrl);
             }
         });
         //收藏
@@ -243,19 +302,19 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     }
 
     @Override
-    public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList, String earnings) {
+    public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         this.detailsBeanList = beanList;
-        LogUtil.e("收益1-------->" + earnings);
-        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
-        double promotionRate = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);//佣金比例
-        double mul = ArithUtil.mul(div, promotionRate);//到手价乘佣金
-        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);//用户佣金比例
-        double mul1 = ArithUtil.mul(mul, earnings1);//收益
+//        LogUtil.e("收益1-------->" + earnings);
+
+        //到手价
+        div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
+        //佣金比例
+        promotionRate = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);
+
 
         commodityName.setText(beanList.get(0).getGoods_name());//名字
         commodityPreferentialPrice.setText("￥" + div);//优惠价
         commodityOriginalPrice.setText("原价：￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));//原价
-        commodityEarnings.setText("预估收益：￥" + mul1);//收益
         commodityNumberSold.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
         commodityCouponPrice.setText(ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元优惠劵");
 
@@ -272,6 +331,94 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         presenter.setShopParticulars(shopParticulars, beanList);
         //收藏状态
         presenter.isCollect(commodityCollectImage, beanList);
+        //领劵
+        presenter.ledSecurities(detailsBeanList.get(0).getGoods_id());
     }
 
+    //加载生成图片布局
+    private void viewToImage(String qRImage) {
+
+        //字体加中划线
+        shareOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        double div = ArithUtil.div(detailsBeanList.get(0).getMin_group_price() - detailsBeanList.get(0).getCoupon_discount(), 100, 1);//到手价
+        LogUtil.e("url主图---------->" + detailsBeanList.get(0).getGoods_gallery_urls().get(0));
+        String s = detailsBeanList.get(0).getGoods_gallery_urls().get(0);
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(s));
+            saveImageToPhotos(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LogUtil.e("url1轮播图---------->" + s);
+
+        shareName.setText(detailsBeanList.get(0).getGoods_name());
+        sharePreferentialPrice.setText("￥" + div);
+        shareOriginalPrice.setText("￥" + ArithUtil.div(detailsBeanList.get(0).getMin_group_price(), 100, 1));
+        shareCouponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(detailsBeanList.get(0).getMin_group_price(), 100, 1), div) + "元");
+        shareNumber.setText("已售" + detailsBeanList.get(0).getSold_quantity() + "件");//已售
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(this, 150), DisplayUtil.dip2px(this, 150));
+        shareQrCode.setImageBitmap(qr);
+        LogUtil.e("url2二维码---------->" + qRImage);
+
+        this.bitmap = ViewToBitmap.createBitmap3(commodityShareAll, ViewToBitmap.getScreenWidth(this), ViewToBitmap.getScreenHeight(this));
+
+    }
+
+    @Override
+    public void imageUri(String url) {
+        this.imageUrl = url;
+        //viewToImage
+//        presenter.viewToImage(url);
+        viewToImage(url);
+    }
+
+    @Override
+    public void imageBitmap(Bitmap bitmap) {
+//        commodityBitmap.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void flag() {
+        flag++;
+        if (flag == 2) {
+            //到手价乘佣金
+            mul = ArithUtil.mul(div, promotionRate);
+            //用户佣金比例
+            earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);
+            //收益
+            mul1 = ArithUtil.mul(mul, earnings1);
+            commodityEarnings.setText("预估收益：￥" + mul1);//收益
+        }
+    }
+
+    @Override
+    public void earnings(String ear) {
+        this.earnings = ear;
+    }
+
+    /**
+     * 保存二维码到本地相册
+     */
+    private void saveImageToPhotos(Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = "wwww" + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
+        LogUtil.e("图片路径"+file.getPath());
+    }
 }

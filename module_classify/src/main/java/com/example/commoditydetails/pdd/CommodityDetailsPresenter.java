@@ -4,9 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,7 +28,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsPddRecAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
@@ -37,6 +52,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.ArithUtil;
+import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.QRCode;
@@ -54,6 +70,11 @@ import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,9 +90,9 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList = new ArrayList<>();
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
-//    private String earnings;
     private LedSecuritiesBean ledSecuritiesBean;
-    private String weAppWebViewUrl;
+    private Bitmap bitmap;
+    private ImageView image;
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -91,29 +112,14 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                 LogUtil.e("CommodityDetailsResult详情------------>" + result);
                 CommodityDetailsBean commodityDetailsBean = JSON.parseObject(result, new TypeReference<CommodityDetailsBean>() {
                 }.getType());
-                beanList.clear();
-                beanList.addAll(commodityDetailsBean.getGoods_detail_response().getGoods_details());
-
-                Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
-                Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
-                RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-                    @Override
-                    public void onSuccess(String result, String msg) {
-                        LogUtil.e("收益-------->" + result);
-                        if (!result.equals("")) {
-                            if (getView() != null) {
-                                getView().CommodityDetailsList(beanList, result);
-                            }
-                        }
+                if (commodityDetailsBean != null && commodityDetailsBean.getGoods_detail_response() != null && commodityDetailsBean.getGoods_detail_response().getGoods_details().size() != 0) {
+                    beanList.clear();
+                    beanList.addAll(commodityDetailsBean.getGoods_detail_response().getGoods_details());
+                    if (getView() != null) {
+                        getView().CommodityDetailsList(beanList);
+                        getView().flag();
                     }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-
-                    }
-                }));
-
-
+                }
             }
 
             @Override
@@ -122,6 +128,30 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
             }
         }));
     }
+
+    public void earnings() {
+        Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("收益-------->" + result);
+                if (!TextUtils.isEmpty(result)) {
+                    if (getView() != null) {
+                        getView().earnings(result);
+                        getView().flag();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("收益errorMsg-------->" + errorMsg);
+            }
+        }));
+
+    }
+
 
     //商品轮播图
     public void setXBanner(XBanner commodityXbanner, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
@@ -195,35 +225,36 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     }
 
     //领劵
-    public void ledSecurities(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
-        if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + beanList.get(0).getGoods_id());
-            RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
-                @Override
-                public void onSuccess(String result, String msg) {
-                    LogUtil.e("CommodityDetailsResult领劵------------>" + result);
-                    ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
-                    }.getType());
+    public void ledSecurities(long id) {
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCOUPON + "/" + SPUtil.getUserCode() + "/" + id);
+        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("CommodityDetailsResult领劵------------>" + result);
+                ledSecuritiesBean = JSON.parseObject(result, new TypeReference<LedSecuritiesBean>() {
+                }.getType());
 
-//                Intent intent = new Intent();
-//                intent.setAction("android.intent.action.VIEW");
-//                Uri content_url = Uri.parse(ledList.get(0).getMobile_url());
-//                intent.setData(content_url);
-//                mContext.startActivity(intent);
-                    if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
-                        weAppWebViewUrl = ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url();
-                        Intent intent = new Intent(mContext, WebViewActivity.class);
-                        intent.putExtra("url", weAppWebViewUrl);
-                        mContext.startActivity(intent);
+                if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
+                    if (getView() != null) {
+                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url());
                     }
-
                 }
 
-                @Override
-                public void onError(String errorCode, String errorMsg) {
-                    LogUtil.e("CommodityDetailsErrorMsg领劵------------>" + errorMsg);
-                }
-            }));
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("CommodityDetailsErrorMsg领劵------------>" + errorMsg);
+            }
+        }));
+    }
+
+    //web
+    public void jumpToWeb(String imageUrl) {
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            Intent intent = new Intent(mContext, WebViewActivity.class);
+            intent.putExtra("url", imageUrl);
+            mContext.startActivity(intent);
         } else {
             ARouter.getInstance().build("/mine/login").navigation();
         }
@@ -314,52 +345,64 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     }
 
+//    //加载生成图片布局
+//    public void viewToImage(String qRImage) {
+//        final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+//        image = view.findViewById(R.id.share_image);
+//        TextView name = view.findViewById(R.id.share_name);
+//        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
+//        TextView originalPrice = view.findViewById(R.id.share_original_price);
+//        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
+//        TextView number = view.findViewById(R.id.share_number);
+//        ImageView qRCode = view.findViewById(R.id.share_qr_code);
+//        //字体加中划线
+//        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+//        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
+//        LogUtil.e("url主图---------->" + beanList.get(0).getGoods_gallery_urls().get(0));
+//        String s = beanList.get(0).getGoods_gallery_urls().get(0);
+//        Glide.with(mContext)
+//                .load(s)
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .placeholder(R.drawable.icon_logo)
+//                .error(R.drawable.icon_chahao)
+//                .into(image);
+//
+//        LogUtil.e("url1轮播图---------->" + s);
+//
+//        name.setText(beanList.get(0).getGoods_name());
+//        preferentialPrice.setText("￥" + div);
+//        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
+//        couponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元");
+//        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
+//        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+//        qRCode.setImageBitmap(qr);
+//        LogUtil.e("url2二维码---------->" + qRImage);
+//
+//        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+//
+//
+//        if (getView() != null) {
+//            getView().imageBitmap(bitmap);
+//        }
+//    }
 
     //分享
-    public void share() {
-        Bitmap bitmap = null;
-        View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
-        ImageView image = view.findViewById(R.id.share_image);
-        TextView name = view.findViewById(R.id.share_name);
-        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
-        TextView originalPrice = view.findViewById(R.id.share_original_price);
-        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
-        TextView number = view.findViewById(R.id.share_number);
-        ImageView qRCode = view.findViewById(R.id.share_qr_code);
-
-        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
-//        image.setImageURI(Uri.parse(beanList.get(0).getGoods_image_url()));
-        LogUtil.e("uri---------->"+beanList.get(0).getGoods_image_url());
-        name.setText(beanList.get(0).getGoods_name());
-        preferentialPrice.setText("￥" + div);
-        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
-        couponPrice.setText("￥"+ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div)+"元");
-        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
-//        Bitmap qrImage = QRCode.createQRImage(weAppWebViewUrl, 157, 154);
-//        qRCode.setImageBitmap(qrImage);
-//        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(mContext.getContentResolver(), qrImage, null,null));
-        LogUtil.e("uri1---------->"+weAppWebViewUrl);
-
-        bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-
-//        Uri shareImage = Uri.parse(MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bitmap, null,null));
-
-
+    public void share(Bitmap bitmap) {
         ShareBoardConfig config = new ShareBoardConfig();
         config.setTitleText("分享到")
                 .setTitleTextColor(Color.parseColor("#222222"))
                 .setMenuItemTextColor(Color.parseColor("#666666"))
                 .setMenuItemIconPressedColor(Color.parseColor("#000000"))
-//                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
-                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE,(int)mContext.getResources().getDimension(R.dimen.dp_20));
-//                .setCancelButtonText("您取消了分享");
-
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
+        LogUtil.e("bitmap" + bitmap);
 
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
                 .withText("hello")
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(shareListener).open(config);
+
     }
 
     private UMShareListener shareListener = new UMShareListener() {

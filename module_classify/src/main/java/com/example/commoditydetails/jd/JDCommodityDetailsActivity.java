@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,6 +100,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     TextView commodityImmediatelyReceive;
     @BindView(R2.id.commodity_led_securities_text)
     TextView commodityLedSecuritiesText;
+    @BindView(R2.id.commodity_shop_item)
+    RelativeLayout commodityShopItem;
 
     @Autowired(name = "skuid")
     String skuid;
@@ -128,7 +131,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //收益
         presenter.earnings();
-
+        commodityShopItem.setVisibility(View.GONE);
         //详情轮播图
         presenter.setXBanner(commodityXbanner, listsBeanList, position);
 
@@ -144,15 +147,10 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         String startTime = MyTimeUtil.date2String("" + listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getUseStartTime());
         String endTime = MyTimeUtil.date2String("" + listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getUseEndTime());
         commodityTime.setText("有效期：" + startTime + "~" + endTime);
-        commodityShopName.setText(listsBeanList.get(position).getShopInfo().getShopName());//商家名
+//        commodityShopName.setText(listsBeanList.get(position).getShopInfo().getShopName());//商家名
 //        commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.get(0).getSeller().getShopIcon()));//商家icon
 //        LogUtil.e("icon---->" + tbBeanList.get(0).getSeller().getShopIcon());
-        shopDescribeScore.setText("");
-        shopServiceScore.setText("");
-        shopLogisticsScore.setText("");
-        shopText1.setText("");
-        shopText2.setText("");
-        shopText3.setText("");
+
 
         //收藏状态
         presenter.isCollect(commodityCollectImage, skuid);
