@@ -115,7 +115,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("授权：" + errorMsg);
             }
         }));
     }
@@ -140,6 +140,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (getView() != null) {
                         getView().tbBeanList(tbBean);
                         getView().tBDetails();
+                        LogUtil.e("tBDetails" + "3");
                     }
                 }
             }
@@ -163,6 +164,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (getView() != null) {
                         getView().earnings(result);
                         getView().tBDetails();
+                        LogUtil.e("tBDetails" + "2");
                     }
                 }
             }
@@ -277,6 +279,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
+
                 if (result.startsWith("{\"code\":3")) {
                     shouQuan();
                 }
@@ -293,6 +296,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                             LogUtil.e("成功");
                             getView().ledSecurities(tbLedSecuritiesBean);
                             getView().tBDetails();
+                            LogUtil.e("tBDetails" + "1");
                         }
 
                     }
@@ -317,8 +321,8 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
                 //打开指定页面
-                AlibcPage alibcPage = new AlibcPage(tbLedSecuritiesBean.getData().getCoupon_click_url());
-                LogUtil.e("GotoTB" + flag + "        " + tbLedSecuritiesBean.getData().getCoupon_click_url());
+                AlibcPage alibcPage = new AlibcPage(tbLedSecuritiesBean.getCoupon_click_url());
+                LogUtil.e("GotoTB" + flag + "        " + tbLedSecuritiesBean.getCoupon_click_url());
                 //设置页面打开方式
                 AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
 
