@@ -9,13 +9,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name="com.example.secondarydetails.SecondaryDetailsActivity" />
+        <activity
+            android:name="com.example.secondarydetails.SecondaryDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.example.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name="com.example.search.SearchActivity" />
-        <activity android:name="com.example.main.GuideActivity" />
+        <activity
+            android:name="com.example.search.SearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.main.GuideActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.example.main.WelcomeActivity"
             android:screenOrientation="portrait">
@@ -23,18 +30,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="myapp.com"
-                    android:pathPrefix="/openApp"
-                    android:scheme="http" />
             </intent-filter>
         </activity>
 

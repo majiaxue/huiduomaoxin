@@ -16,6 +16,8 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.SPUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -26,6 +28,7 @@ import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -63,39 +66,27 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
         }));
     }
 
-    public void shareLink(int bannerCurrentItem) {
-//        UMWeb umWeb = new UMWeb("https://www.baidu.com/");
-//        umWeb.setTitle("我的分享");
-//        umWeb.setThumb(new UMImage(mContext, R.mipmap.icon_app));
-//        umWeb.setDescription("这是一条分享信息");
-//        new ShareAction((Activity)mContext).withMedia(umWeb)
-//                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
-//                .setCallback(shareListener).open();
+    public void shareLink() {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.activity_invite_friends, null);
+
         new ShareAction((Activity) mContext)
-                .withShareBoardDirection(view, Gravity.TOP)
-                .withText("自定义view")
+                .withText("枫林淘客下载地址：https://www.123456.com/\n邀请码：" + SPUtil.getStringValue(CommonResource.USER_INVITE))
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(shareListener).open();
     }
 
     public void share(int bannerCurrentItem) {
         ShareBoardConfig config = new ShareBoardConfig();
-        config.setTitleText("我要分享")
-                .setTitleTextColor(Color.parseColor("#ff0000"))
-                .setMenuItemTextColor(Color.parseColor("#999999"))
-                .setMenuItemIconPressedColor(Color.parseColor("#000000"))
-                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
-                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE,(int)mContext.getResources().getDimension(R.dimen.dp_20))
-                .setCancelButtonText("我不想分享了");
 
 
-        new ShareAction((Activity) mContext)
-                .withMedia(new UMImage(mContext, R.drawable.no_goods))
-                .withText("hello")
+        UMWeb umWeb = new UMWeb("http://192.168.1.9:4001/rest/share/invite?id=" + (bannerCurrentItem + 1) + "&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
+        umWeb.setTitle("您有一个邀请信息");
+        umWeb.setThumb(new UMImage(mContext, R.mipmap.icon_app));
+        umWeb.setDescription("赶紧加入领取高佣吧！！！");
+        new ShareAction((Activity) mContext).withMedia(umWeb)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
-                .setCallback(shareListener).open(config);
+                .setCallback(shareListener).open();
+
     }
 
     private UMShareListener shareListener = new UMShareListener() {
@@ -111,7 +102,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
+            LogUtil.e("onError:" + share_media.toString() + "-----------" + throwable.getMessage());
         }
 
         @Override

@@ -69,7 +69,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
     public void pay(boolean isWeChat, SubmitOrderBean submitOrderBean) {
         this.submitOrderBean = submitOrderBean;
-        Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").build();
+        Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").build();
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {

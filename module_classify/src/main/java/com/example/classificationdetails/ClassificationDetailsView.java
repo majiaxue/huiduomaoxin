@@ -26,4 +26,6 @@ public interface ClassificationDetailsView extends IView {
     void loadJDWaterfallRv(JdWaterfallAdapter adapter);
 
     void loadFinish();
+
+    void updateTitle(boolean isPositiveSalesVolume, boolean isPositivePrice, boolean isPositiveCredit);
 }

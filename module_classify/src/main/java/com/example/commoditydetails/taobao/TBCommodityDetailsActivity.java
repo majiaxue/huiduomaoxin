@@ -125,8 +125,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        AppManager.getInstance().addGoodsActivity(this);
         LogUtil.e("123456              " + para + "        " + shopType);
+        presenter.login();
         //优惠券
         presenter.ledSecurities(para);
         //用户收益

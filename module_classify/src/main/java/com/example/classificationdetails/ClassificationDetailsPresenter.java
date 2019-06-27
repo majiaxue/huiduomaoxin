@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecAdapter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -30,6 +32,8 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -61,6 +65,23 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     private SecondaryJDRecAdapter jdLstAdapter;
     private JdWaterfallAdapter jdWaterfallAdapter;
 
+    private int goodsType = 1;  //商品来源  1：淘宝  2：拼多多   3：京东
+    private String content;     //搜索内容
+
+    private int sort_type = 1;  //拼多多排序字段
+
+    private boolean isPositiveSalesVolume = false;  //是否销量排行
+    private boolean isSalesVolumeReduce = false;     //是否销量从高到低
+    private boolean saleVolumTemp = false;
+
+    private boolean isPositivePrice = false;        //是否价格排行
+    private boolean isPriceReduce = true;          //是否价格从高到低
+    private boolean priceTemp = false;
+
+    private boolean isPositiveCredit = false;       //是否信用排行
+    private boolean isCreditReduce = false;          //是否信用从高到低
+    private boolean creditTemp = false;
+
 
     public ClassificationDetailsPresenter(Context context) {
         super(context);
@@ -71,6 +92,13 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     }
 
+    public void setContent(String content) {
+        if (content == null || "".equals(content)) {
+            this.content = "衣";
+        } else {
+            this.content = content;
+        }
+    }
 
     public void initTabLayout(final TabLayout classificationTab) {
         for (String title : titleArr) {
@@ -122,48 +150,83 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     }
 
-    public void searchTB(String content, final int page, final int index) {
+    public void searchTB(final int page, String sort) {
+        goodsType = 1;
+
         Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageno", page).addParms("pagesize", "10").build();
+        if (sort != null) {
+            map.put("sort", sort);
+        }
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.SEARCHTBGOODS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝搜索：" + result);
-                TBGoodsRecBean tbGoodsRecBean = JSON.parseObject(result, TBGoodsRecBean.class);
                 if (page == 1) {
                     tbList.clear();
                 }
-                tbList.addAll(tbGoodsRecBean.getData());
-                lstAdapter = new BaseRecAdapter(mContext, tbList, R.layout.item_base_rec, "0");
-                waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
-                if (getView() != null) {
-                    if (isWaterfall) {
-                        getView().loadTBWaterfallRv(waterfallAdapter);
-                        getView().loadFinish();
+                JSONObject jsonObject = JSON.parseObject(result);
+                JSONArray data = jsonObject.getJSONArray("data");
+                for (int i = 0; i < data.size(); i++) {
+                    TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                    JSONObject jsonObject1 = data.getJSONObject(i);
+                    dataBean.setItem_id(jsonObject1.getString("item_id"));
+                    dataBean.setPict_url(jsonObject1.getString("pict_url"));
+                    dataBean.setTitle(jsonObject1.getString("title"));
+                    dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
+                    dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
+                    dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
+                    dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                    tbList.add(dataBean);
+                }
+
+//                TBGoodsRecBean tbGoodsRecBean = JSON.parseObject(result, TBGoodsRecBean.class);
+//                tbList.addAll(tbGoodsRecBean.getData());
+                if (isWaterfall) {
+                    if (waterfallAdapter == null) {
+                        waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
+                        if (getView() != null) {
+                            getView().loadTBWaterfallRv(waterfallAdapter);
+                            getView().loadFinish();
+                        }
                     } else {
-                        getView().loadTBLstRv(lstAdapter);
-                        getView().loadFinish();
+                        waterfallAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    if (lstAdapter == null) {
+                        lstAdapter = new BaseRecAdapter(mContext, tbList, R.layout.item_base_rec, "0");
+                        if (getView() != null) {
+                            getView().loadTBLstRv(lstAdapter);
+                            getView().loadFinish();
+                        }
+                    } else {
+                        lstAdapter.notifyDataSetChanged();
                     }
                 }
-                lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", tbList.get(position).getItem_id())
-                                .withString("shoptype", index + "")
-                                .navigation();
-                    }
-                });
 
-                waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", tbList.get(position).getItem_id())
-                                .withString("shoptype", index + "")
-                                .navigation();
-                    }
-                });
+                if (lstAdapter != null) {
+                    lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", tbList.get(position).getItem_id())
+                                    .withString("shoptype", "1")
+                                    .navigation();
+                        }
+                    });
+                }
+
+                if (waterfallAdapter != null) {
+                    waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", tbList.get(position).getItem_id())
+                                    .withString("shoptype", "1")
+                                    .navigation();
+                        }
+                    });
+                }
             }
 
             @Override
@@ -173,53 +236,76 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         }));
     }
 
-    public void searchJD(String searchContent, int page) {
-        Map map = MapUtil.getInstance().addParms("keyword", searchContent).addParms("pageIndex", page).addParms("pageSize", "10").addParms("isCoupon", "1").build();
+    public void searchJD(final int page, String sort, String sortName) {
+        goodsType = 3;
+        Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageIndex", page).addParms("pageSize", "10").addParms("isCoupon", "1").build();
+        if (sort != null) {
+            map.put("sort", sort);
+            map.put("sortName", sortName);
+        }
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.SEARCHJDGOODS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
                 try {
                     String string = responseBody.string();
+                    LogUtil.e("京东搜索:" + string);
                     final JDGoodsRecBean jdSearchBean = JSON.parseObject(string, JDGoodsRecBean.class);
-                    jdList = jdSearchBean.getData().getLists();
-                    jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
-                    jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
+                    if (page == 1) {
+                        jdList.clear();
+                    }
+                    jdList.addAll(jdSearchBean.getData().getLists());
                     if (isWaterfall) {
-                        if (getView() != null) {
-                            getView().loadJDWaterfallRv(jdWaterfallAdapter);
-                            getView().loadFinish();
+                        if (jdWaterfallAdapter == null) {
+                            jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
+                            if (getView() != null) {
+                                getView().loadJDWaterfallRv(jdWaterfallAdapter);
+                                getView().loadFinish();
+                            }
+                        } else {
+                            jdWaterfallAdapter.notifyDataSetChanged();
                         }
                     } else {
-                        if (getView() != null) {
-                            getView().loadJDLstRv(jdLstAdapter);
-                            getView().loadFinish();
+                        if (jdLstAdapter == null) {
+                            jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
+                            if (getView() != null) {
+                                getView().loadJDLstRv(jdLstAdapter);
+                                getView().loadFinish();
+                            }
+                        } else {
+                            jdLstAdapter.notifyDataSetChanged();
                         }
                     }
 
-                    jdLstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance()
-                                    .build("/module_classify/JDCommodityDetailsActivity")
-                                    .withString("skuid", jdList.get(position).getSkuId())
-                                    .withSerializable("jDGoodsRecBean", jdSearchBean)
-                                    .withInt("position", position)
-                                    .navigation();
-                        }
-                    });
+                    if (jdLstAdapter != null) {
+                        jdLstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance()
+                                        .build("/module_classify/JDCommodityDetailsActivity")
+                                        .withString("skuid", jdList.get(position).getSkuId())
+                                        .withSerializable("jDGoodsRecBean", jdSearchBean)
+                                        .withInt("position", position)
+                                        .navigation();
+                            }
+                        });
+                    }
 
-                    jdWaterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance()
-                                    .build("/module_classify/JDCommodityDetailsActivity")
-                                    .withString("skuid", jdList.get(position).getSkuId())
-                                    .withSerializable("jDGoodsRecBean", jdSearchBean)
-                                    .withInt("position", position)
-                                    .navigation();
-                        }
-                    });
+
+                    if (jdWaterfallAdapter != null) {
+                        jdWaterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance()
+                                        .build("/module_classify/JDCommodityDetailsActivity")
+                                        .withString("skuid", jdList.get(position).getSkuId())
+                                        .withSerializable("jDGoodsRecBean", jdSearchBean)
+                                        .withInt("position", position)
+                                        .navigation();
+                            }
+                        });
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -237,11 +323,13 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         });
     }
 
-    public void searchPDD(String searchContent, final int page) {
+    public void searchPDD(final int page) {
+        goodsType = 2;
         PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
         pddGoodsSearchVo.setPage(page);
-        pddGoodsSearchVo.setKeyword(searchContent);
+        pddGoodsSearchVo.setKeyword(content);
         pddGoodsSearchVo.setPageSize(10);
+        pddGoodsSearchVo.setSortType(sort_type);
 
         String pddGoodsSearchVoStr = JSON.toJSONString(pddGoodsSearchVo);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), pddGoodsSearchVoStr);
@@ -256,36 +344,51 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                     pddList.clear();
                 }
                 pddList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
-                pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec, "1");
-                pddWaterAdapter = new PddWaterAdapter(mContext, pddList, R.layout.item_classification_rec_grid);
-                if (getView() != null) {
-                    if (isWaterfall) {
-                        getView().loadPDDWaterfallRv(pddWaterAdapter);
-                        getView().loadFinish();
+                if (isWaterfall) {
+                    if (pddWaterAdapter == null) {
+                        pddWaterAdapter = new PddWaterAdapter(mContext, pddList, R.layout.item_classification_rec_grid);
+                        if (getView() != null) {
+                            getView().loadPDDWaterfallRv(pddWaterAdapter);
+                            getView().loadFinish();
+                        }
                     } else {
-                        getView().loadPDDLstRv(pddLstAdapter);
-                        getView().loadFinish();
+                        pddWaterAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    if (pddLstAdapter == null) {
+                        pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec, "1");
+                        if (getView() != null) {
+                            getView().loadPDDLstRv(pddLstAdapter);
+                            getView().loadFinish();
+                        }
+                    } else {
+                        pddLstAdapter.notifyDataSetChanged();
                     }
                 }
-                pddLstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                                .withString("goods_id", pddList.get(position).getGoods_id() + "")
-                                .withString("type", "1")
-                                .navigation();
-                    }
-                });
 
-                pddWaterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                                .withString("goods_id", pddList.get(position).getGoods_id() + "")
-                                .withString("type", "1")
-                                .navigation();
-                    }
-                });
+                if (pddLstAdapter != null) {
+                    pddLstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                    .withString("goods_id", pddList.get(position).getGoods_id() + "")
+                                    .withString("type", "1")
+                                    .navigation();
+                        }
+                    });
+                }
+
+                if (pddWaterAdapter != null) {
+                    pddWaterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                    .withString("goods_id", pddList.get(position).getGoods_id() + "")
+                                    .withString("type", "1")
+                                    .navigation();
+                        }
+                    });
+                }
             }
 
             @Override
@@ -326,5 +429,94 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 break;
         }
 
+    }
+
+    public void changeType(int index) {
+        isPositiveSalesVolume = index == 1 ? !isPositiveSalesVolume : false;
+        isSalesVolumeReduce = index == 1 ? !isSalesVolumeReduce : false;
+        saleVolumTemp = index == 1 ? true : false;
+
+        isPositivePrice = index == 2 ? !isPositivePrice : false;
+        isPriceReduce = index == 2 ? !isPriceReduce : true;
+        priceTemp = index == 2 ? true : false;
+
+        isPositiveCredit = index == 3 ? !isPositiveCredit : false;
+        isCreditReduce = index == 3 ? !isCreditReduce : false;
+        creditTemp = index == 3 ? true : false;
+        refreshData(1);
+        getView().updateTitle(isPositiveSalesVolume, isPositivePrice, isPositiveCredit);
+    }
+
+    private void refreshData(int page) {
+        if (saleVolumTemp) {
+            if (isSalesVolumeReduce) {
+                if (goodsType == 1) {
+                    searchTB(page, "total_sales_des");
+                } else if (goodsType == 2) {
+                    sort_type = 6;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, "desc", "inOrderCount30Days");
+                }
+            } else {
+                if (goodsType == 1) {
+                    searchTB(page, "total_sales_asc");
+                } else if (goodsType == 2) {
+                    sort_type = 5;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, "asc", "inOrderCount30Days");
+                }
+            }
+        } else if (priceTemp) {
+            if (isPriceReduce) {
+                if (goodsType == 1) {
+                    searchTB(page, "price_des");
+                } else if (goodsType == 2) {
+                    sort_type = 4;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, "desc", "price");
+                }
+            } else {
+                if (goodsType == 1) {
+                    searchTB(page, "price_asc");
+                } else if (goodsType == 2) {
+                    sort_type = 3;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, "asc", "price");
+                }
+            }
+        } else if (creditTemp) {
+            if (isCreditReduce) {
+                if (goodsType == 1) {
+                    searchTB(page, null);
+                } else if (goodsType == 2) {
+                    sort_type = 0;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, null, null);
+                }
+            } else {
+                if (goodsType == 1) {
+                    searchTB(page, null);
+                } else if (goodsType == 2) {
+                    sort_type = 0;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, null, null);
+                }
+            }
+        } else {
+            if (goodsType == 1) {
+                searchTB(page, null);
+            } else if (goodsType == 2) {
+                sort_type = 0;
+                searchPDD(page);
+            } else if (goodsType == 3) {
+                searchJD(page, null, null);
+            }
+        }
     }
 }

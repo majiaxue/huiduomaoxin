@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.example.module_home.R;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
+import com.example.utils.StatusBarUtils;
 
 /**
  * 启动页
@@ -42,6 +43,13 @@ public class WelcomeActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
         isFirstIn = preferences.getBoolean("isFirstIn", false);
         init();
+        changeStatus();
+    }
+
+    private void changeStatus() {
+        // 设置状态栏
+        StatusBarUtils.transparencyBar(this);
+        StatusBarUtils.setStatusTheme(this, true, true);
     }
 
     private void init() {

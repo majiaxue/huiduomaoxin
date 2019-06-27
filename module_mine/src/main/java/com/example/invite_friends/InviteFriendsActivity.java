@@ -64,7 +64,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
         inviteFriendsLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.shareLink(inviteFriendsBanner.getBannerCurrentItem());
+                presenter.shareLink();
             }
         });
 

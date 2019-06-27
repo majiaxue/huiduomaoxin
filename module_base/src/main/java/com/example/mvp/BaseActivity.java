@@ -37,10 +37,9 @@ public abstract class BaseActivity<V extends IView, P extends BasePresenter> ext
 
     private void changeStatus() {
         // 设置状态栏
+        StatusBarUtils.transparencyBar(this);
         StatusBarUtils.setStatusTheme(this, true, true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(StatusBarUtils.STATUS_COLOR);
-        }
+
     }
 
     public abstract int getLayoutId();

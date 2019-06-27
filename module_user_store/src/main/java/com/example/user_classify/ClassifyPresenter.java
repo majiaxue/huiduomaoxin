@@ -99,10 +99,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
             public void onSuccess(String result, String msg) {
                 BannerBean records = JSON.parseObject(result, BannerBean.class);
                 bannerBeanList = records.getRecords();
-//                String data = result;
-//                BaseEntityList<BannerBean> baseEntity = new Gson().fromJson(data, new TypeToken<BaseEntityList<BannerBean>>() {
-//                }.getType());
-//                bannerBeanList = baseEntity.getData();
+
                 if (getView() != null) {
                     getView().loadBanner(bannerBeanList);
                 }
@@ -116,12 +113,16 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
     }
 
     public void formHomeNavbar(int position) {
+        int temp = 0;
         for (int i = 0; i < leftList.size(); i++) {
-            leftList.get(i).setSelect(i == position ? true : false);
+            leftList.get(i).setSelect(leftList.get(i).getId() == position ? true : false);
+            if (leftList.get(i).getId() == position) {
+                temp = i;
+            }
         }
         rightList.clear();
-        if (leftList.get(position).getChildren() != null && leftList.get(position).getChildren().size() > 0) {
-            rightList.addAll(leftList.get(position).getChildren());
+        if (leftList.get(temp).getChildren() != null && leftList.get(temp).getChildren().size() > 0) {
+            rightList.addAll(leftList.get(temp).getChildren());
             rightAdapter.notifyDataSetChanged();
         }
         leftRvAdapter.notifyDataSetChanged();

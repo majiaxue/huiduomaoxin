@@ -1,6 +1,7 @@
 package com.example.mine;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -210,7 +211,8 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineRela.getLocationOnScreen(loction);
         int y = loction[1];
         if (y <= getContext().getResources().getDimension(R.dimen.dp_35)) {
-            StatusBarUtils.setStatusTheme(getActivity(), false, true);
+//            StatusBarUtils.setStatusTheme(getActivity(), false, true);
+            StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
         } else {
             StatusBarUtils.setStatusTheme(getActivity(), true, true);
         }

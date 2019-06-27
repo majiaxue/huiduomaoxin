@@ -97,7 +97,7 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
         if (CommonResource.USER_BACK.equals(eventBusBean2.getMsg())) {
             finish();
         } else if (CommonResource.JUMP_CLASSIFY.equals(eventBusBean2.getMsg())) {
-            ClassifyFragment.position = eventBusBean2.getPosition() + 1;
+            ClassifyFragment.position = eventBusBean2.getPosition();
             userClassify.setChecked(true);
             presenter.click(R.id.user_classify);
         }

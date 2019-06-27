@@ -48,6 +48,7 @@ import com.example.user_store.UserActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.flowLayout.FlowLayout;
@@ -90,6 +91,10 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private List<ChooseInsideBean> sp2List = new ArrayList<>();
     private List<ChooseInsideBean> sp3List = new ArrayList<>();
 
+    private List<Integer> canotClick1 = new ArrayList<>();
+    private List<Integer> canotClick2 = new ArrayList<>();
+    private List<Integer> canotClick3 = new ArrayList<>();
+
     //为你推荐
     List<HotSaleBean.DataBean> commendList = new ArrayList<>();
 
@@ -98,6 +103,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private PopFlowLayoutAdapter sp1Adapter;
     private SecondFlowAdapter sp2Adapter;
     private SecondFlowAdapter sp3Adapter;
+
+    private int attrSize = 1;
 
 
     public GoodsDetailPresenter(Context context) {
@@ -128,24 +135,53 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         imgList.add(dataList.get(i).getPic());
                         imgTemp = dataList.get(i).getSp1();
                         if (dataList.get(i).getStock() > 0) {
-                            sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
+                            sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock(), true));
                         } else {
-                            sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), false));
+                            sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock(), false));
                         }
                     }
                 }
 
-                if (dataList.size() > 0 && userGoodsDetail.getXsProductAttributes().size() > 1) {
-                    String[] split = userGoodsDetail.getXsProductAttributes().get(1).getInputList().split(",");
-                    for (int i = 0; i < split.length; i++) {
-                        sp2List.add(new ChooseInsideBean(split[i]));
+                if (dataList != null && dataList.size() > 0) {
+                    if (dataList.get(0).getSp2() == null) {
+                        attrSize = 1;
+                    } else if (dataList.get(0).getSp3() == null) {
+                        attrSize = 2;
+                    } else {
+                        attrSize = 3;
                     }
                 }
-                if (dataList.size() > 0 && userGoodsDetail.getXsProductAttributes().size() > 2) {
-                    String[] split = userGoodsDetail.getXsProductAttributes().get(2).getInputList().split(",");
-                    for (int i = 0; i < split.length; i++) {
-                        sp3List.add(new ChooseInsideBean(split[i]));
+
+                if (dataList.size() > 0 && attrSize > 1) {
+                    for (int i = 0; i < dataList.size(); i++) {
+                        boolean isHas = false;
+                        if (dataList.get(i).getSp1().equals(sp1List.get(0).getContent())) {
+                            for (int j = 0; j < sp2List.size(); j++) {
+                                if (sp2List.get(j).getContent().equals(dataList.get(i).getSp2())) {
+                                    isHas = true;
+                                }
+                            }
+                            if (!isHas) {
+                                sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
+                            }
+                        }
                     }
+//                    String[] split = userGoodsDetail.getXsProductAttributes().get(1).getInputList().split(",");
+//                    for (int i = 0; i < split.length; i++) {
+//                        sp2List.add(new ChooseInsideBean(split[i]));
+//                    }
+                }
+                if (dataList.size() > 0 && attrSize > 2) {
+                    for (int i = 0; i < dataList.size(); i++) {
+                        if (dataList.get(i).getSp1().equals(sp1List.get(0).getContent()) && dataList.get(i).getSp2().equals(sp2List.get(0).getContent())) {
+                            sp3List.add(new ChooseInsideBean(dataList.get(i).getSp3(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
+                        }
+                    }
+
+//                    String[] split = userGoodsDetail.getXsProductAttributes().get(2).getInputList().split(",");
+//                    for (int i = 0; i < split.length; i++) {
+//                        sp3List.add(new ChooseInsideBean(split[i]));
+//                    }
                 }
                 GoodsImageAdapter goodsImageAdapter = new GoodsImageAdapter(mContext, imgList, R.layout.rv_goods_choose_image);
                 goodsImageAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
@@ -271,7 +307,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
             }
         } else {
-            LogUtil.e("无数据");
+
         }
     }
 
@@ -312,14 +348,13 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 TextView title3 = view.findViewById(R.id.pop_choose_goods_title3);
 //            RecyclerView rv = view.findViewById(R.id.pop_choose_goods_rv);
 
-                if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                if (attrSize == 1) {
                     title2.setVisibility(View.GONE);
                     title3.setVisibility(View.GONE);
                     flow2.setVisibility(View.GONE);
                     flow3.setVisibility(View.GONE);
-                    oneCanClick();
                     title1.setText(userGoodsDetail.getXsProductAttributes().get(0).getName());
-                } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                } else if (attrSize == 2) {
                     title3.setVisibility(View.GONE);
                     flow3.setVisibility(View.GONE);
                     title2.setText(userGoodsDetail.getXsProductAttributes().get(1).getName());
@@ -331,58 +366,89 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 }
 
                 sp1Adapter = new PopFlowLayoutAdapter(sp1List, mContext);
+
+                for (int i = 0; i < sp1List.size(); i++) {
+                    if (sp1List.get(i).getStock() <= 0) {
+                        canotClick1.add(i);
+                    }
+                }
+
                 flow1.setAdapter(sp1Adapter);
+                if (canotClick1.size() > 0) {
+                    flow1.setNoCheckList(canotClick1);
+                }
                 flow1.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                     @Override
                     public boolean onTagClick(View view, int position, FlowLayout parent) {
-                        sp1Position = position;
-                        if (userGoodsDetail.getXsProductAttributes().size() == 1) {
-                            price.setText("￥" + sp1List.get(sp1Position).getPrice());
-                            isChoose = true;
-                            type.setText("已选择：" + sp1List.get(sp1Position).getContent());
-                        } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
-                            if (sp2Position == -1) {
-                                initSizeList(1);
-                                type.setText("已选择：" + sp1List.get(sp1Position).getContent());
-                            } else {
-                                isChoose = true;
-                                initSizeList(1);
-                                price.setText("￥" + stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
-                                type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
+                        boolean isCan = true;
+                        for (int i = 0; i < canotClick1.size(); i++) {
+                            if (canotClick1.get(i) == position) {
+                                LogUtil.e("-------------->" + canotClick1.get(i));
+                                isCan = false;
                             }
-                        } else {
-                            try {
+                        }
+                        if (isCan) {
 
-                                initThirdList(1);
-                                StringBuffer sb = new StringBuffer();
-                                sb.append("已选择：" + sp1List.get(sp1Position).getContent());
-                                if (sp2Position != -1) {
-                                    sb.append("、" + sp2List.get(sp2Position).getContent());
-                                }
-                                if (sp3Position != -1) {
-                                    sb.append("、" + sp3List.get(sp3Position).getContent());
-                                }
-                                if (sp2Position != -1 && sp3Position != -1) {
+                            sp1Position = position;
+                            Glide.with(mContext).load(sp1List.get(sp1Position).getPicUrl()).into(img);
+                            if (attrSize == 1) {
+                                price.setText("￥" + sp1List.get(sp1Position).getPrice());
+                                isChoose = true;
+                                type.setText("已选择：" + sp1List.get(sp1Position).getContent());
+                            } else if (attrSize == 2) {
+                                if (sp2Position == -1) {
+                                    initSizeList(1);
+                                    type.setText("已选择：" + sp1List.get(sp1Position).getContent());
+                                } else {
                                     isChoose = true;
-                                    price.setText("￥" + stock23(sp3List.get(sp3Position).getContent(), sp2List.get(sp2Position).getContent(), sp1Position).getPrice());
+                                    initSizeList(1);
+                                    price.setText("￥" + stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                                    type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
                                 }
-                                type.setText(sb.toString());
-                            } catch (Exception e) {
-                                Toast.makeText(mContext, "商品属性异常", Toast.LENGTH_SHORT).show();
+                            } else {
+                                try {
+
+                                    initThirdList(1);
+                                    StringBuffer sb = new StringBuffer();
+                                    sb.append("已选择：" + sp1List.get(sp1Position).getContent());
+                                    if (sp2Position != -1) {
+                                        sb.append("、" + sp2List.get(sp2Position).getContent());
+                                    }
+                                    if (sp3Position != -1) {
+                                        sb.append("、" + sp3List.get(sp3Position).getContent());
+                                    }
+                                    if (sp2Position != -1 && sp3Position != -1) {
+                                        isChoose = true;
+                                        price.setText("￥" + stock23(sp3List.get(sp3Position).getContent(), sp2List.get(sp2Position).getContent(), sp1Position).getPrice());
+                                    }
+                                    type.setText(sb.toString());
+                                } catch (Exception e) {
+                                    Toast.makeText(mContext, "商品属性异常", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                         return false;
                     }
                 });
 
-                if (userGoodsDetail.getXsProductAttributes().size() > 1) {
+                if (attrSize > 1) {
                     sp2Adapter = new SecondFlowAdapter(sp2List, mContext);
                     flow2.setAdapter(sp2Adapter);
                     flow2.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                         @Override
                         public boolean onTagClick(View view, int position, FlowLayout parent) {
+                            boolean isCan = true;
+                            for (int i = 0; i < canotClick2.size(); i++) {
+                                if (position == canotClick2.get(i)) {
+                                    isCan = false;
+                                }
+                            }
+                            if (!isCan) {
+                                return false;
+                            }
+
                             sp2Position = position;
-                            if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                            if (attrSize == 2) {
                                 if (sp1Position == -1) {
                                     initSizeList(2);
                                     type.setText("已选择：" + sp2List.get(sp2Position).getContent());
@@ -392,7 +458,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                                     price.setText("￥" + stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
                                     type.setText("已选择：" + sp1List.get(sp1Position).getContent() + "、" + sp2List.get(sp2Position).getContent());
                                 }
-                            } else if (userGoodsDetail.getXsProductAttributes().size() == 3) {
+                            } else if (attrSize == 3) {
                                 try {
 
                                     initThirdList(2);
@@ -419,12 +485,22 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                     });
                 }
-                if (userGoodsDetail.getXsProductAttributes().size() > 2) {
+                if (attrSize > 2) {
                     sp3Adapter = new SecondFlowAdapter(sp3List, mContext);
                     flow3.setAdapter(sp3Adapter);
                     flow3.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                         @Override
                         public boolean onTagClick(View view, int position, FlowLayout parent) {
+                            boolean isCan = true;
+                            for (int i = 0; i < canotClick3.size(); i++) {
+                                if (position == canotClick3.get(i)) {
+                                    isCan = false;
+                                }
+                            }
+
+                            if (!isCan) {
+                                return false;
+                            }
                             sp3Position = position;
                             initThirdList(3);
                             if (sp1Position != -1 && sp2Position == -1) {
@@ -457,18 +533,18 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
                 final StringBuffer sb = new StringBuffer();
                 sb.append("请选择");
-                for (int i = 0; i < userGoodsDetail.getXsProductAttributes().size(); i++) {
+                for (int i = 0; i < attrSize; i++) {
                     sb.append(userGoodsDetail.getXsProductAttributes().get(i).getName() + "  ");
                 }
                 type.setText(sb);
                 count.setText("" + quantity);
 
                 if (isChoose) {
-                    if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                    if (attrSize == 1) {
                         sp1Adapter.setSelectedList(sp1Position);
                         type.setText("已选择：" + sp1List.get(sp1Position).getContent());
                         price.setText("￥" + sp1List.get(sp1Position).getPrice());
-                    } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                    } else if (attrSize == 2) {
                         sp1Adapter.setSelectedList(sp1Position);
                         sp2Adapter.setSelectedList(sp2Position);
                         price.setText("￥" + sp2List.get(sp2Position).getPrice());
@@ -485,18 +561,25 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     Glide.with(mContext).load(userGoodsDetail.getPic()).into(img);
                 }
 
+                img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PopUtils.seeBigImg(mContext, Uri.parse(sp1Position == -1 ? userGoodsDetail.getPic() : sp1List.get(sp1Position).getPicUrl()));
+                    }
+                });
+
                 PopUtil.setTransparency(mContext, 0.3f);
                 popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
                         PopUtil.setTransparency(mContext, 1f);
-                        if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (attrSize == 1) {
                             if (sp1Position == -1) {
                                 getView().weixuanze(sb.toString().replace("请选择", ""));
                             } else {
                                 getView().yixuanze(type.getText().toString());
                             }
-                        } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        } else if (attrSize == 2) {
                             if (sp1Position == -1 || sp2Position == -1) {
                                 getView().weixuanze(sb.toString().replace("请选择", ""));
                             } else {
@@ -523,7 +606,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (attrSize == 1) {
                             if (sp1Position == -1) {
                                 Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
                             } else {
@@ -533,7 +616,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                                     quantity++;
                                 }
                             }
-                        } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        } else if (attrSize == 2) {
                             if (sp1Position == -1 || sp2Position == -1) {
                                 Toast.makeText(mContext, "请先选择商品", Toast.LENGTH_SHORT).show();
                             } else {
@@ -572,14 +655,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 shopCart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (attrSize == 1) {
                             if (sp1Position == -1) {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
                                 popupWindow.dismiss();
                                 chooseOrAddCart();
                             }
-                        } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        } else if (attrSize == 2) {
                             if (sp1Position == -1 || sp2Position == -1) {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
@@ -600,14 +683,14 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 buy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+                        if (attrSize == 1) {
                             if (sp1Position == -1) {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
                                 popupWindow.dismiss();
                                 chooseOrJump();
                             }
-                        } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+                        } else if (attrSize == 2) {
                             if (sp1Position == -1 || sp2Position == -1) {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
@@ -693,7 +776,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
             if (clickPos == 1) {
                 sp2List.clear();
-                List<Integer> list = new ArrayList<>();
+                canotClick2.clear();
                 int temp = 0;
                 for (int i = 0; i < dataList.size(); i++) {
                     if (sp1List.get(sp1Position).getContent().equals(dataList.get(i).getSp1())) {
@@ -707,7 +790,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                             if (dataList.get(i).getStock() > 0) {
                                 sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPrice(), true));
                             } else {
-                                list.add(temp);
+                                canotClick2.add(temp);
                                 sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPrice(), false));
                             }
                             temp++;
@@ -715,28 +798,28 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                     }
                 }
 
-                flow2.setNoCheckList(list);
+                flow2.setNoCheckList(canotClick2);
                 sp2Adapter.notifyDataChanged();
                 if (sp2Position != -1) {
                     sp2Adapter.setSelectedList(sp2Position);
                 }
             } else if (clickPos == 2) {
                 sp1List.clear();
-                List<Integer> list = new ArrayList<>();
+                canotClick1.clear();
                 int temp = 0;
                 for (int i = 0; i < dataList.size(); i++) {
                     if (dataList.get(i).getSp2().equals(sp2List.get(sp2Position).getContent())) {
                         if (dataList.get(i).getStock() > 0) {
                             sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), true));
                         } else {
-                            list.add(temp);
+                            canotClick1.add(temp);
                             sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), false));
                         }
                         temp++;
                     }
                 }
 
-                flow1.setNoCheckList(list);
+                flow1.setNoCheckList(canotClick1);
                 sp1Adapter.notifyDataChanged();
                 if (sp1Position != -1) {
                     sp1Adapter.setSelectedList(sp1Position);
@@ -753,12 +836,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             if (clickPos == 1) {
                 int temp2 = 0;
                 int temp3 = 0;
-                List<Integer> list2 = new ArrayList<>();
-                List<Integer> list3 = new ArrayList<>();
+                canotClick2.clear();
+                canotClick3.clear();
                 if (sp2Position == -1 && sp3Position == -1) {
                     sp2List.clear();
                     sp3List.clear();
-                    LogUtil.e("-------------->" + dataList);
                     for (int i = 0; i < dataList.size(); i++) {
 
                         if (dataList.get(i).getSp1().equals(sp1List.get(sp1Position).getContent())) {
@@ -806,7 +888,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         if (!hasStock) {
                             sp2List.get(j).setCanClick(hasStock);
-                            list2.add(j);
+                            canotClick2.add(j);
                         }
                     }
 
@@ -822,11 +904,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         if (!hasStock) {
                             sp3List.get(j).setCanClick(hasStock);
-                            list3.add(j);
+                            canotClick3.add(j);
                         }
                     }
-                    flow2.setNoCheckList(list2);
-                    flow3.setNoCheckList(list3);
+                    flow2.setNoCheckList(canotClick2);
+                    flow3.setNoCheckList(canotClick3);
                     sp2Adapter.notifyDataChanged();
                     sp3Adapter.notifyDataChanged();
                 } else if (sp2Position != -1 && sp3Position == -1) {
@@ -835,7 +917,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         if (dataList.get(i).getSp1().equals(sp1List.get(sp1Position).getContent()) && dataList.get(i).getSp2().equals(sp2List.get(sp2Position).getContent())) {
                             sp3List.add(new ChooseInsideBean(dataList.get(i).getSp3(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock() > 0));
                             if (dataList.get(i).getStock() <= 0) {
-                                list3.add(temp3);
+                                canotClick3.add(temp3);
                                 temp3++;
                             }
                         }
@@ -852,11 +934,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp2List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list2.add(i);
+                            canotClick2.add(i);
                         }
                     }
-                    flow2.setNoCheckList(list2);
-                    flow3.setNoCheckList(list3);
+                    flow2.setNoCheckList(canotClick2);
+                    flow3.setNoCheckList(canotClick3);
                     sp3Adapter.notifyDataChanged();
                     sp2Adapter.notifyDataChanged();
                     sp2Adapter.setSelectedList(sp2Position);
@@ -866,7 +948,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         if (dataList.get(i).getSp1().equals(sp1List.get(sp1Position).getContent()) && dataList.get(i).getSp3().equals(sp3List.get(sp3Position).getContent())) {
                             sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock() > 0));
                             if (dataList.get(i).getStock() <= 0) {
-                                list2.add(temp2);
+                                canotClick2.add(temp2);
                                 temp2++;
                             }
                         }
@@ -883,11 +965,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp3List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list3.add(i);
+                            canotClick3.add(i);
                         }
                     }
-                    flow2.setNoCheckList(list2);
-                    flow3.setNoCheckList(list3);
+                    flow2.setNoCheckList(canotClick2);
+                    flow3.setNoCheckList(canotClick3);
                     sp2Adapter.notifyDataChanged();
                     sp3Adapter.notifyDataChanged();
                     sp3Adapter.setSelectedList(sp3Position);
@@ -903,7 +985,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp2List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list2.add(i);
+                            canotClick2.add(i);
                         }
                     }
 
@@ -918,12 +1000,12 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp3List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list3.add(i);
+                            canotClick3.add(i);
                         }
                     }
 
-                    flow2.setNoCheckList(list2);
-                    flow3.setNoCheckList(list3);
+                    flow2.setNoCheckList(canotClick2);
+                    flow3.setNoCheckList(canotClick3);
                     sp2Adapter.notifyDataChanged();
                     sp3Adapter.notifyDataChanged();
                     sp2Adapter.setSelectedList(sp2Position);
@@ -934,8 +1016,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             } else if (clickPos == 2) {
                 int temp1 = 0;
                 int temp3 = 0;
-                List<Integer> list1 = new ArrayList<>();
-                List<Integer> list3 = new ArrayList<>();
+                canotClick1.clear();
+                canotClick3.clear();
                 if (sp1Position == -1 && sp3Position == -1) {
                     sp1List.clear();
                     sp3List.clear();
@@ -986,7 +1068,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         if (!hasStock) {
                             sp1List.get(j).setCanClick(hasStock);
-                            list1.add(j);
+                            canotClick1.add(j);
                         }
                     }
 
@@ -1002,11 +1084,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         if (!hasStock) {
                             sp3List.get(j).setCanClick(hasStock);
-                            list3.add(j);
+                            canotClick3.add(j);
                         }
                     }
-                    flow1.setNoCheckList(list1);
-                    flow3.setNoCheckList(list3);
+                    flow1.setNoCheckList(canotClick1);
+                    flow3.setNoCheckList(canotClick3);
                     sp1Adapter.notifyDataChanged();
                     sp3Adapter.notifyDataChanged();
                 } else if (sp1Position != -1 && sp3Position == -1) {
@@ -1015,7 +1097,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         if (dataList.get(i).getSp2().equals(sp2List.get(sp2Position).getContent()) && dataList.get(i).getSp1().equals(sp1List.get(sp1Position).getContent())) {
                             sp3List.add(new ChooseInsideBean(dataList.get(i).getSp3(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock() > 0));
                             if (dataList.get(i).getStock() <= 0) {
-                                list3.add(temp3);
+                                canotClick3.add(temp3);
                                 temp3++;
                             }
                         }
@@ -1032,11 +1114,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp1List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list1.add(i);
+                            canotClick1.add(i);
                         }
                     }
-                    flow1.setNoCheckList(list1);
-                    flow3.setNoCheckList(list3);
+                    flow1.setNoCheckList(canotClick1);
+                    flow3.setNoCheckList(canotClick3);
                     sp3Adapter.notifyDataChanged();
                     sp1Adapter.notifyDataChanged();
                     sp1Adapter.setSelectedList(sp1Position);
@@ -1046,7 +1128,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         if (dataList.get(i).getSp2().equals(sp2List.get(sp2Position).getContent()) && dataList.get(i).getSp3().equals(sp3List.get(sp3Position).getContent())) {
                             sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock() > 0));
                             if (dataList.get(i).getStock() <= 0) {
-                                list1.add(temp1);
+                                canotClick1.add(temp1);
                                 temp1++;
                             }
                         }
@@ -1063,11 +1145,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp3List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list3.add(i);
+                            canotClick3.add(i);
                         }
                     }
-                    flow1.setNoCheckList(list1);
-                    flow3.setNoCheckList(list3);
+                    flow1.setNoCheckList(canotClick1);
+                    flow3.setNoCheckList(canotClick3);
                     sp1Adapter.notifyDataChanged();
                     sp3Adapter.notifyDataChanged();
                     sp3Adapter.setSelectedList(sp3Position);
@@ -1083,7 +1165,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp1List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list1.add(i);
+                            canotClick1.add(i);
                         }
                     }
 
@@ -1098,12 +1180,12 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp3List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list3.add(i);
+                            canotClick3.add(i);
                         }
                     }
 
-                    flow1.setNoCheckList(list1);
-                    flow3.setNoCheckList(list3);
+                    flow1.setNoCheckList(canotClick1);
+                    flow3.setNoCheckList(canotClick3);
                     sp1Adapter.notifyDataChanged();
                     sp3Adapter.notifyDataChanged();
                     sp1Adapter.setSelectedList(sp1Position);
@@ -1112,8 +1194,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
             } else if (clickPos == 3) {
                 int temp2 = 0;
                 int temp1 = 0;
-                List<Integer> list2 = new ArrayList<>();
-                List<Integer> list1 = new ArrayList<>();
+                canotClick1.clear();
+                canotClick2.clear();
                 if (sp2Position == -1 && sp1Position == -1) {
                     sp2List.clear();
                     sp1List.clear();
@@ -1164,7 +1246,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         if (!hasStock) {
                             sp2List.get(j).setCanClick(hasStock);
-                            list2.add(j);
+                            canotClick2.add(j);
                         }
                     }
 
@@ -1180,11 +1262,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         if (!hasStock) {
                             sp1List.get(j).setCanClick(hasStock);
-                            list1.add(j);
+                            canotClick1.add(j);
                         }
                     }
-                    flow2.setNoCheckList(list2);
-                    flow1.setNoCheckList(list1);
+                    flow2.setNoCheckList(canotClick2);
+                    flow1.setNoCheckList(canotClick1);
                     sp2Adapter.notifyDataChanged();
                     sp1Adapter.notifyDataChanged();
                 } else if (sp2Position != -1 && sp1Position == -1) {
@@ -1193,7 +1275,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         if (dataList.get(i).getSp3().equals(sp3List.get(sp3Position).getContent()) && dataList.get(i).getSp2().equals(sp2List.get(sp2Position).getContent())) {
                             sp1List.add(new ChooseInsideBean(dataList.get(i).getSp1(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock() > 0));
                             if (dataList.get(i).getStock() <= 0) {
-                                list1.add(temp1);
+                                canotClick1.add(temp1);
                                 temp1++;
                             }
                         }
@@ -1210,11 +1292,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp2List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list2.add(i);
+                            canotClick2.add(i);
                         }
                     }
-                    flow2.setNoCheckList(list2);
-                    flow1.setNoCheckList(list1);
+                    flow2.setNoCheckList(canotClick2);
+                    flow1.setNoCheckList(canotClick1);
                     sp1Adapter.notifyDataChanged();
                     sp2Adapter.notifyDataChanged();
                     sp2Adapter.setSelectedList(sp2Position);
@@ -1224,7 +1306,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         if (dataList.get(i).getSp3().equals(sp3List.get(sp3Position).getContent()) && dataList.get(i).getSp1().equals(sp1List.get(sp1Position).getContent())) {
                             sp2List.add(new ChooseInsideBean(dataList.get(i).getSp2(), dataList.get(i).getPic(), dataList.get(i).getPrice(), dataList.get(i).getStock() > 0));
                             if (dataList.get(i).getStock() <= 0) {
-                                list2.add(temp2);
+                                canotClick2.add(temp2);
                                 temp2++;
                             }
                         }
@@ -1241,11 +1323,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp1List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list1.add(i);
+                            canotClick1.add(i);
                         }
                     }
-                    flow2.setNoCheckList(list2);
-                    flow1.setNoCheckList(list1);
+                    flow2.setNoCheckList(canotClick2);
+                    flow1.setNoCheckList(canotClick1);
                     sp2Adapter.notifyDataChanged();
                     sp1Adapter.notifyDataChanged();
                     sp1Adapter.setSelectedList(sp1Position);
@@ -1261,7 +1343,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp2List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list2.add(i);
+                            canotClick2.add(i);
                         }
                     }
 
@@ -1276,12 +1358,12 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         }
                         sp1List.get(i).setCanClick(isStock);
                         if (!isStock) {
-                            list1.add(i);
+                            canotClick1.add(i);
                         }
                     }
 
-                    flow2.setNoCheckList(list2);
-                    flow1.setNoCheckList(list1);
+                    flow2.setNoCheckList(canotClick2);
+                    flow1.setNoCheckList(canotClick1);
                     sp2Adapter.notifyDataChanged();
                     sp1Adapter.notifyDataChanged();
                     sp2Adapter.setSelectedList(sp2Position);
@@ -1291,17 +1373,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         } catch (Exception e) {
             Toast.makeText(mContext, "商品属性异常", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void oneCanClick() {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < sp1List.size(); i++) {
-            if (dataList.get(i).getStock() <= 0) {
-                list.add(i);
-                sp1List.get(i).setCanClick(false);
-            }
-        }
-        flow1.setNoCheckList(list);
     }
 
     public void jumpToAssess(String id) {
@@ -1323,7 +1394,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         if (isChoose) {
             OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
 
-            if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+            if (attrSize == 1) {
                 orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
                 orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
                 orderConfirmBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
@@ -1342,7 +1413,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 orderConfirmBean.setPromotionPrice(sp1List.get(sp1Position).getPrice());
                 orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
 
-            } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+            } else if (attrSize == 2) {
                 orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
                 orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
                 orderConfirmBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
@@ -1397,7 +1468,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         if (isChoose) {
             AddCartBean cartBean = new AddCartBean();
 
-            if (userGoodsDetail.getXsProductAttributes().size() == 1) {
+            if (attrSize == 1) {
                 cartBean.setChecked(0);
                 cartBean.setPrice(sp1List.get(sp1Position).getPrice());
                 cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
@@ -1413,7 +1484,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 cartBean.setSellerName(userGoodsDetail.getSellerName());
                 cartBean.setSp1(sp1List.get(sp1Position).getContent());
                 cartBean.setUserId(SPUtil.getUserCode());
-            } else if (userGoodsDetail.getXsProductAttributes().size() == 2) {
+            } else if (attrSize == 2) {
                 cartBean.setChecked(0);
                 cartBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
                 cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
@@ -1508,5 +1579,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         Uri data = Uri.parse("tel:" + "18503735075");
         intent.setData(data);
         mContext.startActivity(intent);
+    }
+
+    public void seeBigPicture(int position) {
+        LogUtil.e("piccount:" + imgList);
+        LogUtil.e("---------------------->" + position);
+        PopUtil.popAssessBigPic(mContext, imgList, position);
     }
 }

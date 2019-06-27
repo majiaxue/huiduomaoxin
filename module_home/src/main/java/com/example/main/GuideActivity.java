@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.entity.TopBannerBean;
 import com.example.module_home.R;
+import com.example.utils.StatusBarUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -31,10 +32,16 @@ public class GuideActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-
+        changeStatus();
         initView();
 
         initData();
+    }
+
+    private void changeStatus() {
+        // 设置状态栏
+        StatusBarUtils.transparencyBar(this);
+        StatusBarUtils.setStatusTheme(this, true, true);
     }
 
     private void initView() {

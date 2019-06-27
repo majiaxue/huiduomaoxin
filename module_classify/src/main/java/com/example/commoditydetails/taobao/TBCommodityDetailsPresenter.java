@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
 import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
@@ -79,6 +81,43 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     @Override
     protected void onViewDestroy() {
 
+    }
+
+    public void login() {
+
+        final AlibcLogin alibcLogin = AlibcLogin.getInstance();
+
+        alibcLogin.showLogin((Activity) mContext, new AlibcLoginCallback() {
+
+            @Override
+            public void onSuccess() {
+
+                LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                Toast.makeText(mContext, "登录失败 ",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void shouQuan() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHeadWithout(CommonResource.SHOUQUAN, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("授权：" + result);
+                SPUtil.addParm("link", result);
+                ARouter.getInstance().build("/module_classify/shouquan").withString("url", result.replace("web", "wap")).navigation();
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     //初始化视图
@@ -232,13 +271,15 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     public void ledSecurities(String para) {
         LogUtil.e("----------------------->" + para);
         Map map = MapUtil.getInstance().addParms("para", para).build();
-        final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map,SPUtil.getToken());
+        final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
-
+                if (result.startsWith("{\"code\":3")) {
+                    shouQuan();
+                }
                 if (result.indexOf("error:15") != -1) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     num_iid = (String) errorMap.get("num_iid");
@@ -388,7 +429,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 .setMenuItemTextColor(Color.parseColor("#666666"))
                 .setMenuItemIconPressedColor(Color.parseColor("#000000"))
 //                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
-                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE,(int)mContext.getResources().getDimension(R.dimen.dp_20));
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
 //                .setCancelButtonText("您取消了分享");
 
 

@@ -1,6 +1,6 @@
-package com.example.bean;
+package com.example.dbflow;
 
-import com.example.utils.AppDataBase;
+import com.example.dbflow.AppDataBase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;

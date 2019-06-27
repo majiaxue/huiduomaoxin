@@ -1,8 +1,8 @@
-package com.example.utils;
+package com.example.dbflow;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 
-@Database(name = AppDataBase.NAME, version = AppDataBase.VERSION)
+@Database(name = AppDataBase.NAME,version = AppDataBase.VERSION)
 public class AppDataBase {
     public static final String NAME = "fltk";
 
