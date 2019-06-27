@@ -7,6 +7,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -387,6 +388,18 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             }
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("HomeFragment", "可见");
+        //优惠券
+        presenter.ledSecurities(para);
+        //用户收益
+        presenter.earnings();
+        //加载视图
+        presenter.initView(para, shopType);
     }
 
 

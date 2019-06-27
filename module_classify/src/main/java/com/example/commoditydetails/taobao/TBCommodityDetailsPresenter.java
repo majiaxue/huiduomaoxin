@@ -288,7 +288,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
                     }.getType());
                     flag = 2;
-                    if (tbLedSecuritiesBean != null && tbLedSecuritiesBean.getData() != null) {
+                    if (tbLedSecuritiesBean != null) {
                         if (getView() != null) {
                             LogUtil.e("成功");
                             getView().ledSecurities(tbLedSecuritiesBean);
