@@ -93,7 +93,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             public void onSuccess() {
 
                 LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
-                shouQuan();
             }
 
             @Override
@@ -110,7 +109,8 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("授权：" + result);
-                ARouter.getInstance().build("/module_classify/tshop_home").withString("url", result).navigation();
+                SPUtil.addParm("link", result);
+                ARouter.getInstance().build("/module_classify/shouquan").withString("url", result.replace("web", "wap")).navigation();
             }
 
             @Override
@@ -271,13 +271,15 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     public void ledSecurities(String para) {
         LogUtil.e("----------------------->" + para);
         Map map = MapUtil.getInstance().addParms("para", para).build();
-        final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map,SPUtil.getToken());
+        final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
-
+                if (result.startsWith("{\"code\":3")) {
+                    shouQuan();
+                }
                 if (result.indexOf("error:15") != -1) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     num_iid = (String) errorMap.get("num_iid");
@@ -427,7 +429,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 .setMenuItemTextColor(Color.parseColor("#666666"))
                 .setMenuItemIconPressedColor(Color.parseColor("#000000"))
 //                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
-                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE,(int)mContext.getResources().getDimension(R.dimen.dp_20));
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
 //                .setCancelButtonText("您取消了分享");
 
 

@@ -30,6 +30,9 @@
         <activity
             android:name="com.example.shop_home.TShopHomeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.shou_quan.ShouQuanActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
