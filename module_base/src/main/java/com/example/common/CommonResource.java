@@ -73,7 +73,8 @@ public class CommonResource {
     public static final String COLLECT_SHOP = "/rest/user/seller";              //收藏店铺
     public static final String IWANTUP = "/rest/user/level/info";               //我要升级
     public static final String UP_PAY = "/rest/alipay/upLevelSign";             // 升级运营商/等级 支付
-    public static final String SHARE_TBPIC = "/rest/tbk/goods/weiYi";           //获取淘宝商品分享图片
+    public static final String SHOUQUAN = "/rest/tbk/goods/weiYi";           //转链授权
+    public static final String GET_SHARE_URL = "/rest/share/invite";        //获取分享链接
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -133,4 +134,6 @@ public class CommonResource {
     public static final String LEVELID = "levelId";
     public static final String TABABLE_NAME = "HISTORY";
     public static final String U_APPKEY = "5d0c57294ca35786440001c6";
+    public static final String HISTORY_USER = "user";
+    public static final String HISTORY_TBK = "tbk";
 }

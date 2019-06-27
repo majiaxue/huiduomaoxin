@@ -99,7 +99,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                if (errorCode.equals(1)) {
+                    Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                }
             }
         }));
     }
@@ -130,7 +134,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    if (errorCode.equals(1)) {
+                        Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }));
         }

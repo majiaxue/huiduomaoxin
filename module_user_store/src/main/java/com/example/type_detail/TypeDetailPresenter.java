@@ -214,12 +214,6 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
             map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).build();
         }
 
-        for (Object key : map.keySet()) {
-            LogUtil.e("key:" + key);
-        }
-        for (Object value : map.values()) {
-            LogUtil.e("value:" + value);
-        }
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

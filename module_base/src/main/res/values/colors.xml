@@ -10,4 +10,5 @@
     <color name="white">#ffffff</color>
 
     <color name="colorTransparency">#00FFFFFF</color>
+    <color name="statusBg">#99999999</color>
 </resources>

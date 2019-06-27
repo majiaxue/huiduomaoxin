@@ -5,6 +5,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.common.CommonResource;
+import com.example.dbflow.DBflowUtil;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -53,9 +55,18 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
         searchDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DBflowUtil.getInstance().deleteAll(CommonResource.HISTORY_USER);
                 searchFlowLayout.removeAllViews();
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchFlowLayout.removeAllViews();
+        presenter.getHistory(searchFlowLayout);
     }
 
     @Override

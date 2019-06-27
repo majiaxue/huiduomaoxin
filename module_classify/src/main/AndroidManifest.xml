@@ -19,6 +19,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.classificationdetails.ClassificationDetailsActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.commoditydetails.pdd.CommodityDetailsActivity"

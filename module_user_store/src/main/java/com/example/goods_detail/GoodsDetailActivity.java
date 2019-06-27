@@ -322,6 +322,13 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
                 presenter.callServe();
             }
         });
+
+        goodsDetailXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+            @Override
+            public void onItemClick(XBanner banner, Object model, View view, int position) {
+                presenter.seeBigPicture(position);
+            }
+        });
     }
 
     @Override

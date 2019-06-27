@@ -1,5 +1,6 @@
 package com.example.classificationdetails;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.DisplayUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -40,42 +42,51 @@ import butterknife.BindView;
 @Route(path = "/module_classify/ClassificationDetailsActivity")
 public class ClassificationDetailsActivity extends BaseActivity<ClassificationDetailsView, ClassificationDetailsPresenter> implements ClassificationDetailsView, View.OnClickListener {
 
+
     @BindView(R2.id.classification_back)
     ImageView classificationBack;
-    @BindView(R2.id.classification_message)
-    LinearLayout classificationMessage;
+    @BindView(R2.id.classification_text)
+    TextView classificationText;
     @BindView(R2.id.classification_search)
     LinearLayout classificationSearch;
+    @BindView(R2.id.classification_message)
+    LinearLayout classificationMessage;
+    @BindView(R2.id.classification_tab)
+    TabLayout classificationTab;
+    @BindView(R2.id.classification_text1)
+    TextView classificationText1;
     @BindView(R2.id.synthesize_bottom)
     ImageView synthesizeBottom;
+    @BindView(R2.id.classification_synthesize)
+    RelativeLayout classificationSynthesize;
+    @BindView(R2.id.classification_text2)
+    TextView classificationText2;
     @BindView(R2.id.sales_volume_top)
     ImageView salesVolumeTop;
     @BindView(R2.id.sales_volume_bottom)
     ImageView salesVolumeBottom;
     @BindView(R2.id.classification_sales_volume)
     RelativeLayout classificationSalesVolume;
+    @BindView(R2.id.classification_text3)
+    TextView classificationText3;
     @BindView(R2.id.price_top)
     ImageView priceTop;
     @BindView(R2.id.price_bottom)
     ImageView priceBottom;
     @BindView(R2.id.classification_price)
     RelativeLayout classificationPrice;
+    @BindView(R2.id.classification_text4)
+    TextView classificationText4;
     @BindView(R2.id.credit_top)
     ImageView creditTop;
     @BindView(R2.id.credit_bottom)
     ImageView creditBottom;
     @BindView(R2.id.classification_credit)
     RelativeLayout classificationCredit;
-    @BindView(R2.id.classification_synthesize)
-    RelativeLayout classificationSynthesize;
     @BindView(R2.id.classification_switchover)
     ImageView classificationSwitchover;
     @BindView(R2.id.classification_rec)
     RecyclerView classificationRec;
-    @BindView(R2.id.classification_text)
-    TextView classificationText;
-    @BindView(R2.id.classification_tab)
-    TabLayout classificationTab;
     @BindView(R2.id.classification_refresh)
     SmartRefreshLayout mRefresh;
 
@@ -87,6 +98,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Autowired(name = "position")
     int position;
 
+    private int index = 0;
     private int page = 1;
     private LinearLayoutManager linearLayoutManager;
     private GridLayoutManager gridLayoutManager;
@@ -108,15 +120,17 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
 
         //初始化tablayout
         presenter.initTabLayout(classificationTab);
-        if (searchContent != null && !"" .equals(searchContent)) {
+        if (searchContent != null && !"".equals(searchContent)) {
             classificationText.setText(searchContent);
         }
+        presenter.setContent(searchContent);
+
         classificationTab.getTabAt(position).select();
-        if (position == 0) presenter.searchTB(searchContent, page, position);
+        if (position == 0) presenter.searchTB(page, null);
         else if (position == 1) {
-            presenter.searchPDD(searchContent, page);
+            presenter.searchPDD(page);
         } else if (position == 2) {
-            presenter.searchJD(searchContent, page);
+            presenter.searchJD(page, null, null);
         }
 
         //设置 Header 为 官方主题 样式
@@ -161,17 +175,17 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
                     case 0:
                         position = 0;
                         page = 1;
-                        presenter.searchTB(searchContent, page, 0);
+                        presenter.searchTB(page, null);
                         break;
                     case 1:
                         position = 1;
                         page = 1;
-                        presenter.searchPDD(searchContent, page);
+                        presenter.searchPDD(page);
                         break;
                     case 2:
                         position = 2;
                         page = 1;
-                        presenter.searchJD(searchContent, page);
+                        presenter.searchJD(page, null, null);
                         break;
                 }
             }
@@ -192,11 +206,11 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                if (position == 0) presenter.searchTB(searchContent, page, position);
+                if (position == 0) presenter.searchTB(page, null);
                 else if (position == 1) {
-                    presenter.searchPDD(searchContent, page);
+                    presenter.searchPDD(page);
                 } else if (position == 2) {
-                    presenter.searchJD(searchContent, page);
+                    presenter.searchJD(page, null, null);
                 }
             }
         });
@@ -204,11 +218,11 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                if (position == 0) presenter.searchTB(searchContent, page, position);
+                if (position == 0) presenter.searchTB(page, null);
                 else if (position == 1) {
-                    presenter.searchPDD(searchContent, page);
+                    presenter.searchPDD(page);
                 } else if (position == 2) {
-                    presenter.searchJD(searchContent, page);
+                    presenter.searchJD(page, null, null);
                 }
             }
         });
@@ -234,7 +248,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     public void loadTBLstRv(BaseRecAdapter adapter) {
         classificationSwitchover.setImageResource(R.drawable.xfxfgvx);
         classificationRec.setLayoutManager(linearLayoutManager);
-        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        if (classificationRec.getItemDecorationCount() != 0) {
+            classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setAdapter(adapter);
     }
 
@@ -242,7 +258,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     public void loadTBWaterfallRv(ClassificationRecAdapter adapter) {
         classificationSwitchover.setImageResource(R.drawable.fghfghfg);
         classificationRec.setLayoutManager(gridLayoutManager);
-        classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        if (classificationRec.getItemDecorationCount() == 0) {
+            classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setAdapter(adapter);
     }
 
@@ -250,7 +268,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     public void loadPDDLstRv(SecondaryPddRecAdapter adapter) {
         classificationSwitchover.setImageResource(R.drawable.xfxfgvx);
         classificationRec.setLayoutManager(linearLayoutManager);
-        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        if (classificationRec.getItemDecorationCount() != 0) {
+            classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setAdapter(adapter);
     }
 
@@ -258,7 +278,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     public void loadPDDWaterfallRv(PddWaterAdapter adapter) {
         classificationSwitchover.setImageResource(R.drawable.fghfghfg);
         classificationRec.setLayoutManager(gridLayoutManager);
-        classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        if (classificationRec.getItemDecorationCount() == 0) {
+            classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setAdapter(adapter);
     }
 
@@ -266,7 +288,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     public void loadJDLstRv(SecondaryJDRecAdapter adapter) {
         classificationSwitchover.setImageResource(R.drawable.xfxfgvx);
         classificationRec.setLayoutManager(linearLayoutManager);
-        classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        if (classificationRec.getItemDecorationCount() != 0) {
+            classificationRec.removeItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setAdapter(adapter);
     }
 
@@ -274,71 +298,51 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     public void loadJDWaterfallRv(JdWaterfallAdapter adapter) {
         classificationSwitchover.setImageResource(R.drawable.fghfghfg);
         classificationRec.setLayoutManager(gridLayoutManager);
-        classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        if (classificationRec.getItemDecorationCount() == 0) {
+            classificationRec.addItemDecoration(spaceItemDecorationLeftAndRight);
+        }
         classificationRec.setAdapter(adapter);
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.classification_sales_volume) {
-            //销量
-            if (salesvolume) {
+    public void updateTitle(boolean salesVolume, boolean price, boolean credit) {
+        classificationText1.setTextColor(Color.parseColor(index == 0 ? "#fd3c15" : "#333333"));
+        synthesizeBottom.setImageResource(index == 0 ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
 
-                salesVolumeTop.setImageResource(R.drawable.gvhgh);
-                salesVolumeBottom.setImageResource(R.drawable.khjkjhgjk);
-                priceTop.setImageResource(R.drawable.ghfgh);
-                priceBottom.setImageResource(R.drawable.khjkjhgjk);
-                creditTop.setImageResource(R.drawable.ghfgh);
-                creditBottom.setImageResource(R.drawable.khjkjhgjk);
-                salesvolume = false;
-            } else {
-                salesVolumeTop.setImageResource(R.drawable.ghfgh);
-                salesVolumeBottom.setImageResource(R.drawable.cgbhdfg);
-                priceTop.setImageResource(R.drawable.ghfgh);
-                priceBottom.setImageResource(R.drawable.khjkjhgjk);
-                creditTop.setImageResource(R.drawable.ghfgh);
-                creditBottom.setImageResource(R.drawable.khjkjhgjk);
-                salesvolume = true;
-            }
+        classificationText2.setTextColor(Color.parseColor(index == 1 ? "#fd3c15" : "#333333"));
+        salesVolumeTop.setImageResource(index == 1 ? salesVolume ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
+        salesVolumeBottom.setImageResource(index == 1 ? salesVolume ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
+
+        classificationText3.setTextColor(Color.parseColor(index == 2 ? "#fd3c15" : "#333333"));
+        priceTop.setImageResource(index == 2 ? price ? R.drawable.gvhgh : R.drawable.ghfgh : R.drawable.ghfgh);
+        priceBottom.setImageResource(index == 2 ? price ? R.drawable.khjkjhgjk : R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
+
+        classificationText4.setTextColor(Color.parseColor(index == 3 ? "#fd3c15" : "#333333"));
+        creditTop.setImageResource(index == 3 ? credit ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
+        creditBottom.setImageResource(index == 3 ? credit ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.classification_synthesize) {
+            index = 0;
+            page = 1;
+            presenter.changeType(index);
+        } else if (v.getId() == R.id.classification_sales_volume) {
+            index = 1;
+            page = 1;
+            presenter.changeType(index);
+
         } else if (v.getId() == R.id.classification_price) {
-            //价格
-            if (price) {
-                priceTop.setImageResource(R.drawable.gvhgh);
-                priceBottom.setImageResource(R.drawable.khjkjhgjk);
-                salesVolumeTop.setImageResource(R.drawable.ghfgh);
-                salesVolumeBottom.setImageResource(R.drawable.khjkjhgjk);
-                creditTop.setImageResource(R.drawable.ghfgh);
-                creditBottom.setImageResource(R.drawable.khjkjhgjk);
-                price = false;
-            } else {
-                priceTop.setImageResource(R.drawable.ghfgh);
-                priceBottom.setImageResource(R.drawable.cgbhdfg);
-                salesVolumeTop.setImageResource(R.drawable.ghfgh);
-                salesVolumeBottom.setImageResource(R.drawable.khjkjhgjk);
-                creditTop.setImageResource(R.drawable.ghfgh);
-                creditBottom.setImageResource(R.drawable.khjkjhgjk);
-                price = true;
-            }
+            index = 2;
+            page = 1;
+            presenter.changeType(index);
 
         } else if (v.getId() == R.id.classification_credit) {
-            //信用
-            if (credit) {
-                creditTop.setImageResource(R.drawable.gvhgh);
-                creditBottom.setImageResource(R.drawable.khjkjhgjk);
-                salesVolumeTop.setImageResource(R.drawable.ghfgh);
-                salesVolumeBottom.setImageResource(R.drawable.khjkjhgjk);
-                priceTop.setImageResource(R.drawable.ghfgh);
-                priceBottom.setImageResource(R.drawable.khjkjhgjk);
-                credit = false;
-            } else {
-                creditTop.setImageResource(R.drawable.ghfgh);
-                creditBottom.setImageResource(R.drawable.cgbhdfg);
-                salesVolumeTop.setImageResource(R.drawable.ghfgh);
-                salesVolumeBottom.setImageResource(R.drawable.khjkjhgjk);
-                priceTop.setImageResource(R.drawable.ghfgh);
-                priceBottom.setImageResource(R.drawable.khjkjhgjk);
-                credit = true;
-            }
+            index = 3;
+            page = 1;
+            presenter.changeType(index);
+
         }
     }
 }

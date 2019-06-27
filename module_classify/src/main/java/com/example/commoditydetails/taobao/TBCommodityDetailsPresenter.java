@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
 import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
@@ -73,6 +75,43 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     @Override
     protected void onViewDestroy() {
 
+    }
+
+    public void login() {
+
+        final AlibcLogin alibcLogin = AlibcLogin.getInstance();
+
+        alibcLogin.showLogin((Activity) mContext, new AlibcLoginCallback() {
+
+            @Override
+            public void onSuccess() {
+
+                LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
+                shouQuan();
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                Toast.makeText(mContext, "登录失败 ",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void shouQuan() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHeadWithout(CommonResource.SHOUQUAN, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("授权：" + result);
+                ARouter.getInstance().build("/module_classify/tshop_home").withString("url", result).navigation();
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     //初始化视图
@@ -372,9 +411,5 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 LogUtil.e("TBCommodityDetailsErrorMsg推荐------------>" + errorMsg);
             }
         }));
-    }
-
-    public void share() {
-
     }
 }

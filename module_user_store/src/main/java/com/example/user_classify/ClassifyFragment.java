@@ -1,5 +1,6 @@
 package com.example.user_classify;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
 import com.example.mvp.BaseFragment;
+import com.example.search.UserSearchActivity;
 import com.example.user_classify.adapter.UserLeftRvAdapter;
 import com.example.user_classify.adapter.UserRightRecAdapter;
 import com.example.user_store.R;
@@ -69,7 +71,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
             @Override
             public void onClick(View v) {
                 //到搜索页面
-                ARouter.getInstance().build("/module_home/SearchActivity").withString("from", "users").navigation();
+                startActivity(new Intent(getContext(), UserSearchActivity.class));
             }
         });
 

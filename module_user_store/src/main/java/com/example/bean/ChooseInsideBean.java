@@ -15,10 +15,12 @@ public class ChooseInsideBean {
         this.canClick = canClick;
     }
 
-    public ChooseInsideBean(String content, String picUrl, double price) {
+    public ChooseInsideBean(String content, String picUrl, double price, long stock, boolean canClick) {
         this.content = content;
         this.picUrl = picUrl;
         this.price = price;
+        this.stock = stock;
+        this.canClick = canClick;
     }
 
     public ChooseInsideBean(String content, double price, boolean canClick) {

@@ -29,6 +29,7 @@ public class ModuleBaseApplication extends Application {
         }
         ARouter.init(this);
         SPUtil.getInstance(this);
+        //初始化DBFLOW
         FlowManager.init(this);
 
         wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);

@@ -98,7 +98,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable1, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("导航----->"+result);
+                LogUtil.e("导航----->" + result);
                 NavBarBean navBarBean = JSON.parseObject(result, new TypeReference<NavBarBean>() {
                 }.getType());
                 if (navBarBean != null) {
@@ -107,7 +107,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     navBarAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            EventBus.getDefault().post(new EventBusBean2(CommonResource.JUMP_CLASSIFY, position));
+                            EventBus.getDefault().post(new EventBusBean2(CommonResource.JUMP_CLASSIFY, navbarList.get(position).getId()));
                         }
                     });
                     if (getView() != null) {
@@ -143,7 +143,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("轮播图：" + result);
                 BannerBean records = JSON.parseObject(result, BannerBean.class);
-                LogUtil.e("解析后："+records);
+                LogUtil.e("解析后：" + records);
                 beanList = records.getRecords();
                 if (getView() != null) {
                     getView().loadBanner(beanList);

@@ -1,10 +1,13 @@
 package com.example.main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.example.hairring.HairRingFragment;
 import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;

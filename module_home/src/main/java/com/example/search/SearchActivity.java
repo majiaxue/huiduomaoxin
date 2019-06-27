@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.common.CommonResource;
+import com.example.dbflow.DBflowUtil;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
@@ -55,7 +57,6 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         mTabLayout.addTab(mTabLayout.newTab().setText(titleArr[0]));
         mTabLayout.addTab(mTabLayout.newTab().setText(titleArr[1]));
         mTabLayout.addTab(mTabLayout.newTab().setText(titleArr[2]));
-        presenter.searchFlowLayout(searchFlowLayout);
 
         mTabLayout.post(new Runnable() {
             @Override
@@ -120,6 +121,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DBflowUtil.getInstance().deleteAll(CommonResource.HISTORY_USER);
                 searchFlowLayout.removeAllViews();
             }
         });
@@ -146,6 +148,13 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchFlowLayout.removeAllViews();
+        presenter.getHistory(searchFlowLayout,position);
     }
 
     @Override

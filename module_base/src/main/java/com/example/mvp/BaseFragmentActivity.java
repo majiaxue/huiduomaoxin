@@ -33,10 +33,10 @@ public abstract class BaseFragmentActivity<V extends IView, P extends BasePresen
     }
 
     private void changeStatus() {
+
+//            getWindow().setStatusBarColor(StatusBarUtils.STATUS_COLOR);
+        StatusBarUtils.transparencyBar(this);
         StatusBarUtils.setStatusTheme(this, true, true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(StatusBarUtils.STATUS_COLOR);
-        }
     }
 
     @SuppressLint("MissingSuperCall")

@@ -69,7 +69,7 @@ public class JDGoodsRecBean implements Serializable {
             this.lists = lists;
         }
 
-        public static class ListsBean implements Serializable{
+        public static class ListsBean implements Serializable {
             /**
              * brandCode : 13392
              * brandName : 尼康（Nikon）
@@ -113,8 +113,8 @@ public class JDGoodsRecBean implements Serializable {
             private String skuId;
             private String skuName;
             private String spuid;
-            private List<?> pinGouInfo;
-            private List<?> pingGouInfo;
+            private List pinGouInfo;
+            private List pingGouInfo;
 
             public String getBrandCode() {
                 return brandCode;
@@ -268,23 +268,23 @@ public class JDGoodsRecBean implements Serializable {
                 this.spuid = spuid;
             }
 
-            public List<?> getPinGouInfo() {
+            public List getPinGouInfo() {
                 return pinGouInfo;
             }
 
-            public void setPinGouInfo(List<?> pinGouInfo) {
+            public void setPinGouInfo(List pinGouInfo) {
                 this.pinGouInfo = pinGouInfo;
             }
 
-            public List<?> getPingGouInfo() {
+            public List getPingGouInfo() {
                 return pingGouInfo;
             }
 
-            public void setPingGouInfo(List<?> pingGouInfo) {
+            public void setPingGouInfo(List pingGouInfo) {
                 this.pingGouInfo = pingGouInfo;
             }
 
-            public static class CategoryInfoBean implements Serializable{
+            public static class CategoryInfoBean implements Serializable {
                 /**
                  * cid1 : 652
                  * cid1Name : 数码
@@ -363,14 +363,14 @@ public class JDGoodsRecBean implements Serializable {
             }
 
 
-            public static class CommissionInfoBean implements Serializable{
+            public static class CommissionInfoBean implements Serializable {
                 /**
                  * commission : 16
                  * commissionShare : 0.1
                  */
 
                 private String commission;
-                private double commissionShare;
+                private String commissionShare;
 
                 public String getCommission() {
                     return commission;
@@ -380,11 +380,11 @@ public class JDGoodsRecBean implements Serializable {
                     this.commission = commission;
                 }
 
-                public double getCommissionShare() {
+                public String getCommissionShare() {
                     return commissionShare;
                 }
 
-                public void setCommissionShare(double commissionShare) {
+                public void setCommissionShare(String commissionShare) {
                     this.commissionShare = commissionShare;
                 }
 
@@ -397,7 +397,7 @@ public class JDGoodsRecBean implements Serializable {
                 }
             }
 
-            public static class CouponInfoBean implements Serializable{
+            public static class CouponInfoBean implements Serializable {
                 private List<CouponListBean> couponList;
 
                 public List<CouponListBean> getCouponList() {
@@ -425,11 +425,20 @@ public class JDGoodsRecBean implements Serializable {
                     private String discount;
                     private long getEndTime;
                     private long getStartTime;
+                    private String isBest;
                     private String link;
                     private String platformType;
                     private String quota;
                     private long useEndTime;
                     private long useStartTime;
+
+                    public String getIsBest() {
+                        return isBest;
+                    }
+
+                    public void setIsBest(String isBest) {
+                        this.isBest = isBest;
+                    }
 
                     public String getBindType() {
                         return bindType;
@@ -510,6 +519,7 @@ public class JDGoodsRecBean implements Serializable {
                                 ", discount='" + discount + '\'' +
                                 ", getEndTime=" + getEndTime +
                                 ", getStartTime=" + getStartTime +
+                                ", isBest='" + isBest + '\'' +
                                 ", link='" + link + '\'' +
                                 ", platformType='" + platformType + '\'' +
                                 ", quota='" + quota + '\'' +
@@ -527,7 +537,7 @@ public class JDGoodsRecBean implements Serializable {
                 }
             }
 
-            public static class ImageInfoBean implements Serializable{
+            public static class ImageInfoBean implements Serializable {
                 private List<ImageListBean> imageList;
 
                 public List<ImageListBean> getImageList() {
@@ -538,7 +548,7 @@ public class JDGoodsRecBean implements Serializable {
                     this.imageList = imageList;
                 }
 
-                public static class ImageListBean implements Serializable{
+                public static class ImageListBean implements Serializable {
                     /**
                      * url : http://img14.360buyimg.com/ads/jfs/t1/69610/27/1243/400030/5cf88682E13a4458a/739dbebb44e2a8f5.jpg
                      */
@@ -569,12 +579,30 @@ public class JDGoodsRecBean implements Serializable {
                 }
             }
 
-            public static class PriceInfoBean implements Serializable{
+            public static class PriceInfoBean implements Serializable {
                 /**
                  * price : 15999
                  */
 
                 private String price;
+                private String lowestPrice;
+                private String lowestPriceType;
+
+                public String getLowestPrice() {
+                    return lowestPrice;
+                }
+
+                public void setLowestPrice(String lowestPrice) {
+                    this.lowestPrice = lowestPrice;
+                }
+
+                public String getLowestPriceType() {
+                    return lowestPriceType;
+                }
+
+                public void setLowestPriceType(String lowestPriceType) {
+                    this.lowestPriceType = lowestPriceType;
+                }
 
                 public String getPrice() {
                     return price;
@@ -588,11 +616,13 @@ public class JDGoodsRecBean implements Serializable {
                 public String toString() {
                     return "PriceInfoBean{" +
                             "price='" + price + '\'' +
+                            ", lowestPrice='" + lowestPrice + '\'' +
+                            ", lowestPriceType='" + lowestPriceType + '\'' +
                             '}';
                 }
             }
 
-            public static class ShopInfoBean implements Serializable{
+            public static class ShopInfoBean implements Serializable {
                 /**
                  * shopId : 121268
                  * shopName : 爱深博影像旗舰店
