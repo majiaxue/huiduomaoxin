@@ -74,8 +74,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private TBLedSecuritiesBean tbLedSecuritiesBean;
     private String num_iid;
     private int flag = 0;
-    private  CustomDialog customDialog = new CustomDialog(mContext, "正在加载...");
-
 
     public TBCommodityDetailsPresenter(Context context) {
         super(context);
@@ -107,7 +105,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     private void shouQuan() {
-        customDialog.show();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHeadWithout(CommonResource.SHOUQUAN, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -115,20 +112,17 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 LogUtil.e("授权：" + result);
                 SPUtil.addParm("link", result);
                 ARouter.getInstance().build("/module_classify/shouquan").withString("url", result.replace("web", "wap")).navigation();
-                customDialog.dismiss();
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("授权：" + errorMsg);
-                customDialog.dismiss();
             }
         }));
     }
 
     //初始化视图
     public void initView(String para, String shopType) {
-        customDialog.show();
         if ("0".equals(shopType)) {
             type = "C";
         } else {
@@ -148,7 +142,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                         getView().tbBeanList(tbBean);
                         getView().tBDetails();
                         LogUtil.e("tBDetails" + "3");
-                        customDialog.dismiss();
                     }
                 }
             }
@@ -156,7 +149,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("TBCommodityDetailsErrorMsg---------------->" + errorMsg);
-                customDialog.dismiss();
             }
         }));
     }

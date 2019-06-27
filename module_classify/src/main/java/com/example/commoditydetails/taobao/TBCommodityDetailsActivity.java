@@ -28,6 +28,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
+import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
@@ -116,6 +117,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
     private String earnings;
     private int status = 0;
+    private CustomDialog customDialog;
 
 
     @Override
@@ -127,6 +129,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         LogUtil.e("123456              " + para + "        " + shopType);
+        customDialog = new CustomDialog(this, "正在加载...");
+        customDialog.show();
         presenter.login();
         //优惠券
         presenter.ledSecurities(para);
@@ -334,7 +338,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         status++;
         LogUtil.e("status" +status);
         if (status == 3) {
-
+            customDialog.dismiss();
 //            //详情轮播图
 //            List<String> images = tbBeanList.getData().getImages();
 //            presenter.setXBanner(commodityXbanner, images);
@@ -397,17 +401,17 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("HomeFragment", "可见");
-        //优惠券
-        presenter.ledSecurities(para);
-        //用户收益
-        presenter.earnings();
-        //加载视图
-        presenter.initView(para, shopType);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Log.d("HomeFragment", "可见");
+//        //优惠券
+//        presenter.ledSecurities(para);
+//        //用户收益
+//        presenter.earnings();
+//        //加载视图
+//        presenter.initView(para, shopType);
+//    }
 
 
 }
