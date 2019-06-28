@@ -343,26 +343,28 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         double div = ArithUtil.div(detailsBeanList.get(0).getMin_group_price() - detailsBeanList.get(0).getCoupon_discount(), 100, 1);//到手价
         LogUtil.e("url主图---------->" + detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         String s = detailsBeanList.get(0).getGoods_gallery_urls().get(0);
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(s));
-            saveImageToPhotos(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        //商品图片
+        shareImage.setImageURI(Uri.parse(s));
         LogUtil.e("url1轮播图---------->" + s);
 
         shareName.setText(detailsBeanList.get(0).getGoods_name());
+        //商品优惠价
         sharePreferentialPrice.setText("￥" + div);
+        //商品原价
         shareOriginalPrice.setText("￥" + ArithUtil.div(detailsBeanList.get(0).getMin_group_price(), 100, 1));
+        //商品优惠劵
         shareCouponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(detailsBeanList.get(0).getMin_group_price(), 100, 1), div) + "元");
+        //商品已售件数
         shareNumber.setText("已售" + detailsBeanList.get(0).getSold_quantity() + "件");//已售
+        //得到链接生成二维码
         Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(this, 150), DisplayUtil.dip2px(this, 150));
         shareQrCode.setImageBitmap(qr);
         LogUtil.e("url2二维码---------->" + qRImage);
 
+        //获得view生成一张bitmap
         this.bitmap = ViewToBitmap.createBitmap3(commodityShareAll, ViewToBitmap.getScreenWidth(this), ViewToBitmap.getScreenHeight(this));
 
+//        commodityShareAll.setVisibility(View.GONE);
     }
 
     @Override
@@ -397,28 +399,28 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         this.earnings = ear;
     }
 
-    /**
-     * 保存二维码到本地相册
-     */
-    private void saveImageToPhotos(Bitmap bmp) {
-        // 首先保存图片
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        String fileName = "wwww" + ".jpg";
-        File file = new File(appDir, fileName);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
-        LogUtil.e("图片路径"+file.getPath());
-    }
+//    /**
+//     * 保存二维码到本地相册
+//     */
+//    private void saveImageToPhotos(Bitmap bmp) {
+//        // 首先保存图片
+//        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+//        if (!appDir.exists()) {
+//            appDir.mkdir();
+//        }
+//        String fileName = "wwww" + ".jpg";
+//        File file = new File(appDir, fileName);
+//        try {
+//            FileOutputStream fos = new FileOutputStream(file);
+//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+//            fos.flush();
+//            fos.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
+//        LogUtil.e("图片路径"+file.getPath());
+//    }
 }

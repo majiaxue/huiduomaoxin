@@ -21,6 +21,7 @@ public class LogisticsInforMationBean {
     private String ShipperCode;
     private String State;
     private String EBusinessID;
+    private String Reason;
     private boolean Success;
     private List<TracesBean> Traces;
 
@@ -62,6 +63,14 @@ public class LogisticsInforMationBean {
 
     public void setSuccess(boolean Success) {
         this.Success = Success;
+    }
+
+    public String getReason() {
+        return Reason;
+    }
+
+    public void setReason(String reason) {
+        Reason = reason;
     }
 
     public List<TracesBean> getTraces() {

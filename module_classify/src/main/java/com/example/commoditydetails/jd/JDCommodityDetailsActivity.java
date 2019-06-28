@@ -208,7 +208,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             @Override
             public void onClick(View v) {
 //                Toast.makeText(JDCommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share();
+//                presenter.share();
 
             }
         });

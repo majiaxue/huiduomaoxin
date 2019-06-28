@@ -7,4 +7,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface SuperBrandView extends IView {
+    void noBrand(boolean noBrand);
 }

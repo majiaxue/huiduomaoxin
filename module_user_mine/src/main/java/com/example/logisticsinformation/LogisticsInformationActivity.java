@@ -120,12 +120,58 @@ public class LogisticsInformationActivity extends BaseActivity<LogisticsInformat
         logisticsInformationType.setText(inforMationBeanList.getLogisticCode());
         logisticsInformationExpressType.setText(inforMationBeanList.getShipperCode());
         LogUtil.e("公司----->" + inforMationBeanList.getShipperCode());
-        String acceptStation = inforMationBeanList.getTraces().get(size - 1).getAcceptStation();
-        LogUtil.e("信息" + acceptStation);
-        if (acceptStation.indexOf("已签收") != -1) {
-            logisticsInformationStatus.setText("已签收");
-        } else {
+//        String acceptStation = inforMationBeanList.getTraces().get(size - 1).getAcceptStation();
+//        LogUtil.e("信息" + acceptStation);
+        if ("0".equals(inforMationBeanList.getState())) {
+            logisticsInformationStatus.setText("无轨迹");
+        } else if ("1".equals(inforMationBeanList.getState())) {
+            logisticsInformationStatus.setText("已揽收");
+        } else if ("2".equals(inforMationBeanList.getState())) {
             logisticsInformationStatus.setText("运输中");
+        } else if ("3".equals(inforMationBeanList.getState())) {
+            logisticsInformationStatus.setText("已签收");
+        } else if ("4".equals(inforMationBeanList.getState())) {
+            logisticsInformationStatus.setText("问题件");
+        }
+
+        if (inforMationBeanList.getShipperCode().contains("EMS")) {
+            logisticsInformationOfficialPhone.setText("11183");
+        } else if (inforMationBeanList.getShipperCode().contains("德邦")) {
+            logisticsInformationOfficialPhone.setText("95353");
+        } else if (inforMationBeanList.getShipperCode().contains("中通")) {
+            logisticsInformationOfficialPhone.setText("95311");
+        } else if (inforMationBeanList.getShipperCode().contains("联昊")) {
+            logisticsInformationOfficialPhone.setText("400-8888-887");
+        } else if (inforMationBeanList.getShipperCode().contains("全峰")) {
+            logisticsInformationOfficialPhone.setText("400-100-0001");
+        } else if (inforMationBeanList.getShipperCode().contains("全一")) {
+            logisticsInformationOfficialPhone.setText("400-663-1111");
+        } else if (inforMationBeanList.getShipperCode().contains("圆通")) {
+            logisticsInformationOfficialPhone.setText("95554");
+        } else if (inforMationBeanList.getShipperCode().contains("速尔")) {
+            logisticsInformationOfficialPhone.setText("956036");
+        } else if (inforMationBeanList.getShipperCode().contains("韵达")) {
+            logisticsInformationOfficialPhone.setText("95546");
+        } else if (inforMationBeanList.getShipperCode().contains("天天")) {
+            logisticsInformationOfficialPhone.setText("400-188-8888");
+        } else if (inforMationBeanList.getShipperCode().contains("百世") || inforMationBeanList.getShipperCode().contains("汇通")) {
+            logisticsInformationOfficialPhone.setText("95320");
+        } else if (inforMationBeanList.getShipperCode().contains("国通")) {
+            logisticsInformationOfficialPhone.setText("95327");
+        } else if (inforMationBeanList.getShipperCode().contains("申通")) {
+            logisticsInformationOfficialPhone.setText("95543");
+        } else if (inforMationBeanList.getShipperCode().contains("顺丰")) {
+            logisticsInformationOfficialPhone.setText("95338");
+        } else if (inforMationBeanList.getShipperCode().contains("优速")) {
+            logisticsInformationOfficialPhone.setText("95349");
+        } else if (inforMationBeanList.getShipperCode().contains("宅急送")) {
+            logisticsInformationOfficialPhone.setText("400-6789-000");
+        } else if (inforMationBeanList.getShipperCode().contains("邮政")) {
+            logisticsInformationOfficialPhone.setText("11183");
+        } else if (inforMationBeanList.getShipperCode().contains("联邦")) {
+            logisticsInformationOfficialPhone.setText("800-988-1888");
+        } else if (inforMationBeanList.getShipperCode().contains("中铁")) {
+            logisticsInformationOfficialPhone.setText("400-000-5566");
         }
 
     }

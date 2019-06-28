@@ -62,6 +62,7 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        LogUtil.e("url----->"+url);
         includeTitle.setText("店铺详情");
         if (url.startsWith("//")){
             url = "https:" + url;

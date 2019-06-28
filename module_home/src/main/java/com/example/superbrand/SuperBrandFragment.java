@@ -2,6 +2,7 @@ package com.example.superbrand;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.example.module_home.R;
 import com.example.module_home.R2;
@@ -43,5 +44,14 @@ public class SuperBrandFragment extends BaseFragment<SuperBrandView, SuperBrandP
     @Override
     public SuperBrandPresenter createPresenter() {
         return new SuperBrandPresenter(getContext());
+    }
+
+    @Override
+    public void noBrand(boolean noBrand) {
+        if (noBrand){
+            superBrandRec.setVisibility(View.GONE);
+        }else{
+            superBrandRec.setVisibility(View.VISIBLE);
+        }
     }
 }
