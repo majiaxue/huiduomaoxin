@@ -1,6 +1,7 @@
 package com.example.obligation;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +16,12 @@ import com.example.bean.SubmitOrderBean;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.LogUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +78,30 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
         ARouter.getInstance().inject(this);
         presenter.initView(orderSn);
         presenter.obligationRec(obligationRec);
+
+        time();
+    }
+
+    private void time() {
+        long firstTime = System.currentTimeMillis() + 30 * 60 * 1000;
+        LogUtil.e("firstTime----------->" + firstTime);
+        long time = firstTime - System.currentTimeMillis();
+        LogUtil.e("time------------->" + time / 1000);
+        CountDownTimer countDownTimer = new CountDownTimer(time, 1000) {//第一个参数表示总时间，第二个参数表示间隔时间。
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                SimpleDateFormat formatter = new SimpleDateFormat("mm分ss秒");
+                String dateString = formatter.format(millisUntilFinished);
+
+                obligationTimeRemaining.setText("剩餘" + dateString);
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e("結束");
+            }
+        }.start();
     }
 
     @Override
