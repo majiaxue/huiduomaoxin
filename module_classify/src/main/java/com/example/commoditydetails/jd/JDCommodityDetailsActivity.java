@@ -106,14 +106,10 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     @Autowired(name = "skuid")
     String skuid;
 
-    @Autowired(name = "position")
-    int position;
 
     @Autowired(name = "jDGoodsRecBean")
-    JDGoodsRecBean jDGoodsRecBean;
+    JDGoodsRecBean.DataBean.ListsBean listsBeanList;
 
-
-    private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
     private double sub;
 
     @Override
@@ -125,27 +121,27 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
-        LogUtil.e("京东+++++++++++++" + skuid + "             " + jDGoodsRecBean);
+
+        LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //收益
         presenter.earnings();
         commodityShopItem.setVisibility(View.GONE);
         //详情轮播图
-        presenter.setXBanner(commodityXbanner, listsBeanList, position);
+        presenter.setXBanner(commodityXbanner, listsBeanList);
 
         //商品详情图片
-        presenter.setShopParticulars(shopParticulars, listsBeanList, position);
-        sub = ArithUtil.sub(Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()), Double.valueOf(listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getDiscount()));
+        presenter.setShopParticulars(shopParticulars, listsBeanList);
+        sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
 
-        commodityName.setText(listsBeanList.get(position).getSkuName());//名字
+        commodityName.setText(listsBeanList.getSkuName());//名字
         commodityPreferentialPrice.setText("￥" + sub);//优惠价
-        commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()));//原价
-        commodityNumberSold.setText("已售" + listsBeanList.get(0).getInOrderCount30Days() + "件");//已售
-        commodityCouponPrice.setText(ArithUtil.sub(Double.valueOf(listsBeanList.get(position).getPriceInfo().getPrice()), sub) + "元优惠劵");
-        String startTime = MyTimeUtil.date2String("" + listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getUseStartTime());
-        String endTime = MyTimeUtil.date2String("" + listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getUseEndTime());
+        commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.getPriceInfo().getPrice()));//原价
+        commodityNumberSold.setText("已售" + listsBeanList.getInOrderCount30Days() + "件");//已售
+        commodityCouponPrice.setText(ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), sub) + "元优惠劵");
+        String startTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseStartTime());
+        String endTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseEndTime());
         commodityTime.setText("有效期：" + startTime + "~" + endTime);
 //        commodityShopName.setText(listsBeanList.get(position).getShopInfo().getShopName());//商家名
 //        commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.get(0).getSeller().getShopIcon()));//商家icon
@@ -156,7 +152,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         presenter.isCollect(commodityCollectImage, skuid);
 
         //推荐
-        presenter.setRecommendRec(shopRecommendRec, listsBeanList.get(position).getCategoryInfo().getCid1Name());
+        presenter.setRecommendRec(shopRecommendRec, listsBeanList.getCategoryInfo().getCid1Name());
 
     }
 
@@ -221,7 +217,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.ledSecurities(listsBeanList.get(position).getMaterialUrl(), listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getLink());
+                presenter.ledSecurities(listsBeanList.getMaterialUrl(), listsBeanList.getCouponInfo().getCouponList().get(0).getLink());
 
             }
         });
@@ -231,7 +227,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
-                presenter.ledSecurities(listsBeanList.get(position).getMaterialUrl(), listsBeanList.get(position).getCouponInfo().getCouponList().get(0).getLink());
+                presenter.ledSecurities(listsBeanList.getMaterialUrl(), listsBeanList.getCouponInfo().getCouponList().get(0).getLink());
             }
         });
         //收藏
@@ -270,7 +266,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     @Override
     public void earnings(String earnings) {
-        Double commission = Double.valueOf(listsBeanList.get(position).getCommissionInfo().getCommission());
+        Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
         Double aDouble = Double.valueOf(earnings);
         double mul1 = ArithUtil.mul(sub, ArithUtil.div(commission, 100, 2));
         double mul = ArithUtil.mul(mul1, ArithUtil.div(aDouble, 100, 2));

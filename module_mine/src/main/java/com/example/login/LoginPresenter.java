@@ -134,6 +134,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("登录：" + errorCode + "-------" + errorMsg);
                     if (errorCode.equals(1)) {
                         Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                     } else {

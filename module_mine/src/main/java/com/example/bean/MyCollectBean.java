@@ -15,7 +15,7 @@ public class MyCollectBean {
      */
 
     private String goodsName;
-    private Double normalPrice;
+    private String normalPrice;
     private Double groupPrice;
     private String quantity;
     private String image;
@@ -41,11 +41,11 @@ public class MyCollectBean {
         this.goodsName = goodsName;
     }
 
-    public Double getNormalPrice() {
+    public String getNormalPrice() {
         return normalPrice;
     }
 
-    public void setNormalPrice(Double normalPrice) {
+    public void setNormalPrice(String normalPrice) {
         this.normalPrice = normalPrice;
     }
 

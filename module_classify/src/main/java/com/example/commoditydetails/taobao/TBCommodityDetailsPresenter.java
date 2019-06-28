@@ -2,7 +2,6 @@ package com.example.commoditydetails.taobao;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,6 @@ import com.alibaba.baichuan.android.trade.model.TradeResult;
 import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
 import com.alibaba.baichuan.android.trade.page.AlibcDetailPage;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
-import com.alibaba.baichuan.android.trade.page.AlibcShopPage;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
@@ -34,7 +32,6 @@ import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
 import com.example.commoditydetails.taobao.bean.TBBean;
 import com.example.commoditydetails.taobao.bean.TBGoodChoiceBean;
 import com.example.commoditydetails.taobao.bean.TBLedSecuritiesBean;
-import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
@@ -42,7 +39,6 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
@@ -74,6 +70,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private TBLedSecuritiesBean tbLedSecuritiesBean;
     private String num_iid;
     private int flag = 0;
+    private int number = 0;
 
     public TBCommodityDetailsPresenter(Context context) {
         super(context);
@@ -92,7 +89,10 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onSuccess() {
-
+                number++;
+                if (number == 2) {
+                    shouQuan();
+                }
                 LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
             }
 
@@ -282,7 +282,10 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
 
                 if (result.startsWith("{\"code\":3")) {
-                    shouQuan();
+                    number++;
+                    if (number == 2) {
+                        shouQuan();
+                    }
                 }
                 if (result.indexOf("error:15") != -1) {
                     Map errorMap = new Gson().fromJson(result, Map.class);

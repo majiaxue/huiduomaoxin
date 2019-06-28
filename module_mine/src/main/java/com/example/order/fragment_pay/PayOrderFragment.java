@@ -7,7 +7,11 @@ import com.example.fans_order.adapter.FansOrderRvAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
+import com.example.order.OrderActivity;
+import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
+import com.example.order.adapter.TBAdapter;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
@@ -17,7 +21,7 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
     RecyclerView orderListRv;
 
     private static PayOrderFragment fragment;
-    private int index = 1;
+    private int flag = 0;
 
 
     public static PayOrderFragment getInstance() {
@@ -42,8 +46,6 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData();
-
     }
 
     @Override
@@ -51,21 +53,34 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
 
     }
 
-    public void setOrign(int index) {
-        this.index = index;
-        presenter.loadData();
+    public void addFlag() {
+        flag++;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-
+            if (flag > 0) {
+                presenter.loadData();
+            } else {
+                flag++;
+            }
         }
     }
 
     @Override
     public void loadMineRv(RvListAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadJD(JDAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadTB(TBAdapter adapter) {
         orderListRv.setAdapter(adapter);
     }
 

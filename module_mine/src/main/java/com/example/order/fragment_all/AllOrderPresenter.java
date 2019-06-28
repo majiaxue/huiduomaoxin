@@ -7,25 +7,31 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.JDGoodsRecBean;
+import com.example.bean.JDOrderBean;
 import com.example.bean.MyOrderBean;
+import com.example.bean.TBOrderBean;
 import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
+import com.example.order.adapter.TBAdapter;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 public class AllOrderPresenter extends BasePresenter<AllOrderView> {
-    private List<MyOrderBean> dataList;
-    private RvListAdapter adapter;
 
     public AllOrderPresenter(Context context) {
         super(context);
@@ -38,31 +44,28 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
 
     public void loadData(int index) {
         if (index == 0) {
-            scOrder(index);
+            scOrder();
         } else if (index == 1) {
-            tbOrder(index);
+            tbOrder();
         } else if (index == 2) {
-            jdOrder(index);
+            jdOrder();
         } else if (index == 3) {
-            pddOrder(index);
+            pddOrder();
         }
 
     }
 
-    private void pddOrder(int index) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.QUERY_PDD_ORDER, SPUtil.getToken());
+    private void pddOrder() {
+        Map map = MapUtil.getInstance().addParms("type", 2).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("pdd订单：" + result);
-                dataList = JSON.parseArray(result, MyOrderBean.class);
-                if (adapter == null) {
-                    adapter = new RvListAdapter(mContext, dataList, R.layout.rv_order_list);
-                    if (getView() != null) {
-                        getView().loadMineRv(adapter);
-                    }
-                } else {
-                    adapter.notifyDataSetChanged();
+                final List<MyOrderBean> dataList = JSON.parseArray(result, MyOrderBean.class);
+                RvListAdapter adapter = new RvListAdapter(mContext, dataList, R.layout.rv_order_list);
+                if (getView() != null) {
+                    getView().loadMineRv(adapter);
                 }
 
                 adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
@@ -77,20 +80,92 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                List<MyOrderBean> dataList = new ArrayList<>();
+                RvListAdapter adapter = new RvListAdapter(mContext, dataList, R.layout.rv_order_list);
+                if (getView() != null) {
+                    getView().loadMineRv(adapter);
+                }
             }
         }));
     }
 
-    private void jdOrder(int index) {
+    private void jdOrder() {
+        Map map = MapUtil.getInstance().addParms("type", 1).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("jd订单：" + result);
+                List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
+                for (int i = 0; i < jdOrderBeans.size(); i++) {
+                    String image = jdOrderBeans.get(i).getImage();
+                    String[] split = image.split(" imgUrl=");
+                    String[] split1 = split[1].split(",");
+                    jdOrderBeans.get(i).setImage(split1[0]);
+                }
 
+                JDAdapter jdAdapter = new JDAdapter(mContext, jdOrderBeans, R.layout.rv_order_list);
+                getView().loadJD(jdAdapter);
+
+                jdAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        JDGoodsRecBean.DataBean.ListsBean bean = new JDGoodsRecBean.DataBean.ListsBean();
+
+//                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
+//                                .withString("")
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("jd:" + errorCode + "---------" + errorMsg);
+                List<JDOrderBean> jdOrderBeans = new ArrayList<>();
+                JDAdapter jdAdapter = new JDAdapter(mContext, jdOrderBeans, R.layout.rv_order_list);
+                getView().loadJD(jdAdapter);
+            }
+        }));
     }
 
-    private void tbOrder(int index) {
+    private void tbOrder() {
+        Map map = MapUtil.getInstance().addParms("type", 0).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("淘宝全部订单：" + result);
+                final List<TBOrderBean> orderBeans = JSON.parseArray(result, TBOrderBean.class);
+                TBAdapter tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
+                if (getView() != null) {
+                    getView().loadTB(tbAdapter);
+                }
 
+                tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                .withString("para", orderBeans.get(position).getNumIid())
+                                .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                .navigation();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("jd:" + errorCode + "---------" + errorMsg);
+                List<TBOrderBean> orderBeans = new ArrayList<>();
+                TBAdapter tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
+                if (getView() != null) {
+                    getView().loadTB(tbAdapter);
+                }
+            }
+        }));
     }
 
-    private void scOrder(int index) {
+    private void scOrder() {
 
     }
 }

@@ -231,7 +231,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
             }
         }));
     }
@@ -313,7 +312,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(Throwable e) {
-
             }
 
             @Override
@@ -393,7 +391,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
             }
         }));
     }

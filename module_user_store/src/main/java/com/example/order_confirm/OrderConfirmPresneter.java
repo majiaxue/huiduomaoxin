@@ -3,6 +3,7 @@ package com.example.order_confirm;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -33,6 +34,7 @@ import okhttp3.ResponseBody;
 public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
     private ShippingAddressBean addressBean;
+    private boolean isCan = false;
 
     public OrderConfirmPresneter(Context context) {
         super(context);
@@ -88,13 +90,15 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("运费：" + result);
+                isCan = true;
                 List<PostageBean> postageBean = JSON.parseArray(result, PostageBean.class);
                 getView().loadPostage(postageBean.get(0));
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("yunfei:" + errorCode + "---------" + errorMsg);
+                isCan = false;
+                Toast.makeText(mContext, "没有获取到运费，请返回重试", Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -104,31 +108,39 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     }
 
     public void submit(final OrderConfirmBean bean) {
-        String jsonString = JSON.toJSONString(bean);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("提交订单：" + result);
-                SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
-                submitOrderBean.setProductName("goods");
-                submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
+        if (bean.getReceiverProvince() == null || "".equals(bean.getReceiverProvince())) {
+            Toast.makeText(mContext, "请选择收货地址", Toast.LENGTH_SHORT).show();
+        } else if (!isCan) {
+            Toast.makeText(mContext, "未获取到运费信息，请重试", Toast.LENGTH_SHORT).show();
+        } else {
+            bean.setCouponAmount(0);
+
+            String jsonString = JSON.toJSONString(bean);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("提交订单：" + result);
+                    SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
+                    submitOrderBean.setProductName("goods");
+                    submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
 //                Intent intent = new Intent(mContext, PaymentActivity.class);
 //                intent.putExtra("bean", submitOrderBean);
 //                mContext.startActivity(intent);
-                ARouter.getInstance().build("/module_user_store/PaymentActivity")
-                        .withSerializable("submitOrderBean", submitOrderBean)
-                        .navigation();
-                ((Activity) mContext).finish();
-            }
+                    ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                            .withSerializable("submitOrderBean", submitOrderBean)
+                            .navigation();
+                    ((Activity) mContext).finish();
+                }
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e(errorCode + "--------" + errorMsg);
-                getView().payFail();
-            }
-        }));
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e(errorCode + "--------" + errorMsg);
+                    getView().payFail();
+                }
+            }));
 
+        }
     }
 }

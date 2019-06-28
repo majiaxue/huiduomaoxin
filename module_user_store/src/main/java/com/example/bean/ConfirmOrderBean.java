@@ -28,6 +28,7 @@ public class ConfirmOrderBean {
      */
     private String orderAddress;
 
+    private double couponAmount = 0;
 
     /**
      * 订单详情数组
@@ -35,6 +36,7 @@ public class ConfirmOrderBean {
     List<ConfirmOrderInsideBean> orderRequestItems;
 
     private String userId;
+
 
     public String getReceiverPhone() {
         return receiverPhone;

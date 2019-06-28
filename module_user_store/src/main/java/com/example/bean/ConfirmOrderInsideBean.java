@@ -8,12 +8,12 @@ public class ConfirmOrderInsideBean {
     /**
      * 优惠券ID
      */
-    private Long couponId;
+    private String couponId = "0";
 
     /**
      * 优惠券分解金额
      */
-    private Long couponAmount;
+    private double couponAmount = 0;
 
     private Long sellerId;
 
@@ -25,19 +25,19 @@ public class ConfirmOrderInsideBean {
         this.freightAmount = freightAmount;
     }
 
-    public Long getCouponId() {
+    public String getCouponId() {
         return couponId;
     }
 
-    public void setCouponId(Long couponId) {
+    public void setCouponId(String couponId) {
         this.couponId = couponId;
     }
 
-    public Long getCouponAmount() {
+    public double getCouponAmount() {
         return couponAmount;
     }
 
-    public void setCouponAmount(Long couponAmount) {
+    public void setCouponAmount(double couponAmount) {
         this.couponAmount = couponAmount;
     }
 

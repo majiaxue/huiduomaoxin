@@ -45,11 +45,17 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("浏览记录：" + result);
+                if (result==null){
+                    if (getView()!=null){
+                        getView().loadFinish();
+                    }
+                }
                 if (result != null) {
                     if (page == 1) {
                         dataList.clear();
                     }
                     dataList.addAll(JSON.parseArray(result, MyCollectBean.class));
+                    LogUtil.e("changdu:"+dataList.size());
                     if (recordAdapter == null) {
                         recordAdapter = new BrowseRecordAdapter(mContext, dataList, R.layout.item_base_rec);
                         if (getView() != null) {
@@ -59,6 +65,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
                         recordAdapter.notifyDataSetChanged();
                     }
                 }
+
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -77,7 +84,9 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
         recordAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId()+"").navigation();
+                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                        .withString("goods_id", dataList.get(position).getGoodsId()+"")
+                        .navigation();
             }
         });
     }

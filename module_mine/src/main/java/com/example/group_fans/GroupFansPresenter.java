@@ -69,6 +69,11 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                if ("1".equals(errorCode)) {
+                    if (getView() != null) {
+                        getView().noFans();
+                    }
+                }
                 LogUtil.e(errorCode + "-------" + errorMsg);
             }
         }));

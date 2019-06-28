@@ -105,6 +105,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     private SecondFlowAdapter sp3Adapter;
 
     private int attrSize = 1;
+    private List<BannerBean.RecordsBean> bannerList;
 
 
     public GoodsDetailPresenter(Context context) {
@@ -198,7 +199,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
                 //轮播图
                 String albumPics = userGoodsDetail.getAlbumPics();
-                List<BannerBean.RecordsBean> bannerList = new ArrayList<>();
+                bannerList = new ArrayList<>();
                 String[] split = albumPics.split(",");
                 for (int i = 0; i < split.length; i++) {
                     bannerList.add(new BannerBean.RecordsBean(split[i]));
@@ -649,6 +650,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         } else {
                             quantity--;
                         }
+                        count.setText("" + quantity);
                     }
                 });
 
@@ -1582,8 +1584,10 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void seeBigPicture(int position) {
-        LogUtil.e("piccount:" + imgList);
-        LogUtil.e("---------------------->" + position);
-        PopUtil.popAssessBigPic(mContext, imgList, position);
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < bannerList.size(); i++) {
+            list.add(bannerList.get(i).getPicUrl());
+        }
+        PopUtil.popAssessBigPic(mContext, list, position);
     }
 }

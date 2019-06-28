@@ -272,6 +272,21 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
                 presenter.jumpToShop();
             }
         });
+
+        goodsDetailShopName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToShop();
+            }
+        });
+
+        goodsDetailShopImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToShop();
+            }
+        });
+
         //跳转购入车
         goodsDetailBottomCart.setOnClickListener(new View.OnClickListener() {
             @Override

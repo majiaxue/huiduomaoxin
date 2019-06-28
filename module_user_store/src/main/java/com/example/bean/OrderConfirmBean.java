@@ -59,11 +59,11 @@ public class OrderConfirmBean implements Serializable {
     /**
      * 优惠券ID
      */
-    private String couponId;
+    private String couponId = "0";
     /**
      * 优惠券抵扣金额
      */
-    private double couponAmount;
+    private double couponAmount = 0;
 
     /**
      * 购买数量

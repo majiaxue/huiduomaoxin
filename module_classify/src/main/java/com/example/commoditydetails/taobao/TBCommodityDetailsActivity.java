@@ -2,47 +2,31 @@ package com.example.commoditydetails.taobao;
 
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.commoditydetails.taobao.bean.TBBean;
 import com.example.commoditydetails.taobao.bean.TBLedSecuritiesBean;
-import com.example.common.CommonResource;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
-import com.example.net.OnDataListener;
-import com.example.net.OnMyCallBack;
-import com.example.net.RetrofitUtil;
-import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
-import com.example.utils.CustomDialog;
+import com.example.view.CustomDialog;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
-import com.example.utils.SPUtil;
-import com.example.view.RVNestedScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.Observable;
 
 /**
  * Created by cuihaohao on 2019/6/14
@@ -169,7 +153,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/home/main").navigation();
-                AppManager.getInstance().finishGoodsActivity();
             }
         });
         //进入店铺

@@ -10,6 +10,7 @@ import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.MyOrderBean;
 import com.example.module_mine.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class RvListAdapter extends MyRecyclerAdapter<MyOrderBean> {
                 .setText(R.id.order_list_name, data.getGoodsName())
                 .setText(R.id.order_list_price, "￥" + data.getGoodsPrice())
                 .setText(R.id.order_list_count, "x" + data.getGoodsQuantity())
+                .setImageUrl(R.id.order_list_img, data.getGoodsThumbnailUrl())
                 .setText(R.id.order_list_total, "共" + data.getGoodsQuantity() + "件商品  合计：￥" + data.getGoodsPrice())
                 .setText(R.id.order_list_predict, "预计收益" + ArithUtil.mul(SPUtil.getFloatValue("back"), data.getPromotionAmount() / 100) + "元");
 

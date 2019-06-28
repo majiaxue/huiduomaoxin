@@ -124,7 +124,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     private void jumpToShop(int position) {
-        mContext.startActivity(new Intent(mContext, ShopHomeActivity.class));
+        Intent intent = new Intent(mContext, ShopHomeActivity.class);
+        intent.putExtra("shop_id", commendList.get(position).getSellerId());
+        mContext.startActivity(intent);
     }
 
     public void jumpToGoodsDetail(int position) {

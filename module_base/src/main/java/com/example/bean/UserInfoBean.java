@@ -327,5 +327,43 @@ public class UserInfoBean implements Serializable {
     public void setTotalBackMoney(String totalBackMoney) {
         this.totalBackMoney = totalBackMoney;
     }
+
+    @Override
+    public String toString() {
+        return "UserInfoBean{" +
+                "id='" + id + '\'' +
+                ", userCode='" + userCode + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", status='" + status + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", icon='" + icon + '\'' +
+                ", gender='" + gender + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", city='" + city + '\'' +
+                ", job='" + job + '\'' +
+                ", personalizedSignature='" + personalizedSignature + '\'' +
+                ", sourceType='" + sourceType + '\'' +
+                ", Stringegration='" + Stringegration + '\'' +
+                ", growth='" + growth + '\'' +
+                ", luckeyCount='" + luckeyCount + '\'' +
+                ", historyStringegration='" + historyStringegration + '\'' +
+                ", weixinOpenid='" + weixinOpenid + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", blance='" + blance + '\'' +
+                ", levelId='" + levelId + '\'' +
+                ", backMoney='" + backMoney + '\'' +
+                ", checkCode='" + checkCode + '\'' +
+                ", oldPassword='" + oldPassword + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                ", oldPhone='" + oldPhone + '\'' +
+                ", token='" + token + '\'' +
+                ", level='" + level + '\'' +
+                ", tenantId='" + tenantId + '\'' +
+                ", totalBackMoney='" + totalBackMoney + '\'' +
+                '}';
+    }
 }
 

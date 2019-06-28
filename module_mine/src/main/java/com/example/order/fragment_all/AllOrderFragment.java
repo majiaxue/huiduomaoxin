@@ -6,7 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
+import com.example.order.OrderActivity;
+import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
+import com.example.order.adapter.TBAdapter;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
@@ -15,8 +19,9 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
     @BindView(R2.id.order_list_rv)
     RecyclerView orderListRv;
 
+    private int flag = 0;
+
     private static AllOrderFragment fragment;
-    private int index = 1;
 
     public static AllOrderFragment getInstance() {
         if (fragment == null) {
@@ -40,7 +45,7 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData(index);
+        presenter.loadData(1);
 
     }
 
@@ -49,8 +54,11 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
 
     }
 
+    public void addFlag() {
+        flag++;
+    }
+
     public void setOrign(int index) {
-        this.index = index;
         presenter.loadData(index);
     }
 
@@ -58,12 +66,26 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-
+            if (flag > 0) {
+                presenter.loadData(OrderActivity.index);
+            } else {
+                flag++;
+            }
         }
     }
 
     @Override
     public void loadMineRv(RvListAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadJD(JDAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadTB(TBAdapter adapter) {
         orderListRv.setAdapter(adapter);
     }
 

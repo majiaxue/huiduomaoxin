@@ -104,6 +104,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         orderBean.setUserId(SPUtil.getUserCode());
         orderBean.setOrderRequestItems(list);
 
+
         String jsonString = JSON.toJSONString(orderBean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.CART_SUBMIT_ORDER, requestBody, SPUtil.getToken());

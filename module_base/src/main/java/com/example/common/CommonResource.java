@@ -9,7 +9,7 @@ public class CommonResource {
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
-    public static final String URL_4_4001 = "http://192.168.1.4:4001";
+    public static final String URL_4_4001 = "http://192.168.1.9:4001";
     public static final String URL_9_4001 = "http://47.99.93.123:4001";
     public static final String URL_4_5003 = "http://192.168.1.4:5003";
     public static final String URL_30_9004 = "http://192.168.1.30:9004";

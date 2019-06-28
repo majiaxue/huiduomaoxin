@@ -205,6 +205,12 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     }
 
     @Override
+    public void noFans() {
+        this.totalPage = 0;
+        groupFansTotal.setText("0");
+    }
+
+    @Override
     public GroupFansView createView() {
         return this;
     }

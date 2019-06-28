@@ -33,14 +33,17 @@ public class OrderPresenter extends BasePresenter<OrderView> {
 
     @Override
     protected void onViewDestroy() {
-
+        OrderActivity.index = 1;
     }
 
-    public void initTabLayout(final TabLayout orderTab) {
+    public void initTabLayout(final TabLayout orderTab, int position) {
         allOrderFragment = AllOrderFragment.getInstance();
         payOrderFragment = PayOrderFragment.getInstance();
         settleOrderFragment = SettleOrderFragment.getInstance();
         loseOrderFragment = LoseOrderFragment.getInstance();
+
+        addFlag(position);
+
         for (String title : titleArr) {
             orderTab.addTab(orderTab.newTab().setText(title));
         }
@@ -93,6 +96,26 @@ public class OrderPresenter extends BasePresenter<OrderView> {
         });
     }
 
+    private void addFlag(int position) {
+        if (position == 0) {
+            payOrderFragment.addFlag();
+            settleOrderFragment.addFlag();
+            loseOrderFragment.addFlag();
+        } else if (position == 1) {
+            allOrderFragment.addFlag();
+            settleOrderFragment.addFlag();
+            loseOrderFragment.addFlag();
+        } else if (position == 2) {
+            allOrderFragment.addFlag();
+            payOrderFragment.addFlag();
+            loseOrderFragment.addFlag();
+        } else if (position == 3) {
+            allOrderFragment.addFlag();
+            payOrderFragment.addFlag();
+            settleOrderFragment.addFlag();
+        }
+    }
+
     public void initViewPager(FragmentManager fm) {
         OrderVPAdapter vpAdapter = new OrderVPAdapter(fm, fragmentList, titleArr);
         getView().updateVP(vpAdapter);
@@ -117,19 +140,7 @@ public class OrderPresenter extends BasePresenter<OrderView> {
 
     public void change(int i, int index) {
         getView().typeChanged(i);
-        switch (index) {
-            case 0:
-                allOrderFragment.setOrign(index);
-                break;
-            case 1:
-                allOrderFragment.setOrign(index);
-                break;
-            case 2:
-                allOrderFragment.setOrign(index);
-                break;
-            case 3:
-                allOrderFragment.setOrign(index);
-                break;
-        }
+        allOrderFragment.setOrign(index);
+
     }
 }

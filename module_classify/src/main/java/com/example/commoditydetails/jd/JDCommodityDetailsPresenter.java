@@ -96,8 +96,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //商品轮播图
-    public void setXBanner(XBanner commodityXbanner, final List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList, int position) {
-        List<JDGoodsRecBean.DataBean.ListsBean.ImageInfoBean.ImageListBean> imageList = listsBeanList.get(position).getImageInfo().getImageList();
+    public void setXBanner(XBanner commodityXbanner, final JDGoodsRecBean.DataBean.ListsBean listsBeanList) {
+        List<JDGoodsRecBean.DataBean.ListsBean.ImageInfoBean.ImageListBean> imageList = listsBeanList.getImageInfo().getImageList();
         for (int i = 0; i < imageList.size(); i++) {
             url.add(imageList.get(i).getUrl());
         }
@@ -127,8 +127,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //商品详情图
-    public void setShopParticulars(RecyclerView shopParticulars, final List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList, int position) {
-        List<JDGoodsRecBean.DataBean.ListsBean.ImageInfoBean.ImageListBean> imageList = listsBeanList.get(position).getImageInfo().getImageList();
+    public void setShopParticulars(RecyclerView shopParticulars, final JDGoodsRecBean.DataBean.ListsBean listsBeanList) {
+        List<JDGoodsRecBean.DataBean.ListsBean.ImageInfoBean.ImageListBean> imageList = listsBeanList.getImageInfo().getImageList();
         for (int i = 0; i < imageList.size(); i++) {
             images.add(imageList.get(i).getUrl());
         }

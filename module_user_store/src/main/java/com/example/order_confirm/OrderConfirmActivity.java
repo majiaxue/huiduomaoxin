@@ -17,6 +17,7 @@ import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -99,6 +100,9 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmGoods.setText(confirmBean.getProductName());
         orderConfirmColor.setText(confirmBean.getProductAttr());
         orderConfirmPrice.setText(confirmBean.getPrice() + "");
+        orderConfirmCount.setText(confirmBean.getQuantity() + "");
+        orderConfirmGoodsCount.setText("共" + confirmBean.getQuantity() + "件");
+        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
 
 
         presenter.getAddress();

@@ -10,4 +10,6 @@ public interface GroupFansView extends IView {
     void loadCount(GroupFansPeopleBean peopleBean);
 
     void loadFinish();
+
+    void noFans();
 }

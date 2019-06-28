@@ -39,7 +39,7 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
     @Autowired(name = "type")
     int type;
 
-    private int index = 1;
+    public static int index = 1;
 
     @Override
     public int getLayoutId() {
@@ -50,7 +50,7 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
     public void initData() {
         ARouter.getInstance().inject(this);
         orderTab.setupWithViewPager(orderViewpager);
-        presenter.initTabLayout(orderTab);
+        presenter.initTabLayout(orderTab, type);
         presenter.initViewPager(getSupportFragmentManager());
         orderViewpager.setOffscreenPageLimit(3);
         orderViewpager.setCurrentItem(type);
@@ -97,8 +97,9 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
             @Override
             public void onClick(View v) {
                 index = 0;
-                presenter.change(3, index);
-                orderTab.getTabAt(0).select();
+//                presenter.change(3, index);
+//                orderTab.getTabAt(0).select();
+                Toast.makeText(OrderActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
             }
         });
 

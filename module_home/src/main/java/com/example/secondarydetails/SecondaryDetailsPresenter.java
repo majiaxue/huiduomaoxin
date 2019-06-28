@@ -28,7 +28,7 @@ import com.example.bean.PddGoodsSearchVo;
 import com.example.bean.SecondaryPddRecBean;
 import com.example.secondarydetails.bean.SecondaryTabBean;
 import com.example.bean.TBGoodsRecBean;
-import com.example.utils.CustomDialog;
+import com.example.view.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -111,7 +111,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             }.getType());
 
                                             if (!secondaryPddRecBean.getGoods_search_response().getTotal_count().equals("0")) {
-                                                if (getView()!=null){
+                                                if (getView() != null) {
                                                     getView().noGoods(false);
                                                 }
                                                 baseRecBeanList.clear();
@@ -154,7 +154,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 });
 
                                             } else {
-                                                if (getView()!=null){
+                                                if (getView() != null) {
                                                     getView().noGoods(true);
                                                 }
                                                 LogUtil.e("尚无数据");
@@ -237,7 +237,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             }.getType());
                                             if (tbGoodsRecBean != null) {
                                                 if (tbGoodsRecBean.getData() != null && tbGoodsRecBean.getData().size() != 0) {
-                                                    if (getView()!=null){
+                                                    if (getView() != null) {
                                                         getView().noGoods(false);
                                                     }
                                                     tbGoodsList.clear();
@@ -274,7 +274,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                         }
                                                     });
                                                 } else {
-                                                    if (getView()!=null){
+                                                    if (getView() != null) {
                                                         getView().noGoods(true);
                                                     }
                                                     LogUtil.e("数据为空");
@@ -356,11 +356,11 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             if (jDGoodsRecBean != null) {
 
                                                 if (jDGoodsRecBean.getCode().equals("-1") || jDGoodsRecBean.getData().getLists() == null && jDGoodsRecBean.getData().getLists().size() == 0) {
-                                                    if (getView()!=null){
+                                                    if (getView() != null) {
                                                         getView().noGoods(true);
                                                     }
                                                 } else {
-                                                    if (getView()!=null){
+                                                    if (getView() != null) {
                                                         getView().noGoods(false);
 
                                                     }
@@ -377,28 +377,11 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                             ARouter.getInstance()
                                                                     .build("/module_classify/JDCommodityDetailsActivity")
                                                                     .withString("skuid", listsBeanList.get(position).getSkuId())
-                                                                    .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                                    .withInt("position", position)
+                                                                    .withSerializable("jDGoodsRecBean", jDGoodsRecBean.getData().getLists().get(position))
                                                                     .navigation();
                                                         }
                                                     });
 
-                                                    secondaryJDRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                                                        @Override
-                                                        public void ViewOnClick(View view, final int index) {
-                                                            view.setOnClickListener(new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    ARouter.getInstance()
-                                                                            .build("/module_classify/JDCommodityDetailsActivity")
-                                                                            .withString("skuid", listsBeanList.get(index).getSkuId())
-                                                                            .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                                            .withInt("position", index)
-                                                                            .navigation();
-                                                                }
-                                                            });
-                                                        }
-                                                    });
                                                 }
                                             }
 
@@ -481,7 +464,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }.getType());
                     if (secondaryPddRecBean != null) {
                         if (!secondaryPddRecBean.getGoods_search_response().getTotal_count().equals("0")) {
-                            if (getView()!=null){
+                            if (getView() != null) {
                                 getView().noGoods(false);
                             }
 //                    baseRecBeanList.clear();
@@ -525,7 +508,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 }
                             });
                         } else {
-                            if (getView()!=null){
+                            if (getView() != null) {
                                 getView().noGoods(true);
                             }
                             LogUtil.e("尚无数据");
@@ -557,7 +540,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 //                    tbGoodsList.clear();
                     if (tbGoodsRecBean != null) {
                         if (tbGoodsRecBean.getData() != null && tbGoodsRecBean.getData().size() != 0) {
-                            if (getView()!=null){
+                            if (getView() != null) {
                                 getView().noGoods(false);
                             }
                             tbGoodsList.addAll(tbGoodsRecBean.getData());
@@ -592,7 +575,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 }
                             });
                         } else {
-                            if (getView()!=null){
+                            if (getView() != null) {
                                 getView().noGoods(true);
                             }
                         }
@@ -623,11 +606,11 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                     if (jDGoodsRecBean != null) {
                         if (jDGoodsRecBean.getCode().equals("-1") || jDGoodsRecBean.getData().getLists() == null && jDGoodsRecBean.getData().getLists().size() == 0) {
-                            if (getView()!=null){
+                            if (getView() != null) {
                                 getView().noGoods(true);
                             }
                         } else {
-                            if (getView()!=null){
+                            if (getView() != null) {
                                 getView().noGoods(false);
                             }
                             listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
@@ -642,26 +625,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                     ARouter.getInstance()
                                             .build("/module_classify/JDCommodityDetailsActivity")
                                             .withString("skuid", listsBeanList.get(position).getSkuId())
-                                            .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                            .withInt("position", position)
+                                            .withSerializable("jDGoodsRecBean", jDGoodsRecBean.getData().getLists().get(position))
                                             .navigation();
-                                }
-                            });
-
-                            secondaryJDRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                                @Override
-                                public void ViewOnClick(View view, final int index) {
-                                    view.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            ARouter.getInstance()
-                                                    .build("/module_classify/JDCommodityDetailsActivity")
-                                                    .withString("skuid", listsBeanList.get(index).getSkuId())
-                                                    .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                    .withInt("position", index)
-                                                    .navigation();
-                                        }
-                                    });
                                 }
                             });
                         }

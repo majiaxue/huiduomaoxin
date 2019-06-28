@@ -1,7 +1,5 @@
 package com.example.mine;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +19,6 @@ import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.StatusBarUtils;
@@ -238,7 +235,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         this.userInfo = userInfo;
         mineName.setText(userInfo.getNickname());
         Glide.with(getContext()).load(userInfo.getIcon()).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(mineHeader);
-        mineCode.setText("邀请码："+userInfo.getInviteCode());
+        mineCode.setText("邀请码：" + userInfo.getInviteCode());
         mineTemp.setVisibility(View.VISIBLE);
         if (userInfo.getLevel() != null) {
             mineLv.setVisibility(View.VISIBLE);

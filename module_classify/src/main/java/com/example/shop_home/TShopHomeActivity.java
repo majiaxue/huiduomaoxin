@@ -63,7 +63,10 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
     public void initData() {
         ARouter.getInstance().inject(this);
         includeTitle.setText("店铺详情");
-//        presenter.login();
+        if (url.startsWith("//")){
+            url = "https:" + url;
+        }
+
         //声明WebSettings子类
         WebSettings webSettings = webView.getSettings();
 

@@ -143,11 +143,7 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
     }
 
     private void share() {
-        new ShareAction((Activity)mContext)
-                .setPlatform(SHARE_MEDIA.QQ)//传入平台
-                .withText("hello")//分享内容
-                .setCallback(shareListener)//回调监听器
-                .share();
+
     }
 
     private UMShareListener shareListener = new UMShareListener() {

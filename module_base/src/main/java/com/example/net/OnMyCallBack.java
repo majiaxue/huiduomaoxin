@@ -1,16 +1,11 @@
 package com.example.net;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.example.bean.BaseEntity;
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 

@@ -1,9 +1,5 @@
 package com.example.net;
 
-import android.content.Context;
-
-import com.example.common.CommonResource;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -57,7 +53,6 @@ public class RetrofitUtil {
      * 设置订阅 和 所在的线程环境
      */
     public <T> void toSubscribe(Observable<T> o, DisposableObserver<T> s) {
-
         o.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
