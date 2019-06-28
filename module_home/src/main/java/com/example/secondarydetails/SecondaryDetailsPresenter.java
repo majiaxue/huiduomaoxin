@@ -28,6 +28,7 @@ import com.example.bean.PddGoodsSearchVo;
 import com.example.bean.SecondaryPddRecBean;
 import com.example.secondarydetails.bean.SecondaryTabBean;
 import com.example.bean.TBGoodsRecBean;
+import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -58,7 +59,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     private List<TBGoodsRecBean.DataBean> tbGoodsList = new ArrayList<>();
     private List<JDTabBean.DataBean> jdTabList = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
-
+    private CustomDialog customDialog = new CustomDialog(mContext, "正在加载...");
 
     public SecondaryDetailsPresenter(Context context) {
         super(context);
@@ -179,7 +180,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
+                            customDialog.show();
                             initList(catsListBeans, secondaryDetailsRec, type, page, tBGoodsSearchBeans, jdTabList);
                         } else {
                             LogUtil.e("数据为空");
@@ -304,7 +305,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
+                            customDialog.show();
                             initList(catsListBeans, secondaryDetailsRec, type, page, tBGoodsSearchBeans, jdTabList);
                         } else {
                             LogUtil.e("数据为空");
@@ -420,7 +421,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
+                            customDialog.show();
                             initList(catsListBeans, secondaryDetailsRec, type, page, tBGoodsSearchBeans, jdTabList);
                         } else {
                             LogUtil.e("空");
@@ -474,6 +475,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult----------->" + result);
                     SecondaryPddRecBean secondaryPddRecBean = JSON.parseObject(result, new TypeReference<SecondaryPddRecBean>() {
                     }.getType());
@@ -536,6 +538,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e("SecondaryDetailsError----------->" + errorMsg);
+                    customDialog.dismiss();
                 }
 
             }));
@@ -547,6 +550,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     TBGoodsRecBean tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
                     }.getType());
@@ -601,6 +605,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
@@ -611,6 +616,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
                     final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
                     }.getType());
@@ -669,6 +675,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e("SecondaryDetailsErrorMsg京东商品--------------->" + errorMsg);
+                    customDialog.dismiss();
                 }
             }));
         }
