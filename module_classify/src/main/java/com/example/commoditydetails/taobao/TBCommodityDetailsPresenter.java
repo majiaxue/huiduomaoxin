@@ -153,6 +153,23 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }));
     }
 
+    public void historySave(String goodsId) {
+        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 3).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("添加浏览记录" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("添加浏览记录errorMsg" + errorMsg);
+            }
+        }));
+
+    }
+
     //用户收益
     public void earnings() {
         Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();

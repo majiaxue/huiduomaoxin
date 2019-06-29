@@ -118,6 +118,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         presenter.login();
         //优惠券
         presenter.ledSecurities(para);
+
+        presenter.historySave(para);
         //用户收益
         presenter.earnings();
         //加载视图

@@ -1,5 +1,7 @@
 package com.example.commoditydetails.jd;
 
+import android.graphics.Bitmap;
+
 import com.example.mvp.IView;
 
 /**
@@ -10,4 +12,6 @@ public interface JDCommodityDetailsView extends IView {
     void earnings(String earnings);
 
     void isNoGoods(boolean isNoGoods);
+
+    void qrImage(String url);
 }

@@ -105,7 +105,7 @@ public class CommonResource {
     public static final String TBKGOODSGETGYURLBYALL = "/rest/tbk/goods/getgyurlbyall";//转链接API
     public static final String TBKGOODSTBCATEGOTY = "/rest/tbk/goods/tbcategoty";//tb分类
     public static final String TBKGOODSSELLERTBKLIST = "/rest/tbk/goods/sellerTbkList";//获取全网淘客商品API
-    public static final String TBKGOODSGETTBKSHOP = "/rest/tbk/goods/gettbkshop";//全网搜索淘宝店铺列表
+    public static final String SUPERGRAND = "/rest/tbk/goods/superGrand";//超级品牌
     public static final String JDGETCATEGORY = "/rest/jd/getCategory";//获取京东商品类目
     public static final String JDGETGOODSDETAIL = "/rest/jd/getGoodsDetail";//获取京东商品详情
     public static final String JDGETGOODSMARKETLINK = "/rest/jd/getGoodsMarketLink";//获取京东商品推广链接
@@ -117,6 +117,8 @@ public class CommonResource {
     public static final String ORDERCONFIRM = "/rest/order/confirm";        //确定收货
     public static final String USERCOMMENT = "/rest/user/comment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
+    public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
+
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

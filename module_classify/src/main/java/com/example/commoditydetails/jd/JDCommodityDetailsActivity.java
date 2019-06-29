@@ -111,7 +111,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     JDGoodsRecBean.DataBean.ListsBean listsBeanList;
 
     private double sub;
-
+    private String qRImage;
     @Override
     public int getLayoutId() {
         return R.layout.activity_commodity_details;
@@ -127,6 +127,12 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //收益
         presenter.earnings();
+
+        presenter.historySave(skuid);
+
+        //领劵
+        presenter.ledSecurities(listsBeanList.getMaterialUrl(), listsBeanList.getCouponInfo().getCouponList().get(0).getLink());
+
         commodityShopItem.setVisibility(View.GONE);
         //详情轮播图
         presenter.setXBanner(commodityXbanner, listsBeanList);
@@ -208,7 +214,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             @Override
             public void onClick(View v) {
 //                Toast.makeText(JDCommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-//                presenter.share();
+                presenter.share(listsBeanList,qRImage);
 
             }
         });
@@ -217,8 +223,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.ledSecurities(listsBeanList.getMaterialUrl(), listsBeanList.getCouponInfo().getCouponList().get(0).getLink());
-
+                presenter.clickLedSecurities(qRImage);
             }
         });
 
@@ -227,7 +232,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
-                presenter.ledSecurities(listsBeanList.getMaterialUrl(), listsBeanList.getCouponInfo().getCouponList().get(0).getLink());
+                presenter.clickLedSecurities(qRImage);
             }
         });
         //收藏
@@ -280,5 +285,10 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         } else {
             shopNoGoods.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void qrImage(String url) {
+        this.qRImage = url;
     }
 }

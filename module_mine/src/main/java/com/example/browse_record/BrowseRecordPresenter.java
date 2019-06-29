@@ -73,6 +73,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("浏览记录errorMsg"+errorMsg);
                 if (getView() != null) {
                     getView().loadFinish();
                 }
