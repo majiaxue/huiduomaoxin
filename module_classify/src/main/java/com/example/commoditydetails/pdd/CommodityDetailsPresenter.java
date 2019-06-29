@@ -129,6 +129,23 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         }));
     }
 
+    public void historySave(String goodsId) {
+        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 1).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("添加浏览记录" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("添加浏览记录errorMsg" + errorMsg);
+            }
+        }));
+
+    }
+
     public void earnings() {
         Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
@@ -347,7 +364,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
 //    //加载生成图片布局
 //    public void viewToImage(String qRImage) {
-//        final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+//        final View view = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
 //        image = view.findViewById(R.id.share_image);
 //        TextView name = view.findViewById(R.id.share_name);
 //        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);

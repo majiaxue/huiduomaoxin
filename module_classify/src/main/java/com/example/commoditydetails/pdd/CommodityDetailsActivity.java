@@ -174,6 +174,9 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
         presenter.initView(goods_id);
+
+        //保存浏览记录
+        presenter.historySave(goods_id);
         //收益
         presenter.earnings();
         //推荐recycler

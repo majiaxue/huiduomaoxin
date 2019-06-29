@@ -1,1 +1,1 @@
-include ':app', ':module_base', ':module_mine', ':module_home', ':module_classify', ':module_other', ':module_user_store', ':module_user_mine'
+include ':app', ':module_base', ':module_mine', ':module_home', ':module_classify', ':module_user_store', ':module_user_mine'
