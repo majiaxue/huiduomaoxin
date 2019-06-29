@@ -21,7 +21,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.shopcollect.adapter.ShopCollectAdapter;
-import com.example.shopcollect.bean.ShopCollectBean;
+import com.example.bean.ShopCollectBean;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;

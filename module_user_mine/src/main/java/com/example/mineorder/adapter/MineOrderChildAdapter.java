@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.mineorder.bean.MineOrderBean;
+import com.example.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 
 import java.util.List;

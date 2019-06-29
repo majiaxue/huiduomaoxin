@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.home.bean.GoodChoiceBean;
+import com.example.bean.GoodChoiceBean;
 import com.example.module_home.R;
 import com.example.utils.ArithUtil;
 

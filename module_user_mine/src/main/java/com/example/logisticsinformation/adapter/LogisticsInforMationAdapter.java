@@ -5,10 +5,9 @@ import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.logisticsinformation.bean.LogisticsInforMationBean;
+import com.example.bean.LogisticsInforMationBean;
 import com.example.module_user_mine.R;
 
-import java.sql.RowId;
 import java.util.List;
 
 /**

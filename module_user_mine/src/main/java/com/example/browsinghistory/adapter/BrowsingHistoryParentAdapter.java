@@ -6,21 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.browsinghistory.bean.BrowsingHistoryBean;
+import com.example.bean.BrowsingHistoryBean;
 import com.example.module_user_mine.R;
 import com.example.utils.LogUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by cuihaohao on 2019/5/27

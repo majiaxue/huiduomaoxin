@@ -4,7 +4,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.logisticsinformation.bean.LogisticsInforMationBean;
+import com.example.bean.LogisticsInforMationBean;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -23,7 +22,6 @@ import com.example.utils.LogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 物流信息

@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.commoditydetails.taobao.bean.TBGoodChoiceBean;
+import com.example.bean.TBGoodChoiceBean;
 import com.example.utils.ArithUtil;
 
 import java.util.List;

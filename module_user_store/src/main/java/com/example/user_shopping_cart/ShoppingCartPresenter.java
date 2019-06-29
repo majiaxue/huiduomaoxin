@@ -169,6 +169,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                         }
                         if (getView() != null) {
                             getView().loadCartRv(cartParentRecAdapter);
+                            getView().loadSuccess();
 //                        getView().totalPrice(totalPrice);
                         }
                     }
@@ -179,6 +180,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("cart-------->" + errorCode + "        " + errorMsg);
+                getView().loadSuccess();
             }
         }));
 

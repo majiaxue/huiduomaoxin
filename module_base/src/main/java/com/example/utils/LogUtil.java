@@ -9,13 +9,13 @@ public class LogUtil {
     private static boolean isDebug;
 
     public static void e(String message) {
-        if (isDebug) {
+//        if (isDebug) {
             while (message.length() >= 2000) {
                 Log.e("tag", message.substring(0, 2000));
                 message = message.substring(2000);
             }
             Log.e("tag", message);
-        }
+//        }
     }
 
     public static boolean isDebug(Context context) {

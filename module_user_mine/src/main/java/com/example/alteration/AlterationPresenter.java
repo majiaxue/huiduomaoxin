@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.alteration.adapter.AlterationAdapter;
-import com.example.alteration.bean.AlterationBean;
+import com.example.bean.AlterationBean;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;

@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.entity.BaseRecImageAndTextBean;
 import com.example.module_user_mine.R;
-import com.example.shopcollect.bean.ShopCollectBean;
+import com.example.bean.ShopCollectBean;
 
 import java.util.List;
 

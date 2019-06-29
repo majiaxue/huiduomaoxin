@@ -4,14 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
 import com.example.coupon.adapter.CouponAdapter;
-import com.example.coupon.bean.CouponBean;
+import com.example.bean.CouponBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -21,7 +19,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
