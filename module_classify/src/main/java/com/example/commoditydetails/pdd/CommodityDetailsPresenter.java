@@ -70,6 +70,7 @@ import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -362,60 +363,61 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     }
 
-//    //加载生成图片布局
-//    public void viewToImage(String qRImage) {
-//        final View view = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
-//        image = view.findViewById(R.id.share_image);
-//        TextView name = view.findViewById(R.id.share_name);
-//        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
-//        TextView originalPrice = view.findViewById(R.id.share_original_price);
-//        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
-//        TextView number = view.findViewById(R.id.share_number);
-//        ImageView qRCode = view.findViewById(R.id.share_qr_code);
-//        //字体加中划线
-//        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-//        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
-//        LogUtil.e("url主图---------->" + beanList.get(0).getGoods_gallery_urls().get(0));
-//        String s = beanList.get(0).getGoods_gallery_urls().get(0);
-//        Glide.with(mContext)
-//                .load(s)
-//                .skipMemoryCache(true)
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .placeholder(R.drawable.icon_logo)
-//                .error(R.drawable.icon_chahao)
-//                .into(image);
-//
-//        LogUtil.e("url1轮播图---------->" + s);
-//
-//        name.setText(beanList.get(0).getGoods_name());
-//        preferentialPrice.setText("￥" + div);
-//        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
-//        couponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元");
-//        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
-//        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
-//        qRCode.setImageBitmap(qr);
-//        LogUtil.e("url2二维码---------->" + qRImage);
-//
-//        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-//
-//
-//        if (getView() != null) {
-//            getView().imageBitmap(bitmap);
-//        }
-//    }
+    //加载生成图片布局
+    public void viewToImage(String qRImage,String path) {
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+        image = view.findViewById(R.id.share_image);
+        TextView name = view.findViewById(R.id.share_name);
+        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
+        TextView originalPrice = view.findViewById(R.id.share_original_price);
+        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
+        TextView number = view.findViewById(R.id.share_number);
+        ImageView qRCode = view.findViewById(R.id.share_qr_code);
+        //字体加中划线
+        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
+        LogUtil.e("url主图---------->" + beanList.get(0).getGoods_gallery_urls().get(0));
+        String s = beanList.get(0).getGoods_gallery_urls().get(0);
+        image.setImageURI(Uri.fromFile(new File(path)));
+        /*Glide.with(mContext)
+                .load(s)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.icon_logo)
+                .error(R.drawable.icon_chahao)
+                .into(image);*/
+
+        LogUtil.e("url1轮播图---------->" + s);
+
+        name.setText(beanList.get(0).getGoods_name());
+        preferentialPrice.setText("￥" + div);
+        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
+        couponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元");
+        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+        qRCode.setImageBitmap(qr);
+        LogUtil.e("url2二维码---------->" + qRImage);
+
+        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+
+
+        if (getView() != null) {
+            getView().imageBitmap(bitmap);
+        }
+    }
 
     //分享
-    public void share(Bitmap bitmap) {
+    public void share() {
         ShareBoardConfig config = new ShareBoardConfig();
         config.setTitleText("分享到")
                 .setTitleTextColor(Color.parseColor("#222222"))
                 .setMenuItemTextColor(Color.parseColor("#666666"))
                 .setMenuItemIconPressedColor(Color.parseColor("#000000"))
                 .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
-        LogUtil.e("bitmap" + bitmap);
+        LogUtil.e("bitmap" + this.bitmap);
 
         new ShareAction((Activity) mContext)
-                .withMedia(new UMImage(mContext, bitmap))
+                .withMedia(new UMImage(mContext, this.bitmap))
                 .withText("hello")
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(shareListener).open(config);

@@ -2,6 +2,7 @@ package com.example.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Environment;
@@ -10,7 +11,12 @@ import android.view.View;
 import android.view.WindowManager;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ViewToBitmap {
 
@@ -28,13 +34,32 @@ public class ViewToBitmap {
         return bitmap;
     }
 
-    public static void saveBitmap(Bitmap bitmap) {
+    public static Bitmap GetImageInputStream(String imageurl){
+        URL url;
+        HttpURLConnection connection=null;
+        Bitmap bitmap=null;
+        try {
+            url = new URL(imageurl);
+            connection=(HttpURLConnection)url.openConnection();
+            connection.setConnectTimeout(6000); //超时设置
+            connection.setDoInput(true);
+            connection.setUseCaches(false); //设置不使用缓存
+            InputStream inputStream=connection.getInputStream();
+            bitmap=BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    public static void saveBitmap(Bitmap bitmap1) {
         FileOutputStream fos;
         try {
             File root = Environment.getExternalStorageDirectory();
-            File file = new File(root, "test.png");
+            File file = new File(root, "test.jpg");
             fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            bitmap1.compress(Bitmap.CompressFormat.PNG, 30, fos);
             fos.flush();
             fos.close();
         } catch (Exception e) {
@@ -42,6 +67,16 @@ public class ViewToBitmap {
         }
     }
 
+    public static Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);  ///把流转化为Bitmap图片
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     /**
      * 获得屏幕宽度
      *

@@ -1,18 +1,14 @@
 package com.example.commoditydetails.pdd;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.AsyncTask;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,15 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.commoditydetails.pdd.bean.CommodityDetailsBean;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
@@ -36,9 +27,6 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
-import com.example.utils.FrescoBitmapCallback;
-import com.example.utils.FrescoLoadUtil;
-import com.example.utils.FrescoUtils;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.QRCode;
@@ -50,15 +38,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+
+import static com.example.utils.ViewToBitmap.GetImageInputStream;
 
 /**
  * 拼多多商品详情
@@ -159,6 +144,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private double div;
     private double promotionRate;
     private Bitmap bitmap;
+    private Bitmap saveBitmap;
+    private File file;
 
 
     @Override
@@ -238,7 +225,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share(bitmap);
+                presenter.share();
             }
         });
         //立即领取
@@ -308,7 +295,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         this.detailsBeanList = beanList;
 //        LogUtil.e("收益1-------->" + earnings);
-
+        new Task().execute(detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         //到手价
         div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
         //佣金比例
@@ -340,14 +327,17 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
     //加载生成图片布局
     private void viewToImage(String qRImage) {
-
         //字体加中划线
         shareOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         double div = ArithUtil.div(detailsBeanList.get(0).getMin_group_price() - detailsBeanList.get(0).getCoupon_discount(), 100, 1);//到手价
         LogUtil.e("url主图---------->" + detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         String s = detailsBeanList.get(0).getGoods_gallery_urls().get(0);
+        /*try {
+            Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(Uri.parse(s)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
         //商品图片
-        shareImage.setImageURI(Uri.parse(s));
         LogUtil.e("url1轮播图---------->" + s);
 
         shareName.setText(detailsBeanList.get(0).getGoods_name());
@@ -375,7 +365,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         this.imageUrl = url;
         //viewToImage
 //        presenter.viewToImage(url);
-        viewToImage(url);
+        //viewToImage(url);
     }
 
     @Override
@@ -402,28 +392,60 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         this.earnings = ear;
     }
 
-//    /**
-//     * 保存二维码到本地相册
-//     */
-//    private void saveImageToPhotos(Bitmap bmp) {
-//        // 首先保存图片
-//        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
-//        if (!appDir.exists()) {
-//            appDir.mkdir();
-//        }
-//        String fileName = "wwww" + ".jpg";
-//        File file = new File(appDir, fileName);
-//        try {
-//            FileOutputStream fos = new FileOutputStream(file);
-//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//            fos.flush();
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
-//        LogUtil.e("图片路径"+file.getPath());
-//    }
+    /**
+     * 保存二维码到本地相册
+     */
+    private void saveImageToPhotos(Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = "wwww" + ".jpg";
+        file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
+        presenter.viewToImage(imageUrl,file.getPath());
+        LogUtil.e("图片路径"+ file.getPath());
+    }
+
+
+    Handler handler=new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            if(msg.what==0x123){
+                saveImageToPhotos(saveBitmap);
+            }
+        };
+    };
+
+
+    /**
+     * 异步线程下载图片
+     *
+     */
+    class Task extends AsyncTask<String, Integer, Void> {
+
+        protected Void doInBackground(String... params) {
+            saveBitmap = ViewToBitmap.GetImageInputStream((String)params[0]);
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Message message=new Message();
+            message.what=0x123;
+            handler.sendMessage(message);
+        }
+
+    }
+
 }
