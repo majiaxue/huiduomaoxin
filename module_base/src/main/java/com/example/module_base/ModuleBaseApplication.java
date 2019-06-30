@@ -2,6 +2,7 @@ package com.example.module_base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
@@ -11,6 +12,8 @@ import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
@@ -19,6 +22,18 @@ import com.umeng.socialize.PlatformConfig;
 public class ModuleBaseApplication extends Application {
     private static Context context;
     public static IWXAPI wxapi;
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+
+        // 安装tinker
+        Beta.installTinker();
+    }
 
     @Override
     public void onCreate() {
@@ -39,6 +54,11 @@ public class ModuleBaseApplication extends Application {
         UMConfigure.init(this, CommonResource.U_APPKEY, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
         initShare();
         UMConfigure.setLogEnabled(true);
+
+
+        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
+        // 调试时，将第三个参数改为true
+        Bugly.init(this, "47037498aa", true);
 
         Fresco.initialize(this);
         context = getApplicationContext();
@@ -69,4 +89,5 @@ public class ModuleBaseApplication extends Application {
     private void initShare() {
         PlatformConfig.setWeixin("wxf08fd2965ac9ac30", "2d54eace93a3bda15d041ee594b7eeef");
     }
+
 }

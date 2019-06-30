@@ -1,6 +1,7 @@
 package com.example.user_shopping_cart;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -24,6 +25,9 @@ import com.example.utils.LogUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomerExpandableListView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -127,7 +131,12 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
     @Override
     public void initClick() {
-
+        shoppingCartSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                presenter.setShoppingCartRec();
+            }
+        });
     }
 
     @Override
@@ -201,5 +210,10 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     @Override
     public void totalPrice(double price) {
         shoppingCartTotal.setText("" + price);
+    }
+
+    @Override
+    public void loadSuccess() {
+        shoppingCartSmartRefresh.finishRefresh();
     }
 }

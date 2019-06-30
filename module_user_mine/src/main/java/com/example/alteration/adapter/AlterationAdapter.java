@@ -3,11 +3,10 @@ package com.example.alteration.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.alteration.bean.AlterationBean;
+import com.example.bean.AlterationBean;
 import com.example.module_user_mine.R;
 
 import java.util.List;

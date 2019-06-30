@@ -1,21 +1,17 @@
 package com.example.mineorder.stayobligation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.SubmitOrderBean;
 import com.example.common.CommonResource;
-import com.example.logisticsinformation.LogisticsInformationActivity;
 import com.example.mineorder.adapter.MineOrderParentAdapter;
-import com.example.mineorder.bean.MineOrderBean;
+import com.example.bean.MineOrderBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -32,7 +28,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.http.POST;
 
 /**
  * Created by cuihaohao on 2019/5/27

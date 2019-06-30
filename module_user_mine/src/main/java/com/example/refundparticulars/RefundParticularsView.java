@@ -1,6 +1,6 @@
 package com.example.refundparticulars;
 
-import com.example.alteration.bean.AlterationBean;
+import com.example.bean.AlterationBean;
 import com.example.mvp.IView;
 
 import java.util.List;

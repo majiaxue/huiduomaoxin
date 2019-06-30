@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -23,7 +22,7 @@ import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.bean.TBGoodsSearchBean;
 import com.example.superbrand.adapter.SuperBrandRecAdapter;
-import com.example.superbrand.bean.SuperBrandBean;
+import com.example.bean.SuperBrandBean;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 

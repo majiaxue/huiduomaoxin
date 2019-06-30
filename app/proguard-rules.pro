@@ -170,3 +170,5 @@
    public static *** i(...);
    public static *** w(...);
  }
+
+ -printmapping mapping.txt

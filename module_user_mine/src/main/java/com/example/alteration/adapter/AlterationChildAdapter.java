@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.alteration.bean.AlterationBean;
+import com.example.bean.AlterationBean;
 import com.example.module_user_mine.R;
 
 import java.util.List;

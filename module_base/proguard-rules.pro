@@ -19,14 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-# okhttp
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
--dontwarn okhttp3.**
 
--dontwarn com.squareup.okhttp.**
--keep class com.squareup.okhttp.**{*;}
-
+-keep class com.example.common.**{*;}
+-keep class com.example.net.**{*;}
+-keep class com.example.bean.**{*;}
+-keep class com.example.dbflow**{*;}
+-keep class com.raizlabs.android.dbflow**{*;}
 # okio
 -keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*
@@ -49,10 +47,6 @@
     <init>(java.lang.Throwable);
 }
 
-# Gson
--keep class com.google.gson.examples.models.** { *; }
--keep interface com.google.gson.examples.models.** { *; }
--keep class com.google.gson.examples.upgrade.internal.VersionInfo {*;}
 
 # 阿里百川
 -keepattributes Signature
@@ -70,18 +64,42 @@
 -keep class org.json.** {*;}
 -keep class com.ali.auth.**  {*;}
 
-# RxJava RxAndroid
+# ----------------联网系列-----------
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+#OkHttp3
+-dontwarn okhttp3.logging.**
+-keep class okhttp3.internal.{*;}
+-dontwarn okio.*
+#OkHttp3
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+#Retrofit
+-dontwarn okio.**
+-dontwarn javax.annotation.**
 -dontwarn sun.misc.**
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
+-dontwarn sorg.codehaus.mojo.animal_sniffer.**
+-dontwarn org.codehaus.**
+-dontwarn java.nio.**
+-dontwarn java.lang.invoke.**
+#RxJava RxAndroid
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.ArrayQueueField* {
+long producerIndex;
+long consumerIndex;
 }
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
+rx.internal.util.atomic.LinkedQueueNode producerNode;
 }
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
+#Gson
+-keep class com.google.gson.stream.** { *; }
+-keepattributes EnclosingMethod
+#------------------联网结束--------------
+
 # 友盟
 -keep class com.umeng.** {*;}
 -dontshrink
@@ -174,3 +192,19 @@
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
+
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
+# tinker混淆规则
+-dontwarn com.tencent.tinker.**
+-keep class com.tencent.tinker.** { *; }
+
+#fastjson
+-keepattributes Signature
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.**{*; }
+
+##XBanner 图片轮播混淆配置
+-keep class com.stx.xhb.xbanner.**{*;}

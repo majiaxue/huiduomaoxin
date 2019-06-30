@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.mineorder.bean.MineOrderBean;
+import com.example.bean.MineOrderBean;
 import com.example.mineorder.stayappraise.adapter.StayAppraiseChildAdapter;
 import com.example.module_user_mine.R;
 

@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.commoditydetails.pdd.bean.CommodityDetailsPddRecBean;
+import com.example.bean.CommodityDetailsPddRecBean;
 import com.example.module_classify.R;
 import com.example.utils.ArithUtil;
 

@@ -15,7 +15,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.logisticsinformation.adapter.LogisticsInforMationAdapter;
-import com.example.logisticsinformation.bean.LogisticsInforMationBean;
+import com.example.bean.LogisticsInforMationBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;

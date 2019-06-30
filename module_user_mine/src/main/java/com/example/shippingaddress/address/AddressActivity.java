@@ -1,6 +1,5 @@
 package com.example.shippingaddress.address;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,12 +18,11 @@ import com.example.mvp.BaseActivity;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.shippingaddress.address.bean.AddressInfo;
+import com.example.bean.AddressInfo;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;

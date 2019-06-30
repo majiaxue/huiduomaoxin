@@ -4,13 +4,10 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
-import com.example.mineorder.bean.MineOrderBean;
+import com.example.bean.MineOrderBean;
 import com.example.mineorder.stayappraise.adapter.StayAppraiseParentAdapter;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;

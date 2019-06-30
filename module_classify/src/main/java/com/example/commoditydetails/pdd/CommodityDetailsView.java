@@ -2,7 +2,7 @@ package com.example.commoditydetails.pdd;
 
 import android.graphics.Bitmap;
 
-import com.example.commoditydetails.pdd.bean.CommodityDetailsBean;
+import com.example.bean.CommodityDetailsBean;
 import com.example.mvp.IView;
 
 import java.util.List;

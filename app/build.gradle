@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+// 依赖插件脚本
+apply from: 'tinker-support.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -45,9 +47,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false    //是否开启混淆
+            minifyEnabled true    //是否开启混淆
             zipAlignEnabled true  //是否压缩优化
-//            shrinkResources true  //是否移出无用资源   如果要移除无用资源，必须开启混淆
+            shrinkResources true  //是否移出无用资源   如果要移除无用资源，必须开启混淆
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

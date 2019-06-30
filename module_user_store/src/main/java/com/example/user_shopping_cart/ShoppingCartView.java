@@ -19,4 +19,7 @@ public interface ShoppingCartView extends IView {
     void updateCount(int count);
 
     void deleteSuccess();
+
+    void loadSuccess();
+
 }

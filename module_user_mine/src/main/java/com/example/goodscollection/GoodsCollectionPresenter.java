@@ -15,7 +15,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
-import com.example.goodscollection.bean.GoodsCollectionRecBean;
+import com.example.bean.GoodsCollectionRecBean;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
