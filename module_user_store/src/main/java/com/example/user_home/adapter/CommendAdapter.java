@@ -1,14 +1,12 @@
 package com.example.user_home.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.HotSaleBean;
-import com.example.entity.CommendBean;
 import com.example.user_store.R;
 
 import java.util.List;

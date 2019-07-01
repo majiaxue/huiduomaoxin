@@ -2,6 +2,7 @@ package com.example.upgrade;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -68,14 +69,14 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        upJustNow("0", position);
                     }
                 });
 
                 view2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toPay(beanList.get(position).getPrice());
+                        upJustNow("1", position);
                     }
                 });
             }
@@ -87,5 +88,26 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                 .withString("money", money)
                 .withString("type", "upgrade")
                 .navigation();
+    }
+
+    private void upJustNow(final String flag, final int position) {
+        Map map = MapUtil.getInstance().addParms("levelId", beanList.get(position).getId()).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.UP_JUSTNOW, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("立即升级：" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("error:" + errorCode + "------------------" + errorMsg);
+                if ("1".equals(flag) && errorCode.equals("9")) {
+                    toPay(beanList.get(position).getPrice());
+                } else {
+                    Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }));
     }
 }

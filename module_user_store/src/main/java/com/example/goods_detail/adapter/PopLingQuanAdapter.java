@@ -6,7 +6,6 @@ import android.view.View;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.UserCouponBean;
-import com.example.entity.CouponBean;
 import com.example.user_store.R;
 
 import java.util.List;

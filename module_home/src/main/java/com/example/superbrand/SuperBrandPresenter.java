@@ -11,25 +11,19 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.common.CommonResource;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
-import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.bean.TBGoodsSearchBean;
 import com.example.superbrand.adapter.SuperBrandRecAdapter;
-import com.example.bean.SuperBrandBean;
+import com.example.superbrand.bean.SuperBrandBean;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

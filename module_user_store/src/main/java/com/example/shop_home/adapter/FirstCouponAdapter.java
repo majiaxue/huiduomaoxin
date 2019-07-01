@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.entity.ParmsBean;
+import com.example.bean.ParmsBean;
 import com.example.user_store.R;
 import com.example.view.AutoScaleTextView;
 

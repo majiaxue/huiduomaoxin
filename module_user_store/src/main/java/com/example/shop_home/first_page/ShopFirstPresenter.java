@@ -2,7 +2,7 @@ package com.example.shop_home.first_page;
 
 import android.content.Context;
 
-import com.example.entity.ParmsBean;
+import com.example.bean.ParmsBean;
 import com.example.mvp.BasePresenter;
 import com.example.shop_home.adapter.FirstCouponAdapter;
 import com.example.user_store.R;

@@ -4,18 +4,16 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.user_shopping_cart.bean.CartBean;
+import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.OnCountChangeListener;
 import com.example.utils.OnSelectViewListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

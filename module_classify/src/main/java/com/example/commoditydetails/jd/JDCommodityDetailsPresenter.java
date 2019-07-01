@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,12 +23,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.JDGoodsRecBean;
+import com.example.bean.JDLedSecuritiesBean;
 import com.example.commoditydetails.jd.adapter.JDRecAdapter;
-import com.example.commoditydetails.jd.bean.JDLedSecuritiesBean;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
-import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
-import com.example.commoditydetails.taobao.bean.TBGoodChoiceBean;
-import com.example.commoditydetails.taobao.bean.TBLedSecuritiesBean;
 import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
 import com.example.module_classify.R;
@@ -48,18 +44,12 @@ import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,7 +232,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                     if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
                         String clickURL = jdLedSecuritiesBean.getData().getClickURL();
                         LogUtil.e("url---------->" + clickURL);
-                        if (getView()!=null){
+                        if (getView() != null) {
                             getView().qrImage(clickURL);
                         }
 
@@ -260,7 +250,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //点击领劵
-    public void clickLedSecurities(String clickURL){
+    public void clickLedSecurities(String clickURL) {
         Intent intent = new Intent(mContext, WebViewActivity.class);
         intent.putExtra("url", clickURL);
         mContext.startActivity(intent);
@@ -336,8 +326,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //分享
-    public void share(JDGoodsRecBean.DataBean.ListsBean listsBean,String qRImage) {
-        LogUtil.e("qRImage---------->"+qRImage);
+    public void share(JDGoodsRecBean.DataBean.ListsBean listsBean, String qRImage) {
+        LogUtil.e("qRImage---------->" + qRImage);
         View inflate = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
         final LinearLayout popShareAll = inflate.findViewById(R.id.pop_share_all);
         SimpleDraweeView popShareImage = inflate.findViewById(R.id.pop_share_image);
@@ -410,7 +400,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
          */
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            LogUtil.e("失败"+t.getMessage());
+            LogUtil.e("失败" + t.getMessage());
         }
 
         /**

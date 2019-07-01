@@ -1,11 +1,11 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
-    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
-    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
-    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
+    public static final String BASEURL_9001 = "http://192.168.1.9:9001";   //商品//47.99.93.123
+    public static final String BASEURL_4001 = "http://192.168.1.9:4001";   //用户
+    public static final String BASEURL_9003 = "http://192.168.1.9:9003";   //商家
+    public static final String BASEURL_9004 = "http://192.168.1.9:9004";   //订单
+    public static final String BASEURL_9005 = "http://192.168.1.9:9005";   //参数
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -75,6 +75,7 @@ public class CommonResource {
     public static final String UP_PAY = "/rest/alipay/upLevelSign";             // 升级运营商/等级 支付
     public static final String SHOUQUAN = "/rest/tbk/goods/weiYi";           //转链授权
     public static final String GET_SHARE_URL = "/rest/share/invite";        //获取分享链接
+    public static final String UP_JUSTNOW = "/rest/user/level/up";          //立即升级
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

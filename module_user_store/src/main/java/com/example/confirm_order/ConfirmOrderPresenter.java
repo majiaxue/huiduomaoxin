@@ -2,7 +2,6 @@ package com.example.confirm_order;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -19,8 +18,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.payment.PaymentActivity;
-import com.example.user_shopping_cart.bean.CartBean;
+import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
@@ -38,7 +36,7 @@ import okhttp3.ResponseBody;
 
 public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
     private ConfirmOrderAdapter orderAdapter;
-    private ShippingAddressBean addressBean;
+    public ShippingAddressBean addressBean;
     private List<CartBean.RecordsBean> dataList = new ArrayList<>();
 
     public ConfirmOrderPresenter(Context context) {
@@ -203,7 +201,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             totalPrice += postageBean.get(i).getTotal();
         }
         if (getView() != null) {
-            getView().loadPostage(ArithUtil.exact(totalFeight, 2), ArithUtil.exact(totalFeight, 2), postageBean.size());
+            getView().loadPostage(ArithUtil.exact(totalFeight, 2), ArithUtil.exact(totalPrice, 2), postageBean.size());
         }
     }
 

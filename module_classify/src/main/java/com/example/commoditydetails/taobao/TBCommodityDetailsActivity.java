@@ -321,7 +321,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public void tBDetails() {
         status++;
-        LogUtil.e("status" +status);
+        LogUtil.e("status" + status);
         if (status == 3) {
             customDialog.dismiss();
 //            //详情轮播图
@@ -345,15 +345,15 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                     String[] split = zkFinalPrice.split("-");
                     String commission_rate = tbLedSecuritiesBean.getCommission_rate();
                     String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                    if (!TextUtils.isEmpty(couponInfo)){
+                    if (!TextUtils.isEmpty(couponInfo)) {
                         String substring = couponInfo.substring(couponInfo.indexOf("减"));
                         String price = substring.substring(1, substring.indexOf("元"));
                         double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
                         double div = ArithUtil.div(Double.valueOf(commission_rate), 1000, 2);
-                        double mul = ArithUtil.mul(div, Double.valueOf(zkFinalPrice));
+                        double mul = ArithUtil.mul(div, Double.valueOf(split[0]));
 
-                        commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price)));//优惠价
-                        commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                        commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price)));//优惠价
+                        commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
                         commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
                         commodityCouponPrice.setText(tbLedSecuritiesBean.getCoupon_info());
                         commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + tbLedSecuritiesBean.getCoupon_end_time());
@@ -363,7 +363,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 } else {
                     String commission_rate = tbLedSecuritiesBean.getCommission_rate();
                     String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                    if (!TextUtils.isEmpty(couponInfo)){
+                    if (!TextUtils.isEmpty(couponInfo)) {
                         String substring = couponInfo.substring(couponInfo.indexOf("减"));
                         String price = substring.substring(1, substring.indexOf("元"));
                         double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
@@ -377,7 +377,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                         commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + tbLedSecuritiesBean.getCoupon_end_time());
 
                     }
-
 
 
                 }

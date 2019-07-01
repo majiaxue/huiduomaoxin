@@ -8,17 +8,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
-import com.example.bean.PostageBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.confirm_order.adapter.ConfirmOrderAdapter;
 import com.example.mvp.BaseActivity;
-import com.example.user_shopping_cart.bean.CartBean;
+import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
@@ -116,6 +113,7 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
+            presenter.addressBean = addressBean;
             loadAddress(addressBean);
         }
     }
@@ -131,8 +129,8 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     @Override
     public void loadPostage(double feight, double price, int number) {
         confirmOrderTotalYunfei.setText("+￥" + feight);
-        confirmOrderTotalPrice.setText("￥" + price);
-        confirmOrderFinalPrice.setText("" + ArithUtil.add(feight, price));
+        confirmOrderTotalPrice.setText("￥" + ArithUtil.sub(price, feight));
+        confirmOrderFinalPrice.setText("" + price);
         mCount.setText("共" + number + "件");
     }
 

@@ -9,7 +9,7 @@ import com.example.assess.adapter.AssessAdapter;
 import com.example.assess.adapter.AssessTitleAdapter;
 import com.example.bean.AssessBean;
 import com.example.common.CommonResource;
-import com.example.entity.AssessTitleBean;
+import com.example.bean.AssessTitleBean;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;

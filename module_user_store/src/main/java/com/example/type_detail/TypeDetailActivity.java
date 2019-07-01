@@ -85,6 +85,8 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
     String searchString;
     @Autowired(name = "hotSale")
     boolean isHotSale;
+    @Autowired(name = "categoryId")
+    String categoryId;
 
 
     @Override
@@ -106,7 +108,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         itemDecoration = new RvItemDecoration((int) getResources().getDimension(R.dimen.dp_13), (int) getResources().getDimension(R.dimen.dp_10));
-        presenter.loadData(searchString, isHotSale);
+        presenter.loadData(searchString, categoryId, isHotSale);
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(this);

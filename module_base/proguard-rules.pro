@@ -208,3 +208,6 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 
 ##XBanner 图片轮播混淆配置
 -keep class com.stx.xhb.xbanner.**{*;}
+
+#DBFlow
+-keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
