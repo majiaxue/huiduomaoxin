@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.UserInfoBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
@@ -80,6 +81,13 @@ public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeCh
                 userInfoBean.setCheckCode(wechatCode.getText().toString());
                 userInfoBean.setPhone(wechatPhone.getText().toString());
                 presenter.login(userInfoBean);
+            }
+        });
+
+        wechatUserAgreement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/agreement").withString("type", "wxxy").navigation();
             }
         });
     }

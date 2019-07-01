@@ -22,8 +22,7 @@ public class UpgradeAdapter extends MyRecyclerAdapter<OperatorBean> {
     @Override
     public void convert(RecyclerViewHolder holder, OperatorBean data, int position) {
 
-        holder.setText(R.id.rv_upgrade_title, data.getName())
-                .setText(R.id.rv_upgrade_description, data.getNote());
+        holder.setText(R.id.rv_upgrade_title, data.getName());
 
         if ("0".equals(data.getUpType())) {
             holder.getView(R.id.rv_upgrade_factor1).setVisibility(View.GONE);
@@ -39,8 +38,8 @@ public class UpgradeAdapter extends MyRecyclerAdapter<OperatorBean> {
                     .setText(R.id.rv_upgrade_price, data.getPrice() + "元");
         }
 
-        if (viewTwoOnClickListener != null) {
-            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_upgrade_btn), holder.getView(R.id.rv_upgrade_topay), position);
+        if (viewThreeOnClickListener != null) {
+            viewThreeOnClickListener.ViewThreeOnClick(holder.getView(R.id.rv_upgrade_btn), holder.getView(R.id.rv_upgrade_topay), holder.getView(R.id.rv_upgrade_description), position);
         }
     }
 

@@ -63,20 +63,27 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
 
 
     public void click() {
-        adapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
+        adapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
             @Override
-            public void ViewTwoOnClick(View view1, View view2, final int position) {
+            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        upJustNow("0", position);
+                        upJustNow("0", position, 0);
                     }
                 });
 
                 view2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        upJustNow("1", position);
+                        upJustNow("1", position, 1);
+                    }
+                });
+
+                view3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
             }
@@ -90,8 +97,8 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                 .navigation();
     }
 
-    private void upJustNow(final String flag, final int position) {
-        Map map = MapUtil.getInstance().addParms("levelId", beanList.get(position).getId()).build();
+    private void upJustNow(final String flag, final int position, int payType) {
+        Map map = MapUtil.getInstance().addParms("levelId", beanList.get(position).getId()).addParms("payType", payType).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.UP_JUSTNOW, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -109,5 +116,9 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                 }
             }
         }));
+    }
+
+    private void popQuanYi() {
+
     }
 }

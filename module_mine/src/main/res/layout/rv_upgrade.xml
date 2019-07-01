@@ -28,8 +28,8 @@
             android:layout_marginLeft="@dimen/dp_21"
             android:layout_marginTop="@dimen/dp_52"
             android:includeFontPadding="false"
-            android:text="铜牌权益说明描述"
-            android:textColor="#333333"
+            android:text="查看权益说明"
+            android:textColor="#3F51B5"
             android:textSize="@dimen/sp_14" />
 
         <TextView
