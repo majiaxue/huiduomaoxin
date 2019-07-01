@@ -69,7 +69,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
     private LedSecuritiesBean ledSecuritiesBean;
     private Bitmap bitmap;
-    private ImageView image;
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -230,7 +229,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
                 if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
                     if (getView() != null) {
-                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url());
+                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_short_url());
                     }
                 }
 
@@ -340,9 +339,9 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     }
 
     //加载生成图片布局
-    public void viewToImage(String qRImage,String path) {
+    public void viewToImage(String qRImage, String path) {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
-        image = view.findViewById(R.id.share_image);
+        ImageView image = view.findViewById(R.id.share_image);
         TextView name = view.findViewById(R.id.share_name);
         TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
         TextView originalPrice = view.findViewById(R.id.share_original_price);
@@ -355,13 +354,13 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         LogUtil.e("url主图---------->" + beanList.get(0).getGoods_gallery_urls().get(0));
         String s = beanList.get(0).getGoods_gallery_urls().get(0);
         image.setImageURI(Uri.fromFile(new File(path)));
-        /*Glide.with(mContext)
-                .load(s)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.icon_logo)
-                .error(R.drawable.icon_chahao)
-                .into(image);*/
+//        Glide.with(mContext)
+//                .load(s)
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .placeholder(R.drawable.icon_logo)
+//                .error(R.drawable.icon_chahao)
+//                .into(image);
 
         LogUtil.e("url1轮播图---------->" + s);
 
@@ -375,11 +374,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         LogUtil.e("url2二维码---------->" + qRImage);
 
         this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-
-
-        if (getView() != null) {
-            getView().imageBitmap(bitmap);
-        }
     }
 
     //分享

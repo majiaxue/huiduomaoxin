@@ -1,6 +1,11 @@
 package com.example.commoditydetails.jd;
 
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +19,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.JDGoodsRecBean;
+import com.example.commoditydetails.pdd.CommodityDetailsActivity;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -21,10 +27,15 @@ import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
+import com.example.utils.ViewToBitmap;
 import com.example.view.RVNestedScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +123,10 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     private double sub;
     private String qRImage;
+    private Bitmap saveBitmap;
+
+
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_commodity_details;
@@ -141,6 +156,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         presenter.setShopParticulars(shopParticulars, listsBeanList);
         sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
 
+        //异步下载图片
+        new Task().execute(listsBeanList.getImageInfo().getImageList().get(0).getUrl());
         commodityName.setText(listsBeanList.getSkuName());//名字
         commodityPreferentialPrice.setText("￥" + sub);//优惠价
         commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.getPriceInfo().getPrice()));//原价
@@ -188,33 +205,11 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
                 AppManager.getInstance().finishGoodsActivity();
             }
         });
-//        //进入店铺
-//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-        //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(JDCommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share(listsBeanList,qRImage);
+                presenter.share();
 
             }
         });
@@ -291,4 +286,61 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void qrImage(String url) {
         this.qRImage = url;
     }
+
+    /**
+     * 保存二维码到本地相册
+     */
+    private void saveImageToPhotos(Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = "wwww" + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
+        presenter.viewToImage(listsBeanList,qRImage, file.getPath());
+        LogUtil.e("图片路径" + file.getPath());
+    }
+
+    Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 0x123) {
+                saveImageToPhotos(saveBitmap);
+            }
+        }
+
+        ;
+    };
+
+
+    /**
+     * 异步线程下载图片
+     */
+    class Task extends AsyncTask<String, Integer, Void> {
+
+        protected Void doInBackground(String... params) {
+            saveBitmap = ViewToBitmap.GetImageInputStream((String) params[0]);
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Message message = new Message();
+            message.what = 0x123;
+            handler.sendMessage(message);
+        }
+
+    }
+
 }

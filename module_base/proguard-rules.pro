@@ -47,6 +47,18 @@
     <init>(java.lang.Throwable);
 }
 
+##################fresco库不混淆################
+#fresco
+-keep class com.facebook.** {*;}
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
+-dontwarn com.facebook.**
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+
+
 
 # 阿里百川
 -keepattributes Signature

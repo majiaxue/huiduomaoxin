@@ -2,18 +2,22 @@ package com.example.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.net.Uri;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.module_base.R;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 public class CustomDialog extends Dialog {
-    private String content;
 
-    public CustomDialog(Context context, String content) {
+    public CustomDialog(Context context) {
         super(context, R.style.CustomDialog);
-        this.content=content;
         initView();
     }
 
@@ -30,11 +34,22 @@ public class CustomDialog extends Dialog {
 
     private void initView(){
         setContentView(R.layout.dialog_view);
-        ((TextView)findViewById(R.id.tvcontent)).setText(content);
+        SimpleDraweeView dialogGif = findViewById(R.id.dialog_gif);
+        Uri uri = new Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                .path(String.valueOf(R.drawable.loading))
+                .build();
+        DraweeController draweeController =
+                Fresco.newDraweeControllerBuilder()
+                        .setUri(uri)
+                        .setAutoPlayAnimations(false) // 设置加载图片完成后是否直接进行播放
+                        .build();
+        dialogGif.setController(draweeController);
+
         setCanceledOnTouchOutside(true);
-        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.alpha=0.8f;
-        getWindow().setAttributes(attributes);
+//        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+//        attributes.alpha=0.8f;
+//        getWindow().setAttributes(attributes);
         setCancelable(false);
     }
 }

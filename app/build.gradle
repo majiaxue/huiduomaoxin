@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 // 依赖插件脚本
-apply from: 'tinker-support.gradle'
+//apply from: 'tinker-support.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -35,12 +35,12 @@ android {
             keyAlias 'key'
             keyPassword '123456'
             storePassword '123456'
-            storeFile file('C:/Users/dell/taobaoke/keystore.jks')
+            storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
         }
         debug {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('C:/Users/dell/taobaoke/keystore.jks')
+            storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
             storePassword '123456'
         }
     }

@@ -59,7 +59,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     private List<TBGoodsRecBean.DataBean> tbGoodsList = new ArrayList<>();
     private List<JDTabBean.DataBean> jdTabList = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
-    private CustomDialog customDialog = new CustomDialog(mContext, "正在加载...");
+    private CustomDialog customDialog = new CustomDialog(mContext);
 
     public SecondaryDetailsPresenter(Context context) {
         super(context);
