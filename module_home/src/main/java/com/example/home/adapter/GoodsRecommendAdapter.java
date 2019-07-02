@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.bean.GoodChoiceBean;
+import com.example.bean.GoodsRecommendBean;
 import com.example.utils.ArithUtil;
 
 import java.util.List;
@@ -14,14 +14,14 @@ import java.util.List;
  * Created by cuihaohao on 2019/6/13
  * Describe:
  */
-public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodChoiceBean.DataBean> {
+public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodsRecommendBean.DataBean> {
 
-    public GoodsRecommendAdapter(Context context, List<GoodChoiceBean.DataBean> mList, int mLayoutId) {
+    public GoodsRecommendAdapter(Context context, List<GoodsRecommendBean.DataBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, GoodChoiceBean.DataBean data, int position) {
+    public void convert(RecyclerViewHolder holder, GoodsRecommendBean.DataBean data, int position) {
         // 1表示天猫，0表示淘宝产品
         if (data.getUser_type().equals("0")) {
             //淘宝

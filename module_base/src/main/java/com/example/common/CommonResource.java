@@ -118,6 +118,7 @@ public class CommonResource {
     public static final String USERCOMMENT = "/rest/user/comment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
+    public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
 
 
 

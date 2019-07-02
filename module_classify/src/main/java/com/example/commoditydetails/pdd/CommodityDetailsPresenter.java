@@ -306,8 +306,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             ARouter.getInstance()
                                     .build("/module_classify/CommodityDetailsActivity")
-                                    .withLong("goods_id", topGoodsList.get(position).getGoods_id())
-                                    .withString("type", "1")
+                                    .withString("goods_id", topGoodsList.get(position).getGoods_id()+"")
                                     .navigation();
                         }
                     });
@@ -320,8 +319,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                                 public void onClick(View v) {
                                     ARouter.getInstance()
                                             .build("/module_classify/CommodityDetailsActivity")
-                                            .withLong("goods_id", topGoodsList.get(index).getGoods_id())
-                                            .withString("type", "1")
+                                            .withString("goods_id", topGoodsList.get(index).getGoods_id()+"")
                                             .navigation();
                                 }
                             });

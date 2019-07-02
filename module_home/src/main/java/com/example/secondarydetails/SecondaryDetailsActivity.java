@@ -2,6 +2,7 @@ package com.example.secondarydetails;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,11 +11,13 @@ import android.widget.LinearLayout;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.adapter.SecondaryJDRecAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.search.SearchActivity;
 import com.example.adapter.SecondaryPddRecAdapter;
+import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -55,8 +58,9 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
         ARouter.getInstance().inject(this);
 //        Intent intent = getIntent();
 //        type = intent.getStringExtra("type");
-
-        presenter.initView(secondaryDetailsTab, secondaryDetailsRec, secondaryDetailsSmartRefresh, type);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        secondaryDetailsRec.setLayoutManager(linearLayoutManager);
+        presenter.initView(secondaryDetailsTab, secondaryDetailsSmartRefresh, type);
         secondaryDetailsSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 球脉冲 样式
         secondaryDetailsSmartRefresh.setRefreshFooter(new ClassicsFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
@@ -93,7 +97,18 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
 
     @Override
     public void lodeRec(SecondaryPddRecAdapter baseRecAdapter) {
+
         secondaryDetailsRec.setAdapter(baseRecAdapter);
+    }
+
+    @Override
+    public void lodeTBRec(SecondaryTBRecAdapter secondaryTBRecAdapter) {
+        secondaryDetailsRec.setAdapter(secondaryTBRecAdapter);
+    }
+
+    @Override
+    public void lodeJDRec(SecondaryJDRecAdapter secondaryJDRecAdapter) {
+        secondaryDetailsRec.setAdapter(secondaryJDRecAdapter);
     }
 
     @Override

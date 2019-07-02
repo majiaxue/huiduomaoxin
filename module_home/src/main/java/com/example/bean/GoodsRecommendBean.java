@@ -6,7 +6,7 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/15
  * Describe:
  */
-public class GoodChoiceBean {
+public class GoodsRecommendBean {
 
     /**
      * count : 2

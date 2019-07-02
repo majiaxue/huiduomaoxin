@@ -119,8 +119,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     @Autowired(name = "goods_id")
     String goods_id;
 
-    @Autowired(name = "type")
-    String type;
 
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> detailsBeanList = new ArrayList<>();
     private String imageUrl;
@@ -131,7 +129,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private double mul;
     private double div;
     private double promotionRate;
-    private Bitmap saveBitmap;
     private File file;
     private CustomDialog customDialog;
 
@@ -147,7 +144,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         AppManager.getInstance().addGoodsActivity(this);
         customDialog = new CustomDialog(this);
         customDialog.show();
-        LogUtil.e("goods_id" + goods_id + type);
+        LogUtil.e("goods_id" + goods_id);
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
         presenter.initView(goods_id);

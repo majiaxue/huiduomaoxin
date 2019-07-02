@@ -16,20 +16,15 @@ import java.util.List;
  */
 public class SecondaryPddRecAdapter extends MyRecyclerAdapter<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> {
 
-    private String type;
-
-    public SecondaryPddRecAdapter(Context context, List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> mList, int mLayoutId, String type) {
+    public SecondaryPddRecAdapter(Context context, List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
-        this.type = type;
     }
 
     @Override
     public void convert(RecyclerViewHolder holder, SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean data, int position) {
 
-        if (type != null && type.equals("1")) {
-            //拼多多
-            holder.setImageResource(com.example.module_base.R.id.base_type, com.example.module_base.R.drawable.pinduoduo);
-        }
+        //拼多多
+        holder.setImageResource(com.example.module_base.R.id.base_type, com.example.module_base.R.drawable.pinduoduo);
 
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getGoods_thumbnail_url());
         holder.setText(R.id.base_name, data.getGoods_name());

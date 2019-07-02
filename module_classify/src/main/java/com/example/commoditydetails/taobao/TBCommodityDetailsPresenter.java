@@ -51,6 +51,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -242,11 +243,23 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 return false;
             }
         };
-        CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
+        final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
         shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
+//        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    Fresco.getImagePipeline().resume();
+//                }else {
+//                    Fresco.getImagePipeline().pause();
+//                }
+//
+//            }
+//        });
+
     }
 
     //是否收藏

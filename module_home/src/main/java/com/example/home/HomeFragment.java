@@ -62,7 +62,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @BindView(R2.id.home_nested_scroll)
     NestedScrollView homeNestedScroll;
 
-    private int nextPage = 5;
+    private int nextPage = 1;
 
 
     @Override
@@ -128,7 +128,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                nextPage = 5;
+                nextPage = 1;
                 presenter.setBottomRec(nextPage,homeBottomRec);
             }
         });

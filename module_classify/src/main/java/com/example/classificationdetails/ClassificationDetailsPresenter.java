@@ -354,7 +354,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                     }
                 } else {
                     if (pddLstAdapter == null) {
-                        pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec, "1");
+                        pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec);
                         if (getView() != null) {
                             getView().loadPDDLstRv(pddLstAdapter);
                             getView().loadFinish();

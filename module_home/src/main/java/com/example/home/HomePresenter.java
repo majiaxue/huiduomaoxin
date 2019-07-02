@@ -19,12 +19,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
+import com.example.bean.GoodChoiceBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.GoodsRecommendAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
-import com.example.bean.GoodChoiceBean;
+import com.example.bean.GoodsRecommendBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -49,7 +50,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<String> data;
     private List<View> views = new ArrayList<>();
     private List<BaseRecImageAndTextBean> strings;
-    private List<GoodChoiceBean.DataBean> goodList = new ArrayList<>();
+    private List<GoodsRecommendBean.DataBean> goodList = new ArrayList<>();
+    private List<GoodChoiceBean.DataBean> goodChoiceList = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList;
     private GoodsRecommendAdapter goodsRecommendAdapter;
 
@@ -203,30 +205,30 @@ public class HomePresenter extends BasePresenter<HomeView> {
     //优选
     public void setGoodChoiceRec(final RecyclerView homeGoodChoiceRec) {
 
-        Map map = MapUtil.getInstance().addParms("page", 1).addParms("pagesize", 10).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSPRODUCTS, map);
+        Map map = MapUtil.getInstance().addParms("pageno", 1).addParms("pagesize", 10).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.YOUXUANPRODUCTS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
 //                LogUtil.e("homePresenterResult---------->" + result);
-                GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
 
-                if (GoodChoiceBean != null) {
+                if (goodChoiceBean != null) {
 
-                    if (GoodChoiceBean.getData() != null) {
-                        goodList.clear();
-                        goodList.addAll(GoodChoiceBean.getData());
+                    if (goodChoiceBean.getData() != null) {
+                        goodChoiceList.clear();
+                        goodChoiceList.addAll(goodChoiceBean.getData());
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
                         homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
-                        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodList, R.layout.item_home_good_choice_rec);
+                        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
                         homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
                         goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(RecyclerView parent, View view, int position) {
                                 ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                        .withString("para", goodList.get(position).getItem_id())
-                                        .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+                                        .withString("para", goodChoiceList.get(position).getNum_iid())
+                                        .withString("shoptype", "1").navigation();
                             }
                         });
                     } else {
@@ -255,14 +257,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onSuccess(String result, String msg) {
 //                LogUtil.e("homePresenterResult---------->" + result);
-                GoodChoiceBean GoodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                GoodsRecommendBean goodsRecommendBean = JSON.parseObject(result, new TypeReference<GoodsRecommendBean>() {
                 }.getType());
-                if (GoodChoiceBean != null) {
-                    if (GoodChoiceBean.getData() != null) {
+                if (goodsRecommendBean != null) {
+                    if (goodsRecommendBean.getData() != null) {
                         if (nextPage == 5) {
                             goodList.clear();
                         }
-                        goodList.addAll(GoodChoiceBean.getData());
+                        goodList.addAll(goodsRecommendBean.getData());
 
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                         homeBottomRec.setLayoutManager(linearLayoutManager);
