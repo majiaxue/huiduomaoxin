@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.entity.AssessTitleBean;
+import com.example.bean.AssessTitleBean;
 import com.example.user_store.R;
 import com.example.utils.TxtUtil;
 

@@ -30,7 +30,7 @@ import com.example.bean.OrderConfirmBean;
 import com.example.bean.UserCouponBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
-import com.example.entity.ParmsBean;
+import com.example.bean.ParmsBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;

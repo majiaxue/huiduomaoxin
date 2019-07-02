@@ -1,28 +1,59 @@
 package com.example.main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.fastjson.JSON;
+import com.example.bean.CheckUpBean;
+import com.example.common.CommonResource;
 import com.example.hairring.HairRingFragment;
 import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.classify.ClassifyFragment;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
+import com.example.view.SelfDialog;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.interfaces.BetaPatchListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
+
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
 
 public class MainPresenter extends BasePresenter<MainView> {
     //触碰标识
@@ -34,10 +65,57 @@ public class MainPresenter extends BasePresenter<MainView> {
     private MineFragment mineFragment;
     private ClassifyFragment classifyFragment;
     private SuperBrandFragment superBrandFragment;
+    private ProgressBar mProgress;
+    private AlertDialog alertDialog;
+    private String clientVersion;
+    private static final String savePath = "/sdcard/fltk/apk"; // apk保存到SD卡的路径
+    private static final String saveFileName = savePath + "/fltk.apk"; // 完整路径名
+
+    private static final String patchPath = "/sdcard/fltk/patch"; // apk保存到SD卡的路径
+    private static final String patchFileName = patchPath + "/patch_signed_7zip.apk"; // 完整路径名
+    private static final int DOWNLOADING = 1; // 表示正在下载
+    private static final int DOWNLOADED = 2; // 下载完毕
+    private static final int DOWNLOAD_FAILED = 3; // 下载失败
+    private static final int PATCHEND = 4;
+
+    private int progress; // 下载进度
+    private boolean cancelFlag = false; // 取消下载标志位
+    private CheckUpBean checkUpBean;
+
 
     public MainPresenter(Context context) {
         super(context);
     }
+
+    /**
+     * 更新UI的handler
+     */
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DOWNLOADING:
+                    mProgress.setProgress(progress);
+                    break;
+                case DOWNLOADED:
+                    if (alertDialog != null)
+                        alertDialog.dismiss();
+                    installAPK();
+                    break;
+                case DOWNLOAD_FAILED:
+                    Toast.makeText(mContext, "下载失败", Toast.LENGTH_LONG).show();
+                    break;
+                case PATCHEND:
+                    if (alertDialog != null)
+                        alertDialog.dismiss();
+                    Beta.canAutoPatch = true;
+                    Beta.applyDownloadedPatch();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     public void loadData(FragmentManager fragmentManager, int resId) {
         this.fragmentManager = fragmentManager;
@@ -112,35 +190,35 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void initTinker() {
-        Beta.applyTinkerPatch(mContext.getApplicationContext(), Environment.getExternalStorageDirectory().getAbsolutePath() + "/fltk/patch/patch_signed_7zip.apk");
+        Beta.applyTinkerPatch(mContext.getApplicationContext(), patchFileName);
         //自动检查更新
-        Beta.checkUpgrade();
+//        Beta.checkUpgrade();
         //是否允许自动下载
-        Beta.canAutoDownloadPatch = false;
+//        Beta.canAutoDownloadPatch = true;
         //是否允许自动合成补丁
         Beta.canAutoPatch = true;
         //是否显示弹窗提示用户重启
-        Beta.canNotifyUserRestart = true;
+//        Beta.canNotifyUserRestart = true;
 
 
         //用户主动下载补丁文件
-        Beta.downloadPatch();
+//        Beta.downloadPatch();
 //        //用户主动合成补丁
-//        Beta.applyDownloadedPatch();
+        Beta.applyDownloadedPatch();
 
         /**
          * true表示初始化时自动检查升级;
          * false表示不会自动检查升级,需要手动调用Beta.checkUpgrade()方法;
          */
-        Beta.autoCheckUpgrade = true;
+//        Beta.autoCheckUpgrade = true;
         /**
          * 设置升级检查周期为60s(默认检查周期为0s)，60s内SDK不重复向后台请求策略);
          */
-        Beta.upgradeCheckPeriod = 60 * 1000;
+//        Beta.upgradeCheckPeriod = 60 * 1000;
         /**
          * 点击过确认的弹窗在APP下次启动自动检查更新时会再次显示;
          */
-        Beta.showInterruptedStrategy = true;
+//        Beta.showInterruptedStrategy = true;
 
         Beta.betaPatchListener = new BetaPatchListener() {
             @Override
@@ -183,4 +261,222 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
+    public void checkUp() {
+        getVersionInfo();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.CHECKUP);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("检查更新：" + result);
+                checkUpBean = JSON.parseObject(result, CheckUpBean.class);
+                String[] split = clientVersion.split("\\.");
+                String version = checkUpBean.getVersion();
+                if (version != null) {
+                    String[] split1 = version.split("\\.");
+                    if (Integer.valueOf(split[0]) < Integer.valueOf(split1[0])) {
+                        final SelfDialog selfDialog = new SelfDialog(mContext);
+                        selfDialog.setTitle("更新提示");
+                        selfDialog.setMessage(checkUpBean.getContent());
+                        selfDialog.setYesOnclickListener("立即升级", new SelfDialog.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                writeToDisk(checkUpBean.getUrl());
+                                showDialog();
+                                selfDialog.cancel();
+                            }
+                        });
+
+                        selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                            @Override
+                            public void onNoClick() {
+                                if ("0".equals(checkUpBean.getIsForce())) {
+                                    selfDialog.cancel();
+                                } else {
+                                    selfDialog.cancel();
+                                    AppManager.getInstance().AppExit();
+                                }
+                            }
+                        });
+
+                        selfDialog.show();
+                    } else {
+                        if (Double.valueOf(clientVersion) < Double.valueOf(checkUpBean.getList().get(0).getVersion())) {
+                            final SelfDialog selfDialog = new SelfDialog(mContext);
+                            selfDialog.setTitle("更新提示");
+                            selfDialog.setMessage(checkUpBean.getContent());
+                            selfDialog.setYesOnclickListener("立即升级", new SelfDialog.onYesOnclickListener() {
+                                @Override
+                                public void onYesClick() {
+                                    downLoadPatch(checkUpBean.getList().get(0).getUrl());
+                                    showDialog();
+                                    selfDialog.cancel();
+                                }
+                            });
+
+                            selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                                @Override
+                                public void onNoClick() {
+                                    selfDialog.cancel();
+                                }
+                            });
+
+                            selfDialog.show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("更新：" + errorCode + "------------" + errorMsg);
+            }
+        }));
+    }
+
+    private void getVersionInfo() {
+
+        PackageManager pm = mContext.getPackageManager();
+
+        try {
+            // 0代表拿所有的信息 packageInfo 是一个bean对象 是对整个清单文件的封装
+            // ApplicationInfo是PackageInfo的子集
+            PackageInfo packageInfo = pm.getPackageInfo(mContext.getPackageName(), 0);
+            clientVersion = packageInfo.versionName;
+            LogUtil.e("当前版本：" + clientVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("正在更新");
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.dialog_update, null);
+        mProgress = (ProgressBar) v.findViewById(R.id.update_progress);
+        builder.setView(v);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    public void writeToDisk(final String apkUrl) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(apkUrl);
+                    HttpURLConnection conn = (HttpURLConnection) url
+                            .openConnection();
+                    conn.connect();
+
+                    int length = conn.getContentLength();
+                    InputStream is = conn.getInputStream();
+
+                    File file = new File(savePath);
+                    if (!file.exists()) {
+                        file.mkdir();
+                    }
+                    String apkFile = saveFileName;
+                    File ApkFile = new File(apkFile);
+                    FileOutputStream fos = new FileOutputStream(ApkFile);
+
+                    int count = 0;
+                    byte buf[] = new byte[64];
+
+                    do {
+                        int numread = is.read(buf);
+                        count += numread;
+                        progress = (int) (((float) count / length) * 100);
+                        // 更新进度
+                        mHandler.sendEmptyMessage(DOWNLOADING);
+                        if (numread <= 0) {
+                            // 下载完成通知安装
+                            mHandler.sendEmptyMessage(DOWNLOADED);
+                            break;
+                        }
+                        fos.write(buf, 0, numread);
+                    } while (!cancelFlag); // 点击取消就停止下载.
+
+                    fos.close();
+                    is.close();
+                } catch (Exception e) {
+                    mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 下载完成后自动安装apk
+     */
+    public void installAPK() {
+        File apkFile = new File(saveFileName);
+        if (!apkFile.exists()) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        //判断是否是AndroidN以及更高的版本
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri contentUri = FileProvider.getUriForFile(mContext, "com.lxy.taobaoke.provider", apkFile);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        }
+        mContext.startActivity(intent);
+    }
+
+    private void downLoadPatch(final String patchUrl) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(patchUrl);
+                    HttpURLConnection conn = (HttpURLConnection) url
+                            .openConnection();
+                    conn.connect();
+
+                    int length = conn.getContentLength();
+                    InputStream is = conn.getInputStream();
+
+                    File file = new File(patchPath);
+                    if (!file.exists()) {
+                        file.mkdir();
+                    }
+                    String apkFile = patchFileName;
+                    File ApkFile = new File(apkFile);
+                    FileOutputStream fos = new FileOutputStream(ApkFile);
+
+                    int count = 0;
+                    byte buf[] = new byte[64];
+
+                    do {
+                        int numread = is.read(buf);
+                        count += numread;
+                        progress = (int) (((float) count / length) * 100);
+                        // 更新进度
+                        mHandler.sendEmptyMessage(DOWNLOADING);
+                        if (numread <= 0) {
+                            // 下载完成通知安装
+                            mHandler.sendEmptyMessage(PATCHEND);
+                            break;
+                        }
+                        fos.write(buf, 0, numread);
+                    } while (!cancelFlag); // 点击取消就停止下载.
+
+                    fos.close();
+                    is.close();
+                } catch (Exception e) {
+                    mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }

@@ -162,6 +162,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝搜索：" + result);
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
                 if (page == 1) {
                     tbList.clear();
                 }
@@ -187,7 +190,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
                         if (getView() != null) {
                             getView().loadTBWaterfallRv(waterfallAdapter);
-                            getView().loadFinish();
                         }
                     } else {
                         waterfallAdapter.notifyDataSetChanged();
@@ -197,7 +199,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         lstAdapter = new BaseRecAdapter(mContext, tbList, R.layout.item_base_rec, "0");
                         if (getView() != null) {
                             getView().loadTBLstRv(lstAdapter);
-                            getView().loadFinish();
                         }
                     } else {
                         lstAdapter.notifyDataSetChanged();
@@ -231,6 +232,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
             }
         }));
     }
@@ -246,6 +250,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
                 try {
                     String string = responseBody.string();
                     LogUtil.e("京东搜索:" + string);
@@ -259,7 +266,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
                             if (getView() != null) {
                                 getView().loadJDWaterfallRv(jdWaterfallAdapter);
-                                getView().loadFinish();
                             }
                         } else {
                             jdWaterfallAdapter.notifyDataSetChanged();
@@ -269,7 +275,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
                             if (getView() != null) {
                                 getView().loadJDLstRv(jdLstAdapter);
-                                getView().loadFinish();
                             }
                         } else {
                             jdLstAdapter.notifyDataSetChanged();
@@ -312,6 +317,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(Throwable e) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
             }
 
             @Override
@@ -335,6 +343,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
                 LogUtil.e("拼多多搜索：" + result);
                 SecondaryPddRecBean secondaryPddRecBean = JSON.parseObject(result, new TypeReference<SecondaryPddRecBean>() {
                 }.getType());
@@ -391,6 +402,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
             }
         }));
     }

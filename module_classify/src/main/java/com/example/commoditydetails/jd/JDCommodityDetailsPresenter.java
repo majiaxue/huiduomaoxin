@@ -237,7 +237,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                     if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
                         String clickURL = jdLedSecuritiesBean.getData().getClickURL();
                         LogUtil.e("url---------->" + clickURL);
-                        if (getView()!=null){
+                        if (getView() != null) {
                             getView().qrImage(clickURL);
                         }
 
@@ -255,7 +255,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //点击领劵
-    public void clickLedSecurities(String clickURL){
+    public void clickLedSecurities(String clickURL) {
         Intent intent = new Intent(mContext, WebViewActivity.class);
         intent.putExtra("url", clickURL);
         mContext.startActivity(intent);

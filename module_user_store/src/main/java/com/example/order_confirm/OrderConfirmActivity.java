@@ -173,6 +173,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
+            presenter.addressBean = addressBean;
             loadAddress(addressBean);
         }
     }

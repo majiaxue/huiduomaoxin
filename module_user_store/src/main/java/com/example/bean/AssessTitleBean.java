@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.example.bean;
 
 public class AssessTitleBean {
     private String title;

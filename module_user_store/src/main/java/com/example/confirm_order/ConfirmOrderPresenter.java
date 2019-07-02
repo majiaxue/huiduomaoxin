@@ -36,7 +36,7 @@ import okhttp3.ResponseBody;
 
 public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
     private ConfirmOrderAdapter orderAdapter;
-    private ShippingAddressBean addressBean;
+    public ShippingAddressBean addressBean;
     private List<CartBean.RecordsBean> dataList = new ArrayList<>();
 
     public ConfirmOrderPresenter(Context context) {
@@ -201,7 +201,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             totalPrice += postageBean.get(i).getTotal();
         }
         if (getView() != null) {
-            getView().loadPostage(ArithUtil.exact(totalFeight, 2), ArithUtil.exact(totalFeight, 2), postageBean.size());
+            getView().loadPostage(ArithUtil.exact(totalFeight, 2), ArithUtil.exact(totalPrice, 2), postageBean.size());
         }
     }
 

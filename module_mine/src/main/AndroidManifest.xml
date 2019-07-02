@@ -128,15 +128,10 @@
             android:name="com.example.up_pay.UpPayActivity"
             android:screenOrientation="portrait" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.lxy.taobaoke.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        <activity
+            android:name="com.example.user_agreement.UserAgreementActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

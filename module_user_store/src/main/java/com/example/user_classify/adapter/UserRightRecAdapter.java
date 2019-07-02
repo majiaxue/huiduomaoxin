@@ -35,7 +35,7 @@ public class UserRightRecAdapter extends MyRecyclerAdapter<ClassifyBean.Records.
         myRightChildAdapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_user_store/typeDetail").withString("search", list.get(position).getName()).navigation();
+                ARouter.getInstance().build("/module_user_store/typeDetail").withString("categoryId", list.get(position).getId() + "").navigation();
             }
         });
     }

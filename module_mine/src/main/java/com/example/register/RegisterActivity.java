@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -72,14 +73,14 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
         registerUserAgreement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ARouter.getInstance().build("/mine/agreement").withString("type", "zcxy").navigation();
             }
         });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.toRegister(registerPhone.getText().toString(),registerPassword.getText().toString(),registerCode.getText().toString(),registerInviteCode.getText().toString());
+                presenter.toRegister(registerPhone.getText().toString(), registerPassword.getText().toString(), registerCode.getText().toString(), registerInviteCode.getText().toString());
             }
         });
     }

@@ -79,7 +79,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
         ShareBoardConfig config = new ShareBoardConfig();
 
 
-        UMWeb umWeb = new UMWeb("http://192.168.1.9:4001/rest/share/invite?id=" + (bannerCurrentItem + 1) + "&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
+        UMWeb umWeb = new UMWeb(CommonResource.BASEURL_4001 + "/rest/share/invite?id=" + (bannerCurrentItem + 1) + "&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
         umWeb.setTitle("您有一个邀请信息");
         umWeb.setThumb(new UMImage(mContext, R.mipmap.icon_app));
         umWeb.setDescription("赶紧加入领取高佣吧！！！");

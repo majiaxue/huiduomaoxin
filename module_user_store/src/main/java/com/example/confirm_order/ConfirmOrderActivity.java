@@ -113,6 +113,7 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
+            presenter.addressBean = addressBean;
             loadAddress(addressBean);
         }
     }
@@ -128,8 +129,8 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     @Override
     public void loadPostage(double feight, double price, int number) {
         confirmOrderTotalYunfei.setText("+￥" + feight);
-        confirmOrderTotalPrice.setText("￥" + price);
-        confirmOrderFinalPrice.setText("" + ArithUtil.add(feight, price));
+        confirmOrderTotalPrice.setText("￥" + ArithUtil.sub(price, feight));
+        confirmOrderFinalPrice.setText("" + price);
         mCount.setText("共" + number + "件");
     }
 

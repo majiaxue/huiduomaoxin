@@ -61,6 +61,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
         presenter.initTinker();
+        presenter.checkUp();
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
         if ("login".equals(type)) {
             presenter.click(R.id.main_mine);
@@ -72,7 +73,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         mainGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                LogUtil.e("11111111111111111111");
                 presenter.click(checkedId);
             }
         });
@@ -80,7 +80,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         mainUserMall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtil.e("222222222222222222222");
                 if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
                     Toast.makeText(MainActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 } else {

@@ -21,8 +21,8 @@ public class SuperBrandRecAdapter extends MyRecyclerAdapter<SuperBrandBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, SuperBrandBean data, int position) {
-        holder.setImageFresco(R.id.super_brand_rec_image,data.getPic());
-        holder.setText(R.id.super_brand_rec_name,data.getSellerName());
+        holder.setImageFresco(R.id.super_brand_rec_image, data.getPic());
+        holder.setText(R.id.super_brand_rec_name, data.getSellerName());
 //        holder.setText(R.id.super_brand_rec_rebate,data.getRebate());
     }
 }

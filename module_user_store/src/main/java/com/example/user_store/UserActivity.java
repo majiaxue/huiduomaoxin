@@ -78,8 +78,8 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
         super.onNewIntent(intent);
         String key = intent.getStringExtra("key");
         if (CommonResource.JUMP_CART.equals(key)) {
-            userShoppingCart.setChecked(true);
             presenter.click(R.id.user_shopping_cart);
+            userShoppingCart.setChecked(true);
         }
     }
 
