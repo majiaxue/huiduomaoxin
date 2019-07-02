@@ -16,4 +16,6 @@ public interface TBCommodityDetailsView extends IView {
     void earnings(String earnings);
 
     void tBDetails();
+
+    void noCoupon(boolean noCoupon);
 }

@@ -2,10 +2,13 @@ package com.example.commoditydetails.jd;
 
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +21,9 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.JDGoodsRecBean;
 import com.example.commoditydetails.pdd.CommodityDetailsActivity;
 import com.example.module_classify.R;
@@ -28,6 +34,7 @@ import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.ViewToBitmap;
+import com.example.view.CustomDialog;
 import com.example.view.RVNestedScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
@@ -124,7 +131,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     private double sub;
     private String qRImage;
     private Bitmap saveBitmap;
-
+    private CustomDialog customDialog;
 
 
     @Override
@@ -136,7 +143,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-
+        customDialog = new CustomDialog(this);
+        customDialog.show();
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -156,8 +164,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         presenter.setShopParticulars(shopParticulars, listsBeanList);
         sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
 
-        //异步下载图片
-        new Task().execute(listsBeanList.getImageInfo().getImageList().get(0).getUrl());
         commodityName.setText(listsBeanList.getSkuName());//名字
         commodityPreferentialPrice.setText("￥" + sub);//优惠价
         commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.getPriceInfo().getPrice()));//原价
@@ -266,6 +272,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     @Override
     public void earnings(String earnings) {
+        customDialog.dismiss();
         Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
         Double aDouble = Double.valueOf(earnings);
         double mul1 = ArithUtil.mul(sub, ArithUtil.div(commission, 100, 2));
@@ -285,6 +292,20 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     @Override
     public void qrImage(String url) {
         this.qRImage = url;
+        Glide.with(this)
+                .asBitmap()
+                .load(listsBeanList.getImageInfo().getImageList().get(0).getUrl())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                        saveImageToPhotos(bitmap);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 
     /**
@@ -313,34 +334,5 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         LogUtil.e("图片路径" + file.getPath());
     }
 
-    Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (msg.what == 0x123) {
-                saveImageToPhotos(saveBitmap);
-            }
-        }
-
-        ;
-    };
-
-
-    /**
-     * 异步线程下载图片
-     */
-    class Task extends AsyncTask<String, Integer, Void> {
-
-        protected Void doInBackground(String... params) {
-            saveBitmap = ViewToBitmap.GetImageInputStream((String) params[0]);
-            return null;
-        }
-
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Message message = new Message();
-            message.what = 0x123;
-            handler.sendMessage(message);
-        }
-
-    }
 
 }

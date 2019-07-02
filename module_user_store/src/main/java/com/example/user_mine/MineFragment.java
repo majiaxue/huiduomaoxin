@@ -16,6 +16,7 @@ import com.example.common.CommonResource;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -192,6 +193,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void browsingHistoryCount(int count) {
+        LogUtil.e("浏览记录数量--------->"+count);
         if (count > 99) {
             browsingHistoryCount.setText(count + "+");
         } else {
@@ -202,11 +204,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void shopCollectCount(int count) {
         shopCollectCount.setText(count + "");
+        LogUtil.e("店铺收藏数量--------->"+count);
     }
 
     @Override
     public void goodsCollectionCount(int count) {
         goodsCollectionCount.setText(count + "");
+        LogUtil.e("商品收藏数量--------->"+count);
     }
 
     @Override

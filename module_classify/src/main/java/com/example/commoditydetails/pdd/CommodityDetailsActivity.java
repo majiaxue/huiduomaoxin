@@ -4,11 +4,14 @@ package com.example.commoditydetails.pdd;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +23,9 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.CommodityDetailsBean;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
@@ -257,8 +263,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         this.detailsBeanList = beanList;
 //        LogUtil.e("收益1-------->" + earnings);
-        customDialog.dismiss();
-        new Task().execute(detailsBeanList.get(0).getGoods_gallery_urls().get(0));
+
+        LogUtil.e("图片"+detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         //到手价
         div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
         //佣金比例
@@ -286,6 +292,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         presenter.isCollect(commodityCollectImage, beanList);
         //领劵
         presenter.ledSecurities(detailsBeanList.get(0).getGoods_id());
+
+
     }
 
     @Override
@@ -293,12 +301,27 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         this.imageUrl = url;
         //viewToImage
 //        presenter.viewToImage(url);
+        Glide.with(this)
+                .asBitmap()
+                .load(detailsBeanList.get(0).getGoods_gallery_urls().get(0))
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                        saveImageToPhotos(bitmap);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 
     @Override
     public void flag() {
         flag++;
         if (flag == 2) {
+            customDialog.dismiss();
             //到手价乘佣金
             mul = ArithUtil.mul(div, promotionRate);
             //用户佣金比例
@@ -335,40 +358,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
         presenter.viewToImage(imageUrl, file.getPath());
         LogUtil.e("图片路径" + file.getPath());
-    }
-
-
-    Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (msg.what == 0x123) {
-                saveImageToPhotos(saveBitmap);
-            }
-        }
-
-        ;
-    };
-
-
-    /**
-     * 异步线程下载图片
-     */
-    class Task extends AsyncTask<String, Integer, Void> {
-
-        protected Void doInBackground(String... params) {
-            saveBitmap = ViewToBitmap.GetImageInputStream((String) params[0]);
-            return null;
-        }
-
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Message message = new Message();
-            message.what = 0x123;
-            handler.sendMessage(message);
-        }
-
     }
 
 }

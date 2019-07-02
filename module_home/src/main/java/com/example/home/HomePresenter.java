@@ -298,19 +298,19 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         });
                     } else {
                         LogUtil.e("数据为空");
+                        getView().refreshSuccess();
                     }
 
                 } else {
                     LogUtil.e("数据为空");
+                    getView().refreshSuccess();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
-                if (getView() != null) {
                     getView().refreshSuccess();
-                }
             }
         }));
 

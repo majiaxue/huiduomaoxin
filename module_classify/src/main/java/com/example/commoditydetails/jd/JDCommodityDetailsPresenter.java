@@ -393,14 +393,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         double div = ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount()));//到手价
         LogUtil.e("url主图---------->" + listsBean.getImageInfo().getImageList().get(0).getUrl());
         image.setImageURI(Uri.fromFile(new File(path)));
-//        Glide.with(mContext)
-//                .load(s)
-//                .skipMemoryCache(true)
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .placeholder(R.drawable.icon_logo)
-//                .error(R.drawable.icon_chahao)
-//                .into(image);
-
         name.setText(listsBean.getSkuName());
         preferentialPrice.setText("￥" + div);
         originalPrice.setText("￥" + Double.valueOf(listsBean.getPriceInfo().getPrice()));

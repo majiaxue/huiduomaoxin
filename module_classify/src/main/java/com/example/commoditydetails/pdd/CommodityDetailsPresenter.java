@@ -229,7 +229,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
                 if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
                     if (getView() != null) {
-                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_short_url());
+                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url());
                     }
                 }
 
