@@ -137,6 +137,7 @@
                         android:textSize="@dimen/sp_12" />
 
                     <LinearLayout
+                        android:id="@+id/commodity_details_no_coupon"
                         android:layout_width="@dimen/dp_343"
                         android:layout_height="@dimen/dp_70"
                         android:layout_below="@id/commodity_original_price"

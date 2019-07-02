@@ -179,10 +179,10 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 //            presenter.setXBanner(homeXbanner, homeTopBg);
 //            //topRec
 //            presenter.setRec(homeTopRec);
-//            //优选recycler
-//            presenter.setGoodChoiceRec(homeGoodChoiceRec);
-//            //推荐recycler
-//            presenter.setBottomRec(nextPage,homeBottomRec);
+            //优选recycler
+            presenter.setGoodChoiceRec(homeGoodChoiceRec);
+            //推荐recycler
+            presenter.setBottomRec(nextPage,homeBottomRec);
         }
     }
 

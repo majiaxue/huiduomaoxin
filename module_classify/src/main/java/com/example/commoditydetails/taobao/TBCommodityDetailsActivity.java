@@ -2,11 +2,14 @@ package com.example.commoditydetails.taobao;
 
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,6 +21,9 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.TBBean;
 import com.example.bean.TBLedSecuritiesBean;
 import com.example.commoditydetails.jd.JDCommodityDetailsActivity;
@@ -102,6 +108,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     TextView commodityImmediatelyReceive;
     @BindView(R2.id.commodity_led_securities_text)
     TextView commodityLedSecuritiesText;
+    @BindView(R2.id.commodity_details_no_coupon)
+    LinearLayout commodityDetailsNoCoupon;
 
     @Autowired(name = "para")
     String para;
@@ -113,7 +121,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     private String earnings;
     private int status = 0;
     private CustomDialog customDialog;
-    private Bitmap saveBitmap;
     private String imageUrl;
 
     @Override
@@ -275,11 +282,23 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         presenter.isCollect(commodityCollectImage, para);
         commodityName.setText(tbBeanList.getData().getTitle());//名字
         commodityNumberSold.setText("已售" + tbBeanList.getData().getSellCount() + "件");//已售
-        commodityShopName.setText(tbBeanList.getData().getSeller().getSellerNick() + "");//商家名
+        commodityShopName.setText(tbBeanList.getData().getSeller().getShopName() + "");//商家名
         commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
         shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
         shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
         shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
+        String zkFinalPrice = tbBeanList.getData().getZk_final_price();
+        if (!TextUtils.isEmpty(zkFinalPrice)) {
+            if (zkFinalPrice.contains("-")) {
+                String[] split = zkFinalPrice.split("-");
+                commodityPreferentialPrice.setText("￥" + split[0]);//优惠价
+
+                commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
+            } else {
+                commodityPreferentialPrice.setText("￥" + zkFinalPrice);//优惠价
+                commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
+            }
+        }
 
     }
 
@@ -301,6 +320,20 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         LogUtil.e("status" + status);
         if (status == 3) {
             customDialog.dismiss();
+            Glide.with(this)
+                    .asBitmap()
+                    .load("https:" + tbBeanList.getData().getImages().get(0))
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                            saveImageToPhotos(bitmap);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
+                    });
             String zkFinalPrice = tbBeanList.getData().getZk_final_price();
             if (!TextUtils.isEmpty(zkFinalPrice)) {
                 if (zkFinalPrice.contains("-")) {
@@ -320,7 +353,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                         commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
                         commodityCouponPrice.setText(tbLedSecuritiesBean.getCoupon_info());
                         commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + tbLedSecuritiesBean.getCoupon_end_time());
-                        new Task().execute(tbBeanList.getData().getImages().get(0));
                     }
 
                 } else {
@@ -338,7 +370,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                         commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
                         commodityCouponPrice.setText(tbLedSecuritiesBean.getCoupon_info());
                         commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + tbLedSecuritiesBean.getCoupon_end_time());
-                        new Task().execute(tbBeanList.getData().getImages().get(0));
+
                     }
 
 
@@ -349,12 +381,23 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("HomeFragment" + "可见");
-        //优惠券
-        presenter.ledSecurities(para);
+    public void noCoupon(boolean noCoupon) {
+        if (noCoupon) {
+            customDialog.dismiss();
+
+
+            commodityDetailsNoCoupon.setVisibility(View.GONE);
+            commodityEarnings.setVisibility(View.GONE);
+        }
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        LogUtil.e("HomeFragment" + "可见");
+//        //优惠券
+//        presenter.ledSecurities(para);
+//    }
 
     /**
      * 保存二维码到本地相册
@@ -377,40 +420,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
         presenter.viewToImage(imageUrl, file.getPath());
         LogUtil.e("图片路径" + file.getPath());
-    }
-
-
-    Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (msg.what == 0x123) {
-                saveImageToPhotos(saveBitmap);
-            }
-        }
-
-        ;
-    };
-
-
-    /**
-     * 异步线程下载图片
-     */
-    class Task extends AsyncTask<String, Integer, Void> {
-
-        protected Void doInBackground(String... params) {
-            saveBitmap = ViewToBitmap.GetImageInputStream((String) params[0]);
-            return null;
-        }
-
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Message message = new Message();
-            message.what = 0x123;
-            handler.sendMessage(message);
-        }
-
     }
 
 

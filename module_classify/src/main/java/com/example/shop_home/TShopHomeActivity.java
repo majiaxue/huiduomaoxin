@@ -94,6 +94,7 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
                         return false;
                     }
                     goodsId = id;
+                    LogUtil.e("goodsID----------->"+id);
                     ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                             .withString("shoptype", "0")
                             .withString("para", id)
@@ -110,6 +111,7 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
                         return false;
                     }
                     goodsId = id;
+                    LogUtil.e("goodsID----------->"+id);
                     ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                             .withString("shoptype", "0")
                             .withString("para", id)

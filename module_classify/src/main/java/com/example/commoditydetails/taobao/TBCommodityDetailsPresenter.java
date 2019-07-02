@@ -315,11 +315,14 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (number == 2) {
                         shouQuan();
                     }
-                }
-                if (result.indexOf("error:15") != -1) {
+                }else if (result.startsWith("{\"error\":\"15\"")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
+                    LogUtil.e("errorMap---->"+errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
                     flag = 1;
+                    if (getView() != null) {
+                        getView().noCoupon(true);
+                    }
                 } else {
                     tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
                     }.getType());
@@ -470,7 +473,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         ImageView qRCode = view.findViewById(R.id.share_qr_code);
         //字体加中划线
         originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        String zkFinalPrice = tbRecommendList.get(0).getZk_final_price();
+        String zkFinalPrice = tbBean.getData().getZk_final_price();
         if (!TextUtils.isEmpty(zkFinalPrice)) {
             if (zkFinalPrice.contains("-")) {
                 String[] split = zkFinalPrice.split("-");
@@ -501,7 +504,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             }
             LogUtil.e("url主图---------->" + tbBean.getData().getImages().get(0));
             image.setImageURI(Uri.fromFile(new File(path)));
-            name.setText(tbRecommendList.get(0).getTitle());
+            name.setText(tbBean.getData().getTitle());
             number.setText("已售" + tbBean.getData().getSellCount() + "件");//已售
             Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
             qRCode.setImageBitmap(qr);

@@ -42,7 +42,7 @@ public class CustomDialog extends Dialog {
         DraweeController draweeController =
                 Fresco.newDraweeControllerBuilder()
                         .setUri(uri)
-                        .setAutoPlayAnimations(false) // 设置加载图片完成后是否直接进行播放
+                        .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
                         .build();
         dialogGif.setController(draweeController);
 

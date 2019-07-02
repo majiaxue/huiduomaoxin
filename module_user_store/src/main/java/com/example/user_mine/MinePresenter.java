@@ -92,10 +92,11 @@ public class MinePresenter extends BasePresenter<MineView> {
                 LogUtil.e("result--------->" + result);
                 ShopCollectCountBean shopCollectCountBean = JSON.parseObject(result, new TypeReference<ShopCollectCountBean>() {
                 }.getType());
-
+                LogUtil.e("shopCollectList--------->" + shopCollectCountBean.getRecords().size());
                 if (shopCollectCountBean != null) {
                     shopCollectList.clear();
                     shopCollectList.addAll(shopCollectCountBean.getRecords());
+
                     if (getView() != null) {
                         getView().shopCollectCount(shopCollectList.size());
                     }

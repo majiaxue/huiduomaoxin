@@ -18,6 +18,7 @@ import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -76,16 +77,18 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
     public void initData() {
         includeTitle.setText("等待付款");
         ARouter.getInstance().inject(this);
+        LogUtil.e("订单编号------->" + orderSn);
         presenter.initView(orderSn);
         presenter.obligationRec(obligationRec);
 
-        time();
+//        time();
     }
 
-    private void time() {
-        long firstTime = System.currentTimeMillis() + 30 * 60 * 1000;
-        LogUtil.e("firstTime----------->" + firstTime);
-        long time = firstTime - System.currentTimeMillis();
+    private void time(String orderOutTime) {
+//        long firstTime = System.currentTimeMillis() + 30 * 60 * 1000;
+        long timeStamp = getTimeStamp(orderOutTime, "yyyy-MM-dd HH:mm:ss");
+        LogUtil.e("firstTime----------->" + timeStamp);
+        long time = timeStamp - System.currentTimeMillis();
         LogUtil.e("time------------->" + time / 1000);
         CountDownTimer countDownTimer = new CountDownTimer(time, 1000) {//第一个参数表示总时间，第二个参数表示间隔时间。
 
@@ -134,6 +137,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
 
     @Override
     public void loadData(final OrderDetailBean orderDetailBean) {
+        time(orderDetailBean.getOrderOutTime());
         obligationName.setText(orderDetailBean.getReceiverName());
         obligationPhone.setText(orderDetailBean.getReceiverPhone());
         obligationAddress.setText(orderDetailBean.getReceiverRegion() + orderDetailBean.getReceiverCity() + orderDetailBean.getReceiverProvince() + orderDetailBean.getOrderAddress());
@@ -147,28 +151,6 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
 
         presenter.items(items, obligationGoodsRec);
 
-//        //取消订单
-//        obligationCancellationOrder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Map build = MapUtil.getInstance().addParms("orderId", orderDetailBean.getItems().get(0).getOrderId()).build();
-//                Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERREMOVE, build, SPUtil.getToken());
-//                RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-//                    @Override
-//                    public void onSuccess(String result, String msg) {
-//                        LogUtil.e("删除---------->" + result);
-//                        if ("true".equals(result)) {
-//                            finish();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(String errorCode, String errorMsg) {
-//                        LogUtil.e("删除---------->" + errorMsg);
-//                    }
-//                }));
-//            }
-//        });
         //付款
         obligationPayment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,4 +173,26 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
             finish();
         }
     }
+
+    /**
+     * 时间转换为时间戳
+     *
+     * @param timeStr 时间 例如: 2016-03-09
+     * @param format  时间对应格式  例如: yyyy-MM-dd
+     * @return
+     */
+    public static long getTimeStamp(String timeStr, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(timeStr);
+            long timeStamp = date.getTime();
+            return timeStamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }

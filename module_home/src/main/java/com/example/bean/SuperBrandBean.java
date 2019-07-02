@@ -1,4 +1,4 @@
-package com.example.superbrand.bean;
+package com.example.bean;
 
 /**
  * Created by cuihaohao on 2019/6/5
@@ -8,8 +8,8 @@ public class SuperBrandBean {
 
     /**
      * id : 7
-     * categoryId : 6
-     * pic : http://192.168.1.17:9000/category/c1db892a899040c58ceee768eb686e6b.png
+     * categoryId : 0
+     * pic : http://47.99.93.123:8083/category/c1db892a899040c58ceee768eb686e6b.png
      * sellerName : 苏宁
      * address : https://suning.tmall.com/search.htm?spm=a220m.1000858.1000725.3.460e2a68fX5ui1&user_number_id=2616970884&rn=3a8d59aa0f5598bcdc43fe6863022075&keyword=%CA%D6%BB%FA
      * ratio : 5
