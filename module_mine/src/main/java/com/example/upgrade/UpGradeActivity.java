@@ -1,5 +1,6 @@
 package com.example.upgrade;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -53,6 +54,14 @@ public class UpGradeActivity extends BaseActivity<UpgradeView, UpgradePresenter>
         upgradeRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_27)));
         upgradeRv.setAdapter(adapter);
         presenter.click();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            presenter.upSuccess();
+        }
     }
 
     @Override

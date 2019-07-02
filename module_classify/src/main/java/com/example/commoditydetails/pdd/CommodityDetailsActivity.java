@@ -2,8 +2,13 @@ package com.example.commoditydetails.pdd;
 
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,13 +31,20 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.QRCode;
 import com.example.utils.ViewToBitmap;
+import com.example.view.CustomDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.example.utils.ViewToBitmap.GetImageInputStream;
 
 /**
  * 拼多多商品详情
@@ -96,10 +108,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     TextView commodityImmediatelyReceive;
     @BindView(R2.id.commodity_led_securities_text)
     TextView commodityLedSecuritiesText;
-    @BindView(R2.id.commodity_bitmap)
-    ImageView commodityBitmap;
-    @BindView(R2.id.commodity_share_all)
-    LinearLayout commodityShareAll;
 
 
     @Autowired(name = "goods_id")
@@ -107,21 +115,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
     @Autowired(name = "type")
     String type;
-
-    @BindView(R2.id.share_image)
-    ImageView shareImage;
-    @BindView(R2.id.share_name)
-    TextView shareName;
-    @BindView(R2.id.share_preferential_price)
-    TextView sharePreferentialPrice;
-    @BindView(R2.id.share_original_price)
-    TextView shareOriginalPrice;
-    @BindView(R2.id.share_coupon_price)
-    TextView shareCouponPrice;
-    @BindView(R2.id.share_number)
-    TextView shareNumber;
-    @BindView(R2.id.share_qr_code)
-    ImageView shareQrCode;
 
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> detailsBeanList = new ArrayList<>();
     private String imageUrl;
@@ -132,7 +125,9 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private double mul;
     private double div;
     private double promotionRate;
-    private Bitmap bitmap;
+    private Bitmap saveBitmap;
+    private File file;
+    private CustomDialog customDialog;
 
 
     @Override
@@ -144,6 +139,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
+        customDialog = new CustomDialog(this);
+        customDialog.show();
         LogUtil.e("goods_id" + goods_id + type);
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
@@ -185,34 +182,12 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
                 AppManager.getInstance().finishGoodsActivity();
             }
         });
-//        //进入店铺
-//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_classify/IntoShopActivity").navigation();
-//            }
-//        });
-        //分享
         //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share(bitmap);
+                presenter.share();
             }
         });
         //立即领取
@@ -282,7 +257,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void CommodityDetailsList(List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         this.detailsBeanList = beanList;
 //        LogUtil.e("收益1-------->" + earnings);
-
+        customDialog.dismiss();
+        new Task().execute(detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         //到手价
         div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
         //佣金比例
@@ -312,49 +288,11 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         presenter.ledSecurities(detailsBeanList.get(0).getGoods_id());
     }
 
-    //加载生成图片布局
-    private void viewToImage(String qRImage) {
-
-        //字体加中划线
-        shareOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        double div = ArithUtil.div(detailsBeanList.get(0).getMin_group_price() - detailsBeanList.get(0).getCoupon_discount(), 100, 1);//到手价
-        LogUtil.e("url主图---------->" + detailsBeanList.get(0).getGoods_gallery_urls().get(0));
-        String s = detailsBeanList.get(0).getGoods_gallery_urls().get(0);
-        //商品图片
-        shareImage.setImageURI(Uri.parse(s));
-        LogUtil.e("url1轮播图---------->" + s);
-
-        shareName.setText(detailsBeanList.get(0).getGoods_name());
-        //商品优惠价
-        sharePreferentialPrice.setText("￥" + div);
-        //商品原价
-        shareOriginalPrice.setText("￥" + ArithUtil.div(detailsBeanList.get(0).getMin_group_price(), 100, 1));
-        //商品优惠劵
-        shareCouponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(detailsBeanList.get(0).getMin_group_price(), 100, 1), div) + "元");
-        //商品已售件数
-        shareNumber.setText("已售" + detailsBeanList.get(0).getSold_quantity() + "件");//已售
-        //得到链接生成二维码
-        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(this, 150), DisplayUtil.dip2px(this, 150));
-        shareQrCode.setImageBitmap(qr);
-        LogUtil.e("url2二维码---------->" + qRImage);
-
-        //获得view生成一张bitmap
-        this.bitmap = ViewToBitmap.createBitmap3(commodityShareAll, ViewToBitmap.getScreenWidth(this), ViewToBitmap.getScreenHeight(this));
-
-//        commodityShareAll.setVisibility(View.GONE);
-    }
-
     @Override
     public void imageUri(String url) {
         this.imageUrl = url;
         //viewToImage
 //        presenter.viewToImage(url);
-        viewToImage(url);
-    }
-
-    @Override
-    public void imageBitmap(Bitmap bitmap) {
-//        commodityBitmap.setImageBitmap(bitmap);
     }
 
     @Override
@@ -376,28 +314,61 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         this.earnings = ear;
     }
 
-//    /**
-//     * 保存二维码到本地相册
-//     */
-//    private void saveImageToPhotos(Bitmap bmp) {
-//        // 首先保存图片
-//        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
-//        if (!appDir.exists()) {
-//            appDir.mkdir();
-//        }
-//        String fileName = "wwww" + ".jpg";
-//        File file = new File(appDir, fileName);
-//        try {
-//            FileOutputStream fos = new FileOutputStream(file);
-//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//            fos.flush();
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
-//        LogUtil.e("图片路径"+file.getPath());
-//    }
+    /**
+     * 保存二维码到本地相册
+     */
+    private void saveImageToPhotos(Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = "wwww" + ".jpg";
+        file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
+        presenter.viewToImage(imageUrl, file.getPath());
+        LogUtil.e("图片路径" + file.getPath());
+    }
+
+
+    Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 0x123) {
+                saveImageToPhotos(saveBitmap);
+            }
+        }
+
+        ;
+    };
+
+
+    /**
+     * 异步线程下载图片
+     */
+    class Task extends AsyncTask<String, Integer, Void> {
+
+        protected Void doInBackground(String... params) {
+            saveBitmap = ViewToBitmap.GetImageInputStream((String) params[0]);
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Message message = new Message();
+            message.what = 0x123;
+            handler.sendMessage(message);
+        }
+
+    }
+
 }

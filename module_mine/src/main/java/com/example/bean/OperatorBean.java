@@ -41,6 +41,24 @@ public class OperatorBean {
     private String recommendPercent;
     private String perLevels;
     private String note;
+    private String tenantId;
+    private int sort;
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
 
     public String getId() {
         return id;
@@ -184,5 +202,31 @@ public class OperatorBean {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "OperatorBean{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", defaultStatus='" + defaultStatus + '\'' +
+                ", isEnable='" + isEnable + '\'' +
+                ", upType='" + upType + '\'' +
+                ", levelType='" + levelType + '\'' +
+                ", price='" + price + '\'' +
+                ", perCashs='" + perCashs + '\'' +
+                ", directFansNum='" + directFansNum + '\'' +
+                ", indirectFansNum='" + indirectFansNum + '\'' +
+                ", selfOrderNum='" + selfOrderNum + '\'' +
+                ", selfCommission='" + selfCommission + '\'' +
+                ", recommendNum='" + recommendNum + '\'' +
+                ", sharePercent='" + sharePercent + '\'' +
+                ", perMents='" + perMents + '\'' +
+                ", recommendPercent='" + recommendPercent + '\'' +
+                ", perLevels='" + perLevels + '\'' +
+                ", note='" + note + '\'' +
+                ", tenantId='" + tenantId + '\'' +
+                ", sort=" + sort +
+                '}';
     }
 }

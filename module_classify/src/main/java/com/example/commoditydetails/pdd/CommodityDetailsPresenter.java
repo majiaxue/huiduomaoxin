@@ -5,11 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -18,11 +22,11 @@ import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.commoditydetails.pdd.adapter.CommodityDetailsPddRecAdapter;
-import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.bean.CommodityDetailsBean;
 import com.example.bean.CommodityDetailsPddRecBean;
 import com.example.bean.LedSecuritiesBean;
+import com.example.commoditydetails.pdd.adapter.CommodityDetailsPddRecAdapter;
+import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
 import com.example.module_classify.R;
@@ -31,9 +35,13 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.ArithUtil;
+import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
+import com.example.utils.ViewToBitmap;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -43,6 +51,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +69,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
     private LedSecuritiesBean ledSecuritiesBean;
     private Bitmap bitmap;
-    private ImageView image;
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -221,7 +229,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
                 if (ledSecuritiesBean != null && ledSecuritiesBean.getGoods_promotion_url_generate_response() != null && ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().size() != 0) {
                     if (getView() != null) {
-                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_url());
+                        getView().imageUri(ledSecuritiesBean.getGoods_promotion_url_generate_response().getGoods_promotion_url_list().get(0).getWe_app_web_view_short_url());
                     }
                 }
 
@@ -330,21 +338,22 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     }
 
-//    //加载生成图片布局
-//    public void viewToImage(String qRImage) {
-//        final View view = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
-//        image = view.findViewById(R.id.share_image);
-//        TextView name = view.findViewById(R.id.share_name);
-//        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
-//        TextView originalPrice = view.findViewById(R.id.share_original_price);
-//        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
-//        TextView number = view.findViewById(R.id.share_number);
-//        ImageView qRCode = view.findViewById(R.id.share_qr_code);
-//        //字体加中划线
-//        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-//        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
-//        LogUtil.e("url主图---------->" + beanList.get(0).getGoods_gallery_urls().get(0));
-//        String s = beanList.get(0).getGoods_gallery_urls().get(0);
+    //加载生成图片布局
+    public void viewToImage(String qRImage, String path) {
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+        ImageView image = view.findViewById(R.id.share_image);
+        TextView name = view.findViewById(R.id.share_name);
+        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
+        TextView originalPrice = view.findViewById(R.id.share_original_price);
+        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
+        TextView number = view.findViewById(R.id.share_number);
+        ImageView qRCode = view.findViewById(R.id.share_qr_code);
+        //字体加中划线
+        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);//到手价
+        LogUtil.e("url主图---------->" + beanList.get(0).getGoods_gallery_urls().get(0));
+        String s = beanList.get(0).getGoods_gallery_urls().get(0);
+        image.setImageURI(Uri.fromFile(new File(path)));
 //        Glide.with(mContext)
 //                .load(s)
 //                .skipMemoryCache(true)
@@ -352,38 +361,33 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 //                .placeholder(R.drawable.icon_logo)
 //                .error(R.drawable.icon_chahao)
 //                .into(image);
-//
-//        LogUtil.e("url1轮播图---------->" + s);
-//
-//        name.setText(beanList.get(0).getGoods_name());
-//        preferentialPrice.setText("￥" + div);
-//        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
-//        couponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元");
-//        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
-//        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
-//        qRCode.setImageBitmap(qr);
-//        LogUtil.e("url2二维码---------->" + qRImage);
-//
-//        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-//
-//
-//        if (getView() != null) {
-//            getView().imageBitmap(bitmap);
-//        }
-//    }
+
+        LogUtil.e("url1轮播图---------->" + s);
+
+        name.setText(beanList.get(0).getGoods_name());
+        preferentialPrice.setText("￥" + div);
+        originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
+        couponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元");
+        number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+        qRCode.setImageBitmap(qr);
+        LogUtil.e("url2二维码---------->" + qRImage);
+
+        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+    }
 
     //分享
-    public void share(Bitmap bitmap) {
+    public void share() {
         ShareBoardConfig config = new ShareBoardConfig();
         config.setTitleText("分享到")
                 .setTitleTextColor(Color.parseColor("#222222"))
                 .setMenuItemTextColor(Color.parseColor("#666666"))
                 .setMenuItemIconPressedColor(Color.parseColor("#000000"))
                 .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
-        LogUtil.e("bitmap" + bitmap);
+        LogUtil.e("bitmap" + this.bitmap);
 
         new ShareAction((Activity) mContext)
-                .withMedia(new UMImage(mContext, bitmap))
+                .withMedia(new UMImage(mContext, this.bitmap))
                 .withText("hello")
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(shareListener).open(config);

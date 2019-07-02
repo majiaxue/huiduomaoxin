@@ -61,6 +61,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
         presenter.initTinker();
+        presenter.checkUp();
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
         if ("login".equals(type)) {
             presenter.click(R.id.main_mine);

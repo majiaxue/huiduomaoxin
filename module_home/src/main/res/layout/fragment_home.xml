@@ -148,7 +148,8 @@
                             android:layout_marginRight="@dimen/dp_14"
                             android:text="查看更多"
                             android:textColor="#999999"
-                            android:textSize="@dimen/sp_11" />
+                            android:textSize="@dimen/sp_11"
+                            android:visibility="invisible"/>
 
                     </LinearLayout>
 

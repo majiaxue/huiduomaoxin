@@ -1,4 +1,4 @@
-package com.example.superbrand.bean;
+package com.example.bean;
 
 /**
  * Created by cuihaohao on 2019/6/5

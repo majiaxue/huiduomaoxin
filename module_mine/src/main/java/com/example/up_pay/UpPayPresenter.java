@@ -3,6 +3,7 @@ package com.example.up_pay;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
     private final int ALI_CODE = 0x123;
     private String type;
     private String info;
+    private Intent intent;
 
     public UpPayPresenter(Context context) {
         super(context);
@@ -44,12 +46,10 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
             if (msg.what == ALI_CODE) {
                 Map<String, String> map = (Map<String, String>) msg.obj;
                 String resultStatus = map.get("resultStatus");
-                String result = map.get("result");
-                String memo = map.get("memo");
+
                 if ("9000".equals(resultStatus)) {
-                    SubmitOrderBean submitOrderBean = new SubmitOrderBean();
-                    submitOrderBean.setProductName(type);
-                    ARouter.getInstance().build("/module_user_store/pay_success").withSerializable("bean", submitOrderBean).navigation();
+                    intent.putExtra("type", "1");
+                    ((Activity) mContext).setResult(Activity.RESULT_OK, intent);
                     ((Activity) mContext).finish();
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {
@@ -65,12 +65,14 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {
-            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
+            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", "0.01").addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.UP_PAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("付款：" + result);
+                    intent = new Intent();
+
                     Map parseObject = JSON.parseObject(result, Map.class);
                     info = (String) parseObject.get("body");
                     Thread thread = new Thread(payRunnable);

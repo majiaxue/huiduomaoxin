@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.SuperBrandBean;
 import com.example.module_home.R;
-import com.example.superbrand.bean.SuperBrandBean;
 
 import java.util.List;
 

@@ -59,6 +59,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtil.e(e.getMessage());
         }
     }
 

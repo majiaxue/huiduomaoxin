@@ -1,26 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 加载对话框布局 -->
+<?xml version="1.0" encoding="utf-8"?><!-- 加载对话框布局 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:orientation="vertical"
+    android:background="#4D000000">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateDrawable="@drawable/indeterminate_drawable"
-        android:indeterminateDuration="1800" />
+    <LinearLayout
+        android:layout_width="@dimen/dp_108"
+        android:layout_height="@dimen/dp_146"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog">
 
-    <TextView
-        android:id="@+id/tvcontent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="加载中"
-        android:textColor="#ffffff"
-        android:textSize="14sp" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/dialog_gif"
+            android:layout_width="@dimen/dp_66"
+            android:layout_height="@dimen/dp_66" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="加载中"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_19" />
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -64,9 +64,9 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         id = categoryId == null ? "" : categoryId;
         Map map;
         if (isHotSale) {
-            map = MapUtil.getInstance().addParms("pageNum", 1).addParms("saleDesc", "1").addParms("categoryId",id).build();
+            map = MapUtil.getInstance().addParms("pageNum", 1).addParms("saleDesc", "1").addParms("categoryId", id).build();
         } else {
-            map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).addParms("categoryId",id).build();
+            map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).addParms("categoryId", id).build();
         }
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -80,12 +80,15 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
                 waterfallAdapter = new TypeDetailWaterfallAdapter(mContext, dataList, R.layout.rv_commend);
                 if (getView() != null) {
                     getView().loadLstRv(lstAdapter);
+                    getView().refreshSuccess();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                if (getView() != null) {
+                    getView().refreshSuccess();
+                }
             }
         }));
     }
@@ -196,24 +199,24 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         Map map;
         if (saleVolumTemp) {
             if (isSalesVolumeReduce) {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("saleDesc", "1").addParms("pageNum", page).addParms("categoryId",id).build();
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("saleDesc", "1").addParms("pageNum", page).addParms("categoryId", id).build();
             } else {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("saleAsc", "1").addParms("pageNum", page).addParms("categoryId",id).build();
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("saleAsc", "1").addParms("pageNum", page).addParms("categoryId", id).build();
             }
         } else if (priceTemp) {
             if (isPriceReduce) {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("priceDesc", "1").addParms("categoryId",id).build();
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("priceDesc", "1").addParms("categoryId", id).build();
             } else {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("priceAsc", "1").addParms("categoryId",id).build();
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("priceAsc", "1").addParms("categoryId", id).build();
             }
         } else if (creditTemp) {
             if (isCreditReduce) {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId",id).build();
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId", id).build();
             } else {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId",id).build();
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId", id).build();
             }
         } else {
-            map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId",id).build();
+            map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId", id).build();
         }
 
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);

@@ -58,7 +58,7 @@ public class ModuleBaseApplication extends Application {
 
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        Bugly.init(this, "47037498aa", true);
+        Bugly.init(this, "47037498aa", false);
 
         Fresco.initialize(this);
         context = getApplicationContext();

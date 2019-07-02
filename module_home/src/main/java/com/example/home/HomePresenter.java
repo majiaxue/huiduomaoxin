@@ -64,10 +64,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setViewSingleLine() {
         data = new ArrayList<>();
-        data.add("王**获得了24元佣金");
-        data.add("玉**获得了50元佣金");
-        data.add("张**获得了11元佣金");
-        data.add("王**获得了30元佣金");
+        data.add("王**获得了5.2元佣金");
+        data.add("李**获得了3.6元佣金");
+        data.add("白**获得了0.48元佣金");
+        data.add("崔**获得了10.5元佣金");
+        data.add("谷**获得了15.1元佣金");
+        data.add("张**获得了1.19元佣金");
+        data.add("赵**获得了26.02元佣金");
+        data.add("孙**获得了10.8元佣金");
         views.clear();
         for (int i = 0; i < data.size(); i++) {
             final int position = i;

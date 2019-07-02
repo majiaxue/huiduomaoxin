@@ -1,7 +1,21 @@
 package com.example.upgrade;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -14,11 +28,19 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.operator.OperatorActivity;
+import com.example.upgrade.adapter.PopQuanyiAdapter;
 import com.example.upgrade.adapter.UpgradeAdapter;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnClearCacheListener;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
+import com.example.utils.TxtUtil;
+import com.example.utils.UIHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +51,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
 
     private List<OperatorBean> beanList;
     private UpgradeAdapter adapter;
+    private int clickPosition;
 
     public UpgradePresenter(Context context) {
         super(context);
@@ -69,21 +92,39 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        upJustNow("0", position, 0);
+                        clickPosition = position;
+                        upJustNow("0", position);
                     }
                 });
 
                 view2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        upJustNow("1", position, 1);
+                        clickPosition = position;
+                        upJustNow("1", position);
                     }
                 });
 
                 view3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        clickPosition = position;
+                        UIHelper.popQuanYi(mContext, beanList, position, new OnClearCacheListener() {
+                            @Override
+                            public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                confirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        pop.dismiss();
+                                        if ("0".equals(beanList.get(position).getUpType())) {
+                                            upJustNow("1", position);
+                                        } else {
+                                            upJustNow("0", position);
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
@@ -94,11 +135,15 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
         ARouter.getInstance().build("/module_mine/up_pay")
                 .withString("money", money)
                 .withString("type", "upgrade")
-                .navigation();
+                .navigation((Activity) mContext, 100);
     }
 
-    private void upJustNow(final String flag, final int position, int payType) {
-        Map map = MapUtil.getInstance().addParms("levelId", beanList.get(position).getId()).addParms("payType", payType).build();
+    /**
+     * @param flag     点击按钮   0:立即升级   1:支付(前端用)
+     * @param position
+     */
+    private void upJustNow(final String flag, final int position) {
+        Map map = MapUtil.getInstance().addParms("levelId", beanList.get(position).getId()).addParms("payType", flag).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.UP_JUSTNOW, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -118,7 +163,18 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
         }));
     }
 
-    private void popQuanYi() {
-
+    public void upSuccess() {
+        UIHelper.popUpSuccess(mContext, beanList.get(clickPosition), new OnClearCacheListener() {
+            @Override
+            public void setOnClearCache(final PopupWindow pop, View confirm) {
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(new Intent(mContext, OperatorActivity.class));
+                        pop.dismiss();
+                    }
+                });
+            }
+        });
     }
 }

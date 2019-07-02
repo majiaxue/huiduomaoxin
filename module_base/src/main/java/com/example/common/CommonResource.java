@@ -14,6 +14,7 @@ public class CommonResource {
     public static final String URL_4_5003 = "http://192.168.1.4:5003";
     public static final String URL_30_9004 = "http://192.168.1.30:9004";
     public static final String URL_4_9005 = "http://192.168.1.16:9005";
+    public static final String URL_17_9000 = "http://192.168.1.17:9000";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -77,6 +78,7 @@ public class CommonResource {
     public static final String GET_SHARE_URL = "/rest/share/invite";        //获取分享链接
     public static final String UP_JUSTNOW = "/rest/user/level/up";          //立即升级
     public static final String USER_AGREEMENT = "/rest/html/xy";            //获取用户协议
+    public static final String CHECKUP = "/rest/parameter/apk/0";            //检查更新app
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -120,7 +122,6 @@ public class CommonResource {
     public static final String USERCOMMENT = "/rest/user/comment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
-
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";

@@ -44,10 +44,9 @@ public class PopUtils {
         });
     }
 
-    public static void createPopCenter(final Context context, View view, int height, OnPopListener listener) {
-        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, height, true);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(false);
+    public static void createPopCenter(final Context context, View view, int width, int height, OnPopListener listener) {
+        PopupWindow popupWindow = new PopupWindow(view, width, height, true);
+        popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setAnimationStyle(R.style.animScale);
         popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);

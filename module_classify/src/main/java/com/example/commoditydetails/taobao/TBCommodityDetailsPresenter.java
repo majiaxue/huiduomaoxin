@@ -2,12 +2,17 @@ package com.example.commoditydetails.taobao;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -39,9 +44,13 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.ArithUtil;
+import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
+import com.example.utils.ViewToBitmap;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -51,6 +60,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +81,8 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private String num_iid;
     private int flag = 0;
     private int number = 0;
+    private Bitmap bitmap;
+    private TBBean tbBean;
 
     public TBCommodityDetailsPresenter(Context context) {
         super(context);
@@ -135,7 +147,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult---------------->" + result);
-                final TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
+                tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
                 }.getType());
                 if (tbBean != null && tbBean.getData() != null) {
                     if (getView() != null) {
@@ -446,6 +458,59 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }));
     }
 
+    //加载生成图片布局
+    public void viewToImage(String qRImage, String path) {
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+        ImageView image = view.findViewById(R.id.share_image);
+        TextView name = view.findViewById(R.id.share_name);
+        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
+        TextView originalPrice = view.findViewById(R.id.share_original_price);
+        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
+        TextView number = view.findViewById(R.id.share_number);
+        ImageView qRCode = view.findViewById(R.id.share_qr_code);
+        //字体加中划线
+        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        String zkFinalPrice = tbRecommendList.get(0).getZk_final_price();
+        if (!TextUtils.isEmpty(zkFinalPrice)) {
+            if (zkFinalPrice.contains("-")) {
+                String[] split = zkFinalPrice.split("-");
+                String couponInfo = tbLedSecuritiesBean.getCoupon_info();
+                if (!TextUtils.isEmpty(couponInfo)) {
+                    String substring = couponInfo.substring(couponInfo.indexOf("减"));
+                    String price = substring.substring(1, substring.indexOf("元"));
+                    double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
+                    preferentialPrice.setText("￥" + sub);//优惠价
+                    originalPrice.setText("原价：￥" + split[0]);//原价
+                    couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]), sub));
+
+                }
+
+            } else {
+                String couponInfo = tbLedSecuritiesBean.getCoupon_info();
+                if (!TextUtils.isEmpty(couponInfo)) {
+                    String substring = couponInfo.substring(couponInfo.indexOf("减"));
+                    String price = substring.substring(1, substring.indexOf("元"));
+                    double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
+                    preferentialPrice.setText("￥" + sub);//优惠价
+                    originalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                    couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), sub));
+
+                }
+
+
+            }
+            LogUtil.e("url主图---------->" + tbBean.getData().getImages().get(0));
+            image.setImageURI(Uri.fromFile(new File(path)));
+            name.setText(tbRecommendList.get(0).getTitle());
+            number.setText("已售" + tbBean.getData().getSellCount() + "件");//已售
+            Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+            qRCode.setImageBitmap(qr);
+            LogUtil.e("url2二维码---------->" + qRImage);
+
+            this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+        }
+    }
+
     //分享
     public void share() {
         ShareBoardConfig config = new ShareBoardConfig();
@@ -459,8 +524,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
 
         new ShareAction((Activity) mContext)
-                .withMedia(new UMImage(mContext, R.drawable.no_goods))
-                .withText("hello")
+                .withMedia(new UMImage(mContext, bitmap))
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(shareListener).open(config);
     }

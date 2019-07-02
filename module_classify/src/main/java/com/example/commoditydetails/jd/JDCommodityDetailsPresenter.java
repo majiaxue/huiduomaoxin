@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +52,9 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +71,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     private List<String> url = new ArrayList<>();
     private List<String> images = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
+    private Bitmap bitmap;
 
     public JDCommodityDetailsPresenter(Context context) {
         super(context);
@@ -326,50 +331,103 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //分享
-    public void share(JDGoodsRecBean.DataBean.ListsBean listsBean, String qRImage) {
-        LogUtil.e("qRImage---------->" + qRImage);
-        View inflate = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
-        final LinearLayout popShareAll = inflate.findViewById(R.id.pop_share_all);
-        SimpleDraweeView popShareImage = inflate.findViewById(R.id.pop_share_image);
-        TextView popShareName = inflate.findViewById(R.id.pop_share_name);
-        TextView popSharePrice = inflate.findViewById(R.id.pop_share_price);
-        ImageView popShareQR = inflate.findViewById(R.id.pop_share_qr);
-        final LinearLayout popShareWeiXin = inflate.findViewById(R.id.pop_share_weixin);
-        LinearLayout popSharePengYouQuan = inflate.findViewById(R.id.pop_share_pengyouquan);
-        LinearLayout popShareQQ = inflate.findViewById(R.id.pop_share_qq);
-        LinearLayout popShareQZone = inflate.findViewById(R.id.pop_share_qzone);
-        final TextView popShareCancel = inflate.findViewById(R.id.pop_share_cancel);
-        popShareImage.setImageURI(Uri.parse(listsBean.getImageInfo().getImageList().get(0).getUrl()));
-        popShareName.setText(listsBean.getSkuName());
-        popSharePrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount())));
-        Bitmap qrImage = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 58), DisplayUtil.dip2px(mContext, 58));
-        popShareQR.setImageBitmap(qrImage);
-        final Bitmap bitmap3 = ViewToBitmap.createBitmap3(popShareAll, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-
-        PopUtils.shareBottom(mContext, inflate, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
-            @Override
-            public void setOnPop(final PopupWindow pop) {
-                popShareCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        pop.dismiss();
-                    }
-                });
-
-                popShareWeiXin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        LogUtil.e("分享");
+//    public void share(JDGoodsRecBean.DataBean.ListsBean listsBean,String qRImage) {
+//        LogUtil.e("qRImage---------->"+qRImage);
+//        View inflate = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
+//        final LinearLayout popShareAll = inflate.findViewById(R.id.pop_share_all);
+//        SimpleDraweeView popShareImage = inflate.findViewById(R.id.pop_share_image);
+//        TextView popShareName = inflate.findViewById(R.id.pop_share_name);
+//        TextView popSharePrice = inflate.findViewById(R.id.pop_share_price);
+//        ImageView popShareQR = inflate.findViewById(R.id.pop_share_qr);
+//        final LinearLayout popShareWeiXin = inflate.findViewById(R.id.pop_share_weixin);
+//        LinearLayout popSharePengYouQuan = inflate.findViewById(R.id.pop_share_pengyouquan);
+//        LinearLayout popShareQQ = inflate.findViewById(R.id.pop_share_qq);
+//        LinearLayout popShareQZone = inflate.findViewById(R.id.pop_share_qzone);
+//        final TextView popShareCancel = inflate.findViewById(R.id.pop_share_cancel);
+//        popShareImage.setImageURI(Uri.parse(listsBean.getImageInfo().getImageList().get(0).getUrl()));
+//        popShareName.setText(listsBean.getSkuName());
+//        popSharePrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount())));
+//        Bitmap qrImage = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 58), DisplayUtil.dip2px(mContext, 58));
+//        popShareQR.setImageBitmap(qrImage);
+//        final Bitmap bitmap3 = ViewToBitmap.createBitmap3(popShareAll, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+//
+//        PopUtils.shareBottom(mContext, inflate, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
+//            @Override
+//            public void setOnPop(final PopupWindow pop) {
+//                popShareCancel.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
 //                        pop.dismiss();
-                        new ShareAction((Activity) mContext)
-                                .withMedia(new UMImage(mContext, bitmap3))
-                                .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
-                                .setCallback(shareListener)//回调监听器
-                                .share();
-                    }
-                });
-            }
-        });
+//                    }
+//                });
+//
+//                popShareWeiXin.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        LogUtil.e("分享");
+////                        pop.dismiss();
+//                        new ShareAction((Activity) mContext)
+//                                .withMedia(new UMImage(mContext, bitmap3))
+//                                .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+//                                .setCallback(shareListener)//回调监听器
+//                                .share();
+//                    }
+//                });
+//            }
+//        });
+//
+//    }
+
+    //加载生成图片布局
+    public void viewToImage(JDGoodsRecBean.DataBean.ListsBean listsBean,String qRImage, String path) {
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
+        ImageView image = view.findViewById(R.id.share_image);
+        TextView name = view.findViewById(R.id.share_name);
+        TextView preferentialPrice = view.findViewById(R.id.share_preferential_price);
+        TextView originalPrice = view.findViewById(R.id.share_original_price);
+        TextView couponPrice = view.findViewById(R.id.share_coupon_price);
+        TextView number = view.findViewById(R.id.share_number);
+        ImageView qRCode = view.findViewById(R.id.share_qr_code);
+        //字体加中划线
+        originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        double div = ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount()));//到手价
+        LogUtil.e("url主图---------->" + listsBean.getImageInfo().getImageList().get(0).getUrl());
+        image.setImageURI(Uri.fromFile(new File(path)));
+//        Glide.with(mContext)
+//                .load(s)
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .placeholder(R.drawable.icon_logo)
+//                .error(R.drawable.icon_chahao)
+//                .into(image);
+
+        name.setText(listsBean.getSkuName());
+        preferentialPrice.setText("￥" + div);
+        originalPrice.setText("￥" + Double.valueOf(listsBean.getPriceInfo().getPrice()));
+        couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), div) + "元");
+        number.setText("已售" + listsBean.getInOrderCount30Days() + "件");//已售
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+        qRCode.setImageBitmap(qr);
+        LogUtil.e("url2二维码---------->" + qRImage);
+
+        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+    }
+
+    //分享
+    public void share() {
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setTitleText("分享到")
+                .setTitleTextColor(Color.parseColor("#222222"))
+                .setMenuItemTextColor(Color.parseColor("#666666"))
+                .setMenuItemIconPressedColor(Color.parseColor("#000000"))
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
+        LogUtil.e("bitmap" + bitmap);
+
+        new ShareAction((Activity) mContext)
+                .withMedia(new UMImage(mContext, bitmap))
+                .withText("hello")
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setCallback(shareListener).open(config);
 
     }
 
@@ -400,7 +458,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
          */
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            LogUtil.e("失败" + t.getMessage());
+            LogUtil.e("失败"+t.getMessage());
         }
 
         /**
