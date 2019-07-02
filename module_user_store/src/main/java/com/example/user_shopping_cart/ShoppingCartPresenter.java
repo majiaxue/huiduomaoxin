@@ -27,7 +27,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
-import com.example.user_shopping_cart.bean.CartBean;
+import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;

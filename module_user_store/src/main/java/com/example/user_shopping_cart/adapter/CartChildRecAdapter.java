@@ -2,12 +2,11 @@ package com.example.user_shopping_cart.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.user_shopping_cart.bean.CartBean;
+import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.view.AddAndSubView;
 

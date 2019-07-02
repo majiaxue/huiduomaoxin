@@ -1,23 +1,30 @@
 package com.example.user_mine;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.MineOrderCountBean;
+import com.example.bean.SubmitOrderBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.user_mine.bean.ApplicationBean;
-import com.example.user_mine.bean.BrowsingBean;
-import com.example.user_mine.bean.GoodsCollectCountBean;
-import com.example.user_mine.bean.ShopCollectCountBean;
+import com.example.bean.ApplicationBean;
+import com.example.bean.BrowsingBean;
+import com.example.bean.GoodsCollectCountBean;
+import com.example.bean.ShopCollectCountBean;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +41,11 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     private List<ShopCollectCountBean.RecordsBean> shopCollectList = new ArrayList<>();
     private List<GoodsCollectCountBean.RecordsBean> goodsCountList = new ArrayList<>();
+    private int count1 = 0;
+    private int count2 = 0;
+    private int count3 = 0;
+    private int count6 = 0;
+
 
     public MinePresenter(Context context) {
         super(context);
@@ -53,7 +65,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
                 GoodsCollectCountBean goodsCollectionRecBean = JSON.parseObject(result, new TypeReference<GoodsCollectCountBean>() {
                 }.getType());
-
+                LogUtil.e("goodsCollectionRecBean----->" + goodsCollectionRecBean);
                 if (goodsCollectionRecBean != null) {
                     goodsCountList.clear();
                     goodsCountList.addAll(goodsCollectionRecBean.getRecords());
@@ -142,7 +154,6 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     }
 
-
     //查询商家申请
     public void businessApplication() {
         Map build = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
@@ -167,6 +178,53 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("mineFragmentErrorMsg--------------->" + errorMsg);
+            }
+        }));
+    }
+
+    //我的订单
+    public void mineOrderAll() {
+
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("OrderAllPresenterResult-------->" + result);
+
+                MineOrderCountBean mineOrderBean = new Gson().fromJson(result, MineOrderCountBean.class);
+                if (mineOrderBean != null && mineOrderBean.getOrderList().size() != 0) {
+                    for (int i = 0; i < mineOrderBean.getOrderList().size(); i++) {
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 2) {
+                            //2待收货
+                            count2++;
+                        }
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 6) {
+                            //6待付款
+                            count6++;
+                        }
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 3) {
+                            //3待评论
+                            count3++;
+                        }
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 1) {
+                            //1待发货
+                            count1++;
+                        }
+                    }
+                    getView().daishouhuo(count2);
+                    count2 = 0;
+                    getView().daifukuan(count6);
+                    count6 = 0;
+                    getView().daipingjia(count3);
+                    count3 = 0;
+                    getView().daifahuo(count1);
+                    count1 = 0;
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("OrderAllPresenterError-------->" + errorMsg);
             }
         }));
     }

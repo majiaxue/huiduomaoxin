@@ -1,11 +1,11 @@
 package com.example.user_mine;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +21,9 @@ import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import q.rorbin.badgeview.QBadgeView;
 
 /**
  * Created by cuihaohao on 2019/5/16
@@ -84,6 +87,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         presenter.goodsCollectionCount();
         presenter.shopCollectCount();
         presenter.browsingHistoryCount();
+        presenter.mineOrderAll();
     }
 
     @Override
@@ -193,7 +197,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void browsingHistoryCount(int count) {
-        LogUtil.e("浏览记录数量--------->"+count);
+        LogUtil.e("浏览记录数量--------->" + count);
         if (count > 99) {
             browsingHistoryCount.setText(count + "+");
         } else {
@@ -204,13 +208,65 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void shopCollectCount(int count) {
         shopCollectCount.setText(count + "");
-        LogUtil.e("店铺收藏数量--------->"+count);
+        LogUtil.e("店铺收藏数量--------->" + count);
     }
 
     @Override
     public void goodsCollectionCount(int count) {
         goodsCollectionCount.setText(count + "");
-        LogUtil.e("商品收藏数量--------->"+count);
+        LogUtil.e("商品收藏数量--------->" + count);
+    }
+
+    @Override
+    public void daifahuo(int count) {
+        LogUtil.e("数量1-------------->"+count);
+        new QBadgeView(getContext())
+                .bindTarget(userMineDaifahuo)
+                .setBadgeNumber(count)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10,0,true);
+    }
+
+    @Override
+    public void daishouhuo(int count) {
+        LogUtil.e("数量2-------------->"+count);
+        new QBadgeView(getContext())
+                .bindTarget(userMineDaishouhuo)
+                .setBadgeNumber(count)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10,0,true);
+    }
+
+    @Override
+    public void daipingjia(int count) {
+        LogUtil.e("数量3-------------->"+count);
+        new QBadgeView(getContext())
+                .bindTarget(userMineDaipingjia)
+                .setBadgeNumber(count)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10,0,true);
+    }
+
+    @Override
+    public void daifukuan(int count) {
+        LogUtil.e("数量4-------------->"+count);
+        new QBadgeView(getContext())
+                .bindTarget(userMineDaifukuan)
+                .setBadgeNumber(count)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10,0,true);
     }
 
     @Override
@@ -220,6 +276,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             presenter.goodsCollectionCount();
             presenter.shopCollectCount();
             presenter.browsingHistoryCount();
+            presenter.mineOrderAll();
         }
     }
 
@@ -229,6 +286,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         presenter.goodsCollectionCount();
         presenter.shopCollectCount();
         presenter.browsingHistoryCount();
+        presenter.mineOrderAll();
     }
 
 }

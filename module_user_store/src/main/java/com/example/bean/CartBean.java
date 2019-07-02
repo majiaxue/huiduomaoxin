@@ -1,4 +1,4 @@
-package com.example.user_shopping_cart.bean;
+package com.example.bean;
 
 import java.util.List;
 

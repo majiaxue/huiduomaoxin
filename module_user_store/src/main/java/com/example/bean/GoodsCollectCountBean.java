@@ -1,4 +1,4 @@
-package com.example.user_mine.bean;
+package com.example.bean;
 
 import java.util.List;
 
@@ -501,5 +501,66 @@ public class GoodsCollectCountBean {
         public void setGoodReputation(String goodReputation) {
             this.goodReputation = goodReputation;
         }
+
+        @Override
+        public String toString() {
+            return "RecordsBean{" +
+                    "id=" + id +
+                    ", productCategoryId=" + productCategoryId +
+                    ", feightTemplateId=" + feightTemplateId +
+                    ", productAttributeCategoryId=" + productAttributeCategoryId +
+                    ", name='" + name + '\'' +
+                    ", pic='" + pic + '\'' +
+                    ", productSn='" + productSn + '\'' +
+                    ", deleteStatus=" + deleteStatus +
+                    ", publishStatus=" + publishStatus +
+                    ", newStatus=" + newStatus +
+                    ", recommandStatus=" + recommandStatus +
+                    ", verifyStatus=" + verifyStatus +
+                    ", sort=" + sort +
+                    ", sale=" + sale +
+                    ", price=" + price +
+                    ", promotionPrice=" + promotionPrice +
+                    ", giftGrowth=" + giftGrowth +
+                    ", giftPoint=" + giftPoint +
+                    ", usePointLimit=" + usePointLimit +
+                    ", subTitle='" + subTitle + '\'' +
+                    ", description='" + description + '\'' +
+                    ", originalPrice=" + originalPrice +
+                    ", stock=" + stock +
+                    ", lowStock=" + lowStock +
+                    ", unit='" + unit + '\'' +
+                    ", weight=" + weight +
+                    ", previewStatus=" + previewStatus +
+                    ", serviceIds='" + serviceIds + '\'' +
+                    ", keywords='" + keywords + '\'' +
+                    ", note='" + note + '\'' +
+                    ", albumPics='" + albumPics + '\'' +
+                    ", detailTitle='" + detailTitle + '\'' +
+                    ", detailDesc='" + detailDesc + '\'' +
+                    ", detailHtml='" + detailHtml + '\'' +
+                    ", detailMobileHtml='" + detailMobileHtml + '\'' +
+                    ", promotionStartTime=" + promotionStartTime +
+                    ", promotionEndTime=" + promotionEndTime +
+                    ", promotionPerLimit=" + promotionPerLimit +
+                    ", promotionType=" + promotionType +
+                    ", brandName='" + brandName + '\'' +
+                    ", productCategoryName='" + productCategoryName + '\'' +
+                    ", supplyId=" + supplyId +
+                    ", createTime=" + createTime +
+                    ", sellerId=" + sellerId +
+                    ", sellerName='" + sellerName + '\'' +
+                    ", goodReputation='" + goodReputation + '\'' +
+                    ", isCheck=" + isCheck +
+                    ", favoriteId=" + favoriteId +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "GoodsCollectCountBean{" +
+                "records=" + records +
+                '}';
     }
 }

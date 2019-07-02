@@ -1,4 +1,4 @@
-package com.example.user_mine.bean;
+package com.example.bean;
 
 import java.util.List;
 

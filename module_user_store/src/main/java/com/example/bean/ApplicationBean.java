@@ -1,4 +1,4 @@
-package com.example.user_mine.bean;
+package com.example.bean;
 
 /**
  * Created by cuihaohao on 2019/6/15
