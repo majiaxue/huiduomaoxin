@@ -151,13 +151,13 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
         }
 
         refundParticularsTime.setText(list.get(position).getReceiveTime());
-        refundParticularsName.setText(list.get(position).getReturnName());
-        refundParticularsPhone.setText(list.get(position).getReturnPhone());
+        refundParticularsName.setText(list.get(position).getReceiverName());
+        refundParticularsPhone.setText(list.get(position).getReceiverPhone());
         refundParticularsAddress.setText(list.get(position).getReceiverRegion() + list.get(position).getReceiverCity() + list.get(position).getReceiverProvince() + list.get(position).getOrderAddress());
         refundParticularsPrice.setText(list.get(position).getReturnAmount());
-        if (list.get(position).getPayWay() == 1) {
+        if ("1".equals(list.get(position).getPayWay())) {
             refundParticularsPath.setText("退回支付宝");
-        } else if (list.get(position).getPayWay() == 2) {
+        } else if ("2".equals(list.get(position).getPayWay())) {
             refundParticularsPath.setText("退回微信");
         }
 

@@ -37,7 +37,7 @@ public class CustomDialog extends Dialog {
         SimpleDraweeView dialogGif = findViewById(R.id.dialog_gif);
         Uri uri = new Uri.Builder()
                 .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-                .path(String.valueOf(R.drawable.loading))
+                .path(String.valueOf(R.drawable.loading1))
                 .build();
         DraweeController draweeController =
                 Fresco.newDraweeControllerBuilder()

@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class AlterationBean {
 
+
     private List<RBean> r;
 
     public List<RBean> getR() {
@@ -20,27 +21,27 @@ public class AlterationBean {
 
     public static class RBean {
         /**
-         * id : 58
-         * orderId : 174
+         * id : 31
+         * orderId : 189
          * companyAddressId : null
-         * productId : 39
-         * orderSn : 19061618300001
-         * createTime : 2019-06-24 15:21:14
+         * productId : 56
+         * orderSn : 19061914200001
+         * createTime : 2019-07-03 14:04:46
          * memberUsername : 18639488962
          * returnAmount : null
          * returnName : null
          * returnPhone : null
-         * status : 0
+         * status : 8
          * handleTime : null
          * productPic : null
-         * productName : 夜店女装夜总会性感连衣裙气质大露背修身包臀开叉夜场裙子小礼服
+         * productName : 凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋
          * productAttr : null
          * productCount : null
-         * productPrice : 193
-         * productRealPrice : 11
+         * productPrice : 88
+         * productRealPrice : 99
          * reason : 拍错/多拍/不想要
          * description : null
-         * proofPics : http://192.168.1.17:9000/order/8337267fd55d4302ac05b4dfbf3fffb2..jpg
+         * proofPics : http://172.16.240.23:9000/order/785f00829af14e9f83fa4f7ae64f179f..jpg,http://172.16.240.23:9000/order/7b8c4e3f302647458635d5f76a5c4866..jpg
          * handleNote : null
          * handleMan : null
          * receiveMan : null
@@ -48,20 +49,21 @@ public class AlterationBean {
          * receiveNote : null
          * sellerId : null
          * returnType : null
-         * sellerName : null
-         * receiverPhone : null
-         * receiverName : null
-         * receiverRegion : null
-         * receiverCity : null
-         * receiverProvince : null
-         * orderAddress : null
-         * itemlist : [{"id":null,"orderId":null,"orderSn":null,"productId":null,"productPic":"http://192.168.1.22:9000/goods/d099e84d9b294fcaabd6d91db3d16f83.jpg","productName":"夜店女装夜总会性感连衣裙气质大露背修身包臀开叉夜场裙子小礼服","productBrand":null,"productSn":null,"productPrice":193,"productQuantity":3,"productSkuId":null,"productSkuCode":null,"productCategoryId":null,"sp1":null,"sp2":null,"sp3":null,"promotionName":null,"promotionAmount":null,"couponAmount":null,"integrationAmount":null,"realAmount":null,"giftIntegration":null,"giftGrowth":null,"productAttr":null,"couponId":null,"itemDeliveryTemplateId":null,"expireDate":null}]
+         * sellerName : Allisjoy/我的时代
+         * receiverPhone : 18818881888
+         * receiverName : 辅助
+         * receiverRegion : 金水区
+         * receiverCity : 郑州
+         * receiverProvince : 河南省
+         * orderAddress : 金城国际广场
+         * payWay : null
+         * itemlist : [{"id":null,"orderId":null,"orderSn":null,"productId":null,"productPic":"http://47.99.93.123:8083/goods/8f49f74d0df943c484d1a48ac226d05d.jpg","productName":"凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋","productBrand":null,"productSn":null,"productPrice":88,"productQuantity":1,"productSkuId":null,"productSkuCode":null,"productCategoryId":null,"sp1":null,"sp2":null,"sp3":null,"promotionName":null,"promotionAmount":null,"couponAmount":null,"StringegrationAmount":null,"realAmount":null,"giftStringegration":null,"giftGrowth":null,"productAttr":null,"couponId":null,"itemDeliveryTemplateId":null,"expireDate":null}]
          */
 
-        private int id;
+        private String id;
         private String orderId;
         private String companyAddressId;
-        private int productId;
+        private String productId;
         private String orderSn;
         private String createTime;
         private String memberUsername;
@@ -74,8 +76,8 @@ public class AlterationBean {
         private String productName;
         private String productAttr;
         private String productCount;
-        private int productPrice;
-        private int productRealPrice;
+        private String productPrice;
+        private String productRealPrice;
         private String reason;
         private String description;
         private String proofPics;
@@ -93,22 +95,14 @@ public class AlterationBean {
         private String receiverCity;
         private String receiverProvince;
         private String orderAddress;
-        private int payWay;
+        private String payWay;
         private List<ItemlistBean> itemlist;
 
-        public int getPayWay() {
-            return payWay;
-        }
-
-        public void setPayWay(int payWay) {
-            this.payWay = payWay;
-        }
-
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -128,11 +122,11 @@ public class AlterationBean {
             this.companyAddressId = companyAddressId;
         }
 
-        public int getProductId() {
+        public String getProductId() {
             return productId;
         }
 
-        public void setProductId(int productId) {
+        public void setProductId(String productId) {
             this.productId = productId;
         }
 
@@ -232,19 +226,19 @@ public class AlterationBean {
             this.productCount = productCount;
         }
 
-        public int getProductPrice() {
+        public String getProductPrice() {
             return productPrice;
         }
 
-        public void setProductPrice(int productPrice) {
+        public void setProductPrice(String productPrice) {
             this.productPrice = productPrice;
         }
 
-        public int getProductRealPrice() {
+        public String getProductRealPrice() {
             return productRealPrice;
         }
 
-        public void setProductRealPrice(int productRealPrice) {
+        public void setProductRealPrice(String productRealPrice) {
             this.productRealPrice = productRealPrice;
         }
 
@@ -384,6 +378,14 @@ public class AlterationBean {
             this.orderAddress = orderAddress;
         }
 
+        public String getPayWay() {
+            return payWay;
+        }
+
+        public void setPayWay(String payWay) {
+            this.payWay = payWay;
+        }
+
         public List<ItemlistBean> getItemlist() {
             return itemlist;
         }
@@ -398,12 +400,12 @@ public class AlterationBean {
              * orderId : null
              * orderSn : null
              * productId : null
-             * productPic : http://192.168.1.22:9000/goods/d099e84d9b294fcaabd6d91db3d16f83.jpg
-             * productName : 夜店女装夜总会性感连衣裙气质大露背修身包臀开叉夜场裙子小礼服
+             * productPic : http://47.99.93.123:8083/goods/8f49f74d0df943c484d1a48ac226d05d.jpg
+             * productName : 凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋
              * productBrand : null
              * productSn : null
-             * productPrice : 193
-             * productQuantity : 3
+             * productPrice : 88
+             * productQuantity : 1
              * productSkuId : null
              * productSkuCode : null
              * productCategoryId : null
@@ -413,9 +415,9 @@ public class AlterationBean {
              * promotionName : null
              * promotionAmount : null
              * couponAmount : null
-             * integrationAmount : null
+             * StringegrationAmount : null
              * realAmount : null
-             * giftIntegration : null
+             * giftStringegration : null
              * giftGrowth : null
              * productAttr : null
              * couponId : null
@@ -431,8 +433,8 @@ public class AlterationBean {
             private String productName;
             private String productBrand;
             private String productSn;
-            private int productPrice;
-            private int productQuantity;
+            private String productPrice;
+            private String productQuantity;
             private String productSkuId;
             private String productSkuCode;
             private String productCategoryId;
@@ -442,9 +444,9 @@ public class AlterationBean {
             private String promotionName;
             private String promotionAmount;
             private String couponAmount;
-            private String integrationAmount;
+            private String StringegrationAmount;
             private String realAmount;
-            private String giftIntegration;
+            private String giftStringegration;
             private String giftGrowth;
             private String productAttr;
             private String couponId;
@@ -515,19 +517,19 @@ public class AlterationBean {
                 this.productSn = productSn;
             }
 
-            public int getProductPrice() {
+            public String getProductPrice() {
                 return productPrice;
             }
 
-            public void setProductPrice(int productPrice) {
+            public void setProductPrice(String productPrice) {
                 this.productPrice = productPrice;
             }
 
-            public int getProductQuantity() {
+            public String getProductQuantity() {
                 return productQuantity;
             }
 
-            public void setProductQuantity(int productQuantity) {
+            public void setProductQuantity(String productQuantity) {
                 this.productQuantity = productQuantity;
             }
 
@@ -603,12 +605,12 @@ public class AlterationBean {
                 this.couponAmount = couponAmount;
             }
 
-            public String getIntegrationAmount() {
-                return integrationAmount;
+            public String getStringegrationAmount() {
+                return StringegrationAmount;
             }
 
-            public void setIntegrationAmount(String integrationAmount) {
-                this.integrationAmount = integrationAmount;
+            public void setStringegrationAmount(String StringegrationAmount) {
+                this.StringegrationAmount = StringegrationAmount;
             }
 
             public String getRealAmount() {
@@ -619,12 +621,12 @@ public class AlterationBean {
                 this.realAmount = realAmount;
             }
 
-            public String getGiftIntegration() {
-                return giftIntegration;
+            public String getGiftStringegration() {
+                return giftStringegration;
             }
 
-            public void setGiftIntegration(String giftIntegration) {
-                this.giftIntegration = giftIntegration;
+            public void setGiftStringegration(String giftStringegration) {
+                this.giftStringegration = giftStringegration;
             }
 
             public String getGiftGrowth() {
@@ -666,6 +668,89 @@ public class AlterationBean {
             public void setExpireDate(String expireDate) {
                 this.expireDate = expireDate;
             }
+
+            @Override
+            public String toString() {
+                return "ItemlistBean{" +
+                        "id='" + id + '\'' +
+                        ", orderId='" + orderId + '\'' +
+                        ", orderSn='" + orderSn + '\'' +
+                        ", productId='" + productId + '\'' +
+                        ", productPic='" + productPic + '\'' +
+                        ", productName='" + productName + '\'' +
+                        ", productBrand='" + productBrand + '\'' +
+                        ", productSn='" + productSn + '\'' +
+                        ", productPrice=" + productPrice +
+                        ", productQuantity=" + productQuantity +
+                        ", productSkuId='" + productSkuId + '\'' +
+                        ", productSkuCode='" + productSkuCode + '\'' +
+                        ", productCategoryId='" + productCategoryId + '\'' +
+                        ", sp1='" + sp1 + '\'' +
+                        ", sp2='" + sp2 + '\'' +
+                        ", sp3='" + sp3 + '\'' +
+                        ", promotionName='" + promotionName + '\'' +
+                        ", promotionAmount='" + promotionAmount + '\'' +
+                        ", couponAmount='" + couponAmount + '\'' +
+                        ", StringegrationAmount='" + StringegrationAmount + '\'' +
+                        ", realAmount='" + realAmount + '\'' +
+                        ", giftStringegration='" + giftStringegration + '\'' +
+                        ", giftGrowth='" + giftGrowth + '\'' +
+                        ", productAttr='" + productAttr + '\'' +
+                        ", couponId='" + couponId + '\'' +
+                        ", itemDeliveryTemplateId='" + itemDeliveryTemplateId + '\'' +
+                        ", expireDate='" + expireDate + '\'' +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "RBean{" +
+                    "id=" + id +
+                    ", orderId=" + orderId +
+                    ", companyAddressId='" + companyAddressId + '\'' +
+                    ", productId=" + productId +
+                    ", orderSn='" + orderSn + '\'' +
+                    ", createTime='" + createTime + '\'' +
+                    ", memberUsername='" + memberUsername + '\'' +
+                    ", returnAmount='" + returnAmount + '\'' +
+                    ", returnName='" + returnName + '\'' +
+                    ", returnPhone='" + returnPhone + '\'' +
+                    ", status=" + status +
+                    ", handleTime='" + handleTime + '\'' +
+                    ", productPic='" + productPic + '\'' +
+                    ", productName='" + productName + '\'' +
+                    ", productAttr='" + productAttr + '\'' +
+                    ", productCount='" + productCount + '\'' +
+                    ", productPrice=" + productPrice +
+                    ", productRealPrice=" + productRealPrice +
+                    ", reason='" + reason + '\'' +
+                    ", description='" + description + '\'' +
+                    ", proofPics='" + proofPics + '\'' +
+                    ", handleNote='" + handleNote + '\'' +
+                    ", handleMan='" + handleMan + '\'' +
+                    ", receiveMan='" + receiveMan + '\'' +
+                    ", receiveTime='" + receiveTime + '\'' +
+                    ", receiveNote='" + receiveNote + '\'' +
+                    ", sellerId='" + sellerId + '\'' +
+                    ", returnType='" + returnType + '\'' +
+                    ", sellerName='" + sellerName + '\'' +
+                    ", receiverPhone='" + receiverPhone + '\'' +
+                    ", receiverName='" + receiverName + '\'' +
+                    ", receiverRegion='" + receiverRegion + '\'' +
+                    ", receiverCity='" + receiverCity + '\'' +
+                    ", receiverProvince='" + receiverProvince + '\'' +
+                    ", orderAddress='" + orderAddress + '\'' +
+                    ", payWay='" + payWay + '\'' +
+                    ", itemlist=" + itemlist +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "AlterationBean{" +
+                "r=" + r +
+                '}';
     }
 }

@@ -18,6 +18,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.example.view.CustomDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
     private MineOrderParentAdapter mineOrderParentAdapter;
+    private CustomDialog customDialog =new CustomDialog(mContext);
 
     public StayDeliveryGoodsPresenter(Context context) {
         super(context);
@@ -46,11 +48,13 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
     }
 
     public void stayDeliveryGoodsRec(final RecyclerView stayDeliveryGoodsRec) {
+        customDialog.show();
         Map map = MapUtil.getInstance().addParms("status", 2).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(final String result, String msg) {
+                customDialog.dismiss();
                 LogUtil.e("stayDeliveryGoodsResult" + result);
 //                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -124,6 +128,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                customDialog.dismiss();
                 LogUtil.e("stayDeliveryGoodsErrorMsg" + errorMsg);
             }
         }));

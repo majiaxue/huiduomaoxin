@@ -93,6 +93,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             list.add(insideBean);
         }
         ConfirmOrderBean orderBean = new ConfirmOrderBean();
+
         orderBean.setReceiverName(addressBean.getAddressName());
         orderBean.setReceiverPhone(addressBean.getAddressPhone());
         orderBean.setReceiverProvince(addressBean.getAddressProvince());
@@ -161,6 +162,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         }
 
         String jsonString = JSON.toJSONString(list);
+        LogUtil.e("运费1111---------->"+jsonString);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHeadWithBody(CommonResource.GET_YUNGEI, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

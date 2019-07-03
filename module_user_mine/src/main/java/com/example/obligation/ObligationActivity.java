@@ -97,7 +97,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
                 SimpleDateFormat formatter = new SimpleDateFormat("mm分ss秒");
                 String dateString = formatter.format(millisUntilFinished);
 
-                obligationTimeRemaining.setText("剩餘" + dateString);
+                obligationTimeRemaining.setText("剩余" + dateString);
             }
 
             @Override

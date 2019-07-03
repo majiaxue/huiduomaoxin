@@ -20,6 +20,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.example.view.CustomDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
 
+    private CustomDialog customDialog = new CustomDialog(mContext);
+
     public OrderAllPresenter(Context context) {
         super(context);
     }
@@ -47,6 +50,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
     }
 
     public void orderAllRec(final RecyclerView orderAllRec) {
+        customDialog.show();
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
 
@@ -54,6 +58,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
             @Override
             public void onSuccess(String result, String msg) {
+                customDialog.dismiss();
                 LogUtil.e("OrderAllPresenterResult-------->" + result);
 //                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -115,6 +120,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                                     .build("/module_user_mine/RefundActivity")
                                                     .withSerializable("mineOrderBean", mineOrderBean)
                                                     .withInt("position", position)
+                                                    .withString("type", "0")
                                                     .navigation();
                                         }
                                     });
@@ -269,6 +275,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                customDialog.dismiss();
                 LogUtil.e("OrderAllPresenterError-------->" + errorMsg);
             }
         }));

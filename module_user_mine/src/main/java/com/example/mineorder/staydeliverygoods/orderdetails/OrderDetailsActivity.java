@@ -3,6 +3,7 @@ package com.example.mineorder.staydeliverygoods.orderdetails;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,9 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -179,7 +183,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             orderDetailsRefund.setText("申请退款");
             orderDetailsLeft.setText("查看物流");
             orderDetailsRight.setText("确认收货");
-
+            time(orderDetailBean.getReceiveTime());
             //申请退款
             orderDetailsRefund.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -239,5 +243,48 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
         presenter.items(items, orderDetailsGoodsRec);
 
+    }
+
+    private void time(String orderOutTime) {
+//        long firstTime = System.currentTimeMillis() + 30 * 60 * 1000;
+        long timeStamp = getTimeStamp(orderOutTime, "yyyy-MM-dd HH:mm:ss");
+        LogUtil.e("firstTime----------->" + timeStamp);
+        long time = timeStamp - System.currentTimeMillis();
+        LogUtil.e("time------------->" + time / 1000);
+        CountDownTimer countDownTimer = new CountDownTimer(time, 1000) {//第一个参数表示总时间，第二个参数表示间隔时间。
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd天HH小时mm分");
+                String dateString = formatter.format(millisUntilFinished);
+
+                orderDetailsSubhead.setText("还剩" + dateString + "自动收货");
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e("結束");
+            }
+        }.start();
+    }
+
+    /**
+     * 时间转换为时间戳
+     *
+     * @param timeStr 时间 例如: 2016-03-09
+     * @param format  时间对应格式  例如: yyyy-MM-dd
+     * @return
+     */
+    public static long getTimeStamp(String timeStr, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(timeStr);
+            long timeStamp = date.getTime();
+            return timeStamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

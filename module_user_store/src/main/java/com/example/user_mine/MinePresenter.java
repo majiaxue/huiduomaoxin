@@ -45,7 +45,7 @@ public class MinePresenter extends BasePresenter<MineView> {
     private int count2 = 0;
     private int count3 = 0;
     private int count6 = 0;
-
+    private int size = 0;
 
     public MinePresenter(Context context) {
         super(context);
@@ -136,9 +136,10 @@ public class MinePresenter extends BasePresenter<MineView> {
                 if (browsingBean != null) {
                     if (getView() != null) {
                         for (int i = 0; i < browsingBean.getRecords().size(); i++) {
-                            int size = browsingBean.getRecords().get(i).getItem().size();
-                            getView().browsingHistoryCount(size);
+                            size += browsingBean.getRecords().get(i).getItem().size();
                         }
+                        getView().browsingHistoryCount(size);
+                        size = 0;
                     }
                 } else {
                     getView().browsingHistoryCount(0);

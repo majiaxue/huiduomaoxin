@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -27,6 +28,7 @@ import com.example.bean.RefundApplyVo;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
+import com.example.view.CustomDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -91,9 +93,8 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     String type;
 
 
-    private String Base64;
-    private List<MineOrderBean> list = new ArrayList<>();
     private List<String> images = new ArrayList<>();
+    private CustomDialog customDialog;
 
     @Override
     public int getLayoutId() {
@@ -104,14 +105,14 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     public void initData() {
         includeTitle.setText("退款申请");
         ARouter.getInstance().inject(this);
+        customDialog = new CustomDialog(this);
         LogUtil.e("beanList退款申请" + mineOrderBean1);
-        list.add(mineOrderBean1);
         if ("1".equals(type)) {
-            refundSumText.setText("" + list.get(0).getOrderList().get(position).getTotalAmount());
-            refundImage.setImageURI(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductPic());
-            refundGoodsName.setText(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductName());
-            refundColour.setText(list.get(0).getOrderList().get(position).getOrderItems().get(0).getSp1());
-            refundSize.setText(list.get(0).getOrderList().get(position).getOrderItems().get(0).getSp2());
+            refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
+            refundImage.setImageURI(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPic());
+            refundGoodsName.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductName());
+            refundColour.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getSp1());
+            refundSize.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getSp2());
         } else {
             refundSumText.setText("" + orderDetailBean.getPayAmount());
             refundImage.setImageURI(orderDetailBean.getItems().get(0).getProductPic());
@@ -156,65 +157,83 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
         refundSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(type)) {
-                    RefundApplyVo refundApplyVo = new RefundApplyVo();
-                    refundApplyVo.setOrderId(list.get(0).getOrderList().get(position).getOrderId() + "");
-                    refundApplyVo.setProductId(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductId() + "");
-                    refundApplyVo.setProductName(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductName());
-                    refundApplyVo.setOrderSn(list.get(0).getOrderList().get(position).getOrderItems().get(0).getOrderSn());
-                    refundApplyVo.setProofPics(images);
-                    refundApplyVo.setReason(refundCauseText.getText().toString());
-                    refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
-                    refundApplyVo.setProductPrice(list.get(0).getOrderList().get(position).getOrderItems().get(0).getProductPrice());
-                    refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
-                    refundApplyVo.setSellerId("");
-                    String jsonString = JSON.toJSONString(refundApplyVo);
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.REFUNDAPPLY, requestBody, SPUtil.getToken());
-                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
-                        @Override
-                        public void onSuccess(String result, String msg) {
-                            LogUtil.e("退款申请--------->" + result);
-                            if ("true".equals(result)) {
-                                ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
-                            }
-                        }
-
-                        @Override
-                        public void onError(String errorCode, String errorMsg) {
-                            LogUtil.e("退款申请errorMsg--------->" + errorMsg);
-                        }
-                    }));
-
+                if (refundCauseText.getText().toString().equals("点击选择")) {
+                    Toast.makeText(RefundActivity.this, "请选择退款原因", Toast.LENGTH_SHORT).show();
+                } else if (refundTypeText.getText().toString().equals("点击选择")) {
+                    Toast.makeText(RefundActivity.this, "请选择退款类型", Toast.LENGTH_SHORT).show();
                 } else {
-                    RefundApplyVo refundApplyVo = new RefundApplyVo();
-                    refundApplyVo.setOrderId(orderDetailBean.getItems().get(0).getOrderId() + "");
-                    refundApplyVo.setProductId(orderDetailBean.getItems().get(0).getProductId() + "");
-                    refundApplyVo.setProductName(orderDetailBean.getItems().get(0).getProductName());
-                    refundApplyVo.setOrderSn(orderDetailBean.getItems().get(0).getOrderSn());
-                    refundApplyVo.setProofPics(images);
-                    refundApplyVo.setReason(refundCauseText.getText().toString());
-                    refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
-                    refundApplyVo.setProductPrice(orderDetailBean.getPayAmount());
-                    refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
-                    refundApplyVo.setSellerId("");
-                    String jsonString = JSON.toJSONString(refundApplyVo);
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.REFUNDAPPLY, requestBody, SPUtil.getToken());
-                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
-                        @Override
-                        public void onSuccess(String result, String msg) {
-                            LogUtil.e("退款申请--------->" + result);
-                            if ("true".equals(result)) {
-                                ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
+                    customDialog.show();
+                    if ("1".equals(type)) {
+                        RefundApplyVo refundApplyVo = new RefundApplyVo();
+                        refundApplyVo.setOrderId(mineOrderBean1.getOrderList().get(position).getOrderId() + "");
+                        refundApplyVo.setProductId(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductId() + "");
+                        refundApplyVo.setProductName(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductName());
+                        refundApplyVo.setOrderSn(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getOrderSn());
+                        refundApplyVo.setProofPics(images);
+                        refundApplyVo.setReason(refundCauseText.getText().toString());
+                        refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
+                        refundApplyVo.setProductPrice(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPrice());
+                        refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setSellerId(mineOrderBean1.getOrderList().get(position).getSellerId());
+//                        refundApplyVo.setReturnName(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).get);
+//                        refundApplyVo.setReturnPhone(mineOrderBean1.getReceiverPhone());
+                        String jsonString = JSON.toJSONString(refundApplyVo);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+                        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.REFUNDAPPLY, requestBody, SPUtil.getToken());
+                        RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                            @Override
+                            public void onSuccess(String result, String msg) {
+                                LogUtil.e("退款申请--------->" + result);
+                                customDialog.dismiss();
+                                if ("true".equals(result)) {
+                                    ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
+                                }
+                                finish();
                             }
-                        }
 
-                        @Override
-                        public void onError(String errorCode, String errorMsg) {
-                            LogUtil.e("退款申请errorMsg--------->" + errorMsg);
-                        }
-                    }));
+                            @Override
+                            public void onError(String errorCode, String errorMsg) {
+                                customDialog.dismiss();
+                                LogUtil.e("退款申请errorMsg--------->" + errorMsg);
+                            }
+                        }));
+
+                    } else {
+                        RefundApplyVo refundApplyVo = new RefundApplyVo();
+                        refundApplyVo.setOrderId(orderDetailBean.getItems().get(0).getOrderId() + "");
+                        refundApplyVo.setProductId(orderDetailBean.getItems().get(0).getProductId() + "");
+                        refundApplyVo.setProductName(orderDetailBean.getItems().get(0).getProductName());
+                        refundApplyVo.setOrderSn(orderDetailBean.getItems().get(0).getOrderSn());
+                        refundApplyVo.setProofPics(images);
+                        refundApplyVo.setReason(refundCauseText.getText().toString());
+                        refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
+                        refundApplyVo.setProductPrice(orderDetailBean.getPayAmount());
+                        refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setSellerId(orderDetailBean.getSellerId()+"");
+//                        refundApplyVo.setReturnName(orderDetailBean.getReceiverName());
+//                        refundApplyVo.setReturnPhone(orderDetailBean.getReceiverPhone());
+                        String jsonString = JSON.toJSONString(refundApplyVo);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+                        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.REFUNDAPPLY, requestBody, SPUtil.getToken());
+                        RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                            @Override
+                            public void onSuccess(String result, String msg) {
+                                LogUtil.e("退款申请--------->" + result);
+                                customDialog.dismiss();
+                                if ("true".equals(result)) {
+                                    ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
+                                }
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(String errorCode, String errorMsg) {
+                                customDialog.dismiss();
+                                LogUtil.e("退款申请errorMsg--------->" + errorMsg);
+                                Toast.makeText(RefundActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                            }
+                        }));
+                    }
                 }
             }
         });
