@@ -3,10 +3,7 @@ package com.example.commoditydetails.jd;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -16,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -25,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.JDGoodsRecBean;
-import com.example.commoditydetails.pdd.CommodityDetailsActivity;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -33,9 +28,8 @@ import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.ViewToBitmap;
-import com.example.view.CustomDialog;
-import com.example.view.RVNestedScrollView;
+import com.example.utils.CustomDialog;
+import com.example.utils.ProcessDialogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -43,8 +37,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -130,8 +122,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     private double sub;
     private String qRImage;
-    private Bitmap saveBitmap;
-    private CustomDialog customDialog;
 
 
     @Override
@@ -143,8 +133,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        customDialog = new CustomDialog(this);
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(this);
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -172,10 +161,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         String startTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseStartTime());
         String endTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseEndTime());
         commodityTime.setText("有效期：" + startTime + "~" + endTime);
-//        commodityShopName.setText(listsBeanList.get(position).getShopInfo().getShopName());//商家名
-//        commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.get(0).getSeller().getShopIcon()));//商家icon
-//        LogUtil.e("icon---->" + tbBeanList.get(0).getSeller().getShopIcon());
-
 
         //收藏状态
         presenter.isCollect(commodityCollectImage, skuid);
@@ -272,7 +257,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     @Override
     public void earnings(String earnings) {
-        customDialog.dismiss();
+        ProcessDialogUtil.dismissDialog();
         Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
         Double aDouble = Double.valueOf(earnings);
         double mul1 = ArithUtil.mul(sub, ArithUtil.div(commission, 100, 2));

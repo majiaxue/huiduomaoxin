@@ -367,7 +367,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         originalPrice.setText("￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));
         couponPrice.setText("￥" + ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元");
         number.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
-        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
         qRCode.setImageBitmap(qr);
         LogUtil.e("url2二维码---------->" + qRImage);
 

@@ -163,4 +163,10 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     public void loadCommend(BaseRecStaggeredAdapter adapter) {
         goodsCollectionBottomRec.setAdapter(adapter);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.setGoodsCollectionRec(goodsCollectionRec);
+    }
 }

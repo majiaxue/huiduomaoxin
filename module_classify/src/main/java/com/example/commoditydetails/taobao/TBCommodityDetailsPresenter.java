@@ -519,7 +519,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             image.setImageURI(Uri.fromFile(new File(path)));
             name.setText(tbBean.getData().getTitle());
             number.setText("已售" + tbBean.getData().getSellCount() + "件");//已售
-            Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+            Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
             qRCode.setImageBitmap(qr);
             LogUtil.e("url2二维码---------->" + qRImage);
 

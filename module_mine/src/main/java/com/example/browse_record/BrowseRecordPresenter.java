@@ -17,6 +17,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("浏览记录：" + result);
                 if (result==null){
                     if (getView()!=null){
@@ -57,7 +59,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
                     dataList.addAll(JSON.parseArray(result, MyCollectBean.class));
                     LogUtil.e("changdu:"+dataList.size());
                     if (recordAdapter == null) {
-                        recordAdapter = new BrowseRecordAdapter(mContext, dataList, R.layout.item_base_rec);
+                        recordAdapter = new BrowseRecordAdapter(mContext, dataList, R.layout.rv_collection);
                         if (getView() != null) {
                             getView().loadUI(recordAdapter);
                         }
@@ -73,6 +75,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("浏览记录errorMsg"+errorMsg);
                 if (getView() != null) {
                     getView().loadFinish();
@@ -85,9 +88,20 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
         recordAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                        .withString("goods_id", dataList.get(position).getGoodsId()+"")
-                        .navigation();
+                if (dataList.get(position).getType() == 0) {
+                    //淘宝
+                    ARouter.getInstance()
+                            .build("/module_classify/TBCommodityDetailsActivity")
+                            .withString("para", dataList.get(position).getGoodsId()+"")
+                            .withString("shoptype", "1")
+                            .navigation();
+                } else if (dataList.get(position).getType() == 2) {
+                    //拼多多
+                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId() + "").navigation();
+                } else {
+                    //京东
+
+                }
             }
         });
     }

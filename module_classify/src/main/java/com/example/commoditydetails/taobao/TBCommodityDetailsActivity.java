@@ -4,10 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -26,14 +23,13 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.TBBean;
 import com.example.bean.TBLedSecuritiesBean;
-import com.example.commoditydetails.jd.JDCommodityDetailsActivity;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.ArithUtil;
-import com.example.utils.ViewToBitmap;
-import com.example.view.CustomDialog;
+import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -120,7 +116,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
     private String earnings;
     private int status = 0;
-    private CustomDialog customDialog;
     private String imageUrl;
 
     @Override
@@ -132,8 +127,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         LogUtil.e("123456              " + para + "        " + shopType);
-        customDialog = new CustomDialog(this);
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(this);
         presenter.login();
         //优惠券
         presenter.ledSecurities(para);
@@ -319,7 +313,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         status++;
         LogUtil.e("status" + status);
         if (status == 3) {
-            customDialog.dismiss();
+            ProcessDialogUtil.dismissDialog();
             Glide.with(this)
                     .asBitmap()
                     .load("https:" + tbBeanList.getData().getImages().get(0))
@@ -383,8 +377,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public void noCoupon(boolean noCoupon) {
         if (noCoupon) {
-            customDialog.dismiss();
-
+            ProcessDialogUtil.dismissDialog();
 
             commodityDetailsNoCoupon.setVisibility(View.GONE);
             commodityEarnings.setVisibility(View.GONE);

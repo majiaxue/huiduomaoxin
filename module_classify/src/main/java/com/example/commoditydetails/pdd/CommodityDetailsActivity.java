@@ -2,14 +2,9 @@ package com.example.commoditydetails.pdd;
 
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -32,12 +27,10 @@ import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
-import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.QRCode;
-import com.example.utils.ViewToBitmap;
-import com.example.view.CustomDialog;
+import com.example.utils.CustomDialog;
+import com.example.utils.ProcessDialogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -49,8 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static com.example.utils.ViewToBitmap.GetImageInputStream;
 
 /**
  * 拼多多商品详情
@@ -130,7 +121,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private double div;
     private double promotionRate;
     private File file;
-    private CustomDialog customDialog;
 
 
     @Override
@@ -142,8 +132,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        customDialog = new CustomDialog(this);
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(this);
         LogUtil.e("goods_id" + goods_id);
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
@@ -318,7 +307,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void flag() {
         flag++;
         if (flag == 2) {
-            customDialog.dismiss();
+            ProcessDialogUtil.dismissDialog();
             //到手价乘佣金
             mul = ArithUtil.mul(div, promotionRate);
             //用户佣金比例

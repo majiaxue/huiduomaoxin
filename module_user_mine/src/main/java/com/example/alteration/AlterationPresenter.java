@@ -19,8 +19,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
-import com.example.view.CustomDialog;
-import com.google.gson.Gson;
+import com.example.utils.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,6 +17,7 @@ import com.example.refundparticulars.adapter.RefundParticularsRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
+import com.example.utils.CustomDialog;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,8 @@ import io.reactivex.Observable;
  */
 public class RefundParticularsPresenter extends BasePresenter<RefundParticularsView> {
 
+    private CustomDialog customDialog = new CustomDialog(mContext);
+
     public RefundParticularsPresenter(Context context) {
         super(context);
     }
@@ -39,11 +42,13 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
     }
 
     public void initView(String orderSn) {
+        customDialog.show();
         Map map = MapUtil.getInstance().addParms("orderSn", orderSn).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.RETURNTABLE, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                customDialog.dismiss();
                 LogUtil.e("RefundParticularsResult------------->" + result);
 //                List<AlterationBean> list = JSON.parseArray(result, AlterationBean.class);
                 AlterationBean alterationBean = JSON.parseObject(result, new TypeReference<AlterationBean>() {
@@ -57,6 +62,7 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                customDialog.dismiss();
                 LogUtil.e("RefundParticularsErrorMsg------------->" + errorMsg);
             }
         }));

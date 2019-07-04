@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -19,8 +18,9 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.example.view.CustomDialog;
+import com.example.utils.CustomDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ import okhttp3.ResponseBody;
 public class StayObligationPresenter extends BasePresenter<StayObligationView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
-    private CustomDialog customDialog =new CustomDialog(mContext);
 
     public StayObligationPresenter(Context context) {
         super(context);
@@ -49,7 +48,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
     }
 
     public void stayObligationRec(final RecyclerView stayObligationRec) {
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", 6).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
@@ -58,7 +57,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
 
             @Override
             public void onSuccess(String result, String msg) {
-                customDialog.dismiss();
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("待付款-------->" + result);
 //                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -77,7 +76,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
                             view1.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                                 }
                             });
                             //删除订单
@@ -134,7 +133,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                customDialog.dismiss();
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("待付款-------->" + errorMsg);
             }
         }));

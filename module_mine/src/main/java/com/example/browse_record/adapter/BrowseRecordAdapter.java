@@ -1,6 +1,7 @@
 package com.example.browse_record.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
@@ -24,26 +25,39 @@ public class BrowseRecordAdapter extends MyRecyclerAdapter<MyCollectBean> {
             data.setNormalPrice(split[0]);
         }
 
-        if (data.getNormalPrice() == null) {
-            data.setNormalPrice("0");
-        }
-        if (data.getGroupPrice() == null) {
-            data.setGroupPrice(0.0);
-        }
-
-        holder.setText(R.id.base_name, data.getGoodsName())
-                .setText(R.id.base_reduce_price, "领券减" + ArithUtil.exact(ArithUtil.sub(Double.valueOf(data.getNormalPrice()), data.getGroupPrice() * 0.01), 0) + "元")
-                .setText(R.id.base_preferential_price, "￥" + ArithUtil.exact(data.getGroupPrice() * 0.01, 1))
-                .setText(R.id.base_original_price, ArithUtil.exact(Double.valueOf(data.getNormalPrice()), 1) + "")
-                .setText(R.id.base_number, "已抢" + data.getQuantity() + "件")
-                .setTextLine(R.id.base_original_price)
-                .setImageFresco(R.id.base_image, data.getImage());
         if (data.getType() == 0) {
-            holder.setImageResource(R.id.base_type, R.drawable.taobao);
+            //淘宝
+            holder.setImageResource(R.id.rv_collection_type, R.drawable.taobao);
+            holder.setText(R.id.rv_collection_name, data.getGoodsName());
+            String normalPrice = data.getNormalPrice();
+            boolean contains = normalPrice.contains("-");
+            if (contains) {
+                String[] split = normalPrice.split("-");
+                holder.setText(R.id.rv_collection_preferential_price, "￥" + split[0]);
+            } else {
+                holder.setText(R.id.rv_collection_preferential_price, "￥" + normalPrice);
+            }
+            holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
+            holder.setImageFresco(R.id.rv_collection_image, "https:" + data.getImage());
         } else if (data.getType() == 1) {
-            holder.setImageResource(R.id.base_type, R.drawable.jingdong);
+            //京东
+            holder.setImageResource(R.id.rv_collection_type, R.drawable.jingdong);
+            holder.setText(R.id.rv_collection_name, data.getGoodsName());
+            holder.setText(R.id.rv_collection_preferential_price, "￥" + data.getNormalPrice());
+            if (!TextUtils.isEmpty(data.getQuantity())) {
+                holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
+            } else {
+                holder.setText(R.id.rv_collection_number, "已抢0件");
+            }
+
+            holder.setImageFresco(R.id.rv_collection_image, data.getImage());
         } else if (data.getType() == 2) {
-            holder.setImageResource(R.id.base_type, R.drawable.pinduoduo);
+            //拼多多
+            holder.setImageResource(R.id.rv_collection_type, R.drawable.pinduoduo);
+            holder.setText(R.id.rv_collection_name, data.getGoodsName())
+                    .setText(R.id.rv_collection_preferential_price, "￥" + ArithUtil.exact(data.getGroupPrice() == null ? 0 : data.getGroupPrice() * 0.01, 1))
+                    .setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件")
+                    .setImageFresco(R.id.rv_collection_image, data.getImage());
         }
     }
 }

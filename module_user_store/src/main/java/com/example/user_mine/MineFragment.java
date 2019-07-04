@@ -183,6 +183,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 ARouter.getInstance().build("/module_user_mine/BrowsingHistoryActivity").navigation();
             }
         });
+        userMineUpYys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/operator").navigation();
+            }
+        });
     }
 
     @Override

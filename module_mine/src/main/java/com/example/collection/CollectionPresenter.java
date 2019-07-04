@@ -18,7 +18,9 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.example.utils.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("收藏列表：" + result);
                 if (result != null) {
                     if (page == 1) {
@@ -71,6 +74,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -161,7 +165,20 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                 if (isEdit) {
                     check(position);
                 } else {
-                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId() + "").navigation();
+                    if (dataList.get(position).getType() == 0) {
+                        //淘宝
+                        ARouter.getInstance()
+                                .build("/module_classify/TBCommodityDetailsActivity")
+                                .withString("para", dataList.get(position).getGoodsId()+"")
+                                .withString("shoptype", "1")
+                                .navigation();
+                    } else if (dataList.get(position).getType() == 2) {
+                        //拼多多
+                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId() + "").navigation();
+                    } else {
+                        //京东
+
+                    }
                 }
             }
         });
