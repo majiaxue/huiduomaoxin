@@ -14,6 +14,7 @@ import com.example.collection.adapter.CollectionAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.ProcessDialogUtil;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -55,6 +56,7 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
         includeTitle.setText("我的收藏");
         includeRightBtn.setText("编辑");
         includeRightBtn.setVisibility(View.VISIBLE);
+        ProcessDialogUtil.showProcessDialog(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         collectionRv.setLayoutManager(layoutManager);

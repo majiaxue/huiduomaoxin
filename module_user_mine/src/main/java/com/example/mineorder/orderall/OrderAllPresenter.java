@@ -19,8 +19,9 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.example.view.CustomDialog;
+import com.example.utils.CustomDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -38,8 +39,6 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
 
-    private CustomDialog customDialog = new CustomDialog(mContext);
-
     public OrderAllPresenter(Context context) {
         super(context);
     }
@@ -50,7 +49,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
     }
 
     public void orderAllRec(final RecyclerView orderAllRec) {
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
 
@@ -58,7 +57,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
             @Override
             public void onSuccess(String result, String msg) {
-                customDialog.dismiss();
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("OrderAllPresenterResult-------->" + result);
 //                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -115,7 +114,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                     view2.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Toast.makeText(mContext, "申请退款", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(mContext, "申请退款", Toast.LENGTH_SHORT).show();
                                             ARouter.getInstance()
                                                     .build("/module_user_mine/RefundActivity")
                                                     .withSerializable("mineOrderBean", mineOrderBean)
@@ -137,7 +136,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                     view2.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Toast.makeText(mContext, "再次购买", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(mContext, "再次购买", Toast.LENGTH_SHORT).show();
                                             //再次购买
                                             ARouter.getInstance()
                                                     .build("/module_user_store/GoodsDetailActivity")
@@ -275,7 +274,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                customDialog.dismiss();
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("OrderAllPresenterError-------->" + errorMsg);
             }
         }));

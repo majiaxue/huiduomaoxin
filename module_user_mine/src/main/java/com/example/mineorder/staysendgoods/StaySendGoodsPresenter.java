@@ -18,8 +18,9 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.example.view.CustomDialog;
+import com.example.utils.CustomDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ import okhttp3.ResponseBody;
 public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
-    private CustomDialog customDialog =new CustomDialog(mContext);
 
     public StaySendGoodsPresenter(Context context) {
         super(context);
@@ -48,13 +48,13 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
     }
 
     public void staySendGoodsRec(final RecyclerView staySendGoodsRec) {
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", 1).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                customDialog.dismiss();
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("StaySendGoodsResult-------->" + result);
 //                MineOrderBean MineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -73,7 +73,7 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                             view1.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
                                 }
                             });
                             //申请退款
@@ -113,7 +113,7 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                customDialog.show();
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("StaySendGoodsErrorMsg-------->" + errorMsg);
             }
         }));

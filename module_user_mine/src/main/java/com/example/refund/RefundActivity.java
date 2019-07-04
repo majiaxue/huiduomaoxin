@@ -28,7 +28,7 @@ import com.example.bean.RefundApplyVo;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
-import com.example.view.CustomDialog;
+import com.example.utils.CustomDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;

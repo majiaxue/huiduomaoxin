@@ -226,39 +226,40 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
 
     //领劵
     public void ledSecurities(String url, String couponUrl) {
-        if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            Map map = MapUtil.getInstance().addParms("materialId", url).addParms("userCode", SPUtil.getUserCode()).addParms("couponUrl", couponUrl).build();
-            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postData(CommonResource.JDGETGOODSMARKETLINK, map);
-            RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
-                @Override
-                public void onSuccess(String result, String msg) {
-                    JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
-                    }.getType());
-                    if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
-                        String clickURL = jdLedSecuritiesBean.getData().getClickURL();
-                        LogUtil.e("url---------->" + clickURL);
-                        if (getView() != null) {
-                            getView().qrImage(clickURL);
-                        }
-
+        Map map = MapUtil.getInstance().addParms("materialId", url).addParms("userCode", SPUtil.getUserCode()).addParms("couponUrl", couponUrl).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postData(CommonResource.JDGETGOODSMARKETLINK, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
+                }.getType());
+                if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
+                    String clickURL = jdLedSecuritiesBean.getData().getClickURL();
+                    LogUtil.e("url---------->" + clickURL);
+                    if (getView() != null) {
+                        getView().qrImage(clickURL);
                     }
-                }
-
-                @Override
-                public void onError(String errorCode, String errorMsg) {
 
                 }
-            }));
-        } else {
-            ARouter.getInstance().build("/mine/login").navigation();
-        }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     //点击领劵
     public void clickLedSecurities(String clickURL) {
-        Intent intent = new Intent(mContext, WebViewActivity.class);
-        intent.putExtra("url", clickURL);
-        mContext.startActivity(intent);
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+
+            Intent intent = new Intent(mContext, WebViewActivity.class);
+            intent.putExtra("url", clickURL);
+            mContext.startActivity(intent);
+        } else {
+            ARouter.getInstance().build("/mine/login").navigation();
+        }
     }
 
 
@@ -330,56 +331,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         }));
     }
 
-    //分享
-//    public void share(JDGoodsRecBean.DataBean.ListsBean listsBean,String qRImage) {
-//        LogUtil.e("qRImage---------->"+qRImage);
-//        View inflate = LayoutInflater.from(mContext).inflate(R.layout.pop_share, null, false);
-//        final LinearLayout popShareAll = inflate.findViewById(R.id.pop_share_all);
-//        SimpleDraweeView popShareImage = inflate.findViewById(R.id.pop_share_image);
-//        TextView popShareName = inflate.findViewById(R.id.pop_share_name);
-//        TextView popSharePrice = inflate.findViewById(R.id.pop_share_price);
-//        ImageView popShareQR = inflate.findViewById(R.id.pop_share_qr);
-//        final LinearLayout popShareWeiXin = inflate.findViewById(R.id.pop_share_weixin);
-//        LinearLayout popSharePengYouQuan = inflate.findViewById(R.id.pop_share_pengyouquan);
-//        LinearLayout popShareQQ = inflate.findViewById(R.id.pop_share_qq);
-//        LinearLayout popShareQZone = inflate.findViewById(R.id.pop_share_qzone);
-//        final TextView popShareCancel = inflate.findViewById(R.id.pop_share_cancel);
-//        popShareImage.setImageURI(Uri.parse(listsBean.getImageInfo().getImageList().get(0).getUrl()));
-//        popShareName.setText(listsBean.getSkuName());
-//        popSharePrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount())));
-//        Bitmap qrImage = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 58), DisplayUtil.dip2px(mContext, 58));
-//        popShareQR.setImageBitmap(qrImage);
-//        final Bitmap bitmap3 = ViewToBitmap.createBitmap3(popShareAll, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-//
-//        PopUtils.shareBottom(mContext, inflate, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
-//            @Override
-//            public void setOnPop(final PopupWindow pop) {
-//                popShareCancel.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        pop.dismiss();
-//                    }
-//                });
-//
-//                popShareWeiXin.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        LogUtil.e("分享");
-////                        pop.dismiss();
-//                        new ShareAction((Activity) mContext)
-//                                .withMedia(new UMImage(mContext, bitmap3))
-//                                .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
-//                                .setCallback(shareListener)//回调监听器
-//                                .share();
-//                    }
-//                });
-//            }
-//        });
-//
-//    }
-
     //加载生成图片布局
-    public void viewToImage(JDGoodsRecBean.DataBean.ListsBean listsBean,String qRImage, String path) {
+    public void viewToImage(JDGoodsRecBean.DataBean.ListsBean listsBean, String qRImage, String path) {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
         ImageView image = view.findViewById(R.id.share_image);
         TextView name = view.findViewById(R.id.share_name);
@@ -398,7 +351,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         originalPrice.setText("￥" + Double.valueOf(listsBean.getPriceInfo().getPrice()));
         couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), div) + "元");
         number.setText("已售" + listsBean.getInOrderCount30Days() + "件");//已售
-        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 150), DisplayUtil.dip2px(mContext, 150));
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
         qRCode.setImageBitmap(qr);
         LogUtil.e("url2二维码---------->" + qRImage);
 
@@ -450,7 +403,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
          */
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            LogUtil.e("失败"+t.getMessage());
+            LogUtil.e("失败" + t.getMessage());
         }
 
         /**

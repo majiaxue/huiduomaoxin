@@ -215,5 +215,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     @Override
     public void loadSuccess() {
         shoppingCartSmartRefresh.finishRefresh();
+        shoppingCartSmartRefresh.finishLoadMore();
     }
 }

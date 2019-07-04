@@ -81,7 +81,13 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                     goodsCollectionRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                            ARouter.getInstance()
+                                    .build("/module_user_store/GoodsDetailActivity")
+                                    .withString("id", recBeanList.get(position).getId() + "")
+                                    .withString("sellerId", "" + recBeanList.get(position).getSellerId())
+                                    .withString("commendId", recBeanList.get(position).getProductCategoryId() + "")
+                                    .navigation();
                         }
                     });
 
@@ -100,7 +106,8 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+
                                 }
                             });
                         }

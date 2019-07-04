@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,9 +26,11 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.PhoneNumUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,19 +119,20 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
             @Override
             public void onClick(View v) {
 
-                if (businessApplicationShopName.getText().toString().equals("")) {
+                if (TextUtils.isEmpty(businessApplicationShopName.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入店铺名!", Toast.LENGTH_SHORT).show();
-                } else if (businessApplicationShopClassifyText.getText().toString().equals("点击选择")) {
+                } else if ("点击选择".equals(businessApplicationShopClassifyText.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请选择分类!", Toast.LENGTH_SHORT).show();
-                } else if (businessApplicationName.getText().toString().equals("")) {
+                } else if (TextUtils.isEmpty(businessApplicationName.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入姓名!", Toast.LENGTH_SHORT).show();
-                } else if ("".equals(businessApplicationPhone.getText().toString()) || !PhoneNumUtil.isMobileNO(businessApplicationPhone.getText().toString())) {
+                } else if (TextUtils.isEmpty(businessApplicationPhone.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入手机号!", Toast.LENGTH_SHORT).show();
-                } else if (PhoneNumUtil.isMobileNO(businessApplicationPhone.getText().toString())) {
-
-                } else if (businessApplicationAddressProvince.getText().toString().equals("点击选择")) {
+                } else if (!PhoneNumUtil.isMobileNO(businessApplicationPhone.getText().toString())) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请输入正确的手机号!", Toast.LENGTH_SHORT).show();
+                } else if ("点击选择".equals(businessApplicationAddressProvince.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请选择地址!", Toast.LENGTH_SHORT).show();
                 } else {
+//                    ProcessDialogUtil.showProcessDialog(BusinessApplicationActivity.this);
                     SellerVo sellerVo = new SellerVo();
                     sellerVo.setUserCode(SPUtil.getUserCode());//SPUtil.getUserCode()"297881222686703616"
                     sellerVo.setSellerLogo(map.get("0"));
@@ -147,12 +151,12 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     LogUtil.e("SecondaryDetailsJson----------->" + sellerVoJson);
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
-                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postDataWithBody(CommonResource.SELLERINFO, body);
+                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body,SPUtil.getToken());
                     RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
                         @Override
                         public void onSuccess(String result, String msg) {
                             LogUtil.e("BusinessApplicationResult----------->" + result);
-
+//                            ProcessDialogUtil.dismissDialog();
                             BusinessApplicationBean businessApplicationBean = JSON.parseObject(result, new TypeReference<BusinessApplicationBean>() {
                             }.getType());
 
@@ -167,6 +171,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
                         @Override
                         public void onError(String errorCode, String errorMsg) {
+//                            ProcessDialogUtil.dismissDialog();
                             LogUtil.e("BusinessApplicationErrorMsg----------->" + errorMsg);
                         }
                     }));
@@ -303,6 +308,8 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     @Override
     public void showHeader(String bitmap) {
         this.base64 = bitmap;
+
+
         if (type == 1) {
             map.put("1", bitmap.replace("\n", ""));
             LogUtil.e("111身份证正面222------>" + bitmap);

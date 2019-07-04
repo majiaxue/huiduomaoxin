@@ -1,12 +1,9 @@
-package com.example.view;
+package com.example.utils;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.example.module_base.R;
 import com.facebook.common.util.UriUtil;

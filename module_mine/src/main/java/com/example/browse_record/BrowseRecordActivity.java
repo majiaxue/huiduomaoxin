@@ -12,6 +12,7 @@ import com.example.browse_record.adapter.BrowseRecordAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.ProcessDialogUtil;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -45,6 +46,7 @@ public class BrowseRecordActivity extends BaseActivity<BrowseRecordView, BrowseR
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         browseRecordRv.setLayoutManager(layoutManager);
+        ProcessDialogUtil.showProcessDialog(this);
         presenter.loadData(page);
 
         //设置 Header 为 官方主题 样式
