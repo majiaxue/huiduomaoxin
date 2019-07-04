@@ -132,6 +132,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
             @Override
             public void onSuccess(String result, String msg) {
+                getView().loadSuccess();
                 LogUtil.e("cart------>" + result);
                 CartBean cartBean = JSON.parseObject(result, CartBean.class);
                 if (cartBean != null) {
@@ -169,7 +170,6 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                         }
                         if (getView() != null) {
                             getView().loadCartRv(cartParentRecAdapter);
-                            getView().loadSuccess();
 //                        getView().totalPrice(totalPrice);
                         }
                     }

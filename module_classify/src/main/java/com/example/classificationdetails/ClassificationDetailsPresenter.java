@@ -288,7 +288,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 ARouter.getInstance()
                                         .build("/module_classify/JDCommodityDetailsActivity")
                                         .withString("skuid", jdList.get(position).getSkuId())
-                                        .withSerializable("jDGoodsRecBean", jdSearchBean)
+                                        .withSerializable("jDGoodsRecBean", jdSearchBean.getData().getLists().get(position))
                                         .withInt("position", position)
                                         .navigation();
                             }
@@ -303,7 +303,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 ARouter.getInstance()
                                         .build("/module_classify/JDCommodityDetailsActivity")
                                         .withString("skuid", jdList.get(position).getSkuId())
-                                        .withSerializable("jDGoodsRecBean", jdSearchBean)
+                                        .withSerializable("jDGoodsRecBean", jdSearchBean.getData().getLists().get(position))
                                         .withInt("position", position)
                                         .navigation();
                             }

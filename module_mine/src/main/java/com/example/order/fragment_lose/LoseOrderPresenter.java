@@ -6,16 +6,19 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDOrderBean;
 import com.example.bean.MyOrderBean;
+import com.example.bean.TBBean;
 import com.example.bean.TBOrderBean;
 import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
+import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.order.OrderActivity;
 import com.example.order.adapter.JDAdapter;
@@ -34,6 +37,8 @@ import io.reactivex.Observable;
 public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
     private List<MyOrderBean> dataList;
     private RvListAdapter adapter;
+    private List<TBOrderBean> orderBeans;
+    private TBAdapter tbAdapter;
 
     public LoseOrderPresenter(Context context) {
         super(context);
@@ -68,10 +73,14 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝已失效：" + result);
-                final List<TBOrderBean> orderBeans = JSON.parseArray(result, TBOrderBean.class);
-                TBAdapter tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
+                orderBeans = JSON.parseArray(result, TBOrderBean.class);
+                tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
                 if (getView() != null) {
                     getView().loadTB(tbAdapter);
+                }
+
+                for (int i = 0; i < orderBeans.size(); i++) {
+                    getTbPic(orderBeans.get(i), i);
                 }
 
                 tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
@@ -168,6 +177,27 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
                 if (getView() != null) {
                     getView().loadMineRv(adapter);
                 }
+            }
+        }));
+    }
+
+    private void getTbPic(TBOrderBean bean, final int position) {
+        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("numIid", bean.getNumIid()).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
+                }.getType());
+                if (tbBean != null && tbBean.getData() != null) {
+                    orderBeans.get(position).setImage(tbBean.getData().getImages().get(0));
+                    tbAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
             }
         }));
     }

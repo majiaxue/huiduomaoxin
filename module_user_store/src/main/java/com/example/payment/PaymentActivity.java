@@ -1,6 +1,7 @@
 package com.example.payment;
 
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +18,7 @@ import com.example.user_store.R2;
 import butterknife.BindView;
 
 /**
- *确认支付
+ * 确认支付
  */
 @Route(path = "/module_user_store/PaymentActivity")
 public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter> implements PaymentView {
@@ -59,7 +60,7 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
         paymentBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                presenter.goBack();
             }
         });
 
@@ -82,9 +83,15 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
         paymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.pay(isWeChat,submitOrderBean);
+                presenter.pay(isWeChat, submitOrderBean);
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        presenter.goBack();
+        return false;
     }
 
     private void changePayType() {
