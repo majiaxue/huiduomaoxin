@@ -3,6 +3,7 @@ package com.example.payment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -21,7 +22,9 @@ import com.example.net.RetrofitUtil;
 import com.example.pay_success.PaySuccessActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.PopUtil;
 import com.example.utils.SPUtil;
+import com.example.view.SelfDialog;
 
 import java.util.Map;
 
@@ -106,4 +109,33 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
             mHandler.sendMessage(msg);
         }
     };
+
+    public void goBack() {
+        final SelfDialog dialog = new SelfDialog(mContext);
+        dialog.setTitle("提示");
+        dialog.setMessage("确定要离开吗？");
+        dialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                dialog.dismiss();
+                ((Activity) mContext).finish();
+            }
+        });
+
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                PopUtil.setTransparency(mContext, 1.0f);
+            }
+        });
+        PopUtil.setTransparency(mContext, 0.3f);
+    }
 }

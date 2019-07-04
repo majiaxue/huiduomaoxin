@@ -95,13 +95,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initClick() {
-        mineRela.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mineHeader.dispatchTouchEvent(event);
-            }
-        });
-
         mineHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

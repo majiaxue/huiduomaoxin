@@ -3,6 +3,7 @@ package com.example.main;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -37,6 +38,7 @@ import com.example.net.RetrofitUtil;
 import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
 import com.tencent.bugly.beta.Beta;
@@ -282,7 +284,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                             public void onYesClick() {
                                 writeToDisk(checkUpBean.getUrl());
                                 showDialog();
-                                selfDialog.cancel();
+                                selfDialog.dismiss();
                             }
                         });
 
@@ -290,15 +292,23 @@ public class MainPresenter extends BasePresenter<MainView> {
                             @Override
                             public void onNoClick() {
                                 if ("0".equals(checkUpBean.getIsForce())) {
-                                    selfDialog.cancel();
+                                    selfDialog.dismiss();
                                 } else {
-                                    selfDialog.cancel();
+                                    selfDialog.dismiss();
                                     AppManager.getInstance().AppExit();
                                 }
                             }
                         });
 
                         selfDialog.show();
+                        selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                PopUtils.setTransparency(mContext, 1f);
+                            }
+                        });
+
+                        PopUtils.setTransparency(mContext, 0.3f);
                     } else {
                         if (Double.valueOf(clientVersion) < Double.valueOf(checkUpBean.getList().get(0).getVersion())) {
                             final SelfDialog selfDialog = new SelfDialog(mContext);
