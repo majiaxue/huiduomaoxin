@@ -14,6 +14,7 @@ import com.example.dbflow.DBflowUtil;
 import com.example.dbflow.SearchHistoryBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
+import com.example.utils.LogUtil;
 import com.example.view.FlowLayout;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.List;
  * Describe:
  */
 public class SearchPresenter extends BasePresenter<SearchView> {
+    public int position = 0;
 
     public SearchPresenter(Context context) {
         super(context);
@@ -34,7 +36,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     }
 
-    public void getHistory(FlowLayout searchFlowLayout, final int position) {
+    public void getHistory(FlowLayout searchFlowLayout) {
         final List<SearchHistoryBean> list = DBflowUtil.getInstance().query(CommonResource.HISTORY_TBK);
         for (int i = 0; i < list.size(); i++) {
             TextView searchTextView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.search_text_view, searchFlowLayout, false);
@@ -43,17 +45,18 @@ public class SearchPresenter extends BasePresenter<SearchView> {
             searchTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    searchEdit(list.get(finalI).getContent(), position);
+                    searchEdit(list.get(finalI).getContent());
                 }
             });
             searchFlowLayout.addView(searchTextView);
         }
     }
 
-    public void searchEdit(String content, int position) {
+    public void searchEdit(String content) {
         if (!"".equals(content) && content != null) {
             DBflowUtil.getInstance().insert(content, CommonResource.HISTORY_TBK);
         }
+        LogUtil.e("position:" + position);
         ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", position).withString("searchContent", content).navigation();
     }
 }

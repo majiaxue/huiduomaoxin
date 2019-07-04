@@ -113,6 +113,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        LogUtil.e("----------------->"+position);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         //添加间距
