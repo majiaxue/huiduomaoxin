@@ -27,7 +27,7 @@ public class RvListAdapter extends MyRecyclerAdapter<MyOrderBean> {
                 .setText(R.id.order_list_price, "￥" + data.getGoodsPrice())
                 .setText(R.id.order_list_count, "x" + data.getGoodsQuantity())
                 .setImageUrl(R.id.order_list_img, data.getGoodsThumbnailUrl())
-                .setText(R.id.order_list_total, "共" + data.getGoodsQuantity() + "件商品  合计：￥" + data.getGoodsPrice())
+                .setText(R.id.order_list_total, "共" + data.getGoodsQuantity() + "件商品  合计：￥" + data.getOrderAmount())
                 .setText(R.id.order_list_predict, "预计收益" + ArithUtil.mul(SPUtil.getFloatValue("back"), data.getPromotionAmount() / 100) + "元");
 
         ImageView img = holder.getView(R.id.order_list_my_head);

@@ -74,13 +74,25 @@ public class MinePresenter extends BasePresenter<MineView> {
     private void toolClick(int position) {
         switch (position) {
             case 0:
-                ARouter.getInstance().build("/mine/balance").navigation();
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/balance").navigation();
+                }
                 break;
             case 1:
-                ARouter.getInstance().build("/mine/collection").navigation();
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/collection").navigation();
+                }
                 break;
             case 2:
-                ARouter.getInstance().build("/mine/browserecord").navigation();
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/browserecord").navigation();
+                }
                 break;
             case 3:
                 ARouter.getInstance().build("/mine/contactus").navigation();
@@ -89,13 +101,25 @@ public class MinePresenter extends BasePresenter<MineView> {
                 ARouter.getInstance().build("/mine/helpcenter").navigation();
                 break;
             case 5:
-                ARouter.getInstance().build("/mine/invite_friends").navigation();
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/invite_friends").navigation();
+                }
                 break;
             case 6:
-                ARouter.getInstance().build("/mine/messagecenter").navigation();
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/messagecenter").navigation();
+                }
                 break;
             case 7:
-                ARouter.getInstance().build("/mine/suggestion").navigation();
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/suggestion").navigation();
+                }
                 break;
         }
     }
@@ -123,27 +147,51 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void jumpToPredict() {
-        ARouter.getInstance().build("/mine/predict").navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/predict").navigation();
+        }
     }
 
     public void jumpToOrder(int type) {
-        ARouter.getInstance().build("/mine/order").withInt("type", type).navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/order").withInt("type", type).navigation();
+        }
     }
 
     public void jumpToUpgrade() {
-        ARouter.getInstance().build("/mine/upgrade").navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/upgrade").navigation();
+        }
     }
 
     public void jumpToFansOrder() {
-        ARouter.getInstance().build("/mine/fansorder").navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/fansorder").navigation();
+        }
     }
 
     public void jumpToGroupFans() {
-        ARouter.getInstance().build("/mine/groupfans").navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/groupfans").navigation();
+        }
     }
 
     public void jumpToupYYS() {
-        ARouter.getInstance().build("/mine/operator").navigation();
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/operator").navigation();
+        }
     }
 
     public void loadData() {
@@ -153,6 +201,7 @@ public class MinePresenter extends BasePresenter<MineView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
                 SPUtil.addParm("head", userInfoBean.getIcon());
@@ -169,13 +218,14 @@ public class MinePresenter extends BasePresenter<MineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("个人信息" + errorCode + "---------" + errorMsg);
                 SPUtil.addParm(CommonResource.TOKEN, "");
-                if ("2".equals(errorCode)) {
-                    if (getView() != null) {
-                        getView().onError();
-                    }
+//                if ("2".equals(errorCode)) {
+                if (getView() != null) {
+                    getView().onError();
                 }
+//                }
             }
         }));
     }

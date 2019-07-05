@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.fans_order.adapter.FansOrderRvAdapter;
+import com.example.fans_order.adapter.JdFansAdapter;
 import com.example.fans_order.adapter.TbFansAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
@@ -28,7 +29,7 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
 
     private static FansAllOrderFragment fragment;
     private int page = 1;
-    private int index = 1;
+    private LinearLayoutManager layoutManager;
 
     public static FansAllOrderFragment getInstance() {
         if (fragment == null) {
@@ -48,7 +49,7 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
@@ -58,13 +59,12 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
         //设置 Footer 为 默认 样式
         orderListRefresh.setRefreshFooter(new ClassicsFooter(getActivity()));
 
-        presenter.loadData(page, index);
+        presenter.loadData(page);
     }
 
-    public void setOrigin(int index) {
-        this.index = index;
+    public void setOrigin() {
         page = 1;
-        presenter.loadData(page, index);
+        presenter.loadData(page);
     }
 
     @Override
@@ -74,14 +74,14 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page, index);
+                presenter.loadData(page);
             }
         });
         orderListRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page, index);
+                presenter.loadData(page);
             }
         });
     }
@@ -92,11 +92,6 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
         if (isVisibleToUser) {
 
         }
-    }
-
-    @Override
-    public void loadMineRv(RvListAdapter adapter) {
-        orderListRv.setAdapter(adapter);
     }
 
     @Override
@@ -112,7 +107,18 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
 
     @Override
     public void loadTb(TbFansAdapter adapter) {
+        orderListRv.setAdapter(adapter);
 
+    }
+
+    @Override
+    public void loadJd(JdFansAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void moveTo(int flag) {
+        layoutManager.scrollToPosition(flag);
     }
 
     @Override

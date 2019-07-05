@@ -11,6 +11,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.Map;
@@ -28,14 +29,16 @@ public class TBPresenter extends BasePresenter<TBView> {
     }
 
     public void loadData() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("type", "1").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETPREDICT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+
                 LogUtil.e("tb:" + result);
                 PredictBean predictBean = JSON.parseObject(result, PredictBean.class);
-                if (getView()!= null) {
+                if (getView() != null) {
                     getView().loadUI(predictBean);
                 }
             }

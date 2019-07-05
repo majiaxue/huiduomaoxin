@@ -1,235 +1,267 @@
 package com.example.bean;
 
-import java.util.List;
-
 public class FansOrderBean {
-        /**
-         * id : 2
-         * orderSn : 2
-         * goodsId : 1
-         * goodsName : 123
-         * goodsThumbnailUrl : 123
-         * goodsQuantity : 123
-         * goodsPrice : 123
-         * orderAmount : 123
-         * promotionRate : 123
-         * promotionAmount : 123
-         * orderStatus : -1
-         * orderStatusDesc : 123
-         * orderCreateTime : 123123123
-         * orderPayTime : 123123123
-         * orderGroupSuccessTime : 123123123
-         * orderVerifyTime : 123
-         * orderModifyAt : 12312
-         * customParameters : 3123
-         * userCode : 293701047761764352
-         * pid : 123
-         */
 
-        private int id;
-        private String orderSn;
-        private int goodsId;
-        private String goodsName;
-        private String goodsThumbnailUrl;
-        private int goodsQuantity;
-        private double goodsPrice;
-        private int orderAmount;
-        private int promotionRate;
-        private double promotionAmount;
-        private int orderStatus;
-        private String orderStatusDesc;
-        private String orderCreateTime;
-        private String orderPayTime;
-        private String orderGroupSuccessTime;
-        private String orderVerifyTime;
-        private String orderModifyAt;
-        private String customParameters;
-        private String userCode;
-        private String pid;
+    /**
+     * id : 6
+     * orderSn : 96587564128
+     * goodsId : 9658456123
+     * goodsName : 123
+     * goodsThumbnailUrl : http://t00img.yangkeduo.com/goods/images/2019-04-10/06a8252a80aded0553d9a79c9e2441de.jpeg
+     * goodsQuantity : 123
+     * goodsPrice : 123
+     * orderAmount : 12300
+     * promotionRate : 123
+     * promotionAmount : 123
+     * orderStatus : 0
+     * orderStatusDesc : 123
+     * orderCreateTime : 1560394797
+     * orderPayTime : 1560394808
+     * orderGroupSuccessTime : 1560398073
+     * orderVerifyTime : 123
+     * orderModifyAt : 1560398079
+     * customParameters : 3123
+     * userCode : 304468286475599872
+     * pid : 123
+     * backMoney : 0
+     * fansIcon : http://thirdwx.qlogo.cn/mmopen/vi_32/UjFK0rbVNm1ibqI1eyTSyIpFoiaKxeH0mzIwuHtx7l0IlR8CDYibJF5jjNSdwNyib4vCianfITWEzQTPItBzpLgG7fg/132
+     * fansName : 张层
+     */
 
-        public int getId() {
-            return id;
-        }
+    private String id;
+    private String orderSn;
+    private String goodsId;
+    private String goodsName;
+    private String goodsThumbnailUrl;
+    private String goodsQuantity;
+    private String goodsPrice;
+    private String orderAmount;
+    private String promotionRate;
+    private String promotionAmount;
+    private String orderStatus;
+    private String orderStatusDesc;
+    private String orderCreateTime;
+    private String orderPayTime;
+    private String orderGroupSuccessTime;
+    private String orderVerifyTime;
+    private String orderModifyAt;
+    private String customParameters;
+    private String userCode;
+    private String pid;
+    private String backMoney;
+    private String fansIcon;
+    private String fansName;
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    public String getId() {
+        return id;
+    }
 
-        public String getOrderSn() {
-            return orderSn;
-        }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-        public void setOrderSn(String orderSn) {
-            this.orderSn = orderSn;
-        }
+    public String getOrderSn() {
+        return orderSn;
+    }
 
-        public int getGoodsId() {
-            return goodsId;
-        }
+    public void setOrderSn(String orderSn) {
+        this.orderSn = orderSn;
+    }
 
-        public void setGoodsId(int goodsId) {
-            this.goodsId = goodsId;
-        }
+    public String getGoodsId() {
+        return goodsId;
+    }
 
-        public String getGoodsName() {
-            return goodsName;
-        }
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
-        public void setGoodsName(String goodsName) {
-            this.goodsName = goodsName;
-        }
+    public String getGoodsName() {
+        return goodsName;
+    }
 
-        public String getGoodsThumbnailUrl() {
-            return goodsThumbnailUrl;
-        }
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
 
-        public void setGoodsThumbnailUrl(String goodsThumbnailUrl) {
-            this.goodsThumbnailUrl = goodsThumbnailUrl;
-        }
+    public String getGoodsThumbnailUrl() {
+        return goodsThumbnailUrl;
+    }
 
-        public int getGoodsQuantity() {
-            return goodsQuantity;
-        }
+    public void setGoodsThumbnailUrl(String goodsThumbnailUrl) {
+        this.goodsThumbnailUrl = goodsThumbnailUrl;
+    }
 
-        public void setGoodsQuantity(int goodsQuantity) {
-            this.goodsQuantity = goodsQuantity;
-        }
+    public String getGoodsQuantity() {
+        return goodsQuantity;
+    }
 
-        public double getGoodsPrice() {
-            return goodsPrice;
-        }
+    public void setGoodsQuantity(String goodsQuantity) {
+        this.goodsQuantity = goodsQuantity;
+    }
 
-        public void setGoodsPrice(double goodsPrice) {
-            this.goodsPrice = goodsPrice;
-        }
+    public String getGoodsPrice() {
+        return goodsPrice;
+    }
 
-        public int getOrderAmount() {
-            return orderAmount;
-        }
+    public void setGoodsPrice(String goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
 
-        public void setOrderAmount(int orderAmount) {
-            this.orderAmount = orderAmount;
-        }
+    public String getOrderAmount() {
+        return orderAmount;
+    }
 
-        public int getPromotionRate() {
-            return promotionRate;
-        }
+    public void setOrderAmount(String orderAmount) {
+        this.orderAmount = orderAmount;
+    }
 
-        public void setPromotionRate(int promotionRate) {
-            this.promotionRate = promotionRate;
-        }
+    public String getPromotionRate() {
+        return promotionRate;
+    }
 
-        public double getPromotionAmount() {
-            return promotionAmount;
-        }
+    public void setPromotionRate(String promotionRate) {
+        this.promotionRate = promotionRate;
+    }
 
-        public void setPromotionAmount(double promotionAmount) {
-            this.promotionAmount = promotionAmount;
-        }
+    public String getPromotionAmount() {
+        return promotionAmount;
+    }
 
-        public int getOrderStatus() {
-            return orderStatus;
-        }
+    public void setPromotionAmount(String promotionAmount) {
+        this.promotionAmount = promotionAmount;
+    }
 
-        public void setOrderStatus(int orderStatus) {
-            this.orderStatus = orderStatus;
-        }
+    public String getOrderStatus() {
+        return orderStatus;
+    }
 
-        public String getOrderStatusDesc() {
-            return orderStatusDesc;
-        }
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
-        public void setOrderStatusDesc(String orderStatusDesc) {
-            this.orderStatusDesc = orderStatusDesc;
-        }
+    public String getOrderStatusDesc() {
+        return orderStatusDesc;
+    }
 
-        public String getOrderCreateTime() {
-            return orderCreateTime;
-        }
+    public void setOrderStatusDesc(String orderStatusDesc) {
+        this.orderStatusDesc = orderStatusDesc;
+    }
 
-        public void setOrderCreateTime(String orderCreateTime) {
-            this.orderCreateTime = orderCreateTime;
-        }
+    public String getOrderCreateTime() {
+        return orderCreateTime;
+    }
 
-        public String getOrderPayTime() {
-            return orderPayTime;
-        }
+    public void setOrderCreateTime(String orderCreateTime) {
+        this.orderCreateTime = orderCreateTime;
+    }
 
-        public void setOrderPayTime(String orderPayTime) {
-            this.orderPayTime = orderPayTime;
-        }
+    public String getOrderPayTime() {
+        return orderPayTime;
+    }
 
-        public String getOrderGroupSuccessTime() {
-            return orderGroupSuccessTime;
-        }
+    public void setOrderPayTime(String orderPayTime) {
+        this.orderPayTime = orderPayTime;
+    }
 
-        public void setOrderGroupSuccessTime(String orderGroupSuccessTime) {
-            this.orderGroupSuccessTime = orderGroupSuccessTime;
-        }
+    public String getOrderGroupSuccessTime() {
+        return orderGroupSuccessTime;
+    }
 
-        public String getOrderVerifyTime() {
-            return orderVerifyTime;
-        }
+    public void setOrderGroupSuccessTime(String orderGroupSuccessTime) {
+        this.orderGroupSuccessTime = orderGroupSuccessTime;
+    }
 
-        public void setOrderVerifyTime(String orderVerifyTime) {
-            this.orderVerifyTime = orderVerifyTime;
-        }
+    public String getOrderVerifyTime() {
+        return orderVerifyTime;
+    }
 
-        public String getOrderModifyAt() {
-            return orderModifyAt;
-        }
+    public void setOrderVerifyTime(String orderVerifyTime) {
+        this.orderVerifyTime = orderVerifyTime;
+    }
 
-        public void setOrderModifyAt(String orderModifyAt) {
-            this.orderModifyAt = orderModifyAt;
-        }
+    public String getOrderModifyAt() {
+        return orderModifyAt;
+    }
 
-        public String getCustomParameters() {
-            return customParameters;
-        }
+    public void setOrderModifyAt(String orderModifyAt) {
+        this.orderModifyAt = orderModifyAt;
+    }
 
-        public void setCustomParameters(String customParameters) {
-            this.customParameters = customParameters;
-        }
+    public String getCustomParameters() {
+        return customParameters;
+    }
 
-        public String getUserCode() {
-            return userCode;
-        }
+    public void setCustomParameters(String customParameters) {
+        this.customParameters = customParameters;
+    }
 
-        public void setUserCode(String userCode) {
-            this.userCode = userCode;
-        }
+    public String getUserCode() {
+        return userCode;
+    }
 
-        public String getPid() {
-            return pid;
-        }
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
 
-        public void setPid(String pid) {
-            this.pid = pid;
-        }
+    public String getPid() {
+        return pid;
+    }
 
-        @Override
-        public String toString() {
-            return "RecordsBean{" +
-                    "id=" + id +
-                    ", orderSn='" + orderSn + '\'' +
-                    ", goodsId=" + goodsId +
-                    ", goodsName='" + goodsName + '\'' +
-                    ", goodsThumbnailUrl='" + goodsThumbnailUrl + '\'' +
-                    ", goodsQuantity=" + goodsQuantity +
-                    ", goodsPrice=" + goodsPrice +
-                    ", orderAmount=" + orderAmount +
-                    ", promotionRate=" + promotionRate +
-                    ", promotionAmount=" + promotionAmount +
-                    ", orderStatus=" + orderStatus +
-                    ", orderStatusDesc='" + orderStatusDesc + '\'' +
-                    ", orderCreateTime=" + orderCreateTime +
-                    ", orderPayTime=" + orderPayTime +
-                    ", orderGroupSuccessTime=" + orderGroupSuccessTime +
-                    ", orderVerifyTime=" + orderVerifyTime +
-                    ", orderModifyAt=" + orderModifyAt +
-                    ", customParameters='" + customParameters + '\'' +
-                    ", userCode='" + userCode + '\'' +
-                    ", pid='" + pid + '\'' +
-                    '}';
-        }
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public String getBackMoney() {
+        return backMoney;
+    }
+
+    public void setBackMoney(String backMoney) {
+        this.backMoney = backMoney;
+    }
+
+    public String getFansIcon() {
+        return fansIcon;
+    }
+
+    public void setFansIcon(String fansIcon) {
+        this.fansIcon = fansIcon;
+    }
+
+    public String getFansName() {
+        return fansName;
+    }
+
+    public void setFansName(String fansName) {
+        this.fansName = fansName;
+    }
+
+    @Override
+    public String toString() {
+        return "FansOrderBean{" +
+                "id='" + id + '\'' +
+                ", orderSn='" + orderSn + '\'' +
+                ", goodsId='" + goodsId + '\'' +
+                ", goodsName='" + goodsName + '\'' +
+                ", goodsThumbnailUrl='" + goodsThumbnailUrl + '\'' +
+                ", goodsQuantity='" + goodsQuantity + '\'' +
+                ", goodsPrice='" + goodsPrice + '\'' +
+                ", orderAmount='" + orderAmount + '\'' +
+                ", promotionRate='" + promotionRate + '\'' +
+                ", promotionAmount='" + promotionAmount + '\'' +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", orderStatusDesc='" + orderStatusDesc + '\'' +
+                ", orderCreateTime='" + orderCreateTime + '\'' +
+                ", orderPayTime='" + orderPayTime + '\'' +
+                ", orderGroupSuccessTime='" + orderGroupSuccessTime + '\'' +
+                ", orderVerifyTime='" + orderVerifyTime + '\'' +
+                ", orderModifyAt='" + orderModifyAt + '\'' +
+                ", customParameters='" + customParameters + '\'' +
+                ", userCode='" + userCode + '\'' +
+                ", pid='" + pid + '\'' +
+                ", backMoney='" + backMoney + '\'' +
+                ", fansIcon='" + fansIcon + '\'' +
+                ", fansName='" + fansName + '\'' +
+                '}';
+    }
 }
