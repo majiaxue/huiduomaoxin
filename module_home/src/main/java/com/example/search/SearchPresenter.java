@@ -53,10 +53,10 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     public void searchEdit(String content) {
-        if (!"".equals(content) && content != null) {
+        if (content != null && !"".equals(content.trim())) {
             DBflowUtil.getInstance().insert(content, CommonResource.HISTORY_TBK);
         }
-        LogUtil.e("position:" + position);
+
         ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", position).withString("searchContent", content).navigation();
     }
 }

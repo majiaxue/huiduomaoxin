@@ -89,7 +89,6 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
         if (!hidden && position != -1) {
             presenter.formHomeNavbar(position);
             position = -1;
-            hideBanner();
         }
     }
 
@@ -122,16 +121,6 @@ public class ClassifyFragment extends BaseFragment<ClassifyView, ClassifyPresent
                 Toast.makeText(getContext(), "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void showBanner() {
-        userClassifyXBanner.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideBanner() {
-        userClassifyXBanner.setVisibility(View.GONE);
     }
 
     @Override

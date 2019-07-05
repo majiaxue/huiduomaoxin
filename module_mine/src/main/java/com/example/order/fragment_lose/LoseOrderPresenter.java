@@ -26,6 +26,7 @@ import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
     }
 
     public void loadData() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         if (OrderActivity.index == 0) {
             scOrder();
         } else if (OrderActivity.index == 1) {
@@ -182,7 +184,7 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
     }
 
     private void getTbPic(TBOrderBean bean, final int position) {
-        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("numIid", bean.getNumIid()).build();
+        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("para", bean.getNumIid()).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override

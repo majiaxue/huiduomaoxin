@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp_348"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/dp_80"
     android:layout_gravity="center_horizontal"
+    android:layout_marginLeft="@dimen/dp_14"
+    android:layout_marginRight="@dimen/dp_14"
     android:background="@drawable/bg_rv_group_fans">
 
     <ImageView

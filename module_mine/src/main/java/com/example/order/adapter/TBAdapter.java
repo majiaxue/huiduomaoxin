@@ -23,12 +23,11 @@ public class TBAdapter extends MyRecyclerAdapter<TBOrderBean> {
         if (data.getTotalCommissionFree() == null) {
             data.setTotalCommissionFree(0.0);
         }
-        String substring = data.getImage().substring(2, data.getImage().length() - 2);
-        String[] split = substring.split(",");
-        if (split[0].startsWith("//")) {
-            data.setImage("https:" + split[0].substring(0,split[0].length()-1));
-        } else if (split[0].startsWith("img")) {
-            data.setImage("https://" + split[0].substring(0,split[0].length()-1));
+
+        if (data.getImage() != null && data.getImage().startsWith("//")) {
+            data.setImage("https:" + data.getImage());
+        } else if (data.getImage() != null && data.getImage().startsWith("img")) {
+            data.setImage("https://" + data.getImage());
         }
         holder.setText(R.id.order_list_my_name, SPUtil.getStringValue("name"))
                 .setText(R.id.order_list_name, data.getItemTitle())

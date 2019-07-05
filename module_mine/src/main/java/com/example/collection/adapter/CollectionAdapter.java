@@ -75,13 +75,6 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
                     .setImageFresco(R.id.rv_collection_image, data.getImage());
         }
 
-        if (data.getType() == 0) {
-            holder.setImageResource(R.id.base_type, R.drawable.taobao);
-        } else if (data.getType() == 1) {
-            holder.setImageResource(R.id.base_type, R.drawable.jingdong);
-        } else if (data.getType() == 2) {
-            holder.setImageResource(R.id.base_type, R.drawable.pinduoduo);
-        }
     }
 
     public void setEdit(boolean edit) {

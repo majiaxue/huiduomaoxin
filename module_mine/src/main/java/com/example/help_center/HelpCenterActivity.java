@@ -83,6 +83,13 @@ public class HelpCenterActivity extends BaseActivity<HelpCenterView, HelpCenterP
                 presenter.jumpToGuide();
             }
         });
+
+        helpCenterCallJust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.callPhone("18503735075");
+            }
+        });
     }
 
     @Override

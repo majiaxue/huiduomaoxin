@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 public class ProcessDialogUtil {
-    
+
     private static CustomDialog customDialog;
 
     /**
@@ -65,7 +65,7 @@ public class ProcessDialogUtil {
      */
     public static synchronized void dismissDialog() {
 
-        if (customDialog != null) {
+        if (customDialog != null && customDialog.isShowing()) {
             Activity activity = customDialog.getOwnerActivity();
             if (null != activity && !activity.isFinishing()) {
                 customDialog.dismiss();

@@ -20,6 +20,7 @@ import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
 import com.stx.xhb.xbanner.XBanner;
@@ -58,6 +59,8 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
     @Override
     public void initData() {
         includeTitle.setText("邀请好友");
+        ProcessDialogUtil.showProcessDialog(this);
+
         WebSettings settings1 = webView1.getSettings();
         settings1.setJavaScriptEnabled(true);
         webView1.setWebViewClient(new WebViewClient() {

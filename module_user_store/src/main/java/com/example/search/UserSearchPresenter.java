@@ -28,7 +28,7 @@ public class UserSearchPresenter extends BasePresenter<UserSearchView> {
     }
 
     public void searchEdit(String string) {
-        if (!"".equals(string) && string != null) {
+        if (string != null && !"".equals(string.trim())) {
             DBflowUtil.getInstance().insert(string, CommonResource.HISTORY_USER);
         }
         ARouter.getInstance().build("/module_user_store/typeDetail").withString("search", string).navigation();

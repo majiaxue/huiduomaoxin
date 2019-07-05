@@ -20,6 +20,7 @@ import com.example.payment.PaymentActivity;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     }
 
     public void getAddress() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -115,6 +117,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         } else {
             bean.setCouponAmount(0);
 
+            ProcessDialogUtil.showProcessDialog(mContext);
             String jsonString = JSON.toJSONString(bean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());

@@ -23,6 +23,7 @@ import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
     }
 
     public void loadData(String searchString, String categoryId, boolean isHotSale) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         searchInfo = searchString == null ? "" : searchString;
         id = categoryId == null ? "" : categoryId;
         Map map;
@@ -219,6 +221,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
             map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId", id).build();
         }
 
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

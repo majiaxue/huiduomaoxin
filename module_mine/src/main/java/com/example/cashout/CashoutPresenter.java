@@ -3,6 +3,7 @@ package com.example.cashout;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -11,7 +12,10 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
 
@@ -29,6 +33,7 @@ public class CashoutPresenter extends BasePresenter<CashoutView> {
     }
 
     public void loadData() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETBALANCE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -48,10 +53,30 @@ public class CashoutPresenter extends BasePresenter<CashoutView> {
 
             }
         }));
+
+        Observable<ResponseBody> observable1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());//"http://192.168.1.9:4001"
+        RetrofitUtil.getInstance().toSubscribe(observable1, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
+                }.getType());
+                String realName = userInfoBean.getRealName();
+                String aliAccount = userInfoBean.getAliAccount();
+
+                if (getView() != null) {
+                    getView().loadInfo(realName == null ? "" : realName, aliAccount == null ? "" : aliAccount);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 
     public void tixian(String money, String zfb, String name) {
-        if ("".equals(zfb) || "".equals(name) || "".equals(money) || "0".equals(money) || "0.".equals(money)) {
+        if ("".equals(zfb.trim()) || "".equals(name.trim()) || "".equals(money) || "0".equals(money) || "0.".equals(money)) {
             Toast.makeText(mContext, "请把信息填写完整", Toast.LENGTH_SHORT).show();
         } else if (ArithUtil.exact(Double.valueOf(money), 2) == 0.0) {
             Toast.makeText(mContext, "提现金额不能为0", Toast.LENGTH_SHORT).show();

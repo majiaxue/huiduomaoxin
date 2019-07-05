@@ -19,6 +19,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.Map;
@@ -65,7 +66,8 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {
-            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", "0.01").addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
+            ProcessDialogUtil.showProcessDialog(mContext);
+            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.UP_PAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override

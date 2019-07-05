@@ -2,6 +2,7 @@ package com.example.net;
 
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -70,6 +71,6 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-
+        ProcessDialogUtil.dismissDialog();
     }
 }

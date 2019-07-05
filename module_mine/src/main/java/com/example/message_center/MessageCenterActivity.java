@@ -71,17 +71,23 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-                refreshLayout.finishRefresh();
+                page = 1;
+                presenter.loadData(page);
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-                refreshLayout.finishLoadMore();
+                page++;
+                presenter.loadData(page);
             }
         });
+    }
+
+    @Override
+    public void loadFinish() {
+        refreshLayout.finishRefresh();
+        refreshLayout.finishLoadMore();
     }
 
     @Override

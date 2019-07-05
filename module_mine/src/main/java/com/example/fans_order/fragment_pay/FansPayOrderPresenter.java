@@ -6,14 +6,18 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.FansOrderBean;
+import com.example.bean.TBBean;
+import com.example.bean.TBOrderBean;
 import com.example.common.CommonResource;
 import com.example.fans_order.adapter.FansOrderRvAdapter;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
+import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
@@ -130,6 +134,27 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("粉丝订单fukuan：" + result);
 
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
+    private void getTbPic(TBOrderBean bean, final int position) {
+        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("para", bean.getNumIid()).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
+                }.getType());
+                if (tbBean != null && tbBean.getData() != null) {
+//                    orderBeans.get(position).setImage(tbBean.getData().getImages().get(0));
+//                    tbAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
