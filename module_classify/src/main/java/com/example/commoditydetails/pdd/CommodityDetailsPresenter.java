@@ -401,16 +401,17 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             LogUtil.e("result:" + share_media.toString());
+            Toast.makeText(mContext, "成功了", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
+            Toast.makeText(mContext, "失败了", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-
+            Toast.makeText(mContext, "取消了", Toast.LENGTH_SHORT).show();
         }
     };
 

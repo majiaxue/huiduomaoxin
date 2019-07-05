@@ -81,6 +81,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsTabResult------------------>" + result);
                     SecondaryTabBean secondaryTabBean = JSON.parseObject(result, new TypeReference<SecondaryTabBean>() {
                     }.getType());
@@ -114,7 +115,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
+                            ProcessDialogUtil.showProcessDialog(mContext);
                             //拼多多,淘宝,京东,page用来刷新,type用来分辨
                             initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, 0);
                         } else {
@@ -130,6 +131,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsTabErrorMsg------------------>" + errorMsg);
 
                 }
@@ -140,6 +142,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult淘宝--------------->" + result);
                     tBGoodsSearchBeans = JSON.parseArray(result, TBGoodsSearchBean.class);
                     if (tBGoodsSearchBeans != null) {
@@ -179,7 +182,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
+                            ProcessDialogUtil.showProcessDialog(mContext);
                             //拼多多,淘宝,京东,page用来刷新,type用来分辨
                             initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, 0);
 
@@ -193,6 +196,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝--------------->" + errorMsg);
                 }
             }));
@@ -204,6 +208,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult京东--------------->" + result);
                     JDTabBean jdTabBeans = JSON.parseObject(result, new TypeReference<JDTabBean>() {
                     }.getType());
@@ -238,7 +243,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
+                            ProcessDialogUtil.showProcessDialog(mContext);
                             //拼多多,淘宝,京东,page用来刷新,type用来分辨
                             initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, 0);
 
@@ -253,6 +258,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsErrorMsg京东--------------->" + errorMsg);
                 }
             }));
@@ -301,9 +307,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             if (getView() != null) {
                                 getView().noGoods(false);
                             }
-//                            if (page == 1) {
-//                                baseRecBeanList.clear();
-//                            }
+                            if (page == 1) {
+                                baseRecBeanList.clear();
+                            }
                             baseRecBeanList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
 
                             SecondaryPddRecAdapter baseRecAdapter = new SecondaryPddRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
@@ -377,13 +383,13 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }
 
                     if (tbGoodsRecBean != null) {
-                        if (tbGoodsRecBean.getData() != null && tbGoodsRecBean.getData().size() != 0) {
+                        if (tbGoodsRecBean.getData() != null) {
                             if (getView() != null) {
                                 getView().noGoods(false);
                             }
-//                            if (page == 1) {
-//                                tbGoodsList.clear();
-//                            }
+                            if (page == 1) {
+                                tbGoodsList.clear();
+                            }
                             tbGoodsList.addAll(tbGoodsRecBean.getData());
 
                             SecondaryTBRecAdapter secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
@@ -504,11 +510,13 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }
 
                     if (tbGoodsRecBean != null) {
-                        if (tbGoodsRecBean.getData() != null && tbGoodsRecBean.getData().size() != 0) {
+                        if (tbGoodsRecBean.getData() != null) {
                             if (getView() != null) {
                                 getView().noGoods(false);
                             }
-//                            tbGoodsList.clear();
+                            if (page == 1) {
+                                tbGoodsList.clear();
+                            }
                             tbGoodsList.addAll(tbGoodsRecBean.getData());
 
                             SecondaryTBRecAdapter secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
@@ -609,6 +617,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 }
             }));
         } else {
+            //京东
             Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", page).addParms("pageSize", 20).addParms("keyword", jdTabList.get(position).getName()).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
@@ -620,17 +629,19 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }.getType());
 
                     if (jDGoodsRecBean != null) {
-                        if (jDGoodsRecBean.getCode().equals("-1") || jDGoodsRecBean.getData().getLists() == null && jDGoodsRecBean.getData().getLists().size() == 0) {
-                            if (getView() != null) {
-                                getView().noGoods(true);
+                        if (jDGoodsRecBean.getCode().equals("-1")) {
+                            if (page == 1) {
+                                if (getView() != null) {
+                                    getView().noGoods(true);
+                                }
                             }
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(false);
                             }
-//                            if (page == 1) {
-//                                listsBeanList.clear();
-//                            }
+                            if (page == 1) {
+                                listsBeanList.clear();
+                            }
                             listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
                             SecondaryJDRecAdapter secondaryJDRecAdapter = new SecondaryJDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
                             if (getView() != null) {
@@ -642,7 +653,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                     ARouter.getInstance()
                                             .build("/module_classify/JDCommodityDetailsActivity")
                                             .withString("skuid", listsBeanList.get(position).getSkuId())
-                                            .withSerializable("jDGoodsRecBean", jDGoodsRecBean.getData().getLists().get(position))
+                                            .withSerializable("jDGoodsRecBean", listsBeanList.get(position))
                                             .navigation();
                                 }
                             });
