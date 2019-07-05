@@ -17,7 +17,7 @@
             android:id="@+id/order_list_my_head"
             android:layout_width="@dimen/dp_17"
             android:layout_height="@dimen/dp_17"
-            android:src="@drawable/vhjgf" />
+            android:src="@drawable/icon_tb" />
 
         <TextView
             android:id="@+id/order_list_my_name"

@@ -39,7 +39,7 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
     @BindView(R2.id.fans_order_viewpager)
     ViewPager fansOrderViewpager;
 
-    private int index = 1;
+    public static int index = 1;
 
     @Override
     public int getLayoutId() {

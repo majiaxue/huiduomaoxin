@@ -34,7 +34,7 @@ public class TBAdapter extends MyRecyclerAdapter<TBOrderBean> {
                 .setText(R.id.order_list_price, "￥" + data.getPrice())
                 .setText(R.id.order_list_count, "x" + data.getItemNum())
                 .setImageUrl(R.id.order_list_img, data.getImage())
-                .setText(R.id.order_list_total, "共" + data.getItemNum() + "件商品  合计：￥" + ArithUtil.mul(Double.valueOf(data.getPrice()), data.getItemNum()))
+                .setText(R.id.order_list_total, "共" + data.getItemNum() + "件商品  合计：￥" + data.getAlipayTotalPrice())
                 .setText(R.id.order_list_predict, "预计收益" + ArithUtil.mul(SPUtil.getFloatValue("back"), data.getTotalCommissionFree()) + "元");
 
         ImageView img = holder.getView(R.id.order_list_my_head);

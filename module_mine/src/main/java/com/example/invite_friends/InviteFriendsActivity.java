@@ -22,6 +22,7 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.example.utils.UIHelper;
 import com.example.utils.ViewToBitmap;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.ShareAction;
@@ -154,31 +155,22 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
                 }
             }
         });
+
+        inviteFriendsBanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+            @Override
+            public void onItemClick(XBanner banner, Object model, View view, int position) {
+                UIHelper.seeBigBitmap(InviteFriendsActivity.this, ((InviteBean) model).getXBannerUrl());
+            }
+        });
     }
 
     @Override
     public void loadBanner(List<InviteBean> beanList) {
         inviteFriendsBanner.setBannerData(beanList);
-//        inviteFriendsBanner.setBannerData(R.layout.share_web, beanList);
+
         inviteFriendsBanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-//                boolean b = SPUtil.getBooleanValue("invite" + position);
-//                if (!b) {
-//                    LogUtil.e("--------------------->" + position);
-//                    WebView webView = view.findViewById(R.id.share_webview);
-//                    WebSettings settings = webView.getSettings();
-//                    settings.setJavaScriptEnabled(true);
-//                    webView.setWebViewClient(new WebViewClient() {
-//                        @Override
-//                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                            view.loadUrl(url);
-//                            return true;
-//                        }
-//                    });
-//                    webView.loadUrl(((InviteBean) model).getXBannerUrl());
-//                    SPUtil.addParm("invite" + position, true);
-//                }
                 Glide.with(InviteFriendsActivity.this).load(((InviteBean) model).getXBannerUrl()).into((ImageView) view);
             }
         });

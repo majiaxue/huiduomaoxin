@@ -20,6 +20,7 @@ import com.example.register.RegisterActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PhoneNumUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -71,12 +72,14 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     public void sendCode() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.WXLOGIN_CODE, map);//"http://192.168.1.9:4001"
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
                 LogUtil.e("denglu:" + result);
@@ -114,11 +117,13 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         } else if ("".equals(password) || password == null) {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
+            ProcessDialogUtil.showProcessDialog(mContext);
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("password", password).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.LOGIN_PHONE, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    ProcessDialogUtil.dismissDialog();
                     UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                     }.getType());
                     LogUtil.e("登录：" + userInfoBean);
@@ -134,6 +139,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("登录：" + errorCode + "-------" + errorMsg);
                     if (errorCode.equals(1)) {
                         Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();

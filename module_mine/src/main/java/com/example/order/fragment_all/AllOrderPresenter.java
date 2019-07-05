@@ -166,7 +166,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("jd:" + errorCode + "---------" + errorMsg);
+                LogUtil.e("tb:" + errorCode + "---------" + errorMsg);
                 List<TBOrderBean> orderBeans = new ArrayList<>();
                 TBAdapter tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
                 if (getView() != null) {

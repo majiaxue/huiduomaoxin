@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.fans_order.adapter.FansOrderRvAdapter;
+import com.example.fans_order.adapter.JdFansAdapter;
+import com.example.fans_order.adapter.TbFansAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -28,6 +30,7 @@ public class FansSettleOrderFragment extends BaseFragment<FansSettleOrderView, F
     private static FansSettleOrderFragment fragment;
     private int page = 1;
     private int index = 1;
+    private LinearLayoutManager layoutManager;
 
     public static FansSettleOrderFragment getInstance() {
         if (fragment == null) {
@@ -47,11 +50,11 @@ public class FansSettleOrderFragment extends BaseFragment<FansSettleOrderView, F
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-        presenter.loadData(page, index);
+        presenter.loadData(page);
 
         //设置 Header 为 官方主题 样式
         orderListRefresh.setRefreshHeader(new MaterialHeader(getActivity()));
@@ -68,22 +71,16 @@ public class FansSettleOrderFragment extends BaseFragment<FansSettleOrderView, F
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page, index);
+                presenter.loadData(page);
             }
         });
         orderListRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page, index);
+                presenter.loadData(page);
             }
         });
-    }
-
-    public void setOrigin(int index) {
-        this.index = index;
-        page = 1;
-        presenter.loadData(page, index);
     }
 
     @Override
@@ -95,19 +92,34 @@ public class FansSettleOrderFragment extends BaseFragment<FansSettleOrderView, F
     }
 
     @Override
-    public void loadMineRv(RvListAdapter adapter) {
+    public void loadFansRv(FansOrderRvAdapter adapter) {
         orderListRv.setAdapter(adapter);
     }
 
     @Override
-    public void loadFansRv(FansOrderRvAdapter adapter) {
+    public void loadTb(TbFansAdapter adapter) {
         orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadJd(JdFansAdapter adapter) {
+        orderListRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void moveTo(int flag) {
+        layoutManager.scrollToPosition(flag);
     }
 
     @Override
     public void loadSuccess() {
         orderListRefresh.finishLoadMore();
         orderListRefresh.finishRefresh();
+    }
+
+    public void setOrigin() {
+        page = 1;
+        presenter.loadData(page);
     }
 
     @Override

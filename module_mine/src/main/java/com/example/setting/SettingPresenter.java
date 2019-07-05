@@ -219,16 +219,20 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         userInfoBean.setPersonalizedSignature(sign);
         String jsonString = JSON.toJSONString(userInfoBean);
         Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
+
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putData(CommonResource.REVISEINFO, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+
                 LogUtil.e("修改信息：" + result);
                 ((Activity) mContext).finish();
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+
                 LogUtil.e(errorCode + "--------" + errorMsg);
             }
         }));
@@ -240,6 +244,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+
                 userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
                 LogUtil.e("设置-个人信息:" + userInfoBean);

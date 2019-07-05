@@ -6,7 +6,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.TbFansOrderBean;
 import com.example.module_mine.R;
-import com.example.utils.MyTimeUtil;
 
 import java.util.List;
 
@@ -28,6 +27,10 @@ public class TbFansAdapter extends MyRecyclerAdapter<TbFansOrderBean> {
                 .setText(R.id.fans_order_list_price, "￥" + data.getPrice())
                 .setText(R.id.fans_order_list_count, "x" + data.getItemNum())
                 .setText(R.id.fans_order_list_total, "共" + data.getItemNum() + "件商品  合计：￥" + data.getAlipayTotalPrice())
-                .setText(R.id.fans_order_list_time, "购买时间：" + data.getCreateTime());
+                .setText(R.id.fans_order_list_time, "购买时间：" + data.getCreateTime())
+                .setImageResource(R.id.fans_order_list_type, R.drawable.icon_tb)
+                .setImageUrl(R.id.fans_order_list_head, data.getFansIcon())
+                .setText(R.id.fans_order_list_nickname, data.getFansName())
+                .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
     }
 }

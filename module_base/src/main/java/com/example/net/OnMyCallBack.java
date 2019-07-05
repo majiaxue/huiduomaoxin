@@ -35,6 +35,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
      */
     @Override
     public void onNext(ResponseBody responseBody) {
+        ProcessDialogUtil.dismissDialog();
         try {
             String string = responseBody.string();
 //            BaseEntity baseEntity = JSON.parseObject(string, new TypeReference<BaseEntity>() {
@@ -69,6 +70,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
      */
     @Override
     public void onError(Throwable e) {
+        ProcessDialogUtil.dismissDialog();
         try {
 
             if (e instanceof SocketTimeoutException) {//请求超时
@@ -89,6 +91,6 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-        ProcessDialogUtil.dismissDialog();
+
     }
 }

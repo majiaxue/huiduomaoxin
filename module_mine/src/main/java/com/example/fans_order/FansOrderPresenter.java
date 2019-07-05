@@ -111,7 +111,10 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
     public void change(int i, int index) {
         getView().typeChanged(i);
 
-        fansAllOrderFragment.setOrigin(index);
+        fansAllOrderFragment.setOrigin();
+        fansPayOrderFragment.setOrigin();
+        fansSettleOrderFragment.setOrigin();
+        fansLoseOrderFragment.setOrigin();
         loadData(index);
     }
 
