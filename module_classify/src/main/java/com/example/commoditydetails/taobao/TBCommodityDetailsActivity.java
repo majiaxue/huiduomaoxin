@@ -127,7 +127,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         LogUtil.e("123456              " + para + "        " + shopType);
-        ProcessDialogUtil.showProcessDialog(this);
+
         presenter.login();
         //优惠券
         presenter.ledSecurities(para);
@@ -136,6 +136,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         //用户收益
         presenter.earnings();
         //加载视图
+        ProcessDialogUtil.showProcessDialog(this);
         presenter.initView(para, shopType);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰

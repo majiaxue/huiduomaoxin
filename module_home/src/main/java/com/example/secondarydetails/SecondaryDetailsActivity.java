@@ -18,6 +18,7 @@ import com.example.mvp.BaseActivity;
 import com.example.search.SearchActivity;
 import com.example.adapter.SecondaryPddRecAdapter;
 import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
+import com.example.utils.ProcessDialogUtil;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -58,8 +59,10 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
         ARouter.getInstance().inject(this);
 //        Intent intent = getIntent();
 //        type = intent.getStringExtra("type");
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         secondaryDetailsRec.setLayoutManager(linearLayoutManager);
+        ProcessDialogUtil.showProcessDialog(this);
         presenter.initView(secondaryDetailsTab, secondaryDetailsSmartRefresh, type);
         secondaryDetailsSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 球脉冲 样式

@@ -1,6 +1,7 @@
 package com.example.commoditydetails.pdd;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -33,6 +34,7 @@ import com.example.utils.CustomDialog;
 import com.example.utils.ProcessDialogUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
+import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -250,7 +252,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         this.detailsBeanList = beanList;
 //        LogUtil.e("收益1-------->" + earnings);
 
-        LogUtil.e("图片"+detailsBeanList.get(0).getGoods_gallery_urls().get(0));
+        LogUtil.e("图片" + detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         //到手价
         div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
         //佣金比例
@@ -346,6 +348,12 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         }
         presenter.viewToImage(imageUrl, file.getPath());
         LogUtil.e("图片路径" + file.getPath());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
 }

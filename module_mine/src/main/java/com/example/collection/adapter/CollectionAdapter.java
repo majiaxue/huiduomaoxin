@@ -74,14 +74,6 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
                     .setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件")
                     .setImageFresco(R.id.rv_collection_image, data.getImage());
         }
-
-        if (data.getType() == 0) {
-            holder.setImageResource(R.id.base_type, R.drawable.taobao);
-        } else if (data.getType() == 1) {
-            holder.setImageResource(R.id.base_type, R.drawable.jingdong);
-        } else if (data.getType() == 2) {
-            holder.setImageResource(R.id.base_type, R.drawable.pinduoduo);
-        }
     }
 
     public void setEdit(boolean edit) {
