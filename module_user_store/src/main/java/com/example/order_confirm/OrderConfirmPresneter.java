@@ -34,7 +34,7 @@ import okhttp3.ResponseBody;
 public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
     public ShippingAddressBean addressBean;
-    private boolean isCan = false;
+    public boolean isCan = false;
 
     public OrderConfirmPresneter(Context context) {
         super(context);

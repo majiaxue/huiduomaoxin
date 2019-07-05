@@ -3,6 +3,7 @@ package com.example.confirm_order;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -38,6 +39,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
     private ConfirmOrderAdapter orderAdapter;
     public ShippingAddressBean addressBean;
     private List<CartBean.RecordsBean> dataList = new ArrayList<>();
+    public boolean isCan = false;
 
     public ConfirmOrderPresenter(Context context) {
         super(context);
@@ -84,46 +86,50 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
     }
 
     public void jumpToPayment() {
-        List<ConfirmOrderInsideBean> list = new ArrayList<>();
-        for (int i = 0; i < dataList.size(); i++) {
-            ConfirmOrderInsideBean insideBean = new ConfirmOrderInsideBean();
-            insideBean.setSellerId((long) dataList.get(i).getSellerId());
-            insideBean.setFreightAmount(dataList.get(i).getTotalFeight());
-            insideBean.setCouponAmount(0l);
-            list.add(insideBean);
+        if (isCan) {
+            List<ConfirmOrderInsideBean> list = new ArrayList<>();
+            for (int i = 0; i < dataList.size(); i++) {
+                ConfirmOrderInsideBean insideBean = new ConfirmOrderInsideBean();
+                insideBean.setSellerId((long) dataList.get(i).getSellerId());
+                insideBean.setFreightAmount(dataList.get(i).getTotalFeight());
+                insideBean.setCouponAmount(0l);
+                list.add(insideBean);
+            }
+            ConfirmOrderBean orderBean = new ConfirmOrderBean();
+
+            orderBean.setReceiverName(addressBean.getAddressName());
+            orderBean.setReceiverPhone(addressBean.getAddressPhone());
+            orderBean.setReceiverProvince(addressBean.getAddressProvince());
+            orderBean.setReceiverCity(addressBean.getAddressCity());
+            orderBean.setReceiverRegion(addressBean.getAddressArea());
+            orderBean.setOrderAddress(addressBean.getAddressDetail());
+            orderBean.setUserId(SPUtil.getUserCode());
+            orderBean.setOrderRequestItems(list);
+
+
+            String jsonString = JSON.toJSONString(orderBean);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.CART_SUBMIT_ORDER, requestBody, SPUtil.getToken());
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("购物车下单：" + result);
+                    SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
+                    submitOrderBean.setProductCategoryId(dataList.get(0).getItems().get(0).getProductCategoryId() + "");
+                    submitOrderBean.setProductName("cart");
+                    ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                            .withSerializable("submitOrderBean", submitOrderBean)
+                            .navigation();
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+
+                }
+            }));
+        } else {
+            Toast.makeText(mContext, "未获取到运费信息，请重试", Toast.LENGTH_SHORT).show();
         }
-        ConfirmOrderBean orderBean = new ConfirmOrderBean();
-
-        orderBean.setReceiverName(addressBean.getAddressName());
-        orderBean.setReceiverPhone(addressBean.getAddressPhone());
-        orderBean.setReceiverProvince(addressBean.getAddressProvince());
-        orderBean.setReceiverCity(addressBean.getAddressCity());
-        orderBean.setReceiverRegion(addressBean.getAddressArea());
-        orderBean.setOrderAddress(addressBean.getAddressDetail());
-        orderBean.setUserId(SPUtil.getUserCode());
-        orderBean.setOrderRequestItems(list);
-
-
-        String jsonString = JSON.toJSONString(orderBean);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.CART_SUBMIT_ORDER, requestBody, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("购物车下单：" + result);
-                SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
-                submitOrderBean.setProductCategoryId(dataList.get(0).getItems().get(0).getProductCategoryId() + "");
-                submitOrderBean.setProductName("cart");
-                ARouter.getInstance().build("/module_user_store/PaymentActivity")
-                        .withSerializable("submitOrderBean", submitOrderBean)
-                        .navigation();
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-
-            }
-        }));
     }
 
     public void getAddress() {
@@ -162,13 +168,14 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         }
 
         String jsonString = JSON.toJSONString(list);
-        LogUtil.e("运费1111---------->"+jsonString);
+        LogUtil.e("运费1111---------->" + jsonString);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHeadWithBody(CommonResource.GET_YUNGEI, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("运费：" + result);
+                isCan = true;
                 List<PostageBean> postageBean = JSON.parseArray(result, PostageBean.class);
 
 
@@ -190,6 +197,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                isCan = false;
                 LogUtil.e("yunfei:" + errorCode + "---------" + errorMsg);
             }
         }));

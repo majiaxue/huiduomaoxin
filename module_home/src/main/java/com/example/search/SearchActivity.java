@@ -113,7 +113,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.searchEdit(searchEdit.getText().toString(), position);
+                presenter.searchEdit(searchEdit.getText().toString());
 
             }
         });
@@ -130,11 +130,11 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    position = 0;
+                    presenter.position = 0;
                 } else if (tab.getPosition() == 1) {
-                    position = 1;
+                    presenter.position = 1;
                 } else if (tab.getPosition() == 2) {
-                    position = 2;
+                    presenter.position = 2;
                 }
             }
 
@@ -154,7 +154,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
     protected void onResume() {
         super.onResume();
         searchFlowLayout.removeAllViews();
-        presenter.getHistory(searchFlowLayout,position);
+        presenter.getHistory(searchFlowLayout);
     }
 
     @Override
