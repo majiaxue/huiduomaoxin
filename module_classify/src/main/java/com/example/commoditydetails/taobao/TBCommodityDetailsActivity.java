@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,6 +38,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -117,6 +120,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     private String earnings;
     private int status = 0;
     private String imageUrl;
+    private CustomDialog customDialog;
 
     @Override
     public int getLayoutId() {
@@ -128,6 +132,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         ARouter.getInstance().inject(this);
         LogUtil.e("123456              " + para + "        " + shopType);
 
+        customDialog = new CustomDialog(this);
+        customDialog.show();
         presenter.login();
         //优惠券
         presenter.ledSecurities(para);
@@ -136,7 +142,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         //用户收益
         presenter.earnings();
         //加载视图
-        ProcessDialogUtil.showProcessDialog(this);
         presenter.initView(para, shopType);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -206,7 +211,15 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToTB();
+                redirectUrl(new OnSuccessListener() {
+                    @Override
+                    public void doLogic(String s) {
+                        //获取到重定向的url可以操作啦
+                        LogUtil.e("doLogic: " + s);
+                        presenter.jumpToTB(s);
+                    }
+                });
+
             }
         });
         //分享
@@ -220,7 +233,14 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToTB();
+                redirectUrl(new OnSuccessListener() {
+                    @Override
+                    public void doLogic(String s) {
+                        //获取到重定向的url可以操作啦
+                        LogUtil.e("doLogic: " + s);
+                        presenter.jumpToTB(s);
+                    }
+                });
             }
         });
         //收藏
@@ -314,7 +334,54 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         status++;
         LogUtil.e("status" + status);
         if (status == 3) {
-            ProcessDialogUtil.dismissDialog();
+//            status = 0;
+            customDialog.dismiss();
+            String zkFinalPrice = tbBeanList.getData().getZk_final_price();
+            if (!TextUtils.isEmpty(zkFinalPrice)) {
+                if (zkFinalPrice.contains("-")) {
+                    String[] split = zkFinalPrice.split("-");
+                    String commission_rate = tbLedSecuritiesBean.getCommission_rate();
+                    String couponInfo = tbLedSecuritiesBean.getCoupon_info();
+                    if (!TextUtils.isEmpty(couponInfo)) {
+                        String substring = couponInfo.substring(couponInfo.indexOf("减"));
+                        String price = substring.substring(1, substring.indexOf("元"));
+                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);//用户个人收益
+                        double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
+                        double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate),100,2), sub);//商品收益乘商品价格
+
+                        commodityPreferentialPrice.setText("￥" + sub);//优惠价
+
+                        commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
+                        LogUtil.e("商品收益" + Double.valueOf(commission_rate));
+                        LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品收益" + mul + "最终收益" + ArithUtil.mul(mul, earnings1));
+                        commodityCouponPrice.setText(price + "元");
+                        commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
+                    }
+
+                } else {
+                    String commission_rate = tbLedSecuritiesBean.getCommission_rate();
+                    String couponInfo = tbLedSecuritiesBean.getCoupon_info();
+                    if (!TextUtils.isEmpty(couponInfo)) {
+                        String substring = couponInfo.substring(couponInfo.indexOf("减"));
+                        String price = substring.substring(1, substring.indexOf("元"));
+                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);
+                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
+                        double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate),100,2), sub);
+                        commodityPreferentialPrice.setText("￥" + sub);//优惠价
+                        commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
+                        LogUtil.e("商品收益" + Double.valueOf(commission_rate));
+                        LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品收益" + mul + "最终收益" + ArithUtil.mul(mul, earnings1));
+                        commodityCouponPrice.setText(price + "元");
+                        commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
+
+                    }
+
+
+                }
+            }
+
             Glide.with(this)
                     .asBitmap()
                     .load("https:" + tbBeanList.getData().getImages().get(0))
@@ -329,48 +396,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
                         }
                     });
-            String zkFinalPrice = tbBeanList.getData().getZk_final_price();
-            if (!TextUtils.isEmpty(zkFinalPrice)) {
-                if (zkFinalPrice.contains("-")) {
-                    String[] split = zkFinalPrice.split("-");
-                    String commission_rate = tbLedSecuritiesBean.getCommission_rate();
-                    String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                    if (!TextUtils.isEmpty(couponInfo)) {
-                        String substring = couponInfo.substring(couponInfo.indexOf("减"));
-                        String price = substring.substring(1, substring.indexOf("元"));
-                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-                        double div = ArithUtil.div(Double.valueOf(commission_rate), 1000, 2);
-                        double mul = ArithUtil.mul(div, Double.valueOf(split[0]));
-                        double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
-                        commodityPreferentialPrice.setText("￥" + sub);//优惠价
-
-                        commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
-                        commodityCouponPrice.setText(tbLedSecuritiesBean.getCoupon_info());
-                        commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + tbLedSecuritiesBean.getCoupon_end_time());
-                    }
-
-                } else {
-                    String commission_rate = tbLedSecuritiesBean.getCommission_rate();
-                    String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                    if (!TextUtils.isEmpty(couponInfo)) {
-                        String substring = couponInfo.substring(couponInfo.indexOf("减"));
-                        String price = substring.substring(1, substring.indexOf("元"));
-                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-                        double div = ArithUtil.div(Double.valueOf(commission_rate), 1000, 2);
-                        double mul = ArithUtil.mul(div, Double.valueOf(zkFinalPrice));
-
-                        commodityPreferentialPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price)));//优惠价
-                        commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
-                        commodityCouponPrice.setText(tbLedSecuritiesBean.getCoupon_info());
-                        commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + tbLedSecuritiesBean.getCoupon_end_time());
-
-                    }
-
-
-                }
-            }
 
         }
     }
@@ -378,8 +403,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public void noCoupon(boolean noCoupon) {
         if (noCoupon) {
-            ProcessDialogUtil.dismissDialog();
-
+            customDialog.dismiss();
             commodityDetailsNoCoupon.setVisibility(View.GONE);
             commodityEarnings.setVisibility(View.GONE);
         }
@@ -416,6 +440,36 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         }
         presenter.viewToImage(imageUrl, file.getPath());
         LogUtil.e("图片路径" + file.getPath());
+    }
+
+    private void redirectUrl(final OnSuccessListener onSuccessListener) {
+        new AsyncTask<String, Integer, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                HttpURLConnection conn = null;
+                try {
+                    conn = (HttpURLConnection) new URL(imageUrl).openConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                conn.setInstanceFollowRedirects(false);
+                conn.setConnectTimeout(5000);
+                String url = conn.getHeaderField("Location");
+                conn.disconnect();
+                return url;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                onSuccessListener.doLogic(s);
+
+            }
+        }.execute();
+    }
+
+    private interface OnSuccessListener {
+        void doLogic(String s);
     }
 
 

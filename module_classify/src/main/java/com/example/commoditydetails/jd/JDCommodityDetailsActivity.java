@@ -122,6 +122,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     private double sub;
     private String qRImage;
+    private CustomDialog customDialog;
 
 
     @Override
@@ -133,7 +134,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        ProcessDialogUtil.showProcessDialog(this);
+        customDialog = new CustomDialog(this);
+        customDialog.show();
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -257,7 +259,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     @Override
     public void earnings(String earnings) {
-        ProcessDialogUtil.dismissDialog();
+        customDialog.dismiss();
         Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
         Double aDouble = Double.valueOf(earnings);
         double mul1 = ArithUtil.mul(sub, ArithUtil.div(commission, 100, 2));

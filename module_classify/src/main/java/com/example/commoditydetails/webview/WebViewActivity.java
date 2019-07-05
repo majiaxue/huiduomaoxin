@@ -38,7 +38,7 @@ public class WebViewActivity extends Activity {
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         webView.loadUrl(url);
-        LogUtil.e("========>1"+url);
+        LogUtil.e("========>1" + url);
 //        // 特别注意：5.1以上默认禁止了https和http混用，以下方式是开启
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
@@ -62,10 +62,10 @@ public class WebViewActivity extends Activity {
         WebViewClient webViewClient = new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView wv, String url) {
-                if(url == null) return false;
+                if (url == null) return false;
 
                 try {
-                    if(url.startsWith("pinduoduo://") || url.startsWith("tbopen://")){
+                    if (url.startsWith("pinduoduo://") || url.startsWith("tbopen://") || url.startsWith("openapp.jdmobile://")) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
                         return true;

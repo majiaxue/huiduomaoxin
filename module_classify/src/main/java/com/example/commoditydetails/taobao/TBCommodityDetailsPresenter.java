@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -63,6 +64,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -249,17 +253,17 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
         shopParticulars.setHasFixedSize(true);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
-//        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    Fresco.getImagePipeline().resume();
-//                }else {
-//                    Fresco.getImagePipeline().pause();
-//                }
-//
-//            }
-//        });
+        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Fresco.getImagePipeline().resume();
+                } else {
+                    Fresco.getImagePipeline().pause();
+                }
+
+            }
+        });
 
     }
 
@@ -328,10 +332,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     number++;
                     if (number == 2) {
                         shouQuan();
+                        ((Activity) mContext).finish();
                     }
-                }else if (result.startsWith("{\"error\":\"15\"")) {
+                } else if (result.startsWith("{\"error\":\"15\"")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
-                    LogUtil.e("errorMap---->"+errorMap.toString());
+                    LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
                     flag = 1;
                     if (getView() != null) {
@@ -362,17 +367,15 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }));
     }
 
-    public void jumpToTB() {
+    public void jumpToTB(String originUrl) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-
             if (flag == 2) {
                 //提供给三方传递配置参数
                 Map<String, String> exParams = new HashMap<>();
                 exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
-
                 //打开指定页面
-                AlibcPage alibcPage = new AlibcPage(tbLedSecuritiesBean.getCoupon_click_url());
-                LogUtil.e("GotoTB" + flag + "        " + tbLedSecuritiesBean.getCoupon_click_url());
+                AlibcPage alibcPage = new AlibcPage(originUrl);
+                LogUtil.e("GotoTB" + flag + "        " + originUrl);
                 //设置页面打开方式
                 AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
 
@@ -567,4 +570,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
         }
     };
+
+
 }

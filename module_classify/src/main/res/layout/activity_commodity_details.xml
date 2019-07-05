@@ -393,7 +393,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#ffffff">
 
         <LinearLayout
             android:id="@+id/commodity_go_home"

@@ -123,6 +123,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private double div;
     private double promotionRate;
     private File file;
+    private CustomDialog customDialog;
 
 
     @Override
@@ -134,7 +135,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
-        ProcessDialogUtil.showProcessDialog(this);
+        customDialog = new CustomDialog(this);
+        customDialog.show();
         LogUtil.e("goods_id" + goods_id);
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
@@ -309,7 +311,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void flag() {
         flag++;
         if (flag == 2) {
-            ProcessDialogUtil.dismissDialog();
+            customDialog.dismiss();
             //到手价乘佣金
             mul = ArithUtil.mul(div, promotionRate);
             //用户佣金比例

@@ -99,11 +99,9 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                                 selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
                                     @Override
                                     public void onYesClick() {
-                                        int favoriteId = dataBeanList.get(position).getFavoriteId();
-                                        List<String> integers = new ArrayList<>();
-                                        integers.add(favoriteId + "");
+                                        int favoriteId = dataBeanList.get(position).getId();
                                         LogUtil.e("shopCollect--------->" + favoriteId);
-                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.HISTORYDELETE, integers, SPUtil.getToken());
+                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).deleteDataWithout(CommonResource.SHOPDELETE + "/" + favoriteId, SPUtil.getToken());
                                         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                                             @Override
                                             public void onSuccess(String result, String msg) {

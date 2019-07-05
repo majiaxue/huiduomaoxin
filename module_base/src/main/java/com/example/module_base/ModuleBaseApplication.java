@@ -2,6 +2,7 @@ package com.example.module_base;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -11,6 +12,7 @@ import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -45,7 +47,7 @@ public class ModuleBaseApplication extends Application {
         ARouter.init(this);
         SPUtil.getInstance(this);
         //初始化DBFLOW
-        FlowManager.init(this);
+        initFresco();
 
         wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
         wxapi.registerApp(CommonResource.WXAPPID);
@@ -74,6 +76,16 @@ public class ModuleBaseApplication extends Application {
                 LogUtil.e("阿里百川：" + code + "-------" + msg);
             }
         });
+    }
+
+    private void initFresco() {
+        //对ImagePipelineConfig进行一些配置
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
+                .setDownsampleEnabled(true)              // 对图片进行自动缩放
+                .setResizeAndRotateEnabledForNetwork(true) // 对网络图片进行resize处理，减少内存消耗
+                .setBitmapsConfig(Bitmap.Config.RGB_565) //图片设置RGB_565，减小内存开销 fresco默认情况下是RGB_8888
+                .build();
+        Fresco.initialize(this, config);
     }
 
     public static Context getContext() {

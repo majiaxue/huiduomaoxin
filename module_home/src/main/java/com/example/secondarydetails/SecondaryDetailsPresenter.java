@@ -75,13 +75,13 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     }
 
     public void initView(final TabLayout secondaryDetailsTab, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         if (type.equals("1")) {
             //拼多多
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsTabResult------------------>" + result);
                     SecondaryTabBean secondaryTabBean = JSON.parseObject(result, new TypeReference<SecondaryTabBean>() {
                     }.getType());
@@ -115,7 +115,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-                            ProcessDialogUtil.showProcessDialog(mContext);
                             //拼多多,淘宝,京东,page用来刷新,type用来分辨
                             initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, 0);
                         } else {
@@ -131,7 +130,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsTabErrorMsg------------------>" + errorMsg);
 
                 }
@@ -182,7 +180,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-                            ProcessDialogUtil.showProcessDialog(mContext);
                             //拼多多,淘宝,京东,page用来刷新,type用来分辨
                             initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, 0);
 
@@ -243,7 +240,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-                            ProcessDialogUtil.showProcessDialog(mContext);
+
                             //拼多多,淘宝,京东,page用来刷新,type用来分辨
                             initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, 0);
 

@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,6 +35,9 @@ import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
+import com.example.view.SelfDialog;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
@@ -226,9 +230,34 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(RecyclerView parent, View view, int position) {
-                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                        .withString("para", goodChoiceList.get(position).getNum_iid())
-                                        .withString("shoptype", "1").navigation();
+                                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                            .withString("para", goodChoiceList.get(position).getNum_iid())
+                                            .withString("shoptype", "1").navigation();
+                                } else {
+                                    //是否登录
+                                    final SelfDialog selfDialog = new SelfDialog(mContext);
+                                    selfDialog.setTitle("提示");
+                                    selfDialog.setMessage("您未登陆是否去登陆？");
+                                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                                        @Override
+                                        public void onYesClick() {
+                                            PopUtils.setTransparency(mContext, 1f);
+                                            selfDialog.dismiss();
+                                        }
+                                    });
+                                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                                        @Override
+                                        public void onNoClick() {
+                                            PopUtils.setTransparency(mContext, 1f);
+                                            ARouter.getInstance().build("/mine/login").navigation();
+                                            selfDialog.dismiss();
+                                        }
+                                    });
+                                    PopUtils.setTransparency(mContext, 0.3f);
+                                    selfDialog.show();
+                                }
+
                             }
                         });
                     } else {
@@ -279,9 +308,34 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(RecyclerView parent, View view, int position) {
-                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                        .withString("para", goodList.get(position).getItem_id())
-                                        .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+
+                                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                            .withString("para", goodList.get(position).getItem_id())
+                                            .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+                                } else {
+                                    //是否登录
+                                    final SelfDialog selfDialog = new SelfDialog(mContext);
+                                    selfDialog.setTitle("提示");
+                                    selfDialog.setMessage("您未登陆是否去登陆？");
+                                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                                        @Override
+                                        public void onYesClick() {
+                                            PopUtils.setTransparency(mContext, 1f);
+                                            selfDialog.dismiss();
+                                        }
+                                    });
+                                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                                        @Override
+                                        public void onNoClick() {
+                                            PopUtils.setTransparency(mContext, 1f);
+                                            ARouter.getInstance().build("/mine/login").navigation();
+                                            selfDialog.dismiss();
+                                        }
+                                    });
+                                    PopUtils.setTransparency(mContext, 0.3f);
+                                    selfDialog.show();
+                                }
                             }
                         });
 
@@ -291,9 +345,33 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                                .withString("para", goodList.get(index).getItem_id())
-                                                .withString("shoptype", goodList.get(index).getUser_type()).navigation();
+                                        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                                    .withString("para", goodList.get(index).getItem_id())
+                                                    .withString("shoptype", goodList.get(index).getUser_type()).navigation();
+                                        } else {
+                                            //是否登录
+                                            final SelfDialog selfDialog = new SelfDialog(mContext);
+                                            selfDialog.setTitle("提示");
+                                            selfDialog.setMessage("您未登陆是否去登陆？");
+                                            selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                                                @Override
+                                                public void onYesClick() {
+                                                    PopUtils.setTransparency(mContext, 1f);
+                                                    selfDialog.dismiss();
+                                                }
+                                            });
+                                            selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                                                @Override
+                                                public void onNoClick() {
+                                                    PopUtils.setTransparency(mContext, 1f);
+                                                    ARouter.getInstance().build("/mine/login").navigation();
+                                                    selfDialog.dismiss();
+                                                }
+                                            });
+                                            PopUtils.setTransparency(mContext, 0.3f);
+                                            selfDialog.show();
+                                        }
                                     }
                                 });
                             }
@@ -312,7 +390,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
-                    getView().refreshSuccess();
+                getView().refreshSuccess();
             }
         }));
 

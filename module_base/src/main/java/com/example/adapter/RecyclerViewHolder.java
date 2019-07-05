@@ -3,6 +3,7 @@ package com.example.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -17,7 +18,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.module_base.R;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
+import q.rorbin.badgeview.DisplayUtil;
 
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
@@ -116,7 +124,14 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public RecyclerViewHolder setImageFresco(int resId, String url) {
         SimpleDraweeView simpleDraweeView = getView(resId);
-        simpleDraweeView.setImageURI(url);
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
+//                        .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 360), DisplayUtil.dp2px(context, 200)))
+                        .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setOldController(simpleDraweeView.getController())
+                .build();
+        simpleDraweeView.setController(controller);
         return this;
     }
 

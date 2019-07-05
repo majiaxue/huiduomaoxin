@@ -255,7 +255,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
         List<String> deleteList = new ArrayList<>();
         for (int i = 0; i < recBeanList.size(); i++) {
             if (recBeanList.get(i).isCheck()) {
-                deleteList.add(recBeanList.get(i).getFavoriteId() + "");
+                deleteList.add(recBeanList.get(i).getId() + "");
             }
         }
 
