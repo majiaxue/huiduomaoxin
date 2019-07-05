@@ -79,11 +79,7 @@ public class ClassifyPresenter extends BasePresenter<ClassifyView> {
                 for (int i = 0; i < leftList.size(); i++) {
                     leftList.get(i).setSelect(i == position ? true : false);
                 }
-                if (position == 0) {
-                    getView().showBanner();
-                } else {
-                    getView().hideBanner();
-                }
+
                 rightList.clear();
                 rightList.addAll(leftList.get(position).getChildren());
                 leftRvAdapter.notifyDataSetChanged();

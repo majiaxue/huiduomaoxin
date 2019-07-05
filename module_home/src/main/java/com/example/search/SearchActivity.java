@@ -1,8 +1,10 @@
 package com.example.search;
 
 import android.support.design.widget.TabLayout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -121,7 +123,7 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
         searchDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBflowUtil.getInstance().deleteAll(CommonResource.HISTORY_USER);
+                DBflowUtil.getInstance().deleteAll(CommonResource.HISTORY_TBK);
                 searchFlowLayout.removeAllViews();
             }
         });
@@ -146,6 +148,18 @@ public class SearchActivity extends BaseActivity<SearchView, SearchPresenter> im
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == event.KEYCODE_ENTER) {
+                    presenter.searchEdit(searchEdit.getText().toString());
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
     }

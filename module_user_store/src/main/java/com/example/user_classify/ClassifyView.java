@@ -17,7 +17,4 @@ public interface ClassifyView extends IView {
 
     void loadBanner(List<BannerBean.RecordsBean> list);
 
-    void showBanner();
-
-    void hideBanner();
 }

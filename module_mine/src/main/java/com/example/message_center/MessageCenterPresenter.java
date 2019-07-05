@@ -40,6 +40,9 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                if (getView()!=null){
+                    getView().loadFinish();
+                }
                 LogUtil.e("消息列表：" + result);
                 if (page == 1) {
                     dataList.clear();
@@ -57,7 +60,9 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                if (getView()!=null){
+                    getView().loadFinish();
+                }
             }
         }));
     }

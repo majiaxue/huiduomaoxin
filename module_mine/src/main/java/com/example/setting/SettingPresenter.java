@@ -32,6 +32,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.UIHelper;
 import com.google.gson.Gson;
@@ -234,6 +235,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void loadData() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

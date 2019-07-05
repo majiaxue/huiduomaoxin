@@ -92,7 +92,13 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
     @Override
     public void loadBalance(String balance) {
         this.balance = balance;
-        cashoutBalance.setText("余额￥" + balance+"，");
+        cashoutBalance.setText("余额￥" + balance + "，");
+    }
+
+    @Override
+    public void loadInfo(String name, String aliAcount) {
+        cashoutZFB.setText(aliAcount);
+        cashoutName.setText(name);
     }
 
     @Override

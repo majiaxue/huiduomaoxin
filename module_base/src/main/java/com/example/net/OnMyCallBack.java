@@ -2,6 +2,7 @@ package com.example.net;
 
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import org.json.JSONObject;
@@ -88,6 +89,6 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-
+        ProcessDialogUtil.dismissDialog();
     }
 }

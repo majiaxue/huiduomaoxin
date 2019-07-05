@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.fans_order.adapter.FansOrderRvAdapter;
+import com.example.fans_order.adapter.TbFansAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -107,6 +108,11 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
     public void loadSuccess() {
         orderListRefresh.finishRefresh();
         orderListRefresh.finishLoadMore();
+    }
+
+    @Override
+    public void loadTb(TbFansAdapter adapter) {
+
     }
 
     @Override

@@ -74,6 +74,7 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
                     .setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件")
                     .setImageFresco(R.id.rv_collection_image, data.getImage());
         }
+
     }
 
     public void setEdit(boolean edit) {

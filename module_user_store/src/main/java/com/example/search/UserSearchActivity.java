@@ -1,5 +1,6 @@
 package com.example.search;
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,6 +61,17 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
             }
         });
 
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == event.KEYCODE_ENTER) {
+                    presenter.searchEdit(searchEdit.getText().toString());
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     }
 
     @Override

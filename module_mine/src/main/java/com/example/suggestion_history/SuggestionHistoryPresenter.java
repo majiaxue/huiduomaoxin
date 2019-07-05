@@ -12,6 +12,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.suggestion_history.adapter.SuggestionHistoryAdapter;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class SuggestionHistoryPresenter extends BasePresenter<SuggestionHistoryV
     }
 
     public void loadData() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.QUERYSUGGESTION, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

@@ -10,6 +10,7 @@ import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
 import com.umeng.socialize.ShareAction;
@@ -43,6 +44,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
 //        beanList.add(new InviteBean(bitmap2));
 //        beanList.add(new InviteBean(bitmap3));
         if (getView() != null && beanList.size() == 3) {
+            ProcessDialogUtil.dismissDialog();
             getView().loadBanner(beanList);
         }
     }

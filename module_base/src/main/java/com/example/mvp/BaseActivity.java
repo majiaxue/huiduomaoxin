@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.entity.EventBusBean;
 import com.example.utils.AppManager;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.StatusBarUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -56,6 +57,7 @@ public abstract class BaseActivity<V extends IView, P extends BasePresenter> ext
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ProcessDialogUtil.dismissDialog();
         if (presenter != null) {
             AppManager.getInstance().finishActivity(this);
             //Activity销毁时的调用，让具体实现BasePresenter中onViewDestroy()方法做出决定

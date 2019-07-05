@@ -25,6 +25,7 @@ import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
     }
 
     public void loadData(int index) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         if (index == 0) {
             scOrder();
         } else if (index == 1) {
@@ -179,11 +181,12 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
     }
 
     private void getTbPic(TBOrderBean bean, final int position) {
-        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("numIid", bean.getNumIid()).build();
+        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("para", bean.getNumIid()).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("淘宝图片：" + result);
                 TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
                 }.getType());
                 if (tbBean != null && tbBean.getData() != null) {

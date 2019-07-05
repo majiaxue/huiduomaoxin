@@ -31,6 +31,7 @@ import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import org.json.JSONException;
@@ -66,7 +67,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     private JdWaterfallAdapter jdWaterfallAdapter;
 
     private int goodsType = 1;  //商品来源  1：淘宝  2：拼多多   3：京东
-    private String content;     //搜索内容
+    private String content = "";     //搜索内容
 
     private int sort_type = 1;  //拼多多排序字段
 
@@ -152,7 +153,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     public void searchTB(final int page, String sort) {
         goodsType = 1;
-
+        if (page == 1) {
+            ProcessDialogUtil.showProcessDialog(mContext);
+        }
         Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageno", page).addParms("pagesize", "10").build();
         if (sort != null) {
             map.put("sort", sort);
@@ -169,64 +172,60 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                     tbList.clear();
                 }
                 JSONObject jsonObject = JSON.parseObject(result);
-                JSONArray data = jsonObject.getJSONArray("data");
-                for (int i = 0; i < data.size(); i++) {
-                    TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
-                    JSONObject jsonObject1 = data.getJSONObject(i);
-                    dataBean.setItem_id(jsonObject1.getString("item_id"));
-                    dataBean.setPict_url(jsonObject1.getString("pict_url"));
-                    dataBean.setTitle(jsonObject1.getString("title"));
-                    dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
-                    dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
-                    dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
-                    dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
-                    tbList.add(dataBean);
-                }
+                if ("200".equals(jsonObject.getString("code"))) {
+                    JSONArray data = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < data.size(); i++) {
+                        TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                        JSONObject jsonObject1 = data.getJSONObject(i);
+                        dataBean.setItem_id(jsonObject1.getString("item_id"));
+                        dataBean.setPict_url(jsonObject1.getString("pict_url"));
+                        dataBean.setTitle(jsonObject1.getString("title"));
+                        dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
+                        dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
+                        dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
+                        dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                        tbList.add(dataBean);
+                    }
 
 //                TBGoodsRecBean tbGoodsRecBean = JSON.parseObject(result, TBGoodsRecBean.class);
 //                tbList.addAll(tbGoodsRecBean.getData());
-                if (isWaterfall) {
-                    if (waterfallAdapter == null) {
-                        waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
+                    waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
+                    lstAdapter = new BaseRecAdapter(mContext, tbList, R.layout.item_base_rec, "0");
+                    if (isWaterfall) {
                         if (getView() != null) {
                             getView().loadTBWaterfallRv(waterfallAdapter);
                         }
+
                     } else {
-                        waterfallAdapter.notifyDataSetChanged();
-                    }
-                } else {
-                    if (lstAdapter == null) {
-                        lstAdapter = new BaseRecAdapter(mContext, tbList, R.layout.item_base_rec, "0");
                         if (getView() != null) {
                             getView().loadTBLstRv(lstAdapter);
                         }
-                    } else {
-                        lstAdapter.notifyDataSetChanged();
+
                     }
-                }
 
-                if (lstAdapter != null) {
-                    lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", tbList.get(position).getItem_id())
-                                    .withString("shoptype", "1")
-                                    .navigation();
-                        }
-                    });
-                }
+                    if (lstAdapter != null) {
+                        lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", tbList.get(position).getItem_id())
+                                        .withString("shoptype", "1")
+                                        .navigation();
+                            }
+                        });
+                    }
 
-                if (waterfallAdapter != null) {
-                    waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", tbList.get(position).getItem_id())
-                                    .withString("shoptype", "1")
-                                    .navigation();
-                        }
-                    });
+                    if (waterfallAdapter != null) {
+                        waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", tbList.get(position).getItem_id())
+                                        .withString("shoptype", "1")
+                                        .navigation();
+                            }
+                        });
+                    }
                 }
             }
 
@@ -241,6 +240,10 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     public void searchJD(final int page, String sort, String sortName) {
         goodsType = 3;
+        if (page == 1) {
+            ProcessDialogUtil.showProcessDialog(mContext);
+        }
+
         Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageIndex", page).addParms("pageSize", "10").addParms("isCoupon", "1").build();
         if (sort != null) {
             map.put("sort", sort);
@@ -261,24 +264,20 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         jdList.clear();
                     }
                     jdList.addAll(jdSearchBean.getData().getLists());
+                    jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
+                    jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
                     if (isWaterfall) {
-                        if (jdWaterfallAdapter == null) {
-                            jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
-                            if (getView() != null) {
-                                getView().loadJDWaterfallRv(jdWaterfallAdapter);
-                            }
-                        } else {
-                            jdWaterfallAdapter.notifyDataSetChanged();
+
+                        if (getView() != null) {
+                            getView().loadJDWaterfallRv(jdWaterfallAdapter);
                         }
+
                     } else {
-                        if (jdLstAdapter == null) {
-                            jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
-                            if (getView() != null) {
-                                getView().loadJDLstRv(jdLstAdapter);
-                            }
-                        } else {
-                            jdLstAdapter.notifyDataSetChanged();
+
+                        if (getView() != null) {
+                            getView().loadJDLstRv(jdLstAdapter);
                         }
+
                     }
 
                     if (jdLstAdapter != null) {
@@ -324,13 +323,17 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onComplete() {
-
+                ProcessDialogUtil.dismissDialog();
             }
         });
     }
 
     public void searchPDD(final int page) {
         goodsType = 2;
+        if (page == 1) {
+            ProcessDialogUtil.showProcessDialog(mContext);
+        }
+
         PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
         pddGoodsSearchVo.setPage(page);
         pddGoodsSearchVo.setKeyword(content);
@@ -353,26 +356,23 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                     pddList.clear();
                 }
                 pddList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
+                pddWaterAdapter = new PddWaterAdapter(mContext, pddList, R.layout.item_classification_rec_grid);
+                pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec);
+
                 if (isWaterfall) {
-                    if (pddWaterAdapter == null) {
-                        pddWaterAdapter = new PddWaterAdapter(mContext, pddList, R.layout.item_classification_rec_grid);
-                        if (getView() != null) {
-                            getView().loadPDDWaterfallRv(pddWaterAdapter);
-                            getView().loadFinish();
-                        }
-                    } else {
-                        pddWaterAdapter.notifyDataSetChanged();
+
+                    if (getView() != null) {
+                        getView().loadPDDWaterfallRv(pddWaterAdapter);
+                        getView().loadFinish();
                     }
+
                 } else {
-                    if (pddLstAdapter == null) {
-                        pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec);
-                        if (getView() != null) {
-                            getView().loadPDDLstRv(pddLstAdapter);
-                            getView().loadFinish();
-                        }
-                    } else {
-                        pddLstAdapter.notifyDataSetChanged();
+
+                    if (getView() != null) {
+                        getView().loadPDDLstRv(pddLstAdapter);
+                        getView().loadFinish();
                     }
+
                 }
 
                 if (pddLstAdapter != null) {
@@ -431,10 +431,10 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 break;
             case 2:
                 if (isWaterfall) {
-                    getView().loadJDWaterfallRv(jdWaterfallAdapter);
+                    getView().loadJDLstRv(jdLstAdapter);
                     isWaterfall = false;
                 } else {
-                    getView().loadJDLstRv(jdLstAdapter);
+                    getView().loadJDWaterfallRv(jdWaterfallAdapter);
                     isWaterfall = true;
                 }
                 break;

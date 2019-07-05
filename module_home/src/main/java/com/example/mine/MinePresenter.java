@@ -20,6 +20,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -147,6 +148,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());//"http://192.168.1.9:4001"
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -167,7 +169,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("个人信息"+errorCode + "---------" + errorMsg);
+                LogUtil.e("个人信息" + errorCode + "---------" + errorMsg);
                 SPUtil.addParm(CommonResource.TOKEN, "");
                 if ("2".equals(errorCode)) {
                     if (getView() != null) {
@@ -219,7 +221,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("~~~~~"+errorMsg);
+                LogUtil.e("~~~~~" + errorMsg);
             }
         }));
     }

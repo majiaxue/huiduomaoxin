@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.example.utils.AppManager;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.StatusBarUtils;
 
 import butterknife.ButterKnife;
@@ -54,6 +55,7 @@ public abstract class BaseFragmentActivity<V extends IView, P extends BasePresen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ProcessDialogUtil.dismissDialog();
         if (presenter != null) {
             AppManager.getInstance().finishActivity(this);
             //Activity销毁时的调用，让具体实现BasePresenter中onViewDestroy()方法做出决定

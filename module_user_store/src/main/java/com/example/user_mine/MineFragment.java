@@ -73,6 +73,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @BindView(R2.id.browsing_history_count)
     TextView browsingHistoryCount;
 
+    private boolean flag = false;
 
     @Override
     public int getLayoutId() {
@@ -84,10 +85,10 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         userMineName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
         userMineId.setText("UID：" + SPUtil.getStringValue(CommonResource.USER_INVITE));
         mineHeader.setImageURI(Uri.parse(SPUtil.getStringValue(CommonResource.USER_PIC)));
-        presenter.goodsCollectionCount();
-        presenter.shopCollectCount();
-        presenter.browsingHistoryCount();
-        presenter.mineOrderAll();
+//        presenter.goodsCollectionCount();
+//        presenter.shopCollectCount();
+//        presenter.browsingHistoryCount();
+//        presenter.mineOrderAll();
     }
 
     @Override
@@ -225,7 +226,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void daifahuo(int count) {
-        LogUtil.e("数量1-------------->"+count);
+        LogUtil.e("数量1-------------->" + count);
         new QBadgeView(getContext())
                 .bindTarget(userMineDaifahuo)
                 .setBadgeNumber(count)
@@ -233,12 +234,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 .stroke(Color.parseColor("#fd3c15"), 1, true)
                 .setBadgeTextSize(9, true)
                 .setShowShadow(false)
-                .setGravityOffset(10,0,true);
+                .setGravityOffset(10, 0, true);
     }
 
     @Override
     public void daishouhuo(int count) {
-        LogUtil.e("数量2-------------->"+count);
+        LogUtil.e("数量2-------------->" + count);
         new QBadgeView(getContext())
                 .bindTarget(userMineDaishouhuo)
                 .setBadgeNumber(count)
@@ -246,12 +247,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 .stroke(Color.parseColor("#fd3c15"), 1, true)
                 .setBadgeTextSize(9, true)
                 .setShowShadow(false)
-                .setGravityOffset(10,0,true);
+                .setGravityOffset(10, 0, true);
     }
 
     @Override
     public void daipingjia(int count) {
-        LogUtil.e("数量3-------------->"+count);
+        LogUtil.e("数量3-------------->" + count);
         new QBadgeView(getContext())
                 .bindTarget(userMineDaipingjia)
                 .setBadgeNumber(count)
@@ -259,12 +260,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 .stroke(Color.parseColor("#fd3c15"), 1, true)
                 .setBadgeTextSize(9, true)
                 .setShowShadow(false)
-                .setGravityOffset(10,0,true);
+                .setGravityOffset(10, 0, true);
     }
 
     @Override
     public void daifukuan(int count) {
-        LogUtil.e("数量4-------------->"+count);
+        LogUtil.e("数量4-------------->" + count);
         new QBadgeView(getContext())
                 .bindTarget(userMineDaifukuan)
                 .setBadgeNumber(count)
@@ -272,7 +273,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 .stroke(Color.parseColor("#fd3c15"), 1, true)
                 .setBadgeTextSize(9, true)
                 .setShowShadow(false)
-                .setGravityOffset(10,0,true);
+                .setGravityOffset(10, 0, true);
     }
 
     @Override
@@ -283,16 +284,18 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             presenter.shopCollectCount();
             presenter.browsingHistoryCount();
             presenter.mineOrderAll();
+            flag = true;
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.goodsCollectionCount();
-        presenter.shopCollectCount();
-        presenter.browsingHistoryCount();
-        presenter.mineOrderAll();
+        if (flag) {
+            presenter.goodsCollectionCount();
+            presenter.shopCollectCount();
+            presenter.browsingHistoryCount();
+            presenter.mineOrderAll();
+        }
     }
-
 }

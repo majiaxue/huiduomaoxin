@@ -35,6 +35,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.OnCountChangeListener;
 import com.example.utils.OnSelectViewListener;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 
@@ -127,6 +128,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void setShoppingCartRec() {
+        ProcessDialogUtil.showProcessDialog(mContext);
         final Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
         RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
 

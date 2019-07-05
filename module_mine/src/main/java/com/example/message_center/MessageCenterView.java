@@ -5,4 +5,6 @@ import com.example.mvp.IView;
 
 public interface MessageCenterView extends IView {
     void loadRv(MessageCenterAdapter adapter);
+
+    void loadFinish();
 }

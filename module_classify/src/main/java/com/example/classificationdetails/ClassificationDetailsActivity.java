@@ -1,5 +1,6 @@
 package com.example.classificationdetails;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -113,7 +114,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        LogUtil.e("----------------->"+position);
+
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         //添加间距
@@ -127,8 +128,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
         presenter.setContent(searchContent);
 
         classificationTab.getTabAt(position).select();
-        if (position == 0) presenter.searchTB(page, null);
-        else if (position == 1) {
+        if (position == 0) {
+            presenter.searchTB(page, null);
+        } else if (position == 1) {
             presenter.searchPDD(page);
         } else if (position == 2) {
             presenter.searchJD(page, null, null);
@@ -321,6 +323,12 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
         classificationText4.setTextColor(Color.parseColor(index == 3 ? "#fd3c15" : "#333333"));
         creditTop.setImageResource(index == 3 ? credit ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
         creditBottom.setImageResource(index == 3 ? credit ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        presenter.setContent(searchContent);
     }
 
     @Override

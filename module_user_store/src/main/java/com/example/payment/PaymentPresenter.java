@@ -23,6 +23,7 @@ import com.example.pay_success.PaySuccessActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
 
@@ -76,6 +77,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         if (isWeChat) {
             Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
         } else {
+            ProcessDialogUtil.showProcessDialog(mContext);
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
