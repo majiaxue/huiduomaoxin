@@ -345,7 +345,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                     if (!TextUtils.isEmpty(couponInfo)) {
                         String substring = couponInfo.substring(couponInfo.indexOf("减"));
                         String price = substring.substring(1, substring.indexOf("元"));
-                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);//用户个人收益
+                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);//用户个人收益
                         double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
                         double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate),100,2), sub);//商品收益乘商品价格
 
@@ -365,7 +365,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                     if (!TextUtils.isEmpty(couponInfo)) {
                         String substring = couponInfo.substring(couponInfo.indexOf("减"));
                         String price = substring.substring(1, substring.indexOf("元"));
-                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);
+                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
                         double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
                         double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate),100,2), sub);
                         commodityPreferentialPrice.setText("￥" + sub);//优惠价
