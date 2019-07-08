@@ -3,7 +3,6 @@ package com.example.mine;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,8 +55,8 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     LinearLayout mineYijiesuan;
     @BindView(R2.id.mine_yishixiao)
     LinearLayout mineYishixiao;
-    @BindView(R2.id.mine_advice)
-    ImageView mineAdvice;
+    @BindView(R2.id.mine_iwantup)
+    TextView mIWantUp;
     @BindView(R2.id.mine_income_form)
     LinearLayout mineIncomeForm;
     @BindView(R2.id.mine_fans_order)
@@ -78,6 +77,14 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     TextView mBenyue;
     @BindView(R2.id.mine_shangyue)
     TextView mShangyue;
+    @BindView(R2.id.mine_balance)
+    LinearLayout mBalance;
+    @BindView(R2.id.mine_my_balance)
+    TextView mBalanceTxt;
+    @BindView(R2.id.mine_points)
+    LinearLayout mPoints;
+    @BindView(R2.id.mine_my_points)
+    TextView mPointsTxt;
 
     private UserInfoBean userInfo;
 
@@ -116,7 +123,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             }
         });
 
-        mineAdvice.setOnClickListener(new View.OnClickListener() {
+        mIWantUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.jumpToUpgrade();
@@ -218,9 +225,9 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void loadPredict(HomePredictBean homePredictBean) {
-        mBenri.setText(homePredictBean.getWaitCurrentMonth());
-        mBenyue.setText(homePredictBean.getSettleCurrentMonth());
-        mShangyue.setText(homePredictBean.getSettleLastMonth());
+        mBenri.setText(homePredictBean.getWaitCurrentMonth() + "元");
+        mBenyue.setText(homePredictBean.getSettleCurrentMonth() + "元");
+        mShangyue.setText(homePredictBean.getSettleLastMonth() + "元");
     }
 
     @Override
@@ -230,6 +237,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         Glide.with(getContext()).load(userInfo.getIcon()).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(mineHeader);
         mineCode.setText("邀请码：" + userInfo.getInviteCode());
         mineTemp.setVisibility(View.VISIBLE);
+        mIWantUp.setVisibility(View.VISIBLE);
         if (userInfo.getLevel() != null) {
             mineLv.setVisibility(View.VISIBLE);
             if ("铜牌".equals(userInfo.getLevel())) {
@@ -251,6 +259,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineName.setText("请注册/登录");
         mineHeader.setImageResource(R.drawable.vhjfg);
         mineTemp.setVisibility(View.GONE);
+        mIWantUp.setVisibility(View.GONE);
     }
 
     @Override

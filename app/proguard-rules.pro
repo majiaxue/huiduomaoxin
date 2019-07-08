@@ -172,3 +172,5 @@
  }
 
  -printmapping mapping.txt
+
+ -keep class multidex-config.txt

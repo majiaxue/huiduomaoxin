@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.GoodChoiceBean;
+import com.example.bean.ZBannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
@@ -41,8 +42,8 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.view.CustomeRecyclerView;
 import com.example.view.SelfDialog;
+import com.example.view.animation.RotateYTransformer;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
@@ -63,6 +64,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<GoodChoiceBean.DataBean> goodChoiceList = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList;
     private GoodsRecommendAdapter goodsRecommendAdapter;
+//    private List<ZBannerBean> bannerBeanList = new ArrayList<>();
 
     public HomePresenter(Context context) {
         super(context);
@@ -133,6 +135,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         });
                         // 设置XBanner的页面切换特效
                         homeXbanner.setPageTransformer(Transformer.Default);
+//                        homeXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+
                         // 设置XBanner页面切换的时间，即动画时长
                         homeXbanner.setPageChangeDuration(1000);
 
@@ -181,6 +185,25 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     }
 
+//    public void setZhongXBanner(XBanner homeZhongXbanner) {
+//        bannerBeanList.add(new ZBannerBean(R.drawable.img_108));
+//        bannerBeanList.add(new ZBannerBean(R.drawable.img_109));
+//        bannerBeanList.add(new ZBannerBean(R.drawable.img_110));
+//        homeZhongXbanner.setBannerData(bannerBeanList);
+//        homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
+//            @Override
+//            public void loadBanner(XBanner banner, Object model, View view, int position) {
+//                Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+//
+//            }
+//        });
+//        // 设置XBanner的页面切换特效
+////        homeZhongXbanner.setPageTransformer(Transformer.Default);
+//        homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+//        // 设置XBanner页面切换的时间，即动画时长
+//        homeZhongXbanner.setPageChangeDuration(1000);
+//    }
+
     //店铺
     public void setRec(RecyclerView homeTopRec, final SeekBar homeSlideIndicatorPoint) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.HORIZONTAL, false);
@@ -228,7 +251,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 int range = recyclerView.computeHorizontalScrollRange();
                 //已经向下滚动的距离，为0时表示已处于顶部。
                 int offset = recyclerView.computeHorizontalScrollOffset();
-                LogUtil.e("dx------"+ range + "****" + extent + "****" + offset);
+                LogUtil.e("dx------" + range + "****" + extent + "****" + offset);
                 //此处获取seekbar的getThumb，就是可以滑动的小的滚动游标
                 GradientDrawable gradientDrawable = (GradientDrawable) homeSlideIndicatorPoint.getThumb();
                 //根据列表的个数，动态设置游标的大小，设置游标的时候，progress进度的颜色设置为和seekbar的颜色设置的一样的，所以就不显示进度了。
@@ -239,10 +262,10 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     homeSlideIndicatorPoint.setProgress(0);
                 } else if (dx > 0) {
 //                    int ss = (int)(tt/2.3f);
-                    LogUtil.e("dx------"+"右滑");
+                    LogUtil.e("dx------" + "右滑");
                     homeSlideIndicatorPoint.setProgress(offset);
                 } else if (dx < 0) {
-                    LogUtil.e("dx------"+ "左滑");
+                    LogUtil.e("dx------" + "左滑");
                     homeSlideIndicatorPoint.setProgress(offset);
                 }
             }
@@ -251,7 +274,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, ""+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
 //                if (position >= 3) {
 //                    ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
 //                            .withString("type", position + "")
@@ -342,7 +365,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-//                LogUtil.e("homePresenterResult---------->" + result);
+                LogUtil.e("homePresenterResult---------->" + result);
                 GoodsRecommendBean goodsRecommendBean = JSON.parseObject(result, new TypeReference<GoodsRecommendBean>() {
                 }.getType());
                 if (goodsRecommendBean != null) {

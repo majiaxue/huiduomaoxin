@@ -237,7 +237,7 @@ public class MinePresenter extends BasePresenter<MineView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("返佣比例：" + result);
                 Float valueOf = Float.valueOf(result) / 100;
-                SPUtil.addParm("back", valueOf);
+                SPUtil.addParm(CommonResource.BACKBL, valueOf);
             }
 
             @Override

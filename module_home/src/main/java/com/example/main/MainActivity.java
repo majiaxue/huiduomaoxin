@@ -50,6 +50,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     @Autowired(name = "type")
     String type;
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -60,7 +61,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         ARouter.getInstance().inject(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
-        presenter.initTinker();
         presenter.checkUp();
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
         if ("login".equals(type)) {

@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;
 import com.example.view.MarqueeView;
@@ -52,8 +53,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     TextView homeSeeMoreTop;
     @BindView(R2.id.home_top_rec)
     CustomeRecyclerView homeTopRec;
-    @BindView(R2.id.taobaoke)
-    ImageView taobaoke;
     @BindView(R2.id.home_see_more_bottom)
     TextView homeSeeMoreBottom;
     @BindView(R2.id.home_good_choice_rec)
@@ -68,6 +67,12 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     NestedScrollView homeNestedScroll;
     @BindView(R2.id.home_slide_indicator_point)
     SeekBar homeSlideIndicatorPoint;
+    @BindView(R2.id.text131_gradual_change)
+    TextView text131GradualChange;
+    @BindView(R2.id.text141_gradual_change)
+    TextView text141GradualChange;
+//    @BindView(R2.id.home_zhong_xbanner)
+//    XBanner homeZhongXbanner;
 
     private int nextPage = 1;
 
@@ -83,8 +88,10 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         presenter.setViewSingleLine();
         //xBanner
         presenter.setXBanner(homeXbanner, homeTopBg);
+        //中间轮播图
+//        presenter.setZhongXBanner(homeZhongXbanner);
         //topRec
-        presenter.setRec(homeTopRec,homeSlideIndicatorPoint);
+        presenter.setRec(homeTopRec, homeSlideIndicatorPoint);
 
         //优选recycler
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
@@ -97,7 +104,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSmartRefresh.setRefreshHeader(customHeader);
         homeSmartRefresh.setRefreshFooter(new ClassicsFooter(getContext()));
 
-
+        TxtUtil.txtJianbian(text131GradualChange, "#0c53e4", "#ae3fed");
+        TxtUtil.txtJianbian(text141GradualChange, "#fe5d05", "#fdb902");
     }
 
     @Override
@@ -232,4 +240,5 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             mGoTop.setVisibility(View.GONE);
         }
     }
+
 }

@@ -348,6 +348,7 @@
                                 android:background="#999999" />
 
                             <TextView
+                                android:id="@+id/text131_gradual_change"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignTop="@id/image131"
@@ -398,6 +399,7 @@
                                 android:background="#999999" />
 
                             <TextView
+                                android:id="@+id/text141_gradual_change"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignTop="@id/image141"
@@ -439,6 +441,20 @@
                         android:layout_below="@id/home_relative"
                         android:layout_marginTop="@dimen/dp_30"
                         android:src="@drawable/taobaoke" />
+
+                    <!--<com.stx.xhb.xbanner.XBanner-->
+                        <!--android:id="@+id/home_zhong_xbanner"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="@dimen/dp_150"-->
+                        <!--android:layout_centerHorizontal="true"-->
+                        <!--android:layout_marginTop="@dimen/dp_7"-->
+                        <!--app:clipChildrenLeftRightMargin="@dimen/dp_15"-->
+                        <!--app:clipChildrenTopBottomMargin="@dimen/dp_0"-->
+                        <!--app:isAutoPlay="true"-->
+                        <!--app:isClipChildrenMode="true"-->
+                        <!--app:pointNormal="@drawable/shape_noraml"-->
+                        <!--app:pointSelect="@drawable/shape_select"-->
+                        <!--app:viewpagerMargin="@dimen/dp_30"></com.stx.xhb.xbanner.XBanner>-->
 
                     <RelativeLayout
                         android:layout_width="@dimen/dp_350"

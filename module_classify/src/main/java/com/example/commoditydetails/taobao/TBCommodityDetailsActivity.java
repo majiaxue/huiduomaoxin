@@ -281,10 +281,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     //详情回调
     @Override
     public void tbBeanList(TBBean tbBeanList) {
-        this.tbBeanList = tbBeanList;
-
         try {
 
+            this.tbBeanList = tbBeanList;
             //详情轮播图
             List<String> images = tbBeanList.getData().getImages();
             presenter.setXBanner(commodityXbanner, images);
@@ -320,9 +319,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             }
         } catch (Exception e) {
             e.printStackTrace();
-//            Toast.makeText(this, "暂未找到改商品", Toast.LENGTH_SHORT).show();
         }
-
     }
 
 
@@ -364,7 +361,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                             commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
                             LogUtil.e("商品收益" + Double.valueOf(commission_rate));
                             LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品收益" + mul + "最终收益" + ArithUtil.mul(mul, earnings1));
-                            commodityCouponPrice.setText(price + "元优惠券");
+                            commodityCouponPrice.setText(price + "元");
                             commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
                         }
 
@@ -382,7 +379,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                             commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
                             LogUtil.e("商品收益" + Double.valueOf(commission_rate));
                             LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品收益" + mul + "最终收益" + ArithUtil.mul(mul, earnings1));
-                            commodityCouponPrice.setText(price + "元优惠券");
+                            commodityCouponPrice.setText(price + "元优惠劵");
                             commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
 
                         }
@@ -390,6 +387,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
                     }
                 }
+
                 Glide.with(this)
                         .asBitmap()
                         .load("https:" + tbBeanList.getData().getImages().get(0))
@@ -405,9 +403,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                             }
                         });
             } catch (Exception e) {
+                Toast.makeText(this, "暂未找到该商品", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-                customDialog.dismiss();
-                Toast.makeText(this, "暂未找到改商品", Toast.LENGTH_SHORT).show();
             }
         }
     }
