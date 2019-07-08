@@ -1,6 +1,8 @@
 package com.example.home;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -37,6 +41,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
+import com.example.view.CustomeRecyclerView;
 import com.example.view.SelfDialog;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -177,8 +182,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     //店铺
-    public void setRec(RecyclerView homeTopRec) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+    public void setRec(RecyclerView homeTopRec, final SeekBar homeSlideIndicatorPoint) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.HORIZONTAL, false);
         homeTopRec.setLayoutManager(gridLayoutManager);
 
         strings = new ArrayList<>();
@@ -186,24 +191,76 @@ public class HomePresenter extends BasePresenter<HomeView> {
         strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.pdd));
         strings.add(new BaseRecImageAndTextBean("京东", R.drawable.jd));
         strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.tm));
+        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.tb));
+        strings.add(new BaseRecImageAndTextBean("商城", R.drawable.pdd));
+        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.jd));
+        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.tm));
+        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.tb));
+        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.pdd));
+        strings.add(new BaseRecImageAndTextBean("今日免单", R.drawable.jd));
+        strings.add(new BaseRecImageAndTextBean("影视", R.drawable.tm));
 
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);
         homeTopRec.setAdapter(homeTopRecAdapter);
 
-        homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        homeSlideIndicatorPoint.setPadding(0, 0, 0, 0);
+        homeSlideIndicatorPoint.setThumbOffset(0);
+//        //显示区域的高度。
+//        int extent = homeTopRec.computeHorizontalScrollExtent();
+//        //整体的高度，注意是整体，包括在显示区域之外的。
+//        int range = homeTopRec.computeHorizontalScrollRange();
+//        //已经向下滚动的距离，为0时表示已处于顶部。
+//        int offset = homeTopRec.computeHorizontalScrollOffset();
+
+        homeTopRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-//                Intent intent = new Intent(mContext, SecondaryDetailsActivity.class);
-//                intent.putExtra("type", "" + position);
-//                mContext.startActivity(intent);
-                ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
-                        .withString("type", position + "")
-                        .navigation();
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //显示区域的高度。
+                int extent = recyclerView.computeHorizontalScrollExtent();
+                //整体的高度，注意是整体，包括在显示区域之外的。
+                int range = recyclerView.computeHorizontalScrollRange();
+                //已经向下滚动的距离，为0时表示已处于顶部。
+                int offset = recyclerView.computeHorizontalScrollOffset();
+                LogUtil.e("dx------"+ range + "****" + extent + "****" + offset);
+                //此处获取seekbar的getThumb，就是可以滑动的小的滚动游标
+                GradientDrawable gradientDrawable = (GradientDrawable) homeSlideIndicatorPoint.getThumb();
+                //根据列表的个数，动态设置游标的大小，设置游标的时候，progress进度的颜色设置为和seekbar的颜色设置的一样的，所以就不显示进度了。
+                gradientDrawable.setSize(extent / (int) (strings.size() / 0.7), 6);
+                //设置可滚动区域
+                homeSlideIndicatorPoint.setMax((int) (range - extent));
+                if (dx == 0) {
+                    homeSlideIndicatorPoint.setProgress(0);
+                } else if (dx > 0) {
+//                    int ss = (int)(tt/2.3f);
+                    LogUtil.e("dx------"+"右滑");
+                    homeSlideIndicatorPoint.setProgress(offset);
+                } else if (dx < 0) {
+                    LogUtil.e("dx------"+ "左滑");
+                    homeSlideIndicatorPoint.setProgress(offset);
+                }
             }
         });
 
-
+        homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                Toast.makeText(mContext, ""+position, Toast.LENGTH_SHORT).show();
+//                if (position >= 3) {
+//                    ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
+//                            .withString("type", position + "")
+//                            .navigation();
+//                }else{
+//                    Toast.makeText(mContext, "开发中", Toast.LENGTH_SHORT).show();
+//                }
+            }
+        });
     }
 
     //优选
