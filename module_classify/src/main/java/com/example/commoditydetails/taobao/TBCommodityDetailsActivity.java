@@ -357,7 +357,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                             double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);//用户个人收益
                             double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
                             double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate), 100, 2), sub);//商品收益乘商品价格
+
                             commodityPreferentialPrice.setText("￥" + sub);//优惠价
+
                             commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
                             commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
                             LogUtil.e("商品收益" + Double.valueOf(commission_rate));
@@ -404,7 +406,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                         });
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "暂未找到该商品", Toast.LENGTH_SHORT).show();
+                customDialog.dismiss();
+                Toast.makeText(this, "暂未找到改商品", Toast.LENGTH_SHORT).show();
             }
         }
     }

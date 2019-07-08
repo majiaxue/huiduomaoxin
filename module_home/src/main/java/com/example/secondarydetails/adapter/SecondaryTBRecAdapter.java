@@ -43,7 +43,7 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
 
-        TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);
-        viewOnClickListener.ViewOnClick(immediatelyGrab, position);
+//        TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);
+//        viewOnClickListener.ViewOnClick(immediatelyGrab, position);
     }
 }

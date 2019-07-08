@@ -312,7 +312,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         });
                     }
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

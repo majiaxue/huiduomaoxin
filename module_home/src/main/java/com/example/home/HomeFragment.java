@@ -1,20 +1,24 @@
 package com.example.home;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
 import com.example.view.CustomHeader;
+import com.example.view.CustomeRecyclerView;
 import com.example.view.MarqueeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -26,12 +30,13 @@ import com.stx.xhb.xbanner.XBanner;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
  * 首页
  */
-public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView ,NestedScrollView.OnScrollChangeListener{
+public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView, NestedScrollView.OnScrollChangeListener {
 
     @BindView(R2.id.home_top_bg)
     ImageView homeTopBg;
@@ -46,7 +51,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @BindView(R2.id.home_see_more_top)
     TextView homeSeeMoreTop;
     @BindView(R2.id.home_top_rec)
-    RecyclerView homeTopRec;
+    CustomeRecyclerView homeTopRec;
     @BindView(R2.id.taobaoke)
     ImageView taobaoke;
     @BindView(R2.id.home_see_more_bottom)
@@ -61,6 +66,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     ImageView mGoTop;
     @BindView(R2.id.home_nested_scroll)
     NestedScrollView homeNestedScroll;
+    @BindView(R2.id.home_slide_indicator_point)
+    SeekBar homeSlideIndicatorPoint;
 
     private int nextPage = 1;
 
@@ -77,11 +84,12 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         //xBanner
         presenter.setXBanner(homeXbanner, homeTopBg);
         //topRec
-        presenter.setRec(homeTopRec);
+        presenter.setRec(homeTopRec,homeSlideIndicatorPoint);
+
         //优选recycler
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
         //推荐recycler
-        presenter.setBottomRec(nextPage,homeBottomRec);
+        presenter.setBottomRec(nextPage, homeBottomRec);
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
@@ -129,14 +137,14 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 nextPage = 1;
-                presenter.setBottomRec(nextPage,homeBottomRec);
+                presenter.setBottomRec(nextPage, homeBottomRec);
             }
         });
         homeSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 nextPage++;
-                presenter.setBottomRec(nextPage,homeBottomRec);
+                presenter.setBottomRec(nextPage, homeBottomRec);
             }
         });
 
@@ -182,7 +190,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             //优选recycler
             presenter.setGoodChoiceRec(homeGoodChoiceRec);
             //推荐recycler
-            presenter.setBottomRec(nextPage,homeBottomRec);
+            presenter.setBottomRec(nextPage, homeBottomRec);
         }
     }
 
