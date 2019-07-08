@@ -49,7 +49,7 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
 
     }
 
-    public void initTabLayout(final TabLayout intoShopTab) {
+    public void initTabLayout(final TabLayout intoShopTab, int shop_id) {
         for (String title : titleArr) {
             intoShopTab.addTab(intoShopTab.newTab().setText(title));
         }
@@ -58,7 +58,7 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
         intoShopTab.addTab(intoShopTab.newTab().setText("宝贝"));
 
         fragmentList.add(new ShopFirstFragment());
-        fragmentList.add(new ShopTreasureFragment());
+        fragmentList.add(new ShopTreasureFragment(shop_id + ""));
 
         intoShopTab.post(new Runnable() {
             @Override

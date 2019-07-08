@@ -1,14 +1,16 @@
 package com.example.shop_home.treasure;
 
 import com.example.mvp.IView;
-import com.example.shop_home.adapter.TreasureLstAdapter;
-import com.example.shop_home.adapter.TreasureWaterfallAdapter;
+import com.example.type_detail.adapter.TypeDetailLstAdapter;
+import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 
 public interface ShopTreasureView extends IView {
 
-    void loadLstRv(TreasureLstAdapter adapter);
+    void loadLstRv(TypeDetailLstAdapter adapter, int flag);
 
-    void loadWaterfallRv(TreasureWaterfallAdapter adapter);
+    void loadWaterfallRv(TypeDetailWaterfallAdapter adapter, int flag);
 
     void updateTitle(boolean salesVolume, boolean price, boolean credit);
+
+    void loadFinish();
 }

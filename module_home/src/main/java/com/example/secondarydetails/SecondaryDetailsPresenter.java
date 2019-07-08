@@ -407,7 +407,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         //是否登录
                                         final SelfDialog selfDialog = new SelfDialog(mContext);
                                         selfDialog.setTitle("提示");
-                                        selfDialog.setMessage("您未登陆是否去登陆？");
+                                        selfDialog.setMessage("您未登陆是否去登录？");
                                         selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
                                             @Override
                                             public void onYesClick() {
@@ -534,7 +534,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         //是否登录
                                         final SelfDialog selfDialog = new SelfDialog(mContext);
                                         selfDialog.setTitle("提示");
-                                        selfDialog.setMessage("您未登陆是否去登陆？");
+                                        selfDialog.setMessage("您未登陆是否去登录？");
                                         selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
                                             @Override
                                             public void onYesClick() {
@@ -572,7 +572,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 //是否登录
                                                 final SelfDialog selfDialog = new SelfDialog(mContext);
                                                 selfDialog.setTitle("提示");
-                                                selfDialog.setMessage("您未登陆是否去登陆？");
+                                                selfDialog.setMessage("您未登陆是否去登录？");
                                                 selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
                                                     @Override
                                                     public void onYesClick() {

@@ -1,6 +1,8 @@
 package com.example.shop_home.treasure;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -10,11 +12,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mvp.BaseFragment;
-import com.example.shop_home.adapter.TreasureLstAdapter;
-import com.example.shop_home.adapter.TreasureWaterfallAdapter;
+import com.example.type_detail.adapter.TypeDetailLstAdapter;
+import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.example.utils.RvItemDecoration;
+import com.example.view.CustomHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 
@@ -53,11 +60,23 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
     ImageView shopTreasureCreditTop;
     @BindView(R2.id.shop_treasure_credit_bottom)
     ImageView shopTreasureCreditBottom;
+//    @BindView(R2.id.shop_treasure_refresh)
+//    SmartRefreshLayout mRefresh;
 
     private LinearLayoutManager linearLayoutManager;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private SpaceItemDecorationLeftAndRight itemDecoration;
+    private RvItemDecoration itemDecoration;
     private int index = 0;
+    private int page = 1;
+    private String sellerId;
+
+    public ShopTreasureFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public ShopTreasureFragment(String sellerId) {
+        this.sellerId = sellerId;
+    }
 
     @Override
     public int getLayoutId() {
@@ -68,8 +87,15 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
     public void initData() {
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        itemDecoration = new SpaceItemDecorationLeftAndRight((int) getContext().getResources().getDimension(R.dimen.dp_15), (int) getContext().getResources().getDimension(R.dimen.dp_15));
-        presenter.loadData();
+        itemDecoration = new RvItemDecoration((int) getResources().getDimension(R.dimen.dp_13), (int) getResources().getDimension(R.dimen.dp_10));
+
+
+        //下拉刷新样式
+//        CustomHeader customHeader = new CustomHeader(getContext());
+//        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
+//        mRefresh.setRefreshHeader(customHeader);
+
+        presenter.loadData(sellerId, page);
     }
 
     @Override
@@ -112,6 +138,22 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
                 presenter.changeTyep(index);
             }
         });
+
+//        //设置上拉刷新下拉加载
+//        mRefresh.setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+//                page = 1;
+//                presenter.loadMore(sellerId, page);
+//            }
+//        });
+//        mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+//                page++;
+//                presenter.loadData(sellerId, page);
+//            }
+//        });
     }
 
     @Override
@@ -133,19 +175,29 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
     }
 
     @Override
-    public void loadLstRv(TreasureLstAdapter adapter) {
+    public void loadLstRv(TypeDetailLstAdapter adapter, int flag) {
         mChange.setImageResource(R.drawable.xfxfgvx);
         mRv.setLayoutManager(linearLayoutManager);
         mRv.removeItemDecoration(itemDecoration);
         mRv.setAdapter(adapter);
+        linearLayoutManager.scrollToPosition(flag);
     }
 
     @Override
-    public void loadWaterfallRv(TreasureWaterfallAdapter adapter) {
+    public void loadWaterfallRv(TypeDetailWaterfallAdapter adapter, int flag) {
         mChange.setImageResource(R.drawable.fghfghfg);
         mRv.setLayoutManager(staggeredGridLayoutManager);
-        mRv.addItemDecoration(itemDecoration);
+        if (mRv.getItemDecorationCount() == 0) {
+            mRv.addItemDecoration(itemDecoration);
+        }
         mRv.setAdapter(adapter);
+        staggeredGridLayoutManager.scrollToPosition(flag);
+    }
+
+    @Override
+    public void loadFinish() {
+//        mRefresh.finishRefresh();
+//        mRefresh.finishLoadMore();
     }
 
     @Override

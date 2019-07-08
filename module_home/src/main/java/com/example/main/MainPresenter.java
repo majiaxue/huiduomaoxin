@@ -275,7 +275,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 String version = checkUpBean.getVersion();
                 if (version != null) {
                     String[] split1 = version.split("\\.");
-                    if (Integer.valueOf(split[0]) < Integer.valueOf(split1[0])) {
+                    if ((Integer.valueOf(split[0]) < Integer.valueOf(split1[0])) || (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) < Integer.valueOf(split1[1]))) {
                         final SelfDialog selfDialog = new SelfDialog(mContext);
                         selfDialog.setTitle("更新提示");
                         selfDialog.setMessage(checkUpBean.getContent());
@@ -376,6 +376,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void run() {
                 try {
+                    LogUtil.e("-------url:" + apkUrl);
                     URL url = new URL(apkUrl);
                     HttpURLConnection conn = (HttpURLConnection) url
                             .openConnection();
@@ -386,7 +387,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     File file = new File(savePath);
                     if (!file.exists()) {
-                        file.mkdir();
+                        file.mkdirs();
                     }
                     String apkFile = saveFileName;
                     File ApkFile = new File(apkFile);
@@ -412,6 +413,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     fos.close();
                     is.close();
                 } catch (Exception e) {
+                    LogUtil.e("--------------->"+e.getMessage());
                     mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
                     e.printStackTrace();
                 }

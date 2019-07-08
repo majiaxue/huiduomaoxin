@@ -1,6 +1,8 @@
 package com.example.bean;
 
-public class MessageCenterBean {
+import java.io.Serializable;
+
+public class MessageCenterBean implements Serializable {
 
     /**
      * id : 36

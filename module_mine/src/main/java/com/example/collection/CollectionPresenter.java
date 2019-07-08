@@ -111,10 +111,12 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                 deleteList.add(dataList.get(i).getGoodsId() + "");
             }
         }
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete(CommonResource.FAVORITEDELETE, deleteList, SPUtil.getToken());
+        Map map = MapUtil.getInstance().addParms("type", "1").build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDelete1(CommonResource.FAVORITEDELETE, deleteList, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("删除收藏：" + result);
                 loadData(1);
                 isEdit = true;
                 edit();
@@ -169,7 +171,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                         //淘宝
                         ARouter.getInstance()
                                 .build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", dataList.get(position).getGoodsId()+"")
+                                .withString("para", dataList.get(position).getGoodsId() + "")
                                 .withString("shoptype", "1")
                                 .navigation();
                     } else if (dataList.get(position).getType() == 2) {

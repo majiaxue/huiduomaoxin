@@ -32,8 +32,6 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
     @BindView(R2.id.message_center_refresh)
     SmartRefreshLayout refreshLayout;
 
-    private int page = 1;
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_message_center;
@@ -42,7 +40,7 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
     @Override
     public void initData() {
         includeTitle.setText("消息中心");
-        presenter.loadData(page);
+        presenter.loadData();
 
         //设置 Header 为 官方主题 样式
         refreshLayout.setRefreshHeader(new MaterialHeader(this));
@@ -63,7 +61,7 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
         messageCenterLst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                presenter.jumpToDetail(position);
+                presenter.jumpToDetail(position);
             }
         });
 
@@ -71,15 +69,13 @@ public class MessageCenterActivity extends BaseActivity<MessageCenterView, Messa
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                page = 1;
-                presenter.loadData(page);
+                presenter.loadData();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                page++;
-                presenter.loadData(page);
+
             }
         });
     }

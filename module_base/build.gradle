@@ -136,7 +136,7 @@ dependencies {
     api 'com.google.zxing:core:3.4.0'
 
     //bugly热更新
-    api 'com.android.support:multidex:1.0.1'
+    api 'com.android.support:multidex:1.0.3'
 
     // 多dex配置
 

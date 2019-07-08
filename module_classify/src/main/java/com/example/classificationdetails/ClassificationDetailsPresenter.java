@@ -164,6 +164,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("淘宝搜索：" + result);
                 if (getView() != null) {
                     getView().loadFinish();
@@ -231,6 +232,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -253,6 +255,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -316,6 +319,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(Throwable e) {
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -323,7 +327,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onComplete() {
-                ProcessDialogUtil.dismissDialog();
+
             }
         });
     }
@@ -346,6 +350,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -402,6 +407,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
