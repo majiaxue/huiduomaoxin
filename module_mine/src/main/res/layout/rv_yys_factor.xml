@@ -24,26 +24,44 @@
         android:layout_marginRight="@dimen/dp_20"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="@dimen/dp_12"
-            android:layout_height="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_1"
-            android:src="@drawable/ghf" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_13"
-            android:text="条件一："
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_12" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:src="@drawable/ghf" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:text="条件一："
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/rv_yys_content"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
             android:textColor="#333333"
             android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/rv_yys_just_up"
+            android:layout_width="@dimen/dp_79"
+            android:layout_height="@dimen/dp_25"
+            android:background="@drawable/bg_btn_upgrade"
+            android:gravity="center"
+            android:text="@string/upgrade_just"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_15" />
     </LinearLayout>
 
     <LinearLayout
@@ -56,19 +74,26 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="@dimen/dp_12"
-            android:layout_height="@dimen/dp_12"
-            android:src="@drawable/ghf" />
-
-        <TextView
-            android:id="@+id/rv_yys_txt"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_13"
-            android:text="条件二："
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_12" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:src="@drawable/ghf" />
+
+            <TextView
+                android:id="@+id/rv_yys_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:text="条件二："
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/rv_yys_price"

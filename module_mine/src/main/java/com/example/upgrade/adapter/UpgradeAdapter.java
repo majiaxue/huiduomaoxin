@@ -27,7 +27,7 @@ public class UpgradeAdapter extends MyRecyclerAdapter<OperatorBean> {
         if ("0".equals(data.getUpType())) {
             holder.getView(R.id.rv_upgrade_factor1).setVisibility(View.GONE);
             holder.getView(R.id.rv_upgrade_view).setVisibility(View.GONE);
-            holder.setText(R.id.rv_upgrade_txt, "条件一")
+            holder.setText(R.id.rv_upgrade_txt, "条件一：")
                     .setText(R.id.rv_upgrade_price, data.getPrice() + "元");
         } else if ("1".equals(data.getUpType())) {
             holder.getView(R.id.rv_upgrade_factor2).setVisibility(View.GONE);

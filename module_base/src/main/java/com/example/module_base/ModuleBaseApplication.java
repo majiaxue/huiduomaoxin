@@ -80,8 +80,8 @@ public class ModuleBaseApplication extends MultiDexApplication {
     }
 
     private void initShare() {
-//        PlatformConfig.setWeixin("wxf08fd2965ac9ac30", "2d54eace93a3bda15d041ee594b7eeef");
-        PlatformConfig.setWeixin("wx7df9caffc7db4493", "abd4af996218993f30493a732b2f964f");
+        PlatformConfig.setWeixin("wxf08fd2965ac9ac30", "2d54eace93a3bda15d041ee594b7eeef");
+//        PlatformConfig.setWeixin("wx7df9caffc7db4493", "abd4af996218993f30493a732b2f964f");
     }
 
 }

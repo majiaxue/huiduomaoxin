@@ -126,7 +126,7 @@ public class CommonResource {
     public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
 
 
-    public static final String WXAPPID = "wx7df9caffc7db4493";  //wxf08fd2965ac9ac30
+    public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
     public static final String CODE_SUCCESS = "0";  //联网成功
     public static final String TOKEN_EXPIRE = "2";    //token过期
     public static final String ERROR = "ERROR";
@@ -138,6 +138,7 @@ public class CommonResource {
     public static final String USER_NAME = "userName";
     public static final String USER_PIC = "userPic";
     public static final String USER_INVITE = "userInvite";
+    public static final String BACKBL = "back";     //佣金比例
     public static final String LEVELID = "levelId";
     public static final String TABABLE_NAME = "HISTORY";
     public static final String U_APPKEY = "5d0c57294ca35786440001c6";

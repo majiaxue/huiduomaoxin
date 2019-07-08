@@ -315,7 +315,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             //到手价乘佣金
             mul = ArithUtil.mul(div, promotionRate);
             //用户佣金比例
-            earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 1);
+            earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
             //收益
             mul1 = ArithUtil.mul(mul, earnings1);
             commodityEarnings.setText("预估收益：￥" + mul1);//收益

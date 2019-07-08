@@ -22,7 +22,7 @@ public class YysFactorAdapter extends MyRecyclerAdapter<OperatorBean> {
                 .setText(R.id.rv_yys_remark, data.getNote() == null ? "备注：暂无" : "备注：" + data.getNote());
         if ("0".equals(data.getUpType())) {
             holder.getView(R.id.rv_yys_factor1).setVisibility(View.GONE);
-            holder.setText(R.id.rv_yys_txt, "条件一")
+            holder.setText(R.id.rv_yys_txt, "条件一：")
                     .setText(R.id.rv_yys_price, data.getPrice() + "元");
         } else if ("1".equals(data.getUpType())) {
             holder.getView(R.id.rv_yys_factor2).setVisibility(View.GONE);
@@ -32,6 +32,9 @@ public class YysFactorAdapter extends MyRecyclerAdapter<OperatorBean> {
                     .setText(R.id.rv_yys_price, data.getPrice() + "元");
         }
 
+        if (viewTwoOnClickListener != null) {
+            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_yys_just_up), holder.getView(R.id.rv_yys_topay), position);
+        }
         if (viewOnClickListener != null) {
             viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_yys_topay), position);
         }
