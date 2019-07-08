@@ -34,8 +34,6 @@ import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -312,7 +310,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         });
                     }
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -1,16 +1,13 @@
 package com.example.main;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
@@ -21,17 +18,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.fastjson.JSON;
 import com.example.bean.CheckUpBean;
+import com.example.classify.ClassifyFragment;
 import com.example.common.CommonResource;
+import com.example.fix.Constants;
+import com.example.fix.FileUtils;
+import com.example.fix.FixDexUtils;
 import com.example.hairring.HairRingFragment;
 import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
-import com.example.classify.ClassifyFragment;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
@@ -39,23 +37,16 @@ import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
-import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
-import com.tencent.bugly.beta.Beta;
-import com.tencent.bugly.beta.interfaces.BetaPatchListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.Callback;
 
 public class MainPresenter extends BasePresenter<MainView> {
     //触碰标识
@@ -74,7 +65,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private static final String saveFileName = savePath + "/fltk.apk"; // 完整路径名
 
     private static final String patchPath = "/sdcard/fltk/patch"; // apk保存到SD卡的路径
-    private static final String patchFileName = patchPath + "/patch_signed_7zip.apk"; // 完整路径名
+    private static final String patchFileName = patchPath + "/classes_0.dex"; // 完整路径名
     private static final int DOWNLOADING = 1; // 表示正在下载
     private static final int DOWNLOADED = 2; // 下载完毕
     private static final int DOWNLOAD_FAILED = 3; // 下载失败
@@ -108,10 +99,9 @@ public class MainPresenter extends BasePresenter<MainView> {
                     Toast.makeText(mContext, "下载失败", Toast.LENGTH_LONG).show();
                     break;
                 case PATCHEND:
-                    if (alertDialog != null)
-                        alertDialog.dismiss();
-                    Beta.canAutoPatch = true;
-                    Beta.applyDownloadedPatch();
+                    hotFix();
+//                    Beta.canAutoPatch = true;
+//                    Beta.applyDownloadedPatch();
                     break;
                 default:
                     break;
@@ -191,78 +181,6 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     }
 
-    public void initTinker() {
-        Beta.applyTinkerPatch(mContext.getApplicationContext(), patchFileName);
-        //自动检查更新
-//        Beta.checkUpgrade();
-        //是否允许自动下载
-//        Beta.canAutoDownloadPatch = true;
-        //是否允许自动合成补丁
-        Beta.canAutoPatch = true;
-        //是否显示弹窗提示用户重启
-//        Beta.canNotifyUserRestart = true;
-
-
-        //用户主动下载补丁文件
-//        Beta.downloadPatch();
-//        //用户主动合成补丁
-        Beta.applyDownloadedPatch();
-
-        /**
-         * true表示初始化时自动检查升级;
-         * false表示不会自动检查升级,需要手动调用Beta.checkUpgrade()方法;
-         */
-//        Beta.autoCheckUpgrade = true;
-        /**
-         * 设置升级检查周期为60s(默认检查周期为0s)，60s内SDK不重复向后台请求策略);
-         */
-//        Beta.upgradeCheckPeriod = 60 * 1000;
-        /**
-         * 点击过确认的弹窗在APP下次启动自动检查更新时会再次显示;
-         */
-//        Beta.showInterruptedStrategy = true;
-
-        Beta.betaPatchListener = new BetaPatchListener() {
-            @Override
-            public void onPatchReceived(String patchFile) {
-                LogUtil.e("---------->补丁下载地址：" + patchFile);
-            }
-
-            @Override
-            public void onDownloadReceived(long savedLength, long totalLength) {
-                LogUtil.e("---------->" + String.format(Locale.getDefault(), "%s %d%%",
-                        Beta.strNotificationDownloading,
-                        (int) (totalLength == 0 ? 0 : savedLength * 100 / totalLength)));
-            }
-
-            @Override
-            public void onDownloadSuccess(String msg) {
-                LogUtil.e("---------->补丁下载成功");
-            }
-
-            @Override
-            public void onDownloadFailure(String msg) {
-                LogUtil.e("---------->补丁下载失败");
-            }
-
-            @Override
-            public void onApplySuccess(String msg) {
-                LogUtil.e("---------->补丁应用成功");
-            }
-
-            @Override
-            public void onApplyFailure(String msg) {
-                LogUtil.e("----------->补丁应用失败");
-            }
-
-            @Override
-            public void onPatchRollback() {
-                LogUtil.e("----------->补丁回滚");
-            }
-        };
-
-    }
-
     public void checkUp() {
         getVersionInfo();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.CHECKUP);
@@ -310,28 +228,29 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                         PopUtils.setTransparency(mContext, 0.3f);
                     } else {
-                        if (Double.valueOf(clientVersion) < Double.valueOf(checkUpBean.getList().get(0).getVersion())) {
-                            final SelfDialog selfDialog = new SelfDialog(mContext);
-                            selfDialog.setTitle("更新提示");
-                            selfDialog.setMessage(checkUpBean.getContent());
-                            selfDialog.setYesOnclickListener("立即升级", new SelfDialog.onYesOnclickListener() {
-                                @Override
-                                public void onYesClick() {
-                                    downLoadPatch(checkUpBean.getList().get(0).getUrl());
-                                    showDialog();
-                                    selfDialog.cancel();
-                                }
-                            });
-
-                            selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-                                @Override
-                                public void onNoClick() {
-                                    selfDialog.cancel();
-                                }
-                            });
-
-                            selfDialog.show();
-                        }
+                        downLoadPatch(checkUpBean.getList().get(0).getUrl());
+//                        if (Double.valueOf(clientVersion) < Double.valueOf(checkUpBean.getList().get(0).getVersion())) {
+//                            final SelfDialog selfDialog = new SelfDialog(mContext);
+//                            selfDialog.setTitle("更新提示");
+//                            selfDialog.setMessage(checkUpBean.getContent());
+//                            selfDialog.setYesOnclickListener("立即升级", new SelfDialog.onYesOnclickListener() {
+//                                @Override
+//                                public void onYesClick() {
+//                                    downLoadPatch(checkUpBean.getList().get(0).getUrl());
+//                                    showDialog();
+//                                    selfDialog.cancel();
+//                                }
+//                            });
+//
+//                            selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+//                                @Override
+//                                public void onNoClick() {
+//                                    selfDialog.cancel();
+//                                }
+//                            });
+//
+//                            selfDialog.show();
+//                        }
                     }
                 }
             }
@@ -376,7 +295,6 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void run() {
                 try {
-                    LogUtil.e("-------url:" + apkUrl);
                     URL url = new URL(apkUrl);
                     HttpURLConnection conn = (HttpURLConnection) url
                             .openConnection();
@@ -413,7 +331,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                     fos.close();
                     is.close();
                 } catch (Exception e) {
-                    LogUtil.e("--------------->"+e.getMessage());
                     mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
                     e.printStackTrace();
                 }
@@ -490,5 +407,30 @@ public class MainPresenter extends BasePresenter<MainView> {
                 }
             }
         }).start();
+    }
+
+    public void hotFix() {
+        //修复包
+        File sourceFile = new File(patchFileName);
+        // 私有目录
+        File targetFile = new File(mContext.getDir(Constants.DEX_DIR, Context.MODE_PRIVATE).getAbsolutePath() + File.separator + Constants.DEX_NAME);
+
+        // 如果存在之前修复过的dex
+        if (targetFile.exists()) {
+            targetFile.delete();
+            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT);
+        }
+
+        Toast.makeText(mContext, "开始修复", Toast.LENGTH_SHORT).show();
+        // 将下载的修复包复制到私有目录，然后再解压
+        try {
+            FileUtils.copyFile(sourceFile, targetFile);
+
+            // 开始修复
+            FixDexUtils.loadFixedDex(mContext);
+            Toast.makeText(mContext, "修复成功", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

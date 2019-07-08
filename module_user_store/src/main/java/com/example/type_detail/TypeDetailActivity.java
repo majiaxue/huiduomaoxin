@@ -1,6 +1,5 @@
 package com.example.type_detail;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,16 +18,12 @@ import com.example.type_detail.adapter.TypeDetailLstAdapter;
 import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import java.util.Map;
 
 import butterknife.BindView;
 

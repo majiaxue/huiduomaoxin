@@ -126,7 +126,7 @@ public class CommonResource {
     public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
 
 
-    public static final String WXAPPID = "wxf08fd2965ac9ac30";
+    public static final String WXAPPID = "wx7df9caffc7db4493";  //wxf08fd2965ac9ac30
     public static final String CODE_SUCCESS = "0";  //联网成功
     public static final String TOKEN_EXPIRE = "2";    //token过期
     public static final String ERROR = "ERROR";
