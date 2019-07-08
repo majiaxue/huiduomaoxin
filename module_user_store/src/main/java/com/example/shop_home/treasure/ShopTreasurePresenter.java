@@ -1,30 +1,42 @@
 package com.example.shop_home.treasure;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.entity.BabyRecBean;
-import com.example.goods_detail.GoodsDetailActivity;
+import com.example.bean.HotSaleBean;
+import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
-import com.example.shop_home.adapter.TreasureLstAdapter;
-import com.example.shop_home.adapter.TreasureWaterfallAdapter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
+import com.example.type_detail.adapter.TypeDetailLstAdapter;
+import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
 
-    private List<BabyRecBean> babyRecBeanList;
-    private TreasureLstAdapter lstAdapter;
-    private TreasureWaterfallAdapter waterfallAdapter;
+    private List<HotSaleBean.DataBean> dataList = new ArrayList<>();
+    private TypeDetailLstAdapter lstAdapter;
+    private TypeDetailWaterfallAdapter waterfallAdapter;
+
     private boolean isWaterfall = false;
     private boolean isPositiveSalesVolume = false;
     private boolean isPositivePrice = false;
     private boolean isPositiveCredit = false;
+    private int flag = 0;
 
     public ShopTreasurePresenter(Context context) {
         super(context);
@@ -35,49 +47,76 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
 
     }
 
-    public void loadData() {
-        babyRecBeanList = new ArrayList<>();
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_109, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_110, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_109, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_110, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_109, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_110, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_108, "2019夏季新款纯棉白色短袖女T恤个性字母简约......", "￥39.90", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_109, "星座毛巾纯棉洗脸家用吸水男女洗澡全棉柔软情侣......", "￥18.80", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        babyRecBeanList.add(new BabyRecBean(R.drawable.img_110, "ins超火纯棉短袖T恤女夏装2019新款港风潮宽松学......", "￥15.88", "12345人付款", "97%好评", "班迪卡旗舰店"));
-        lstAdapter = new TreasureLstAdapter(mContext, babyRecBeanList, R.layout.item_baby_rec);
-        waterfallAdapter = new TreasureWaterfallAdapter(mContext, babyRecBeanList, R.layout.item_baby_rec_staggered_grid);
-
-        lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+    public void loadData(String sellerId, final int page) {
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2").build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
-            }
-        });
+            public void onSuccess(String result, String msg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                LogUtil.e("店铺详情：" + result);
+                if (page == 1) {
+                    dataList.clear();
+                }
+                HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
+                }.getType());
+                dataList.addAll(hotSaleBean.getData());
+                if (lstAdapter == null) {
+                    lstAdapter = new TypeDetailLstAdapter(mContext, dataList, R.layout.item_baby_rec);
+                    waterfallAdapter = new TypeDetailWaterfallAdapter(mContext, dataList, R.layout.rv_commend);
+                    getView().loadLstRv(lstAdapter, flag);
+                } else {
+                    if (isWaterfall) {
+                        getView().loadWaterfallRv(waterfallAdapter, flag > 1 ? flag - 1 : flag);
+                    } else {
+                        getView().loadLstRv(lstAdapter, flag > 1 ? flag - 1 : flag);
+                    }
+                }
+                lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", dataList.get(position).getId() + "")
+                                .withString("sellerId", dataList.get(position).getSellerId())
+                                .withString("commendId", dataList.get(position).getProductCategoryId() + "")
+                                .navigation();
+//                        mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+                    }
+                });
 
-        waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_user_store/GoodsDetailActivity")
+                                .withString("id", dataList.get(position).getId() + "")
+                                .withString("sellerId", dataList.get(position).getSellerId())
+                                .withString("commendId", dataList.get(position).getProductCategoryId() + "")
+                                .navigation();
+//                        mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+                    }
+                });
+                flag = dataList.size();
+            }
+
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class));
+            public void onError(String errorCode, String errorMsg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                LogUtil.e(errorCode + "------------" + errorMsg);
             }
-        });
-
-        if (getView() != null) {
-            getView().loadLstRv(lstAdapter);
-        }
+        }));
     }
 
 
     public void ChangeShow() {
         if (isWaterfall) {
-            getView().loadLstRv(lstAdapter);
+            getView().loadLstRv(lstAdapter, flag);
             isWaterfall = false;
         } else {
-            getView().loadWaterfallRv(waterfallAdapter);
+            getView().loadWaterfallRv(waterfallAdapter, flag);
             isWaterfall = true;
         }
     }
@@ -87,5 +126,41 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
         isPositivePrice = index == 2 ? !isPositivePrice : false;
         isPositiveCredit = index == 3 ? !isPositiveCredit : false;
         getView().updateTitle(isPositiveSalesVolume, isPositivePrice, isPositiveCredit);
+    }
+
+    public void loadMore(String sellerId, final int page) {
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2").build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                LogUtil.e("店铺详情：" + result);
+                if (page == 1) {
+                    dataList.clear();
+                }
+                HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
+                }.getType());
+                dataList.addAll(hotSaleBean.getData());
+
+                if (isWaterfall) {
+                    getView().loadWaterfallRv(waterfallAdapter, 0);
+                } else {
+                    getView().loadLstRv(lstAdapter, 0);
+                }
+
+                flag = dataList.size();
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                LogUtil.e(errorCode + "------------" + errorMsg);
+            }
+        }));
     }
 }

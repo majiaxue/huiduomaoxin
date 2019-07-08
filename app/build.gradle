@@ -25,8 +25,10 @@ android {
             }
         }
 
-        //解决65535
+        // 配置分包  让其存在两个dex文件
         multiDexEnabled true
+        // 设置分包配置
+        multiDexKeepFile file('multidex-config.txt')
 
     }
 

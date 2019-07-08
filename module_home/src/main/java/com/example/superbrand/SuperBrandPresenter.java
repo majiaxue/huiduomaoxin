@@ -21,6 +21,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.superbrand.adapter.SuperBrandRecAdapter;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -73,12 +74,16 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                         superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(RecyclerView parent, View view, int position) {
-                                String shop_url = superBrandBeans.get(position).getAddress();
-                                LogUtil.e("shop_url---------->" + shop_url);
-                                ARouter.getInstance()
-                                        .build("/module_classify/tshop_home")
-                                        .withString("url", shop_url)
-                                        .navigation();
+                                if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+                                    String shop_url = superBrandBeans.get(position).getAddress();
+                                    LogUtil.e("shop_url---------->" + shop_url);
+                                    ARouter.getInstance()
+                                            .build("/module_classify/tshop_home")
+                                            .withString("url", shop_url)
+                                            .navigation();
+                                } else {
+                                    ARouter.getInstance().build("/mine/login").navigation();
+                                }
                             }
                         });
 
@@ -217,12 +222,16 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
                 superBrandRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        String shop_url = superBrandBeans.get(position).getAddress();
-                        LogUtil.e("shop_url---------->" + shop_url);
-                        ARouter.getInstance()
-                                .build("/module_classify/tshop_home")
-                                .withString("url", shop_url)
-                                .navigation();
+                        if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+                            String shop_url = superBrandBeans.get(position).getAddress();
+                            LogUtil.e("shop_url---------->" + shop_url);
+                            ARouter.getInstance()
+                                    .build("/module_classify/tshop_home")
+                                    .withString("url", shop_url)
+                                    .navigation();
+                        } else {
+                            ARouter.getInstance().build("/mine/login").navigation();
+                        }
                     }
                 });
 

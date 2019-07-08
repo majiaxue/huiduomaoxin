@@ -100,6 +100,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         if (searchString != null || !"".equals(searchString)) {
             mSearch.setText(searchString);
         }
+
         if (isHotSale) {
             index = 1;
             presenter.fromSeeAll();

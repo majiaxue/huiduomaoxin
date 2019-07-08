@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.mvp.BaseFragmentActivity;
@@ -35,7 +36,12 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     ViewPager shopHomeVp;
     @BindView(R2.id.shop_home_more)
     ImageView mMore;
-    private int shop_id;
+    @Autowired(name = "sellerId")
+    public int shop_id;
+    @Autowired(name = "shop_name")
+    public String shop_name;
+    @Autowired(name = "shop_icon")
+    public String shop_icon;
 
     @Override
     public int getLayoutId() {
@@ -44,6 +50,7 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         Intent intent = getIntent();
         String shop_name = intent.getStringExtra("shop_name");
         String shop_icon = intent.getStringExtra("shop_icon");
@@ -53,7 +60,7 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
         shopHomeStoreName.setText(shop_name);
         shopHomeStoreCollectNumber.setText(number + "收藏");
 
-        presenter.initTabLayout(shopHomeTab);
+        presenter.initTabLayout(shopHomeTab, shop_id);
         presenter.initViewPager(getSupportFragmentManager());
 
         shopHomeVp.setOffscreenPageLimit(2);

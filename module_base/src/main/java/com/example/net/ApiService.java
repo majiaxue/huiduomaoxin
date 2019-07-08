@@ -17,6 +17,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -52,6 +53,9 @@ public interface ApiService {
 
     @HTTP(method = "DELETE", hasBody = true)
     Observable<ResponseBody> postDelete(@Url String url, @Body List<String> list, @Header("Authorization") String token);
+
+    @HTTP(method = "DELETE", hasBody = true)
+    Observable<ResponseBody> postDelete1(@Url String url, @Body List<String> list, @QueryMap Map<String, String> map, @Header("Authorization") String token);
 
     @FormUrlEncoded
     @POST
