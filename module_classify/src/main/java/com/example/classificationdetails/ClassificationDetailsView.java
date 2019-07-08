@@ -28,4 +28,6 @@ public interface ClassificationDetailsView extends IView {
     void loadFinish();
 
     void updateTitle(boolean isPositiveSalesVolume, boolean isPositivePrice, boolean isPositiveCredit);
+
+    void moveTo(int num, boolean isWaterfall);
 }
