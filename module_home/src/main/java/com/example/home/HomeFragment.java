@@ -71,8 +71,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     TextView text131GradualChange;
     @BindView(R2.id.text141_gradual_change)
     TextView text141GradualChange;
-//    @BindView(R2.id.home_zhong_xbanner)
-//    XBanner homeZhongXbanner;
+    @BindView(R2.id.home_zhong_xbanner)
+    XBanner homeZhongXbanner;
 
     private int nextPage = 1;
 
@@ -89,7 +89,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         //xBanner
         presenter.setXBanner(homeXbanner, homeTopBg);
         //中间轮播图
-//        presenter.setZhongXBanner(homeZhongXbanner);
+        presenter.setZhongXBanner(homeZhongXbanner);
         //topRec
         presenter.setRec(homeTopRec, homeSlideIndicatorPoint);
 

@@ -76,7 +76,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
     public void initView(final TabLayout secondaryDetailsTab, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
         ProcessDialogUtil.showProcessDialog(mContext);
-        if (type.equals("1")) {
+        if (type.equals("2")) {
             //拼多多
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -134,7 +134,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 }
             }));
-        } else if (type.equals("0") || type.equals("3")) {
+        } else if (type.equals("0") || type.equals("6")) {
             //淘宝
             Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.TBKGOODSTBCATEGOTY);
             RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
@@ -198,7 +198,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 }
             }));
 
-        } else {
+        } else if(type.equals("4")) {
             //京东
             final Map map = MapUtil.getInstance().addParms("grade", 0).addParms("parentId", 0).build();
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGETCATEGORY, map);
@@ -283,8 +283,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     //京东
 
     private void initList(List<SecondaryTabBean.GoodsCatsGetResponseBean.GoodsCatsListBean> catsListBeans, List<TBGoodsSearchBean> tBGoodsSearchBeans, List<JDTabBean.DataBean> jdTabList, final int page, final String type, int position) {
-        //0淘宝 1 拼多多  2京东 3天猫
-        if ("1".equals(type)) {
+        //0淘宝 2 拼多多  4京东 6天猫
+        if ("2".equals(type)) {
             PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
             pddGoodsSearchVo.setPage(page);
             pddGoodsSearchVo.setCatId((long) catsListBeans.get(position).getCat_id());
@@ -430,45 +430,45 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 }
                             });
 
-                            secondaryTBRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                                @Override
-                                public void ViewOnClick(View view, final int index) {
-                                    view.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                                ARouter.getInstance()
-                                                        .build("/module_classify/TBCommodityDetailsActivity")
-                                                        .withString("para", tbGoodsList.get(index).getItem_id())
-                                                        .withString("shoptype", tbGoodsList.get(index).getUser_type())
-                                                        .navigation();
-                                            } else {
-                                                //是否登录
-                                                final SelfDialog selfDialog = new SelfDialog(mContext);
-                                                selfDialog.setTitle("提示");
-                                                selfDialog.setMessage("您未登陆是否去登陆？");
-                                                selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                                    @Override
-                                                    public void onYesClick() {
-                                                        PopUtils.setTransparency(mContext, 1f);
-                                                        selfDialog.dismiss();
-                                                    }
-                                                });
-                                                selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                                    @Override
-                                                    public void onNoClick() {
-                                                        PopUtils.setTransparency(mContext, 1f);
-                                                        ARouter.getInstance().build("/mine/login").navigation();
-                                                        selfDialog.dismiss();
-                                                    }
-                                                });
-                                                PopUtils.setTransparency(mContext, 0.3f);
-                                                selfDialog.show();
-                                            }
-                                        }
-                                    });
-                                }
-                            });
+//                            secondaryTBRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+//                                @Override
+//                                public void ViewOnClick(View view, final int index) {
+//                                    view.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            if (!TextUtils.isEmpty(SPUtil.getToken())) {
+//                                                ARouter.getInstance()
+//                                                        .build("/module_classify/TBCommodityDetailsActivity")
+//                                                        .withString("para", tbGoodsList.get(index).getItem_id())
+//                                                        .withString("shoptype", tbGoodsList.get(index).getUser_type())
+//                                                        .navigation();
+//                                            } else {
+//                                                //是否登录
+//                                                final SelfDialog selfDialog = new SelfDialog(mContext);
+//                                                selfDialog.setTitle("提示");
+//                                                selfDialog.setMessage("您未登陆是否去登陆？");
+//                                                selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+//                                                    @Override
+//                                                    public void onYesClick() {
+//                                                        PopUtils.setTransparency(mContext, 1f);
+//                                                        selfDialog.dismiss();
+//                                                    }
+//                                                });
+//                                                selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+//                                                    @Override
+//                                                    public void onNoClick() {
+//                                                        PopUtils.setTransparency(mContext, 1f);
+//                                                        ARouter.getInstance().build("/mine/login").navigation();
+//                                                        selfDialog.dismiss();
+//                                                    }
+//                                                });
+//                                                PopUtils.setTransparency(mContext, 0.3f);
+//                                                selfDialog.show();
+//                                            }
+//                                        }
+//                                    });
+//                                }
+//                            });
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(true);
@@ -476,6 +476,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                         }
 
                     } else {
+                        if (getView() != null) {
+                            getView().noGoods(true);
+                        }
                         LogUtil.e("数据为空");
                     }
 
@@ -487,7 +490,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
-        } else if ("3".equals(type)) {
+        } else if ("6".equals(type)) {
             //天猫
             Map map = MapUtil.getInstance().addParms("keyword", tBGoodsSearchBeans.get(position).getCat_name()).addParms("pageno", page).addParms("istmall", true).build();
             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
@@ -613,7 +616,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
-        } else {
+        } else if (type.equals("4")){
             //京东
             Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", page).addParms("pageSize", 20).addParms("keyword", jdTabList.get(position).getName()).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);

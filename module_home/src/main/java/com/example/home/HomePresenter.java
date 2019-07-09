@@ -64,7 +64,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<GoodChoiceBean.DataBean> goodChoiceList = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList;
     private GoodsRecommendAdapter goodsRecommendAdapter;
-//    private List<ZBannerBean> bannerBeanList = new ArrayList<>();
+    private List<ZBannerBean> bannerBeanList = new ArrayList<>();
 
     public HomePresenter(Context context) {
         super(context);
@@ -185,24 +185,24 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     }
 
-//    public void setZhongXBanner(XBanner homeZhongXbanner) {
-//        bannerBeanList.add(new ZBannerBean(R.drawable.img_108));
-//        bannerBeanList.add(new ZBannerBean(R.drawable.img_109));
-//        bannerBeanList.add(new ZBannerBean(R.drawable.img_110));
-//        homeZhongXbanner.setBannerData(bannerBeanList);
-//        homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
-//            @Override
-//            public void loadBanner(XBanner banner, Object model, View view, int position) {
-//                Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
-//
-//            }
-//        });
-//        // 设置XBanner的页面切换特效
-////        homeZhongXbanner.setPageTransformer(Transformer.Default);
-//        homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
-//        // 设置XBanner页面切换的时间，即动画时长
-//        homeZhongXbanner.setPageChangeDuration(1000);
-//    }
+    public void setZhongXBanner(XBanner homeZhongXbanner) {
+        bannerBeanList.add(new ZBannerBean(R.drawable.img_108));
+        bannerBeanList.add(new ZBannerBean(R.drawable.img_109));
+        bannerBeanList.add(new ZBannerBean(R.drawable.img_110));
+        homeZhongXbanner.setBannerData(bannerBeanList);
+        homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
+            @Override
+            public void loadBanner(XBanner banner, Object model, View view, int position) {
+                Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+
+            }
+        });
+        // 设置XBanner的页面切换特效
+//        homeZhongXbanner.setPageTransformer(Transformer.Default);
+        homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+        // 设置XBanner页面切换的时间，即动画时长
+        homeZhongXbanner.setPageChangeDuration(1000);
+    }
 
     //店铺
     public void setRec(RecyclerView homeTopRec, final SeekBar homeSlideIndicatorPoint) {
@@ -212,11 +212,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
         strings = new ArrayList<>();
         strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.tb));
         strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.pdd));
-        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.jd));
+        strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.pdd));
         strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.tm));
-        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.tb));
+        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.jd));
         strings.add(new BaseRecImageAndTextBean("商城", R.drawable.pdd));
-        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.jd));
+        strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.tm));
         strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.tm));
         strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.tb));
         strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.pdd));
@@ -274,14 +274,15 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
-//                if (position >= 3) {
-//                    ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
-//                            .withString("type", position + "")
-//                            .navigation();
-//                }else{
-//                    Toast.makeText(mContext, "开发中", Toast.LENGTH_SHORT).show();
-//                }
+//                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
+                //0淘宝  2 拼多多 3京东 6天猫
+                if (position == 0 || position == 2 || position == 4 || position == 6) {
+                    ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
+                            .withString("type", position + "")
+                            .navigation();
+                } else {
+                    Toast.makeText(mContext, "开发中", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
