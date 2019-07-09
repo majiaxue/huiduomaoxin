@@ -28,7 +28,7 @@ android {
         // 配置分包  让其存在两个dex文件
         multiDexEnabled true
 //        // 设置分包配置
-//        multiDexKeepFile file('multidex-config.txt')
+        multiDexKeepFile file('multidex-config.txt')
 
     }
 
@@ -76,4 +76,6 @@ dependencies {
     implementation project(':module_classify')
     implementation project(':module_user_store')
     implementation project(':module_user_mine')
+    implementation project(':module_local_store')
+    implementation project(':module_local_mine')
 }

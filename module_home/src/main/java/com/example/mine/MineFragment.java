@@ -38,7 +38,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @BindView(R2.id.mine_header)
     ImageView mineHeader;
     @BindView(R2.id.mine_lv)
-    ImageView mineLv;
+    TextView mineLv;
     @BindView(R2.id.mine_name)
     TextView mineName;
     @BindView(R2.id.mine_temp)
@@ -193,6 +193,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             }
         });
 
+        mBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToBalance();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -240,15 +246,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mIWantUp.setVisibility(View.VISIBLE);
         if (userInfo.getLevel() != null) {
             mineLv.setVisibility(View.VISIBLE);
-            if ("铜牌".equals(userInfo.getLevel())) {
-                mineLv.setImageResource(R.drawable.lv_tong);
-            } else if ("银牌".equals(userInfo.getLevel())) {
-                mineLv.setImageResource(R.drawable.lv_yin);
-            } else if ("金牌".equals(userInfo.getLevel())) {
-                mineLv.setImageResource(R.drawable.lv_jin);
-            } else {
-                mineLv.setVisibility(View.GONE);
-            }
+            mineLv.setText(userInfo.getLevel());
         } else {
             mineLv.setVisibility(View.GONE);
         }

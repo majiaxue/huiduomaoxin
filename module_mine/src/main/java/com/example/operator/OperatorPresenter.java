@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -23,7 +24,9 @@ import com.example.net.RetrofitUtil;
 import com.example.operator.adapter.YysFactorAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnClearCacheListener;
 import com.example.utils.SPUtil;
+import com.example.utils.UIHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,7 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
     private YysFactorAdapter factorAdapter;
     private List<OperatorBean> beanList;
     private int sort;
+    private int clickPosition = 0;
 
     public OperatorPresenter(Context context) {
         super(context);
@@ -54,25 +58,6 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
                 LogUtil.e("运营商：" + result);
                 beanList = JSON.parseArray(result, OperatorBean.class);
                 factorAdapter = new YysFactorAdapter(mContext, beanList, R.layout.rv_yys_factor);
-                factorAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                judge();
-                                if (sort >= beanList.get(index).getSort()) {
-                                    Toast.makeText(mContext, "请勿重复升级", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    ARouter.getInstance().build("/module_mine/up_pay")
-                                            .withString("money", beanList.get(index).getPrice())
-                                            .withString("type", "operator")
-                                            .navigation();
-                                }
-                            }
-                        });
-                    }
-                });
 
                 factorAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
                     @Override
@@ -136,11 +121,23 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("升级运营商：" + result);
+                UIHelper.popUpSuccess(mContext, beanList.get(clickPosition), new OnClearCacheListener() {
+                    @Override
+                    public void setOnClearCache(final PopupWindow pop, View confirm) {
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pop.dismiss();
+                            }
+                        });
+                    }
+                });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("error:" + errorCode + "------------------" + errorMsg);
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
