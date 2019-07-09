@@ -20,10 +20,16 @@ public class SellerVo {
      * 店铺名称
      */
     private String sellerShopName;
+
+    /**
+     * 商家类型
+     */
+    private String sellerType;
     /**
      * 商家分类（商家分类code）
      */
     private String sellerCategory;
+
     /**
      * 商家姓名（经营者姓名）
      */
@@ -69,6 +75,14 @@ public class SellerVo {
 
     public void setSellerShopName(String sellerShopName) {
         this.sellerShopName = sellerShopName;
+    }
+
+    public String getSellerType() {
+        return sellerType;
+    }
+
+    public void setSellerType(String sellerType) {
+        this.sellerType = sellerType;
     }
 
     public String getSellerCategory() {

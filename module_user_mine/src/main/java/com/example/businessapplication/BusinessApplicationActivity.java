@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -26,16 +27,15 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.PhoneNumUtil;
-import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -84,6 +84,10 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     TextView businessApplicationAddressCity;
     @BindView(R2.id.business_application_address_area)
     TextView businessApplicationAddressArea;
+    @BindView(R2.id.business_application_shop_type_text)
+    TextView businessApplicationShopTypeText;
+    @BindView(R2.id.business_application_shop_type)
+    LinearLayout businessApplicationShopType;
 
     private final int TAKE_PHOTO_CODE = 0x111;
     private final int PHOTO_ALBUM_CODE = 0x222;
@@ -121,8 +125,10 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
                 if (TextUtils.isEmpty(businessApplicationShopName.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入店铺名!", Toast.LENGTH_SHORT).show();
+                } else if ("点击选择".equals(businessApplicationShopTypeText.getText().toString())) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请选择商家类型!", Toast.LENGTH_SHORT).show();
                 } else if ("点击选择".equals(businessApplicationShopClassifyText.getText().toString())) {
-                    Toast.makeText(BusinessApplicationActivity.this, "请选择分类!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BusinessApplicationActivity.this, "请选择商品分类!", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(businessApplicationName.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入姓名!", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(businessApplicationPhone.getText().toString())) {
@@ -140,8 +146,12 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     sellerVo.setSellerIdBackCardUrl(map.get("2"));
                     sellerVo.setSellerBusinessLicenseUrl(map.get("3"));
                     sellerVo.setSellerFoodSafetyPermitUrl(map.get("4"));
-
                     LogUtil.e("map------------>" + map.get("0"));
+                    if (businessApplicationShopTypeText.getText().toString().equals("线上商家")) {
+                        sellerVo.setSellerType("0");
+                    } else if (businessApplicationShopTypeText.getText().toString().equals("本地商家")) {
+                        sellerVo.setSellerType("1");
+                    }
                     sellerVo.setSellerShopName(businessApplicationShopName.getText().toString());
                     sellerVo.setSellerCategory(businessApplicationShopClassifyText.getText().toString());
                     sellerVo.setSellerName(businessApplicationName.getText().toString());
@@ -151,7 +161,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     LogUtil.e("SecondaryDetailsJson----------->" + sellerVoJson);
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
-                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body,SPUtil.getToken());
+                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body, SPUtil.getToken());
                     RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
                         @Override
                         public void onSuccess(String result, String msg) {
@@ -222,7 +232,15 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopClassify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupGoodsClassify(businessApplicationShopClassifyText);
+                if (businessApplicationShopTypeText.getText().toString().equals("点击选择")) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请先选择商家类型!", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (businessApplicationShopTypeText.getText().toString().equals("线上商家")){
+                        presenter.popupGoodsClassify(businessApplicationShopClassifyText,0);
+                    }else if (businessApplicationShopTypeText.getText().toString().equals("本地商家")){
+                        presenter.popupGoodsClassify(businessApplicationShopClassifyText,1);
+                    }
+                }
             }
         });
         //选择地址
@@ -230,6 +248,13 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
             @Override
             public void onClick(View v) {
                 presenter.popupAddressWhere(businessApplicationAddressProvince, businessApplicationAddressCity, businessApplicationAddressArea);
+            }
+        });
+        //商家类型
+        businessApplicationShopType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.popupGoodsType(businessApplicationShopTypeText);
             }
         });
     }
@@ -308,8 +333,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     @Override
     public void showHeader(String bitmap) {
         this.base64 = bitmap;
-
-
         if (type == 1) {
             map.put("1", bitmap.replace("\n", ""));
             LogUtil.e("111身份证正面222------>" + bitmap);
@@ -348,4 +371,5 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                 break;
         }
     }
+
 }

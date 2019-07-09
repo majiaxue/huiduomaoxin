@@ -16,6 +16,8 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.CityBean;
+import com.example.bean.PopupGoodsClassBean;
+import com.example.businessapplication.adapter.PopupGoodsClassifyAdapter;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
@@ -38,6 +44,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
 import com.example.utils.TxtUtil;
@@ -52,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -71,6 +79,8 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     private String cityName1 = "";
     private String cityName2 = "";
     private String cityName3 = "";
+    private List<PopupGoodsClassBean> classBeanList = new ArrayList<>();
+    private PopupGoodsClassifyAdapter popupGoodsClassifyAdapter;
 
     public BusinessApplicationPresenter(Context context) {
         super(context);
@@ -253,36 +263,82 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         }));
     }
 
-    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
-        TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
+    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText, final int type) {
+
+        Map map = MapUtil.getInstance().addParms("type", type).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("popupGoodsClassify" + result);
+//                        PopupGoodsClassBean popupGoodsClassBean = JSON.parseObject(result, new TypeReference<PopupGoodsClassBean>() {
+//                        }.getType());
+                List<PopupGoodsClassBean> popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
+                if (popupGoodsClassBeans.size() != 0) {
+                    final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
+                    TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
+                    TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
+                    final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
+                    final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    classifyRec.setLayoutManager(linearLayoutManager);
+                    popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
+                    classifyRec.setAdapter(popupGoodsClassifyAdapter);
+
+                    PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
+                        @Override
+                        public void setOnPop(final PopupWindow pop) {
+
+
+                            imageClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    pop.dismiss();
+                                }
+                            });
+
+//                popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(RecyclerView parent, View view, int position) {
+//
+//                    }
+//                });
+
+                        }
+                    });
+                    PopUtils.setTransparency(mContext, 0.3f);
+
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+
+
+    }
+
+    public void popupGoodsType(final TextView businessApplicationShopTypeText) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_type, null);
+        TextView text = view.findViewById(R.id.popup_select_goods_type_text);
         TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
-        final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
-        final RadioGroup popupRefundRadio = view.findViewById(R.id.popup_select_goods_classify_radio);
-        final RadioButton but1 = view.findViewById(R.id.popup_select_goods_classify_but1);
-        final RadioButton but2 = view.findViewById(R.id.popup_select_goods_classify_but2);
-        final RadioButton but3 = view.findViewById(R.id.popup_select_goods_classify_but3);
-        final RadioButton but4 = view.findViewById(R.id.popup_select_goods_classify_but4);
-        final RadioButton but5 = view.findViewById(R.id.popup_select_goods_classify_but5);
-        String textCause = businessApplicationShopClassifyText.getText().toString();
+        final ImageView imageClose = view.findViewById(R.id.popup_select_goods_type_close);
+        final RadioGroup popupRefundRadio = view.findViewById(R.id.popup_select_goods_type_radio);
+        final RadioButton but1 = view.findViewById(R.id.popup_select_goods_type_but1);
+        final RadioButton but2 = view.findViewById(R.id.popup_select_goods_type_but2);
+        String textCause = businessApplicationShopTypeText.getText().toString();
         if (textCause.equals(but1.getText().toString())) {
             but1.setChecked(true);
         } else if (textCause.equals(but2.getText().toString())) {
             but2.setChecked(true);
-        } else if (textCause.equals(but3.getText().toString())) {
-            but3.setChecked(true);
-        } else if (textCause.equals(but4.getText().toString())) {
-            but4.setChecked(true);
-        } else if (textCause.equals(but5.getText().toString())) {
-            but5.setChecked(true);
         } else {
             but1.setChecked(false);
             but2.setChecked(false);
-            but3.setChecked(false);
-            but4.setChecked(false);
-            but5.setChecked(false);
         }
-        PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(mContext, 352), new OnPopListener() {
+        PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
             @Override
             public void setOnPop(final PopupWindow pop) {
                 imageClose.setOnClickListener(new View.OnClickListener() {
@@ -294,20 +350,11 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                 popupRefundRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if (checkedId == R.id.popup_select_goods_classify_but1) {
-                            businessApplicationShopClassifyText.setText(but1.getText().toString());
+                        if (checkedId == R.id.popup_select_goods_type_but1) {
+                            businessApplicationShopTypeText.setText(but1.getText().toString());
                             pop.dismiss();
-                        } else if (checkedId == R.id.popup_select_goods_classify_but2) {
-                            businessApplicationShopClassifyText.setText(but2.getText().toString());
-                            pop.dismiss();
-                        } else if (checkedId == R.id.popup_select_goods_classify_but3) {
-                            businessApplicationShopClassifyText.setText(but3.getText().toString());
-                            pop.dismiss();
-                        } else if (checkedId == R.id.popup_select_goods_classify_but4) {
-                            businessApplicationShopClassifyText.setText(but4.getText().toString());
-                            pop.dismiss();
-                        } else {
-                            businessApplicationShopClassifyText.setText(but5.getText().toString());
+                        } else if (checkedId == R.id.popup_select_goods_type_but2) {
+                            businessApplicationShopTypeText.setText(but2.getText().toString());
                             pop.dismiss();
                         }
                     }

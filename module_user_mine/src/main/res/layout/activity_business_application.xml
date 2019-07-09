@@ -63,6 +63,42 @@
                 android:background="#f3f3f3" />
 
             <LinearLayout
+                android:id="@+id/business_application_shop_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_44"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="商家类型："
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:id="@+id/business_application_shop_type_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:text="点击选择"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp_7"
+                    android:layout_height="@dimen/dp_12"
+                    android:src="@drawable/right_back" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="#f3f3f3" />
+
+            <LinearLayout
                 android:id="@+id/business_application_shop_classify"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_44"
@@ -73,7 +109,7 @@
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="商家分类："
+                    android:text="商品分类："
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
 

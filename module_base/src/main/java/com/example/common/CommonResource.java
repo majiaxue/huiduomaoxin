@@ -3,7 +3,7 @@ package com.example.common;
 public class CommonResource {
     public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
     public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
-    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
+    public static final String BASEURL_9003 = "http://192.168.1.16:9003";   //商家
     public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
     public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
@@ -124,6 +124,7 @@ public class CommonResource {
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
     public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
+    public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
