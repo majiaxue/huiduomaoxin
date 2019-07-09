@@ -199,6 +199,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 presenter.jumpToBalance();
             }
         });
+
+        mPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToPoints();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

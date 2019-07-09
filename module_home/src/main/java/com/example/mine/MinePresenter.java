@@ -278,4 +278,8 @@ public class MinePresenter extends BasePresenter<MineView> {
             }
         }));
     }
+
+    public void jumpToPoints() {
+        ARouter.getInstance().build("/mine/points").navigation();
+    }
 }

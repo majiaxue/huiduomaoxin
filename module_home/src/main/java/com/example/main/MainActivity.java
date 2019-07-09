@@ -1,7 +1,6 @@
 package com.example.main;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.support.v4.app.ActivityCompat;
@@ -9,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,16 +32,9 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
 
     private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     private final int REQUEST_CODE = 0xa123;
-    @BindView(R2.id.main_home)
-    RadioButton mainHome;
-    @BindView(R2.id.main_classify)
-    RadioButton mainClassify;
+
     @BindView(R2.id.main_user_mall)
     LinearLayout mainUserMall;
-    @BindView(R2.id.main_hairring)
-    RadioButton mainHairring;
-    @BindView(R2.id.main_mine)
-    RadioButton mainMine;
     @BindView(R2.id.main_group)
     RadioGroup mainGroup;
     @Autowired(name = "type")
@@ -93,11 +83,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().post(new EventBusBean("login"));
-    }
-
-    @Override
-    public void clickBottom(int position) {
-
     }
 
     private void initPermission() {

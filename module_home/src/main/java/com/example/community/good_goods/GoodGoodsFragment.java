@@ -1,4 +1,4 @@
-package com.example.community.goods_commend;
+package com.example.community.good_goods;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +12,7 @@ import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
 
-public class GoodsCommendFragment extends BaseFragment<GoodsCommendView, GoodsCommendPresenter> implements GoodsCommendView {
+public class GoodGoodsFragment extends BaseFragment<GoodGoodsView, GoodGoodsPresneter> implements GoodGoodsView {
     @BindView(R2.id.goods_commend_title)
     RecyclerView goodsCommendTitle;
     @BindView(R2.id.goods_commend_rv)
@@ -50,12 +50,12 @@ public class GoodsCommendFragment extends BaseFragment<GoodsCommendView, GoodsCo
     }
 
     @Override
-    public GoodsCommendView createView() {
+    public GoodGoodsView createView() {
         return this;
     }
 
     @Override
-    public GoodsCommendPresenter createPresenter() {
-        return new GoodsCommendPresenter(getContext());
+    public GoodGoodsPresneter createPresenter() {
+        return new GoodGoodsPresneter(getContext());
     }
 }

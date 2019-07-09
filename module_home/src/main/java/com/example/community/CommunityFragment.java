@@ -3,13 +3,14 @@ package com.example.community;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import com.example.community.adapter.CommunityAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
-import com.example.mvp.BaseFragmentActivity;
+import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
 
-public class CommunityActivity extends BaseFragmentActivity<CommunityView, CommunityPresenter> implements CommunityView {
+public class CommunityFragment extends BaseFragment<CommunityView, CommunityPresenter> implements CommunityView {
     @BindView(R2.id.community_tab)
     TabLayout communityTab;
     @BindView(R2.id.community_vp)
@@ -24,11 +25,17 @@ public class CommunityActivity extends BaseFragmentActivity<CommunityView, Commu
     public void initData() {
         communityTab.setupWithViewPager(communityVp);
         presenter.setTab(communityTab);
+        presenter.initVp(getActivity().getSupportFragmentManager());
     }
 
     @Override
     public void initClick() {
 
+    }
+
+    @Override
+    public void updateVP(CommunityAdapter adapter) {
+        communityVp.setAdapter(adapter);
     }
 
     @Override
@@ -38,7 +45,7 @@ public class CommunityActivity extends BaseFragmentActivity<CommunityView, Commu
 
     @Override
     public CommunityPresenter createPresenter() {
-        return new CommunityPresenter(this);
+        return new CommunityPresenter(getContext());
     }
 
 }

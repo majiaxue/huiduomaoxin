@@ -22,10 +22,10 @@ import com.alibaba.fastjson.JSON;
 import com.example.bean.CheckUpBean;
 import com.example.classify.ClassifyFragment;
 import com.example.common.CommonResource;
+import com.example.community.CommunityFragment;
 import com.example.fix.Constants;
 import com.example.fix.FileUtils;
 import com.example.fix.FixDexUtils;
-import com.example.hairring.HairRingFragment;
 import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.module_home.R;
@@ -53,10 +53,9 @@ public class MainPresenter extends BasePresenter<MainView> {
     private long exitTime = 0;
 
     private FragmentManager fragmentManager;
-    private HairRingFragment hairRingFragment;
+    private CommunityFragment communityFragment;
     private HomeFragment homeFragment;
     private MineFragment mineFragment;
-    private ClassifyFragment classifyFragment;
     private SuperBrandFragment superBrandFragment;
     private ProgressBar mProgress;
     private AlertDialog alertDialog;
@@ -111,22 +110,19 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void loadData(FragmentManager fragmentManager, int resId) {
         this.fragmentManager = fragmentManager;
-        hairRingFragment = new HairRingFragment();
+        communityFragment = new CommunityFragment();
         homeFragment = new HomeFragment();
         mineFragment = new MineFragment();
-        classifyFragment = new ClassifyFragment();
         superBrandFragment = new SuperBrandFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(resId, hairRingFragment)
+        transaction.add(resId, communityFragment)
                 .add(resId, homeFragment)
                 .add(resId, mineFragment)
-                .add(resId, classifyFragment)
                 .add(resId, superBrandFragment);
         transaction.show(homeFragment)
-                .hide(hairRingFragment)
+                .hide(communityFragment)
                 .hide(mineFragment)
-                .hide(classifyFragment)
                 .hide(superBrandFragment)
                 .commit();
 
@@ -134,35 +130,36 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void click(int resId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        int position = 0;
+
         if (resId == R.id.main_home) {
             transaction.show(homeFragment)
-                    .hide(hairRingFragment)
-                    .hide(classifyFragment)
+                    .hide(communityFragment)
                     .hide(mineFragment)
                     .hide(superBrandFragment)
                     .commit();
-            position = 0;
+
         } else if (resId == R.id.main_classify) {
             transaction.show(superBrandFragment)
-                    .hide(classifyFragment)
-                    .hide(hairRingFragment)
+                    .hide(communityFragment)
                     .hide(homeFragment)
                     .hide(mineFragment)
                     .commit();
-            position = 1;
+
         } else if (resId == R.id.main_mine) {
             transaction.show(mineFragment)
-                    .hide(hairRingFragment)
+                    .hide(communityFragment)
                     .hide(superBrandFragment)
-                    .hide(classifyFragment)
                     .hide(homeFragment)
                     .commit();
-            position = 4;
+
+        } else if (resId == R.id.main_community) {
+            transaction.show(communityFragment)
+                    .hide(mineFragment)
+                    .hide(superBrandFragment)
+                    .hide(homeFragment)
+                    .commit();
         }
-        if (getView() != null) {
-            getView().clickBottom(position);
-        }
+
     }
 
     public void exit() {

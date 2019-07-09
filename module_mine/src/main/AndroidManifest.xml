@@ -132,6 +132,9 @@
             android:name="com.example.user_agreement.UserAgreementActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.example.points.PointsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

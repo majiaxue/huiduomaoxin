@@ -1,11 +1,8 @@
-package com.example.community.goods_commend;
+package com.example.community.good_goods;
 
 import com.example.community.adapter.CommendTitleAdapter;
 import com.example.mvp.IView;
 
-import java.util.List;
-
-public interface GoodsCommendView extends IView {
-
+public interface GoodGoodsView extends IView {
     void loadTitle(CommendTitleAdapter adapter);
 }

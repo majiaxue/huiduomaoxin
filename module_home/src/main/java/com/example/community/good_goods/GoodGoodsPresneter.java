@@ -1,4 +1,4 @@
-package com.example.community.goods_commend;
+package com.example.community.good_goods;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +13,8 @@ import com.example.mvp.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
-    public GoodsCommendPresenter(Context context) {
+public class GoodGoodsPresneter extends BasePresenter<GoodGoodsView> {
+    public GoodGoodsPresneter(Context context) {
         super(context);
     }
 
