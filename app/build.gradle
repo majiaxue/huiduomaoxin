@@ -76,6 +76,4 @@ dependencies {
     implementation project(':module_classify')
     implementation project(':module_user_store')
     implementation project(':module_user_mine')
-    implementation project(':module_local_store')
-    implementation project(':module_local_mine')
 }

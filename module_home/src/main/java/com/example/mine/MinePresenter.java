@@ -280,6 +280,10 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void jumpToPoints() {
-        ARouter.getInstance().build("/mine/points").navigation();
+        if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+            ARouter.getInstance().build("/mine/points").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/login").navigation();
+        }
     }
 }

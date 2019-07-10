@@ -1,6 +1,8 @@
 package com.example.points;
 
-import android.os.Bundle;
+import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -8,12 +10,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.ali_account.AliAccountActivity;
+import com.example.bean.MyPointsBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @Route(path = "/mine/points")
 public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> implements PointsView {
@@ -42,6 +45,8 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
     @BindView(R2.id.points_btn)
     TextView pointsBtn;
 
+    private MyPointsBean bean = new MyPointsBean();
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_points;
@@ -51,6 +56,8 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
     public void initData() {
         includeTitle.setText("积分提现");
         includeRightBtn.setText("明细");
+        includeRightBtn.setVisibility(View.VISIBLE);
+        presenter.getData();
     }
 
     @Override
@@ -61,6 +68,78 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
                 finish();
             }
         });
+
+        pointsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.commit(bean, pointsEdit.getText().toString());
+            }
+        });
+
+        pointsToall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pointsEdit.setText(bean.getMember().getIntegration());
+            }
+        });
+
+        pointsChooseZfb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(PointsActivity.this, AliAccountActivity.class), 100);
+            }
+        });
+
+        pointsEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null) {
+                    if ("0".equals(s.toString())) {
+                        pointsEdit.setText("");
+                    } else if (bean.getMember().getIntegration() != null) {
+                        if (Integer.valueOf(s.toString()) > Integer.valueOf(bean.getMember().getIntegration())) {
+                            pointsEdit.setText(bean.getMember().getIntegration());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            String name = data.getStringExtra("name");
+            String account = data.getStringExtra("account");
+            bean.getMember().setAliAccount(account);
+            bean.getMember().setRealName(name);
+            pointsZfbAccount.setText(name + "    " + account);
+        }
+    }
+
+    @Override
+    public void loadData(MyPointsBean pointsBean) {
+        this.bean = pointsBean;
+        pointsTotalPoints.setText(pointsBean.getMember().getIntegration() == null ? "0" : pointsBean.getMember().getIntegration());
+        pointsCashingPoints.setText(pointsBean.getMember().getCashOutIntegration() == null ? "0" : pointsBean.getMember().getCashOutIntegration());
+        if (pointsBean.getMember().getAliAccount() == null) {
+            pointsZfbAccount.setText("还没有支付宝账号，去添加");
+        } else {
+            pointsZfbAccount.setText(pointsBean.getMember().getRealName() + "    " + pointsBean.getMember().getAliAccount());
+        }
+        pointsMyPoints.setText(pointsBean.getMember().getIntegration() == null ? "剩余积分0，" : "剩余积分" + pointsBean.getMember().getIntegration() + "，");
+        pointsRules.setText(pointsBean.getIntegrationConf().getRatio() + "积分=1元，最小提现金额为" + pointsBean.getIntegrationConf().getMin() + "个积分，手续费为" + pointsBean.getIntegrationConf().getServiceRatio() + "%，提现必须是" + pointsBean.getIntegrationConf().getMultiple() + "的倍数");
     }
 
     @Override
@@ -71,12 +150,5 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
     @Override
     public PointsPresenter createPresenter() {
         return new PointsPresenter(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

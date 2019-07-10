@@ -35,6 +35,16 @@
             android:paddingTop="@dimen/dp_7" />
 
         <RadioButton
+            android:id="@+id/user_local_shop"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_market"
+            android:gravity="center"
+            android:paddingTop="@dimen/dp_8" />
+
+        <RadioButton
             android:id="@+id/user_shopping_cart"
             android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"

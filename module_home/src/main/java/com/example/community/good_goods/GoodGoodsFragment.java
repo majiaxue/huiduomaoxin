@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.community.adapter.CommendTitleAdapter;
+import com.example.community.adapter.GoodGoodsAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
@@ -37,6 +38,7 @@ public class GoodGoodsFragment extends BaseFragment<GoodGoodsView, GoodGoodsPres
         goodsCommendRv.setLayoutManager(verManager);
 
         presenter.initTitle();
+        presenter.loadData();
     }
 
     @Override
@@ -47,6 +49,11 @@ public class GoodGoodsFragment extends BaseFragment<GoodGoodsView, GoodGoodsPres
     @Override
     public void loadTitle(CommendTitleAdapter adapter) {
         goodsCommendTitle.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadContent(GoodGoodsAdapter adapter) {
+        goodsCommendRv.setAdapter(adapter);
     }
 
     @Override

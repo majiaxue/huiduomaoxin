@@ -5,16 +5,16 @@ import java.io.Serializable;
 public class UserInfoBean implements Serializable {
 
     /**
-     * id : 73
-     * userCode : 296548168642854912
-     * username : 13523021356
-     * password : $2a$10$wnPqnb0rAADCvRM24UyMa.90sAUL6FPLNFW4EgQyBrIzMYg9ZyDDS
+     * id : 81
+     * userCode : 298242555449966592
+     * username : 13201835918
+     * password : $2a$10$MRQbFykd2savGuHv26dswu3lei4k2VtXzC5/uYy5qyRyupFvGZUhK
      * realName : null
-     * nickname : 13523021356
-     * phone : 13523021356
+     * nickname : 秋水共长天一色
+     * phone : 13201835918
      * status : 1
-     * createTime : 2019-06-06 17:43:23
-     * icon : null
+     * createTime : 2019-06-23 15:26:52
+     * icon : http://192.168.1.17:9000/member/9697fb3bce79412a88f5b41d997bf840.jpg
      * gender : null
      * birthday : null
      * province : null
@@ -22,14 +22,14 @@ public class UserInfoBean implements Serializable {
      * job : null
      * personalizedSignature : null
      * sourceType : null
-     * Stringegration : 0
+     * integration : 502
      * growth : null
      * luckeyCount : null
      * historyStringegration : null
-     * weixinOpenid : null
-     * inviteCode : 84KSFE
-     * blance : 0
-     * levelId : 5
+     * weixinOpenid : oC5Gu5k8hOSlrbXkYgh-YDHkva48
+     * inviteCode : VsVqWO
+     * blance : 1000
+     * levelId : 1
      * backMoney : 0
      * notBackMoney : 0
      * checkCode : null
@@ -37,14 +37,16 @@ public class UserInfoBean implements Serializable {
      * newPassword : null
      * oldPhone : null
      * token : null
-     * level : 初级运营商
+     * level : 铜牌
      * tenantId : 1
      * totalBackMoney : 1
      * firstFansNum : 1
      * selfOrderNum : 1
-     * recommendNum : 2
-     * relationId : null
+     * recommendNum : 1
+     * relationId : 1234
      * aliAccount : null
+     * cashOutStringegration : null
+     * StringegrationCashOutNote : null
      */
 
     private String id;
@@ -64,7 +66,7 @@ public class UserInfoBean implements Serializable {
     private String job;
     private String personalizedSignature;
     private String sourceType;
-    private String Stringegration;
+    private String integration;
     private String growth;
     private String luckeyCount;
     private String historyStringegration;
@@ -87,6 +89,8 @@ public class UserInfoBean implements Serializable {
     private String recommendNum;
     private String relationId;
     private String aliAccount;
+    private String cashOutStringegration;
+    private String StringegrationCashOutNote;
 
     public String getId() {
         return id;
@@ -224,12 +228,12 @@ public class UserInfoBean implements Serializable {
         this.sourceType = sourceType;
     }
 
-    public String getStringegration() {
-        return Stringegration;
+    public String getIntegration() {
+        return integration;
     }
 
-    public void setStringegration(String Stringegration) {
-        this.Stringegration = Stringegration;
+    public void setIntegration(String Stringegration) {
+        this.integration = Stringegration;
     }
 
     public String getGrowth() {
@@ -406,6 +410,70 @@ public class UserInfoBean implements Serializable {
 
     public void setAliAccount(String aliAccount) {
         this.aliAccount = aliAccount;
+    }
+
+    public String getCashOutStringegration() {
+        return cashOutStringegration;
+    }
+
+    public void setCashOutStringegration(String cashOutStringegration) {
+        this.cashOutStringegration = cashOutStringegration;
+    }
+
+    public String getStringegrationCashOutNote() {
+        return StringegrationCashOutNote;
+    }
+
+    public void setStringegrationCashOutNote(String StringegrationCashOutNote) {
+        this.StringegrationCashOutNote = StringegrationCashOutNote;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfoBean{" +
+                "id='" + id + '\'' +
+                ", userCode='" + userCode + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", realName='" + realName + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", status='" + status + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", icon='" + icon + '\'' +
+                ", gender='" + gender + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", job='" + job + '\'' +
+                ", personalizedSignature='" + personalizedSignature + '\'' +
+                ", sourceType='" + sourceType + '\'' +
+                ", integration='" + integration + '\'' +
+                ", growth='" + growth + '\'' +
+                ", luckeyCount='" + luckeyCount + '\'' +
+                ", historyStringegration='" + historyStringegration + '\'' +
+                ", weixinOpenid='" + weixinOpenid + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", blance='" + blance + '\'' +
+                ", levelId='" + levelId + '\'' +
+                ", backMoney='" + backMoney + '\'' +
+                ", notBackMoney='" + notBackMoney + '\'' +
+                ", checkCode='" + checkCode + '\'' +
+                ", oldPassword='" + oldPassword + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                ", oldPhone='" + oldPhone + '\'' +
+                ", token='" + token + '\'' +
+                ", level='" + level + '\'' +
+                ", tenantId='" + tenantId + '\'' +
+                ", totalBackMoney='" + totalBackMoney + '\'' +
+                ", firstFansNum='" + firstFansNum + '\'' +
+                ", selfOrderNum='" + selfOrderNum + '\'' +
+                ", recommendNum='" + recommendNum + '\'' +
+                ", relationId='" + relationId + '\'' +
+                ", aliAccount='" + aliAccount + '\'' +
+                ", cashOutStringegration='" + cashOutStringegration + '\'' +
+                ", StringegrationCashOutNote='" + StringegrationCashOutNote + '\'' +
+                '}';
     }
 }
 

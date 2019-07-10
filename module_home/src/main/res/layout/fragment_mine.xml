@@ -278,7 +278,8 @@
                     <ImageView
                         android:layout_width="@dimen/dp_27"
                         android:layout_height="@dimen/dp_27"
-                        android:layout_marginTop="@dimen/dp_17" />
+                        android:layout_marginTop="@dimen/dp_17"
+                        android:src="@drawable/icon_yue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -339,7 +340,8 @@
                     <ImageView
                         android:layout_width="@dimen/dp_27"
                         android:layout_height="@dimen/dp_27"
-                        android:layout_marginTop="@dimen/dp_17" />
+                        android:layout_marginTop="@dimen/dp_17"
+                        android:src="@drawable/icon_jifen1" />
 
                     <TextView
                         android:layout_width="wrap_content"

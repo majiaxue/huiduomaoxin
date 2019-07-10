@@ -251,6 +251,9 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineCode.setText("邀请码：" + userInfo.getInviteCode());
         mineTemp.setVisibility(View.VISIBLE);
         mIWantUp.setVisibility(View.VISIBLE);
+        mBalanceTxt.setText(userInfo.getBlance());
+        mPointsTxt.setText(userInfo.getIntegration());
+
         if (userInfo.getLevel() != null) {
             mineLv.setVisibility(View.VISIBLE);
             mineLv.setText(userInfo.getLevel());

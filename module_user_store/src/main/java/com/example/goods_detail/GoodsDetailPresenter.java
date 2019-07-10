@@ -27,10 +27,10 @@ import com.example.bean.BannerBean;
 import com.example.bean.ChooseInsideBean;
 import com.example.bean.HotSaleBean;
 import com.example.bean.OrderConfirmBean;
+import com.example.bean.ParmsBean;
 import com.example.bean.UserCouponBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
-import com.example.bean.ParmsBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.GoodsImageAdapter;
@@ -1590,6 +1590,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         for (int i = 0; i < bannerList.size(); i++) {
             list.add(bannerList.get(i).getPicUrl());
         }
-        PopUtil.popAssessBigPic(mContext, list, position);
+        PopUtils.popAssessBigPic(mContext, list, position);
     }
 }
