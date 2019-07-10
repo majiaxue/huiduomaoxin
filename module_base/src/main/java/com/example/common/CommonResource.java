@@ -3,7 +3,7 @@ package com.example.common;
 public class CommonResource {
     public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
     public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
-    public static final String BASEURL_9003 = "http://192.168.1.16:9003";   //商家
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
     public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
     public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
@@ -107,6 +107,7 @@ public class CommonResource {
     public static final String SELLERINFO = "/rest/seller/info";//商家入驻
     public static final String TBKGOODSPRODUCTS = "/rest/tbk/goods/products";//淘宝客推荐
     public static final String TBKGOODSITEMDETAIL = "/rest/tbk/goods/itemdetail";//商品详情接口功能（店铺信息/产品介绍/主图视频/SKU）
+    public static final String TBKGOODSGETITEMDESC = "/rest/tbk/goods/getItemDesc";//商品详情接口功能（店铺信息/产品介绍/主图视频/SKU）
     public static final String TBKGOODSGETGYURLBYALL = "/rest/tbk/goods/getgyurlbyall";//转链接API
     public static final String TBKGOODSTBCATEGOTY = "/rest/tbk/goods/tbcategoty";//tb分类
     public static final String TBKGOODSSELLERTBKLIST = "/rest/tbk/goods/sellerTbkList";//获取全网淘客商品API

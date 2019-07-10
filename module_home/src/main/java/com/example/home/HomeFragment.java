@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -73,6 +74,14 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     TextView text141GradualChange;
     @BindView(R2.id.home_zhong_xbanner)
     XBanner homeZhongXbanner;
+    @BindView(R2.id.home_hot_recommend)
+    RelativeLayout homeHotRecommend;
+    @BindView(R2.id.home_dou_juan_buy)
+    RelativeLayout homeDouJuanBuy;
+    @BindView(R2.id.home_punch_sign)
+    RelativeLayout homePunchSign;
+    @BindView(R2.id.home_free_of_charge)
+    RelativeLayout homeFreeOfCharge;
 
     private int nextPage = 1;
 
@@ -137,6 +146,35 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             public void onClick(View v) {
 //                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
                 ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").navigation();
+            }
+        });
+
+        //爆款推荐
+        homeHotRecommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //抖劵购买
+        homeDouJuanBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //打卡签到
+        homePunchSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+            }
+        });
+        //今日免单
+        homeFreeOfCharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -240,5 +278,4 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             mGoTop.setVisibility(View.GONE);
         }
     }
-
 }

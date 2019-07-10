@@ -34,7 +34,7 @@ public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodsRecommendBean.
             holder.setImageResource(R.id.base_type, R.drawable.tianmao);
         }
         double couponPrice = ArithUtil.sub(Double.valueOf(data.getZk_final_price()), Double.valueOf(data.getCoupon_amount()));//商品价格
-        double mul = ArithUtil.mul(couponPrice, ArithUtil.div(Double.valueOf(data.getCommission_rate()), 1000, 2));//商品收益需要乘个人收益
+        double mul = ArithUtil.mul(couponPrice, ArithUtil.div(Double.valueOf(data.getCommission_rate()), 100, 2));//商品收益需要乘个人收益
 
         holder.setImageFresco(R.id.base_image, data.getPict_url());
         holder.setText(R.id.base_name, data.getTitle());
