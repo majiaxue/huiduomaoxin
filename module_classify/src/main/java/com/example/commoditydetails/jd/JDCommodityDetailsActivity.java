@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.JDGoodsRecBean;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -134,6 +135,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
+        ModuleBaseApplication.initShare();
         customDialog = new CustomDialog(this);
         customDialog.show();
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList);

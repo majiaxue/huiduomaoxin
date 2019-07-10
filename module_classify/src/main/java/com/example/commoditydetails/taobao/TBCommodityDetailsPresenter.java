@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -29,10 +28,13 @@ import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
 import com.alibaba.baichuan.android.trade.page.AlibcDetailPage;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.TBGoodsDetailsBean;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
 import com.example.bean.TBBean;
@@ -49,7 +51,6 @@ import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
-import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
@@ -64,9 +65,6 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,14 +79,14 @@ import okhttp3.ResponseBody;
  */
 public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetailsView> {
 
-    private String type;
     private List<TBGoodChoiceBean.DataBean> tbRecommendList = new ArrayList<>();
     private TBLedSecuritiesBean tbLedSecuritiesBean;
     private String num_iid;
     private int flag = 0;
     private int number = 0;
     private Bitmap bitmap;
-    private TBBean tbBean;
+    private TBGoodsDetailsBean tbGoodsDetailsBean;
+    private List<String> imageList = new ArrayList<>();
 
     public TBCommodityDetailsPresenter(Context context) {
         super(context);
@@ -140,24 +138,26 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     //初始化视图
-    public void initView(String para, String shopType) {
-        if ("0".equals(shopType)) {
-            type = "C";
-        } else {
-            type = "B";
-        }
-        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("para", para).addParms("shoptype", type).build();
-        LogUtil.e("赋值" + 1 + "    " + para + "    " + type);
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
+    public void initView(final String para) {
+        Map num_iid = MapUtil.getInstance().addParms("num_iid", para).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETITEMDESC, num_iid);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult---------------->" + result);
-                tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
-                }.getType());
-                if (tbBean != null && tbBean.getData() != null) {
+                JSONObject jsonObject = JSON.parseObject(result);
+                JSONArray albumPics = jsonObject.getJSONArray("albumPics");
+                String info = (String) jsonObject.get("info");
+                LogUtil.e("数组" + albumPics);
+                LogUtil.e("对象" + info);
+                for (int i = 0; i < albumPics.size(); i++) {
+                    imageList.add(albumPics.get(i).toString());
+                }
+                if (!TextUtils.isEmpty(info)) {
+                    tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
+                    }.getType());
                     if (getView() != null) {
-                        getView().tbBeanList(tbBean);
+                        getView().tbBeanList(tbGoodsDetailsBean,imageList);
                         getView().tBDetails();
                         LogUtil.e("tBDetails" + "3");
                     }
@@ -222,7 +222,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             public void loadBanner(XBanner banner, Object model, View view, int position) {
 //                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
 //                bannerImage.setImageResource((int) images.get(position).getXBannerUrl());
-                Glide.with(mContext).load("https:" + images.get(position)).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
+                Glide.with(mContext).load(images.get(position)).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
             }
         });
         // 设置XBanner的页面切换特效
@@ -490,7 +490,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         ImageView qRCode = view.findViewById(R.id.share_qr_code);
         //字体加中划线
         originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        String zkFinalPrice = tbBean.getData().getZk_final_price();
+        String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
         if (!TextUtils.isEmpty(zkFinalPrice)) {
             if (zkFinalPrice.contains("-")) {
                 String[] split = zkFinalPrice.split("-");
@@ -519,10 +519,10 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
 
             }
-            LogUtil.e("url主图---------->" + tbBean.getData().getImages().get(0));
+            LogUtil.e("url主图---------->" + tbGoodsDetailsBean.getN_tbk_item().getPict_url());
             image.setImageURI(Uri.fromFile(new File(path)));
-            name.setText(tbBean.getData().getTitle());
-            number.setText("已售" + tbBean.getData().getSellCount() + "件");//已售
+            name.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());
+            number.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
             Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
             qRCode.setImageBitmap(qr);
             LogUtil.e("url2二维码---------->" + qRImage);

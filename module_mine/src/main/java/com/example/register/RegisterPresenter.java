@@ -94,7 +94,7 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }

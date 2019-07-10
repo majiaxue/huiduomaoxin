@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.GoodChoiceBean;
+import com.example.bean.ZBannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
@@ -41,8 +42,8 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.view.CustomeRecyclerView;
 import com.example.view.SelfDialog;
+import com.example.view.animation.RotateYTransformer;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
@@ -52,6 +53,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.POST;
 
 public class HomePresenter extends BasePresenter<HomeView> {
 
@@ -63,6 +65,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<GoodChoiceBean.DataBean> goodChoiceList = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList;
     private GoodsRecommendAdapter goodsRecommendAdapter;
+    private List<ZBannerBean> bannerBeanList = new ArrayList<>();
 
     public HomePresenter(Context context) {
         super(context);
@@ -133,6 +136,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         });
                         // 设置XBanner的页面切换特效
                         homeXbanner.setPageTransformer(Transformer.Default);
+//                        homeXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+
                         // 设置XBanner页面切换的时间，即动画时长
                         homeXbanner.setPageChangeDuration(1000);
 
@@ -181,6 +186,25 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     }
 
+    public void setZhongXBanner(XBanner homeZhongXbanner) {
+        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner10));
+        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner11));
+        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner12));
+        homeZhongXbanner.setBannerData(bannerBeanList);
+        homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
+            @Override
+            public void loadBanner(XBanner banner, Object model, View view, int position) {
+                Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+
+            }
+        });
+        // 设置XBanner的页面切换特效
+//        homeZhongXbanner.setPageTransformer(Transformer.Default);
+        homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+        // 设置XBanner页面切换的时间，即动画时长
+        homeZhongXbanner.setPageChangeDuration(1000);
+    }
+
     //店铺
     public void setRec(RecyclerView homeTopRec, final SeekBar homeSlideIndicatorPoint) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.HORIZONTAL, false);
@@ -188,18 +212,16 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         strings = new ArrayList<>();
         strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.tb));
+        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.icon_taoqianggou));
         strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.pdd));
+        strings.add(new BaseRecImageAndTextBean("商城", R.drawable.icon_shangcheng));
         strings.add(new BaseRecImageAndTextBean("京东", R.drawable.jd));
+        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.icon_xiaodian));
         strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.tm));
-        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.tb));
-        strings.add(new BaseRecImageAndTextBean("商城", R.drawable.pdd));
-        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.jd));
-        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.tm));
-        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.tb));
-        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.pdd));
-        strings.add(new BaseRecImageAndTextBean("今日免单", R.drawable.jd));
-        strings.add(new BaseRecImageAndTextBean("影视", R.drawable.tm));
-
+        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_99baoyou));
+        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_juhuasuan));
+        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_dakaqiandao));
+        strings.add(new BaseRecImageAndTextBean("今日免单", R.drawable.icon_miandan1));
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);
         homeTopRec.setAdapter(homeTopRecAdapter);
@@ -251,14 +273,16 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
-//                if (position >= 3) {
-//                    ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
-//                            .withString("type", position + "")
-//                            .navigation();
-//                }else{
-//                    Toast.makeText(mContext, "开发中", Toast.LENGTH_SHORT).show();
-//                }
+                //0淘宝  2 拼多多 3京东 6天猫
+                if (position == 0 || position == 2 || position == 4 || position == 6) {
+                    ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
+                            .withString("type", position + "")
+                            .navigation();
+                } else if (position == 3) {
+                    ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
+                }else if (position == 9){
+                    ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                }
             }
         });
     }
@@ -272,61 +296,57 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("优选：" + result);
-                try {
+                GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                }.getType());
 
-                    GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
-                    }.getType());
+                if (goodChoiceBean != null) {
 
-                    if (goodChoiceBean != null) {
-                        if (goodChoiceBean.getData() != null) {
-                            goodChoiceList.clear();
-                            goodChoiceList.addAll(goodChoiceBean.getData());
-                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
-                            homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
-                            GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
-                            homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
-                            goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(RecyclerView parent, View view, int position) {
-                                    if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                                .withString("para", goodChoiceList.get(position).getNum_iid())
-                                                .withString("shoptype", "1").navigation();
-                                    } else {
-                                        //是否登录
-                                        final SelfDialog selfDialog = new SelfDialog(mContext);
-                                        selfDialog.setTitle("提示");
-                                        selfDialog.setMessage("您未登陆是否去登陆？");
-                                        selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                            @Override
-                                            public void onYesClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                            @Override
-                                            public void onNoClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                ARouter.getInstance().build("/mine/login").navigation();
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        PopUtils.setTransparency(mContext, 0.3f);
-                                        selfDialog.show();
-                                    }
-
+                    if (goodChoiceBean.getData() != null) {
+                        goodChoiceList.clear();
+                        goodChoiceList.addAll(goodChoiceBean.getData());
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+                        homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+                        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
+                        homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
+                        goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                            .withString("para", goodChoiceList.get(position).getNum_iid())
+                                            .withString("shoptype", "1").navigation();
+                                } else {
+                                    //是否登录
+                                    final SelfDialog selfDialog = new SelfDialog(mContext);
+                                    selfDialog.setTitle("提示");
+                                    selfDialog.setMessage("您未登陆是否去登陆？");
+                                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                                        @Override
+                                        public void onYesClick() {
+                                            PopUtils.setTransparency(mContext, 1f);
+                                            selfDialog.dismiss();
+                                        }
+                                    });
+                                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                                        @Override
+                                        public void onNoClick() {
+                                            PopUtils.setTransparency(mContext, 1f);
+                                            ARouter.getInstance().build("/mine/login").navigation();
+                                            selfDialog.dismiss();
+                                        }
+                                    });
+                                    PopUtils.setTransparency(mContext, 0.3f);
+                                    selfDialog.show();
                                 }
-                            });
-                        } else {
-                            LogUtil.e("数据为空");
-                        }
 
+                            }
+                        });
                     } else {
                         LogUtil.e("数据为空");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                } else {
+                    LogUtil.e("数据为空");
                 }
             }
 
@@ -346,7 +366,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-//                LogUtil.e("homePresenterResult---------->" + result);
+                LogUtil.e("homePresenterResult---------->" + result);
                 GoodsRecommendBean goodsRecommendBean = JSON.parseObject(result, new TypeReference<GoodsRecommendBean>() {
                 }.getType());
                 if (goodsRecommendBean != null) {

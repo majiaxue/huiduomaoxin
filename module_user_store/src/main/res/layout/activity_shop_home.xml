@@ -61,8 +61,7 @@
             android:id="@+id/shop_home_store_image"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_centerVertical="true"
-            android:src="@drawable/img_50" />
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/shop_home_store_name"

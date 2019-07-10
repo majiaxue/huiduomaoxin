@@ -19,7 +19,6 @@
             android:id="@+id/refund_image"
             android:layout_width="@dimen/dp_92"
             android:layout_height="@dimen/dp_92"
-            app:placeholderImage="@drawable/img_108"
             app:placeholderImageScaleType="fitXY" />
 
         <TextView
@@ -30,7 +29,6 @@
             android:layout_toRightOf="@id/refund_image"
             android:ellipsize="end"
             android:lines="2"
-            android:text="原宿潮牌短袖T恤男夏季新款休闲欧美bf风青少年韩版宽松大码T恤"
             android:textColor="#333333"
             android:textSize="@dimen/sp_13" />
 

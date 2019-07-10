@@ -6,8 +6,10 @@ import android.widget.TextView;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.CommodityDetailsPddRecBean;
+import com.example.common.CommonResource;
 import com.example.module_classify.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.SPUtil;
 
 import java.util.List;
 
@@ -25,17 +27,19 @@ public class CommodityDetailsPddRecAdapter extends MyRecyclerAdapter<CommodityDe
     public void convert(RecyclerViewHolder holder, CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean data, int position) {
         //拼多多
         holder.setImageResource(com.example.module_base.R.id.base_type, com.example.module_base.R.drawable.pinduoduo);
-
+        double div = ArithUtil.div(data.getMin_group_price() - data.getCoupon_discount(), 100, 2);
+        double mul = ArithUtil.mul(div, ArithUtil.div(data.getPromotion_rate(), 1000, 2));
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getGoods_thumbnail_url());
         holder.setText(com.example.module_base.R.id.base_name, data.getGoods_name());
-        holder.setText(R.id.base_reduce_price, "领劵减" + ArithUtil.div(Double.valueOf(data.getCoupon_discount()), 100, 1) + "元");
-        holder.setText(R.id.base_preferential_price, "￥" + ArithUtil.div(Double.valueOf(data.getMin_group_price()) - Double.valueOf(data.getCoupon_discount()), 100, 1));
-        holder.setText(R.id.base_original_price, "" + ArithUtil.div(Double.valueOf(data.getMin_group_price()),100,1));
+        holder.setText(R.id.base_reduce_price, "领劵减" + ArithUtil.div(data.getCoupon_discount(), 100, 2) + "元");
+        holder.setText(R.id.base_preferential_price, "￥" + div);
+        holder.setText(R.id.base_original_price, "" + ArithUtil.div(data.getMin_group_price(),100,2));
         holder.setText(R.id.base_number, "已抢" + data.getSold_quantity());
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
-
-        TextView immediatelyGrab = holder.getView(com.example.module_base.R.id.base_immediately_grab);
-        viewOnClickListener.ViewOnClick(immediatelyGrab, position);
+        holder.setText(com.example.module_base.R.id.base_estimate, "预估赚"+ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        holder.setText(com.example.module_base.R.id.base_upgrade, "升级赚"+ArithUtil.mul(mul,0.8));
+//        TextView immediatelyGrab = holder.getView(com.example.module_base.R.id.base_immediately_grab);
+//        viewOnClickListener.ViewOnClick(immediatelyGrab, position);
     }
 }

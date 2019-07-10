@@ -13,8 +13,7 @@
         android:layout_width="@dimen/dp_30"
         android:layout_height="@dimen/dp_30"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/dp_4"
-        android:src="@drawable/img_48" />
+        android:layout_marginLeft="@dimen/dp_4" />
 
     <TextView
         android:id="@+id/flow_goods_color_content"

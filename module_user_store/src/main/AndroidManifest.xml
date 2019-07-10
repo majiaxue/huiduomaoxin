@@ -57,6 +57,10 @@
         <activity
             android:name="com.example.order_detail.OrderDetailActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.local_list.LocalListActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

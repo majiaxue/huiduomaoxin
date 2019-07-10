@@ -24,7 +24,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.TBBean;
+import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBLedSecuritiesBean;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -110,12 +112,14 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     TextView commodityLedSecuritiesText;
     @BindView(R2.id.commodity_details_no_coupon)
     LinearLayout commodityDetailsNoCoupon;
+    @BindView(R2.id.shop_xinxi)
+    LinearLayout shopXinxi;
 
     @Autowired(name = "para")
     String para;
     @Autowired(name = "shoptype")
     String shopType;
-    private TBBean tbBeanList;
+    private TBGoodsDetailsBean tbGoodsDetailsBean;
     private TBLedSecuritiesBean tbLedSecuritiesBean;
 
     private String earnings;
@@ -132,7 +136,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         LogUtil.e("123456              " + para + "        " + shopType);
-
+        ModuleBaseApplication.initShare();
+        shopXinxi.setVisibility(View.GONE);
         customDialog = new CustomDialog(this);
         customDialog.show();
         presenter.login();
@@ -143,7 +148,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         //用户收益
         presenter.earnings();
         //加载视图
-        presenter.initView(para, shopType);
+        presenter.initView(para);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //字体加粗
@@ -183,7 +188,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             public void onClick(View v) {
                 ARouter.getInstance()
                         .build("/module_classify/tshop_home")
-                        .withString("url", tbBeanList.getData().getSeller().getTaoShopUrl())
+                        .withString("url", tbGoodsDetailsBean.getN_tbk_item().getItem_url())
                         .navigation();
             }
         });
@@ -193,7 +198,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             public void onClick(View v) {
                 ARouter.getInstance()
                         .build("/module_classify/tshop_home")
-                        .withString("url", tbBeanList.getData().getSeller().getTaoShopUrl())
+                        .withString("url", tbGoodsDetailsBean.getN_tbk_item().getItem_url())
                         .navigation();
             }
         });
@@ -203,7 +208,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             public void onClick(View v) {
                 ARouter.getInstance()
                         .build("/module_classify/tshop_home")
-                        .withString("url", tbBeanList.getData().getSeller().getTaoShopUrl())
+                        .withString("url", tbGoodsDetailsBean.getN_tbk_item().getItem_url())
                         .navigation();
             }
         });
@@ -280,32 +285,30 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
     //详情回调
     @Override
-    public void tbBeanList(TBBean tbBeanList) {
+    public void tbBeanList(TBGoodsDetailsBean tbGoodsDetailsBean, List<String> imageList) {
         try {
-
-            this.tbBeanList = tbBeanList;
+            this.tbGoodsDetailsBean = tbGoodsDetailsBean;
             //详情轮播图
-            List<String> images = tbBeanList.getData().getImages();
+            List<String> images = tbGoodsDetailsBean.getN_tbk_item().getSmall_images().getString();
             presenter.setXBanner(commodityXbanner, images);
 
             //商品详情图片
-            List<String> itemDetail = tbBeanList.getData().getItem_detail();
-            if (itemDetail.size() != 0) {
-                presenter.setShopParticulars(shopParticulars, itemDetail);
+            if (imageList.size() != 0) {
+                presenter.setShopParticulars(shopParticulars, imageList);
             } else {
                 presenter.setShopParticulars(shopParticulars, images);
             }
 
             //收藏状态
             presenter.isCollect(commodityCollectImage, para);
-            commodityName.setText(tbBeanList.getData().getTitle());//名字
-            commodityNumberSold.setText("已售" + tbBeanList.getData().getSellCount() + "件");//已售
-            commodityShopName.setText(tbBeanList.getData().getSeller().getShopName() + "");//商家名
-            commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
-            shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
-            shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
-            shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
-            String zkFinalPrice = tbBeanList.getData().getZk_final_price();
+            commodityName.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());//名字
+            commodityNumberSold.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
+            commodityShopName.setText(tbGoodsDetailsBean.getN_tbk_item().getNick()+ "");//商家名
+//            commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
+//            shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
+//            shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
+//            shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
+            String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
             if (!TextUtils.isEmpty(zkFinalPrice)) {
                 if (zkFinalPrice.contains("-")) {
                     String[] split = zkFinalPrice.split("-");
@@ -321,7 +324,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void ledSecurities(TBLedSecuritiesBean tbLedSecuritiesBean) {
@@ -342,7 +344,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 //            status = 0;
             try {
                 customDialog.dismiss();
-                String zkFinalPrice = tbBeanList.getData().getZk_final_price();
+                String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
                 if (!TextUtils.isEmpty(zkFinalPrice)) {
                     if (zkFinalPrice.contains("-")) {
                         String[] split = zkFinalPrice.split("-");
@@ -352,15 +354,13 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                             String substring = couponInfo.substring(couponInfo.indexOf("减"));
                             String price = substring.substring(1, substring.indexOf("元"));
                             double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);//用户个人收益
-                            double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
-                            double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate), 100, 2), sub);//商品收益乘商品价格
-
+                            double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));//商品价格
+                            double div = ArithUtil.div(Double.valueOf(commission_rate), 100, 2);//商品佣金率
                             commodityPreferentialPrice.setText("￥" + sub);//优惠价
 
                             commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-                            commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
-                            LogUtil.e("商品收益" + Double.valueOf(commission_rate));
-                            LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品收益" + mul + "最终收益" + ArithUtil.mul(mul, earnings1));
+                            commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub,div), earnings1));//收益
+                            LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品佣金" + commission_rate + "商品价格" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub,div), earnings1));
                             commodityCouponPrice.setText(price + "元");
                             commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
                         }
@@ -372,14 +372,14 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                             String substring = couponInfo.substring(couponInfo.indexOf("减"));
                             String price = substring.substring(1, substring.indexOf("元"));
                             double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-                            double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
-                            double mul = ArithUtil.mul(ArithUtil.div(Double.valueOf(commission_rate), 100, 2), sub);
+                            double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));//商品价格
+                            double div = ArithUtil.div(Double.valueOf(commission_rate), 100, 2);//商品佣金率
+
                             commodityPreferentialPrice.setText("￥" + sub);//优惠价
                             commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                            commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(mul, earnings1));//收益
-                            LogUtil.e("商品收益" + Double.valueOf(commission_rate));
-                            LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品收益" + mul + "最终收益" + ArithUtil.mul(mul, earnings1));
-                            commodityCouponPrice.setText(price + "元");
+                            commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub,div), earnings1));//收益
+                            LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品佣金" + commission_rate + "商品价格" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub,div), earnings1));
+                            commodityCouponPrice.setText(price + "元优惠劵");
                             commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
 
                         }
@@ -390,7 +390,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
                 Glide.with(this)
                         .asBitmap()
-                        .load("https:" + tbBeanList.getData().getImages().get(0))
+                        .load(tbGoodsDetailsBean.getN_tbk_item().getPict_url())
                         .into(new CustomTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {

@@ -9,6 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <activity android:name="com.example.punchsign.PunchSignActivity"></activity>
         <activity
             android:name="com.example.secondarydetails.SecondaryDetailsActivity"
             android:screenOrientation="portrait" />
@@ -32,7 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

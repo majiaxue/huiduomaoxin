@@ -3,8 +3,6 @@
     android:id="@+id/mine_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="false"
     android:orientation="vertical"
     android:overScrollMode="never">
 
@@ -80,7 +78,8 @@
                 android:src="@drawable/lv_jin"
                 android:text="金牌"
                 android:textColor="#fb4619"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/mine_name"

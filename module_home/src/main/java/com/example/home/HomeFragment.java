@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;
 import com.example.view.MarqueeView;
@@ -52,8 +54,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     TextView homeSeeMoreTop;
     @BindView(R2.id.home_top_rec)
     CustomeRecyclerView homeTopRec;
-    @BindView(R2.id.taobaoke)
-    ImageView taobaoke;
     @BindView(R2.id.home_see_more_bottom)
     TextView homeSeeMoreBottom;
     @BindView(R2.id.home_good_choice_rec)
@@ -68,6 +68,20 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     NestedScrollView homeNestedScroll;
     @BindView(R2.id.home_slide_indicator_point)
     SeekBar homeSlideIndicatorPoint;
+    @BindView(R2.id.text131_gradual_change)
+    TextView text131GradualChange;
+    @BindView(R2.id.text141_gradual_change)
+    TextView text141GradualChange;
+    @BindView(R2.id.home_zhong_xbanner)
+    XBanner homeZhongXbanner;
+    @BindView(R2.id.home_hot_recommend)
+    RelativeLayout homeHotRecommend;
+    @BindView(R2.id.home_dou_juan_buy)
+    RelativeLayout homeDouJuanBuy;
+    @BindView(R2.id.home_punch_sign)
+    RelativeLayout homePunchSign;
+    @BindView(R2.id.home_free_of_charge)
+    RelativeLayout homeFreeOfCharge;
 
     private int nextPage = 1;
 
@@ -83,8 +97,10 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         presenter.setViewSingleLine();
         //xBanner
         presenter.setXBanner(homeXbanner, homeTopBg);
+        //中间轮播图
+        presenter.setZhongXBanner(homeZhongXbanner);
         //topRec
-        presenter.setRec(homeTopRec,homeSlideIndicatorPoint);
+        presenter.setRec(homeTopRec, homeSlideIndicatorPoint);
 
         //优选recycler
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
@@ -97,7 +113,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSmartRefresh.setRefreshHeader(customHeader);
         homeSmartRefresh.setRefreshFooter(new ClassicsFooter(getContext()));
 
-
+        TxtUtil.txtJianbian(text131GradualChange, "#0c53e4", "#ae3fed");
+        TxtUtil.txtJianbian(text141GradualChange, "#fe5d05", "#fdb902");
     }
 
     @Override
@@ -129,6 +146,35 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             public void onClick(View v) {
 //                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
                 ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").navigation();
+            }
+        });
+
+        //爆款推荐
+        homeHotRecommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //抖劵购买
+        homeDouJuanBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //打卡签到
+        homePunchSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+            }
+        });
+        //今日免单
+        homeFreeOfCharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

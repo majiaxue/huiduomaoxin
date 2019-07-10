@@ -12,7 +12,9 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.SPUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.PlatformConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,16 +34,18 @@ public class BindWeChatPresenter extends BasePresenter<BindWeChatView> {
 
     public void bind() {
         SPUtil.addParm("weixin", "bind");
-        if (ModuleBaseApplication.wxapi == null) {
-            ModuleBaseApplication.wxapi = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
-        }
-        if (!ModuleBaseApplication.wxapi.isWXAppInstalled()) {
+        PlatformConfig.setWeixin("", "");
+
+        IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
+
+        if (!api.isWXAppInstalled()) {
             Toast.makeText(mContext, "请先安装微信客户端", Toast.LENGTH_SHORT).show();
+        } else {
+            SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_sdk_demo_test";
+            api.sendReq(req);
         }
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo_test";
-        ModuleBaseApplication.wxapi.sendReq(req);
     }
 
     public void bindWX() {
@@ -56,6 +60,7 @@ public class BindWeChatPresenter extends BasePresenter<BindWeChatView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }

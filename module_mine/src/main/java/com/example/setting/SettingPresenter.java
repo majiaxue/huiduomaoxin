@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;

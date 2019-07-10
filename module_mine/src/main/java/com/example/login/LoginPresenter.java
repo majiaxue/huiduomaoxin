@@ -11,7 +11,6 @@ import com.example.code_login.CodeLoginActivity;
 import com.example.common.CommonResource;
 import com.example.forget.ForgetActivity;
 import com.example.login_wechat.LoginWeChatActivity;
-import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -25,7 +24,9 @@ import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.PlatformConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,16 +60,18 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     public void WeChatLogin() {
         SPUtil.addParm("weixin", "code");
-        if (ModuleBaseApplication.wxapi == null) {
-            ModuleBaseApplication.wxapi = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
-        }
-        if (!ModuleBaseApplication.wxapi.isWXAppInstalled()) {
+        PlatformConfig.setWeixin("", "");
+
+        IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
+
+        if (!api.isWXAppInstalled()) {
             Toast.makeText(mContext, "请先安装微信客户端", Toast.LENGTH_SHORT).show();
+        } else {
+            SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_sdk_demo_test";
+            api.sendReq(req);
         }
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo_test";
-        ModuleBaseApplication.wxapi.sendReq(req);
     }
 
     public void sendCode() {
@@ -102,7 +105,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                if (errorCode.equals(1)) {
+                LogUtil.e(errorCode + "------------" + errorMsg);
+                if (errorCode.equals("1")) {
                     Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
@@ -141,7 +145,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 public void onError(String errorCode, String errorMsg) {
                     ProcessDialogUtil.dismissDialog();
                     LogUtil.e("登录：" + errorCode + "-------" + errorMsg);
-                    if (errorCode.equals(1)) {
+                    if (errorCode.equals("1")) {
                         Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();

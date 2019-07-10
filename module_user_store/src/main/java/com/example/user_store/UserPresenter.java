@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.example.local_shop.LocalShopFragment;
 import com.example.user_classify.ClassifyFragment;
 import com.example.user_home.HomeFragment;
 import com.example.user_mine.MineFragment;
@@ -23,6 +24,7 @@ public class UserPresenter extends BasePresenter<UserView> {
     private HomeFragment homeFragment;
     private ClassifyFragment classifyFragment;
     private ShoppingCartFragment shoppingCartFragment;
+    private LocalShopFragment localShopFragment;
     private MineFragment mineFragment;
 
     private boolean isHomeShow = true;
@@ -42,16 +44,19 @@ public class UserPresenter extends BasePresenter<UserView> {
         classifyFragment = new ClassifyFragment();
         shoppingCartFragment = new ShoppingCartFragment();
         mineFragment = new MineFragment();
+        localShopFragment = new LocalShopFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(resId, homeFragment)
                 .add(resId, classifyFragment)
                 .add(resId, shoppingCartFragment)
-                .add(resId, mineFragment);
+                .add(resId, mineFragment)
+                .add(resId, localShopFragment);
         transaction.show(homeFragment)
                 .hide(classifyFragment)
                 .hide(shoppingCartFragment)
                 .hide(mineFragment)
+                .hide(localShopFragment)
                 .commit();
     }
 
@@ -62,6 +67,7 @@ public class UserPresenter extends BasePresenter<UserView> {
                     .hide(classifyFragment)
                     .hide(shoppingCartFragment)
                     .hide(mineFragment)
+                    .hide(localShopFragment)
                     .commit();
             isHomeShow = true;
         } else if (resId == R.id.user_classify) {
@@ -69,6 +75,7 @@ public class UserPresenter extends BasePresenter<UserView> {
                     .hide(homeFragment)
                     .hide(shoppingCartFragment)
                     .hide(mineFragment)
+                    .hide(localShopFragment)
                     .commit();
             isHomeShow = false;
         } else if (resId == R.id.user_shopping_cart) {
@@ -76,6 +83,7 @@ public class UserPresenter extends BasePresenter<UserView> {
                     .hide(homeFragment)
                     .hide(classifyFragment)
                     .hide(mineFragment)
+                    .hide(localShopFragment)
                     .commit();
             isHomeShow = false;
         } else if (resId == R.id.user_mine) {
@@ -83,6 +91,15 @@ public class UserPresenter extends BasePresenter<UserView> {
                     .hide(homeFragment)
                     .hide(classifyFragment)
                     .hide(shoppingCartFragment)
+                    .hide(localShopFragment)
+                    .commit();
+            isHomeShow = false;
+        } else if (resId == R.id.user_local_shop) {
+            transaction.show(localShopFragment)
+                    .hide(homeFragment)
+                    .hide(classifyFragment)
+                    .hide(shoppingCartFragment)
+                    .hide(mineFragment)
                     .commit();
             isHomeShow = false;
         }

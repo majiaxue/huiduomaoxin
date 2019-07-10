@@ -122,8 +122,7 @@
                         android:layout_width="@dimen/dp_92"
                         android:layout_height="@dimen/dp_92"
                         android:layout_marginLeft="@dimen/dp_3"
-                        android:layout_marginTop="@dimen/dp_6"
-                        android:src="@drawable/img_108" />
+                        android:layout_marginTop="@dimen/dp_6" />
 
                     <TextView
                         android:id="@+id/order_confirm_goods"
@@ -135,7 +134,6 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:maxLines="2"
-                        android:text="原宿潮牌短袖T恤男夏季新款休闲欧美bf风青少年韩版宽松大码T恤"
                         android:textColor="#777777"
                         android:textSize="@dimen/sp_13" />
 
@@ -162,7 +160,6 @@
                         android:layout_alignLeft="@id/order_confirm_goods"
                         android:layout_alignBottom="@id/order_confirm_img"
                         android:includeFontPadding="false"
-                        android:text="¥59"
                         android:textColor="@color/codeText"
                         android:textSize="@dimen/sp_15" />
 
@@ -363,7 +360,6 @@
                         android:id="@+id/order_confirm_xiaoji"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="￥100"
                         android:textColor="@color/codeText"
                         android:textSize="@dimen/sp_11" />
                 </LinearLayout>
