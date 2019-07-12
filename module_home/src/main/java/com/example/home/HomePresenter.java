@@ -282,6 +282,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
                 }else if (position == 9){
                     ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                }else if (position == 10){
+                    ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
+                }else if (position == 1){
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",1).navigation();
+                }else if (position == 7){
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",2).navigation();
+                }else if (position == 8){
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",3).navigation();
                 }
             }
         });

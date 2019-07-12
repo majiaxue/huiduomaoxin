@@ -33,7 +33,7 @@ import butterknife.BindView;
 @Route(path = "/home/main")
 public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> implements MainView {
 
-    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
     private final int REQUEST_CODE = 0xa123;
     @BindView(R2.id.main_home)
     RadioButton mainHome;

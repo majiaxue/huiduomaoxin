@@ -153,14 +153,14 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeHotRecommend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",4).navigation();
             }
         });
         //抖劵购买
         homeDouJuanBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ARouter.getInstance().build("/module_home/ShakeStockActivity").navigation();
             }
         });
         //打卡签到
@@ -174,7 +174,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeFreeOfCharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
             }
         });
 
