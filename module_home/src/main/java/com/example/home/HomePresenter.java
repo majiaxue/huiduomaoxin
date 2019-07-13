@@ -290,6 +290,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",2).navigation();
                 }else if (position == 8){
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",3).navigation();
+                }else if (position == 5){
+                    ARouter.getInstance().build("/module_user_store/LocationActivity").navigation();
                 }
             }
         });

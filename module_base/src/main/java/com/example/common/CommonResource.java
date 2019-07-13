@@ -126,6 +126,8 @@ public class CommonResource {
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
     public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
     public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
+    public static final String TBKGOODSGETITEMS = "/rest/tbk/goods/getitems";//淘抢购/聚划算/9.9元淘客商品库 API
+    public static final String TBKGOODSGETTRILLDATA = "/rest/tbk/goods/gettrilldata";//抖券直播
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
