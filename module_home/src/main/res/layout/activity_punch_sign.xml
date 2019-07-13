@@ -63,6 +63,7 @@
                 android:background="@drawable/img_qianbao">
 
                 <TextView
+                    android:id="@+id/punch_sign_ji_fen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_33"
@@ -82,6 +83,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/punch_sign_bottom_qian_dao"
                 android:layout_width="@dimen/dp_346"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginTop="@dimen/dp_11"
@@ -106,6 +108,7 @@
                     android:textSize="@dimen/sp_14" />
 
                 <TextView
+                    android:id="@+id/punch_sign_several_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -125,6 +128,7 @@
                     android:textSize="@dimen/sp_14" />
 
                 <TextView
+                    android:id="@+id/punch_sign_ji_fen_zhi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -195,6 +199,7 @@
                             android:textSize="@dimen/sp_13" />
 
                         <TextView
+                            android:id="@+id/punch_sign_text11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="完成0/1"
@@ -204,6 +209,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/punch_sign_text111"
                         android:layout_width="@dimen/dp_76"
                         android:layout_height="@dimen/dp_31"
                         android:layout_alignParentRight="true"
@@ -247,6 +253,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/punch_sign_text2222"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="每日浏览五件商品以上"
@@ -254,6 +261,7 @@
                         android:textSize="@dimen/sp_13" />
 
                     <TextView
+                        android:id="@+id/punch_sign_text22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="完成0/5"
@@ -263,6 +271,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/punch_sign_text222"
                     android:layout_width="@dimen/dp_76"
                     android:layout_height="@dimen/dp_31"
                     android:layout_alignParentRight="true"
@@ -304,6 +313,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/punch_sign_text3333"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="每日分享一件商品，上限3次"
@@ -311,6 +321,7 @@
                         android:textSize="@dimen/sp_13" />
 
                     <TextView
+                        android:id="@+id/punch_sign_text33"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="完成0/3"
@@ -320,6 +331,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/punch_sign_text333"
                     android:layout_width="@dimen/dp_76"
                     android:layout_height="@dimen/dp_31"
                     android:layout_alignParentRight="true"
@@ -361,6 +373,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/punch_sign_text4444"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="每日邀请5个好友注册"
@@ -368,15 +381,17 @@
                         android:textSize="@dimen/sp_13" />
 
                     <TextView
+                        android:id="@+id/punch_sign_text44"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="完成0/5"
+                        android:text="完成0/3"
                         android:textColor="#c74111"
                         android:textSize="@dimen/sp_13" />
 
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/punch_sign_text444"
                     android:layout_width="@dimen/dp_76"
                     android:layout_height="@dimen/dp_31"
                     android:layout_alignParentRight="true"
@@ -440,6 +455,7 @@
                             android:textSize="@dimen/sp_13" />
 
                         <TextView
+                            android:id="@+id/punch_sign_text55"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="完成0/1"
@@ -449,6 +465,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/punch_sign_text555"
                         android:layout_width="@dimen/dp_76"
                         android:layout_height="@dimen/dp_31"
                         android:layout_alignParentRight="true"
@@ -492,6 +509,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/punch_sign_text6666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="有效订单(自购或分享)"
@@ -499,6 +517,7 @@
                         android:textSize="@dimen/sp_13" />
 
                     <TextView
+                        android:id="@+id/punch_sign_text66"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="完成0/1"
@@ -508,6 +527,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/punch_sign_text666"
                     android:layout_width="@dimen/dp_76"
                     android:layout_height="@dimen/dp_31"
                     android:layout_alignParentRight="true"
@@ -550,6 +570,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/punch_sign_text7777"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="邀请粉丝5人以上"
@@ -557,6 +578,7 @@
                         android:textSize="@dimen/sp_13" />
 
                     <TextView
+                        android:id="@+id/punch_sign_text77"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="完成0/5"
@@ -566,6 +588,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/punch_sign_text777"
                     android:layout_width="@dimen/dp_76"
                     android:layout_height="@dimen/dp_31"
                     android:layout_alignParentRight="true"

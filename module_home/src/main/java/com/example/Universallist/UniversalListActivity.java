@@ -13,7 +13,10 @@ import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
+import com.example.view.CustomHeader;
+import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +60,9 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             includeTitle.setText("聚划算");
         }
         presenter.universalList(universalListRec,position);
+
+        universalListSmartRefresh.setRefreshHeader(new MaterialHeader(this));
+        universalListSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
     }
 
     @Override

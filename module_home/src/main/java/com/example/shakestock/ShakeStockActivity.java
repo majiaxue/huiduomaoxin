@@ -38,7 +38,8 @@ public class ShakeStockActivity extends BaseActivity<ShakeStockView, ShakeStockP
         StatusBarUtils.setStatusBar(this, getResources().getColor(R.color.black));
 
         presenter.recyclerVideo(shakeStockRec);
-        String url = "http://video.haodanku.com/ff02cd42e310c04251892b53d13e8d63?attname=1562752503.mp4";
+
+//        String url = "http://video.haodanku.com/ff02cd42e310c04251892b53d13e8d63?attname=1562752503.mp4";
 //        shakeStockVideo.setVideoPath(url);
 //        shakeStockVideo.seekTo(0);
 //        shakeStockVideo.requestFocus();

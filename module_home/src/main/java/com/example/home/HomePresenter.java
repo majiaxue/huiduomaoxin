@@ -28,6 +28,7 @@ import com.example.bean.GoodChoiceBean;
 import com.example.bean.ZBannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
+import com.example.entity.EventBusBean2;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.GoodsRecommendAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
@@ -46,6 +47,8 @@ import com.example.view.SelfDialog;
 import com.example.view.animation.RotateYTransformer;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,18 +283,18 @@ public class HomePresenter extends BasePresenter<HomeView> {
                             .navigation();
                 } else if (position == 3) {
                     ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
-                }else if (position == 9){
+                } else if (position == 9) {
                     ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
-                }else if (position == 10){
+                } else if (position == 10) {
                     ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
-                }else if (position == 1){
-                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",1).navigation();
-                }else if (position == 7){
-                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",2).navigation();
-                }else if (position == 8){
-                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",3).navigation();
-                }else if (position == 5){
-                    ARouter.getInstance().build("/module_user_store/LocationActivity").navigation();
+                } else if (position == 1) {
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 1).navigation();
+                } else if (position == 7) {
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 2).navigation();
+                } else if (position == 8) {
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 3).navigation();
+                } else if (position == 5) {
+//                    ARouter.getInstance().build("/module_user_store/LocationActivity").navigation();
                 }
             }
         });

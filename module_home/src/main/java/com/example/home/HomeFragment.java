@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,13 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;
 import com.example.view.MarqueeView;
+import com.example.view.SelfDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -153,28 +157,127 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeHotRecommend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position",4).navigation();
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).navigation();
+                } else {
+                    //是否登录
+                    final SelfDialog selfDialog = new SelfDialog(getContext());
+                    selfDialog.setTitle("提示");
+                    selfDialog.setMessage("您未登陆是否去登陆？");
+                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            selfDialog.dismiss();
+                        }
+                    });
+                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            ARouter.getInstance().build("/mine/login").navigation();
+                            selfDialog.dismiss();
+                        }
+                    });
+                    PopUtils.setTransparency(getContext(), 0.3f);
+                    selfDialog.show();
+                }
+
             }
         });
         //抖劵购买
         homeDouJuanBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_home/ShakeStockActivity").navigation();
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/module_home/ShakeStockActivity").navigation();
+                } else {
+                    //是否登录
+                    final SelfDialog selfDialog = new SelfDialog(getContext());
+                    selfDialog.setTitle("提示");
+                    selfDialog.setMessage("您未登陆是否去登陆？");
+                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            selfDialog.dismiss();
+                        }
+                    });
+                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            ARouter.getInstance().build("/mine/login").navigation();
+                            selfDialog.dismiss();
+                        }
+                    });
+                    PopUtils.setTransparency(getContext(), 0.3f);
+                    selfDialog.show();
+                }
+
             }
         });
         //打卡签到
         homePunchSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                } else {
+                    //是否登录
+                    final SelfDialog selfDialog = new SelfDialog(getContext());
+                    selfDialog.setTitle("提示");
+                    selfDialog.setMessage("您未登陆是否去登陆？");
+                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            selfDialog.dismiss();
+                        }
+                    });
+                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            ARouter.getInstance().build("/mine/login").navigation();
+                            selfDialog.dismiss();
+                        }
+                    });
+                    PopUtils.setTransparency(getContext(), 0.3f);
+                    selfDialog.show();
+                }
             }
         });
         //今日免单
         homeFreeOfCharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
+                } else {
+                    //是否登录
+                    final SelfDialog selfDialog = new SelfDialog(getContext());
+                    selfDialog.setTitle("提示");
+                    selfDialog.setMessage("您未登陆是否去登陆？");
+                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            selfDialog.dismiss();
+                        }
+                    });
+                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            PopUtils.setTransparency(getContext(), 1f);
+                            ARouter.getInstance().build("/mine/login").navigation();
+                            selfDialog.dismiss();
+                        }
+                    });
+                    PopUtils.setTransparency(getContext(), 0.3f);
+                    selfDialog.show();
+                }
+
             }
         });
 
