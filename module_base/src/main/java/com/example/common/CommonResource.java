@@ -79,6 +79,8 @@ public class CommonResource {
     public static final String UP_JUSTNOW = "/rest/user/level/up";          //立即升级
     public static final String USER_AGREEMENT = "/rest/html/xy";            //获取用户协议
     public static final String CHECKUP = "/rest/parameter/apk/0";            //检查更新app
+    public static final String GETPOINTS = "/rest/user/my/integration";     //获取我的积分
+    public static final String POINTS_CRASH = "/rest/user/cashOut/aliPay/integration";      //积分提现
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

@@ -26,6 +26,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.TBBean;
 import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBLedSecuritiesBean;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -135,6 +136,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     public void initData() {
         ARouter.getInstance().inject(this);
         LogUtil.e("123456              " + para + "        " + shopType);
+        ModuleBaseApplication.initShare();
         shopXinxi.setVisibility(View.GONE);
         customDialog = new CustomDialog(this);
         customDialog.show();

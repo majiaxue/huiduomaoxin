@@ -1,10 +1,16 @@
 package com.example.net;
 
+import java.io.IOException;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -43,7 +49,7 @@ public class RetrofitUtil {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient())
+                .client(getHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(ApiService.class);
@@ -61,23 +67,47 @@ public class RetrofitUtil {
 
     }
 
-//    private OkHttpClient getHttpClient(final Context context) {
-//        final String token = SPUtil.getToken();
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-//                .addInterceptor(new Interceptor() {
-//                    @Override
-//                    public Response intercept(Chain chain) throws IOException {
+    private OkHttpClient getHttpClient() {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
 //                        Request build = null;
 //                        try {
 //                            build = chain.request().newBuilder()
-//                                    .addHeader("Authorization", token)
+//                                    .addHeader("relationId", "1")
 //                                    .build();
 //                        } catch (Exception e) {
 //                            e.printStackTrace();
 //                        }
 //                        return chain.proceed(build);
-//                    }
-//                }).build();
-//        return okHttpClient;
-//    }
+
+                        Request oldRequest = chain.request();
+                        Request request = addParam(oldRequest);
+
+                        return chain.proceed(request);
+                    }
+                }).build();
+        return okHttpClient;
+    }
+
+    /**
+     * 添加公共参数
+     *
+     * @param oldRequest
+     * @return
+     */
+    private Request addParam(Request oldRequest) {
+
+        HttpUrl.Builder builder = oldRequest.url()
+                .newBuilder()
+                .setEncodedQueryParameter("relationId", "1");
+
+        Request newRequest = oldRequest.newBuilder()
+                .method(oldRequest.method(), oldRequest.body())
+                .url(builder.build())
+                .build();
+
+        return newRequest;
+    }
 }

@@ -50,6 +50,7 @@
                     app:clipChildrenTopBottomMargin="@dimen/dp_18"
                     app:isAutoPlay="false"
                     app:isClipChildrenMode="true"
+                    app:isClipChildrenModeLessThree="true"
                     app:pointsVisibility="false"
                     app:viewPagerClipChildren="true" />
 

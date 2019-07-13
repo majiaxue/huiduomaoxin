@@ -54,7 +54,7 @@ public class ForgetPresneter extends BasePresenter<ForgetView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }));
         }

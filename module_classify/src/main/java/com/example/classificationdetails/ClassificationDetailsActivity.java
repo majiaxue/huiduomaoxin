@@ -242,6 +242,15 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     }
 
     @Override
+    public void moveTo(int num, boolean isWaterfall) {
+        if (isWaterfall) {
+            gridLayoutManager.scrollToPosition(num);
+        } else {
+            linearLayoutManager.scrollToPosition(num);
+        }
+    }
+
+    @Override
     public void loadFinish() {
         mRefresh.finishRefresh();
         mRefresh.finishLoadMore();

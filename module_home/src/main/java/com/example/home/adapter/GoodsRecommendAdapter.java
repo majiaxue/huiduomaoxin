@@ -42,7 +42,6 @@ public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodsRecommendBean.
         holder.setText(R.id.base_preferential_price, "￥" + couponPrice);//优惠价
         holder.setText(R.id.base_original_price, "￥" + data.getZk_final_price());//原价
         holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");//已抢数量
-        LogUtil.e("商品佣金"+data.getCommission_rate());
         holder.setText(R.id.base_estimate, "预估赚"+ArithUtil.mul(mul,SPUtil.getFloatValue(CommonResource.BACKBL)));
         holder.setText(R.id.base_upgrade, "升级赚"+ArithUtil.mul(mul,0.8));
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿

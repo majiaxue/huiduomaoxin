@@ -81,7 +81,7 @@ public class CodeLoginPresenter extends BasePresenter<CodeLoginView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }));
         }

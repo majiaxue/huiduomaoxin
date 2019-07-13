@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.bean.BannerBean;
 import com.example.bean.InviteBean;
 import com.example.common.CommonResource;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -61,6 +62,8 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
     public void initData() {
         includeTitle.setText("邀请好友");
         ProcessDialogUtil.showProcessDialog(this);
+
+        ModuleBaseApplication.initShare();
 
         WebSettings settings1 = webView1.getSettings();
         settings1.setJavaScriptEnabled(true);

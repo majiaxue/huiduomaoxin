@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.CommodityDetailsBean;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -135,6 +136,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void initData() {
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
+        ModuleBaseApplication.initShare();
         customDialog = new CustomDialog(this);
         customDialog.show();
         LogUtil.e("goods_id" + goods_id);

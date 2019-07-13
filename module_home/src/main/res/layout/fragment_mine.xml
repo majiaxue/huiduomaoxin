@@ -3,8 +3,6 @@
     android:id="@+id/mine_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="false"
     android:orientation="vertical"
     android:overScrollMode="never">
 
@@ -64,14 +62,23 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/vhjfg" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/mine_lv"
-                android:layout_width="@dimen/dp_55"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_20"
                 android:layout_alignLeft="@id/mine_header"
                 android:layout_marginLeft="@dimen/dp_41"
                 android:layout_marginTop="@dimen/dp_18"
+                android:background="@drawable/bg_10_fb4619_border"
+                android:drawableLeft="@drawable/icon_huiyuanbiao"
+                android:drawablePadding="@dimen/dp_3"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingRight="@dimen/dp_8"
                 android:src="@drawable/lv_jin"
+                android:text="金牌"
+                android:textColor="#fb4619"
+                android:textSize="@dimen/sp_12"
                 android:visibility="gone" />
 
             <TextView
@@ -270,7 +277,8 @@
                     <ImageView
                         android:layout_width="@dimen/dp_27"
                         android:layout_height="@dimen/dp_27"
-                        android:layout_marginTop="@dimen/dp_17" />
+                        android:layout_marginTop="@dimen/dp_17"
+                        android:src="@drawable/icon_yue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -331,7 +339,8 @@
                     <ImageView
                         android:layout_width="@dimen/dp_27"
                         android:layout_height="@dimen/dp_27"
-                        android:layout_marginTop="@dimen/dp_17" />
+                        android:layout_marginTop="@dimen/dp_17"
+                        android:src="@drawable/icon_jifen1" />
 
                     <TextView
                         android:layout_width="wrap_content"

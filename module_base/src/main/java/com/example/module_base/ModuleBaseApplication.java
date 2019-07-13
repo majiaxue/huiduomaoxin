@@ -20,7 +20,6 @@ import com.umeng.socialize.PlatformConfig;
 
 public class ModuleBaseApplication extends MultiDexApplication {
     private static Context context;
-    public static IWXAPI wxapi;
 
     @Override
     public void onCreate() {
@@ -35,7 +34,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         FlowManager.init(this);
         initFresco();
 
-        wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
+        IWXAPI wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
         wxapi.registerApp(CommonResource.WXAPPID);
 
         //友盟
@@ -79,7 +78,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         ARouter.getInstance().destroy();
     }
 
-    private void initShare() {
+    public static void initShare() {
         PlatformConfig.setWeixin("wxf08fd2965ac9ac30", "2d54eace93a3bda15d041ee594b7eeef");
 //        PlatformConfig.setWeixin("wx7df9caffc7db4493", "abd4af996218993f30493a732b2f964f");
     }

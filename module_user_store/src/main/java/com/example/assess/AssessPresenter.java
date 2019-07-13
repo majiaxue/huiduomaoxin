@@ -8,8 +8,8 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.assess.adapter.AssessAdapter;
 import com.example.assess.adapter.AssessTitleAdapter;
 import com.example.bean.AssessBean;
-import com.example.common.CommonResource;
 import com.example.bean.AssessTitleBean;
+import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -17,7 +17,7 @@ import com.example.net.RetrofitUtil;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
-import com.example.utils.PopUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class AssessPresenter extends BasePresenter<AssessView> {
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                PopUtil.popAssessBigPic(mContext, list, index);
+                                PopUtils.popAssessBigPic(mContext, list, index);
                             }
                         });
                     }

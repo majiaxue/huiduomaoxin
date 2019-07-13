@@ -44,11 +44,10 @@
         </LinearLayout>
 
         <RadioButton
-            android:id="@+id/main_hairring"
+            android:id="@+id/main_community"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_hairring"
-            android:paddingTop="@dimen/dp_7"
-            android:visibility="gone" />
+            android:paddingTop="@dimen/dp_7" />
 
         <RadioButton
             android:id="@+id/main_mine"
