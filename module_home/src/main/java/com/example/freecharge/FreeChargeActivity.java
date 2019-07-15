@@ -38,6 +38,8 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
     View freeChargeLookBackView;
     @BindView(R2.id.free_charge_look_back)
     LinearLayout freeChargeLookBack;
+    @BindView(R2.id.free_charge_on_activity)
+    ImageView freeChargeOnActivity;
     @BindView(R2.id.free_charge_rec)
     RecyclerView freeChargeRec;
 
@@ -50,6 +52,7 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
     public void initData() {
         includeTitle.setText("0元抢购免单");
         TxtUtil.txtJianbian(freeChargeActivityText, "#febc0d", "#fb3912");
+        presenter.freeChargeActivity(0, freeChargeRec);
     }
 
     @Override
@@ -68,6 +71,7 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
                 TxtUtil.txtJianbian(freeChargeLookBackText, "#999999", "#999999");
                 freeChargeActivityView.setVisibility(View.VISIBLE);
                 freeChargeLookBackView.setVisibility(View.INVISIBLE);
+                presenter.freeChargeActivity(0, freeChargeRec);
             }
         });
         //往期回顾
@@ -78,6 +82,7 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
                 TxtUtil.txtJianbian(freeChargeActivityText, "#999999", "#999999");
                 freeChargeLookBackView.setVisibility(View.VISIBLE);
                 freeChargeActivityView.setVisibility(View.INVISIBLE);
+                presenter.freeChargeActivity(1, freeChargeRec);
             }
         });
     }
@@ -92,4 +97,14 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
         return new FreeChargePresenter(this);
     }
 
+    @Override
+    public void noGoods(boolean noGoods) {
+        if (noGoods) {
+            freeChargeRec.setVisibility(View.GONE);
+            freeChargeOnActivity.setVisibility(View.VISIBLE);
+        } else {
+            freeChargeRec.setVisibility(View.VISIBLE);
+            freeChargeOnActivity.setVisibility(View.GONE);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.Universallist;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,10 +14,14 @@ import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,10 +41,10 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
     @BindView(R2.id.universal_list_smart_refresh)
     SmartRefreshLayout universalListSmartRefresh;
 
-
-
     @Autowired(name = "position")
     int position;
+
+    private int page = 1;
 
     @Override
     public int getLayoutId() {
@@ -49,7 +54,8 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        LogUtil.e("从哪个地方近的"+position);
+        ProcessDialogUtil.showProcessDialog(this);
+        LogUtil.e("从哪个地方近的" + position);
         if (position == 4) {
             includeTitle.setText("爆款推荐");
         } else if (position == 1) {
@@ -59,10 +65,26 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
         } else if (position == 3) {
             includeTitle.setText("聚划算");
         }
-        presenter.universalList(universalListRec,position);
+        presenter.universalList(universalListRec, position, page);
 
         universalListSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         universalListSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
+
+        universalListSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                presenter.universalList(universalListRec, position, page);
+            }
+        });
+
+        universalListSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                presenter.universalList(universalListRec, position, page);
+            }
+        });
     }
 
     @Override
@@ -85,4 +107,9 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
         return new UniversalListPresenter(this);
     }
 
+    @Override
+    public void finishRefresh() {
+        universalListSmartRefresh.finishRefresh();
+        universalListSmartRefresh.finishLoadMore();
+    }
 }

@@ -3,17 +3,17 @@ package com.example.bean;
 import com.stx.xhb.xbanner.entity.SimpleBannerInfo;
 
 public class ZBannerBean extends SimpleBannerInfo {
-    private int image;
+    private String image;
 
-    public ZBannerBean(int image) {
+    public ZBannerBean(String image) {
         this.image = image;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

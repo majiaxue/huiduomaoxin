@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/dp_15"
+    android:layout_marginTop="@dimen/dp_10"
     android:layout_marginRight="@dimen/dp_15"
     android:background="@drawable/bg_corner_radius10"
     android:orientation="vertical">
@@ -29,7 +30,7 @@
             android:layout_marginRight="@dimen/dp_15">
 
             <ImageView
-                android:id="@+id/free_charge_rec_look_back_image1"
+                android:id="@+id/free_charge_rec_look_back_type"
                 android:layout_width="@dimen/dp_43"
                 android:layout_height="@dimen/dp_19"
                 android:src="@drawable/image_tbk" />
@@ -38,9 +39,9 @@
                 android:id="@+id/free_charge_rec_look_back_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/free_charge_rec_look_back_image1"
+                android:layout_alignTop="@id/free_charge_rec_look_back_type"
                 android:layout_marginLeft="@dimen/dp_12"
-                android:layout_toRightOf="@id/free_charge_rec_look_back_image1"
+                android:layout_toRightOf="@id/free_charge_rec_look_back_type"
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:lines="1"
@@ -52,8 +53,8 @@
                 android:id="@+id/free_charge_rec_look_back_preferential_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/free_charge_rec_look_back_image1"
-                android:layout_alignLeft="@id/free_charge_rec_look_back_image1"
+                android:layout_below="@id/free_charge_rec_look_back_type"
+                android:layout_alignLeft="@id/free_charge_rec_look_back_type"
                 android:layout_marginTop="@dimen/dp_9"
                 android:includeFontPadding="false"
                 android:text="￥4.99"

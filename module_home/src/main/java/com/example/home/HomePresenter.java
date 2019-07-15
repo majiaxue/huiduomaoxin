@@ -26,6 +26,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.GoodChoiceBean;
 import com.example.bean.ZBannerBean;
+import com.example.bean.ZhongXBannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.EventBusBean2;
@@ -189,23 +190,43 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     }
 
-    public void setZhongXBanner(XBanner homeZhongXbanner) {
-        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner10));
-        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner11));
-        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner12));
-        homeZhongXbanner.setBannerData(bannerBeanList);
-        homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
-            @Override
-            public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+    public void setZhongXBanner(final XBanner homeZhongXbanner) {
 
-            }
-        });
-        // 设置XBanner的页面切换特效
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.HOMEADVERTISEBOTTOM);
+        RetrofitUtil.getInstance().toSubscribe(dataWithout,new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("HomePresenterResult"+result);
+
+                ZhongXBannerBean zhongXBannerBean = JSON.parseObject(result, new TypeReference<ZhongXBannerBean>() {
+                }.getType());
+                if (zhongXBannerBean!=null){
+                    for (int i = 0; i < zhongXBannerBean.getRecords().size(); i++) {
+                        bannerBeanList.add(new ZBannerBean(zhongXBannerBean.getRecords().get(i).getPicUrl()));
+                    }
+                    homeZhongXbanner.setBannerData(bannerBeanList);
+                    homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
+                        @Override
+                        public void loadBanner(XBanner banner, Object model, View view, int position) {
+                            Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+
+                        }
+                    });
+                    // 设置XBanner的页面切换特效
 //        homeZhongXbanner.setPageTransformer(Transformer.Default);
-        homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
-        // 设置XBanner页面切换的时间，即动画时长
-        homeZhongXbanner.setPageChangeDuration(1000);
+                    homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+                    // 设置XBanner页面切换的时间，即动画时长
+                    homeZhongXbanner.setPageChangeDuration(1000);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("HomePresenterErrorMsg"+errorMsg);
+            }
+        }));
+
+
     }
 
     //店铺
@@ -311,9 +332,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 LogUtil.e("优选：" + result);
                 GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
-
+                LogUtil.e("goodChoiceBean"+goodChoiceBean);
                 if (goodChoiceBean != null) {
-
                     if (goodChoiceBean.getData() != null) {
                         goodChoiceList.clear();
                         goodChoiceList.addAll(goodChoiceBean.getData());

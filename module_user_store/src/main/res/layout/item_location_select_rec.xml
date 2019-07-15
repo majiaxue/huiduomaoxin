@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/item_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_33"
+        android:layout_height="@dimen/dp_44"
         android:layout_marginLeft="16dp"
         android:gravity="center_vertical"
         android:text="北京市"

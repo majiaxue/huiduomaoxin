@@ -84,7 +84,7 @@ public class UniversalListBean {
         private String coupon_info;
         private String item_url;
         private double commission_rate;
-        private int online_end_time;
+        private long online_end_time;
         private String coupon_total_count;
         private int yilingqu;
         private String zk_final_price;
@@ -159,11 +159,11 @@ public class UniversalListBean {
             this.commission_rate = commission_rate;
         }
 
-        public int getOnline_end_time() {
+        public long getOnline_end_time() {
             return online_end_time;
         }
 
-        public void setOnline_end_time(int online_end_time) {
+        public void setOnline_end_time(long online_end_time) {
             this.online_end_time = online_end_time;
         }
 

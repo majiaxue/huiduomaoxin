@@ -111,13 +111,14 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "您还未完成任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
     public void shareCount(){
-        Map map = MapUtil.getInstance().addParms("count", 3).build();
+        final int count = 3;
+        Map map = MapUtil.getInstance().addParms("count", count).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.SIGNSHARE, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -125,14 +126,14 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
                 LogUtil.e("每日分享Result" + result);
                 if (result.contains("true")) {
                     if (getView() != null) {
-                        getView().shareCount();
+                        getView().shareCount(count);
                     }
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "您还未完成任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -152,7 +153,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "您还未完成任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -172,7 +173,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "您还未完成任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -192,7 +193,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "您还未完成任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -212,7 +213,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "您还未完成任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }

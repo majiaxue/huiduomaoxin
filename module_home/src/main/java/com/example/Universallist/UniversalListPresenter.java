@@ -30,7 +30,7 @@ import io.reactivex.Observable;
 
 public class UniversalListPresenter extends BasePresenter<UniversalListView> {
 
-    private String itemtype;
+    private String itemType;
     List<UniversalListBean.DataBean> dataBeanList = new ArrayList<>();
 
 
@@ -43,22 +43,21 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
 
     }
 
-    public void universalList(final RecyclerView universalListRec, int position) {
-        ProcessDialogUtil.showProcessDialog(mContext);
+    public void universalList(final RecyclerView universalListRec, int position, final int page) {
         if (position == 1) {
             //淘抢购
-            itemtype = "tqg";
+            itemType = "item";
         } else if (position == 2) {
             //9.9包邮
-            itemtype = "item";
+            itemType = "tqg";
         } else if (position == 3) {
             //聚划算
-            itemtype = "ju";
+            itemType = "ju";
         } else {
             //爆款推荐
-
+            itemType = "item";
         }
-        Map map = MapUtil.getInstance().addParms("page", 1).addParms("itemtype", itemtype).build();
+        Map map = MapUtil.getInstance().addParms("page", page).addParms("itemtype", itemType).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETITEMS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
@@ -68,13 +67,14 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                 UniversalListBean universalListBean = JSON.parseObject(result, new TypeReference<UniversalListBean>() {
                 }.getType());
                 if (universalListBean != null && universalListBean.getData() != null) {
-                    dataBeanList.clear();
+                    if (page == 1) {
+                        dataBeanList.clear();
+                    }
                     dataBeanList.addAll(universalListBean.getData());
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
                     UniversalListRecAdapter universalListRecAdapter = new UniversalListRecAdapter(mContext, dataBeanList, R.layout.item_universal_list_rec);
                     universalListRec.setLayoutManager(gridLayoutManager);
                     universalListRec.setAdapter(universalListRecAdapter);
-
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
@@ -84,11 +84,13 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                         }
                     });
                 }
+                getView().finishRefresh();
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 ProcessDialogUtil.dismissDialog();
+                getView().finishRefresh();
             }
         }));
     }
