@@ -13,4 +13,10 @@ public interface LocalShopView extends IView {
     void loadNavbar(LocalNavbarAdapter adapter);
 
     void loadSeller(LocalSellerAdapter adapter);
+
+    void changed(boolean isDistanceJin, boolean isStarMore);
+
+    void loadFinish();
+
+    void noData();
 }

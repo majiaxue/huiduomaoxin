@@ -30,6 +30,12 @@ android {
 //        // 设置分包配置
         multiDexKeepFile file('multidex-config.txt')
 
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.example.taobaoguest_android",
+                JPUSH_APPKEY : "a6db2b6c24a07fc1b1de7abb", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+
     }
 
     signingConfigs {

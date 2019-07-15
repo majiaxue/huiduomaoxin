@@ -7,27 +7,29 @@ import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.CommunityLocalBean;
 import com.example.module_home.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsCommendAdapter extends MyRecyclerAdapter<String> {
-    public GoodsCommendAdapter(Context context, List<String> mList, int mLayoutId) {
+public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
+    public GoodsCommendAdapter(Context context, List<CommunityLocalBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, String data, int position) {
-        List<Integer> list = new ArrayList<>();
-        list.add(R.drawable.img_temp);
-        list.add(R.drawable.img_temp);
-        list.add(R.drawable.img_temp);
+    public void convert(RecyclerViewHolder holder, CommunityLocalBean data, int position) {
+        holder.setText(R.id.rv_goods_commend_name, data.getItemtitle())
+                .setText(R.id.rv_goods_commend_content, data.getContent())
+                .setText(R.id.rv_goods_commend_profit, data.getCouponmoney());
 
+
+        List<String> pics = data.getPics();
         RecyclerView rv = holder.getView(R.id.rv_goods_commend_img);
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rv.setLayoutManager(layoutManager);
-        GoodsCommendInsideAdapter adapter = new GoodsCommendInsideAdapter(context, list, R.layout.rv_goods_commend_inside);
+        GoodsCommendInsideAdapter adapter = new GoodsCommendInsideAdapter(context, pics, R.layout.rv_goods_commend_inside);
         rv.setAdapter(adapter);
 
         adapter.setOnItemClick(new OnItemClickListener() {

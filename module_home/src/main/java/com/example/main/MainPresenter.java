@@ -329,6 +329,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     is.close();
                 } catch (Exception e) {
                     mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
+                    LogUtil.e("------>"+e.getMessage());
                     e.printStackTrace();
                 }
             }

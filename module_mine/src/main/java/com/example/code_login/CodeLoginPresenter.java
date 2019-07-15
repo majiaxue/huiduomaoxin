@@ -11,6 +11,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PhoneNumUtil;
@@ -75,6 +76,8 @@ public class CodeLoginPresenter extends BasePresenter<CodeLoginView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+
+                    JpushUtil.setAlias(userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

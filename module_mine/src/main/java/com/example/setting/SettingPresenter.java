@@ -28,6 +28,7 @@ import com.example.replace_phone.ReplacePhoneActivity;
 import com.example.update_password.UpdatePasswordActivity;
 import com.example.utils.CacheUtil;
 import com.example.utils.ImageUtil;
+import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnChangeHeaderListener;
@@ -277,6 +278,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("退出：" + result);
+                JpushUtil.deleteAlias();
                 SPUtil.loginOut();
                 ((Activity) mContext).finish();
             }

@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="@dimen/dp_351"
         android:layout_height="@dimen/dp_189"
-        android:background="@drawable/bg_mine_top">
+        android:background="@drawable/bg_10_fff">
 
         <TextView
             android:id="@+id/lst_message_center_title"

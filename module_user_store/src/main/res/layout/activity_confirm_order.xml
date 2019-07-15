@@ -89,7 +89,7 @@
                 android:layout_height="@dimen/dp_105"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/bg_mine_top"
+                android:background="@drawable/bg_10_fff"
                 android:orientation="vertical">
 
                 <LinearLayout

@@ -40,7 +40,7 @@
             android:layout_below="@id/mine_status"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_45"
-            android:background="@drawable/bg_mine_top"
+            android:background="@drawable/bg_10_fff"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:elevation="@dimen/dp_4"
@@ -387,7 +387,7 @@
             android:layout_below="@id/mine_linear"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/bg_mine_top"
+            android:background="@drawable/bg_10_fff"
             android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 
@@ -410,7 +410,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_mine_top"
+                android:background="@drawable/bg_10_fff"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -510,7 +510,7 @@
             android:layout_below="@id/mine_linea"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/bg_mine_top"
+            android:background="@drawable/bg_10_fff"
             android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 
@@ -619,7 +619,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_19"
-            android:background="@drawable/bg_mine_top"
+            android:background="@drawable/bg_10_fff"
             android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 

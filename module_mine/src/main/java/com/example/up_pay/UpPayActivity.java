@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.SPUtil;
 
 import butterknife.BindView;
 
@@ -77,6 +78,7 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
         uppayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                uppayBtn.setEnabled(false);
                 presenter.pay(isWeChat, money, type);
             }
         });
@@ -85,6 +87,20 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
     private void changePayType() {
         uppayWeixinImg.setImageResource(isWeChat ? R.drawable.icon_xuanzhong : R.drawable.icon_weixuanzhong);
         uppayZfbImg.setImageResource(isWeChat ? R.drawable.icon_weixuanzhong : R.drawable.icon_xuanzhong);
+    }
+
+    @Override
+    public void callBack() {
+        uppayBtn.setEnabled(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if ("3".equals(SPUtil.getStringValue("wxpay"))) {
+            SPUtil.addParm("wxpay", "");
+            finish();
+        }
     }
 
     @Override

@@ -8,19 +8,22 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
-import com.example.bean.SubmitOrderBean;
+import com.example.bean.WeChatPayBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
+import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.Map;
 
@@ -64,7 +67,41 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
     public void pay(boolean isWeChat, String money, String type) {
         this.type = type;
         if (isWeChat) {
-            Toast.makeText(mContext, "开发中...", Toast.LENGTH_SHORT).show();
+            final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
+
+            Map map = MapUtil.getInstance().addParms("totalAmount", Double.valueOf(money) * 100).addParms("userCode", SPUtil.getUserCode()).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.UP_WXPAY, map);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("微信支付-------------->" + result);
+                    try {
+
+                        WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
+
+                        PayReq request = new PayReq();
+                        request.appId = payBean.getAppid();
+                        request.partnerId = payBean.getPartnerid();
+                        request.prepayId = payBean.getPrepayid();
+                        request.packageValue = "Sign=WXPay";
+                        request.nonceStr = payBean.getNoncestr();
+                        request.timeStamp = payBean.getTimestamp();
+                        request.sign = payBean.getSign();
+
+                        api.registerApp(CommonResource.WXAPPID);
+                        api.sendReq(request);
+                        SPUtil.addParm("wxpay", "2");
+                        getView().callBack();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e(errorCode + "------------" + errorMsg);
+                }
+            }));
         } else {
             ProcessDialogUtil.showProcessDialog(mContext);
             Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();

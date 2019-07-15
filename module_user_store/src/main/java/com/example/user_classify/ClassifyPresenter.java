@@ -16,6 +16,7 @@ import com.example.net.RetrofitUtil;
 import com.example.user_classify.adapter.UserLeftRvAdapter;
 import com.example.user_classify.adapter.UserRightRecAdapter;
 import com.example.user_store.R;
+import com.example.utils.LogUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

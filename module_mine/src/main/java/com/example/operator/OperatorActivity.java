@@ -3,6 +3,7 @@ package com.example.operator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.operator.adapter.YysFactorAdapter;
+import com.example.operator.adapter.YysQuanyiAdapter;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
@@ -39,6 +41,8 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     TextView mTitle;
     @BindView(R2.id.operator_status)
     LinearLayout mStatus;
+    @BindView(R2.id.operator_goods)
+    RecyclerView mGoods;
 
     @Override
     public int getLayoutId() {
@@ -57,7 +61,13 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
         SpaceItemDecoration itemDecoration = new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_12));
         mRv.setLayoutManager(layoutManager);
         mRv.addItemDecoration(itemDecoration);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        mGoods.setLayoutManager(gridLayoutManager);
+        mGoods.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_8)));
+
         presenter.loadData();
+        presenter.loadQuanyi();
         mScorll.setOnScrollChangeListener(this);
     }
 
@@ -97,6 +107,11 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         CallbackContext.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void loadQuanyi(YysQuanyiAdapter adapter) {
+        mGoods.setAdapter(adapter);
     }
 
     @Override

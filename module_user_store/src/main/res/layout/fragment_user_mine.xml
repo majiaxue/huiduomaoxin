@@ -32,7 +32,7 @@
                 android:layout_height="@dimen/dp_176"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_50"
-                android:background="@drawable/bg_mine_top"
+                android:background="@drawable/bg_10_fff"
                 android:elevation="@dimen/dp_6"
                 android:orientation="vertical">
 
@@ -198,7 +198,7 @@
                 android:layout_below="@id/user_mine_rela"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_10"
-                android:background="@drawable/bg_mine_top"
+                android:background="@drawable/bg_10_fff"
                 android:elevation="@dimen/dp_6"
                 android:orientation="vertical">
 
@@ -235,7 +235,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_mine_top"
+                    android:background="@drawable/bg_10_fff"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -366,7 +366,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_15"
                 android:layout_marginBottom="@dimen/dp_19"
-                android:background="@drawable/bg_mine_top"
+                android:background="@drawable/bg_10_fff"
                 android:elevation="@dimen/dp_6"
                 android:orientation="vertical">
 
@@ -389,7 +389,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_83"
-                    android:background="@drawable/bg_mine_top"
+                    android:background="@drawable/bg_10_fff"
                     android:orientation="horizontal">
 
                     <LinearLayout

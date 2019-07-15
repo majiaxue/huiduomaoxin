@@ -1,6 +1,7 @@
 package com.example.net;
 
 import com.example.common.CommonResource;
+import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
@@ -38,13 +39,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
         ProcessDialogUtil.dismissDialog();
         try {
             String string = responseBody.string();
-//            BaseEntity baseEntity = JSON.parseObject(string, new TypeReference<BaseEntity>() {
-//            }.getType());
-//            if (CommonResource.CODE_SUCCESS.equals(baseEntity.getCode())) {
-//                listener.onSuccess(JSON.toJSONString(baseEntity.getData()), baseEntity.getMsg());
-//            } else {
-//                listener.onError(baseEntity.getCode(), baseEntity.getMsg());
-//            }
+LogUtil.e("==================>"+string);
             JSONObject jsonObject = new JSONObject(string);
 
             String code = jsonObject.optString("code");
@@ -53,8 +48,8 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
             if (CommonResource.CODE_SUCCESS.equals(code)) {
                 listener.onSuccess(data, msg);
             } else if (CommonResource.TOKEN_EXPIRE.equals(code)) {
-//                SPUtil.addParm(CommonResource.TOKEN, "");
                 SPUtil.clear();
+                JpushUtil.deleteAlias();
                 listener.onError(code, msg);
             } else {
                 listener.onError(code, msg);

@@ -11,7 +11,7 @@
         android:layout_marginLeft="@dimen/dp_14"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_14"
-        android:background="@drawable/bg_mine_top"
+        android:background="@drawable/bg_10_fff"
         android:orientation="vertical">
 
         <LinearLayout

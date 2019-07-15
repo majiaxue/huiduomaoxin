@@ -32,8 +32,12 @@ public class YysFactorAdapter extends MyRecyclerAdapter<OperatorBean> {
                     .setText(R.id.rv_yys_price, data.getPrice() + "元");
         }
 
-        if (viewOnClickListener != null) {
-            viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_yys_topay), position);
+//        if (viewOnClickListener != null) {
+//            viewOnClickListener.ViewOnClick(holder.getView(R.id.rv_yys_topay), position);
+//        }
+
+        if (viewTwoOnClickListener != null) {
+            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_yys_just_up),holder.getView(R.id.rv_yys_topay), position);
         }
 
     }

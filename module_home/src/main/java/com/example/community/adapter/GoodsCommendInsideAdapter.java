@@ -8,13 +8,13 @@ import com.example.module_home.R;
 
 import java.util.List;
 
-public class GoodsCommendInsideAdapter extends MyRecyclerAdapter<Integer> {
-    public GoodsCommendInsideAdapter(Context context, List<Integer> mList, int mLayoutId) {
+public class GoodsCommendInsideAdapter extends MyRecyclerAdapter<String> {
+    public GoodsCommendInsideAdapter(Context context, List<String> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, Integer data, int position) {
-        holder.setImageResource(R.id.rv_goods_commend_inside_img, data);
+    public void convert(RecyclerViewHolder holder, String data, int position) {
+        holder.setImageUrl(R.id.rv_goods_commend_inside_img, data);
     }
 }

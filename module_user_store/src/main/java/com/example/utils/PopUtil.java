@@ -73,6 +73,7 @@ public class PopUtil {
         rv.setLayoutManager(layoutManager);
         final PopLingQuanAdapter adapter = new PopLingQuanAdapter(context, dataList, R.layout.rv_pop_lingquan);
         rv.setAdapter(adapter);
+
         adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
             @Override
             public void ViewOnClick(View view, final int index) {
