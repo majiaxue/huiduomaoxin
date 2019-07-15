@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.community.adapter.CommunityAdapter;
+
+import com.example.adapter.BaseVPAdapter;
 import com.example.community.good_goods.GoodGoodsFragment;
 import com.example.community.goods_commend.GoodsCommendFragment;
 import com.example.mvp.BasePresenter;
@@ -86,7 +87,7 @@ public class CommunityPresenter extends BasePresenter<CommunityView> {
         fragmentList.add(commendFragment);
         fragmentList.add(goodsFragment);
 
-        CommunityAdapter vpAdapter = new CommunityAdapter(fm, fragmentList, titleArr);
+        BaseVPAdapter vpAdapter = new BaseVPAdapter(fm, fragmentList, titleArr);
         getView().updateVP(vpAdapter);
     }
 }

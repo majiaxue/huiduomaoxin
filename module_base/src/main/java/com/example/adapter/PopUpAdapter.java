@@ -1,10 +1,8 @@
-package com.example.upgrade.adapter;
+package com.example.adapter;
 
 import android.content.Context;
 
-import com.example.adapter.MyRecyclerAdapter;
-import com.example.adapter.RecyclerViewHolder;
-import com.example.module_mine.R;
+import com.example.module_base.R;
 
 import java.util.List;
 

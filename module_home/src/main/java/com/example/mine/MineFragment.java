@@ -87,6 +87,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     TextView mPointsTxt;
 
     private UserInfoBean userInfo;
+    private boolean flag = false;
 
     @Override
     public int getLayoutId() {
@@ -222,9 +223,11 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         int y = loction[1];
         if (y <= getContext().getResources().getDimension(R.dimen.dp_35)) {
 //            StatusBarUtils.setStatusTheme(getActivity(), false, true);
+            flag = true;
             StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
         } else {
             StatusBarUtils.setStatusTheme(getActivity(), true, true);
+            flag = false;
         }
     }
 
@@ -233,6 +236,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         super.onHiddenChanged(hidden);
         if (!hidden && !"".equals(SPUtil.getToken())) {
             presenter.getPredict();
+        }
+        if (hidden) {
+            StatusBarUtils.setStatusTheme(getActivity(), true, true);
+        } else {
+            if (flag) {
+                StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
+            }
         }
     }
 
@@ -251,10 +261,10 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineCode.setText("邀请码：" + userInfo.getInviteCode());
         mineTemp.setVisibility(View.VISIBLE);
         mIWantUp.setVisibility(View.VISIBLE);
-        mBalanceTxt.setText(userInfo.getBlance());
-        mPointsTxt.setText(userInfo.getIntegration());
+        mBalanceTxt.setText(userInfo.getBlance() == null ? "0" : userInfo.getBlance());
+        mPointsTxt.setText(userInfo.getIntegration() == null ? "0" : userInfo.getIntegration());
 
-        if (userInfo.getLevel() != null) {
+        if (userInfo.getLevel() != null && "".equals(userInfo.getLevel().trim())) {
             mineLv.setVisibility(View.VISIBLE);
             mineLv.setText(userInfo.getLevel());
         } else {

@@ -3,7 +3,7 @@ package com.example.community;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
-import com.example.community.adapter.CommunityAdapter;
+import com.example.adapter.BaseVPAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
@@ -34,7 +34,7 @@ public class CommunityFragment extends BaseFragment<CommunityView, CommunityPres
     }
 
     @Override
-    public void updateVP(CommunityAdapter adapter) {
+    public void updateVP(BaseVPAdapter adapter) {
         communityVp.setAdapter(adapter);
     }
 

@@ -3,19 +3,8 @@ package com.example.upgrade;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -29,18 +18,13 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.operator.OperatorActivity;
-import com.example.upgrade.adapter.PopQuanyiAdapter;
 import com.example.upgrade.adapter.UpgradeAdapter;
-import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.utils.TxtUtil;
-import com.example.utils.UIHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -109,7 +93,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                     @Override
                     public void onClick(View v) {
                         clickPosition = position;
-                        UIHelper.popQuanYi(mContext, beanList, position, new OnClearCacheListener() {
+                        PopUtils.popQuanYi(mContext, beanList, position, new OnClearCacheListener() {
                             @Override
                             public void setOnClearCache(final PopupWindow pop, View confirm) {
                                 confirm.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +148,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
     }
 
     public void upSuccess() {
-        UIHelper.popUpSuccess(mContext, beanList.get(clickPosition), new OnClearCacheListener() {
+        PopUtils.popUpSuccess(mContext, beanList.get(clickPosition), new OnClearCacheListener() {
             @Override
             public void setOnClearCache(final PopupWindow pop, View confirm) {
                 confirm.setOnClickListener(new View.OnClickListener() {

@@ -61,6 +61,26 @@
         <activity
             android:name="com.example.local_list.LocalListActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.local_detail.LocalDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.local_coupon.LocalCouponActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.local_pay.LocalPayActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.local_mingxi.LocalMingxiActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.local_assess.LocalAssessActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -3,37 +3,47 @@ package com.example.local_shop.adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
+import com.example.bean.LocalShopBean;
 import com.example.user_store.R;
+import com.example.utils.ArithUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.RatingBarView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalSellerAdapter extends MyRecyclerAdapter<String> {
-    private int[] imgArr = {R.drawable.img_501, R.drawable.img_502, R.drawable.img_503, R.drawable.img_501, R.drawable.img_502, R.drawable.img_503, R.drawable.img_501, R.drawable.img_502, R.drawable.img_503};
+public class LocalSellerAdapter extends MyRecyclerAdapter<LocalShopBean> {
 
-    public LocalSellerAdapter(Context context, List<String> mList, int mLayoutId) {
+    public LocalSellerAdapter(Context context, List<LocalShopBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, String data, int position) {
-        holder.setImageResource(R.id.rv_local_seller_img, imgArr[position])
-                .setText(R.id.rv_local_seller_name, data);
+    public void convert(RecyclerViewHolder holder, LocalShopBean data, int position) {
+        holder.setImageUrl(R.id.rv_local_seller_img, data.getSeller_logo())
+                .setText(R.id.rv_local_seller_name, data.getSeller_shop_name())
+                .setText(R.id.rv_local_seller_type, data.getSeller_category_name())
+                .setText(R.id.rv_local_seller_address, data.getSeller_addredd());
         RatingBarView star = holder.getView(R.id.rv_local_seller_star);
         star.setClickable(false);
-        star.setStar(4, false);
+        star.setStar(Integer.valueOf(data.getStar()), false);
+
+        Integer integer = Integer.valueOf(data.getDistance().split("\\.")[0]);
+        if (integer >= 1000) {
+            holder.setText(R.id.rv_local_seller_distance, ArithUtil.div(integer * 1.0, 1000.0, 1) + "千米");
+        } else {
+            holder.setText(R.id.rv_local_seller_distance, integer + "米");
+        }
 
         RecyclerView rv = holder.getView(R.id.rv_local_seller_rv);
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rv.setLayoutManager(layoutManager);
-        SpaceItemDecoration itemDecoration = new SpaceItemDecoration(0, (int) context.getResources().getDimension(R.dimen.dp_10), 0, (int) context.getResources().getDimension(R.dimen.dp_10));
-        rv.addItemDecoration(itemDecoration);
+        if (rv.getItemDecorationCount() == 0) {
+            rv.addItemDecoration(new SpaceItemDecoration(0, (int) context.getResources().getDimension(R.dimen.dp_10), 0, (int) context.getResources().getDimension(R.dimen.dp_10)));
+        }
         List<String> list = new ArrayList<>();
 
         list.add("满20减5");

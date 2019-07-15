@@ -1,8 +1,9 @@
 package com.example.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserGoodsDetail {
+public class UserGoodsDetail implements Serializable {
 
     /**
      * id : 56
@@ -115,6 +116,15 @@ public class UserGoodsDetail {
     private List<SkuStockListBean> skuStockList;
     private List productAttributeValueList;
     private List<XsProductAttributesBean> xsProductAttributes;
+    private String levelId;
+
+    public String getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
+    }
 
     public int getId() {
         return id;

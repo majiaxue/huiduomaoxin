@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_25"
-        android:background="@drawable/bg_mine_top"
+        android:background="@drawable/bg_10_fff"
         android:paddingBottom="@dimen/dp_30">
 
         <TextView

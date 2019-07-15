@@ -2,18 +2,17 @@ package com.example.operator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.OperatorBean;
+import com.example.bean.UserGoodsDetail;
+import com.example.buy2up.Buy2UpActivity;
 import com.example.common.CommonResource;
 import com.example.invite_friends.InviteFriendsActivity;
 import com.example.module_mine.R;
@@ -22,11 +21,12 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.operator.adapter.YysFactorAdapter;
+import com.example.operator.adapter.YysQuanyiAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnClearCacheListener;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.utils.UIHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +40,7 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
     private List<OperatorBean> beanList;
     private int sort;
     private int clickPosition = 0;
+    private List<UserGoodsDetail> goodsBeans;
 
     public OperatorPresenter(Context context) {
         super(context);
@@ -121,7 +122,7 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("升级运营商：" + result);
-                UIHelper.popUpSuccess(mContext, beanList.get(clickPosition), new OnClearCacheListener() {
+                PopUtils.popUpSuccess(mContext, beanList.get(clickPosition), new OnClearCacheListener() {
                     @Override
                     public void setOnClearCache(final PopupWindow pop, View confirm) {
                         confirm.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +139,41 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("error:" + errorCode + "------------------" + errorMsg);
                 Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        }));
+    }
+
+    public void loadQuanyi() {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.OPERATOR_GOODS);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("商品：" + result);
+                try {
+                    if (result != null) {
+                        goodsBeans = JSON.parseArray(result, UserGoodsDetail.class);
+                        YysQuanyiAdapter quanyiAdapter = new YysQuanyiAdapter(mContext, goodsBeans, R.layout.rv_yys_quanyi);
+                        if (getView() != null) {
+                            getView().loadQuanyi(quanyiAdapter);
+                        }
+
+                        quanyiAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                Intent intent = new Intent(mContext, Buy2UpActivity.class);
+                                intent.putExtra("bean", goodsBeans.get(position));
+                                mContext.startActivity(intent);
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "-----------" + errorMsg);
             }
         }));
     }

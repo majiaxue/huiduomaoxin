@@ -10,10 +10,13 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.bean.ShippingAddressBean;
 import com.example.bean.SubmitOrderBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import butterknife.BindView;
 
@@ -39,6 +42,8 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
 
     @Autowired(name = "submitOrderBean")
     SubmitOrderBean submitOrderBean;
+    @Autowired(name = "wxpay")
+    String wxpay;
 
     private boolean isWeChat = true;
 
@@ -50,8 +55,6 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-//        Intent intent = getIntent();
-//        submitOrderBean = (SubmitOrderBean) intent.getSerializableExtra("bean");
         paymentMoney.setText("￥" + submitOrderBean.getTotalAmount());
     }
 
@@ -83,6 +86,7 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
         paymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                paymentBtn.setEnabled(false);
                 presenter.pay(isWeChat, submitOrderBean);
             }
         });
@@ -92,6 +96,20 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         presenter.goBack();
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if ("0".equals(SPUtil.getStringValue("wxpay"))) {
+            SPUtil.addParm("wxpay", "");
+            presenter.paySuccess();
+        }
+    }
+
+    @Override
+    public void callBack() {
+        paymentBtn.setEnabled(true);
     }
 
     private void changePayType() {

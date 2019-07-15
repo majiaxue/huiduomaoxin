@@ -43,6 +43,15 @@ public class OperatorBean {
     private String note;
     private String tenantId;
     private int sort;
+    private String nextLevel;
+
+    public String getNextLevel() {
+        return nextLevel;
+    }
+
+    public void setNextLevel(String nextLevel) {
+        this.nextLevel = nextLevel;
+    }
 
     public String getTenantId() {
         return tenantId;
@@ -227,6 +236,7 @@ public class OperatorBean {
                 ", note='" + note + '\'' +
                 ", tenantId='" + tenantId + '\'' +
                 ", sort=" + sort +
+                ", nextLevel='" + nextLevel + '\'' +
                 '}';
     }
 }

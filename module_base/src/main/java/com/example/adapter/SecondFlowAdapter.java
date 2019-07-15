@@ -1,4 +1,4 @@
-package com.example.goods_detail.adapter;
+package com.example.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,8 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.bean.ChooseInsideBean;
-import com.example.user_store.R;
-import com.example.utils.OnFlowSelectListener;
+import com.example.module_base.R;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagAdapter;
 

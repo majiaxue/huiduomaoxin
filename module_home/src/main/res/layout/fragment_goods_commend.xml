@@ -11,9 +11,15 @@
         android:background="#f5f5f5"
         android:overScrollMode="never" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/goods_commend_rv"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/goods_commend_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/goods_commend_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

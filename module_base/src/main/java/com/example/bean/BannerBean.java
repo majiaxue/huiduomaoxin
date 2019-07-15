@@ -63,6 +63,24 @@ public class BannerBean implements Serializable {
         private String note;
         private String sort;
         private String pid;
+        private String flag;
+        private String switchFlag;
+
+        public String getFlag() {
+            return flag;
+        }
+
+        public void setFlag(String flag) {
+            this.flag = flag;
+        }
+
+        public String getSwitchFlag() {
+            return switchFlag;
+        }
+
+        public void setSwitchFlag(String switchFlag) {
+            this.switchFlag = switchFlag;
+        }
 
         public String getId() {
             return id;
@@ -198,6 +216,8 @@ public class BannerBean implements Serializable {
                     ", note='" + note + '\'' +
                     ", sort='" + sort + '\'' +
                     ", pid='" + pid + '\'' +
+                    ", flag='" + flag + '\'' +
+                    ", switchFlag='" + switchFlag + '\'' +
                     '}';
         }
     }

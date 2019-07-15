@@ -9,18 +9,22 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.example.bean.TitleBean;
 import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.utils.SPUtil;
+import com.example.utils.LogUtil;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -30,7 +34,8 @@ import butterknife.BindView;
 @Route(path = "/home/main")
 public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> implements MainView {
 
-    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private final int REQUEST_CODE = 0xa123;
 
     @BindView(R2.id.main_user_mall)
@@ -70,11 +75,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         mainUserMall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
-                    Toast.makeText(MainActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
-                } else {
-                    ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
-                }
+                ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
             }
         });
     }

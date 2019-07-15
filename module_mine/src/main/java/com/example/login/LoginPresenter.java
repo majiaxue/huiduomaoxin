@@ -16,6 +16,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.register.RegisterActivity;
+import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PhoneNumUtil;
@@ -31,7 +32,10 @@ import com.umeng.socialize.PlatformConfig;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
+import java.util.Set;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
@@ -98,6 +102,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+
+                    JpushUtil.setAlias(userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }
@@ -137,6 +143,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+
+                    JpushUtil.setAlias(userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

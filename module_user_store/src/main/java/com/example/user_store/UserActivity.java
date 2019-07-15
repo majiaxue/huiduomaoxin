@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.user_classify.ClassifyFragment;
 import com.example.view.WindowInsetsFrameLayout;
@@ -54,6 +55,8 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     public void initData() {
         EventBus.getDefault().register(this);
         presenter.loadData(getSupportFragmentManager(), R.id.user_frame);
+        presenter.initNotification();
+        ModuleBaseApplication.mLocationClient.restart();
     }
 
     @Override

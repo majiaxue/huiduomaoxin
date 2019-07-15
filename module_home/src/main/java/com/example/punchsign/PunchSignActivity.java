@@ -11,6 +11,9 @@ import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
 
+/**
+ * 社区
+ */
 @Route(path = "/module_home/PunchSignActivity")
 public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPresenter> implements PunchSignView {
 

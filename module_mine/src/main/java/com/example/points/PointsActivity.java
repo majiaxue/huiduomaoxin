@@ -69,17 +69,24 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
             }
         });
 
+        includeRightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToMingXi();
+            }
+        });
+
         pointsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.commit(bean, pointsEdit.getText().toString());
+                presenter.commit(pointsEdit.getText().toString());
             }
         });
 
         pointsToall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pointsEdit.setText(bean.getMember().getIntegration());
+                pointsEdit.setText(bean.getMember().getIntegration() == null ? "0" : bean.getMember().getIntegration());
             }
         });
 
@@ -107,7 +114,7 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
                     if ("0".equals(s.toString())) {
                         pointsEdit.setText("");
                     } else if (bean.getMember().getIntegration() != null) {
-                        if (Integer.valueOf(s.toString()) > Integer.valueOf(bean.getMember().getIntegration())) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(bean.getMember().getIntegration())) {
                             pointsEdit.setText(bean.getMember().getIntegration());
                         }
                     }
@@ -138,8 +145,11 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
         } else {
             pointsZfbAccount.setText(pointsBean.getMember().getRealName() + "    " + pointsBean.getMember().getAliAccount());
         }
-        pointsMyPoints.setText(pointsBean.getMember().getIntegration() == null ? "剩余积分0，" : "剩余积分" + pointsBean.getMember().getIntegration() + "，");
-        pointsRules.setText(pointsBean.getIntegrationConf().getRatio() + "积分=1元，最小提现金额为" + pointsBean.getIntegrationConf().getMin() + "个积分，手续费为" + pointsBean.getIntegrationConf().getServiceRatio() + "%，提现必须是" + pointsBean.getIntegrationConf().getMultiple() + "的倍数");
+        if (pointsBean.getIntegrationConf() != null) {
+
+            pointsMyPoints.setText(pointsBean.getMember().getIntegration() == null ? "剩余积分0，" : "剩余积分" + pointsBean.getMember().getIntegration() + "，");
+            pointsRules.setText(pointsBean.getIntegrationConf().getRatio() + "积分=1元，最小提现金额为" + pointsBean.getIntegrationConf().getMin() + "个积分，手续费为" + pointsBean.getIntegrationConf().getServiceRatio() + "%，提现必须是" + pointsBean.getIntegrationConf().getMultiple() + "的倍数");
+        }
     }
 
     @Override

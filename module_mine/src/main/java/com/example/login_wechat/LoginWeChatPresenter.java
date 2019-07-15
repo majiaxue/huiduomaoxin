@@ -12,6 +12,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.JpushUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PhoneNumUtil;
 import com.example.utils.SPUtil;
@@ -81,6 +82,8 @@ public class LoginWeChatPresenter extends BasePresenter<LoginWeChatView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean1.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean1.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean1.getLevelId());
+
+                    JpushUtil.setAlias(userInfoBean1.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

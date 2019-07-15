@@ -1,11 +1,11 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
-    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
-    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
-    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
+    public static final String BASEURL_9001 = "http://192.168.1.9:9001";   //商品//47.99.93.123
+    public static final String BASEURL_4001 = "http://192.168.1.9:4001";   //用户
+    public static final String BASEURL_9003 = "http://192.168.1.9:9003";   //商家
+    public static final String BASEURL_9004 = "http://192.168.1.9:9004";   //订单
+    public static final String BASEURL_9005 = "http://192.168.1.9:9005";   //参数
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -81,6 +81,15 @@ public class CommonResource {
     public static final String CHECKUP = "/rest/parameter/apk/0";            //检查更新app
     public static final String GETPOINTS = "/rest/user/my/integration";     //获取我的积分
     public static final String POINTS_CRASH = "/rest/user/cashOut/aliPay/integration";      //积分提现
+    public static final String WXPAY = "/rest/WXPay/pay";                   //微信支付
+    public static final String UP_WXPAY = "/rest/WXPay/recharge";           //升级运营商微信支付
+    public static final String LOCAL_BANNER = "/rest/parameter/homeAdvertiseXx";    //本地商城轮播图
+    public static final String LOCAL_NAVBAR = "/rest/seller/sellerCategory";       //本地商城导航 /rest/seller/sellerCategory？type=值   1:线下   0：线上
+    public static final String COMMUNITY = "/rest/community/goods/mallGoods";      //社区
+    public static final String POINTS_CASHOUT_RECORD = "/rest/sign/history";        //积分记录、积分提现记录  type  0：签到记录 1：积分提现记录   4001
+    public static final String LOCAL_SHOP_GOODS = "/rest/goods/localProduct";       //商家里的商品列表
+    public static final String OPERATOR_GOODS = "/rest/goods/level";        //升级运营商商品
+    public static final String GET_QUANYI = "/rest/user/level";             //根据levelId 获取当前等级的权益
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -128,6 +137,7 @@ public class CommonResource {
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
     public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
     public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
+    public static final String LOCALSHOPLIST = "/rest/seller/seller";       //本地商城列表
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
@@ -144,8 +154,8 @@ public class CommonResource {
     public static final String USER_INVITE = "userInvite";
     public static final String BACKBL = "back";     //佣金比例
     public static final String LEVELID = "levelId";
-    public static final String TABABLE_NAME = "HISTORY";
     public static final String U_APPKEY = "5d0c57294ca35786440001c6";
     public static final String HISTORY_USER = "user";
     public static final String HISTORY_TBK = "tbk";
+    public static final String HISTORY_LOCAL = "local";
 }
