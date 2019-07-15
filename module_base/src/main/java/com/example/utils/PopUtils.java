@@ -74,6 +74,26 @@ public class PopUtils {
         });
     }
 
+    public static void viewPopBottom(View text ,final Context context, View view, int width, int height, OnPopListener listener) {
+        PopupWindow popupWindow = new PopupWindow(view, width, height, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        popupWindow.setAnimationStyle(R.style.animScale);
+//        popupWindow.showAtLocation(new View(context), Gravity.BOTTOM, 0, 0);
+        popupWindow.showAsDropDown(text,0 ,0,Gravity.BOTTOM);
+        setTransparency(context, 0.3f);
+        listener.setOnPop(popupWindow);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setTransparency(context, 1f);
+            }
+        });
+    }
+
+
+
     public static void changeHeader(final Context mContext, OnChangeHeaderListener listener) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.pop_change_header, null);
         TextView takePhoto = view.findViewById(R.id.pop_change_header_camera);

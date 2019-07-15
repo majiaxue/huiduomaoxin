@@ -153,4 +153,7 @@ dependencies {
     api files('libs/jpush-android-3.3.2.jar')
     //百度地图
     api files('libs/BaiduLBS_Android.jar')
+
+    //播放器
+    api 'cn.jzvd:jiaozivideoplayer:7.0.4'
 }

@@ -1,11 +1,11 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.1.9:9001";   //商品//47.99.93.123
-    public static final String BASEURL_4001 = "http://192.168.1.9:4001";   //用户
-    public static final String BASEURL_9003 = "http://192.168.1.9:9003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.1.9:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.1.9:9005";   //参数
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
+    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -90,7 +90,7 @@ public class CommonResource {
     public static final String LOCAL_SHOP_GOODS = "/rest/goods/localProduct";       //商家里的商品列表
     public static final String OPERATOR_GOODS = "/rest/goods/level";        //升级运营商商品
     public static final String GET_QUANYI = "/rest/user/level";             //根据levelId 获取当前等级的权益
-
+    public static final String LOCALSHOPLIST = "/rest/seller/seller";       //本地商城列表
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏
@@ -137,7 +137,17 @@ public class CommonResource {
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
     public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
     public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
-    public static final String LOCALSHOPLIST = "/rest/seller/seller";       //本地商城列表
+    public static final String TBKGOODSGETITEMS = "/rest/tbk/goods/getitems";//淘抢购/聚划算/9.9元淘客商品库 API
+    public static final String TBKGOODSGETTRILLDATA = "/rest/tbk/goods/gettrilldata";//抖券直播
+    public static final String SIGNFANS = "/rest/sign/fans";//粉丝数量"
+    public static final String SIGNFIRSTORDER = "/rest/sign/first/order";//首次下单
+    public static final String SIGNGOODS = "/rest/sign/goods";//每日浏览商品签到
+    public static final String SIGNHISTORY = "/rest/sign/history";//积分 积分提现记录
+    public static final String SIGNINVITE = "/rest/sign/invite";//邀请好友
+    public static final String SIGNORDER = "/rest/sign/order";//有效订单
+    public static final String SIGNQUERY = "/rest/sign/query";//查询签到任务完成度
+    public static final String SIGNSHARE = "/rest/sign/share";//每日分享商品
+    public static final String SIGNTODAY = "/rest/sign/today";//每日签到
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
@@ -147,6 +157,7 @@ public class CommonResource {
     public static final String USER_BACK = "USER_BACK";
     public static final String JUMP_CLASSIFY = "JUMP_CLASSIFY";
     public static final String JUMP_CART = "JUMP_CART";
+    public static final String JUMP_LOCAL_SHOP = "JUMP_LOCAL_SHOP";
     public static final String TOKEN = "token";
     public static final String USERCODE = "userCode";
     public static final String USER_NAME = "userName";

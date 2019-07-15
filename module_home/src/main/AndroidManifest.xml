@@ -9,7 +9,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name="com.example.punchsign.PunchSignActivity"></activity>
+        <activity android:name="com.example.Universallist.UniversalListActivity"></activity>
+        <activity android:name="com.example.shakestock.ShakeStockActivity" />
+        <activity android:name="com.example.freecharge.FreeChargeActivity" />
+        <activity android:name="com.example.punchsign.PunchSignActivity" />
         <activity
             android:name="com.example.secondarydetails.SecondaryDetailsActivity"
             android:screenOrientation="portrait" />
@@ -28,9 +31,9 @@
             android:name="com.example.main.WelcomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
     </application>

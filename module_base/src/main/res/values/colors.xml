@@ -8,6 +8,10 @@
     <color name="color333">#333333</color>
     <color name="color999">#999999</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="colorProgress">#fbeadb</color>
+    <color name="colorIndicatorColor">#fc6615</color>
 
     <color name="colorTransparency">#00FFFFFF</color>
     <color name="statusBg">#99999999</color>

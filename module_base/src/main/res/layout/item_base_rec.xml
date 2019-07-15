@@ -56,12 +56,12 @@
                 android:layout_height="@dimen/dp_22"
                 android:layout_below="@id/base_linear"
                 android:layout_marginTop="@dimen/dp_11"
-                android:background="@drawable/bg_text_led_securities"
+                android:background="@drawable/bg_youhuiquan"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingRight="@dimen/dp_5"
                 android:text="领券减50元"
-                android:textColor="#222222"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_10" />
 
             <LinearLayout

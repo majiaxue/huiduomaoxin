@@ -36,10 +36,10 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
             if (string.indexOf("error_response") != -1) {
                 //包含error_response
                 listener.onError("失败", string);
-            } else if (string.indexOf("error:6001") != -1) {
+            } else if (string.indexOf("\"error\":6001") != -1) {
                 //包含error
                 listener.onError("失败", string);
-            } else if (string.indexOf("code:-1") != -1) {
+            } else if (string.indexOf("\"code\":-1") != -1) {
                 //包含error
                 listener.onError("失败", string);
             } else {

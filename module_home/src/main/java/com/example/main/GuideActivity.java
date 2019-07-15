@@ -64,7 +64,7 @@ public class GuideActivity extends Activity {
 //            }
 //        }.start();
 
-        images.add(new TopBannerBean(R.drawable.gdgdgdfgfdh));
+        images.add(new TopBannerBean(R.drawable.frist111));
         images.add(new TopBannerBean(R.drawable.jgfhfhdfhdf));
         images.add(new TopBannerBean(R.drawable.hfcgxhdhd));
 

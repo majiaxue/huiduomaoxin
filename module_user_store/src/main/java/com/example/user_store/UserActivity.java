@@ -2,16 +2,15 @@ package com.example.user_store;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.common.CommonResource;
-import com.example.entity.EventBusBean;
 import com.example.entity.EventBusBean2;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragmentActivity;
@@ -23,6 +22,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 多用户商城主界面
@@ -43,6 +43,8 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     RadioButton userMine;
     @BindView(R2.id.user_group)
     RadioGroup userGroup;
+    @BindView(R2.id.user_local_shop)
+    RadioButton userLocalShop;
     @BindView(R2.id.user_finish)
     ImageView mFinish;
 
@@ -120,4 +122,5 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     public UserPresenter createPresenter() {
         return new UserPresenter(this);
     }
+
 }
