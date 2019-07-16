@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.baidu.location.BDLocation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -20,9 +21,12 @@ import com.example.bean.BannerBean;
 import com.example.local_list.LocalListActivity;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
+import com.example.location.LocationActivity;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
+import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -35,6 +39,9 @@ import java.util.List;
 
 import butterknife.BindView;
 
+/**
+ * 本地商城
+ */
 public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPresenter> implements LocalShopView {
     @BindView(R2.id.local_shop_city)
     TextView localShopCity;
@@ -87,6 +94,8 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     public static final String STAR = "star";   //评分排序
     public static final String DISTANCE = "distance";   //距离排序
 
+    private static int REQUESTCODE = 0;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_local_shop;
@@ -94,6 +103,9 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 
     @Override
     public void initData() {
+        //定位
+        LogUtil.e("地址:"+MyLocationListener.city);
+        localShopCity.setText(MyLocationListener.city);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -119,6 +131,16 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/user/localList").withInt("label", 1).navigation();
+            }
+        });
+
+        localShopChooseCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                ARouter.getInstance().build("/module_user_store/LocationActivity").withString("cityName",localShopCity.getText().toString()).navigation();
+                Intent intent = new Intent(getActivity(), LocationActivity.class);
+                intent.putExtra("cityName", localShopCity.getText().toString());
+                startActivityForResult(intent, REQUESTCODE);
             }
         });
 
@@ -244,5 +266,14 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     @Override
     public LocalShopPresenter createPresenter() {
         return new LocalShopPresenter(getContext());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String cityName = data.getStringExtra("cityName");
+        if (resultCode == 0) {
+            localShopCity.setText(cityName);
+        }
     }
 }

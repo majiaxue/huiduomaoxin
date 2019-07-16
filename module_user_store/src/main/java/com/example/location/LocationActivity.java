@@ -1,7 +1,11 @@
 package com.example.location;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,12 +39,9 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
     RecyclerView locationSelectRecycler;
     @BindView(R2.id.location_relative)
     RelativeLayout locationRelative;
-//    @BindView(R2.id.location_now_address)
-//    TextView locationNowAddress;
-//    @BindView(R2.id.location_recently_used_rec)
-//    RecyclerView locationRecentlyUsedRec;
-//    @BindView(R2.id.location_hot_city_rec)
-//    RecyclerView locationHotCityRec;
+    private String cityName;
+
+    private static int RESULTCODE = 0;
 
     @Override
     public int getLayoutId() {
@@ -49,14 +50,10 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
 
     @Override
     public void initData() {
-        presenter.initView(locationSearch, locationRecycler, locationSelectRecycler, locationSideBar);
+        Intent intent = getIntent();
+        cityName = intent.getStringExtra("cityName");
 
-        //最近使用
-//         presenter.locationRecentlyUsedRec(locationRecentlyUsedRec);
-
-        //热门城市
-//        presenter.locationHotCityRec(locationHotCityRec);
-
+        presenter.initView(locationSearch, locationRecycler, locationSelectRecycler, locationSideBar, cityName);
 
     }
 
@@ -65,6 +62,9 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
         locationImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("cityName", cityName);
+                setResult(RESULTCODE, intent);
                 finish();
             }
         });
@@ -91,4 +91,15 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
         }
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getRepeatCount() == 0) {
+            //具体的操作代码
+            setResult(RESULTCODE, new Intent().putExtra("cityName", cityName));
+            finish();
+        }
+        return super.dispatchKeyEvent(event);
+    }
 }

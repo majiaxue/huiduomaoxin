@@ -154,6 +154,8 @@ public class CommonResource {
     public static final String SIGNQUERY = "/rest/sign/query";//查询签到任务完成度
     public static final String SIGNSHARE = "/rest/sign/share";//每日分享商品
     public static final String SIGNTODAY = "/rest/sign/today";//每日签到
+    public static final String GOODSACTIVITY = "/rest/goods/activity";//免单活动
+    public static final String HOMEADVERTISEBOTTOM = "/rest/parameter/homeAdvertise-bottom";//首页下方轮播图
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493

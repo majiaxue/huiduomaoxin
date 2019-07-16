@@ -19,4 +19,5 @@ public interface LocalShopView extends IView {
     void loadFinish();
 
     void noData();
+
 }

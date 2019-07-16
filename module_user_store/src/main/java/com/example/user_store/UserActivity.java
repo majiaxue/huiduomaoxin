@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean2;
 import com.example.module_base.ModuleBaseApplication;
@@ -48,6 +50,10 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     @BindView(R2.id.user_finish)
     ImageView mFinish;
 
+    @Autowired(name = "go")
+    String goLocalShop;
+
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_user;
@@ -55,10 +61,16 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
+
         EventBus.getDefault().register(this);
         presenter.loadData(getSupportFragmentManager(), R.id.user_frame);
         presenter.initNotification();
         ModuleBaseApplication.mLocationClient.restart();
+        if ("go".equals(goLocalShop)){
+            presenter.click(R.id.user_local_shop);
+            userLocalShop.setChecked(true);
+        }
     }
 
     @Override

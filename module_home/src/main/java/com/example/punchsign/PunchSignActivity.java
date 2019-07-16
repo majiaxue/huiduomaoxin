@@ -1,5 +1,6 @@
 package com.example.punchsign;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 打卡签到
@@ -212,15 +214,18 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         punchSignText3.setText("+" + punchSignBean.getSignSetting().getShareGoods());
         punchSignText3333.setText("每日分享一件商品，上限" + punchSignBean.getSignSetting().getShareNum() + "次");
         punchSignText33.setText("完成" + 0 + "/" + punchSignBean.getSignSetting().getShareNum());
-        if (punchSignBean.getResult().getShareGoods() == 3) {
-            punchSignText33.setText("完成" + punchSignBean.getSignSetting().getShareNum() + "/" + punchSignBean.getSignSetting().getShareNum());
+        if (punchSignBean.getResult().getShareGoods() < 3) {
+            punchSignText33.setText("完成" + punchSignBean.getResult().getShareGoods() + "/" + punchSignBean.getSignSetting().getShareNum());
+            punchSignText333.setText("完成");
+        } else if (punchSignBean.getResult().getShareGoods() == 3) {
+            punchSignText33.setText("完成" + punchSignBean.getResult().getShareGoods() + "/" + punchSignBean.getSignSetting().getShareNum());
             punchSignText333.setText("已完成");
         }
         punchSignText4.setText("+" + punchSignBean.getSignSetting().getInviteUser());
         punchSignText4444.setText("每日邀请" + punchSignBean.getSignSetting().getInviteNum() + "个好友注册");
         punchSignText44.setText("完成" + 0 + "/" + punchSignBean.getSignSetting().getInviteNum());
         if (punchSignBean.getResult().getInviteUser() == 1) {
-            punchSignText44.setText("完成" + punchSignBean.getSignSetting().getInviteNum() + "/" + punchSignBean.getSignSetting().getInviteNum());
+            punchSignText44.setText("完成" + punchSignBean.getFinish().getTodayFansCount() + "/" + punchSignBean.getSignSetting().getInviteNum());
             punchSignText444.setText("已完成");
         }
         punchSignText5.setText("+" + punchSignBean.getNewUserConf().getFirstOrder());
@@ -229,17 +234,17 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
             punchSignText555.setText("已完成");
         }
         punchSignText6.setText("+" + punchSignBean.getNewUserConf().getOrderIntegration());
-        punchSignText6666.setText(punchSignBean.getNewUserConf().getOrderNum() + "有效订单(自购或分享)");
+        punchSignText6666.setText(punchSignBean.getNewUserConf().getOrderNum() + "个有效订单(自购或分享)");
         punchSignText66.setText("完成" + 0 + "/" + punchSignBean.getNewUserConf().getOrderNum());
-        if (punchSignBean.getResult().getOrderIntegration() == 3) {
-            punchSignText66.setText("完成" + punchSignBean.getNewUserConf().getOrderNum() + "/" + punchSignBean.getNewUserConf().getOrderNum());
+        if (punchSignBean.getResult().getOrderIntegration() == 1) {
+            punchSignText66.setText("完成" + punchSignBean.getFinish().getOrderNum() + "/" + punchSignBean.getNewUserConf().getOrderNum());
             punchSignText666.setText("已完成");
         }
         punchSignText7.setText("+" + punchSignBean.getNewUserConf().getFansIntegration());
         punchSignText7777.setText("邀请粉丝" + punchSignBean.getNewUserConf().getFansNum() + "人以上");
         punchSignText77.setText("完成" + 0 + "/" + punchSignBean.getNewUserConf().getFansNum());
         if (punchSignBean.getResult().getFansIntegration() == 1) {
-            punchSignText77.setText("完成" + punchSignBean.getNewUserConf().getFansNum() + "/" + punchSignBean.getNewUserConf().getFansNum());
+            punchSignText77.setText("完成" + punchSignBean.getFinish().getFansNum() + "/" + punchSignBean.getNewUserConf().getFansNum());
             punchSignText777.setText("已完成");
         }
     }
@@ -280,13 +285,19 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
     }
 
     @Override
-    public void shareCount() {
+    public void shareCount(int count) {
         Toast.makeText(this, "任务已完成", Toast.LENGTH_SHORT).show();
         int shareGoods = punchSignBean.getSignSetting().getShareGoods();
-        allJiFen = shareGoods + allJiFen;
+        int resultShareGoods = punchSignBean.getResult().getShareGoods();
+        int allShareJiFen = shareGoods * count;
+        allJiFen = allShareJiFen + allJiFen;
         punchSignJiFen.setText("" + allJiFen);
-        punchSignText33.setText("完成" + punchSignBean.getSignSetting().getShareNum() + "/" + punchSignBean.getSignSetting().getShareNum());
-        punchSignText333.setText("已完成");
+        punchSignText33.setText("完成" + count + "/" + punchSignBean.getSignSetting().getShareNum());
+        if ((resultShareGoods + 1) == 3) {
+            punchSignText333.setText("已完成");
+        } else {
+            punchSignText333.setText("完成");
+        }
     }
 
     @Override
@@ -313,8 +324,8 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         int orderIntegration = punchSignBean.getNewUserConf().getOrderIntegration();
         allJiFen = orderIntegration + allJiFen;
         punchSignJiFen.setText("" + allJiFen);
-        punchSignText77.setText("完成" + punchSignBean.getNewUserConf().getOrderNum() + "/" + punchSignBean.getNewUserConf().getOrderNum());
-        punchSignText777.setText("已完成");
+        punchSignText66.setText("完成" + punchSignBean.getNewUserConf().getOrderNum() + "/" + punchSignBean.getNewUserConf().getOrderNum());
+        punchSignText666.setText("已完成");
     }
 
     @Override

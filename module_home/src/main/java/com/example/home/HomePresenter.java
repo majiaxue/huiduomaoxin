@@ -26,6 +26,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.GoodChoiceBean;
 import com.example.bean.ZBannerBean;
+import com.example.bean.ZhongXBannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
 import com.example.entity.EventBusBean2;
@@ -189,23 +190,43 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     }
 
-    public void setZhongXBanner(XBanner homeZhongXbanner) {
-        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner10));
-        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner11));
-        bannerBeanList.add(new ZBannerBean(R.drawable.img_banner12));
-        homeZhongXbanner.setBannerData(bannerBeanList);
-        homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
-            @Override
-            public void loadBanner(XBanner banner, Object model, View view, int position) {
-                Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+    public void setZhongXBanner(final XBanner homeZhongXbanner) {
 
-            }
-        });
-        // 设置XBanner的页面切换特效
+        Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.HOMEADVERTISEBOTTOM);
+        RetrofitUtil.getInstance().toSubscribe(dataWithout,new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("HomePresenterResult"+result);
+
+                ZhongXBannerBean zhongXBannerBean = JSON.parseObject(result, new TypeReference<ZhongXBannerBean>() {
+                }.getType());
+                if (zhongXBannerBean!=null){
+                    for (int i = 0; i < zhongXBannerBean.getRecords().size(); i++) {
+                        bannerBeanList.add(new ZBannerBean(zhongXBannerBean.getRecords().get(i).getPicUrl()));
+                    }
+                    homeZhongXbanner.setBannerData(bannerBeanList);
+                    homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
+                        @Override
+                        public void loadBanner(XBanner banner, Object model, View view, int position) {
+                            Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+
+                        }
+                    });
+                    // 设置XBanner的页面切换特效
 //        homeZhongXbanner.setPageTransformer(Transformer.Default);
-        homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
-        // 设置XBanner页面切换的时间，即动画时长
-        homeZhongXbanner.setPageChangeDuration(1000);
+                    homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
+                    // 设置XBanner页面切换的时间，即动画时长
+                    homeZhongXbanner.setPageChangeDuration(1000);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("HomePresenterErrorMsg"+errorMsg);
+            }
+        }));
+
+
     }
 
     //店铺
@@ -295,6 +316,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 3).navigation();
                 } else if (position == 5) {
 //                    ARouter.getInstance().build("/module_user_store/LocationActivity").navigation();
+                    ARouter.getInstance().build("/module_user_store/UserActivity").withString("go","go").navigation();
                 }
             }
         });
@@ -310,55 +332,60 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("优选：" + result);
                 try {
-                    GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
-                    }.getType());                    if (goodChoiceBean != null) {
 
-                        if (goodChoiceBean.getData() != null) {
-                            goodChoiceList.clear();
-                            goodChoiceList.addAll(goodChoiceBean.getData());
-                            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
-                            homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
-                            GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
-                            homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
-                            goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(RecyclerView parent, View view, int position) {
-                                    if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                                .withString("para", goodChoiceList.get(position).getNum_iid())
-                                                .withString("shoptype", "1").navigation();
-                                    } else {
-                                        //是否登录
-                                        final SelfDialog selfDialog = new SelfDialog(mContext);
-                                        selfDialog.setTitle("提示");
-                                        selfDialog.setMessage("您未登陆是否去登陆？");
-                                        selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                            @Override
-                                            public void onYesClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                            @Override
-                                            public void onNoClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                ARouter.getInstance().build("/mine/login").navigation();
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        PopUtils.setTransparency(mContext, 0.3f);
-                                        selfDialog.show();
+                    if ("\"code\":-1".indexOf(result) != -1) {
+                        GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                        }.getType());
+
+                        if (goodChoiceBean != null) {
+
+                            if (goodChoiceBean.getData() != null) {
+                                goodChoiceList.clear();
+                                goodChoiceList.addAll(goodChoiceBean.getData());
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+                                homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+                                GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
+                                homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
+                                goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(RecyclerView parent, View view, int position) {
+                                        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                                    .withString("para", goodChoiceList.get(position).getNum_iid())
+                                                    .withString("shoptype", "1").navigation();
+                                        } else {
+                                            //是否登录
+                                            final SelfDialog selfDialog = new SelfDialog(mContext);
+                                            selfDialog.setTitle("提示");
+                                            selfDialog.setMessage("您未登陆是否去登陆？");
+                                            selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                                                @Override
+                                                public void onYesClick() {
+                                                    PopUtils.setTransparency(mContext, 1f);
+                                                    selfDialog.dismiss();
+                                                }
+                                            });
+                                            selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                                                @Override
+                                                public void onNoClick() {
+                                                    PopUtils.setTransparency(mContext, 1f);
+                                                    ARouter.getInstance().build("/mine/login").navigation();
+                                                    selfDialog.dismiss();
+                                                }
+                                            });
+                                            PopUtils.setTransparency(mContext, 0.3f);
+                                            selfDialog.show();
+                                        }
+
                                     }
+                                });
+                            } else {
+                                LogUtil.e("数据为空");
+                            }
 
-                                }
-                            });
                         } else {
                             LogUtil.e("数据为空");
                         }
-
-                    } else {
-                        LogUtil.e("数据为空");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

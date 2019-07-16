@@ -10,7 +10,7 @@ public interface PunchSignView extends IView {
 
     void meiRiQianDao(int type);
 
-    void shareCount();
+    void shareCount(int count);
 
     void yaoQingHaoYou();
 
