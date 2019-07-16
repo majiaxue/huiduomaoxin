@@ -27,12 +27,14 @@ import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagFlowLayout;
 
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
     //选择商品列表
@@ -106,10 +109,39 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
         }));
     }
 
-    public void chooseAttr(UserGoodsDetail bean) {
-        userGoodsDetail = bean;
+    /**
+     * flag     点击按钮   0:立即升级   1:支付(前端用)
+     *
+     * @param levelId
+     */
+    public void isCanUp(String levelId) {
+        Map map = MapUtil.getInstance().addParms("levelId", levelId).addParms("payType", "1").build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.UP_JUSTNOW, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("立即升级：" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("error:" + errorCode + "------------------" + errorMsg);
+                if (errorCode.equals("9")) {
+                    chooseAttr();
+                } else {
+                    Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }));
+    }
+
+    public void chooseAttr() {
         dataList = userGoodsDetail.getSkuStockList();
         if (dataList != null && dataList.size() > 0) {
+            sp1List.clear();
+            sp2List.clear();
+            sp3List.clear();
+
             //规格缩略图
             String imgTemp = "";
             for (int i = 0; i < dataList.size(); i++) {
@@ -158,21 +190,22 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
 
             }
 
-            chooseGoodsPop();
+            chooseGoodsPop(userGoodsDetail.getName());
         } else {
             OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
-            orderConfirmBean.setProductName(bean.getName());
-            orderConfirmBean.setPic(bean.getPic());
-            orderConfirmBean.setPrice(bean.getPrice());
+            orderConfirmBean.setProductName(userGoodsDetail.getName());
+            orderConfirmBean.setPic(userGoodsDetail.getPic());
+            orderConfirmBean.setPrice(userGoodsDetail.getPrice());
 
-            ARouter.getInstance().build("/module_mine/up_pay")
+            ARouter.getInstance().build("/mine/upOrderConfirm")
                     .withSerializable("bean", orderConfirmBean)
+                    .withString("name", userGoodsDetail.getName())
                     .withString("type", "operator")
                     .navigation();
         }
     }
 
-    public void chooseGoodsPop() {
+    public void chooseGoodsPop(final String name) {
         try {
 
             if (userGoodsDetail != null && userGoodsDetail.getXsProductAttributes().size() > 0 && dataList.size() > 0) {
@@ -433,21 +466,21 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
                                 popupWindow.dismiss();
-                                toBuy();
+                                toBuy(name);
                             }
                         } else if (attrSize == 2) {
                             if (sp1Position == -1 || sp2Position == -1) {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
                                 popupWindow.dismiss();
-                                toBuy();
+                                toBuy(name);
                             }
                         } else {
                             if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
                                 Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
                             } else {
                                 popupWindow.dismiss();
-                                toBuy();
+                                toBuy(name);
                             }
                         }
                     }
@@ -1120,7 +1153,7 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
         }
     }
 
-    private void toBuy() {
+    private void toBuy(String name) {
         OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
 
         if (attrSize == 1) {
@@ -1185,27 +1218,55 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
 
         }
 
-        ARouter.getInstance().build("/module_mine/up_pay")
+        ARouter.getInstance().build("/mine/upOrderConfirm")
                 .withSerializable("bean", orderConfirmBean)
+                .withString("name", name)
                 .withString("type", "operator")
                 .navigation();
     }
 
     public void popQuanYi() {
-        if (opList.size() > 0) {
-            PopUtils.popQuanYi(mContext, opList, 0, new OnClearCacheListener() {
-                @Override
-                public void setOnClearCache(final PopupWindow pop, View confirm) {
-                    confirm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            pop.dismiss();
-                        }
-                    });
+        PopUtils.popLiBaoQuanYi(mContext, operatorBean, new OnClearCacheListener() {
+            @Override
+            public void setOnClearCache(final PopupWindow pop, View confirm) {
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pop.dismiss();
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void loadData(int id, String levelId) {
+        Map map = MapUtil.getInstance().addParms("levelId", levelId).build();
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.GETGOODSDETAIL + "/" + id, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("详情：" + result);
+                try {
+
+                    userGoodsDetail = JSON.parseObject(result, UserGoodsDetail.class);
+                    String albumPics = userGoodsDetail.getAlbumPics();
+                    String[] split = albumPics.split(",");
+                    List<BannerBean.RecordsBean> banner = new ArrayList<>();
+                    for (int i = 0; i < split.length; i++) {
+                        banner.add(new BannerBean.RecordsBean(split[i]));
+                    }
+                    getView().loadBanner(banner);
+                    getView().loadUI(userGoodsDetail);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-        } else {
-            Toast.makeText(mContext, "出错了", Toast.LENGTH_SHORT).show();
-        }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
     }
 }

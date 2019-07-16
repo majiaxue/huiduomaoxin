@@ -7,5 +7,7 @@ import com.example.mvp.IView;
 import java.util.List;
 
 public interface Buy2UpView extends IView {
+    void loadUI(UserGoodsDetail bean);
 
+    void loadBanner(List<BannerBean.RecordsBean> banner);
 }

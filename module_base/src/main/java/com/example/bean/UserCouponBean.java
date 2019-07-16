@@ -1,6 +1,8 @@
 package com.example.bean;
 
-public class UserCouponBean {
+import java.io.Serializable;
+
+public class UserCouponBean implements Serializable {
 
     /**
      * id : 1

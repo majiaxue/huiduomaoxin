@@ -7,6 +7,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.bean.OrderConfirmBean;
 import com.example.bean.ShippingAddressBean;
@@ -16,6 +19,7 @@ import com.example.mvp.BaseActivity;
 
 import butterknife.BindView;
 
+@Route(path = "/mine/upOrderConfirm")
 public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpOrderConfirmPresenter> implements UpOrderConfirmView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
@@ -52,7 +56,11 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
     @BindView(R2.id.up_order_btn)
     TextView upOrderBtn;
 
-    private OrderConfirmBean confirmBean;
+    @Autowired(name = "bean")
+    OrderConfirmBean confirmBean;
+    @Autowired(name = "name")
+    String name;
+
     private boolean isWeChat = true;
 
     @Override
@@ -62,16 +70,16 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         includeTitle.setText("确认订单");
 
-        Intent intent = getIntent();
-        confirmBean = (OrderConfirmBean) intent.getSerializableExtra("order");
-        Glide.with(this).load(confirmBean.getPic()).into(upOrderImg);
-        upOrderGoodsName.setText(confirmBean.getProductName());
-        upOrderAttr.setText(confirmBean.getProductAttr() == null ? "" : confirmBean.getProductAttr());
-        upOrderPrice.setText("￥" + confirmBean.getPrice());
-        upOrderTotal.setText(confirmBean.getPrice() + "");
-
+        if (confirmBean != null) {
+            Glide.with(this).load(confirmBean.getPic()).into(upOrderImg);
+            upOrderGoodsName.setText(confirmBean.getProductName());
+            upOrderAttr.setText(confirmBean.getProductAttr() == null ? "" : confirmBean.getProductAttr());
+            upOrderPrice.setText("￥" + confirmBean.getPrice());
+            upOrderTotal.setText(confirmBean.getPrice() + "");
+        }
         presenter.getAddress();
     }
 
@@ -112,7 +120,8 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
         upOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.commit(isWeChat);
+                upOrderBtn.setEnabled(false);
+                presenter.commit(isWeChat, confirmBean, name);
             }
         });
     }
@@ -129,12 +138,23 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
     }
 
     @Override
+    public void callBack() {
+        upOrderBtn.setEnabled(true);
+    }
+
+    @Override
     public void loadAddress(ShippingAddressBean addressBean) {
         upOrderChooseAddress.setVisibility(View.GONE);
         upOrderName.setText(addressBean.getAddressName());
         upOrderPhone.setText(addressBean.getAddressPhone());
         upOrderAddressDetail.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
 
+        confirmBean.setReceiverName(addressBean.getAddressName());
+        confirmBean.setReceiverPhone(addressBean.getAddressPhone());
+        confirmBean.setReceiverProvince(addressBean.getAddressProvince());
+        confirmBean.setReceiverCity(addressBean.getAddressCity());
+        confirmBean.setReceiverRegion(addressBean.getAddressArea());
+        confirmBean.setOrderAddress(addressBean.getAddressDetail());
     }
 
     @Override

@@ -51,7 +51,7 @@ public class LocalSellerFragment extends BaseFragment<LocalSellerView, LocalSell
         localDetailSellerRv.setLayoutManager(linearLayoutManager);
         localDetailSellerRv.addItemDecoration(new SpaceItemDecoration(0, (int) getContext().getResources().getDimension(R.dimen.dp_8), 0, 0));
 
-        presenter.loadData();
+        presenter.loadData(bean.getSellerpics());
     }
 
     @Override

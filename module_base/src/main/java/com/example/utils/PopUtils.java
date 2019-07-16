@@ -74,13 +74,13 @@ public class PopUtils {
         });
     }
 
-    public static void viewPopBottom(View text ,final Context context, View view, int width, int height, OnPopListener listener) {
+    public static void viewPopBottom(View text, final Context context, View view, int width, int height, OnPopListener listener) {
         PopupWindow popupWindow = new PopupWindow(view, width, height, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 //        popupWindow.setAnimationStyle(R.style.animScale);
 //        popupWindow.showAtLocation(new View(context), Gravity.BOTTOM, 0, 0);
-        popupWindow.showAsDropDown(text,0 ,0,Gravity.BOTTOM);
+        popupWindow.showAsDropDown(text, 0, 0, Gravity.BOTTOM);
         setTransparency(context, 0.3f);
         listener.setOnPop(popupWindow);
 
@@ -91,7 +91,6 @@ public class PopUtils {
             }
         });
     }
-
 
 
     public static void changeHeader(final Context mContext, OnChangeHeaderListener listener) {
@@ -323,6 +322,74 @@ public class PopUtils {
 
         PopUpAdapter adapter = new PopUpAdapter(context, list, R.layout.rv_pop_quanyi);
         rv.setAdapter(adapter);
+
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        listener.setOnClearCache(popupWindow, btn);
+    }
+
+    public static void popLiBaoQuanYi(final Context mContext, final OperatorBean bean, OnClearCacheListener listener) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_quanyi, null);
+        TextView title = view.findViewById(R.id.pop_quanyi_level);
+        RecyclerView rv = view.findViewById(R.id.pop_quanyi_rv);
+        TextView btn = view.findViewById(R.id.pop_quanyi_btn);
+        ImageView cancel = view.findViewById(R.id.pop_quanyi_cancel);
+
+        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setAnimationStyle(com.example.module_base.R.style.animScale);
+        popupWindow.showAtLocation(new View(mContext), Gravity.CENTER, 0, 0);
+        PopUtils.setTransparency(mContext, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setTransparency(mContext, 1f);
+            }
+        });
+
+        AssetManager assets = mContext.getAssets();
+        Typeface typeface = Typeface.createFromAsset(assets, "fonts/MyFont.TTF");
+        title.setTypeface(typeface);
+
+        TxtUtil.txtJianbian(title, "#a26335", "#c97d3b");
+        title.setText("升级为" + bean.getName());
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+        rv.setLayoutManager(layoutManager);
+
+        String perCashs = bean.getPerCashs();
+        List<String> list = new ArrayList<>();
+        list.add("自买返佣" + bean.getSharePercent() + "%");
+        list.add("分享返佣" + bean.getSharePercent() + "%");
+        if (perCashs == null) {
+            list.add("直接会员出单奖励" + "0%");
+            list.add("平级奖励" + "0%");
+
+            list.add("团队奖励" + bean.getSharePercent() + "%");
+
+            list.add("间接会员出单奖励" + "0%");
+        } else {
+            String[] split = perCashs.split(",");
+            list.add("直接会员出单奖励" + split[0] + "%");
+            list.add("平级奖励" + "0%");
+
+            list.add("团队奖励" + bean.getSharePercent() + "%");
+
+            if (split.length == 1) {
+                list.add("间接会员出单奖励" + "0%");
+            } else {
+                list.add("间接会员出单奖励" + split[1] + "%");
+            }
+        }
+        PopQuanyiAdapter quanyiAdapter = new PopQuanyiAdapter(mContext, list, R.layout.rv_pop_quanyi);
+        rv.setAdapter(quanyiAdapter);
 
 
         cancel.setOnClickListener(new View.OnClickListener() {

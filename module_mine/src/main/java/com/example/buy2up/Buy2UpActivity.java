@@ -55,8 +55,6 @@ public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> im
         for (int i = 0; i < split.length; i++) {
             banner.add(new BannerBean.RecordsBean(split[i]));
         }
-        loadBanner(banner);
-        loadUI(bean);
 
         includeTitle.setText("商品详情");
 
@@ -68,6 +66,7 @@ public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> im
         });
 
         buy2upWebview.getSettings().setJavaScriptEnabled(true);
+        presenter.loadData(bean.getId(), bean.getLevelId());
 
         presenter.loadQuanyi(bean.getLevelId());
     }
@@ -91,11 +90,12 @@ public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> im
         buy2upBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.chooseAttr(bean);
+                presenter.isCanUp(bean.getLevelId());
             }
         });
     }
 
+    @Override
     public void loadUI(UserGoodsDetail bean) {
         mName.setText(bean.getName());
         String detailHtml = bean.getDetailHtml();
@@ -104,7 +104,8 @@ public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> im
         buy2upWebview.loadData(varjs + detailHtml, "text/html", "UTF-8");
     }
 
-    private void loadBanner(List<BannerBean.RecordsBean> bannerList) {
+    @Override
+    public void loadBanner(List<BannerBean.RecordsBean> bannerList) {
         buy2upBanner.setBannerData(bannerList);
     }
 

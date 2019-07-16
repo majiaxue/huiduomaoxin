@@ -30,25 +30,22 @@ public class LocalSellerAdapter extends MyRecyclerAdapter<LocalShopBean> {
         RatingBarView star = holder.getView(R.id.rv_local_seller_star);
         star.setClickable(false);
         star.setStar(Integer.valueOf(data.getStar()), false);
-
-        Integer integer = Integer.valueOf(data.getDistance().split("\\.")[0]);
-        if (integer >= 1000) {
-            holder.setText(R.id.rv_local_seller_distance, ArithUtil.div(integer * 1.0, 1000.0, 1) + "千米");
-        } else {
-            holder.setText(R.id.rv_local_seller_distance, integer + "米");
+        if (data.getDistance() != null) {
+            Integer integer = Integer.valueOf(data.getDistance().split("\\.")[0]);
+            if (integer >= 1000) {
+                holder.setText(R.id.rv_local_seller_distance, ArithUtil.div(integer * 1.0, 1000.0, 1) + "千米");
+            } else {
+                holder.setText(R.id.rv_local_seller_distance, integer + "米");
+            }
         }
-
         RecyclerView rv = holder.getView(R.id.rv_local_seller_rv);
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rv.setLayoutManager(layoutManager);
         if (rv.getItemDecorationCount() == 0) {
             rv.addItemDecoration(new SpaceItemDecoration(0, (int) context.getResources().getDimension(R.dimen.dp_10), 0, (int) context.getResources().getDimension(R.dimen.dp_10)));
         }
-        List<String> list = new ArrayList<>();
 
-        list.add("满20减5");
-        list.add("满30减10");
-        ManJianAdapter adapter = new ManJianAdapter(context, list, R.layout.rv_local_seller_inside);
+        ManJianAdapter adapter = new ManJianAdapter(context, data.getCouponList(), R.layout.rv_local_seller_inside);
         rv.setAdapter(adapter);
     }
 }

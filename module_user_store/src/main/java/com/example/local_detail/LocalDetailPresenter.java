@@ -8,22 +8,38 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.BaseVPAdapter;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalShopBean;
 import com.example.bean.UserCouponBean;
+import com.example.common.CommonResource;
+import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.local_coupon.LocalCouponActivity;
 import com.example.local_detail.local_goods.LocalGoodsFragment;
 import com.example.local_detail.local_seller.LocalSellerFragment;
 import com.example.local_shop.adapter.ManJianAdapter;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.user_store.R;
+import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
+import com.example.utils.SPUtil;
+import com.example.view.SelfDialog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
     private String[] titleArr = {"商品", "商家"};
@@ -90,7 +106,7 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
     }
 
     public void initVp(FragmentManager fm, LocalShopBean bean) {
-        goodsFragment = LocalGoodsFragment.getInstance(bean.getId());
+        goodsFragment = LocalGoodsFragment.getInstance(bean);
         sellerFragment = LocalSellerFragment.getInstance(bean);
         fragmentList.add(goodsFragment);
         fragmentList.add(sellerFragment);
@@ -99,27 +115,45 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
         getView().updateVP(vpAdapter);
     }
 
-    public void loadData() {
-        List<String> list = new ArrayList<>();
-        list.add("满100减10元");
-        list.add("满200减30元");
-        manJianAdapter = new ManJianAdapter(mContext, list, R.layout.rv_local_seller_inside);
+    public void loadData(List<UserCouponBean> couponList) {
+        manJianAdapter = new ManJianAdapter(mContext, couponList, R.layout.rv_local_seller_inside);
         if (getView() != null) {
             getView().loadManJian(manJianAdapter);
         }
     }
 
-    public void lingquan() {
-        List<UserCouponBean> couponList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            UserCouponBean couponBean = new UserCouponBean();
-            couponBean.setAmount(10);
-            couponBean.setMinPoint(30);
-            couponBean.setEnableTime("2020-10-1");
-            couponBean.setHas(false);
-            couponList.add(couponBean);
-        }
-        PopUtil.lingquanPop(mContext, couponList);
+    public void lingquan(final List<UserCouponBean> list) {
+
+        PopUtil.lingquanPop(mContext, list, new OnAdapterListener() {
+            @Override
+            public void setOnAdapterListener(final PopupWindow popupWindow, final PopLingQuanAdapter adapter) {
+                adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                    @Override
+                    public void ViewOnClick(View view, final int index) {
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Map map = MapUtil.getInstance().addParms("couponID", list.get(index).getId()).addParms("userID", SPUtil.getUserCode()).addParms("userNickName", SPUtil.getStringValue(CommonResource.USER_NAME)).build();
+                                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LINGCOUPON, map);
+                                RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                    @Override
+                                    public void onSuccess(String result, String msg) {
+                                        LogUtil.e("领取：" + result);
+                                        list.get(index).setHas(true);
+                                        adapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorCode, String errorMsg) {
+                                        LogUtil.e(errorCode + "------------" + errorMsg);
+                                    }
+                                }));
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public void callPhone() {
@@ -130,7 +164,27 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
     }
 
     public void jumpToCoupon() {
-        Intent intent = new Intent(mContext, LocalCouponActivity.class);
-        mContext.startActivity(intent);
+        if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+            Intent intent = new Intent(mContext, LocalCouponActivity.class);
+            mContext.startActivity(intent);
+        } else {
+            final SelfDialog dialog = new SelfDialog(mContext);
+            dialog.setTitle("提示");
+            dialog.setMessage("请先登录");
+            dialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.setNoOnclickListener("去登录", new SelfDialog.onNoOnclickListener() {
+                @Override
+                public void onNoClick() {
+                    dialog.dismiss();
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }
+            });
+        }
     }
 }

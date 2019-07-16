@@ -32,6 +32,7 @@
             android:hint="搜索想要剁手的商品"
             android:paddingLeft="@dimen/dp_18"
             android:textColorHint="#999999"
+            android:textCursorDrawable="@drawable/edit_cursor"
             android:textSize="@dimen/sp_12" />
 
         <TextView

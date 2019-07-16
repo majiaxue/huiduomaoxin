@@ -64,13 +64,13 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
 
     };
 
-    public void pay(boolean isWeChat, String money, String type) {
+    public void pay(boolean isWeChat, String money, String type, String name) {
         this.type = type;
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-            Map map = MapUtil.getInstance().addParms("totalAmount", Double.valueOf(money) * 100).addParms("userCode", SPUtil.getUserCode()).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.UP_WXPAY, map);
+//            Map map = MapUtil.getInstance().addParms("totalAmount", money).addParms("userCode", SPUtil.getUserCode()).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID) + "&productName=枫林淘客-" + name);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -99,13 +99,14 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    getView().callBack();
                     LogUtil.e(errorCode + "------------" + errorMsg);
                 }
             }));
         } else {
             ProcessDialogUtil.showProcessDialog(mContext);
-            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.UP_PAY, map, SPUtil.getToken());
+//            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID));
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -116,11 +117,12 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
                     info = (String) parseObject.get("body");
                     Thread thread = new Thread(payRunnable);
                     thread.start();
+                    getView().callBack();
                 }
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    getView().callBack();
                 }
             }));
         }

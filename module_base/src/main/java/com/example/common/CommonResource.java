@@ -91,6 +91,12 @@ public class CommonResource {
     public static final String OPERATOR_GOODS = "/rest/goods/level";        //升级运营商商品
     public static final String GET_QUANYI = "/rest/user/level";             //根据levelId 获取当前等级的权益
     public static final String LOCALSHOPLIST = "/rest/seller/seller";       //本地商城列表
+    public static final String LINGCOUPON = "/rest/seller/coupon";          //领取优惠券
+    public static final String LOCAL_CREATEORDER = "/rest/localOrder/payLocalProduct";    //本地商城创建订单
+    public static final String LIBAO_WXPAY = "/rest/WXPay/level";          //礼包升级微信支付
+    public static final String LIBAO_ZFBPAY = "/rest/alipay/upLevelSign";   //礼包升级支付宝支付
+    public static final String QUERY_COUPON = "/rest/seller/coupon/status";     //查询已领取优惠券  未使用 status 0
+
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏

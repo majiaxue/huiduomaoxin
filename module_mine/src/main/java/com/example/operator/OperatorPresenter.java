@@ -79,6 +79,7 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
                                 } else {
                                     ARouter.getInstance().build("/module_mine/up_pay")
                                             .withString("money", beanList.get(index).getPrice())
+                                            .withString("name", beanList.get(index).getName())
                                             .withString("type", "operator")
                                             .navigation();
                                 }

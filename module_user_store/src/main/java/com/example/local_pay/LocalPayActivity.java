@@ -1,20 +1,23 @@
 package com.example.local_pay;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.bean.LocalShopBean;
+import com.example.bean.UserCouponBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresenter> implements LocalPayView {
     @BindView(R2.id.include_back)
@@ -45,8 +48,15 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
     LinearLayout localPayBalance;
     @BindView(R2.id.local_pay_btn)
     TextView mBtn;
+    @BindView(R2.id.local_pay_choose_coupon)
+    RelativeLayout mChooseCoupon;
+    @BindView(R2.id.local_pay_coupon_money)
+    TextView mCouponMoney;
+    @BindView(R2.id.local_pay_money)
+    TextView mMoney;
 
     private int payType = 0;
+    private LocalShopBean bean;
 
     @Override
     public int getLayoutId() {
@@ -55,8 +65,19 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        bean = (LocalShopBean) intent.getSerializableExtra("bean");
         includeTitle.setText("确认支付");
+        localPayName.setText(bean.getSeller_shop_name());
+        localPayAddress.setText(bean.getSeller_addredd());
+        localPayType.setText(bean.getSeller_type());
+        if (bean.getSellerpics() != null) {
+            String[] split = bean.getSellerpics().split(",");
+            Glide.with(this).load(split[0]).into(localPayImg);
+        }
 
+        presenter.createOrder(bean);
+        presenter.getCoupon(bean);
     }
 
     @Override
@@ -95,7 +116,15 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.commit(localPayEdit.getText().toString(), payType);
+                mBtn.setEnabled(false);
+                presenter.commit(mMoney.getText().toString(), payType);
+            }
+        });
+
+        mChooseCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.choose(localPayEdit.getText().toString());
             }
         });
 
@@ -124,9 +153,35 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
                         localPayEdit.setText(s.toString().split("0")[1]);
                         localPayEdit.setSelection(localPayEdit.getText().length());
                     }
+                    presenter.update(s.toString());
                 }
             }
         });
+    }
+
+    @Override
+    public void chooseFinish(UserCouponBean coupon) {
+        if (coupon != null) {
+            if (coupon.getMinPoint() == 0) {
+                mCouponMoney.setText("立减" + coupon.getAmount() + "元");
+            } else {
+                mCouponMoney.setText("满" + coupon.getMinPoint() + "减" + coupon.getAmount());
+            }
+        }
+    }
+
+    @Override
+    public void callBack() {
+        mBtn.setEnabled(true);
+    }
+
+    @Override
+    public void updateMoney(String money) {
+        if (Double.valueOf(money) < 0) {
+            mMoney.setText("0.1");
+        } else {
+            mMoney.setText(money);
+        }
     }
 
     private void changePayType() {

@@ -71,6 +71,6 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-//        ProcessDialogUtil.dismissDialog();
+        ProcessDialogUtil.dismissDialog();
     }
 }

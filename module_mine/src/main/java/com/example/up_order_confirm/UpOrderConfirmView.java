@@ -7,4 +7,6 @@ public interface UpOrderConfirmView extends IView {
     void loadAddress(ShippingAddressBean bean);
 
     void noAddress();
+
+    void callBack();
 }

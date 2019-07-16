@@ -146,4 +146,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
         }
     }
+
+    public void chooseCoupon() {
+
+    }
 }

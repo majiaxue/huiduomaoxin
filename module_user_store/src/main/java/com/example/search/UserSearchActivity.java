@@ -1,5 +1,6 @@
 package com.example.search;
 
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
     @BindView(R2.id.user_search_flow_layout)
     FlowLayout searchFlowLayout;
 
+    private String from;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_user_search;
@@ -34,6 +37,8 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        from = intent.getStringExtra("from");
 
     }
 
@@ -48,7 +53,7 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.searchEdit(searchEdit.getText().toString());
+                presenter.searchEdit(searchEdit.getText().toString(), from);
 
             }
         });
@@ -65,7 +70,7 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == event.KEYCODE_ENTER) {
-                    presenter.searchEdit(searchEdit.getText().toString());
+                    presenter.searchEdit(searchEdit.getText().toString(), from);
                     return true;
                 } else {
                     return false;
@@ -78,7 +83,7 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
     protected void onResume() {
         super.onResume();
         searchFlowLayout.removeAllViews();
-        presenter.getHistory(searchFlowLayout);
+        presenter.getHistory(searchFlowLayout, from);
     }
 
     @Override

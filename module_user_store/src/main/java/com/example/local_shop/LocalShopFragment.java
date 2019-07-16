@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -110,14 +111,14 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         localShopPinzhi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), LocalListActivity.class));
+                ARouter.getInstance().build("/user/localList").withInt("label", 0).navigation();
             }
         });
 
         localShopXinxuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), LocalListActivity.class));
+                ARouter.getInstance().build("/user/localList").withInt("label", 1).navigation();
             }
         });
 
@@ -158,6 +159,13 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
                 presenter.loadData(index, page);
+            }
+        });
+
+        localShopSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToSearch();
             }
         });
     }

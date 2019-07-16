@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.stx.xhb.xbanner.XBanner
+            <ImageView
                 android:id="@+id/local_detail_banner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_175"
@@ -191,6 +191,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/local_detail_lingquan2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_15"

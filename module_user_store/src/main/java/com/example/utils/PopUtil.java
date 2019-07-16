@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -20,17 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
-import com.example.adapter.MyRecyclerAdapter;
-import com.example.bean.UserCouponBean;
 import com.example.bean.ParmsBean;
+import com.example.bean.UserCouponBean;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.goods_detail.adapter.PopParmsAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
-import com.example.utils.adapter.VPBigPicAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PopUtil {
@@ -42,7 +37,7 @@ public class PopUtil {
         window.setAttributes(params);
     }
 
-    public static void lingquanPop(final Context context, final List<UserCouponBean> dataList) {
+    public static void lingquanPop(final Context context, final List<UserCouponBean> dataList, OnAdapterListener listener) {
         View view = LayoutInflater.from(context).inflate(R.layout.pop_lingquan, null);
         RecyclerView rv = view.findViewById(R.id.pop_lingquan_rv);
         TextView btn = view.findViewById(R.id.pop_lingquan_btn);
@@ -74,18 +69,7 @@ public class PopUtil {
         final PopLingQuanAdapter adapter = new PopLingQuanAdapter(context, dataList, R.layout.rv_pop_lingquan);
         rv.setAdapter(adapter);
 
-        adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-            @Override
-            public void ViewOnClick(View view, final int index) {
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dataList.get(index).setHas(true);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        });
+        listener.setOnAdapterListener(popupWindow, adapter);
     }
 
     public static void ensurePop(final Context context) {

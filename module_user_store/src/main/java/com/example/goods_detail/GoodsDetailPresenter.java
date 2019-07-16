@@ -19,7 +19,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
+import com.example.adapter.GoodsImageAdapter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.PopFlowLayoutAdapter;
+import com.example.adapter.SecondFlowAdapter;
 import com.example.assess.AssessActivity;
 import com.example.bean.AddCartBean;
 import com.example.bean.AssessBean;
@@ -33,9 +36,7 @@ import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
-import com.example.adapter.GoodsImageAdapter;
-import com.example.adapter.PopFlowLayoutAdapter;
-import com.example.adapter.SecondFlowAdapter;
+import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -47,6 +48,7 @@ import com.example.user_store.R;
 import com.example.user_store.UserActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
@@ -305,7 +307,37 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     public void lingquan() {
         if (couponBeanList != null) {
             if (couponBeanList.size() > 0) {
-                PopUtil.lingquanPop(mContext, couponBeanList);
+                PopUtil.lingquanPop(mContext, couponBeanList, new OnAdapterListener() {
+                    @Override
+                    public void setOnAdapterListener(final PopupWindow popupWindow, final PopLingQuanAdapter adapter) {
+                        adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                            @Override
+                            public void ViewOnClick(View view, final int index) {
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Map map = MapUtil.getInstance().addParms("couponID", couponBeanList.get(index).getId()).addParms("userID", SPUtil.getUserCode()).addParms("userNickName", SPUtil.getStringValue(CommonResource.USER_NAME)).build();
+                                        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LINGCOUPON, map);
+                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                            @Override
+                                            public void onSuccess(String result, String msg) {
+                                                LogUtil.e("领取：" + result);
+                                                Toast.makeText(mContext, "领取成功", Toast.LENGTH_SHORT).show();
+                                                couponBeanList.get(index).setHas(true);
+                                                adapter.notifyDataSetChanged();
+                                            }
+
+                                            @Override
+                                            public void onError(String errorCode, String errorMsg) {
+                                                LogUtil.e(errorCode + "------------" + errorMsg);
+                                            }
+                                        }));
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             } else {
                 Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
             }
@@ -320,7 +352,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void detailParms() {
         List<ParmsBean> dataList = new ArrayList<>();
-        dataList.add(new ParmsBean("品牌", "华为"));
+        dataList.add(new ParmsBean("品牌", "李宁"));
         dataList.add(new ParmsBean("尺码", "M  L  XL  XXL"));
         dataList.add(new ParmsBean("领型", "鸡心领"));
         dataList.add(new ParmsBean("颜色", "黑色  白色  灰色  卡其色"));

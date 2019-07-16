@@ -1,6 +1,5 @@
 package com.example.punchsign;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 打卡签到
@@ -233,7 +231,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         punchSignText6.setText("+" + punchSignBean.getNewUserConf().getOrderIntegration());
         punchSignText6666.setText(punchSignBean.getNewUserConf().getOrderNum() + "有效订单(自购或分享)");
         punchSignText66.setText("完成" + 0 + "/" + punchSignBean.getNewUserConf().getOrderNum());
-        if (punchSignBean.getResult().getOrderIntegration() ==3) {
+        if (punchSignBean.getResult().getOrderIntegration() == 3) {
             punchSignText66.setText("完成" + punchSignBean.getNewUserConf().getOrderNum() + "/" + punchSignBean.getNewUserConf().getOrderNum());
             punchSignText666.setText("已完成");
         }
