@@ -405,70 +405,12 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 .navigation();
                                     } else {
                                         //是否登录
-                                        final SelfDialog selfDialog = new SelfDialog(mContext);
-                                        selfDialog.setTitle("提示");
-                                        selfDialog.setMessage("您未登陆是否去登录？");
-                                        selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                            @Override
-                                            public void onYesClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                            @Override
-                                            public void onNoClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                ARouter.getInstance().build("/mine/login").navigation();
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        PopUtils.setTransparency(mContext, 0.3f);
-                                        selfDialog.show();
+                                        PopUtils.isLogin(mContext);
                                     }
 
                                 }
                             });
 
-//                            secondaryTBRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-//                                @Override
-//                                public void ViewOnClick(View view, final int index) {
-//                                    view.setOnClickListener(new View.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View v) {
-//                                            if (!TextUtils.isEmpty(SPUtil.getToken())) {
-//                                                ARouter.getInstance()
-//                                                        .build("/module_classify/TBCommodityDetailsActivity")
-//                                                        .withString("para", tbGoodsList.get(index).getItem_id())
-//                                                        .withString("shoptype", tbGoodsList.get(index).getUser_type())
-//                                                        .navigation();
-//                                            } else {
-//                                                //是否登录
-//                                                final SelfDialog selfDialog = new SelfDialog(mContext);
-//                                                selfDialog.setTitle("提示");
-//                                                selfDialog.setMessage("您未登陆是否去登陆？");
-//                                                selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-//                                                    @Override
-//                                                    public void onYesClick() {
-//                                                        PopUtils.setTransparency(mContext, 1f);
-//                                                        selfDialog.dismiss();
-//                                                    }
-//                                                });
-//                                                selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-//                                                    @Override
-//                                                    public void onNoClick() {
-//                                                        PopUtils.setTransparency(mContext, 1f);
-//                                                        ARouter.getInstance().build("/mine/login").navigation();
-//                                                        selfDialog.dismiss();
-//                                                    }
-//                                                });
-//                                                PopUtils.setTransparency(mContext, 0.3f);
-//                                                selfDialog.show();
-//                                            }
-//                                        }
-//                                    });
-//                                }
-//                            });
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(true);
@@ -535,26 +477,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                 .navigation();
                                     } else {
                                         //是否登录
-                                        final SelfDialog selfDialog = new SelfDialog(mContext);
-                                        selfDialog.setTitle("提示");
-                                        selfDialog.setMessage("您未登陆是否去登录？");
-                                        selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                            @Override
-                                            public void onYesClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                            @Override
-                                            public void onNoClick() {
-                                                PopUtils.setTransparency(mContext, 1f);
-                                                ARouter.getInstance().build("/mine/login").navigation();
-                                                selfDialog.dismiss();
-                                            }
-                                        });
-                                        PopUtils.setTransparency(mContext, 0.3f);
-                                        selfDialog.show();
+                                        PopUtils.isLogin(mContext);
                                     }
                                 }
                             });
@@ -573,26 +496,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                                         .navigation();
                                             } else {
                                                 //是否登录
-                                                final SelfDialog selfDialog = new SelfDialog(mContext);
-                                                selfDialog.setTitle("提示");
-                                                selfDialog.setMessage("您未登陆是否去登录？");
-                                                selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                                    @Override
-                                                    public void onYesClick() {
-                                                        PopUtils.setTransparency(mContext, 1f);
-                                                        selfDialog.dismiss();
-                                                    }
-                                                });
-                                                selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                                    @Override
-                                                    public void onNoClick() {
-                                                        PopUtils.setTransparency(mContext, 1f);
-                                                        ARouter.getInstance().build("/mine/login").navigation();
-                                                        selfDialog.dismiss();
-                                                    }
-                                                });
-                                                PopUtils.setTransparency(mContext, 0.3f);
-                                                selfDialog.show();
+                                                PopUtils.isLogin(mContext);
                                             }
                                         }
                                     });

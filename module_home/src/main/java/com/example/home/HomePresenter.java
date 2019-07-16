@@ -331,64 +331,37 @@ public class HomePresenter extends BasePresenter<HomeView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("优选：" + result);
-                try {
+                GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
+                }.getType());
+                LogUtil.e("goodChoiceBean"+goodChoiceBean);
+                if (goodChoiceBean != null) {
+                    if (goodChoiceBean.getData() != null) {
+                        goodChoiceList.clear();
+                        goodChoiceList.addAll(goodChoiceBean.getData());
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+                        homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+                        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
+                        homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
+                        goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                            .withString("para", goodChoiceList.get(position).getNum_iid())
+                                            .withString("shoptype", "1").navigation();
+                                } else {
+                                    //是否登录
+                                    PopUtils.isLogin(mContext);
+                                }
 
-                    if ("\"code\":-1".indexOf(result) != -1) {
-                        GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
-                        }.getType());
-
-                        if (goodChoiceBean != null) {
-
-                            if (goodChoiceBean.getData() != null) {
-                                goodChoiceList.clear();
-                                goodChoiceList.addAll(goodChoiceBean.getData());
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
-                                homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
-                                GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
-                                homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
-                                goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(RecyclerView parent, View view, int position) {
-                                        if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                                    .withString("para", goodChoiceList.get(position).getNum_iid())
-                                                    .withString("shoptype", "1").navigation();
-                                        } else {
-                                            //是否登录
-                                            final SelfDialog selfDialog = new SelfDialog(mContext);
-                                            selfDialog.setTitle("提示");
-                                            selfDialog.setMessage("您未登陆是否去登陆？");
-                                            selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                                @Override
-                                                public void onYesClick() {
-                                                    PopUtils.setTransparency(mContext, 1f);
-                                                    selfDialog.dismiss();
-                                                }
-                                            });
-                                            selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                                @Override
-                                                public void onNoClick() {
-                                                    PopUtils.setTransparency(mContext, 1f);
-                                                    ARouter.getInstance().build("/mine/login").navigation();
-                                                    selfDialog.dismiss();
-                                                }
-                                            });
-                                            PopUtils.setTransparency(mContext, 0.3f);
-                                            selfDialog.show();
-                                        }
-
-                                    }
-                                });
-                            } else {
-                                LogUtil.e("数据为空");
                             }
-
-                        } else {
-                            LogUtil.e("数据为空");
-                        }
+                        });
+                    } else {
+                        LogUtil.e("数据为空");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                } else {
+                    LogUtil.e("数据为空");
                 }
             }
 
@@ -438,26 +411,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                             .withString("shoptype", goodList.get(position).getUser_type()).navigation();
                                 } else {
                                     //是否登录
-                                    final SelfDialog selfDialog = new SelfDialog(mContext);
-                                    selfDialog.setTitle("提示");
-                                    selfDialog.setMessage("您未登陆是否去登陆？");
-                                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                        @Override
-                                        public void onYesClick() {
-                                            PopUtils.setTransparency(mContext, 1f);
-                                            selfDialog.dismiss();
-                                        }
-                                    });
-                                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                        @Override
-                                        public void onNoClick() {
-                                            PopUtils.setTransparency(mContext, 1f);
-                                            ARouter.getInstance().build("/mine/login").navigation();
-                                            selfDialog.dismiss();
-                                        }
-                                    });
-                                    PopUtils.setTransparency(mContext, 0.3f);
-                                    selfDialog.show();
+                                    PopUtils.isLogin(mContext);
                                 }
                             }
                         });
@@ -474,26 +428,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                                     .withString("shoptype", goodList.get(index).getUser_type()).navigation();
                                         } else {
                                             //是否登录
-                                            final SelfDialog selfDialog = new SelfDialog(mContext);
-                                            selfDialog.setTitle("提示");
-                                            selfDialog.setMessage("您未登陆是否去登陆？");
-                                            selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                                                @Override
-                                                public void onYesClick() {
-                                                    PopUtils.setTransparency(mContext, 1f);
-                                                    selfDialog.dismiss();
-                                                }
-                                            });
-                                            selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                                                @Override
-                                                public void onNoClick() {
-                                                    PopUtils.setTransparency(mContext, 1f);
-                                                    ARouter.getInstance().build("/mine/login").navigation();
-                                                    selfDialog.dismiss();
-                                                }
-                                            });
-                                            PopUtils.setTransparency(mContext, 0.3f);
-                                            selfDialog.show();
+                                            PopUtils.isLogin(mContext);
                                         }
                                     }
                                 });

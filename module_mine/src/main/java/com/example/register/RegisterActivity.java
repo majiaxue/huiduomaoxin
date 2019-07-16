@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
@@ -16,6 +17,7 @@ import butterknife.BindView;
 /**
  * 注册
  */
+@Route(path = "/module_mine/RegisterActivity")
 public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresenter> implements RegisterView {
     @BindView(R2.id.register_back)
     ImageView registerBack;

@@ -2,10 +2,12 @@ package com.example.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.adapter.PopQuanyiAdapter;
 import com.example.adapter.PopUpAdapter;
@@ -74,13 +77,13 @@ public class PopUtils {
         });
     }
 
-    public static void viewPopBottom(View text, final Context context, View view, int width, int height, OnPopListener listener) {
+    public static void viewPopBottom(View text ,final Context context, View view, int width, int height, OnPopListener listener) {
         PopupWindow popupWindow = new PopupWindow(view, width, height, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 //        popupWindow.setAnimationStyle(R.style.animScale);
 //        popupWindow.showAtLocation(new View(context), Gravity.BOTTOM, 0, 0);
-        popupWindow.showAsDropDown(text, 0, 0, Gravity.BOTTOM);
+        popupWindow.showAsDropDown(text,0 ,0,Gravity.BOTTOM);
         setTransparency(context, 0.3f);
         listener.setOnPop(popupWindow);
 
@@ -91,6 +94,7 @@ public class PopUtils {
             }
         });
     }
+
 
 
     public static void changeHeader(final Context mContext, OnChangeHeaderListener listener) {
@@ -408,5 +412,118 @@ public class PopUtils {
         });
 
         listener.setOnClearCache(popupWindow, btn);
+    }
+
+    public static void isLogin(final Context context) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_wei_deng_lu, null);
+        TextView goToLogin = inflate.findViewById(R.id.pop_wei_deng_lu_go_to_login);
+        TextView register = inflate.findViewById(R.id.pop_wei_deng_lu_register);
+        ImageView cancelLogin = inflate.findViewById(R.id.pop_wei_deng_lu_cancel);
+
+        final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        PopUtils.setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setTransparency(context, 1f);
+            }
+        });
+
+        goToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/login").navigation();
+                popupWindow.dismiss();
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_mine/RegisterActivity").navigation();
+                popupWindow.dismiss();
+            }
+        });
+
+        cancelLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+
+    public static void update(final Context context, String versions,String message,OnClearCacheListener listener) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_geng_xin, null);
+        TextView versionsText = inflate.findViewById(R.id.pop_gen_xin_versions);
+        TextView messageText = inflate.findViewById(R.id.pop_gen_xin_text_message);
+        TextView updateBottom = inflate.findViewById(R.id.pop_gen_xin_bottom);
+        ImageView img = inflate.findViewById(R.id.pop_gen_xin_cancel);
+        versionsText.setText("V"+versions);
+        messageText.setText(message);
+        final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        PopUtils.setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setTransparency(context, 1f);
+            }
+        });
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        listener.setOnClearCache(popupWindow,updateBottom);
+    }
+
+    public static void location(final Context context){
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_ding_wei, null);
+        ImageView image = inflate.findViewById(R.id.pop_ding_wei_image);
+        TextView bottom = inflate.findViewById(R.id.pop_ding_wei_bottom);
+
+        final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        PopUtils.setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setTransparency(context, 1f);
+            }
+        });
+
+
+        bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                context.startActivity(intent);
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
     }
 }

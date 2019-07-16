@@ -161,26 +161,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).navigation();
                 } else {
                     //是否登录
-                    final SelfDialog selfDialog = new SelfDialog(getContext());
-                    selfDialog.setTitle("提示");
-                    selfDialog.setMessage("您未登陆是否去登陆？");
-                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            ARouter.getInstance().build("/mine/login").navigation();
-                            selfDialog.dismiss();
-                        }
-                    });
-                    PopUtils.setTransparency(getContext(), 0.3f);
-                    selfDialog.show();
+                    PopUtils.isLogin(getContext());
                 }
 
             }
@@ -193,26 +174,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                     ARouter.getInstance().build("/module_home/ShakeStockActivity").navigation();
                 } else {
                     //是否登录
-                    final SelfDialog selfDialog = new SelfDialog(getContext());
-                    selfDialog.setTitle("提示");
-                    selfDialog.setMessage("您未登陆是否去登陆？");
-                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            ARouter.getInstance().build("/mine/login").navigation();
-                            selfDialog.dismiss();
-                        }
-                    });
-                    PopUtils.setTransparency(getContext(), 0.3f);
-                    selfDialog.show();
+                    PopUtils.isLogin(getContext());
                 }
 
             }
@@ -225,26 +187,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                     ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
                 } else {
                     //是否登录
-                    final SelfDialog selfDialog = new SelfDialog(getContext());
-                    selfDialog.setTitle("提示");
-                    selfDialog.setMessage("您未登陆是否去登陆？");
-                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            ARouter.getInstance().build("/mine/login").navigation();
-                            selfDialog.dismiss();
-                        }
-                    });
-                    PopUtils.setTransparency(getContext(), 0.3f);
-                    selfDialog.show();
+                    PopUtils.isLogin(getContext());
                 }
             }
         });
@@ -256,26 +199,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                     ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
                 } else {
                     //是否登录
-                    final SelfDialog selfDialog = new SelfDialog(getContext());
-                    selfDialog.setTitle("提示");
-                    selfDialog.setMessage("您未登陆是否去登陆？");
-                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            PopUtils.setTransparency(getContext(), 1f);
-                            ARouter.getInstance().build("/mine/login").navigation();
-                            selfDialog.dismiss();
-                        }
-                    });
-                    PopUtils.setTransparency(getContext(), 0.3f);
-                    selfDialog.show();
+                    PopUtils.isLogin(getContext());
                 }
 
             }
