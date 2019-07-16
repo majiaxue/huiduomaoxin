@@ -222,11 +222,15 @@ public class PopUtils {
         title.setTypeface(typeface);
 
         TxtUtil.txtJianbian(title, "#a26335", "#c97d3b");
-        title.setText("升级为" + beanList.get(position).getName());
+        if (beanList.get(position).getName().length() > 4) {
+            title.setText(beanList.get(position).getName());
+        } else {
+            title.setText("升级为" + beanList.get(position).getName());
+        }
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         rv.setLayoutManager(layoutManager);
 
-        int temp = -1;
+        int temp = 0;
         for (int i = 0; i < beanList.size(); i++) {
             if (beanList.get(i).getId().equals(SPUtil.getStringValue(CommonResource.LEVELID))) {
                 temp = i;
@@ -305,7 +309,7 @@ public class PopUtils {
 
         btn.setText("升级" + bean.getNextLevel() + "身份");
         TxtUtil.txtJianbian(level, "#a26335", "#c97d3b");
-        level.setText("升级为" + bean.getName());
+        level.setText("成为" + bean.getName());
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rv.setLayoutManager(layoutManager);
 
@@ -360,7 +364,11 @@ public class PopUtils {
         title.setTypeface(typeface);
 
         TxtUtil.txtJianbian(title, "#a26335", "#c97d3b");
-        title.setText("升级为" + bean.getName());
+        if (bean.getName().length() > 4) {
+            title.setText(bean.getName());
+        } else {
+            title.setText("升级为" + bean.getName());
+        }
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         rv.setLayoutManager(layoutManager);
 
