@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.adapter.BaseVPAdapter;
 import com.example.bean.LocalShopBean;
 import com.example.local_shop.adapter.ManJianAdapter;
@@ -19,7 +20,6 @@ import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.RatingBarView;
-import com.stx.xhb.xbanner.XBanner;
 
 import butterknife.BindView;
 
@@ -30,7 +30,7 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
     @BindView(R2.id.include_title)
     TextView includeTitle;
     @BindView(R2.id.local_detail_banner)
-    XBanner localDetailBanner;
+    ImageView localDetailBanner;
     @BindView(R2.id.local_detail_name)
     TextView localDetailName;
     @BindView(R2.id.local_detail_star)
@@ -55,6 +55,10 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
     TabLayout localDetailTab;
     @BindView(R2.id.local_detail_vp)
     ViewPager localDetailVp;
+    @BindView(R2.id.local_detail_lingquan2)
+    LinearLayout mLingQuan;
+
+    private LocalShopBean bean;
 
     @Override
     public int getLayoutId() {
@@ -64,14 +68,19 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
     @Override
     public void initData() {
         Intent intent = getIntent();
-        LocalShopBean bean = (LocalShopBean) intent.getSerializableExtra("bean");
+        bean = (LocalShopBean) intent.getSerializableExtra("bean");
         includeTitle.setText("商品详情");
         localDetailName.setText(bean.getSeller_shop_name());
         localDetailStar.setClickable(false);
         localDetailStar.setStar(bean.getStar(), false);
         localDetailType.setText(bean.getSeller_type());
-        localDetailTime.setText("营业时间："+bean.getSeller_business_hours());
+        localDetailTime.setText("营业时间：" + bean.getSeller_business_hours());
         localDetailAddress.setText(bean.getSeller_addredd());
+
+        if (bean.getSellerpics() != null) {
+            String[] split = bean.getSellerpics().split(",");
+            Glide.with(this).load(split[0]).into(localDetailBanner);
+        }
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -82,7 +91,7 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
         localDetailTab.setupWithViewPager(localDetailVp);
         presenter.initTab(localDetailTab);
         presenter.initVp(getSupportFragmentManager(), bean);
-        presenter.loadData();
+        presenter.loadData(bean.getCouponList());
 
         localDetailStar.setStar(4, false);
         localDetailStar.setClickable(false);
@@ -100,14 +109,14 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
         localDetailLingquan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.lingquan();
+                presenter.lingquan(bean.getCouponList());
             }
         });
 
-        localDetailCouponRv.setOnClickListener(new View.OnClickListener() {
+        mLingQuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.lingquan();
+                presenter.lingquan(bean.getCouponList());
             }
         });
 

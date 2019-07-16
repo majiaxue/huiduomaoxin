@@ -166,6 +166,13 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
                 orderConfirmSubmit.setEnabled(false);
             }
         });
+
+        orderConfirmCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.chooseCoupon();
+            }
+        });
     }
 
     @Override

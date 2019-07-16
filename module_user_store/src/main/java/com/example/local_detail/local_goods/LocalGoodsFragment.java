@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.bean.LocalShopBean;
 import com.example.local_detail.adapter.LocalDetailGoodsAdapter;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
@@ -18,10 +19,10 @@ public class LocalGoodsFragment extends BaseFragment<LocalGoodsView, LocalGoodsP
     @BindView(R2.id.local_detail_goods_btn)
     TextView localDetailGoodsBtn;
 
-    private static String sellerId;
+    private static LocalShopBean bean;
 
-    public static LocalGoodsFragment getInstance(String id) {
-        sellerId = id;
+    public static LocalGoodsFragment getInstance(LocalShopBean shopBean) {
+        bean = shopBean;
         return new LocalGoodsFragment();
     }
 
@@ -35,7 +36,7 @@ public class LocalGoodsFragment extends BaseFragment<LocalGoodsView, LocalGoodsP
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         localDetailGoodsRv.setLayoutManager(layoutManager);
 
-        presenter.loadData(sellerId);
+        presenter.loadData(bean.getId());
     }
 
     @Override
@@ -43,7 +44,7 @@ public class LocalGoodsFragment extends BaseFragment<LocalGoodsView, LocalGoodsP
         localDetailGoodsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToPay();
+                presenter.jumpToPay(bean);
             }
         });
     }

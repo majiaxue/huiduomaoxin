@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.LocalShopBean;
 import com.example.local_detail.adapter.SellerImaAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.user_store.R;
@@ -26,11 +27,13 @@ public class LocalSellerPresenter extends BasePresenter<LocalSellerView> {
 
     }
 
-    public void loadData() {
-        for (int i = 0; i < 5; i++) {
-            imgList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562825130737&di=c3f5e6fa4c19552e11b6880baa170aac&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201504%2F03%2F20150403H4625_LWeky.jpeg");
+    public void loadData(String pics) {
+        if (pics != null) {
+            String[] split = pics.split(",");
+            for (int i = 0; i < split.length; i++) {
+                imgList.add(split[i]);
+            }
         }
-
         imgAdapter = new SellerImaAdapter(mContext, imgList, R.layout.rv_local_seller_img);
         if (getView() != null) {
             getView().loadImg(imgAdapter);

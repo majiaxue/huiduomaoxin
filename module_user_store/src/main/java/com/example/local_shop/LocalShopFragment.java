@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.baidu.location.BDLocation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -115,23 +116,21 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         mRefresh.setRefreshHeader(customHeader);
-
     }
-
 
     @Override
     public void initClick() {
         localShopPinzhi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), LocalListActivity.class));
+                ARouter.getInstance().build("/user/localList").withInt("label", 0).navigation();
             }
         });
 
         localShopXinxuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), LocalListActivity.class));
+                ARouter.getInstance().build("/user/localList").withInt("label", 1).navigation();
             }
         });
 
@@ -184,6 +183,13 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
                 presenter.loadData(index, page);
             }
         });
+
+        localShopSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToSearch();
+            }
+        });
     }
 
     @Override
@@ -196,16 +202,6 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
             presenter.getXBanner();
             isFirst = false;
         }
-
-        localShopChooseCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                ARouter.getInstance().build("/module_user_store/LocationActivity").withString("cityName",localShopCity.getText().toString()).navigation();
-                Intent intent = new Intent(getActivity(), LocationActivity.class);
-                intent.putExtra("cityName", localShopCity.getText().toString());
-                startActivityForResult(intent, REQUESTCODE);
-            }
-        });
     }
 
     @Override

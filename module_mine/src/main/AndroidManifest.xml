@@ -147,6 +147,10 @@
         <activity
             android:name="com.example.buy2up.Buy2UpActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.up_order_confirm.UpOrderConfirmActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

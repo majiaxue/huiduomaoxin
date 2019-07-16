@@ -53,6 +53,7 @@
 
         <activity
             android:name="com.example.local_list.LocalListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity

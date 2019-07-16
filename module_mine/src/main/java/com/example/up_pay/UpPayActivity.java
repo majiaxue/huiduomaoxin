@@ -36,6 +36,8 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
     String money;
     @Autowired(name = "type")
     String type;
+    @Autowired(name = "name")
+    String name;
 
     private boolean isWeChat = true;
 
@@ -79,7 +81,7 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
             @Override
             public void onClick(View v) {
                 uppayBtn.setEnabled(false);
-                presenter.pay(isWeChat, money, type);
+                presenter.pay(isWeChat, money, type, name);
             }
         });
     }

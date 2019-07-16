@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.alibaba.fastjson.JSON;
 import com.example.bean.LocalGoodsBean;
+import com.example.bean.LocalShopBean;
 import com.example.common.CommonResource;
 import com.example.local_detail.adapter.LocalDetailGoodsAdapter;
 import com.example.local_pay.LocalPayActivity;
@@ -63,8 +64,9 @@ public class LocalGoodsPresenter extends BasePresenter<LocalGoodsView> {
         }));
     }
 
-    public void jumpToPay() {
+    public void jumpToPay(LocalShopBean bean) {
         Intent intent = new Intent(mContext, LocalPayActivity.class);
+        intent.putExtra("bean", bean);
         mContext.startActivity(intent);
     }
 }

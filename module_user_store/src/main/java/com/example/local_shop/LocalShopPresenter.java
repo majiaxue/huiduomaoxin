@@ -5,25 +5,22 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.LocalNavbarBean;
 import com.example.bean.LocalShopBean;
 import com.example.common.CommonResource;
 import com.example.local_detail.LocalDetailActivity;
-import com.example.local_list.LocalListActivity;
 import com.example.local_mingxi.LocalMingxiActivity;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
-import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.service.LocationService;
+import com.example.search.UserSearchActivity;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
@@ -36,8 +33,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-
-import static com.taobao.applink.util.TBAppLinkUtil.getApplication;
 
 public class LocalShopPresenter extends BasePresenter<LocalShopView> {
     private List<BannerBean.RecordsBean> beanList = new ArrayList<>();
@@ -170,7 +165,10 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
         navbarAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                mContext.startActivity(new Intent(mContext, LocalListActivity.class));
+                ARouter.getInstance().build("/user/localList").withString("type", navbarList.get(position).getSellerCategoryCode()).navigation();
+//                Intent intent = new Intent(mContext, LocalListActivity.class);
+//                intent.putExtra("type", navbarList.get(position).getSellerCategoryName());
+//                mContext.startActivity(intent);
             }
         });
     }
@@ -228,4 +226,9 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
         }
     }
 
+    public void jumpToSearch() {
+        Intent intent = new Intent(mContext, UserSearchActivity.class);
+        intent.putExtra("from", CommonResource.HISTORY_LOCAL);
+        mContext.startActivity(intent);
+    }
 }
