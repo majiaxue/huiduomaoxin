@@ -2,6 +2,7 @@ package com.example.location;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -89,14 +90,6 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
             locationSelectRecycler.setVisibility(View.GONE);
         }
     }
-
-
-//    @Override
-//    public void onBackPressed() {
-////        super.onBackPressed();
-//        setResult(RESULTCODE, new Intent().putExtra("cityName", cityName));
-//        finish();
-//    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

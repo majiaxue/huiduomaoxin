@@ -35,7 +35,6 @@
                 android:id="@+id/local_shop_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="郑州"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_14" />
 

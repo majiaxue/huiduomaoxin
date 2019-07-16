@@ -151,9 +151,13 @@ dependencies {
     //极光推送
     api files('libs/jcore-android-2.1.0.jar')
     api files('libs/jpush-android-3.3.2.jar')
+
     //百度地图
     api files('libs/BaiduLBS_Android.jar')
+    api files('libs/component_common_sdk_1.0.0.jar')
+    api files('libs/IndoorscapeAlbumPlugin.jar')
 
     //播放器
     api 'cn.jzvd:jiaozivideoplayer:7.0.4'
+
 }

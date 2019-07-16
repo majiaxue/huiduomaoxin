@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,6 +24,8 @@ import com.example.location.LocationActivity;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
+import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -99,6 +102,9 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 
     @Override
     public void initData() {
+        //定位
+        LogUtil.e("地址:"+MyLocationListener.city);
+        localShopCity.setText(MyLocationListener.city);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -109,7 +115,9 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         mRefresh.setRefreshHeader(customHeader);
+
     }
+
 
     @Override
     public void initClick() {

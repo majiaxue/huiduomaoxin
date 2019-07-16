@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.LocalNavbarBean;
@@ -16,10 +18,12 @@ import com.example.local_list.LocalListActivity;
 import com.example.local_mingxi.LocalMingxiActivity;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.service.LocationService;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
@@ -32,6 +36,8 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+
+import static com.taobao.applink.util.TBAppLinkUtil.getApplication;
 
 public class LocalShopPresenter extends BasePresenter<LocalShopView> {
     private List<BannerBean.RecordsBean> beanList = new ArrayList<>();
@@ -221,4 +227,5 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
             initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, page);
         }
     }
+
 }
