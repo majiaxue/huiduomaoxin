@@ -58,6 +58,7 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
         LogUtil.e("从哪个地方近的" + position);
         if (position == 4) {
             includeTitle.setText("爆款推荐");
+            presenter.hotRecommend(universalListRec,page);
         } else if (position == 1) {
             includeTitle.setText("淘抢购");
         } else if (position == 2) {
@@ -74,7 +75,11 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.universalList(universalListRec, position, page);
+                if (position == 4){
+                    presenter.hotRecommend(universalListRec,page);
+                }else{
+                    presenter.universalList(universalListRec, position, page);
+                }
             }
         });
 
@@ -82,7 +87,11 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.universalList(universalListRec, position, page);
+                if (position == 4){
+                    presenter.hotRecommend(universalListRec,page);
+                }else{
+                    presenter.universalList(universalListRec, position, page);
+                }
             }
         });
     }

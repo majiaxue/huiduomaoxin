@@ -193,14 +193,14 @@ public class HomePresenter extends BasePresenter<HomeView> {
     public void setZhongXBanner(final XBanner homeZhongXbanner) {
 
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.HOMEADVERTISEBOTTOM);
-        RetrofitUtil.getInstance().toSubscribe(dataWithout,new OnMyCallBack(new OnDataListener() {
+        RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("HomePresenterResult"+result);
+                LogUtil.e("HomePresenterResult" + result);
 
                 ZhongXBannerBean zhongXBannerBean = JSON.parseObject(result, new TypeReference<ZhongXBannerBean>() {
                 }.getType());
-                if (zhongXBannerBean!=null){
+                if (zhongXBannerBean != null) {
                     for (int i = 0; i < zhongXBannerBean.getRecords().size(); i++) {
                         bannerBeanList.add(new ZBannerBean(zhongXBannerBean.getRecords().get(i).getPicUrl()));
                     }
@@ -222,7 +222,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("HomePresenterErrorMsg"+errorMsg);
+                LogUtil.e("HomePresenterErrorMsg" + errorMsg);
             }
         }));
 
@@ -316,7 +316,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 3).navigation();
                 } else if (position == 5) {
 //                    ARouter.getInstance().build("/module_user_store/LocationActivity").navigation();
-                    ARouter.getInstance().build("/module_user_store/UserActivity").withString("go","go").navigation();
+                    ARouter.getInstance().build("/module_user_store/UserActivity").withString("go", "go").navigation();
                 }
             }
         });
@@ -325,41 +325,36 @@ public class HomePresenter extends BasePresenter<HomeView> {
     //优选
     public void setGoodChoiceRec(final RecyclerView homeGoodChoiceRec) {
 
-        Map map = MapUtil.getInstance().addParms("pageno", 1).addParms("pagesize", 10).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.YOUXUANPRODUCTS, map);
+        Map map = MapUtil.getInstance().addParms("sale_type", 1).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSALESLIST, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("优选：" + result);
                 GoodChoiceBean goodChoiceBean = JSON.parseObject(result, new TypeReference<GoodChoiceBean>() {
                 }.getType());
-                LogUtil.e("goodChoiceBean"+goodChoiceBean);
-                if (goodChoiceBean != null) {
-                    if (goodChoiceBean.getData() != null) {
-                        goodChoiceList.clear();
-                        goodChoiceList.addAll(goodChoiceBean.getData());
-                        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
-                        homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
-                        GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
-                        homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
-                        goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(RecyclerView parent, View view, int position) {
-                                if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                            .withString("para", goodChoiceList.get(position).getNum_iid())
-                                            .withString("shoptype", "1").navigation();
-                                } else {
-                                    //是否登录
-                                    PopUtils.isLogin(mContext);
-                                }
-
+                LogUtil.e("goodChoiceBean" + goodChoiceBean);
+                if (goodChoiceBean != null && goodChoiceBean.getData().size() != 0) {
+                    goodChoiceList.clear();
+                    goodChoiceList.addAll(goodChoiceBean.getData());
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 1, LinearLayoutManager.HORIZONTAL, false);
+                    homeGoodChoiceRec.setLayoutManager(gridLayoutManager);
+                    GoodChoiceRecAdapter goodChoiceRecAdapter = new GoodChoiceRecAdapter(mContext, goodChoiceList, R.layout.item_home_good_choice_rec);
+                    homeGoodChoiceRec.setAdapter(goodChoiceRecAdapter);
+                    goodChoiceRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", goodChoiceList.get(position).getItemid())
+                                        .withString("shoptype", "1").navigation();
+                            } else {
+                                //是否登录
+                                PopUtils.isLogin(mContext);
                             }
-                        });
-                    } else {
-                        LogUtil.e("数据为空");
-                    }
 
+                        }
+                    });
                 } else {
                     LogUtil.e("数据为空");
                 }
