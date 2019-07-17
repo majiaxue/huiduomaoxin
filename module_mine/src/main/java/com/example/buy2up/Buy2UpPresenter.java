@@ -201,6 +201,7 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
                     .withSerializable("bean", orderConfirmBean)
                     .withString("name", userGoodsDetail.getName())
                     .withString("type", "operator")
+                    .withString("levelId", userGoodsDetail.getLevelId())
                     .navigation();
         }
     }
@@ -1222,6 +1223,7 @@ public class Buy2UpPresenter extends BasePresenter<Buy2UpView> {
                 .withSerializable("bean", orderConfirmBean)
                 .withString("name", name)
                 .withString("type", "operator")
+                .withString("levelId", userGoodsDetail.getLevelId())
                 .navigation();
     }
 

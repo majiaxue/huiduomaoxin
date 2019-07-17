@@ -3,6 +3,7 @@ package com.example.up_pay;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -18,12 +19,15 @@ import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
-import com.example.utils.MapUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.example.view.SelfDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -31,6 +35,7 @@ import io.reactivex.Observable;
 
 public class UpPayPresenter extends BasePresenter<UpPayView> {
     private final int ALI_CODE = 0x123;
+    private String orderSn;
     private String type;
     private String info;
     private Intent intent;
@@ -41,7 +46,7 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(mContext);
     }
 
     @SuppressLint("HandlerLeak")
@@ -64,20 +69,22 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
 
     };
 
-    public void pay(boolean isWeChat, String money, String type, String name) {
+    public void pay(boolean isWeChat, String money, String type, String name, String levelId) {
         this.type = type;
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
-
-//            Map map = MapUtil.getInstance().addParms("totalAmount", money).addParms("userCode", SPUtil.getUserCode()).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID) + "&productName=枫林淘客-" + name);
+            ProcessDialogUtil.showProcessDialog(mContext);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + levelId + "&productName=枫林淘客-" + name);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("微信支付-------------->" + result);
-                    try {
 
-                        WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
+                    ProcessDialogUtil.dismissDialog();
+                    try {
+                        String[] split = result.split("-----");
+                        orderSn = split[1];
+                        WeChatPayBean payBean = JSON.parseObject(split[0], WeChatPayBean.class);
 
                         PayReq request = new PayReq();
                         request.appId = payBean.getAppid();
@@ -90,11 +97,12 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
 
                         api.registerApp(CommonResource.WXAPPID);
                         api.sendReq(request);
-                        SPUtil.addParm("wxpay", "2");
+                        SPUtil.addParm("wxpay", "4");
                         getView().callBack();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 }
 
                 @Override
@@ -105,19 +113,23 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
             }));
         } else {
             ProcessDialogUtil.showProcessDialog(mContext);
-//            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID));
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("付款：" + result);
-                    intent = new Intent();
+                    try {
+                        intent = new Intent();
 
-                    Map parseObject = JSON.parseObject(result, Map.class);
-                    info = (String) parseObject.get("body");
-                    Thread thread = new Thread(payRunnable);
-                    thread.start();
-                    getView().callBack();
+                        Map parseObject = JSON.parseObject(result, Map.class);
+                        info = (String) parseObject.get("body");
+                        orderSn = (String) parseObject.get("msg");
+                        Thread thread = new Thread(payRunnable);
+                        thread.start();
+                        getView().callBack();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -141,4 +153,33 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
             mHandler.sendMessage(msg);
         }
     };
+
+    public void goBack() {
+        final SelfDialog dialog = new SelfDialog(mContext);
+        dialog.setTitle("提示");
+        dialog.setMessage("确定要离开吗？");
+        dialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                dialog.dismiss();
+                ((Activity) mContext).finish();
+            }
+        });
+
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                PopUtils.setTransparency(mContext, 1.0f);
+            }
+        });
+        PopUtils.setTransparency(mContext, 0.3f);
+    }
 }

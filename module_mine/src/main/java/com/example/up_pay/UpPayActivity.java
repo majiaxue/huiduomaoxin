@@ -1,5 +1,6 @@
 package com.example.up_pay;
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -8,10 +9,16 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.SPUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -38,6 +45,8 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
     String type;
     @Autowired(name = "name")
     String name;
+    @Autowired(name = "levelId")
+    String levelId;
 
     private boolean isWeChat = true;
 
@@ -49,6 +58,7 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
         uppayMoney.setText("￥" + money);
     }
 
@@ -57,7 +67,7 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
         uppayBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                presenter.goBack();
             }
         });
 
@@ -81,9 +91,22 @@ public class UpPayActivity extends BaseActivity<UpPayView, UpPayPresenter> imple
             @Override
             public void onClick(View v) {
                 uppayBtn.setEnabled(false);
-                presenter.pay(isWeChat, money, type, name);
+                presenter.pay(isWeChat, money, type, name, levelId);
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.WXPAY_SUCCESS_UP.equals(eventBusBean.getMsg())) {
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        presenter.goBack();
+        return false;
     }
 
     private void changePayType() {

@@ -72,20 +72,20 @@ public class RetrofitUtil {
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-//                        Request build = null;
-//                        try {
-//                            build = chain.request().newBuilder()
-//                                    .addHeader("relationId", "1")
-//                                    .build();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        return chain.proceed(build);
+                        Request build = null;
+                        try {
+                            build = chain.request().newBuilder()
+                                    .addHeader("TENANT_ID", "1")
+                                    .build();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return chain.proceed(build);
 
-                        Request oldRequest = chain.request();
-                        Request request = addParam(oldRequest);
+//                        Request oldRequest = chain.request();
+//                        Request request = addParam(oldRequest);
 
-                        return chain.proceed(request);
+//                        return chain.proceed(request);
                     }
                 }).build();
         return okHttpClient;
@@ -101,7 +101,7 @@ public class RetrofitUtil {
 
         HttpUrl.Builder builder = oldRequest.url()
                 .newBuilder()
-                .setEncodedQueryParameter("relationId", "1");
+                .setEncodedQueryParameter("TENANT_ID", "3");
 
         Request newRequest = oldRequest.newBuilder()
                 .method(oldRequest.method(), oldRequest.body())

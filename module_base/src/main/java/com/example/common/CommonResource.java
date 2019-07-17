@@ -1,11 +1,11 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.1.9:9001";   //商品//47.99.93.123
-    public static final String BASEURL_4001 = "http://192.168.1.9:4001";   //用户
-    public static final String BASEURL_9003 = "http://192.168.1.9:9003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.1.9:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.1.9:9005";   //参数
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
+    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -96,6 +96,8 @@ public class CommonResource {
     public static final String LIBAO_WXPAY = "/rest/WXPay/level";          //礼包升级微信支付
     public static final String LIBAO_ZFBPAY = "/rest/alipay/upLevelSign";   //礼包升级支付宝支付
     public static final String QUERY_COUPON = "/rest/seller/coupon/status";     //查询已领取优惠券  未使用 status 0
+    public static final String LOCAL_BALANCE_PAY = "/rest/localPay/localOrderPay";   //本地商城余额支付
+    public static final String LIBAO_CANCEL_ORDER = "/rest/order/remove/level";     //取消礼包订单
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -177,4 +179,7 @@ public class CommonResource {
     public static final String HISTORY_USER = "user";
     public static final String HISTORY_TBK = "tbk";
     public static final String HISTORY_LOCAL = "local";
+    public static final String WXPAY_CANCEL = "wxpay_cancel";   //微信支付  取消支付
+    public static final String WXPAY_SUCCESS = "wxpay_success"; //礼包微信支付成功
+    public static final String WXPAY_SUCCESS_UP = "wxpay_up";   //金银铜微信支付成功
 }

@@ -3,6 +3,7 @@ package com.example.local_pay;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.example.bean.UserCouponBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -85,7 +87,7 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
         includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                presenter.goBack();
             }
         });
 
@@ -117,7 +119,8 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
             @Override
             public void onClick(View v) {
                 mBtn.setEnabled(false);
-                presenter.commit(mMoney.getText().toString(), payType);
+                LogUtil.e("------------>" + payType);
+                presenter.commit(mMoney.getText().toString(), payType, bean.getId());
             }
         });
 
@@ -157,6 +160,12 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        presenter.goBack();
+        return false;
     }
 
     @Override

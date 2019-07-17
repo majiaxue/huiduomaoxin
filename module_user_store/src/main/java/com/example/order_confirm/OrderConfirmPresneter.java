@@ -3,23 +3,29 @@ package com.example.order_confirm;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.OrderConfirmBean;
 import com.example.bean.PostageBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.bean.SubmitOrderBean;
+import com.example.bean.UserCouponBean;
 import com.example.common.CommonResource;
+import com.example.goods_detail.adapter.PopLingQuanAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.payment.PaymentActivity;
 import com.example.shop_home.ShopHomeActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnAdapterListener;
+import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
@@ -36,6 +42,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
     public ShippingAddressBean addressBean;
     public boolean isCan = false;
+    private List<UserCouponBean> couponBeanList;
+    private UserCouponBean chooseCoupon;
 
     public OrderConfirmPresneter(Context context) {
         super(context);
@@ -128,9 +136,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
                     SubmitOrderBean submitOrderBean = JSON.parseObject(result, SubmitOrderBean.class);
                     submitOrderBean.setProductName("goods");
                     submitOrderBean.setProductCategoryId(bean.getProductCategoryId());
-//                Intent intent = new Intent(mContext, PaymentActivity.class);
-//                intent.putExtra("bean", submitOrderBean);
-//                mContext.startActivity(intent);
+
                     ARouter.getInstance().build("/module_user_store/PaymentActivity")
                             .withSerializable("submitOrderBean", submitOrderBean)
                             .navigation();
@@ -147,7 +153,39 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         }
     }
 
-    public void chooseCoupon() {
+    public void chooseCoupon(OrderConfirmBean confirmBean) {
+        Map map = MapUtil.getInstance().addParms("status", "0").addParms("userCode", SPUtil.getUserCode()).addParms("goodsId", confirmBean.getProductId()).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.QUERY_COUPON, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("可用优惠券：" + result);
+                try {
 
+                    couponBeanList = JSON.parseArray(result, UserCouponBean.class);
+                    if (couponBeanList != null && couponBeanList.size() > 0) {
+                        PopUtil.lingquanPop(mContext, couponBeanList, new OnAdapterListener() {
+                            @Override
+                            public void setOnAdapterListener(PopupWindow popupWindow, PopLingQuanAdapter adapter) {
+                                adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                                    @Override
+                                    public void ViewOnClick(View view, int index) {
+                                        chooseCoupon = couponBeanList.get(index);
+                                        getView().couponChoosed(chooseCoupon);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------------" + errorMsg);
+            }
+        }));
     }
 }

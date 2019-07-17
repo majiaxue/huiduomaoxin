@@ -235,7 +235,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && !"".equals(SPUtil.getToken())) {
-            presenter.getPredict();
+
         }
         if (hidden) {
             StatusBarUtils.setStatusTheme(getActivity(), true, true);
@@ -264,7 +264,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mBalanceTxt.setText(userInfo.getBlance() == null ? "0" : userInfo.getBlance());
         mPointsTxt.setText(userInfo.getIntegration() == null ? "0" : userInfo.getIntegration());
 
-        if (userInfo.getLevel() != null && "".equals(userInfo.getLevel().trim())) {
+        if (userInfo.getLevel() != null && !"".equals(userInfo.getLevel().trim())) {
             mineLv.setVisibility(View.VISIBLE);
             mineLv.setText(userInfo.getLevel());
         } else {
@@ -278,6 +278,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineHeader.setImageResource(R.drawable.vhjfg);
         mineTemp.setVisibility(View.GONE);
         mIWantUp.setVisibility(View.GONE);
+        mineLv.setVisibility(View.GONE);
     }
 
     @Override

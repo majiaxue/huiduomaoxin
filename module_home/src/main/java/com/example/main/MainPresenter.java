@@ -2,7 +2,6 @@ package com.example.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,12 +14,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.bean.CheckUpBean;
-import com.example.classify.ClassifyFragment;
 import com.example.common.CommonResource;
 import com.example.community.CommunityFragment;
 import com.example.fix.Constants;
@@ -36,8 +35,8 @@ import com.example.net.RetrofitUtil;
 import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
+import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
-import com.example.view.SelfDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -191,63 +190,34 @@ public class MainPresenter extends BasePresenter<MainView> {
                 if (version != null) {
                     String[] split1 = version.split("\\.");
                     if ((Integer.valueOf(split[0]) < Integer.valueOf(split1[0])) || (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) < Integer.valueOf(split1[1]))) {
-                        final SelfDialog selfDialog = new SelfDialog(mContext);
-                        selfDialog.setTitle("更新提示");
-                        selfDialog.setMessage(checkUpBean.getContent());
-                        selfDialog.setYesOnclickListener("立即升级", new SelfDialog.onYesOnclickListener() {
+                        PopUtils.update(mContext, version, checkUpBean.getIsForce(), checkUpBean.getContent(), new OnClearCacheListener() {
                             @Override
-                            public void onYesClick() {
-                                writeToDisk(checkUpBean.getUrl());
-                                showDialog();
-                                selfDialog.dismiss();
+                            public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                confirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        writeToDisk(checkUpBean.getUrl());
+                                        showDialog();
+                                        pop.dismiss();
+                                    }
+                                });
                             }
                         });
 
-                        selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                    } else if (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) == Integer.valueOf(split1[1]) && Integer.valueOf(split[2]) < Integer.valueOf(split1[2])) {
+                        PopUtils.update(mContext, version, checkUpBean.getIsForce(), checkUpBean.getContent(), new OnClearCacheListener() {
                             @Override
-                            public void onNoClick() {
-                                if ("0".equals(checkUpBean.getIsForce())) {
-                                    selfDialog.dismiss();
-                                } else {
-                                    selfDialog.dismiss();
-                                    AppManager.getInstance().AppExit();
-                                }
+                            public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                confirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        writeToDisk(checkUpBean.getUrl());
+                                        showDialog();
+                                        pop.dismiss();
+                                    }
+                                });
                             }
                         });
-
-                        selfDialog.show();
-                        selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                PopUtils.setTransparency(mContext, 1f);
-                            }
-                        });
-
-                        PopUtils.setTransparency(mContext, 0.3f);
-                    } else {
-                        downLoadPatch(checkUpBean.getList().get(0).getUrl());
-//                        if (Double.valueOf(clientVersion) < Double.valueOf(checkUpBean.getList().get(0).getVersion())) {
-//                            final SelfDialog selfDialog = new SelfDialog(mContext);
-//                            selfDialog.setTitle("更新提示");
-//                            selfDialog.setMessage(checkUpBean.getContent());
-//                            selfDialog.setYesOnclickListener("立即升级", new SelfDialog.onYesOnclickListener() {
-//                                @Override
-//                                public void onYesClick() {
-//                                    downLoadPatch(checkUpBean.getList().get(0).getUrl());
-//                                    showDialog();
-//                                    selfDialog.cancel();
-//                                }
-//                            });
-//
-//                            selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-//                                @Override
-//                                public void onNoClick() {
-//                                    selfDialog.cancel();
-//                                }
-//                            });
-//
-//                            selfDialog.show();
-//                        }
                     }
                 }
             }
@@ -329,7 +299,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     is.close();
                 } catch (Exception e) {
                     mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
-                    LogUtil.e("------>"+e.getMessage());
+                    LogUtil.e("------>" + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -346,14 +316,12 @@ public class MainPresenter extends BasePresenter<MainView> {
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //判断是否是AndroidN以及更高的版本
-
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri contentUri = FileProvider.getUriForFile(mContext, "com.lxy.taobaoke.provider", apkFile);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(mContext, "com.lxy.taobaoke.provider", apkFile);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
         }
         mContext.startActivity(intent);

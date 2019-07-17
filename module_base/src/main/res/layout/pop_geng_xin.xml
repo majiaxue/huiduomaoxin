@@ -77,11 +77,12 @@
         <TextView
             android:id="@+id/pop_gen_xin_text_message"
             android:layout_width="@dimen/dp_193"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_53"
             android:layout_below="@id/pop_gen_xin_text"
             android:layout_centerHorizontal="true"
-            android:gravity="center"
             android:layout_marginTop="@dimen/dp_15"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:text="更新签到、9.9包邮、0元购抖券等功能,更好的支持手机操作系统解决了部分手机闪退的问题" />
 
         <TextView

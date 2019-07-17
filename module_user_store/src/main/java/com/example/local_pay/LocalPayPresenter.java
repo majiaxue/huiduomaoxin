@@ -3,7 +3,7 @@ package com.example.local_pay;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -19,7 +19,6 @@ import com.example.bean.UserCouponBean;
 import com.example.bean.WeChatPayBean;
 import com.example.common.CommonResource;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
-import com.example.local_assess.LocalAssessActivity;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -77,11 +76,12 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
 
     };
 
-    public void commit(final String edit, final int payType) {
+    public void commit(final String edit, final int payType, final String sellerId) {
         try {
 
             if (Double.valueOf(edit) == 0) {
                 Toast.makeText(mContext, "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                getView().callBack();
             } else {
                 if (!isCanUse) {
                     final SelfDialog dialog = new SelfDialog(mContext);
@@ -91,18 +91,19 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
                         @Override
                         public void onYesClick() {
                             dialog.dismiss();
+                            getView().callBack();
                         }
                     });
 
                     dialog.setNoOnclickListener("直接支付", new SelfDialog.onNoOnclickListener() {
                         @Override
                         public void onNoClick() {
-                            toPay(edit, payType);
+                            toPay(edit, payType, sellerId);
                             dialog.dismiss();
                         }
                     });
                 } else {
-                    toPay(edit, payType);
+                    toPay(edit, payType, sellerId);
                 }
             }
         } catch (Exception e) {
@@ -112,7 +113,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
 //        mContext.startActivity(intent);
     }
 
-    private void toPay(String money, int type) {
+    private void toPay(String money, int type, String sellerId) {
         if (type == 0) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
@@ -169,8 +170,29 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
                     getView().callBack();
                 }
             }));
-        } else if (type == 3) {
+        } else if (type == 2) {
+            Map map = MapUtil.getInstance().addParms("masterNo", orderSn).addParms("totalAmount", money)
+                    .addParms("productName", "枫林淘客").addParms("userCode", SPUtil.getUserCode()).addParms("sellerId", sellerId).build();
+            if (chooseCoupon != null) {
+                map.put("couponId", chooseCoupon.getId());
+            }
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getData(CommonResource.LOCAL_BALANCE_PAY, map);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("余额支付：" + result);
+                    Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
+                    ((Activity) mContext).finish();
+                }
 
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e(errorCode + "--------------" + errorMsg);
+                    if ("1".equals(errorCode)) {
+                        Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }));
         }
     }
 
@@ -228,25 +250,29 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
     }
 
     public void choose(final String string) {
-        PopUtil.lingquanPop(mContext, beanList, new OnAdapterListener() {
-            @Override
-            public void setOnAdapterListener(final PopupWindow popupWindow, PopLingQuanAdapter adapter) {
-                adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                chooseCoupon = beanList.get(index);
-                                popupWindow.dismiss();
-                                getView().chooseFinish(chooseCoupon);
-                                update(string);
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        if (beanList.size() > 0) {
+            PopUtil.lingquanPop(mContext, beanList, new OnAdapterListener() {
+                @Override
+                public void setOnAdapterListener(final PopupWindow popupWindow, PopLingQuanAdapter adapter) {
+                    adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                        @Override
+                        public void ViewOnClick(View view, final int index) {
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    chooseCoupon = beanList.get(index);
+                                    popupWindow.dismiss();
+                                    getView().chooseFinish(chooseCoupon);
+                                    update(string);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            Toast.makeText(mContext, "暂无可用优惠券", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void update(String edit) {
@@ -271,5 +297,34 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
                 getView().updateMoney(edit);
             }
         }
+    }
+
+    public void goBack() {
+        final SelfDialog dialog = new SelfDialog(mContext);
+        dialog.setTitle("提示");
+        dialog.setMessage("确定要离开吗？");
+        dialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                dialog.dismiss();
+                ((Activity) mContext).finish();
+            }
+        });
+
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                PopUtil.setTransparency(mContext, 1.0f);
+            }
+        });
+        PopUtil.setTransparency(mContext, 0.3f);
     }
 }

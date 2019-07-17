@@ -2,6 +2,7 @@ package com.example.local_shop;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -230,5 +231,12 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
         Intent intent = new Intent(mContext, UserSearchActivity.class);
         intent.putExtra("from", CommonResource.HISTORY_LOCAL);
         mContext.startActivity(intent);
+    }
+
+    public void isOpenLocation() {
+        LocationManager locManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
+        }
     }
 }

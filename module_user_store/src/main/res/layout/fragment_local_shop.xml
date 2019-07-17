@@ -50,6 +50,7 @@
             android:layout_width="@dimen/dp_264"
             android:layout_height="@dimen/dp_30"
             android:layout_marginLeft="@dimen/dp_8"
+            android:layout_weight="1"
             android:background="@drawable/bg_15_f7f7f7"
             android:drawableLeft="@drawable/icon_sousuo111"
             android:drawablePadding="@dimen/dp_10"
@@ -64,6 +65,7 @@
             android:layout_width="@dimen/dp_29"
             android:layout_height="@dimen/dp_30"
             android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_19"
             android:padding="@dimen/dp_6"
             android:src="@drawable/icon_zhichumingxi" />
     </LinearLayout>

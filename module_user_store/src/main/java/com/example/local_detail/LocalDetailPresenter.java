@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.BaseVPAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalShopBean;
@@ -22,6 +21,7 @@ import com.example.local_coupon.LocalCouponActivity;
 import com.example.local_detail.local_goods.LocalGoodsFragment;
 import com.example.local_detail.local_seller.LocalSellerFragment;
 import com.example.local_shop.adapter.ManJianAdapter;
+import com.example.map_detail.MapDetailActivity;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -31,8 +31,8 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.view.SelfDialog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -123,37 +123,40 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
     }
 
     public void lingquan(final List<UserCouponBean> list) {
+        if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+            PopUtil.lingquanPop(mContext, list, new OnAdapterListener() {
+                @Override
+                public void setOnAdapterListener(final PopupWindow popupWindow, final PopLingQuanAdapter adapter) {
+                    adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                        @Override
+                        public void ViewOnClick(View view, final int index) {
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Map map = MapUtil.getInstance().addParms("couponID", list.get(index).getId()).addParms("userID", SPUtil.getUserCode()).addParms("userNickName", SPUtil.getStringValue(CommonResource.USER_NAME)).build();
+                                    Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LINGCOUPON, map);
+                                    RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                        @Override
+                                        public void onSuccess(String result, String msg) {
+                                            LogUtil.e("领取：" + result);
+                                            list.get(index).setHas(true);
+                                            adapter.notifyDataSetChanged();
+                                        }
 
-        PopUtil.lingquanPop(mContext, list, new OnAdapterListener() {
-            @Override
-            public void setOnAdapterListener(final PopupWindow popupWindow, final PopLingQuanAdapter adapter) {
-                adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                    @Override
-                    public void ViewOnClick(View view, final int index) {
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Map map = MapUtil.getInstance().addParms("couponID", list.get(index).getId()).addParms("userID", SPUtil.getUserCode()).addParms("userNickName", SPUtil.getStringValue(CommonResource.USER_NAME)).build();
-                                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LINGCOUPON, map);
-                                RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-                                    @Override
-                                    public void onSuccess(String result, String msg) {
-                                        LogUtil.e("领取：" + result);
-                                        list.get(index).setHas(true);
-                                        adapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onError(String errorCode, String errorMsg) {
-                                        LogUtil.e(errorCode + "------------" + errorMsg);
-                                    }
-                                }));
-                            }
-                        });
-                    }
-                });
-            }
-        });
+                                        @Override
+                                        public void onError(String errorCode, String errorMsg) {
+                                            LogUtil.e(errorCode + "------------" + errorMsg);
+                                        }
+                                    }));
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            PopUtils.isLogin(mContext);
+        }
     }
 
     public void callPhone() {
@@ -168,23 +171,14 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
             Intent intent = new Intent(mContext, LocalCouponActivity.class);
             mContext.startActivity(intent);
         } else {
-            final SelfDialog dialog = new SelfDialog(mContext);
-            dialog.setTitle("提示");
-            dialog.setMessage("请先登录");
-            dialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                @Override
-                public void onYesClick() {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.setNoOnclickListener("去登录", new SelfDialog.onNoOnclickListener() {
-                @Override
-                public void onNoClick() {
-                    dialog.dismiss();
-                    ARouter.getInstance().build("/mine/login").navigation();
-                }
-            });
+            PopUtils.isLogin(mContext);
         }
+    }
+
+    public void jumpToMap(String lat, String lon) {
+        Intent intent = new Intent(mContext, MapDetailActivity.class);
+        intent.putExtra("lat", lat);
+        intent.putExtra("lon", lon);
+        mContext.startActivity(intent);
     }
 }

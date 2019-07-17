@@ -81,6 +81,7 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
                                             .withString("money", beanList.get(index).getPrice())
                                             .withString("name", beanList.get(index).getName())
                                             .withString("type", "operator")
+                                            .withString("levelId", beanList.get(index).getId())
                                             .navigation();
                                 }
                             }

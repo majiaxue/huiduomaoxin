@@ -51,6 +51,7 @@ android {
             storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
             storePassword '123456'
         }
+
     }
 
     buildTypes {
@@ -65,6 +66,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
     productFlavors {
     }
 }

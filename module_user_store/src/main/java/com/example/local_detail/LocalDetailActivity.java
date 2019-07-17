@@ -57,6 +57,8 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
     ViewPager localDetailVp;
     @BindView(R2.id.local_detail_lingquan2)
     LinearLayout mLingQuan;
+    @BindView(R2.id.local_detail_map)
+    LinearLayout mMap;
 
     private LocalShopBean bean;
 
@@ -131,6 +133,13 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
             @Override
             public void onClick(View v) {
                 presenter.jumpToCoupon();
+            }
+        });
+
+        mMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToMap(bean.getSeller_lat(),bean.getSeller_lon());
             }
         });
     }
