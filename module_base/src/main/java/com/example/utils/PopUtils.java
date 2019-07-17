@@ -77,13 +77,13 @@ public class PopUtils {
         });
     }
 
-    public static void viewPopBottom(View text ,final Context context, View view, int width, int height, OnPopListener listener) {
+    public static void viewPopBottom(View text, final Context context, View view, int width, int height, OnPopListener listener) {
         PopupWindow popupWindow = new PopupWindow(view, width, height, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 //        popupWindow.setAnimationStyle(R.style.animScale);
 //        popupWindow.showAtLocation(new View(context), Gravity.BOTTOM, 0, 0);
-        popupWindow.showAsDropDown(text,0 ,0,Gravity.BOTTOM);
+        popupWindow.showAsDropDown(text, 0, 0, Gravity.BOTTOM);
         setTransparency(context, 0.3f);
         listener.setOnPop(popupWindow);
 
@@ -94,7 +94,6 @@ public class PopUtils {
             }
         });
     }
-
 
 
     public static void changeHeader(final Context mContext, OnChangeHeaderListener listener) {
@@ -226,11 +225,15 @@ public class PopUtils {
         title.setTypeface(typeface);
 
         TxtUtil.txtJianbian(title, "#a26335", "#c97d3b");
-        title.setText("升级为" + beanList.get(position).getName());
+        if (beanList.get(position).getName().length() > 4) {
+            title.setText(beanList.get(position).getName());
+        } else {
+            title.setText("升级为" + beanList.get(position).getName());
+        }
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         rv.setLayoutManager(layoutManager);
 
-        int temp = -1;
+        int temp = 0;
         for (int i = 0; i < beanList.size(); i++) {
             if (beanList.get(i).getId().equals(SPUtil.getStringValue(CommonResource.LEVELID))) {
                 temp = i;
@@ -309,7 +312,7 @@ public class PopUtils {
 
         btn.setText("升级" + bean.getNextLevel() + "身份");
         TxtUtil.txtJianbian(level, "#a26335", "#c97d3b");
-        level.setText("升级为" + bean.getName());
+        level.setText("成为" + bean.getName());
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rv.setLayoutManager(layoutManager);
 
@@ -364,7 +367,11 @@ public class PopUtils {
         title.setTypeface(typeface);
 
         TxtUtil.txtJianbian(title, "#a26335", "#c97d3b");
-        title.setText("升级为" + bean.getName());
+        if (bean.getName().length() > 4) {
+            title.setText(bean.getName());
+        } else {
+            title.setText("升级为" + bean.getName());
+        }
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         rv.setLayoutManager(layoutManager);
 
@@ -413,7 +420,6 @@ public class PopUtils {
         ImageView cancelLogin = inflate.findViewById(R.id.pop_wei_deng_lu_cancel);
 
         final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-        popupWindow.setOutsideTouchable(false);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
         PopUtils.setTransparency(context, 0.3f);
@@ -450,13 +456,13 @@ public class PopUtils {
     }
 
 
-    public static void update(final Context context, String versions,String message,OnClearCacheListener listener) {
+    public static void update(final Context context, String versions, String message, final String isQiangzhi, OnClearCacheListener listener) {
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_geng_xin, null);
         TextView versionsText = inflate.findViewById(R.id.pop_gen_xin_versions);
         TextView messageText = inflate.findViewById(R.id.pop_gen_xin_text_message);
         TextView updateBottom = inflate.findViewById(R.id.pop_gen_xin_bottom);
         ImageView img = inflate.findViewById(R.id.pop_gen_xin_cancel);
-        versionsText.setText("V"+versions);
+        versionsText.setText("V" + versions);
         messageText.setText(message);
         final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(false);
@@ -474,14 +480,19 @@ public class PopUtils {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
+                if ("0".equals(isQiangzhi)) {
+                    popupWindow.dismiss();
+                } else {
+                    popupWindow.dismiss();
+                    AppManager.getInstance().AppExit();
+                }
             }
         });
 
-        listener.setOnClearCache(popupWindow,updateBottom);
+        listener.setOnClearCache(popupWindow, updateBottom);
     }
 
-    public static void location(final Context context){
+    public static void location(final Context context) {
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_ding_wei, null);
         ImageView image = inflate.findViewById(R.id.pop_ding_wei_image);
         TextView bottom = inflate.findViewById(R.id.pop_ding_wei_bottom);

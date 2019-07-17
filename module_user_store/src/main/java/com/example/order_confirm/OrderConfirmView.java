@@ -1,8 +1,8 @@
 package com.example.order_confirm;
 
-import com.example.bean.OrderConfirmBean;
 import com.example.bean.PostageBean;
 import com.example.bean.ShippingAddressBean;
+import com.example.bean.UserCouponBean;
 import com.example.mvp.IView;
 
 public interface OrderConfirmView extends IView {
@@ -14,4 +14,6 @@ public interface OrderConfirmView extends IView {
     void loadPostage(PostageBean postageBean);
 
     void payFail();
+
+    void couponChoosed(UserCouponBean coupon);
 }

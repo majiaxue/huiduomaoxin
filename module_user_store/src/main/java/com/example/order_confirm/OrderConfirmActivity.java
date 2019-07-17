@@ -13,11 +13,11 @@ import com.bumptech.glide.Glide;
 import com.example.bean.OrderConfirmBean;
 import com.example.bean.PostageBean;
 import com.example.bean.ShippingAddressBean;
+import com.example.bean.UserCouponBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
@@ -170,7 +170,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.chooseCoupon();
+                presenter.chooseCoupon(confirmBean);
             }
         });
     }
@@ -184,6 +184,11 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             presenter.isCan = false;
             loadAddress(addressBean);
         }
+    }
+
+    @Override
+    public void couponChoosed(UserCouponBean coupon) {
+        orderConfirmCouponTxt.setText("优惠￥" + coupon.getAmount() + "元");
     }
 
     @Override

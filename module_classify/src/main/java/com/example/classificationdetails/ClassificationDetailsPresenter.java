@@ -195,8 +195,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 tbList.add(dataBean);
                             }
 
-//                TBGoodsRecBean tbGoodsRecBean = JSON.parseObject(result, TBGoodsRecBean.class);
-//                tbList.addAll(tbGoodsRecBean.getData());
                             waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
                             lstAdapter = new BaseRecAdapter(mContext, tbList, R.layout.item_base_rec, "0");
                             if (isWaterfall) {

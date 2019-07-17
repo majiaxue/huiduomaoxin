@@ -96,6 +96,8 @@ public class CommonResource {
     public static final String LIBAO_WXPAY = "/rest/WXPay/level";          //礼包升级微信支付
     public static final String LIBAO_ZFBPAY = "/rest/alipay/upLevelSign";   //礼包升级支付宝支付
     public static final String QUERY_COUPON = "/rest/seller/coupon/status";     //查询已领取优惠券  未使用 status 0
+    public static final String LOCAL_BALANCE_PAY = "/rest/localPay/localOrderPay";   //本地商城余额支付
+    public static final String LIBAO_CANCEL_ORDER = "/rest/order/remove/level";     //取消礼包订单
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -178,4 +180,7 @@ public class CommonResource {
     public static final String HISTORY_USER = "user";
     public static final String HISTORY_TBK = "tbk";
     public static final String HISTORY_LOCAL = "local";
+    public static final String WXPAY_CANCEL = "wxpay_cancel";   //微信支付  取消支付
+    public static final String WXPAY_SUCCESS = "wxpay_success"; //礼包微信支付成功
+    public static final String WXPAY_SUCCESS_UP = "wxpay_up";   //金银铜微信支付成功
 }

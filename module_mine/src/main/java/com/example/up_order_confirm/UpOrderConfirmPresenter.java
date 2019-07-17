@@ -3,6 +3,7 @@ package com.example.up_order_confirm;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
@@ -20,11 +21,16 @@ import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.example.view.SelfDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -36,6 +42,7 @@ import okhttp3.ResponseBody;
 public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
     private final int ALI_CODE = 0x123;
     public ShippingAddressBean addressBean;
+    private String orderSn;
     public boolean isCan = false;
     private String info;
 
@@ -45,7 +52,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(mContext);
     }
 
     @SuppressLint("HandlerLeak")
@@ -60,6 +67,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                     ((Activity) mContext).finish();
                 } else {
                     Toast.makeText(mContext, "支付失败", Toast.LENGTH_SHORT).show();
+                    removeOrder();
                 }
             }
         }
@@ -95,7 +103,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
         ARouter.getInstance().build("/module_user_mine/ShippingAddressActivity").navigation((Activity) mContext, 123);
     }
 
-    public void commit(boolean isWeChat, OrderConfirmBean bean, String name) {
+    public void commit(boolean isWeChat, OrderConfirmBean bean, String name, String levelId) {
         if (!isCan) {
             Toast.makeText(mContext, "未获取到收货地址，请重试", Toast.LENGTH_SHORT).show();
         } else {
@@ -107,15 +115,16 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
             if (isWeChat) {
                 final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-//                Map map = MapUtil.getInstance().addParms("totalAmount", bean.getPrice()).addParms("userCode", SPUtil.getUserCode()).build();
-                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.LIBAO_WXPAY + "?totalAmount=" + bean.getPrice() + "&userCode=" + SPUtil.getUserCode() + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID) + "&productName=枫林淘客-" + name, requestBody, SPUtil.getToken());
+                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.LIBAO_WXPAY + "?totalAmount=" + bean.getPrice() + "&userCode=" + SPUtil.getUserCode() + "&levelId=" + levelId + "&productName=枫林淘客-" + name + "&type=1", requestBody, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
                         LogUtil.e("微信支付-------------->" + result);
+                        ProcessDialogUtil.dismissDialog();
                         try {
-
-                            WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
+                            String[] split = result.split("-----");
+                            orderSn = split[1];
+                            WeChatPayBean payBean = JSON.parseObject(split[0], WeChatPayBean.class);
 
                             PayReq request = new PayReq();
                             request.appId = payBean.getAppid();
@@ -143,18 +152,23 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                     }
                 }));
             } else {
-//              Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", money).addParms("levelId", SPUtil.getStringValue(CommonResource.LEVELID)).build();
-                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + bean.getPrice() + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID), requestBody, SPUtil.getToken());
+                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + bean.getPrice() + "&levelId=" + levelId + "&type=1", requestBody, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
+                        ProcessDialogUtil.dismissDialog();
                         LogUtil.e("付款：" + result);
+                        try {
 
-                        Map parseObject = JSON.parseObject(result, Map.class);
-                        info = (String) parseObject.get("body");
-                        Thread thread = new Thread(payRunnable);
-                        thread.start();
-                        getView().callBack();
+                            Map parseObject = JSON.parseObject(result, Map.class);
+                            info = (String) parseObject.get("body");
+                            orderSn = (String) parseObject.get("msg");
+                            Thread thread = new Thread(payRunnable);
+                            thread.start();
+                            getView().callBack();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -180,4 +194,49 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
             mHandler.sendMessage(msg);
         }
     };
+
+    public void goBack() {
+        final SelfDialog dialog = new SelfDialog(mContext);
+        dialog.setTitle("提示");
+        dialog.setMessage("确定要离开吗？");
+        dialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                dialog.dismiss();
+                ((Activity) mContext).finish();
+            }
+        });
+
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                PopUtils.setTransparency(mContext, 1.0f);
+            }
+        });
+        PopUtils.setTransparency(mContext, 0.3f);
+    }
+
+    public void removeOrder() {
+        Map map = MapUtil.getInstance().addParms("orderSn", this.orderSn).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getData(CommonResource.LIBAO_CANCEL_ORDER, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("取消订单：" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------" + errorMsg);
+            }
+        }));
+    }
 }

@@ -231,3 +231,8 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 
 #DBFlow
 -keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
+
+#百度地图
+-keep class com.baidu.** {*;}
+-keep class mapsdkvi.com.** {*;}
+-dontwarn com.baidu.**

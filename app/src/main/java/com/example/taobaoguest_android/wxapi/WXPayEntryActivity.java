@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.common.CommonResource;
-import com.example.utils.LogUtil;
+import com.example.entity.EventBusBean;
 import com.example.utils.SPUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -14,6 +14,8 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private IWXAPI api;
@@ -48,11 +50,18 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
                 } else if ("2".equals(wxpay)) {
                     SPUtil.addParm("wxpay", "3");
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.WXPAY_SUCCESS));
+                } else if ("4".equals(wxpay)) {
+                    SPUtil.addParm("wxpay","5");
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.WXPAY_SUCCESS_UP));
                 }
 
                 finish();
             } else {
                 Toast.makeText(this, "支付失败", Toast.LENGTH_SHORT).show();
+                if ("2".equals(SPUtil.getStringValue("wxpay"))) {
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.WXPAY_CANCEL));
+                }
                 finish();
             }
         }

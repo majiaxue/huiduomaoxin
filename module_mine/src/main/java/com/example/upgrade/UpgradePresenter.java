@@ -115,10 +115,11 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
         });
     }
 
-    private void toPay(String money, String name) {
+    private void toPay(String money, String name, String id) {
         ARouter.getInstance().build("/module_mine/up_pay")
                 .withString("money", money)
                 .withString("name", name)
+                .withString("levelId", id)
                 .withString("type", "upgrade")
                 .navigation((Activity) mContext, 100);
     }
@@ -140,7 +141,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("error:" + errorCode + "------------------" + errorMsg);
                 if ("1".equals(flag) && errorCode.equals("9")) {
-                    toPay(beanList.get(position).getPrice(), beanList.get(position).getName());
+                    toPay(beanList.get(position).getPrice(), beanList.get(position).getName(), beanList.get(position).getId());
                 } else {
                     Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
                 }

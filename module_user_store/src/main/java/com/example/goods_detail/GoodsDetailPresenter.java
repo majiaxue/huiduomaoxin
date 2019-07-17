@@ -305,8 +305,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void lingquan() {
-        if (couponBeanList != null) {
-            if (couponBeanList.size() > 0) {
+        if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+            if (couponBeanList != null && couponBeanList.size() > 0) {
                 PopUtil.lingquanPop(mContext, couponBeanList, new OnAdapterListener() {
                     @Override
                     public void setOnAdapterListener(final PopupWindow popupWindow, final PopLingQuanAdapter adapter) {
@@ -342,7 +342,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 Toast.makeText(mContext, "无可领优惠券", Toast.LENGTH_SHORT).show();
             }
         } else {
-
+            PopUtils.isLogin(mContext);
         }
     }
 
@@ -691,26 +691,30 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 shopCart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (attrSize == 1) {
-                            if (sp1Position == -1) {
-                                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-                            } else {
-                                popupWindow.dismiss();
-                                chooseOrAddCart();
-                            }
-                        } else if (attrSize == 2) {
-                            if (sp1Position == -1 || sp2Position == -1) {
-                                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-                            } else {
-                                popupWindow.dismiss();
-                                chooseOrAddCart();
-                            }
+                        if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
+                            PopUtils.isLogin(mContext);
                         } else {
-                            if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
-                                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                            if (attrSize == 1) {
+                                if (sp1Position == -1) {
+                                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    popupWindow.dismiss();
+                                    chooseOrAddCart();
+                                }
+                            } else if (attrSize == 2) {
+                                if (sp1Position == -1 || sp2Position == -1) {
+                                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    popupWindow.dismiss();
+                                    chooseOrAddCart();
+                                }
                             } else {
-                                popupWindow.dismiss();
-                                chooseOrAddCart();
+                                if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
+                                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    popupWindow.dismiss();
+                                    chooseOrAddCart();
+                                }
                             }
                         }
                     }
@@ -719,26 +723,30 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 buy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (attrSize == 1) {
-                            if (sp1Position == -1) {
-                                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-                            } else {
-                                popupWindow.dismiss();
-                                chooseOrJump();
-                            }
-                        } else if (attrSize == 2) {
-                            if (sp1Position == -1 || sp2Position == -1) {
-                                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
-                            } else {
-                                popupWindow.dismiss();
-                                chooseOrJump();
-                            }
+                        if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
+                            PopUtils.isLogin(mContext);
                         } else {
-                            if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
-                                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                            if (attrSize == 1) {
+                                if (sp1Position == -1) {
+                                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    popupWindow.dismiss();
+                                    chooseOrJump();
+                                }
+                            } else if (attrSize == 2) {
+                                if (sp1Position == -1 || sp2Position == -1) {
+                                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    popupWindow.dismiss();
+                                    chooseOrJump();
+                                }
                             } else {
-                                popupWindow.dismiss();
-                                chooseOrJump();
+                                if (sp1Position == -1 || sp2Position == -1 || sp3Position == -1) {
+                                    Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    popupWindow.dismiss();
+                                    chooseOrJump();
+                                }
                             }
                         }
                     }
@@ -1427,152 +1435,160 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void chooseOrJump() {
-        if (isChoose) {
-            OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
-
-            if (attrSize == 1) {
-                orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
-                orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
-                orderConfirmBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
-                orderConfirmBean.setQuantity((int) quantity);
-                orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
-                orderConfirmBean.setPrice(sp1List.get(sp1Position).getPrice());
-                orderConfirmBean.setSourceType(1);
-                orderConfirmBean.setPic(userGoodsDetail.getPic());
-                orderConfirmBean.setProductName(userGoodsDetail.getName());
-                orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
-                orderConfirmBean.setStock(dataList.get(sp1Position).getStock());
-                orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
-                orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
-                orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
-                orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
-                orderConfirmBean.setPromotionPrice(sp1List.get(sp1Position).getPrice());
-                orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
-
-            } else if (attrSize == 2) {
-                orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
-                orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
-                orderConfirmBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
-                orderConfirmBean.setQuantity((int) quantity);
-                orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
-                orderConfirmBean.setSp2(sp2List.get(sp2Position).getContent());
-                orderConfirmBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
-                orderConfirmBean.setSourceType(1);
-                orderConfirmBean.setPic(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPic());
-                orderConfirmBean.setProductName(userGoodsDetail.getName());
-                orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
-                orderConfirmBean.setStock(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getStock());
-                orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
-                orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
-                orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
-                orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
-                orderConfirmBean.setPromotionPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
-                orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
-
-            } else {
-                orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
-                orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
-                orderConfirmBean.setProductSkuId(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getId() + "");
-                orderConfirmBean.setQuantity((int) quantity);
-                orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
-                orderConfirmBean.setSp2(sp2List.get(sp2Position).getContent());
-                orderConfirmBean.setSp2(sp3List.get(sp3Position).getContent());
-                orderConfirmBean.setPrice(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
-                orderConfirmBean.setSourceType(1);
-                orderConfirmBean.setPic(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPic());
-                orderConfirmBean.setProductName(userGoodsDetail.getName());
-                orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
-                orderConfirmBean.setStock(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getStock());
-                orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
-                orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
-                orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
-                orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
-                orderConfirmBean.setPromotionPrice(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
-                orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(2).getName() + ":" + sp3List.get(sp3Position).getContent());
-
-            }
-
-            Intent intent = new Intent(mContext, OrderConfirmActivity.class);
-            intent.putExtra("order", orderConfirmBean);
-            mContext.startActivity(intent);
+        if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
+            PopUtils.isLogin(mContext);
         } else {
-            chooseGoodsPop();
+            if (isChoose) {
+                OrderConfirmBean orderConfirmBean = new OrderConfirmBean();
+
+                if (attrSize == 1) {
+                    orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                    orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+                    orderConfirmBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
+                    orderConfirmBean.setQuantity((int) quantity);
+                    orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
+                    orderConfirmBean.setPrice(sp1List.get(sp1Position).getPrice());
+                    orderConfirmBean.setSourceType(1);
+                    orderConfirmBean.setPic(userGoodsDetail.getPic());
+                    orderConfirmBean.setProductName(userGoodsDetail.getName());
+                    orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
+                    orderConfirmBean.setStock(dataList.get(sp1Position).getStock());
+                    orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
+                    orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                    orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+                    orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+                    orderConfirmBean.setPromotionPrice(sp1List.get(sp1Position).getPrice());
+                    orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
+
+                } else if (attrSize == 2) {
+                    orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                    orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+                    orderConfirmBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
+                    orderConfirmBean.setQuantity((int) quantity);
+                    orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
+                    orderConfirmBean.setSp2(sp2List.get(sp2Position).getContent());
+                    orderConfirmBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                    orderConfirmBean.setSourceType(1);
+                    orderConfirmBean.setPic(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPic());
+                    orderConfirmBean.setProductName(userGoodsDetail.getName());
+                    orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
+                    orderConfirmBean.setStock(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getStock());
+                    orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
+                    orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                    orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+                    orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+                    orderConfirmBean.setPromotionPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                    orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
+
+                } else {
+                    orderConfirmBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                    orderConfirmBean.setSellerName(userGoodsDetail.getSellerName());
+                    orderConfirmBean.setProductSkuId(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getId() + "");
+                    orderConfirmBean.setQuantity((int) quantity);
+                    orderConfirmBean.setSp1(sp1List.get(sp1Position).getContent());
+                    orderConfirmBean.setSp2(sp2List.get(sp2Position).getContent());
+                    orderConfirmBean.setSp2(sp3List.get(sp3Position).getContent());
+                    orderConfirmBean.setPrice(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
+                    orderConfirmBean.setSourceType(1);
+                    orderConfirmBean.setPic(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPic());
+                    orderConfirmBean.setProductName(userGoodsDetail.getName());
+                    orderConfirmBean.setFeightTemplateId((long) userGoodsDetail.getFeightTemplateId());
+                    orderConfirmBean.setStock(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getStock());
+                    orderConfirmBean.setProductId(userGoodsDetail.getId() + "");
+                    orderConfirmBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                    orderConfirmBean.setProductPrice(userGoodsDetail.getPrice());
+                    orderConfirmBean.setProductSn(userGoodsDetail.getProductSn());
+                    orderConfirmBean.setPromotionPrice(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
+                    orderConfirmBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(2).getName() + ":" + sp3List.get(sp3Position).getContent());
+
+                }
+
+                Intent intent = new Intent(mContext, OrderConfirmActivity.class);
+                intent.putExtra("order", orderConfirmBean);
+                mContext.startActivity(intent);
+            } else {
+                chooseGoodsPop();
+            }
         }
     }
 
     public void chooseOrAddCart() {
-        if (isChoose) {
-            AddCartBean cartBean = new AddCartBean();
-
-            if (attrSize == 1) {
-                cartBean.setChecked(0);
-                cartBean.setPrice(sp1List.get(sp1Position).getPrice());
-                cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
-                cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
-                cartBean.setProductId(userGoodsDetail.getId() + "");
-                cartBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
-                cartBean.setProductName(userGoodsDetail.getName());
-                cartBean.setProductPic(dataList.get(sp1Position).getPic());
-                cartBean.setProductSn(userGoodsDetail.getProductSn());
-                cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
-                cartBean.setQuantity((int) quantity);
-                cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
-                cartBean.setSellerName(userGoodsDetail.getSellerName());
-                cartBean.setSp1(sp1List.get(sp1Position).getContent());
-                cartBean.setUserId(SPUtil.getUserCode());
-            } else if (attrSize == 2) {
-                cartBean.setChecked(0);
-                cartBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
-                cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
-                cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
-                cartBean.setProductId(userGoodsDetail.getId() + "");
-                cartBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
-                cartBean.setProductName(userGoodsDetail.getName());
-                cartBean.setProductPic(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPic());
-                cartBean.setProductSn(userGoodsDetail.getProductSn());
-                cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
-                cartBean.setQuantity((int) quantity);
-                cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
-                cartBean.setSellerName(userGoodsDetail.getSellerName());
-                cartBean.setSp1(sp1List.get(sp1Position).getContent());
-                cartBean.setSp2(sp2List.get(sp2Position).getContent());
-                cartBean.setUserId(SPUtil.getUserCode());
-            } else {
-                cartBean.setChecked(0);
-                cartBean.setPrice(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
-                cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(2).getName() + ":" + sp3List.get(sp3Position).getContent());
-                cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
-                cartBean.setProductId(userGoodsDetail.getId() + "");
-                cartBean.setProductSkuId(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getId() + "");
-                cartBean.setProductName(userGoodsDetail.getName());
-                cartBean.setProductPic(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPic());
-                cartBean.setProductSn(userGoodsDetail.getProductSn());
-                cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
-                cartBean.setQuantity((int) quantity);
-                cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
-                cartBean.setSellerName(userGoodsDetail.getSellerName());
-                cartBean.setSp1(sp1List.get(sp1Position).getContent());
-                cartBean.setSp2(sp2List.get(sp2Position).getContent());
-                cartBean.setSp3(sp3List.get(sp3Position).getContent());
-                cartBean.setUserId(SPUtil.getUserCode());
-            }
-
-            String jsonString = JSON.toJSONString(cartBean);
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
-            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-                @Override
-                public void onSuccess(String result, String msg) {
-                    Toast.makeText(mContext, "添加成功，可前往购物车查看", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onError(String errorCode, String errorMsg) {
-
-                }
-            }));
+        if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
+            PopUtils.isLogin(mContext);
         } else {
-            chooseGoodsPop();
+            if (isChoose) {
+                AddCartBean cartBean = new AddCartBean();
+
+                if (attrSize == 1) {
+                    cartBean.setChecked(0);
+                    cartBean.setPrice(sp1List.get(sp1Position).getPrice());
+                    cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + ":" + sp1List.get(sp1Position).getContent());
+                    cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                    cartBean.setProductId(userGoodsDetail.getId() + "");
+                    cartBean.setProductSkuId(dataList.get(sp1Position).getId() + "");
+                    cartBean.setProductName(userGoodsDetail.getName());
+                    cartBean.setProductPic(dataList.get(sp1Position).getPic());
+                    cartBean.setProductSn(userGoodsDetail.getProductSn());
+                    cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+                    cartBean.setQuantity((int) quantity);
+                    cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                    cartBean.setSellerName(userGoodsDetail.getSellerName());
+                    cartBean.setSp1(sp1List.get(sp1Position).getContent());
+                    cartBean.setUserId(SPUtil.getUserCode());
+                } else if (attrSize == 2) {
+                    cartBean.setChecked(0);
+                    cartBean.setPrice(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPrice());
+                    cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent());
+                    cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                    cartBean.setProductId(userGoodsDetail.getId() + "");
+                    cartBean.setProductSkuId(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getId() + "");
+                    cartBean.setProductName(userGoodsDetail.getName());
+                    cartBean.setProductPic(stock1(sp1List.get(sp1Position).getContent(), sp2Position).getPic());
+                    cartBean.setProductSn(userGoodsDetail.getProductSn());
+                    cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+                    cartBean.setQuantity((int) quantity);
+                    cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                    cartBean.setSellerName(userGoodsDetail.getSellerName());
+                    cartBean.setSp1(sp1List.get(sp1Position).getContent());
+                    cartBean.setSp2(sp2List.get(sp2Position).getContent());
+                    cartBean.setUserId(SPUtil.getUserCode());
+                } else {
+                    cartBean.setChecked(0);
+                    cartBean.setPrice(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPrice());
+                    cartBean.setProductAttr(userGoodsDetail.getXsProductAttributes().get(0).getName() + "：" + sp1List.get(sp1Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(1).getName() + "：" + sp2List.get(sp2Position).getContent() + "、" + userGoodsDetail.getXsProductAttributes().get(2).getName() + ":" + sp3List.get(sp3Position).getContent());
+                    cartBean.setProductCategoryId(userGoodsDetail.getProductCategoryId() + "");
+                    cartBean.setProductId(userGoodsDetail.getId() + "");
+                    cartBean.setProductSkuId(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getId() + "");
+                    cartBean.setProductName(userGoodsDetail.getName());
+                    cartBean.setProductPic(stock12(sp1List.get(sp1Position).getContent(), sp2List.get(sp2Position).getContent(), sp3Position).getPic());
+                    cartBean.setProductSn(userGoodsDetail.getProductSn());
+                    cartBean.setProductSubTitle(userGoodsDetail.getSubTitle());
+                    cartBean.setQuantity((int) quantity);
+                    cartBean.setSellerId(userGoodsDetail.getSellerId() + "");
+                    cartBean.setSellerName(userGoodsDetail.getSellerName());
+                    cartBean.setSp1(sp1List.get(sp1Position).getContent());
+                    cartBean.setSp2(sp2List.get(sp2Position).getContent());
+                    cartBean.setSp3(sp3List.get(sp3Position).getContent());
+                    cartBean.setUserId(SPUtil.getUserCode());
+                }
+
+                String jsonString = JSON.toJSONString(cartBean);
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+                Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.ADD_CART, requestBody, SPUtil.getToken());
+                RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                    @Override
+                    public void onSuccess(String result, String msg) {
+                        Toast.makeText(mContext, "添加成功，可前往购物车查看", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+
+                    }
+                }));
+            } else {
+                chooseGoodsPop();
+            }
         }
     }
 
@@ -1595,7 +1611,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 goodsCouponAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        lingquan();
+                        if (SPUtil.getToken() == null || "".equals(SPUtil.getToken())) {
+                            PopUtils.isLogin(mContext);
+                        } else {
+                            lingquan();
+                        }
                     }
                 });
                 if (getView() != null) {

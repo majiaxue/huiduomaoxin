@@ -103,9 +103,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 
     @Override
     public void initData() {
-        //定位
-        LogUtil.e("地址:"+MyLocationListener.city);
-        localShopCity.setText(MyLocationListener.city);
+        presenter.isOpenLocation();
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -197,6 +195,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         super.onHiddenChanged(hidden);
         if (!hidden && isFirst) {
             ProcessDialogUtil.showProcessDialog(getContext());
+            localShopCity.setText(MyLocationListener.city);
             presenter.initNavbar();
             presenter.initSeller("", "", page);
             presenter.getXBanner();

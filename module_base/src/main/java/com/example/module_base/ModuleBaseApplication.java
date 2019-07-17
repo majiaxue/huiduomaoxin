@@ -1,8 +1,6 @@
 package com.example.module_base;
 
-import android.app.Service;
 import android.graphics.Bitmap;
-import android.os.Vibrator;
 import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -12,7 +10,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
-import com.example.service.LocationService;
 import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
@@ -29,8 +26,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class ModuleBaseApplication extends MultiDexApplication {
     public static LocationClient mLocationClient = null;
-    public LocationService locationService;
-    public Vibrator mVibrator;
 
     @Override
     public void onCreate() {
@@ -61,7 +56,6 @@ public class ModuleBaseApplication extends MultiDexApplication {
         Fresco.initialize(this);
 
         //百度地图
-
         initLocationClient();
 
         AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
@@ -99,6 +93,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
     }
 
     public void initLocationClient() {
+        SDKInitializer.initialize(this);
         MyLocationListener myListener = new MyLocationListener();
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(myListener);

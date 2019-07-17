@@ -93,32 +93,41 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="@dimen/dp_13"
-                    android:layout_height="@dimen/dp_13"
-                    android:layout_marginLeft="@dimen/dp_19"
-                    android:src="@drawable/iocn_dizhi" />
-
-                <TextView
-                    android:id="@+id/local_detail_address"
+                <LinearLayout
+                    android:id="@+id/local_detail_map"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_13" />
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <View
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="@dimen/dp_0"
-                    android:layout_weight="1" />
+                    <ImageView
+                        android:layout_width="@dimen/dp_13"
+                        android:layout_height="@dimen/dp_13"
+                        android:layout_marginLeft="@dimen/dp_19"
+                        android:src="@drawable/iocn_dizhi" />
 
-                <ImageView
-                    android:id="@+id/local_detail_choose_address"
-                    android:layout_width="@dimen/dp_39"
-                    android:layout_height="@dimen/dp_39"
-                    android:layout_marginRight="@dimen/dp_4"
-                    android:padding="@dimen/dp_10"
-                    android:src="@drawable/iocn_daohang" />
+                    <TextView
+                        android:id="@+id/local_detail_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/sp_13" />
+
+                    <View
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="@dimen/dp_0"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/local_detail_choose_address"
+                        android:layout_width="@dimen/dp_39"
+                        android:layout_height="@dimen/dp_39"
+                        android:layout_marginRight="@dimen/dp_4"
+                        android:padding="@dimen/dp_10"
+                        android:src="@drawable/iocn_daohang" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="@dimen/dp_1"

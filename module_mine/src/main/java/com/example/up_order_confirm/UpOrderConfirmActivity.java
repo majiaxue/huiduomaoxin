@@ -1,6 +1,7 @@
 package com.example.up_order_confirm;
 
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,9 +14,15 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.bean.OrderConfirmBean;
 import com.example.bean.ShippingAddressBean;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -60,6 +67,8 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
     OrderConfirmBean confirmBean;
     @Autowired(name = "name")
     String name;
+    @Autowired(name = "levelId")
+    String levelId;
 
     private boolean isWeChat = true;
 
@@ -71,6 +80,7 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
         includeTitle.setText("确认订单");
 
         if (confirmBean != null) {
@@ -88,7 +98,7 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
         includeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                presenter.goBack();
             }
         });
 
@@ -121,9 +131,18 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
             @Override
             public void onClick(View v) {
                 upOrderBtn.setEnabled(false);
-                presenter.commit(isWeChat, confirmBean, name);
+                presenter.commit(isWeChat, confirmBean, name, levelId);
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.WXPAY_CANCEL.equals(eventBusBean.getMsg())) {
+            presenter.removeOrder();
+        } else if (CommonResource.WXPAY_SUCCESS.equals(eventBusBean.getMsg())) {
+            finish();
+        }
     }
 
     @Override
@@ -135,6 +154,12 @@ public class UpOrderConfirmActivity extends BaseActivity<UpOrderConfirmView, UpO
             presenter.isCan = true;
             loadAddress(addressBean);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        presenter.goBack();
+        return false;
     }
 
     @Override
