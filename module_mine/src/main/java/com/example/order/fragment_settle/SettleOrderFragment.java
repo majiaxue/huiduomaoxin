@@ -19,6 +19,7 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
 
     private static SettleOrderFragment fragment;
     private int flag = 0;
+    private LinearLayoutManager layoutManager;
 
 
     public static SettleOrderFragment getInstance() {
@@ -39,7 +40,7 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
@@ -53,6 +54,11 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
 
     public void addFlag() {
         flag++;
+    }
+
+    @Override
+    public void moveTo(int flag) {
+        layoutManager.scrollToPosition(flag);
     }
 
     @Override

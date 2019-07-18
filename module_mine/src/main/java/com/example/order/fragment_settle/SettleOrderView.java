@@ -12,4 +12,6 @@ public interface SettleOrderView extends IView {
     void loadJD(JDAdapter adapter);
 
     void loadTB(TBAdapter adapter);
+
+    void moveTo(int flag);
 }

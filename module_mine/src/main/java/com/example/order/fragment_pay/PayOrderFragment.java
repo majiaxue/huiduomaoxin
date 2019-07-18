@@ -3,15 +3,12 @@ package com.example.order.fragment_pay;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.fans_order.adapter.FansOrderRvAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
-import com.example.order.OrderActivity;
 import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
-import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
@@ -22,6 +19,7 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
 
     private static PayOrderFragment fragment;
     private int flag = 0;
+    private LinearLayoutManager layoutManager;
 
 
     public static PayOrderFragment getInstance() {
@@ -42,7 +40,7 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
@@ -55,6 +53,11 @@ public class PayOrderFragment extends BaseFragment<PayOrderView, PayOrderPresent
 
     public void addFlag() {
         flag++;
+    }
+
+    @Override
+    public void moveTo(int flag) {
+        layoutManager.scrollToPosition(flag);
     }
 
     @Override

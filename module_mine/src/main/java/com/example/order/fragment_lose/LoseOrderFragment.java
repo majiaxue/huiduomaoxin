@@ -20,6 +20,7 @@ public class LoseOrderFragment extends BaseFragment<LoseOrderView, LoseOrderPres
     private int flag = 0;
 
     private static LoseOrderFragment fragment;
+    private LinearLayoutManager layoutManager;
 
 
     public static LoseOrderFragment getInstance() {
@@ -40,7 +41,7 @@ public class LoseOrderFragment extends BaseFragment<LoseOrderView, LoseOrderPres
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
@@ -67,6 +68,11 @@ public class LoseOrderFragment extends BaseFragment<LoseOrderView, LoseOrderPres
                 flag++;
             }
         }
+    }
+
+    @Override
+    public void moveTo(int flag) {
+        layoutManager.scrollToPosition(flag);
     }
 
     @Override
