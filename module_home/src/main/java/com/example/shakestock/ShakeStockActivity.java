@@ -1,6 +1,7 @@
 package com.example.shakestock;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,10 +11,15 @@ import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.StatusBarUtils;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
 
 /**
@@ -27,6 +33,10 @@ public class ShakeStockActivity extends BaseActivity<ShakeStockView, ShakeStockP
     ImageView shakeStockImageBack;
     @BindView(R2.id.shake_stock_rec)
     RecyclerView shakeStockRec;
+    @BindView(R2.id.shake_stock_smart_refresh)
+    SmartRefreshLayout shakeStockSmartRefresh;
+
+    private int page = 1;
 
     @Override
     public int getLayoutId() {
@@ -37,7 +47,7 @@ public class ShakeStockActivity extends BaseActivity<ShakeStockView, ShakeStockP
     public void initData() {
         StatusBarUtils.setStatusBar(this, getResources().getColor(R.color.black));
 
-        presenter.recyclerVideo(shakeStockRec);
+        presenter.recyclerVideo(shakeStockRec, page);
 
 //        String url = "http://video.haodanku.com/ff02cd42e310c04251892b53d13e8d63?attname=1562752503.mp4";
 //        shakeStockVideo.setVideoPath(url);
@@ -45,6 +55,27 @@ public class ShakeStockActivity extends BaseActivity<ShakeStockView, ShakeStockP
 //        shakeStockVideo.requestFocus();
 //        shakeStockVideo.start();
 //        shakeStockVideo.stopPlayback();
+
+        shakeStockSmartRefresh.setRefreshHeader(new MaterialHeader(this));
+//        shakeStockSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
+
+        shakeStockSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                presenter.recyclerVideo(shakeStockRec, page);
+                refreshLayout.finishRefresh();
+            }
+        });
+
+        shakeStockSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                presenter.recyclerVideo(shakeStockRec, page);
+                refreshLayout.finishLoadMore();
+            }
+        });
     }
 
     @Override

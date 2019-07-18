@@ -43,6 +43,8 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
 
     @Autowired(name = "position")
     int position;
+    @Autowired(name = "type")
+    int type;
 
     private int page = 1;
 
@@ -56,17 +58,23 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
         ARouter.getInstance().inject(this);
         ProcessDialogUtil.showProcessDialog(this);
         LogUtil.e("从哪个地方近的" + position);
-        if (position == 4) {
-            includeTitle.setText("爆款推荐");
-        } else if (position == 1) {
+        if (position == 1) {
             includeTitle.setText("淘抢购");
         } else if (position == 2) {
             includeTitle.setText("9.9包邮");
         } else if (position == 3) {
             includeTitle.setText("聚划算");
+        } else if (position == 4) {
+            includeTitle.setText("爆款推荐");
+        } else {
+            includeTitle.setText("好货优选");
         }
-        presenter.universalList(universalListRec, position, page);
 
+        if (position >= 4) {
+            presenter.hotRecommend(universalListRec, page, type);
+        } else {
+            presenter.universalList(universalListRec, position, page);
+        }
         universalListSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         universalListSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
 
@@ -74,7 +82,11 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.universalList(universalListRec, position, page);
+                if (position == 4) {
+                    presenter.hotRecommend(universalListRec, page, type);
+                } else {
+                    presenter.universalList(universalListRec, position, page);
+                }
             }
         });
 
@@ -82,7 +94,11 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.universalList(universalListRec, position, page);
+                if (position == 4) {
+                    presenter.hotRecommend(universalListRec, page, type);
+                } else {
+                    presenter.universalList(universalListRec, position, page);
+                }
             }
         });
     }

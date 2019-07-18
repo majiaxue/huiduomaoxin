@@ -20,4 +20,6 @@ public interface LocalShopView extends IView {
 
     void noData();
 
+    void cityName(String cityName);
+
 }

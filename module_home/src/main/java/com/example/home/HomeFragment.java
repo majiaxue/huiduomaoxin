@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
@@ -148,8 +149,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSeeMoreBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
-                ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").navigation();
+                ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 5).withInt("type",1).navigation();
             }
         });
 
@@ -158,7 +158,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).navigation();
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).withInt("type",2).navigation();
                 } else {
                     //是否登录
                     PopUtils.isLogin(getContext());
@@ -196,7 +196,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                    ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
+                    Toast.makeText(getContext(), "正在马不停蹄滴开发中", Toast.LENGTH_SHORT).show();
+//                    ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
                 } else {
                     //是否登录
                     PopUtils.isLogin(getContext());

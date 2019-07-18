@@ -23,6 +23,7 @@ public class SuperBrandRecAdapter extends MyRecyclerAdapter<SuperBrandBean> {
     public void convert(RecyclerViewHolder holder, SuperBrandBean data, int position) {
         holder.setImageFresco(R.id.super_brand_rec_image, data.getPic());
         holder.setText(R.id.super_brand_rec_name, data.getSellerName());
+        holder.setText(R.id.super_brand_rec_average, "平均返佣"+data.getRatio() + "%");
 //        holder.setText(R.id.super_brand_rec_rebate,data.getRebate());
     }
 }

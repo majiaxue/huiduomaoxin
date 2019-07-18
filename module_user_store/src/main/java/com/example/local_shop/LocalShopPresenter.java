@@ -8,6 +8,10 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.LocalNavbarBean;
@@ -26,6 +30,8 @@ import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyLocationListener;
+import com.example.utils.PopUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 
 import java.util.ArrayList;
@@ -108,8 +114,8 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
         }));
     }
 
-    public void initSeller(String sorttype, String sort, final int page) {
-        Map map = MapUtil.getInstance().addParms("sort", sort + " " + sorttype).addParms("page", page).addParms("lon", MyLocationListener.longitude).addParms("lat", MyLocationListener.latitude).build();
+    public void initSeller(String sorttype, String sort, final int page, double lon, double lat) {
+        Map map = MapUtil.getInstance().addParms("sort", sort + " " + sorttype).addParms("page", page).addParms("lon", lon).addParms("lat", lat).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LOCALSHOPLIST, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -188,7 +194,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
             if (!isZh) {
                 isZh = true;
                 ProcessDialogUtil.showProcessDialog(mContext);
-                initSeller("", "", 1);
+                initSeller("", "", 1,MyLocationListener.longitude,MyLocationListener.latitude);
             }
         } else if (index == 1) {
             isZh = false;
@@ -200,7 +206,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
             }
             distanceFlag = true;
             ProcessDialogUtil.showProcessDialog(mContext);
-            initSeller(isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, 1);
+            initSeller(isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, 1,MyLocationListener.longitude,MyLocationListener.latitude);
         } else if (index == 2) {
             isZh = false;
             isDistance = false;
@@ -211,7 +217,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
             }
             starFlag = true;
             ProcessDialogUtil.showProcessDialog(mContext);
-            initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, 1);
+            initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, 1,MyLocationListener.longitude,MyLocationListener.latitude);
         }
 
         getView().changed(isDistanceJin, isStarMore);
@@ -219,11 +225,11 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
 
     public void loadData(int index, int page) {
         if (index == 0) {
-            initSeller("", "", page);
+            initSeller("", "", page,MyLocationListener.longitude,MyLocationListener.latitude);
         } else if (index == 1) {
-            initSeller(isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, page);
+            initSeller(isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, page,MyLocationListener.longitude,MyLocationListener.latitude);
         } else if (index == 2) {
-            initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, page);
+            initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, page,MyLocationListener.longitude,MyLocationListener.latitude);
         }
     }
 
@@ -237,6 +243,8 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
         LocationManager locManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
+            PopUtils.location(mContext);
         }
     }
+
 }

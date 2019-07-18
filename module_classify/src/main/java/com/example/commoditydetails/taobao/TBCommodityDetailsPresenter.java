@@ -41,6 +41,9 @@ import com.example.bean.TBBean;
 import com.example.bean.TBGoodChoiceBean;
 import com.example.bean.TBLedSecuritiesBean;
 import com.example.common.CommonResource;
+import com.example.dbflow.ShareBean;
+import com.example.dbflow.ShareOperationUtil;
+import com.example.dbflow.ShareUtil;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -58,6 +61,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
+import com.umeng.commonsdk.debug.E;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -65,7 +69,10 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,7 +164,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
                     }.getType());
                     if (getView() != null) {
-                        getView().tbBeanList(tbGoodsDetailsBean,imageList);
+                        getView().tbBeanList(tbGoodsDetailsBean, imageList);
                         getView().tBDetails();
                         LogUtil.e("tBDetails" + "3");
                     }
@@ -207,7 +214,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("收益errorMsg-------->" + errorMsg);
             }
         }));
     }
@@ -558,16 +565,18 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             LogUtil.e("result:" + share_media.toString());
+            ShareOperationUtil.getShareOperationUtil().createOrUpdate();
+            Toast.makeText(mContext, "成功了", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
+            Toast.makeText(mContext, "失败了", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-
+            Toast.makeText(mContext, "取消了", Toast.LENGTH_SHORT).show();
         }
     };
 

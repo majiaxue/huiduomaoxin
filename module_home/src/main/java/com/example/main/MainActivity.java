@@ -118,7 +118,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogUtil.e("返回：" + requestCode + "------------------" + resultCode);
         if (requestCode == 0x111) {
             presenter.installAPK();
         }
