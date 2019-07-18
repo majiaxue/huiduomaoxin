@@ -188,6 +188,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 dataBean.setItem_id(jsonObject1.getString("item_id"));
                                 dataBean.setPict_url(jsonObject1.getString("pict_url"));
                                 dataBean.setTitle(jsonObject1.getString("title"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
+                                dataBean.setVolume(jsonObject1.getString("volume"));
                                 dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
                                 dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
                                 dataBean.setReserve_price(jsonObject1.getString("reserve_price"));

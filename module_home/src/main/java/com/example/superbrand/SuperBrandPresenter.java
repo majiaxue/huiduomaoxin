@@ -36,7 +36,7 @@ import okhttp3.ResponseBody;
 public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
 
 
-    private String[] strArray = new String[]{"女装", "男装", "食品", "居家", "鞋品", "母婴", "数码"};
+    private String[] strArray = new String[]{"女装", "男装", "食品", "居家", "鞋品", "母婴", "数码","美妆","百货"};
 
 
     public SuperBrandPresenter(Context context) {

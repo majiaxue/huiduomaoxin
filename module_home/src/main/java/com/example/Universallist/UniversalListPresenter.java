@@ -99,8 +99,8 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         }));
     }
 
-    public void hotRecommend(final RecyclerView universalListRec, final int page){
-        Map map = MapUtil.getInstance().addParms("sale_type", 2).build();
+    public void hotRecommend(final RecyclerView universalListRec, final int page,int type){
+        Map map = MapUtil.getInstance().addParms("sale_type", type).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSALESLIST, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override

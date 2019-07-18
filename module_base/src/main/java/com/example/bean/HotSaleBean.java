@@ -132,6 +132,15 @@ public class HotSaleBean implements Serializable {
         private String sellerId;
         private String sellerName;
         private String goodReputation;
+        private double returnRatio;
+
+        public double getReturnRatio() {
+            return returnRatio;
+        }
+
+        public void setReturnRatio(double returnRatio) {
+            this.returnRatio = returnRatio;
+        }
 
         public String getSellerName() {
             return sellerName;

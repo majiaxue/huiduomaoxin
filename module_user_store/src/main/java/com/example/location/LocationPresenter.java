@@ -68,8 +68,8 @@ public class LocationPresenter extends BasePresenter<LocationView> {
             JSONObject jsonObject = new JSONObject(stringBuilder.toString());
             JSONArray jsonArray = jsonObject.getJSONArray("city");
             for (int i = 0; i < jsonArray.length(); i++) {
-                LogUtil.e("数组长度" + jsonArray.length());
-                LogUtil.e("数组内容" + jsonArray.get(i).toString());
+//                LogUtil.e("数组长度" + jsonArray.length());
+//                LogUtil.e("数组内容" + jsonArray.get(i).toString());
                 CityListBean cityListBean = new Gson().fromJson(jsonArray.get(i).toString(), CityListBean.class);
                 mList.add(new RegionBean.CityBean(cityListBean.getLabel(),cityListBean.getRegion()));
             }

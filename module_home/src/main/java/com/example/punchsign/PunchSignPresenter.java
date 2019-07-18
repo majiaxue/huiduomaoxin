@@ -12,6 +12,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.bean.PunchSignBean;
 import com.example.common.CommonResource;
+import com.example.dbflow.ShareBean;
+import com.example.dbflow.ShareUtil;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -24,12 +26,15 @@ import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 
 import java.lang.annotation.Retention;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 public class PunchSignPresenter extends BasePresenter<PunchSignView> {
+
+    private PunchSignBean punchSignBean;
 
     public PunchSignPresenter(Context context) {
         super(context);
@@ -56,7 +61,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("PunchSignPresenterResult" + result);
-                PunchSignBean punchSignBean = JSON.parseObject(result, new TypeReference<PunchSignBean>() {
+                punchSignBean = JSON.parseObject(result, new TypeReference<PunchSignBean>() {
                 }.getType());
 //                LogUtil.e("punchSignBean"+punchSignBean);
                 if (punchSignBean != null) {
@@ -111,34 +116,48 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
-    public void shareCount(){
-        final int count = 3;
+    public void shareCount() {
+        int count = 0;
+        long timeMillis = System.currentTimeMillis();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateTime = formatter.format(timeMillis);
+        ShareBean shareBean = ShareUtil.getInstance().query(SPUtil.getUserCode());
+        if (shareBean != null) {
+            if (dateTime.equals(shareBean.getUpdateTime())) {
+                if (shareBean.getCount() > punchSignBean.getSignSetting().getShareNum()) {
+                    count = punchSignBean.getSignSetting().getShareNum();
+                } else {
+                    count = shareBean.getCount();
+                }
+            }
+        }
         Map map = MapUtil.getInstance().addParms("count", count).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.SIGNSHARE, map, SPUtil.getToken());
+        final int finalCount = count;
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("每日分享Result" + result);
                 if (result.contains("true")) {
                     if (getView() != null) {
-                        getView().shareCount(count);
+                        getView().shareCount(finalCount);
                     }
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
-    public void yaoQingHaoYou(){
+    public void yaoQingHaoYou() {
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SIGNINVITE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -153,12 +172,12 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
-    public void firstOrder(){
+    public void firstOrder() {
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SIGNFIRSTORDER, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -173,12 +192,12 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
-    public void order(){
+    public void order() {
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SIGNORDER, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -193,12 +212,12 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
 
-    public void fans(){
+    public void fans() {
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.SIGNFANS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -213,7 +232,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, ""+errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }

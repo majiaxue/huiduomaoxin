@@ -25,6 +25,7 @@
         android:textSize="@dimen/sp_14" />
 
     <TextView
+        android:id="@+id/super_brand_rec_average"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="平均返佣10%"

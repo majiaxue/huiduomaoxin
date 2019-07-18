@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,12 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.baidu.location.BDLocation;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -22,6 +29,7 @@ import com.example.local_list.LocalListActivity;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.location.LocationActivity;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -103,7 +111,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 
     @Override
     public void initData() {
-        presenter.isOpenLocation();
+
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -195,10 +203,17 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         super.onHiddenChanged(hidden);
         if (!hidden && isFirst) {
             ProcessDialogUtil.showProcessDialog(getContext());
-            localShopCity.setText(MyLocationListener.city);
+            if (!TextUtils.isEmpty(MyLocationListener.city)) {
+                localShopCity.setText(MyLocationListener.city);
+            } else {
+                localShopCity.setText("定位中");
+            }
+//            presenter.locationClient();
+//            ModuleBaseApplication.mLocationClient.restart();
             presenter.initNavbar();
-            presenter.initSeller("", "", page);
+            presenter.initSeller("", "", page, MyLocationListener.longitude, MyLocationListener.latitude);
             presenter.getXBanner();
+            presenter.isOpenLocation();
             isFirst = false;
         }
     }
@@ -253,6 +268,11 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     }
 
     @Override
+    public void cityName(String cityName) {
+        localShopCity.setText(cityName);
+    }
+
+    @Override
     public void loadSeller(LocalSellerAdapter adapter) {
         localShopRvShop.setAdapter(adapter);
     }
@@ -273,6 +293,36 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         String cityName = data.getStringExtra("cityName");
         if (resultCode == 0) {
             localShopCity.setText(cityName);
+            GeoCoder mCoder = GeoCoder.newInstance();
+
+            mCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+                @Override
+                public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+                    if (null != geoCodeResult && null != geoCodeResult.getLocation()) {
+                        if (geoCodeResult == null || geoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                            //没有检索到结果
+                            LogUtil.e("没检索到结果");
+                            return;
+                        } else {
+                            double latitude = geoCodeResult.getLocation().latitude;
+                            double longitude = geoCodeResult.getLocation().longitude;
+                            LogUtil.e("-------->纬度：" + latitude + "--------->经度：" + longitude);
+                            presenter.initSeller("", "", page, longitude, latitude);
+                        }
+                    }
+                }
+
+                @Override
+                public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+
+                }
+            });
+
+            mCoder.geocode(new GeoCodeOption()
+                    .city(cityName)
+                    .address(cityName));
+
+            mCoder.destroy();
         }
     }
 }

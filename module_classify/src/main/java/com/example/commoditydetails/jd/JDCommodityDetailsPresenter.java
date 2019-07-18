@@ -30,6 +30,7 @@ import com.example.commoditydetails.jd.adapter.JDRecAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
+import com.example.dbflow.ShareOperationUtil;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -377,43 +378,26 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     private UMShareListener shareListener = new UMShareListener() {
-        /**
-         * @descrption 分享开始的回调
-         * @param platform 平台类型
-         */
         @Override
-        public void onStart(SHARE_MEDIA platform) {
-
+        public void onStart(SHARE_MEDIA share_media) {
+            LogUtil.e("start:" + share_media.toString());
         }
 
-        /**
-         * @descrption 分享成功的回调
-         * @param platform 平台类型
-         */
         @Override
-        public void onResult(SHARE_MEDIA platform) {
-//            Toast.makeText(mContext,"成功了",Toast.LENGTH_LONG).show();
-            LogUtil.e("成功了");
+        public void onResult(SHARE_MEDIA share_media) {
+            LogUtil.e("result:" + share_media.toString());
+            ShareOperationUtil.getShareOperationUtil().createOrUpdate();
+            Toast.makeText(mContext, "成功了", Toast.LENGTH_SHORT).show();
         }
 
-        /**
-         * @descrption 分享失败的回调
-         * @param platform 平台类型
-         * @param t 错误原因
-         */
         @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            LogUtil.e("失败" + t.getMessage());
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Toast.makeText(mContext, "失败了", Toast.LENGTH_SHORT).show();
         }
 
-        /**
-         * @descrption 分享取消的回调
-         * @param platform 平台类型
-         */
         @Override
-        public void onCancel(SHARE_MEDIA platform) {
-//            Toast.makeText(ShareDetailActivity.this,"取消了",Toast.LENGTH_LONG).show();
-            LogUtil.e("取消了");
+        public void onCancel(SHARE_MEDIA share_media) {
+            Toast.makeText(mContext, "取消了", Toast.LENGTH_SHORT).show();
         }
     };
 

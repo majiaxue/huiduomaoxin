@@ -29,6 +29,9 @@ import com.example.commoditydetails.pdd.adapter.CommodityDetailsPddRecAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
+import com.example.dbflow.ShareBean;
+import com.example.dbflow.ShareOperationUtil;
+import com.example.dbflow.ShareUtil;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -52,6 +55,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -306,7 +310,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             ARouter.getInstance()
                                     .build("/module_classify/CommodityDetailsActivity")
-                                    .withString("goods_id", topGoodsList.get(position).getGoods_id()+"")
+                                    .withString("goods_id", topGoodsList.get(position).getGoods_id() + "")
                                     .navigation();
                         }
                     });
@@ -319,7 +323,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                                 public void onClick(View v) {
                                     ARouter.getInstance()
                                             .build("/module_classify/CommodityDetailsActivity")
-                                            .withString("goods_id", topGoodsList.get(index).getGoods_id()+"")
+                                            .withString("goods_id", topGoodsList.get(index).getGoods_id() + "")
                                             .navigation();
                                 }
                             });
@@ -401,6 +405,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             LogUtil.e("result:" + share_media.toString());
+            ShareOperationUtil.getShareOperationUtil().createOrUpdate();
             Toast.makeText(mContext, "成功了", Toast.LENGTH_SHORT).show();
         }
 
