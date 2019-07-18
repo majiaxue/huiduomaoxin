@@ -3,6 +3,7 @@ package com.example.user_mine;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,9 +83,17 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initData() {
-        userMineName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
-        userMineId.setText("UID：" + SPUtil.getStringValue(CommonResource.USER_INVITE));
-        mineHeader.setImageURI(Uri.parse(SPUtil.getStringValue(CommonResource.USER_PIC)));
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            userMineName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
+            userMineId.setText("UID：" + SPUtil.getStringValue(CommonResource.USER_INVITE));
+            mineHeader.setImageURI(Uri.parse(SPUtil.getStringValue(CommonResource.USER_PIC)));
+        }else{
+            userMineName.setText("请注册/登陆");
+            userMineId.setText("");
+            mineHeader.setImageResource(R.drawable.vhjfg);
+        }
+
+
 //        presenter.goodsCollectionCount();
 //        presenter.shopCollectCount();
 //        presenter.browsingHistoryCount();
@@ -93,6 +102,16 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void initClick() {
+
+        if (TextUtils.isEmpty(SPUtil.getToken())){
+            userMineName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }
+            });
+        }
+
         //商品收藏
         userMineGoodsCollection.setOnClickListener(new View.OnClickListener() {
             @Override
