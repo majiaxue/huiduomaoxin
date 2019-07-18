@@ -10,7 +10,6 @@ import com.example.order.OrderActivity;
 import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
-import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
@@ -22,6 +21,7 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
     private int flag = 0;
 
     private static AllOrderFragment fragment;
+    private LinearLayoutManager layoutManager;
 
     public static AllOrderFragment getInstance() {
         if (fragment == null) {
@@ -41,7 +41,7 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
@@ -72,6 +72,11 @@ public class AllOrderFragment extends BaseFragment<AllOrderView, AllOrderPresent
                 flag++;
             }
         }
+    }
+
+    @Override
+    public void moveTo(int flag) {
+        layoutManager.scrollToPosition(flag);
     }
 
     @Override

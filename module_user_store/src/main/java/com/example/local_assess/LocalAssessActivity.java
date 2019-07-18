@@ -1,10 +1,12 @@
 package com.example.local_assess;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bean.LocalShopBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -28,6 +30,8 @@ public class LocalAssessActivity extends BaseActivity<LocalAssessView, LocalAsse
     @BindView(R2.id.local_assess_btn)
     TextView localAssessBtn;
 
+    private LocalShopBean bean;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_local_assess;
@@ -36,6 +40,8 @@ public class LocalAssessActivity extends BaseActivity<LocalAssessView, LocalAsse
     @Override
     public void initData() {
         includeTitle.setText("评价");
+        Intent intent = getIntent();
+        bean = (LocalShopBean) intent.getSerializableExtra("bean");
     }
 
     @Override
@@ -50,7 +56,7 @@ public class LocalAssessActivity extends BaseActivity<LocalAssessView, LocalAsse
         localAssessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.commit(localAssessTotal.getStarCount(), localAssessServe.getStarCount(), localAssessDescription.getStarCount(), localAssessEdit.getText().toString());
+                presenter.commit(localAssessTotal.getStarCount(), localAssessServe.getStarCount(), localAssessDescription.getStarCount(), localAssessEdit.getText().toString(), bean);
             }
         });
     }

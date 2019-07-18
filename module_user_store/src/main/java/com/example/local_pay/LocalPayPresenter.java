@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.bean.UserCouponBean;
 import com.example.bean.WeChatPayBean;
 import com.example.common.CommonResource;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
+import com.example.local_assess.LocalAssessActivity;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -41,7 +43,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 
 public class LocalPayPresenter extends BasePresenter<LocalPayView> {
-
+    private LocalShopBean bean;
     private List<UserCouponBean> beanList;
     private UserCouponBean chooseCoupon;
     private boolean isCanUse = true;
@@ -66,8 +68,8 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
                 Map<String, String> map = (Map<String, String>) msg.obj;
                 String resultStatus = map.get("resultStatus");
                 if ("9000".equals(resultStatus)) {
-
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
+                    jumpToAssess();
                 } else {
                     Toast.makeText(mContext, "支付失败", Toast.LENGTH_SHORT).show();
                 }
@@ -109,8 +111,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        Intent intent = new Intent(mContext, LocalAssessActivity.class);
-//        mContext.startActivity(intent);
+
     }
 
     private void toPay(String money, int type, String sellerId) {
@@ -124,7 +125,6 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("微信支付-------------->" + result);
                     try {
-
                         WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
 
                         PayReq request = new PayReq();
@@ -211,6 +211,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
     };
 
     public void createOrder(final LocalShopBean bean) {
+        this.bean = bean;
         Map map = MapUtil.getInstance().addParms("sellerId", bean.getId()).addParms("sellerName", bean.getSeller_shop_name()).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.LOCAL_CREATEORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -326,5 +327,11 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
             }
         });
         PopUtil.setTransparency(mContext, 0.3f);
+    }
+
+    public void jumpToAssess() {
+        Intent intent = new Intent(mContext, LocalAssessActivity.class);
+        intent.putExtra("bean", bean);
+        mContext.startActivity(intent);
     }
 }

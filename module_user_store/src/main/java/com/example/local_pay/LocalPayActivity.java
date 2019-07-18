@@ -14,10 +14,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bean.LocalShopBean;
 import com.example.bean.UserCouponBean;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.LogUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -166,6 +171,13 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         presenter.goBack();
         return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.WXPAY_SUCCESS_LOCAL.equals(eventBusBean.getMsg())) {
+            presenter.jumpToAssess();
+        }
     }
 
     @Override

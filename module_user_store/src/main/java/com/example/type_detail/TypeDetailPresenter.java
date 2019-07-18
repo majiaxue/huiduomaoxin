@@ -11,7 +11,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
-import com.example.goods_detail.GoodsDetailActivity;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -66,9 +65,17 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         id = categoryId == null ? "" : categoryId;
         Map map;
         if (isHotSale) {
-            map = MapUtil.getInstance().addParms("pageNum", 1).addParms("saleDesc", "1").addParms("categoryId", id).build();
+            if ("".equals(id)) {
+                map = MapUtil.getInstance().addParms("pageNum", 1).addParms("saleDesc", "1").build();
+            } else {
+                map = MapUtil.getInstance().addParms("pageNum", 1).addParms("saleDesc", "1").addParms("categoryId", id).build();
+            }
         } else {
-            map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).addParms("categoryId", id).build();
+            if ("".equals(id)) {
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).build();
+            } else {
+                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).addParms("categoryId", id).build();
+            }
         }
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -88,6 +95,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "-------------" + errorMsg);
                 if (getView() != null) {
                     getView().refreshSuccess();
                 }

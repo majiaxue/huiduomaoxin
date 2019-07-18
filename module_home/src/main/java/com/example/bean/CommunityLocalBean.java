@@ -15,7 +15,25 @@ public class CommunityLocalBean {
     private String itemprice;
     private String communityType;
     private String mallType;
+    private String sellerIcon;  //自己添加字段
+    private String time;
     private List<String> pics;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getSellerIcon() {
+        return sellerIcon;
+    }
+
+    public void setSellerIcon(String sellerIcon) {
+        this.sellerIcon = sellerIcon;
+    }
 
     public List<String> getPics() {
         return pics;
@@ -136,6 +154,8 @@ public class CommunityLocalBean {
                 ", itemprice='" + itemprice + '\'' +
                 ", communityType='" + communityType + '\'' +
                 ", mallType='" + mallType + '\'' +
+                ", sellerIcon='" + sellerIcon + '\'' +
+                ", time='" + time + '\'' +
                 ", pics=" + pics +
                 '}';
     }

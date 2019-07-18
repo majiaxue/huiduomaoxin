@@ -2,16 +2,19 @@ package com.example.order.fragment_all;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDOrderBean;
 import com.example.bean.MyOrderBean;
 import com.example.bean.TBBean;
+import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBOrderBean;
 import com.example.common.CommonResource;
 import com.example.module_mine.R;
@@ -39,6 +42,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
 
     private List<TBOrderBean> orderBeans;
     private TBAdapter tbAdapter;
+    private int flag = 0;
 
     public AllOrderPresenter(Context context) {
         super(context);
@@ -181,17 +185,22 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
     }
 
     private void getTbPic(TBOrderBean bean, final int position) {
-        Map map = MapUtil.getInstance().addParms("moreinfo", "1").addParms("shoptype", "C").addParms("para", bean.getNumIid()).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSITEMDETAIL, map);
+        Map map = MapUtil.getInstance().addParms("num_iid", bean.getNumIid()).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETITEMDESC, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝图片：" + result);
-                TBBean tbBean = JSON.parseObject(result, new TypeReference<TBBean>() {
-                }.getType());
-                if (tbBean != null && tbBean.getData() != null) {
-                    orderBeans.get(position).setImage(tbBean.getData().getImages().get(0));
+                JSONObject jsonObject = JSON.parseObject(result);
+                String info = (String) jsonObject.get("info");
+
+                if (!TextUtils.isEmpty(info)) {
+                    TBGoodsDetailsBean tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
+                    }.getType());
+
+                    orderBeans.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
                     tbAdapter.notifyDataSetChanged();
+                    getView().moveTo(flag);
                 }
             }
 

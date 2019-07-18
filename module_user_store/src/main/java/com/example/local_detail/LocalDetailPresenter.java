@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adapter.BaseVPAdapter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -175,10 +176,13 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
         }
     }
 
-    public void jumpToMap(String lat, String lon) {
-        Intent intent = new Intent(mContext, MapDetailActivity.class);
-        intent.putExtra("lat", lat);
-        intent.putExtra("lon", lon);
-        mContext.startActivity(intent);
+    public void jumpToMap(LocalShopBean bean) {
+        if (bean.getSeller_lat() != null && bean.getSeller_lon() != null) {
+            Intent intent = new Intent(mContext, MapDetailActivity.class);
+            intent.putExtra("bean", bean);
+            mContext.startActivity(intent);
+        } else {
+            Toast.makeText(mContext, "商家未设置地图信息", Toast.LENGTH_SHORT).show();
+        }
     }
 }

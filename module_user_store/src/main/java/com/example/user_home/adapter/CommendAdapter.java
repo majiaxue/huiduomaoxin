@@ -7,7 +7,10 @@ import android.widget.ImageView;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.HotSaleBean;
+import com.example.common.CommonResource;
 import com.example.user_store.R;
+import com.example.utils.ArithUtil;
+import com.example.utils.SPUtil;
 
 import java.util.List;
 
@@ -18,10 +21,13 @@ public class CommendAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, HotSaleBean.DataBean data, int position) {
+        float value = SPUtil.getFloatValue(CommonResource.BACKBL);
+        double predict = ArithUtil.mul(ArithUtil.mul(value, data.getReturnRatio()), data.getPrice());
         holder.setText(R.id.rv_commend_name, data.getName())
                 .setText(R.id.rv_commend_price, "￥" + data.getPrice())
                 .setText(R.id.rv_commend_count, data.getSale() + "人付款")
                 .setText(R.id.rv_commend_shop, data.getSellerName())
+                .setText(R.id.rv_commend_predict, "预估赚￥" + predict)
                 .setImageFresco(R.id.rv_commend_img, data.getPic());
         if (position == 0) {
             ImageView img = holder.getView(R.id.rv_commend_img);

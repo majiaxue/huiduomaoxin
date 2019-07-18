@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.support.v4.app.ActivityCompat;
@@ -13,18 +14,13 @@ import android.widget.RadioGroup;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.example.bean.TitleBean;
 import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.utils.LogUtil;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -56,7 +52,19 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         ARouter.getInstance().inject(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
-        presenter.checkUp();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                    presenter.checkUp();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
         if ("login".equals(type)) {
             presenter.click(R.id.main_mine);
@@ -106,6 +114,15 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtil.e("返回：" + requestCode + "------------------" + resultCode);
+        if (requestCode == 0x111) {
+            presenter.installAPK();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

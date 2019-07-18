@@ -145,7 +145,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     }
 
-
     //商品轮播图
     public void setXBanner(XBanner commodityXbanner, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         final List<String> images = beanList.get(0).getGoods_gallery_urls();

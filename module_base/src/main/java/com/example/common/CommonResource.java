@@ -182,4 +182,5 @@ public class CommonResource {
     public static final String WXPAY_CANCEL = "wxpay_cancel";   //微信支付  取消支付
     public static final String WXPAY_SUCCESS = "wxpay_success"; //礼包微信支付成功
     public static final String WXPAY_SUCCESS_UP = "wxpay_up";   //金银铜微信支付成功
+    public static final String WXPAY_SUCCESS_LOCAL = "wxpay_local"; //本地商城微信支付成功
 }

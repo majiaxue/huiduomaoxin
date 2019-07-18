@@ -139,7 +139,7 @@ public class LocalDetailActivity extends BaseFragmentActivity<LocalDetailView, L
         mMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToMap(bean.getSeller_lat(),bean.getSeller_lon());
+                presenter.jumpToMap(bean);
             }
         });
     }

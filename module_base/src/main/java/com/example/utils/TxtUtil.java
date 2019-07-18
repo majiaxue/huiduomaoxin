@@ -6,6 +6,10 @@ import android.graphics.Shader;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TxtUtil {
     public static void txtJianbian(TextView txt, String startColor, String endColor) {

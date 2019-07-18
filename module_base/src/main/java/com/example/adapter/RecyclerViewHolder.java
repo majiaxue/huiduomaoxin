@@ -21,11 +21,8 @@ import com.example.module_base.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-
-import q.rorbin.badgeview.DisplayUtil;
 
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
@@ -126,7 +123,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         SimpleDraweeView simpleDraweeView = getView(resId);
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
 //                        .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 360), DisplayUtil.dp2px(context, 200)))
-                        .build();
+                .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setImageRequest(request)
                 .setOldController(simpleDraweeView.getController())

@@ -8,9 +8,14 @@ import android.view.View;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.CommunityLocalBean;
+import com.example.common.CommonResource;
+import com.example.community.goods_commend.GoodsCommendPresenter;
 import com.example.module_home.R;
+import com.example.utils.ArithUtil;
+import com.example.utils.MyTimeUtil;
+import com.example.utils.SPUtil;
+import com.example.utils.TBUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
@@ -19,10 +24,13 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, CommunityLocalBean data, int position) {
+    public void convert(RecyclerViewHolder holder, final CommunityLocalBean data, int position) {
+        double v = Double.valueOf(data.getTkrates()) / 100 * Double.valueOf(data.getItemprice()) * SPUtil.getFloatValue(CommonResource.BACKBL);
         holder.setText(R.id.rv_goods_commend_name, data.getItemtitle())
-                .setText(R.id.rv_goods_commend_content, data.getContent())
-                .setText(R.id.rv_goods_commend_profit, data.getCouponmoney());
+                .setImageUrl(R.id.rv_goods_commend_head, data.getSellerIcon())
+                .setText(R.id.rv_goods_commend_time, MyTimeUtil.date2StringLong(data.getTime()))
+                .setText(R.id.rv_goods_commend_content, data.getCopyContent() == null ? "" : data.getCopyContent().replaceAll("&lt;br&gt;", "\n"))
+                .setText(R.id.rv_goods_commend_profit, "分享赚￥" + ArithUtil.exact(v, 2) + "元");
 
 
         List<String> pics = data.getPics();
@@ -35,7 +43,9 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
         adapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-
+                if (GoodsCommendPresenter.type == 0) {
+                    new TBUtil().openTbWithGoodsId(context, data.getId());
+                }
             }
         });
 

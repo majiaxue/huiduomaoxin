@@ -1,7 +1,9 @@
 package com.example.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +11,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
@@ -37,6 +41,7 @@ import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
+import com.example.view.SelfDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,7 +96,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 case DOWNLOADED:
                     if (alertDialog != null)
                         alertDialog.dismiss();
-                    installAPK();
+                    initInstall();
                     break;
                 case DOWNLOAD_FAILED:
                     Toast.makeText(mContext, "下载失败", Toast.LENGTH_LONG).show();
@@ -175,6 +180,62 @@ public class MainPresenter extends BasePresenter<MainView> {
     @Override
     protected void onViewDestroy() {
 
+    }
+
+    private void initInstall() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean hasInstallPermission = isHasInstallPermissionWithO(mContext);
+            if (!hasInstallPermission) {
+                startInstallPermissionSettingActivity(mContext);
+            } else {
+                installAPK();
+            }
+        }
+    }
+
+    /**
+     * 开启设置安装未知来源应用权限界面
+     *
+     * @param context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startInstallPermissionSettingActivity(Context context) {
+        if (context == null) {
+            return;
+        }
+        final SelfDialog selfDialog = new SelfDialog(mContext);
+        selfDialog.setTitle("提示");
+        selfDialog.setMessage("未开启自动安装，无法更新程序");
+        selfDialog.setNoOnclickListener("前往设置", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                selfDialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                ((Activity) mContext).startActivityForResult(intent, 0x111);
+            }
+        });
+        selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                selfDialog.dismiss();
+            }
+        });
+        selfDialog.show();
+        PopUtils.setTransparency(mContext, 0.3f);
+        selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                PopUtils.setTransparency(mContext, 1.0f);
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isHasInstallPermissionWithO(Context context) {
+        if (context == null) {
+            return false;
+        }
+        return context.getPackageManager().canRequestPackageInstalls();
     }
 
     public void checkUp() {

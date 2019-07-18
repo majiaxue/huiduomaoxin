@@ -1,16 +1,19 @@
 package com.example.community.good_goods;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.example.community.adapter.CommendTitleAdapter;
-import com.example.community.adapter.GoodsCommendAdapter;
+import com.bumptech.glide.Glide;
+import com.example.bean.GoodGoodsBean;
+import com.example.community.adapter.GoodGoodsAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
-import com.example.utils.SpaceItemDecoration;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -20,30 +23,39 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import butterknife.BindView;
 
 public class GoodGoodsFragment extends BaseFragment<GoodGoodsView, GoodGoodsPresneter> implements GoodGoodsView {
-    @BindView(R2.id.goods_commend_title)
-    RecyclerView goodsCommendTitle;
-    @BindView(R2.id.goods_commend_rv)
+    @BindView(R2.id.good_goods_rv)
     RecyclerView goodsCommendRv;
-    @BindView(R2.id.goods_commend_refresh)
+    @BindView(R2.id.good_goods_refresh)
     SmartRefreshLayout mRefresh;
+    @BindView(R2.id.good_goods_image)
+    ImageView goodGoodsImage;
+    @BindView(R2.id.good_goods_name)
+    TextView goodGoodsName;
+    @BindView(R2.id.good_goods_preferential_price)
+    TextView goodGoodsPreferentialPrice;
+    @BindView(R2.id.good_goods_original_price)
+    TextView goodGoodsOriginalPrice;
+    @BindView(R2.id.good_goods_coupon_price)
+    TextView goodGoodsCouponPrice;
+    @BindView(R2.id.good_goods_number)
+    TextView goodGoodsNumber;
+    @BindView(R2.id.good_goods_qr_code)
+    ImageView goodGoodsQrCode;
+    @BindView(R2.id.good_goods_linear)
+    LinearLayout goodGoodsLinear;
 
     private LinearLayoutManager verManager;
-    private GridLayoutManager gridLayoutManager;
 
     private int page = 1;
 
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_goods_commend;
+        return R.layout.fragment_good_goods;
     }
 
     @Override
     public void initData() {
-        gridLayoutManager = new GridLayoutManager(getContext(), 4);
-        goodsCommendTitle.setLayoutManager(gridLayoutManager);
-        goodsCommendTitle.addItemDecoration(new SpaceItemDecoration((int) getContext().getResources().getDimension(R.dimen.dp_11), (int) getContext().getResources().getDimension(R.dimen.dp_11), 0, 0));
-
         verManager = new LinearLayoutManager(getContext());
         verManager.setOrientation(LinearLayoutManager.VERTICAL);
         goodsCommendRv.setLayoutManager(verManager);
@@ -53,7 +65,6 @@ public class GoodGoodsFragment extends BaseFragment<GoodGoodsView, GoodGoodsPres
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         mRefresh.setRefreshHeader(customHeader);
 
-        presenter.initTitle();
         presenter.loadData(page);
     }
 
@@ -77,12 +88,23 @@ public class GoodGoodsFragment extends BaseFragment<GoodGoodsView, GoodGoodsPres
     }
 
     @Override
-    public void loadTitle(CommendTitleAdapter adapter) {
-        goodsCommendTitle.setAdapter(adapter);
+    public void loadQR(Bitmap bitmap) {
+        goodGoodsQrCode.setImageBitmap(bitmap);
+        presenter.share(goodGoodsLinear);
     }
 
     @Override
-    public void loadContent(GoodsCommendAdapter adapter) {
+    public void loadShareInfo(GoodGoodsBean.NetBean.ItemDataBean dataBean) {
+        Glide.with(getContext()).load(dataBean.getItempic()).into(goodGoodsImage);
+        goodGoodsName.setText(dataBean.getItemtitle());
+        goodGoodsPreferentialPrice.setText("￥" + dataBean.getItemendprice());
+        goodGoodsOriginalPrice.setText("￥"+dataBean.getItemprice());
+        goodGoodsCouponPrice.setText("￥"+dataBean.getCouponmoney());
+
+    }
+
+    @Override
+    public void loadContent(GoodGoodsAdapter adapter) {
         goodsCommendRv.setAdapter(adapter);
     }
 

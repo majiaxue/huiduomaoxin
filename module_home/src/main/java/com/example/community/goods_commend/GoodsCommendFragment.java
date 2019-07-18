@@ -1,10 +1,17 @@
 package com.example.community.goods_commend;
 
+import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.bean.CommunityLocalBean;
 import com.example.community.adapter.CommendTitleAdapter;
 import com.example.community.adapter.GoodsCommendAdapter;
 import com.example.module_home.R;
@@ -26,6 +33,22 @@ public class GoodsCommendFragment extends BaseFragment<GoodsCommendView, GoodsCo
     RecyclerView goodsCommendRv;
     @BindView(R2.id.goods_commend_refresh)
     SmartRefreshLayout mRefresh;
+    @BindView(R2.id.goods_commend_image)
+    ImageView goodsCommendImage;
+    @BindView(R2.id.goods_commend_name)
+    TextView goodsCommendName;
+    @BindView(R2.id.goods_commend_preferential_price)
+    TextView goodsCommendPreferentialPrice;
+    @BindView(R2.id.goods_commend_original_price)
+    TextView goodsCommendOriginalPrice;
+    @BindView(R2.id.goods_commend_coupon_price)
+    TextView goodsCommendCouponPrice;
+    @BindView(R2.id.goods_commend_number)
+    TextView goodsCommendNumber;
+    @BindView(R2.id.goods_commend_qr_code)
+    ImageView goodsCommendQrCode;
+    @BindView(R2.id.goods_commend_linear)
+    LinearLayout mLinear;
 
     private LinearLayoutManager verManager;
     private GridLayoutManager gridLayoutManager;
@@ -85,6 +108,22 @@ public class GoodsCommendFragment extends BaseFragment<GoodsCommendView, GoodsCo
     public void loadFinish() {
         mRefresh.finishRefresh();
         mRefresh.finishLoadMore();
+    }
+
+    @Override
+    public void loadShareInfo(CommunityLocalBean bean) {
+        Glide.with(getContext()).load(bean.getItempic()).into(goodsCommendImage);
+        goodsCommendName.setText(bean.getItemtitle());
+        goodsCommendOriginalPrice.setText("￥" + bean.getItemprice());
+        goodsCommendPreferentialPrice.setText("￥" + (Double.valueOf(bean.getItemprice()) - Double.valueOf(bean.getCouponmoney())));
+        goodsCommendCouponPrice.setText("￥" + bean.getCouponmoney());
+        goodsCommendOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+    }
+
+    @Override
+    public void loadQR(Bitmap bitmap) {
+        goodsCommendQrCode.setImageBitmap(bitmap);
+        presenter.share(mLinear);
     }
 
     @Override
