@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.JDGoodsRecBean;
@@ -145,14 +147,14 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     tBGoodsSearchBeans = JSON.parseArray(result, TBGoodsSearchBean.class);
                     if (tBGoodsSearchBeans != null) {
                         if (tBGoodsSearchBeans != null && tBGoodsSearchBeans.size() != 0) {
-                            for (int i = tBGoodsSearchBeans.size() - 1; i >= 0; i--) {
-                                if (tBGoodsSearchBeans.get(i).getCat_name().equals("数码家电")) {
-                                    tBGoodsSearchBeans.remove(i);
-                                }
-                                if (tBGoodsSearchBeans.get(i).getCat_name().equals("箱包")) {
-                                    tBGoodsSearchBeans.remove(i);
-                                }
-                            }
+//                            for (int i = tBGoodsSearchBeans.size() - 1; i >= 0; i--) {
+//                                if (tBGoodsSearchBeans.get(i).getCat_name().equals("数码家电")) {
+//                                    tBGoodsSearchBeans.remove(i);
+//                                }
+//                                if (tBGoodsSearchBeans.get(i).getCat_name().equals("箱包")) {
+//                                    tBGoodsSearchBeans.remove(i);
+//                                }
+//                            }
                             for (int i = 0; i < tBGoodsSearchBeans.size(); i++) {
                                 secondaryDetailsTab.addTab(secondaryDetailsTab.newTab().setText(tBGoodsSearchBeans.get(i).getCat_name()));
                             }
@@ -198,7 +200,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 }
             }));
 
-        } else if(type.equals("4")) {
+        } else if (type.equals("4")) {
             //京东
             final Map map = MapUtil.getInstance().addParms("grade", 0).addParms("parentId", 0).build();
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGETCATEGORY, map);
@@ -366,28 +368,43 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
 
-                private TBGoodsRecBean tbGoodsRecBean;
+//                private TBGoodsRecBean tbGoodsRecBean;
 
                 @Override
                 public void onSuccess(String result, String msg) {
                     ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     try {
-                        tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
-                        }.getType());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                        tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
+//                        }.getType());
 
-                    if (tbGoodsRecBean != null) {
-                        if (tbGoodsRecBean.getData() != null) {
+//                        if (tbGoodsRecBean != null) {
+//                            if (tbGoodsRecBean.getData() != null) {
+                        JSONObject jsonObject = JSON.parseObject(result);
+                        if ("200".equals(jsonObject.getString("code"))) {
                             if (getView() != null) {
                                 getView().noGoods(false);
                             }
                             if (page == 1) {
                                 tbGoodsList.clear();
                             }
-                            tbGoodsList.addAll(tbGoodsRecBean.getData());
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < data.size(); i++) {
+                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                JSONObject jsonObject1 = data.getJSONObject(i);
+                                dataBean.setItem_id(jsonObject1.getString("item_id"));
+                                dataBean.setPict_url(jsonObject1.getString("pict_url"));
+                                dataBean.setTitle(jsonObject1.getString("title"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
+                                dataBean.setVolume(jsonObject1.getString("volume"));
+                                dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
+                                dataBean.setUser_type(jsonObject1.getString("user_type"));
+                                dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
+                                dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
+                                dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                                tbGoodsList.add(dataBean);
+                            }
+//                            tbGoodsList.addAll(tbGoodsRecBean.getData());
 
                             SecondaryTBRecAdapter secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
                             if (getView() != null) {
@@ -410,20 +427,22 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
-
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(true);
                             }
                         }
 
-                    } else {
-                        if (getView() != null) {
-                            getView().noGoods(true);
-                        }
-                        LogUtil.e("数据为空");
-                    }
+//                        } else {
+//                            if (getView() != null) {
+//                                getView().noGoods(true);
+//                            }
+//                            LogUtil.e("数据为空");
+//                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
 
+                    }
                 }
 
                 @Override
@@ -438,28 +457,43 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {
 
-                private TBGoodsRecBean tbGoodsRecBean;
+//                private TBGoodsRecBean tbGoodsRecBean;
 
                 @Override
                 public void onSuccess(String result, String msg) {
                     ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     try {
-                        tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
-                        }.getType());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                        tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
+//                        }.getType());
 
-                    if (tbGoodsRecBean != null) {
-                        if (tbGoodsRecBean.getData() != null) {
+//                        if (tbGoodsRecBean != null) {
+//                            if (tbGoodsRecBean.getData() != null) {
+                        JSONObject jsonObject = JSON.parseObject(result);
+                        if ("200".equals(jsonObject.getString("code"))) {
                             if (getView() != null) {
                                 getView().noGoods(false);
                             }
                             if (page == 1) {
                                 tbGoodsList.clear();
                             }
-                            tbGoodsList.addAll(tbGoodsRecBean.getData());
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < data.size(); i++) {
+                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                JSONObject jsonObject1 = data.getJSONObject(i);
+                                dataBean.setItem_id(jsonObject1.getString("item_id"));
+                                dataBean.setPict_url(jsonObject1.getString("pict_url"));
+                                dataBean.setTitle(jsonObject1.getString("title"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
+                                dataBean.setVolume(jsonObject1.getString("volume"));
+                                dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
+                                dataBean.setUser_type(jsonObject1.getString("user_type"));
+                                dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
+                                dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
+                                dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                                tbGoodsList.add(dataBean);
+                            }
+//                            tbGoodsList.addAll(tbGoodsRecBean.getData());
 
                             SecondaryTBRecAdapter secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
                             if (getView() != null) {
@@ -479,27 +513,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         //是否登录
                                         PopUtils.isLogin(mContext);
                                     }
-                                }
-                            });
 
-                            secondaryTBRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                                @Override
-                                public void ViewOnClick(View view, final int index) {
-                                    view.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                                ARouter.getInstance()
-                                                        .build("/module_classify/TBCommodityDetailsActivity")
-                                                        .withString("para", tbGoodsList.get(index).getItem_id())
-                                                        .withString("shoptype", tbGoodsList.get(index).getUser_type())
-                                                        .navigation();
-                                            } else {
-                                                //是否登录
-                                                PopUtils.isLogin(mContext);
-                                            }
-                                        }
-                                    });
                                 }
                             });
                         } else {
@@ -508,10 +522,16 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             }
                         }
 
-                    } else {
-                        LogUtil.e("数据为空");
-                    }
+//                        } else {
+//                            if (getView() != null) {
+//                                getView().noGoods(true);
+//                            }
+//                            LogUtil.e("数据为空");
+//                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
 
+                    }
                 }
 
                 @Override
@@ -520,7 +540,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
-        } else if (type.equals("4")){
+        } else if (type.equals("4")) {
             //京东
             Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("pageIndex", page).addParms("pageSize", 20).addParms("keyword", jdTabList.get(position).getName()).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);

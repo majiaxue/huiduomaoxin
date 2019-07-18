@@ -72,6 +72,7 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
     private LinearLayoutManager linearLayoutManager;
     private VideoRecAdapter videoRecAdapter;
     private List<VideoRecBean.DataBean> videoList = new ArrayList<>();
+    private PagerSnapHelper pagerSnapHelper;
 
     public ShakeStockPresenter(Context context) {
         super(context);
@@ -82,8 +83,8 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
 
     }
 
-    public void recyclerVideo(final RecyclerView shakeStockRec) {
-        Map map = MapUtil.getInstance().addParms("min_id", 1).build();
+    public void recyclerVideo(final RecyclerView shakeStockRec, final int page) {
+        Map map = MapUtil.getInstance().addParms("min_id", page).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETTRILLDATA, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
@@ -92,12 +93,18 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
                 final VideoRecBean videoRecBean = JSON.parseObject(result, new TypeReference<VideoRecBean>() {
                 }.getType());
                 if (videoRecBean != null && videoRecBean.getData() != null) {
+                    if (page == 1) {
+                        videoList.clear();
+                    }
                     videoList.addAll(videoRecBean.getData());
 
-                    final PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+                    if (pagerSnapHelper == null) {
+                        pagerSnapHelper = new PagerSnapHelper();
+                    }
                     pagerSnapHelper.attachToRecyclerView(shakeStockRec);
-
-                    linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    if (linearLayoutManager == null) {
+                        linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    }
                     videoRecAdapter = new VideoRecAdapter(mContext, videoList, R.layout.item_shake_stock_rec);
                     shakeStockRec.setLayoutManager(linearLayoutManager);
                     shakeStockRec.setAdapter(videoRecAdapter);
@@ -193,12 +200,14 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
                         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                             switch (newState) {
                                 case RecyclerView.SCROLL_STATE_IDLE://停止滚动
-                                    View view = pagerSnapHelper.findSnapView(linearLayoutManager);
-                                    JzvdStd.resetAllVideos();
-                                    viewHolder = recyclerView.getChildViewHolder(view);
-                                    if (viewHolder != null && viewHolder instanceof RecyclerViewHolder) {
-                                        videoView = ((RecyclerViewHolder) viewHolder).getView(R.id.shake_stock_rec_video);
-                                        videoView.startVideo();
+                                    if (pagerSnapHelper != null) {
+                                        View view = pagerSnapHelper.findSnapView(linearLayoutManager);
+                                        JzvdStd.resetAllVideos();
+                                        viewHolder = recyclerView.getChildViewHolder(view);
+                                        if (viewHolder != null && viewHolder instanceof RecyclerViewHolder) {
+                                            videoView = ((RecyclerViewHolder) viewHolder).getView(R.id.shake_stock_rec_video);
+                                            videoView.startVideo();
+                                        }
                                     }
                                     break;
                                 case RecyclerView.SCROLL_STATE_DRAGGING://拖动
@@ -263,7 +272,7 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
         originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         preferentialPrice.setText("￥" + videoList.get(position).getItemendprice());//优惠价
         originalPrice.setText("原价：￥" + videoList.get(position).getItemprice());//原价
-        couponPrice.setText("￥" +videoList.get(position).getCouponmoney());
+        couponPrice.setText("￥" + videoList.get(position).getCouponmoney());
         LogUtil.e("url主图---------->" + videoList.get(position).getItempic());
         image.setImageURI(Uri.fromFile(new File(path)));
         name.setText(videoList.get(position).getItemtitle());

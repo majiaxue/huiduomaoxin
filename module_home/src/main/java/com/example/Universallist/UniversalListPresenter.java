@@ -1,6 +1,7 @@
 package com.example.Universallist;
 
 import android.content.Context;
+import android.graphics.drawable.PaintDrawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -100,7 +101,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
     }
 
     public void hotRecommend(final RecyclerView universalListRec, final int page,int type){
-        Map map = MapUtil.getInstance().addParms("sale_type", type).build();
+        Map map = MapUtil.getInstance().addParms("sale_type", type).addParms("min_id", page).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSALESLIST, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
