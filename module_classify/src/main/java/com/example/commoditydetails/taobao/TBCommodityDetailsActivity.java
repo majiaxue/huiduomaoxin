@@ -142,6 +142,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         LogUtil.e("123456              " + para + "        " + shopType);
         ModuleBaseApplication.initShare();
         shopXinxi.setVisibility(View.GONE);
+        commodityIntoShop.setVisibility(View.GONE);
         customDialog = new CustomDialog(this);
         customDialog.show();
         presenter.login();
@@ -186,36 +187,36 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 ARouter.getInstance().build("/home/main").navigation();
             }
         });
-        //进入店铺
-        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance()
-                        .build("/module_classify/tshop_home")
-                        .withString("url", tbGoodsDetailsBean.getN_tbk_item().getItem_url())
-                        .navigation();
-            }
-        });
-        //进入店铺
-        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance()
-                        .build("/module_classify/tshop_home")
-                        .withString("url", tbGoodsDetailsBean.getN_tbk_item().getItem_url())
-                        .navigation();
-            }
-        });
-        //进入店铺
-        commodityShopName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance()
-                        .build("/module_classify/tshop_home")
-                        .withString("url", tbGoodsDetailsBean.getN_tbk_item().getItem_url())
-                        .navigation();
-            }
-        });
+//        //进入店铺
+//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance()
+//                        .build("/module_classify/tshop_home")
+//                        .withString("shopId", tbGoodsDetailsBean.getN_tbk_item().getSeller_id())
+//                        .navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance()
+//                        .build("/module_classify/tshop_home")
+//                        .withString("shopId", tbGoodsDetailsBean.getN_tbk_item().getSeller_id())
+//                        .navigation();
+//            }
+//        });
+//        //进入店铺
+//        commodityShopName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ARouter.getInstance()
+//                        .build("/module_classify/tshop_home")
+//                        .withString("shopId", tbGoodsDetailsBean.getN_tbk_item().getSeller_id())
+//                        .navigation();
+//            }
+//        });
         //分享
         //立即领取
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {

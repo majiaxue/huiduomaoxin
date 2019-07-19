@@ -299,7 +299,7 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
 
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)//SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
                 .setCallback(shareListener).open(config);
     }
 

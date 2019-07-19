@@ -26,7 +26,7 @@ public class ArithUtil {
     public static double sub(double value1, double value2) {
         BigDecimal b1 = new BigDecimal(Double.valueOf(value1));
         BigDecimal b2 = new BigDecimal(Double.valueOf(value2));
-        return b1.subtract(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return b1.subtract(b2).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     /**
@@ -39,7 +39,7 @@ public class ArithUtil {
     public static double mul(double value1, double value2) {
         BigDecimal b1 = new BigDecimal(Double.valueOf(value1));
         BigDecimal b2 = new BigDecimal(Double.valueOf(value2));
-        return b1.multiply(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return b1.multiply(b2).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     /**
@@ -59,11 +59,11 @@ public class ArithUtil {
         BigDecimal b1 = new BigDecimal(Double.toString(value1));
         BigDecimal b2 = new BigDecimal(Double.toString(value2));
         //默认保留两位会有错误，这里设置保留小数点后4位
-        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return b1.divide(b2, scale, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     public static double exact(double value, int scale) {
         BigDecimal bigDecimal = new BigDecimal(value);
-        return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bigDecimal.setScale(scale, BigDecimal.ROUND_DOWN).doubleValue();
     }
 }

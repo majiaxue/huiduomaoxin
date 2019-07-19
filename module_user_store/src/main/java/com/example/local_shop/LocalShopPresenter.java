@@ -3,8 +3,12 @@ package com.example.local_shop;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -243,8 +247,33 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
         LocationManager locManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
-            PopUtils.location(mContext);
+//            PopUtils.location(mContext);
+            // 新建一个子线程来发送消息
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        // 让ProgressDialog显示一会儿。。。。
+                        Thread.sleep(1000);
+                        Message message = new Message();
+                        message.what = 1;
+                        // 发送消息到消息队列中
+                        handler.sendMessage(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
         }
     }
+
+    // Handler异步方式
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                PopUtils.location(mContext);
+            }
+        }
+    };
 
 }

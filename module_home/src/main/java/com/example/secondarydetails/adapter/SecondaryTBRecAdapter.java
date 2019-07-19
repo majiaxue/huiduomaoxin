@@ -1,6 +1,7 @@
 package com.example.secondarydetails.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
@@ -37,7 +38,7 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
             holder.setImageResource(com.example.module_base.R.id.base_type, com.example.module_base.R.drawable.tianmao);
         }
 
-        double sub = ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0.0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0.0": data.getCoupon_amount()));
+        double sub = ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0.0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0.0" : data.getCoupon_amount()));
         double div = ArithUtil.div(Double.valueOf(data.getCommission_rate()), 10000, 2);
         double mul = ArithUtil.mul(sub, div);//商品收益需要乘个人收益
 
@@ -49,8 +50,12 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
         holder.setText(com.example.module_base.R.id.base_number, "已抢" + data.getVolume() + "件");
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
 
-        holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        } else {
+            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, 0.3));
+        }
         holder.setText(com.example.module_base.R.id.base_upgrade, "升级赚" + ArithUtil.mul(mul, 0.8));
 //        TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);
 //        viewOnClickListener.ViewOnClick(immediatelyGrab, position);

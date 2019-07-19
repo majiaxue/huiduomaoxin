@@ -1,6 +1,5 @@
-package com.example.Universallist;
+package com.example.universallist;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,7 +14,6 @@ import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
-import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -24,7 +22,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 全能列表

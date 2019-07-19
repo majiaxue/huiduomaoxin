@@ -1,4 +1,4 @@
-package com.example.Universallist;
+package com.example.universallist;
 
 import com.example.mvp.IView;
 

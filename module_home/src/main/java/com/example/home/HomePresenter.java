@@ -217,6 +217,20 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
                     // 设置XBanner页面切换的时间，即动画时长
                     homeZhongXbanner.setPageChangeDuration(1000);
+
+                    //监听广告 item 的单击事件
+                    homeZhongXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(XBanner banner, Object model, View view, int position) {
+                            if (position == 0){
+
+                            }else if (position == 1){
+                                ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                            }else{
+                                ARouter.getInstance().build("/mine/invite_friends").navigation();
+                            }
+                        }
+                    });
                 }
             }
 
