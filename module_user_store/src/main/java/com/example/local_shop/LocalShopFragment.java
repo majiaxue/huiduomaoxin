@@ -2,6 +2,8 @@ package com.example.local_shop;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -47,6 +50,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -115,6 +120,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     @Override
     public void initData() {
         EventBus.getDefault().register(this);
+        localShopCity.setText("定位中");
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -206,17 +212,33 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         super.onHiddenChanged(hidden);
         if (!hidden && isFirst) {
             ProcessDialogUtil.showProcessDialog(getContext());
-            if (!TextUtils.isEmpty(MyLocationListener.city)) {
-                localShopCity.setText(MyLocationListener.city);
-            } else {
-                localShopCity.setText("定位中");
-            }
-//            presenter.locationClient();
-//            ModuleBaseApplication.mLocationClient.restart();
+
+//            if (TextUtils.isEmpty(MyLocationListener.city)) {
+//                // 新建一个子线程来发送消息
+//                new Thread() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            // 让ProgressDialog显示一会儿。。。。
+//                            Thread.sleep(2000);
+//                            Message message = new Message();
+//                            message.what = 1;
+//                            // 发送消息到消息队列中
+//                            handler.sendMessage(message);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }.start();
+//            } else {
+//                localShopCity.setText(MyLocationListener.city);
+//            }
+
             presenter.initNavbar();
             presenter.initSeller("", "", page, MyLocationListener.longitude, MyLocationListener.latitude);
             presenter.getXBanner();
             presenter.isOpenLocation();
+
             isFirst = false;
         }
     }
@@ -227,6 +249,20 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
             localShopCity.setText(MyLocationListener.city);
         }
     }
+
+//    // Handler异步方式下载图片
+//    private Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            if (msg.what == 1) {
+//                if (!TextUtils.isEmpty(MyLocationListener.city)) {
+//                    localShopCity.setText(MyLocationListener.city);
+//                } else {
+//                    localShopCity.setText("定位失败");
+//                    Toast.makeText(getContext(), "请检查网络设置或者定位信息", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    };
 
     @Override
     public void loadBanner(List<BannerBean.RecordsBean> beanList) {

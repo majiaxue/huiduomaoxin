@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.example.bean.TBGoodsRecBean;
 import com.example.common.CommonResource;
@@ -49,7 +50,7 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
             double couponPrice = ArithUtil.sub(Double.valueOf(data.getZk_final_price()), Double.valueOf(data.getCoupon_amount()));//商品价格
             double mul = 0;
             if (data.getCommission_rate() != null) {
-                mul = ArithUtil.mul(couponPrice, ArithUtil.div(Double.valueOf(data.getCommission_rate()), 100, 2));//商品收益需要乘个人收益
+                mul = ArithUtil.mul(couponPrice, ArithUtil.div(Double.valueOf(data.getCommission_rate()), 10000, 2));//商品收益需要乘个人收益
             }
             holder.setImageFresco(R.id.base_image, data.getPict_url());
             holder.setText(R.id.base_name, data.getTitle());
@@ -58,7 +59,11 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
             holder.setText(R.id.base_original_price, "￥" + data.getZk_final_price());//原价
             holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");//已抢数量
             LogUtil.e("商品佣金" + data.getCommission_rate());
-            holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            } else {
+                holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, 0.3));
+            }
             holder.setText(R.id.base_upgrade, "升级赚" + ArithUtil.mul(mul, 0.8));
             // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
             holder.setTextLine(R.id.base_original_price);

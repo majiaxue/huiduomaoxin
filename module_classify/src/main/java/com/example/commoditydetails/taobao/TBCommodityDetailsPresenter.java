@@ -238,12 +238,12 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         commodityXbanner.setPageChangeDuration(1000);
 
         //监听广告 item 的单击事件
-        commodityXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
-            @Override
-            public void onItemClick(XBanner banner, Object model, View view, int position) {
-                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        commodityXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(XBanner banner, Object model, View view, int position) {
+//                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     //商品详情图
@@ -552,7 +552,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
                 .setCallback(shareListener).open(config);
     }
 
@@ -566,17 +566,14 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         public void onResult(SHARE_MEDIA share_media) {
             LogUtil.e("result:" + share_media.toString());
             ShareOperationUtil.getShareOperationUtil().createOrUpdate();
-            Toast.makeText(mContext, "成功了", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-            Toast.makeText(mContext, "失败了", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            Toast.makeText(mContext, "取消了", Toast.LENGTH_SHORT).show();
         }
     };
 

@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -514,10 +515,15 @@ public class PopUtils {
         bottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
-                context.startActivity(intent);
+//                Intent intent = new Intent();
+//                intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                intent.setData(Uri.parse("package:" + context.getPackageName()));
+//                context.startActivity(intent);
+
+                // 转到手机设置界面，用户设置GPS
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                context.startActivity(intent); // 设置完成后返回到原来的界面
+                popupWindow.dismiss();
             }
         });
 

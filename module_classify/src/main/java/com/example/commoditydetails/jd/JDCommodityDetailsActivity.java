@@ -263,10 +263,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     public void earnings(String earnings) {
         customDialog.dismiss();
         Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
-        Double aDouble = Double.valueOf(earnings);
-        double mul1 = ArithUtil.mul(sub, ArithUtil.div(commission, 100, 2));
-        double mul = ArithUtil.mul(mul1, ArithUtil.div(aDouble, 100, 2));
-        commodityEarnings.setText("预估收益：￥" + mul);//收益
+        Double aDouble = Double.valueOf(earnings) / 100;
+        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(commission, aDouble));//收益
     }
 
     @Override
@@ -319,7 +317,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             e.printStackTrace();
         }
         //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
-        presenter.viewToImage(listsBeanList,qRImage, file.getPath());
+        presenter.viewToImage(listsBeanList, qRImage, file.getPath());
         LogUtil.e("图片路径" + file.getPath());
     }
 

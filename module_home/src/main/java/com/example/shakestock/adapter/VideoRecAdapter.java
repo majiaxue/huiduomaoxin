@@ -30,6 +30,7 @@ import com.example.net.RetrofitUtil;
 import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
@@ -39,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import cn.jzvd.JzvdStd;
 import io.reactivex.Observable;
@@ -72,6 +74,20 @@ public class VideoRecAdapter extends MyRecyclerAdapter<VideoRecBean.DataBean> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("TBCommodityDetailsErrorMsg收藏------------>" + errorMsg);
+            }
+        }));
+
+        Map map = MapUtil.getInstance().addParms("productId", data.getItemid()).addParms("userCode", SPUtil.getUserCode()).addParms("type", 3).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("添加浏览记录" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("添加浏览记录errorMsg" + errorMsg);
             }
         }));
 

@@ -4,13 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_pinpai"
     tools:context="com.example.superbrand.SuperBrandFragment">
+
+    <ImageView
+        android:id="@+id/super_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_300"
+        android:src="@drawable/fgdgd"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_300"
+        android:layout_below="@id/super_image"
+        android:layout_marginTop="-10dp"
         android:background="@drawable/bg_10_fff_top"
         android:orientation="vertical">
 

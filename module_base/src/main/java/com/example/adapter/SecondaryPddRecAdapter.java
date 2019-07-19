@@ -44,7 +44,12 @@ public class SecondaryPddRecAdapter extends MyRecyclerAdapter<SecondaryPddRecBea
         }
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
-        holder.setText(R.id.base_estimate, "预估赚"+ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+
+        } else {
+            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, 0.3));
+        }
         holder.setText(R.id.base_upgrade, "升级赚"+ArithUtil.mul(mul,0.8));
 
 //        TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);
