@@ -53,7 +53,7 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
                 holder.setText(R.id.rv_collection_preferential_price, "￥" + normalPrice);
             }
             holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
-            holder.setImageFresco(R.id.rv_collection_image, "https:" + data.getImage());
+            holder.setImageFresco(R.id.rv_collection_image, data.getImage());
         } else if (data.getType() == 1) {
             //京东
             holder.setImageResource(R.id.rv_collection_type, R.drawable.jingdong);

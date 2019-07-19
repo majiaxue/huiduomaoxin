@@ -3,6 +3,10 @@ package com.example.utils;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.MyLocationData;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class MyLocationListener extends BDAbstractLocationListener {
     /**
@@ -31,5 +35,6 @@ public class MyLocationListener extends BDAbstractLocationListener {
                 .direction(bdLocation.getDirection()).latitude(bdLocation.getLatitude())
                 .longitude(bdLocation.getLongitude()).build();
         LogUtil.e("--------》纬度：" + latitude + "=====经度：" + longitude + "=====城市：" + city + "-----------getLocType:" + adCode);
+        EventBus.getDefault().post(new EventBusBean(CommonResource.NETCHANGED));
     }
 }

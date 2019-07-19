@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.CartBean;
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.confirm_order.ConfirmOrderActivity;
@@ -27,7 +28,6 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
-import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
@@ -38,6 +38,8 @@ import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(mContext);
     }
 
     public void setShoppingCartRecommendRec(final RecyclerView shoppingCartRecommendRec) {
@@ -102,6 +104,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                                     .withString("id", commendList.get(position).getId() + "")
                                     .withString("sellerId", commendList.get(position).getSellerId())
                                     .withString("commendId", commendList.get(position).getProductCategoryId() + "")
+                                    .withString("from", "cart")
                                     .navigation();
                         }
                     });

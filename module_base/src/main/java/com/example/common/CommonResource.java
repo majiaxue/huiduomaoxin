@@ -184,4 +184,6 @@ public class CommonResource {
     public static final String WXPAY_SUCCESS = "wxpay_success"; //礼包微信支付成功
     public static final String WXPAY_SUCCESS_UP = "wxpay_up";   //金银铜微信支付成功
     public static final String WXPAY_SUCCESS_LOCAL = "wxpay_local"; //本地商城微信支付成功
+    public static final String CART_REFRESH = "cartRefresh";        //从购物车的商品推荐进入商品详情，又跳到购物车时刷新购物车
+    public static final String NETCHANGED = "net_changed";      //网络发生变化，重新定位
 }

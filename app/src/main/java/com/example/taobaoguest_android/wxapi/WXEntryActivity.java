@@ -49,19 +49,15 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
 
     @Override
     public void onResp(BaseResp baseResp) {
-        String result;
 
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             switch (baseResp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
-                    result = "分享成功";
-                    Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 
                     finish();
                     break;
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                    result = "分享失败";
-                    Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+
                     finish();
                     break;
                 default:

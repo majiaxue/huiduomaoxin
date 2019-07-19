@@ -64,7 +64,7 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
                 }.getType());
                 dataList.addAll(hotSaleBean.getData());
                 if (lstAdapter == null) {
-                    lstAdapter = new TypeDetailLstAdapter(mContext, dataList, R.layout.item_baby_rec);
+                    lstAdapter = new TypeDetailLstAdapter(mContext, dataList, R.layout.rv_type_detail_lst);
                     waterfallAdapter = new TypeDetailWaterfallAdapter(mContext, dataList, R.layout.rv_commend);
                     getView().loadLstRv(lstAdapter, flag);
                 } else {

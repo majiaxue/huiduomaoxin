@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.baidu.location.BDLocation;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeOption;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -25,11 +24,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
-import com.example.local_list.LocalListActivity;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.location.LocationActivity;
-import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -42,6 +41,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xhb.xbanner.XBanner;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -111,7 +114,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 
     @Override
     public void initData() {
-
+        EventBus.getDefault().register(this);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -218,6 +221,13 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.NETCHANGED.equals(eventBusBean.getMsg())) {
+            localShopCity.setText(MyLocationListener.city);
+        }
+    }
+
     @Override
     public void loadBanner(List<BannerBean.RecordsBean> beanList) {
         localShopXbanner.setBannerData(beanList);
@@ -307,6 +317,9 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
                             double latitude = geoCodeResult.getLocation().latitude;
                             double longitude = geoCodeResult.getLocation().longitude;
                             LogUtil.e("-------->纬度：" + latitude + "--------->经度：" + longitude);
+                            index = 0;
+                            changed(false, false);
+                            page = 1;
                             presenter.initSeller("", "", page, longitude, latitude);
                         }
                     }

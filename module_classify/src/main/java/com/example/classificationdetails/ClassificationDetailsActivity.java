@@ -26,7 +26,6 @@ import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.DisplayUtil;
-import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -221,8 +220,9 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                if (position == 0) presenter.searchTB(page, null);
-                else if (position == 1) {
+                if (position == 0) {
+                    presenter.searchTB(page, null);
+                } else if (position == 1) {
                     presenter.searchPDD(page);
                 } else if (position == 2) {
                     presenter.searchJD(page, null, null);

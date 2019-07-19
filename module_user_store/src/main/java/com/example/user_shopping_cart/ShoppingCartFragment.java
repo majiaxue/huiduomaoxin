@@ -1,35 +1,28 @@
 package com.example.user_shopping_cart;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.common.CommonResource;
-import com.example.confirm_order.ConfirmOrderActivity;
 import com.example.entity.EventBusBean;
-import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
-import com.example.net.RetrofitUtil;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
 import com.example.view.CustomHeader;
-import com.example.view.CustomerExpandableListView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -56,6 +49,9 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     LinearLayout shoppingCartHide;
     @BindView(R2.id.shopping_cart_close_account_and_delete)
     TextView shoppingCartCloseAccountAndDelete;
+    @BindView(R2.id.cart_top)
+    RelativeLayout mTop;
+
     public boolean compileStatus = true;
     //全选初始状态
     private boolean isCheckAllParent = false;
@@ -69,6 +65,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         shoppingCartRec.setLayoutManager(linearLayoutManager);
         //商品
@@ -139,11 +136,22 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.CART_REFRESH.equals(eventBusBean.getMsg())) {
+            mTop.setFocusable(true);
+            mTop.setFocusableInTouchMode(true);
+            presenter.setShoppingCartRec();
+        }
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             //显示
+            mTop.setFocusable(true);
+            mTop.setFocusableInTouchMode(true);
             presenter.setShoppingCartRec();
         }
     }
@@ -170,10 +178,12 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     @Override
     public void isHide(boolean isHide) {
         if (isHide) {
+            shoppingCartRec.setVisibility(View.GONE);
             shoppingCartEmpty.setVisibility(View.VISIBLE);
             shoppingCartCompile.setVisibility(View.GONE);
             shoppingCartCloseAccountAndDelete.setEnabled(false);
         } else {
+            shoppingCartRec.setVisibility(View.VISIBLE);
             shoppingCartEmpty.setVisibility(View.GONE);
             shoppingCartCompile.setVisibility(View.VISIBLE);
             shoppingCartCloseAccountAndDelete.setEnabled(true);
