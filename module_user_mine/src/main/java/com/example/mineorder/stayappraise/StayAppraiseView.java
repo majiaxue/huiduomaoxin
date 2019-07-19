@@ -1,5 +1,6 @@
 package com.example.mineorder.stayappraise;
 
+import com.example.mineorder.stayappraise.adapter.StayAppraiseParentAdapter;
 import com.example.mvp.IView;
 
 /**
@@ -7,4 +8,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface StayAppraiseView extends IView {
+    void load(StayAppraiseParentAdapter stayAppraiseParentAdapter);
 }

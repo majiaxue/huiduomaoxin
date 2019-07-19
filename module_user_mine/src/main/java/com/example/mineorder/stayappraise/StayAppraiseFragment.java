@@ -1,7 +1,9 @@
 package com.example.mineorder.stayappraise;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.mineorder.stayappraise.adapter.StayAppraiseParentAdapter;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -17,7 +19,7 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
 
     @BindView(R2.id.stay_appraise_rec)
     RecyclerView stayAppraiseRec;
-
+    private int flag = 0;
 
     @Override
     public int getLayoutId() {
@@ -26,8 +28,10 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
 
     @Override
     public void initData() {
-//        LogUtil.e("-------->onCreate");
-//        presenter.stayAppraiseRec(stayAppraiseRec);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        stayAppraiseRec.setLayoutManager(linearLayoutManager);
+        presenter.stayAppraiseRec();
+        flag = 1;
     }
 
     @Override
@@ -46,12 +50,28 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
     }
 
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        LogUtil.e("setUserVisibleHint-------->待评价当前可见");
+//        presenter.stayAppraiseRec(stayAppraiseRec);
+//    }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("setUserVisibleHint-------->待评价当前可见");
-        presenter.stayAppraiseRec(stayAppraiseRec);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.e("11111111111" + isVisibleToUser);
+        if (isVisibleToUser) {
+            if (flag == 1) {
+                presenter.stayAppraiseRec();
+            }
+        } else {
+            flag = 0;
+        }
     }
 
+    @Override
+    public void load(StayAppraiseParentAdapter stayAppraiseParentAdapter) {
+        stayAppraiseRec.setAdapter(stayAppraiseParentAdapter);
+    }
 }

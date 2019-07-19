@@ -1,7 +1,9 @@
 package com.example.mineorder.orderall;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -16,6 +18,7 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
 
     @BindView(R2.id.order_all_rec)
     RecyclerView orderAllRec;
+    private int flag = 0;
 
     @Override
     public int getLayoutId() {
@@ -24,15 +27,16 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
 
     @Override
     public void initData() {
-//        LogUtil.e("setUserVisibleHint-------->初始化布局");
-//        presenter.orderAllRec(orderAllRec);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        orderAllRec.setLayoutManager(linearLayoutManager);
+        presenter.orderAllRec();
+        flag = 1;
     }
 
     @Override
     public void initClick() {
 
     }
-
 
     @Override
     public OrderAllView createView() {
@@ -44,12 +48,28 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
         return new OrderAllPresenter(getContext());
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        LogUtil.e("setUserVisibleHint-------->全部订单当前可见");
+//        presenter.orderAllRec(orderAllRec);
+//    }
+
     @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("setUserVisibleHint-------->全部订单当前可见");
-        presenter.orderAllRec(orderAllRec);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.e("11111111111" + isVisibleToUser);
+        if (isVisibleToUser) {
+            if (flag == 1) {
+                presenter.orderAllRec();
+            }
+        } else {
+            flag = 0;
+        }
     }
 
-
+    @Override
+    public void load(MineOrderParentAdapter mineOrderParentAdapter) {
+        orderAllRec.setAdapter(mineOrderParentAdapter);
+    }
 }

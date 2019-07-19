@@ -37,6 +37,7 @@ import okhttp3.ResponseBody;
 public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
+    private MineOrderParentAdapter mineOrderParentAdapter;
 
     public StaySendGoodsPresenter(Context context) {
         super(context);
@@ -47,7 +48,7 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
 
     }
 
-    public void staySendGoodsRec(final RecyclerView staySendGoodsRec) {
+    public void staySendGoodsRec() {
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", 1).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
@@ -62,10 +63,17 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                 if (mineOrderBean != null) {
                     listBeans.clear();
                     listBeans.addAll(mineOrderBean.getOrderList());
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                    staySendGoodsRec.setLayoutManager(linearLayoutManager);
-                    MineOrderParentAdapter mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                    staySendGoodsRec.setAdapter(mineOrderParentAdapter);
+
+                    if (mineOrderParentAdapter == null){
+                        mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+
+                    }else{
+                        mineOrderParentAdapter.notifyDataSetChanged();
+                    }
+                    if (getView()!=null){
+                        getView().load(mineOrderParentAdapter);
+                    }
+
                     mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                         @Override
                         public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {

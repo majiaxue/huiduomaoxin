@@ -37,6 +37,7 @@ import okhttp3.ResponseBody;
 public class StayObligationPresenter extends BasePresenter<StayObligationView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
+    private MineOrderParentAdapter mineOrderParentAdapter;
 
     public StayObligationPresenter(Context context) {
         super(context);
@@ -47,13 +48,11 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
 
     }
 
-    public void stayObligationRec(final RecyclerView stayObligationRec) {
+    public void stayObligationRec() {
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", 6).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
-
-            private MineOrderParentAdapter mineOrderParentAdapter;
 
             @Override
             public void onSuccess(String result, String msg) {
@@ -65,10 +64,14 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
                 if (mineOrderBean != null) {
                     listBeans.clear();
                     listBeans.addAll(mineOrderBean.getOrderList());
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                    stayObligationRec.setLayoutManager(linearLayoutManager);
-                    mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                    stayObligationRec.setAdapter(mineOrderParentAdapter);
+                    if (mineOrderParentAdapter == null){
+                        mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                    }else{
+                        mineOrderParentAdapter.notifyDataSetChanged();
+                    }
+                    if (getView()!=null){
+                        getView().load(mineOrderParentAdapter);
+                    }
                     mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                         @Override
                         public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {

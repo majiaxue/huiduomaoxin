@@ -1,5 +1,6 @@
 package com.example.mineorder.stayobligation;
 
+import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.mvp.IView;
 
 /**
@@ -7,4 +8,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface StayObligationView extends IView {
+    void load(MineOrderParentAdapter mineOrderParentAdapter);
 }

@@ -24,6 +24,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -75,6 +76,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     TextView browsingHistoryCount;
 
     private boolean flag = false;
+    private Badge badge1,badge2,badge3,badge4;
 
     @Override
     public int getLayoutId() {
@@ -92,6 +94,39 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             userMineId.setText("");
             mineHeader.setImageResource(R.drawable.vhjfg);
         }
+
+
+        badge1 = new QBadgeView(getContext())
+                .bindTarget(userMineDaifahuo)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10, 0, true);
+
+        badge2 = new QBadgeView(getContext())
+                .bindTarget(userMineDaishouhuo)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10, 0, true);
+
+        badge3 = new QBadgeView(getContext())
+                .bindTarget(userMineDaipingjia)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10, 0, true);
+
+        badge4 = new QBadgeView(getContext())
+                .bindTarget(userMineDaifukuan)
+                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
+                .stroke(Color.parseColor("#fd3c15"), 1, true)
+                .setBadgeTextSize(9, true)
+                .setShowShadow(false)
+                .setGravityOffset(10, 0, true);
 
 
 //        presenter.goodsCollectionCount();
@@ -246,53 +281,25 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void daifahuo(int count) {
         LogUtil.e("数量1-------------->" + count);
-        new QBadgeView(getContext())
-                .bindTarget(userMineDaifahuo)
-                .setBadgeNumber(count)
-                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
-                .stroke(Color.parseColor("#fd3c15"), 1, true)
-                .setBadgeTextSize(9, true)
-                .setShowShadow(false)
-                .setGravityOffset(10, 0, true);
+        badge1.setBadgeNumber(count);
     }
 
     @Override
     public void daishouhuo(int count) {
         LogUtil.e("数量2-------------->" + count);
-        new QBadgeView(getContext())
-                .bindTarget(userMineDaishouhuo)
-                .setBadgeNumber(count)
-                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
-                .stroke(Color.parseColor("#fd3c15"), 1, true)
-                .setBadgeTextSize(9, true)
-                .setShowShadow(false)
-                .setGravityOffset(10, 0, true);
+        badge2.setBadgeNumber(count);
     }
 
     @Override
     public void daipingjia(int count) {
         LogUtil.e("数量3-------------->" + count);
-        new QBadgeView(getContext())
-                .bindTarget(userMineDaipingjia)
-                .setBadgeNumber(count)
-                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
-                .stroke(Color.parseColor("#fd3c15"), 1, true)
-                .setBadgeTextSize(9, true)
-                .setShowShadow(false)
-                .setGravityOffset(10, 0, true);
+        badge3.setBadgeNumber(count);
     }
 
     @Override
     public void daifukuan(int count) {
         LogUtil.e("数量4-------------->" + count);
-        new QBadgeView(getContext())
-                .bindTarget(userMineDaifukuan)
-                .setBadgeNumber(count)
-                .setBadgeTextColor(Color.parseColor("#FFFFFF"))
-                .stroke(Color.parseColor("#fd3c15"), 1, true)
-                .setBadgeTextSize(9, true)
-                .setShowShadow(false)
-                .setGravityOffset(10, 0, true);
+        badge4.setBadgeNumber(count);
     }
 
     @Override
@@ -317,4 +324,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             presenter.mineOrderAll();
         }
     }
+
+
+
 }

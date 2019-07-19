@@ -1,7 +1,9 @@
 package com.example.mineorder.stayobligation;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.mineorder.adapter.MineOrderParentAdapter;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -17,7 +19,7 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
 
     @BindView(R2.id.stay_obligation_rec)
     RecyclerView stayObligationRec;
-
+    private int flag = 0;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_stay_obligation;
@@ -25,7 +27,10 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
 
     @Override
     public void initData() {
-//        presenter.stayObligationRec(stayObligationRec);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        stayObligationRec.setLayoutManager(linearLayoutManager);
+        presenter.stayObligationRec();
+        flag = 1;
     }
 
     @Override
@@ -43,12 +48,28 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
         return new StayObligationPresenter(getContext());
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        LogUtil.e("setUserVisibleHint-------->待付款当前可见");
+//        presenter.stayObligationRec(stayObligationRec);
+//    }
+
     @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("setUserVisibleHint-------->待付款当前可见");
-        presenter.stayObligationRec(stayObligationRec);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.e("11111111111" + isVisibleToUser);
+        if (isVisibleToUser) {
+            if (flag == 1){
+                presenter.stayObligationRec();
+            }
+        }else{
+            flag = 0;
+        }
     }
 
-
+    @Override
+    public void load(MineOrderParentAdapter mineOrderParentAdapter) {
+        stayObligationRec.setAdapter(mineOrderParentAdapter);
+    }
 }

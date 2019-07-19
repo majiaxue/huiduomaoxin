@@ -48,7 +48,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
     }
 
-    public void orderAllRec(final RecyclerView orderAllRec) {
+    public void orderAllRec() {
         ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
@@ -69,10 +69,15 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                         listBeans.clear();
                         listBeans.addAll(mineOrderBean.getOrderList());
 
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                        orderAllRec.setLayoutManager(linearLayoutManager);
-                        mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                        orderAllRec.setAdapter(mineOrderParentAdapter);
+                        if (mineOrderParentAdapter == null){
+                            mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                        }else{
+                            mineOrderParentAdapter.notifyDataSetChanged();
+                        }
+
+                        if (getView()!=null){
+                            getView().load(mineOrderParentAdapter);
+                        }
 
                         mineOrderParentAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override

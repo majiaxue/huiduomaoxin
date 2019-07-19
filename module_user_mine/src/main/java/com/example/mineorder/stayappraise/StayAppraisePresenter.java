@@ -35,6 +35,7 @@ import okhttp3.ResponseBody;
 public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
     private List<MineOrderBean.OrderListBean> listBeans = new ArrayList<>();
+    private StayAppraiseParentAdapter stayAppraiseParentAdapter;
 
     public StayAppraisePresenter(Context context) {
         super(context);
@@ -45,7 +46,7 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
     }
 
-    public void stayAppraiseRec(final RecyclerView stayAppraiseRec) {
+    public void stayAppraiseRec() {
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", 3).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
@@ -61,10 +62,15 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
                 if (mineOrderBean != null) {
                     listBeans.clear();
                     listBeans.addAll(mineOrderBean.getOrderList());
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                    stayAppraiseRec.setLayoutManager(linearLayoutManager);
-                    StayAppraiseParentAdapter stayAppraiseParentAdapter = new StayAppraiseParentAdapter(mContext, listBeans, R.layout.item_stay_appraise_parent);
-                    stayAppraiseRec.setAdapter(stayAppraiseParentAdapter);
+                    if (stayAppraiseParentAdapter == null){
+                        stayAppraiseParentAdapter = new StayAppraiseParentAdapter(mContext, listBeans, R.layout.item_stay_appraise_parent);
+
+                    }else {
+                        stayAppraiseParentAdapter.notifyDataSetChanged();
+                    }
+                    if (getView()!=null){
+                        getView().load(stayAppraiseParentAdapter);
+                    }
 
                     stayAppraiseParentAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                         @Override

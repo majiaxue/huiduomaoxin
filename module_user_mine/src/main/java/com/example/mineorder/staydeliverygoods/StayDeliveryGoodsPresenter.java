@@ -47,7 +47,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
 
     }
 
-    public void stayDeliveryGoodsRec(final RecyclerView stayDeliveryGoodsRec) {
+    public void stayDeliveryGoodsRec() {
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", 2).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
@@ -63,10 +63,15 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                 if (mineOrderBean != null) {
                     listBeans.clear();
                     listBeans.addAll(mineOrderBean.getOrderList());
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                    stayDeliveryGoodsRec.setLayoutManager(linearLayoutManager);
-                    mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
-                    stayDeliveryGoodsRec.setAdapter(mineOrderParentAdapter);
+                    if (mineOrderParentAdapter == null){
+                        mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
+                    }else {
+                        mineOrderParentAdapter.notifyDataSetChanged();
+                    }
+
+                    if (getView()!=null){
+                        getView().load(mineOrderParentAdapter);
+                    }
                     mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                         @Override
                         public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
