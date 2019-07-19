@@ -200,7 +200,6 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
 
                     orderBeans.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
                     tbAdapter.notifyDataSetChanged();
-                    getView().moveTo(flag);
                 }
             }
 

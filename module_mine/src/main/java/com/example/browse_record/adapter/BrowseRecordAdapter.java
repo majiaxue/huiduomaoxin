@@ -6,10 +6,8 @@ import android.text.TextUtils;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.MyCollectBean;
-import com.example.entity.BaseRecBean;
 import com.example.module_mine.R;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class BrowseRecordAdapter extends MyRecyclerAdapter<MyCollectBean> {
                 holder.setText(R.id.rv_collection_preferential_price, "￥" + normalPrice);
             }
             holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
-            holder.setImageFresco(R.id.rv_collection_image, "https:" + data.getImage());
+            holder.setImageFresco(R.id.rv_collection_image, data.getImage());
         } else if (data.getType() == 1) {
             //京东
             holder.setImageResource(R.id.rv_collection_type, R.drawable.jingdong);

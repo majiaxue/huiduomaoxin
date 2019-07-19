@@ -19,12 +19,12 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.adapter.GoodsImageAdapter;
 import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
-import com.example.adapter.GoodsImageAdapter;
 import com.example.mvp.BaseActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
@@ -131,6 +131,8 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     String sellerId;
     @Autowired(name = "commendId")
     String commendId;
+    @Autowired(name = "from")
+    String from;
 
     @Override
     public int getLayoutId() {
@@ -290,7 +292,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailBottomCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToCart();
+                presenter.jumpToCart(from);
             }
         });
 

@@ -18,7 +18,6 @@ import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,6 +51,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         ARouter.getInstance().inject(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
+        presenter.registerReceiver();
 
         new Thread(new Runnable() {
             @Override

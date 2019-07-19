@@ -34,6 +34,7 @@ import com.example.bean.ParmsBean;
 import com.example.bean.UserCouponBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
@@ -56,6 +57,8 @@ import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagFlowLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1592,7 +1595,10 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         }
     }
 
-    public void jumpToCart() {
+    public void jumpToCart(String from) {
+        if ("cart".equals(from)) {
+            EventBus.getDefault().post(new EventBusBean(CommonResource.CART_REFRESH));
+        }
         Intent intent = new Intent(mContext, UserActivity.class);
         intent.putExtra("key", CommonResource.JUMP_CART);
         mContext.startActivity(intent);

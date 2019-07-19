@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -41,6 +43,7 @@ import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
+import com.example.utils.net_change_util.NetStateChangeReceiver;
 import com.example.view.SelfDialog;
 
 import java.io.File;
@@ -77,6 +80,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private int progress; // 下载进度
     private boolean cancelFlag = false; // 取消下载标志位
     private CheckUpBean checkUpBean;
+    private NetStateChangeReceiver receiver;
 
 
     public MainPresenter(Context context) {
@@ -179,7 +183,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     @Override
     protected void onViewDestroy() {
+        mContext.unregisterReceiver(receiver);
+    }
 
+    public void registerReceiver() {
+        receiver = new NetStateChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        mContext.registerReceiver(receiver, intentFilter);
     }
 
     private void initInstall() {

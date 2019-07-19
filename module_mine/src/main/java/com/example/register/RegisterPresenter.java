@@ -54,12 +54,14 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    LogUtil.e("获取验证码：" + result);
                     getView().getCodeSuccess();
                 }
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
+                    LogUtil.e(errorCode + "-----------" + errorMsg);
                 }
             }));
         } else {

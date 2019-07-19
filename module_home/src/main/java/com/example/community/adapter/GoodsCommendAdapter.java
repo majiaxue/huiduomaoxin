@@ -28,10 +28,14 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
         double v = Double.valueOf(data.getTkrates()) / 100 * Double.valueOf(data.getItemprice()) * SPUtil.getFloatValue(CommonResource.BACKBL);
         holder.setText(R.id.rv_goods_commend_name, data.getItemtitle())
                 .setImageUrl(R.id.rv_goods_commend_head, data.getSellerIcon())
-                .setText(R.id.rv_goods_commend_time, MyTimeUtil.date2StringLong(data.getTime()))
                 .setText(R.id.rv_goods_commend_content, data.getCopyContent() == null ? "" : data.getCopyContent().replaceAll("&lt;br&gt;", "\n"))
                 .setText(R.id.rv_goods_commend_profit, "分享赚￥" + ArithUtil.exact(v, 2) + "元");
 
+        if (data.getTime().indexOf("-") != -1) {
+            holder.setText(R.id.rv_goods_commend_time, data.getTime());
+        } else {
+            holder.setText(R.id.rv_goods_commend_time, MyTimeUtil.date2StringLong(data.getTime()));
+        }
 
         List<String> pics = data.getPics();
         RecyclerView rv = holder.getView(R.id.rv_goods_commend_img);

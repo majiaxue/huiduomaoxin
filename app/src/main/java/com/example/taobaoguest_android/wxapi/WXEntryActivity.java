@@ -53,9 +53,11 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             switch (baseResp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
+
                     finish();
                     break;
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:
+
                     finish();
                     break;
                 default:
