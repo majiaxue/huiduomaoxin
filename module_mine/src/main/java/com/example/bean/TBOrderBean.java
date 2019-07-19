@@ -52,7 +52,7 @@ public class TBOrderBean {
     private String totalCommissionRate;
     private Double totalCommissionFree;
     private String commission;
-    private String pubSharePreFee;
+    private Double pubSharePreFee;
     private String commissionRate;
     private String relationId;
     private String auctionCategory;
@@ -214,11 +214,11 @@ public class TBOrderBean {
         this.commission = commission;
     }
 
-    public String getPubSharePreFee() {
+    public Double getPubSharePreFee() {
         return pubSharePreFee;
     }
 
-    public void setPubSharePreFee(String pubSharePreFee) {
+    public void setPubSharePreFee(Double pubSharePreFee) {
         this.pubSharePreFee = pubSharePreFee;
     }
 

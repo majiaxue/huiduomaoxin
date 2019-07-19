@@ -64,7 +64,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
         Bitmap bitmap = ViewToBitmap.createBitmap3(webView, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
                 .setCallback(shareListener).open();
     }
 

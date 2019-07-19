@@ -10,6 +10,7 @@ import com.example.order.OrderActivity;
 import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;

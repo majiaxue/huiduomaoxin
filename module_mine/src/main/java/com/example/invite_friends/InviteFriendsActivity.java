@@ -81,7 +81,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
                     public void run() {
                         presenter.loadData(webView1);
                     }
-                }, 2000);
+                }, 1000);
             }
         });
         webView1.loadUrl(CommonResource.BASEURL_4001 + "/rest/share/invite?id=1&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
@@ -102,7 +102,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
                     public void run() {
                         presenter.loadData(webView2);
                     }
-                }, 2000);
+                }, 1000);
             }
         });
         webView2.loadUrl(CommonResource.BASEURL_4001 + "/rest/share/invite?id=2&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
@@ -123,7 +123,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
                     public void run() {
                         presenter.loadData(webView3);
                     }
-                }, 2000);
+                }, 1000);
             }
         });
         webView3.loadUrl(CommonResource.BASEURL_4001 + "/rest/share/invite?id=3&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
