@@ -17,6 +17,7 @@ import com.example.entity.EventBusBean2;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.user_classify.ClassifyFragment;
+import com.example.utils.LogUtil;
 import com.example.view.WindowInsetsFrameLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -135,4 +136,10 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
         return new UserPresenter(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("本地商城可见");
+        ModuleBaseApplication.mLocationClient.restart();
+    }
 }

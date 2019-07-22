@@ -370,7 +370,7 @@
                                 android:layout_below="@id/image131"
                                 android:layout_alignLeft="@id/image131"
                                 android:layout_marginTop="@dimen/dp_10"
-                                android:text="打卡的虫儿有鸟吃"
+                                android:text="打卡的鸟儿有虫吃"
                                 android:textColor="#999999"
                                 android:textSize="@dimen/sp_12" />
 

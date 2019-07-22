@@ -246,7 +246,11 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
         if (CommonResource.NETCHANGED.equals(eventBusBean.getMsg())) {
-            localShopCity.setText(MyLocationListener.city);
+            if (TextUtils.isEmpty(MyLocationListener.city)){
+                localShopCity.setText("定位中");
+            }else{
+                localShopCity.setText(MyLocationListener.city);
+            }
         }
     }
 
