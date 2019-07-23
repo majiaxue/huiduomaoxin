@@ -15,6 +15,8 @@ public class CommunityFragment extends BaseFragment<CommunityView, CommunityPres
     TabLayout communityTab;
     @BindView(R2.id.community_vp)
     ViewPager communityVp;
+    @BindView(R2.id.community_tab_top)
+    TabLayout communityTabTop;
 
     @Override
     public int getLayoutId() {
@@ -25,6 +27,7 @@ public class CommunityFragment extends BaseFragment<CommunityView, CommunityPres
     public void initData() {
         communityTab.setupWithViewPager(communityVp);
         presenter.setTab(communityTab);
+        presenter.setTabTop(communityTabTop);
         presenter.initVp(getActivity().getSupportFragmentManager());
     }
 

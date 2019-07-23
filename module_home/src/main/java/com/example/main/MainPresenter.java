@@ -258,10 +258,11 @@ public class MainPresenter extends BasePresenter<MainView> {
                 checkUpBean = JSON.parseObject(result, CheckUpBean.class);
                 String[] split = clientVersion.split("\\.");
                 String version = checkUpBean.getVersion();
+
                 if (version != null) {
                     String[] split1 = version.split("\\.");
                     if ((Integer.valueOf(split[0]) < Integer.valueOf(split1[0])) || (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) < Integer.valueOf(split1[1]))) {
-                        PopUtils.update(mContext, version, checkUpBean.getIsForce(), checkUpBean.getContent(), new OnClearCacheListener() {
+                        PopUtils.update(mContext, version, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), new OnClearCacheListener() {
                             @Override
                             public void setOnClearCache(final PopupWindow pop, View confirm) {
                                 confirm.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +277,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                         });
 
                     } else if (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) == Integer.valueOf(split1[1]) && Integer.valueOf(split[2]) < Integer.valueOf(split1[2])) {
-                        PopUtils.update(mContext, version, checkUpBean.getIsForce(), checkUpBean.getContent(), new OnClearCacheListener() {
+                        PopUtils.update(mContext, version, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), new OnClearCacheListener() {
                             @Override
                             public void setOnClearCache(final PopupWindow pop, View confirm) {
                                 confirm.setOnClickListener(new View.OnClickListener() {
