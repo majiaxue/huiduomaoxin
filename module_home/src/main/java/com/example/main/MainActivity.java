@@ -18,6 +18,7 @@ import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
+import com.example.utils.WebSocketManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,6 +41,8 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     @Autowired(name = "type")
     String type;
 
+    private String url = "";
+
 
     @Override
     public int getLayoutId() {
@@ -52,6 +55,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
         presenter.registerReceiver();
+//        WebSocketManager.getInstance().init(url);
 
         new Thread(new Runnable() {
             @Override

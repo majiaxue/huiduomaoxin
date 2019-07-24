@@ -7,7 +7,6 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.view.ViewPager;
@@ -458,6 +457,7 @@ public class PopUtils {
 
 
     public static void update(final Context context, String versions, String message, final String isQiangzhi, OnClearCacheListener listener) {
+        LogUtil.e("------------>" + message);
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_geng_xin, null);
         TextView versionsText = inflate.findViewById(R.id.pop_gen_xin_versions);
         TextView messageText = inflate.findViewById(R.id.pop_gen_xin_text_message);

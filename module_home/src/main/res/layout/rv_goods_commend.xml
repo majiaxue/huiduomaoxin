@@ -93,24 +93,13 @@
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_12" />
 
-    <View
-        android:id="@+id/rv_goods_commend_temp1"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_1"
-        android:layout_below="@id/rv_goods_commend_profit"
-        android:layout_marginTop="@dimen/dp_25"
-        android:background="#dedede" />
 
     <View
         android:id="@+id/rv_goods_commend_temp2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_8"
-        android:layout_below="@id/rv_goods_commend_temp1"
+        android:layout_below="@id/rv_goods_commend_profit"
+        android:layout_marginTop="@dimen/dp_25"
         android:background="#f5f5f5" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_1"
-        android:layout_below="@id/rv_goods_commend_temp2"
-        android:background="#dedede" />
 </RelativeLayout>

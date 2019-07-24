@@ -25,7 +25,7 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, final CommunityLocalBean data, int position) {
-        double v = Double.valueOf(data.getTkrates()) / 100 * Double.valueOf(data.getItemprice()) * SPUtil.getFloatValue(CommonResource.BACKBL);
+        double v = Double.valueOf(data.getTkrates()) / 100 * Double.valueOf(data.getItemprice()) * (SPUtil.getFloatValue(CommonResource.BACKBL) == 0 ? 0.3 : SPUtil.getFloatValue(CommonResource.BACKBL));
         holder.setText(R.id.rv_goods_commend_name, data.getItemtitle())
                 .setImageUrl(R.id.rv_goods_commend_head, data.getSellerIcon())
                 .setText(R.id.rv_goods_commend_content, data.getCopyContent() == null ? "" : data.getCopyContent().replaceAll("&lt;br&gt;", "\n"))

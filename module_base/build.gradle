@@ -162,4 +162,6 @@ dependencies {
     //播放器
     api 'cn.jzvd:jiaozivideoplayer:7.0.4'
 
+    //webSocket
+    api 'com.neovisionaries:nv-websocket-client:2.9'
 }
