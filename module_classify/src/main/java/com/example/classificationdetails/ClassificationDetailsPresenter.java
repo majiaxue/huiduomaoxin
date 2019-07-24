@@ -3,6 +3,7 @@ package com.example.classificationdetails;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
@@ -157,11 +159,11 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         if (page == 1) {
             ProcessDialogUtil.showProcessDialog(mContext);
         }
-        Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageno", page).addParms("pagesize", "10").build();
+        Map map = MapUtil.getInstance().addParms("para", content).addParms("pageno", page).addParms("pagesize", "10").build();
         if (sort != null) {
             map.put("sort", sort);
         }
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.SEARCHTBGOODS, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.SEARCH_NEW_TB, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -172,7 +174,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 }
 
                 try {
-
                     if (result != null) {
                         if (page == 1) {
                             tbList.clear();
@@ -180,22 +181,51 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
                         tbNum = tbList.size();
                         JSONObject jsonObject = JSON.parseObject(result);
-                        if ("200".equals(jsonObject.getString("code"))) {
-                            JSONArray data = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < data.size(); i++) {
+                        if ("0".equals(jsonObject.getString("error"))) {
+                            String search_type = jsonObject.getString("search_type");
+                            if ("1".equals(search_type)) {
+                                JSONArray resultList = jsonObject.getJSONArray("result_list");
+                                for (int i = 0; i < resultList.size(); i++) {
+                                    TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                    JSONObject object = resultList.getJSONObject(i);
+
+                                    String coupon_info = object.getString("coupon_info");
+                                    if (!TextUtils.isEmpty(coupon_info)) {
+                                        String[] split = coupon_info.split("减");
+                                        String[] split1 = split[1].split("元");
+                                        dataBean.setCoupon_amount(split1[0]);
+                                    }
+                                    dataBean.setItem_id(object.getString("item_id"));
+                                    dataBean.setPict_url(object.getString("pict_url"));
+                                    dataBean.setTitle(object.getString("title"));
+                                    dataBean.setCommission_rate("" + ArithUtil.div(object.getDouble("commission_rate"), 100, 1));
+                                    dataBean.setVolume(object.getString("volume"));
+                                    dataBean.setCoupon_amount(object.getString("coupon_amount"));
+                                    dataBean.setZk_final_price(object.getString("zk_final_price"));
+                                    dataBean.setReserve_price(object.getString("reserve_price"));
+                                    dataBean.setTk_total_sales(object.getString("tk_total_sales"));
+                                    tbList.add(dataBean);
+                                }
+                            } else if ("2".equals(search_type)) {
+                                JSONObject data = jsonObject.getJSONObject("data");
                                 TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
-                                JSONObject jsonObject1 = data.getJSONObject(i);
-                                dataBean.setItem_id(jsonObject1.getString("item_id"));
-                                dataBean.setPict_url(jsonObject1.getString("pict_url"));
-                                dataBean.setTitle(jsonObject1.getString("title"));
-                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
-                                dataBean.setVolume(jsonObject1.getString("volume"));
-                                dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
-                                dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
-                                dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
-                                dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                                String coupon_info = data.getString("coupon_info");
+                                if (!TextUtils.isEmpty(coupon_info)) {
+                                    String[] split = coupon_info.split("减");
+                                    String[] split1 = split[1].split("元");
+                                    dataBean.setCoupon_amount(split1[0]);
+                                }
+                                dataBean.setItem_id(data.getString("num_iid"));
+                                dataBean.setPict_url(data.getString("pict_url"));
+                                dataBean.setTitle(data.getString("title"));
+                                dataBean.setCommission_rate(data.getString("commission_rate"));
+                                dataBean.setVolume(data.getString("volume"));
+                                dataBean.setZk_final_price(data.getString("zk_final_price"));
+                                dataBean.setReserve_price(data.getString("reserve_price"));
+                                dataBean.setTk_total_sales(data.getString("volume"));
                                 tbList.add(dataBean);
                             }
+
 
                             if (waterfallAdapter == null) {
                                 waterfallAdapter = new ClassificationRecAdapter(mContext, tbList, R.layout.item_classification_rec_grid);
@@ -248,6 +278,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         }
                     }
                 } catch (Exception e) {
+                    LogUtil.e("异常信息：" + e.getMessage());
                     e.printStackTrace();
                 }
             }

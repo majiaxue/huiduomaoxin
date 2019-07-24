@@ -1,4 +1,4 @@
-package com.example.universallist;
+package com.example.Universallist;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,8 +10,8 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.example.universallist.adapter.HotRecommendRecAdapter;
-import com.example.universallist.adapter.UniversalListRecAdapter;
+import com.example.Universallist.adapter.HotRecommendRecAdapter;
+import com.example.Universallist.adapter.UniversalListRecAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotRecommendBean;
 import com.example.bean.UniversalListBean;
@@ -97,7 +97,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         }));
     }
 
-    public void hotRecommend(final RecyclerView universalListRec, final int page,int type){
+    public void hotRecommend(final RecyclerView universalListRec, final int page, int type) {
         Map map = MapUtil.getInstance().addParms("sale_type", type).addParms("min_id", page).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSALESLIST, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -108,7 +108,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                 HotRecommendBean hotRecommendBean = JSON.parseObject(result, new TypeReference<HotRecommendBean>() {
                 }.getType());
                 if (hotRecommendBean != null && hotRecommendBean.getData().size() != 0) {
-                    if (page == 1){
+                    if (page == 1) {
                         hotList.clear();
                     }
                     hotList.addAll(hotRecommendBean.getData());

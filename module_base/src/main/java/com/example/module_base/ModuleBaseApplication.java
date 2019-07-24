@@ -10,10 +10,12 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
+import com.example.utils.ForegroundCallbacks;
 import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
+import com.example.utils.TxtUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -26,6 +28,7 @@ import cn.jpush.android.api.JPushInterface;
 
 public class ModuleBaseApplication extends MultiDexApplication {
     public static LocationClient mLocationClient = null;
+    public static boolean isDingWei = false;
 
     @Override
     public void onCreate() {
@@ -69,6 +72,9 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 LogUtil.e("阿里百川：" + code + "-------" + msg);
             }
         });
+
+        //应用回到前台
+        initAppStatusListener();
     }
 
     private void initFresco() {
@@ -143,5 +149,20 @@ public class ModuleBaseApplication extends MultiDexApplication {
         //如果开发者需要获得当前点的地址信息，此处必须为true
 
         mLocationClient.setLocOption(option);
+    }
+
+    private void initAppStatusListener() {
+        ForegroundCallbacks.init(this).addListener(new ForegroundCallbacks.Listener() {
+            @Override
+            public void onBecameForeground() {
+                LogUtil.e("应用回到前台调用重连方法");
+//                WebSocketManager.getInstance().reconnect();
+            }
+
+            @Override
+            public void onBecameBackground() {
+
+            }
+        });
     }
 }

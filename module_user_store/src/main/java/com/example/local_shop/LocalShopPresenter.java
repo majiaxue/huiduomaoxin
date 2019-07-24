@@ -6,9 +6,7 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -21,6 +19,7 @@ import com.example.local_detail.LocalDetailActivity;
 import com.example.local_mingxi.LocalMingxiActivity;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -67,6 +66,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
     @Override
     protected void onViewDestroy() {
         EventBus.getDefault().unregister(this);
+        ModuleBaseApplication.isDingWei = false;
     }
 
     public void getXBanner() {

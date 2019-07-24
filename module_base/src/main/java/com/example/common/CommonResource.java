@@ -9,7 +9,7 @@ public class CommonResource {
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
-    public static final String URL_4_4001 = "http://192.168.1.9:4001";
+    public static final String URL_4_4001 = "http://192.168.0.194:4001";
     public static final String URL_9_4001 = "http://47.99.93.123:4001";
     public static final String URL_4_5003 = "http://192.168.1.4:5003";
     public static final String URL_30_9004 = "http://192.168.1.30:9004";
@@ -67,6 +67,7 @@ public class CommonResource {
     public static final String HOME_PREDICT = "/rest/user/settlement/total";    //首页获取预估数据
     public static final String GETOPER = "/rest/user/getOperLevel";             //获取运营商等级列表
     public static final String SEARCHTBGOODS = "/rest/tbk/goods/sellerTbkList"; //搜索淘宝商品
+    public static final String SEARCH_NEW_TB = "/rest/tbk/goods/sellerTbkList_1";   //搜索淘宝商品（新）  关键词 淘口令  链接
     public static final String SEARCHPDDGOODS = "/rest/pdd/goods/pddgoods";      //搜索拼多多商品
     public static final String SEARCHJDGOODS = "/rest/jd/goodsList";            //搜索京东商品
     public static final String TIXIAN = "/rest/user/cashOut/aliPay  ";          //提现
@@ -98,6 +99,7 @@ public class CommonResource {
     public static final String QUERY_COUPON = "/rest/seller/coupon/status";     //查询已领取优惠券  未使用 status 0
     public static final String LOCAL_BALANCE_PAY = "/rest/localPay/localOrderPay";   //本地商城余额支付
     public static final String LIBAO_CANCEL_ORDER = "/rest/order/remove/level";     //取消礼包订单
+    public static final String TKOULING = "/rest/tbk/goods/jiexitkl";           //淘口令转商品信息
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

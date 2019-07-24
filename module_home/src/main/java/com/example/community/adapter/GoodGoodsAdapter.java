@@ -3,15 +3,16 @@ package com.example.community.adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.GoodGoodsBean;
 import com.example.module_home.R;
-import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.TBUtil;
+import com.example.utils.SPUtil;
 
 import java.util.List;
 
@@ -39,7 +40,10 @@ public class GoodGoodsAdapter extends MyRecyclerAdapter<GoodGoodsBean.NetBean> {
         adapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                new TBUtil().openTbWithGoodsId(context, data.getItem_data().get(position).getItemid());
+//                new TBUtil().openTbWithGoodsId(context, data.getItem_data().get(position).getItemid());
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity").withString("para", data.getItem_data().get(position).getItemid()).navigation();
+                }
             }
         });
 

@@ -18,7 +18,7 @@ import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.utils.WebSocketManager;
+import com.example.utils.TxtUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -90,6 +90,14 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
                 ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
             }
         });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (TxtUtil.isFirst) {
+            TxtUtil.hasClipboard(this);
+        }
     }
 
     @Override

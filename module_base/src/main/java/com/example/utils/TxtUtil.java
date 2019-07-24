@@ -1,17 +1,18 @@
 package com.example.utils;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TxtUtil {
+    public static boolean isFirst = true;
+
     public static void txtJianbian(TextView txt, String startColor, String endColor) {
         LinearGradient linearGradient = new LinearGradient(0, 0, 0, txt.getPaint().getTextSize(), Color.parseColor(startColor), Color.parseColor(endColor), Shader.TileMode.CLAMP);
         txt.getPaint().setShader(linearGradient);
@@ -24,5 +25,14 @@ public class TxtUtil {
             return new BigDecimal(v).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue() + "万人";
         }
         return value + "人";
+    }
+
+    public static void hasClipboard(final Context context) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        final String string = clipboard.getText().toString();
+        isFirst = false;
+        if (!TextUtils.isEmpty(string)) {
+            PopUtils.popClipboard(context, string);
+        }
     }
 }

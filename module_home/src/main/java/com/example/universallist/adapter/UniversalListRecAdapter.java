@@ -1,4 +1,4 @@
-package com.example.universallist.adapter;
+package com.example.Universallist.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;

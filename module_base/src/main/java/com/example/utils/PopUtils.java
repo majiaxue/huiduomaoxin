@@ -456,7 +456,7 @@ public class PopUtils {
     }
 
 
-    public static void update(final Context context, String versions, String message, final String isQiangzhi, OnClearCacheListener listener) {
+    public static void update(final Context context, String versions, String message, final String isQiangzhi, boolean isHas, OnClearCacheListener listener) {
         LogUtil.e("------------>" + message);
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_geng_xin, null);
         TextView versionsText = inflate.findViewById(R.id.pop_gen_xin_versions);
@@ -465,6 +465,9 @@ public class PopUtils {
         ImageView img = inflate.findViewById(R.id.pop_gen_xin_cancel);
         versionsText.setText("V" + versions);
         messageText.setText(message);
+        if (isHas) {
+            updateBottom.setText("立即安装");
+        }
         final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(false);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -534,5 +537,52 @@ public class PopUtils {
             }
         });
 
+    }
+
+    public static void popClipboard(final Context context, final String content) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_clipboard, null);
+        TextView txt = inflate.findViewById(R.id.pop_clipboard_content);
+        ImageView tb = inflate.findViewById(R.id.pop_clipboard_tb);
+        final ImageView pdd = inflate.findViewById(R.id.pop_clipboard_pdd);
+        final ImageView jd = inflate.findViewById(R.id.pop_clipboard_jd);
+
+        txt.setText(content);
+
+        final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        PopUtils.setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setTransparency(context, 1f);
+            }
+        });
+
+        tb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", 0).withString("searchContent", content).navigation();
+                popupWindow.dismiss();
+            }
+        });
+
+        pdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", 1).withString("searchContent", content).navigation();
+                popupWindow.dismiss();
+            }
+        });
+
+        jd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", 2).withString("searchContent", content).navigation();
+                popupWindow.dismiss();
+            }
+        });
     }
 }

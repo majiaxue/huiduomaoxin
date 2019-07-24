@@ -3,8 +3,10 @@ package com.example.community.adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.CommunityLocalBean;
@@ -14,7 +16,6 @@ import com.example.module_home.R;
 import com.example.utils.ArithUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.SPUtil;
-import com.example.utils.TBUtil;
 
 import java.util.List;
 
@@ -48,7 +49,10 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
                 if (GoodsCommendPresenter.type == 0) {
-                    new TBUtil().openTbWithGoodsId(context, data.getId());
+//                    new TBUtil().openTbWithGoodsId(context, data.getId());
+                    if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity").withString("para", data.getId()).navigation();
+                    }
                 }
             }
         });

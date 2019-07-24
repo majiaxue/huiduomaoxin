@@ -32,10 +32,7 @@ import com.umeng.socialize.PlatformConfig;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
-import java.util.Set;
 
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
@@ -115,7 +112,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 if (errorCode.equals("1")) {
                     Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
                 }
             }
         }));
@@ -156,7 +153,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     if (errorCode.equals("1")) {
                         Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
                     }
                 }
             }));

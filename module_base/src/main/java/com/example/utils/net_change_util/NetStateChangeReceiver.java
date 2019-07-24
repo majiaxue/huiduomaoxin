@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.widget.Toast;
 
 import com.example.module_base.ModuleBaseApplication;
 import com.example.utils.LogUtil;
@@ -15,9 +16,11 @@ public class NetStateChangeReceiver extends BroadcastReceiver {
             NetworkType networkType = NetworkUtil.getNetworkType(context);
             LogUtil.e("当前网络：" + networkType);
             if (networkType == NetworkType.NETWORK_NO) {
-
+                Toast.makeText(context, "无法连接网络，请检查重试", Toast.LENGTH_LONG).show();
             } else {
-                ModuleBaseApplication.mLocationClient.restart();
+                if (ModuleBaseApplication.isDingWei) {
+                    ModuleBaseApplication.mLocationClient.restart();
+                }
             }
         }
     }

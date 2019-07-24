@@ -58,4 +58,5 @@
     <string name="group_fans">团队粉丝</string>
     <string name="quanyishuoming">权益说明：</string>
     <string name="upgrade_just">立即升级</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 </resources>

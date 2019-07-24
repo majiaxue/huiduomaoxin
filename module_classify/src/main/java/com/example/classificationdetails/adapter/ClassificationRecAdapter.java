@@ -2,6 +2,7 @@ package com.example.classificationdetails.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
@@ -28,7 +29,12 @@ public class ClassificationRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.D
 
             holder.setImageFresco(R.id.classification_image, data.getPict_url());
             holder.setText(R.id.classification_name, data.getTitle());
-            holder.setText(R.id.classification_reduce_price, "领券减" + data.getCoupon_amount() + "元");
+            if (TextUtils.isEmpty(data.getCoupon_amount())) {
+                holder.setText(R.id.classification_reduce_price, "领券减0元");
+            } else {
+                holder.setText(R.id.classification_reduce_price, "领券减" + data.getCoupon_amount() + "元");
+            }
+
             holder.setText(R.id.classification_preferential_price, "￥" + data.getZk_final_price());
             holder.setText(R.id.classification_original_price, data.getReserve_price());
             // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿

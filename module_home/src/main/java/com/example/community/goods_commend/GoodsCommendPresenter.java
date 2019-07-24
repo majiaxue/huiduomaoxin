@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -27,6 +28,7 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnSuccessListener;
+import com.example.utils.PopUtils;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.TBUtil;
@@ -52,6 +54,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
     private TBUtil tbUtil = new TBUtil();
 
     private int number = 0;
+    private View btn;
 
 
     public GoodsCommendPresenter(Context context) {
@@ -159,15 +162,21 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
                             view.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (type == 0) {
-                                        tbZL(dataList.get(index).getId());
-                                    } else if (type == 1) {
+                                    if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                        btn = v;
+                                        v.setEnabled(false);
+                                        if (type == 0) {
+                                            tbZL(dataList.get(index).getId());
+                                        } else if (type == 1) {
 
-                                    } else if (type == 2) {
-                                        ledPdd(dataList.get(index).getId());
+                                        } else if (type == 2) {
+                                            ledPdd(dataList.get(index).getId());
+                                        }
+
+                                        getView().loadShareInfo(dataList.get(index));
+                                    } else {
+                                        PopUtils.isLogin(mContext);
                                     }
-
-                                    getView().loadShareInfo(dataList.get(index));
                                 }
                             });
                         }
@@ -191,7 +200,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
             public void onSuccess() {
                 number++;
                 if (number == 2) {
-                    tbUtil.shouQuan();
+                    btn.setEnabled(true);
                 }
             }
         });
@@ -210,6 +219,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
                     number++;
                     if (number == 2) {
                         tbUtil.shouQuan();
+                        btn.setEnabled(true);
                     }
                 } else {
                     Map parseObject = JSON.parseObject(result, Map.class);
@@ -255,6 +265,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
     }
 
     public void share(LinearLayout mLinear) {
+        btn.setEnabled(true);
         Bitmap bitmap = ViewToBitmap.createBitmap3(mLinear, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))

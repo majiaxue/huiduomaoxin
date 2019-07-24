@@ -17,7 +17,7 @@ import com.example.utils.StatusBarUtils;
  */
 public class WelcomeActivity extends Activity {
     private boolean isFirstIn = false;
-    private static final int TIME = 3000;
+    private static final int TIME = 1500;
     private static final int GO_HOME = 1000;
     private static final int GO_GUIDE = 1001;
 

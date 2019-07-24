@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_301"
+    android:layout_height="@dimen/dp_400"
+    android:background="@drawable/bg_youhuitanchuang">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_45"
+        android:includeFontPadding="false"
+        android:text="智能搜索优惠券"
+        android:textColor="#fdfaf9"
+        android:textSize="@dimen/sp_30" />
+
+    <RelativeLayout
+        android:id="@+id/pop_clipboard_rela"
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_197"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_108"
+        android:background="@drawable/img_xiaoxi"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/pop_clipboard_content"
+            android:layout_width="@dimen/dp_233"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_46"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="【拼团购】蓝月亮 洗衣液机洗深层洁净1kg*2瓶装 薰衣草香"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/pop_clipboard_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_clipboard_rela"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="@dimen/dp_34"
+            android:layout_height="@dimen/dp_0" />
+
+        <View
+            android:layout_width="@dimen/dp_68"
+            android:layout_height="@dimen/dp_1"
+            android:background="#333333" />
+
+        <View
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择搜索平台"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_12" />
+
+        <View
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_0"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="@dimen/dp_68"
+            android:layout_height="@dimen/dp_1"
+            android:background="#333333" />
+
+        <View
+            android:layout_width="@dimen/dp_34"
+            android:layout_height="@dimen/dp_0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_clipboard_linear"
+        android:layout_marginTop="@dimen/dp_22"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/pop_clipboard_tb"
+                android:layout_width="@dimen/dp_41"
+                android:layout_height="@dimen/dp_41"
+                android:src="@drawable/img_taobao" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pop_clipboard_pdd_linear"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/pop_clipboard_pdd"
+                android:layout_width="@dimen/dp_41"
+                android:layout_height="@dimen/dp_41"
+                android:src="@drawable/img_pinduoduo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pop_clipboard_jd_linear"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/pop_clipboard_jd"
+                android:layout_width="@dimen/dp_41"
+                android:layout_height="@dimen/dp_41"
+                android:src="@drawable/img_jingdong" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

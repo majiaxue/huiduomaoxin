@@ -68,7 +68,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private AlertDialog alertDialog;
     private String clientVersion;
     private static final String savePath = "/sdcard/fltk/apk"; // apk保存到SD卡的路径
-    private static final String saveFileName = savePath + "/fltk.apk"; // 完整路径名
+    private static final String saveFileName = savePath + "/fltk"; // 完整路径名
 
     private static final String patchPath = "/sdcard/fltk/patch"; // apk保存到SD卡的路径
     private static final String patchFileName = patchPath + "/classes_0.dex"; // 完整路径名
@@ -81,6 +81,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private boolean cancelFlag = false; // 取消下载标志位
     private CheckUpBean checkUpBean;
     private NetStateChangeReceiver receiver;
+    private String newVersion;
 
 
     public MainPresenter(Context context) {
@@ -257,39 +258,70 @@ public class MainPresenter extends BasePresenter<MainView> {
                 LogUtil.e("检查更新：" + result);
                 checkUpBean = JSON.parseObject(result, CheckUpBean.class);
                 String[] split = clientVersion.split("\\.");
-                String version = checkUpBean.getVersion();
+                newVersion = checkUpBean.getVersion();
 
-                if (version != null) {
-                    String[] split1 = version.split("\\.");
+                if (newVersion != null) {
+                    String[] split1 = newVersion.split("\\.");
+                    File apkFile = new File(saveFileName + newVersion + ".apk");
                     if ((Integer.valueOf(split[0]) < Integer.valueOf(split1[0])) || (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) < Integer.valueOf(split1[1]))) {
-                        PopUtils.update(mContext, version, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), new OnClearCacheListener() {
-                            @Override
-                            public void setOnClearCache(final PopupWindow pop, View confirm) {
-                                confirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        writeToDisk(checkUpBean.getUrl());
-                                        showDialog();
-                                        pop.dismiss();
-                                    }
-                                });
-                            }
-                        });
+                        if (apkFile.exists()) {
+                            PopUtils.update(mContext, newVersion, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), true, new OnClearCacheListener() {
+                                @Override
+                                public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                    confirm.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            installAPK();
+                                            pop.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            PopUtils.update(mContext, newVersion, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), false, new OnClearCacheListener() {
+                                @Override
+                                public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                    confirm.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            writeToDisk(checkUpBean.getUrl());
+                                            showDialog();
+                                            pop.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                        }
 
                     } else if (Integer.valueOf(split[0]) == Integer.valueOf(split1[0]) && Integer.valueOf(split[1]) == Integer.valueOf(split1[1]) && Integer.valueOf(split[2]) < Integer.valueOf(split1[2])) {
-                        PopUtils.update(mContext, version, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), new OnClearCacheListener() {
-                            @Override
-                            public void setOnClearCache(final PopupWindow pop, View confirm) {
-                                confirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        writeToDisk(checkUpBean.getUrl());
-                                        showDialog();
-                                        pop.dismiss();
-                                    }
-                                });
-                            }
-                        });
+                        if (apkFile.exists()) {
+                            PopUtils.update(mContext, newVersion, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), true, new OnClearCacheListener() {
+                                @Override
+                                public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                    confirm.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            installAPK();
+                                            pop.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            PopUtils.update(mContext, newVersion, checkUpBean.getAppDescribe(), checkUpBean.getIsForce(), false, new OnClearCacheListener() {
+                                @Override
+                                public void setOnClearCache(final PopupWindow pop, View confirm) {
+                                    confirm.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            writeToDisk(checkUpBean.getUrl());
+                                            showDialog();
+                                            pop.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -346,7 +378,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     if (!file.exists()) {
                         file.mkdirs();
                     }
-                    String apkFile = saveFileName;
+                    String apkFile = saveFileName + newVersion + ".apk";
                     File ApkFile = new File(apkFile);
                     FileOutputStream fos = new FileOutputStream(ApkFile);
 
@@ -382,7 +414,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * 下载完成后自动安装apk
      */
     public void installAPK() {
-        File apkFile = new File(saveFileName);
+        File apkFile = new File(saveFileName + newVersion + ".apk");
         if (!apkFile.exists()) {
             return;
         }
@@ -394,7 +426,9 @@ public class MainPresenter extends BasePresenter<MainView> {
             Uri contentUri = FileProvider.getUriForFile(mContext, "com.lxy.taobaoke.provider", apkFile);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
-            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+            String path = apkFile.getAbsolutePath();
+            Uri uri = Uri.parse("file://" + path);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
         }
         mContext.startActivity(intent);
     }

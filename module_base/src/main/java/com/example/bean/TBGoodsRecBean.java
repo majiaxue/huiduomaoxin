@@ -479,6 +479,54 @@ public class TBGoodsRecBean {
             this.youhuiquan = youhuiquan;
         }
 
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "category_id='" + category_id + '\'' +
+                    ", category_name='" + category_name + '\'' +
+                    ", commission_rate='" + commission_rate + '\'' +
+                    ", commission_type='" + commission_type + '\'' +
+                    ", coupon_amount='" + coupon_amount + '\'' +
+                    ", coupon_end_time='" + coupon_end_time + '\'' +
+                    ", coupon_id='" + coupon_id + '\'' +
+                    ", coupon_info='" + coupon_info + '\'' +
+                    ", coupon_remain_count='" + coupon_remain_count + '\'' +
+                    ", coupon_share_url='" + coupon_share_url + '\'' +
+                    ", coupon_start_fee='" + coupon_start_fee + '\'' +
+                    ", coupon_start_time='" + coupon_start_time + '\'' +
+                    ", coupon_total_count='" + coupon_total_count + '\'' +
+                    ", include_dxjh='" + include_dxjh + '\'' +
+                    ", include_mkt='" + include_mkt + '\'' +
+                    ", info_dxjh='" + info_dxjh + '\'' +
+                    ", item_description='" + item_description + '\'' +
+                    ", item_id='" + item_id + '\'' +
+                    ", item_url='" + item_url + '\'' +
+                    ", level_one_category_id='" + level_one_category_id + '\'' +
+                    ", level_one_category_name='" + level_one_category_name + '\'' +
+                    ", nick='" + nick + '\'' +
+                    ", num_iid='" + num_iid + '\'' +
+                    ", pict_url='" + pict_url + '\'' +
+                    ", provcity='" + provcity + '\'' +
+                    ", reserve_price='" + reserve_price + '\'' +
+                    ", seller_id='" + seller_id + '\'' +
+                    ", shop_dsr='" + shop_dsr + '\'' +
+                    ", shop_title='" + shop_title + '\'' +
+                    ", short_title='" + short_title + '\'' +
+                    ", small_images=" + small_images +
+                    ", title='" + title + '\'' +
+                    ", tk_total_commi='" + tk_total_commi + '\'' +
+                    ", tk_total_sales='" + tk_total_sales + '\'' +
+                    ", url='" + url + '\'' +
+                    ", user_type='" + user_type + '\'' +
+                    ", volume='" + volume + '\'' +
+                    ", white_image='" + white_image + '\'' +
+                    ", x_id='" + x_id + '\'' +
+                    ", zk_final_price='" + zk_final_price + '\'' +
+                    ", quanlimit=" + quanlimit +
+                    ", youhuiquan=" + youhuiquan +
+                    '}';
+        }
+
         public static class SmallImagesBean {
             private List<Object> string;
 
@@ -489,6 +537,24 @@ public class TBGoodsRecBean {
             public void setString(List<Object> string) {
                 this.string = string;
             }
+
+            @Override
+            public String toString() {
+                return "SmallImagesBean{" +
+                        "string=" + string +
+                        '}';
+            }
         }
+
+    }
+
+    @Override
+    public String toString() {
+        return "TBGoodsRecBean{" +
+                "code=" + code +
+                ", totalcount='" + totalcount + '\'' +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

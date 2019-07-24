@@ -28,6 +28,7 @@ import com.example.entity.EventBusBean;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.location.LocationActivity;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
@@ -234,6 +235,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
             presenter.isOpenLocation();
 
             isFirst = false;
+            ModuleBaseApplication.isDingWei = true;
         }
     }
 

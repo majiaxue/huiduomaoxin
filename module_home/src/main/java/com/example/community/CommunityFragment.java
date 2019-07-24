@@ -2,6 +2,8 @@ package com.example.community;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
+import android.view.View;
 
 import com.example.adapter.BaseVPAdapter;
 import com.example.module_home.R;
@@ -15,8 +17,6 @@ public class CommunityFragment extends BaseFragment<CommunityView, CommunityPres
     TabLayout communityTab;
     @BindView(R2.id.community_vp)
     ViewPager communityVp;
-    @BindView(R2.id.community_tab_top)
-    TabLayout communityTabTop;
 
     @Override
     public int getLayoutId() {
@@ -27,7 +27,6 @@ public class CommunityFragment extends BaseFragment<CommunityView, CommunityPres
     public void initData() {
         communityTab.setupWithViewPager(communityVp);
         presenter.setTab(communityTab);
-        presenter.setTabTop(communityTabTop);
         presenter.initVp(getActivity().getSupportFragmentManager());
     }
 
