@@ -32,9 +32,11 @@ import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragment;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.CitySPUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
+import com.example.utils.SPUtil;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -114,8 +116,12 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 
     @Override
     public void initData() {
-        EventBus.getDefault().register(this);
-        localShopCity.setText("定位中");
+        if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
+            LogUtil.e("城市"+CitySPUtil.getStringValue(CommonResource.CITY));
+            localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
+        } else {
+            localShopCity.setText("选择城市");
+        }
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localShopNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -228,7 +234,12 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 //            } else {
 //                localShopCity.setText(MyLocationListener.city);
 //            }
-
+            if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
+                LogUtil.e("城市"+CitySPUtil.getStringValue(CommonResource.CITY));
+                localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
+            } else {
+                localShopCity.setText("选择城市");
+            }
             presenter.initNavbar();
             presenter.initSeller("", "", page, MyLocationListener.longitude, MyLocationListener.latitude);
             presenter.getXBanner();
@@ -239,12 +250,16 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventBusBean eventBusBean) {
-        if (CommonResource.NETCHANGED.equals(eventBusBean.getMsg())) {
-            localShopCity.setText(MyLocationListener.city);
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEventMainThread(EventBusBean eventBusBean) {
+//        if (CommonResource.NETCHANGED.equals(eventBusBean.getMsg())) {
+//            if (TextUtils.isEmpty(MyLocationListener.district)){
+//                localShopCity.setText("定位中");
+//            }else{
+//                localShopCity.setText(MyLocationListener.district);
+//            }
+//        }
+//    }
 
 //    // Handler异步方式下载图片
 //    private Handler handler = new Handler() {

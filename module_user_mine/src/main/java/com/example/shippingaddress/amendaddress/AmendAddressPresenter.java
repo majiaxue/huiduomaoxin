@@ -75,19 +75,19 @@ public class AmendAddressPresenter extends BasePresenter<AmendAddressView> {
                     public void itemClick(AddressSelector addressSelector, CityInterface city, int tabPosition) {
                         switch (tabPosition) {
                             case 0:
-                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
                                 city2(addressSelector, city.getCityId());
                                 cityName1 = city.getCityName();
                                 amendAddressProvince.setText(cityName1);
                                 break;
                             case 1:
-                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
                                 city3(addressSelector, city.getCityId());
                                 cityName2 = city.getCityName();
                                 amendAddressCity.setText(cityName2);
                                 break;
                             case 2:
-                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "tabPosition ：" + tabPosition + " " + city.getCityName() + city.getCityId(), Toast.LENGTH_SHORT).show();
                                 cityName3 = city.getCityName();
                                 //关闭赋值
                                 amendAddressArea.setText(cityName3);

@@ -1,5 +1,6 @@
 package com.example.commoditydetails.taobao;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -39,6 +40,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
+import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -501,5 +503,10 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         void doLogic(String s);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
 
 }

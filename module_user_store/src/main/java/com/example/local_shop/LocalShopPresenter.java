@@ -6,7 +6,9 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -65,7 +67,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
 
     @Override
     protected void onViewDestroy() {
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
         ModuleBaseApplication.isDingWei = false;
     }
 

@@ -161,6 +161,7 @@ public class CommonResource {
     public static final String GOODSACTIVITY = "/rest/goods/activity";//免单活动
     public static final String HOMEADVERTISEBOTTOM = "/rest/parameter/homeAdvertise-bottom";//首页下方轮播图
     public static final String TBKGOODSSALESLIST = "/rest/tbk/goods/sales_list";//首页下方轮播图
+    public static final String ADDRESSAREA = "/rest/address/area";//根据市搜索区
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
@@ -188,4 +189,6 @@ public class CommonResource {
     public static final String WXPAY_SUCCESS_LOCAL = "wxpay_local"; //本地商城微信支付成功
     public static final String CART_REFRESH = "cartRefresh";        //从购物车的商品推荐进入商品详情，又跳到购物车时刷新购物车
     public static final String NETCHANGED = "net_changed";      //网络发生变化，重新定位
+    public static final String CITY = "city";      //网络发生变化，重新定位
+
 }

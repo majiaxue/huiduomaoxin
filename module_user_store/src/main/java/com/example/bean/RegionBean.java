@@ -48,5 +48,20 @@ public class RegionBean {
         public void setRegion(List<String> region) {
             this.region = region;
         }
+
+        @Override
+        public String toString() {
+            return "CityBean{" +
+                    "label='" + label + '\'' +
+                    ", region=" + region +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "RegionBean{" +
+                "city=" + city +
+                '}';
     }
 }

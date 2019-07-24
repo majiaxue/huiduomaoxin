@@ -3,6 +3,7 @@ package com.example.location;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,13 +14,23 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.CitiesBean;
 import com.example.bean.CityListBean;
 import com.example.bean.RegionBean;
+import com.example.common.CommonResource;
+import com.example.location.adapter.LocationHotCityAdapter;
 import com.example.location.adapter.LocationSelectAdapter;
 import com.example.location.adapter.RegionAdapter;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.user_store.R;
+import com.example.utils.CitySPUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.MyLocationListener;
+import com.example.utils.SPUtil;
 import com.example.view.wavesidebar.SearchEditText;
 import com.example.view.wavesidebar.WaveSideBarView;
 import com.google.gson.Gson;
@@ -32,14 +43,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 public class LocationPresenter extends BasePresenter<LocationView> {
 
     private List<RegionBean.CityBean> mList = new ArrayList<>();
     private List<String> selectList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
-    private List<CityListBean> listBeans = new ArrayList<>();
     private static int RESULTCODE = 0;
+    private List<String> recentlyList = new ArrayList<>();
+
 
     public LocationPresenter(Context context) {
         super(context);
@@ -50,9 +65,11 @@ public class LocationPresenter extends BasePresenter<LocationView> {
 
     }
 
-    public void initView(SearchEditText locationSearch, final RecyclerView locationRecycler, final RecyclerView locationSelectRecycler, WaveSideBarView locationSideBar, String cityName) {
-        mList.add(new RegionBean.CityBean("您正在看:", Arrays.asList(cityName)));
-        mList.add(new RegionBean.CityBean("定位/最近使用", Arrays.asList("郑州", "北京", "上海")));
+    public void initView(SearchEditText locationSearch, final RecyclerView locationRecycler, final RecyclerView locationSelectRecycler, WaveSideBarView locationSideBar, final String cityName) {
+
+
+        mList.add(new RegionBean.CityBean("您正在看:" + cityName + "                             " + "点击选择区/县", Arrays.asList("")));
+        mList.add(new RegionBean.CityBean("定位", Arrays.asList(MyLocationListener.city)));
         mList.add(new RegionBean.CityBean("热门城市", Arrays.asList("北京", "上海", "广州", "深圳", "杭州", "郑州")));
 
         try {
@@ -71,7 +88,7 @@ public class LocationPresenter extends BasePresenter<LocationView> {
 //                LogUtil.e("数组长度" + jsonArray.length());
 //                LogUtil.e("数组内容" + jsonArray.get(i).toString());
                 CityListBean cityListBean = new Gson().fromJson(jsonArray.get(i).toString(), CityListBean.class);
-                mList.add(new RegionBean.CityBean(cityListBean.getLabel(),cityListBean.getRegion()));
+                mList.add(new RegionBean.CityBean(cityListBean.getLabel(), cityListBean.getRegion()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,6 +98,50 @@ public class LocationPresenter extends BasePresenter<LocationView> {
         locationRecycler.setLayoutManager(linearLayoutManager);
         RegionAdapter regionAdapter = new RegionAdapter(mContext, mList, R.layout.item_location_rec);
         locationRecycler.setAdapter(regionAdapter);
+
+        regionAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View view, int position) {
+                final RecyclerView itemRegionList = view.findViewById(R.id.item_regionList);
+                if (position == 0) {
+                    Map map = MapUtil.getInstance().addParms("cityName", cityName).build();
+                    Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ADDRESSAREA, map);
+                    RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                        @Override
+                        public void onSuccess(String result, String msg) {
+                            LogUtil.e("LocationPresenterResult" + result);
+                            List<CitiesBean> citiesBeans = JSON.parseArray(result, CitiesBean.class);
+                            if (citiesBeans.size() != 0) {
+                                recentlyList.clear();
+                                for (int i = 0; i < citiesBeans.size(); i++) {
+                                    recentlyList.add(citiesBeans.get(i).getName());
+                                }
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
+                                LocationHotCityAdapter locationHotCityAdapter = new LocationHotCityAdapter(mContext, recentlyList, R.layout.item_location_hot_city_rec);
+                                itemRegionList.setLayoutManager(gridLayoutManager);
+                                itemRegionList.setAdapter(locationHotCityAdapter);
+                                locationHotCityAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(RecyclerView parent, View view, int position) {
+                                        TextView hotCityName = view.findViewById(R.id.location_hot_city_name);
+                                        CitySPUtil.addParm(CommonResource.CITY, hotCityName.getText().toString());
+                                        Intent intent = new Intent();
+                                        intent.putExtra("cityName", hotCityName.getText().toString());
+                                        ((Activity) mContext).setResult(RESULTCODE, intent);
+                                        ((Activity) mContext).finish();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorCode, String errorMsg) {
+                            LogUtil.e("LocationPresenterErrorMsg" + errorMsg);
+                        }
+                    }));
+                }
+            }
+        });
 
         locationSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,6 +182,7 @@ public class LocationPresenter extends BasePresenter<LocationView> {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             TextView name = view.findViewById(R.id.item_text);
+                            CitySPUtil.addParm(CommonResource.CITY, name.getText().toString());
                             Intent intent = new Intent();
                             intent.putExtra("cityName", name.getText().toString());
                             ((Activity) mContext).setResult(RESULTCODE, intent);
