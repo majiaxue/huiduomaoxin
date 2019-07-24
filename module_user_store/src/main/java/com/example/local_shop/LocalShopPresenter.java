@@ -66,7 +66,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
 
     @Override
     protected void onViewDestroy() {
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
 
     }
 

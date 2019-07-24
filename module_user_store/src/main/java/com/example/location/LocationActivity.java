@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,11 +13,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.CitySPUtil;
+import com.example.utils.MyLocationListener;
+import com.example.utils.SPUtil;
 import com.example.view.wavesidebar.SearchEditText;
 import com.example.view.wavesidebar.WaveSideBarView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +60,7 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
 
     @Override
     public void initData() {
+
         Intent intent = getIntent();
         cityName = intent.getStringExtra("cityName");
 
@@ -62,8 +73,14 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
         locationImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent();
-                intent.putExtra("cityName", cityName);
+                if ("选择地址".equals(cityName)){
+                    intent.putExtra("cityName", MyLocationListener.city);
+                }else{
+                    intent.putExtra("cityName", cityName);
+                }
+                CitySPUtil.addParm(CommonResource.CITY, cityName);
                 setResult(RESULTCODE, intent);
                 finish();
             }
@@ -97,7 +114,14 @@ public class LocationActivity extends BaseActivity<LocationView, LocationPresent
                 && event.getAction() == KeyEvent.ACTION_DOWN
                 && event.getRepeatCount() == 0) {
             //具体的操作代码
-            setResult(RESULTCODE, new Intent().putExtra("cityName", cityName));
+            CitySPUtil.addParm(CommonResource.CITY, MyLocationListener.city);
+            Intent intent = new Intent();
+            if ("选择地址".equals(cityName)){
+                intent.putExtra("cityName", MyLocationListener.city);
+            }else{
+                intent.putExtra("cityName", cityName);
+            }
+            setResult(RESULTCODE, intent);
             finish();
         }
         return super.dispatchKeyEvent(event);

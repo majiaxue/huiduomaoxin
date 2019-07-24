@@ -23,6 +23,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.secondarydetails.SecondaryDetailsActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.main.MainActivity"

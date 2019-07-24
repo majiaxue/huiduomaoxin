@@ -64,7 +64,7 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
         presenter.initView(secondaryDetailsTab, secondaryDetailsSmartRefresh, type);
         secondaryDetailsSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 球脉冲 样式
-        secondaryDetailsSmartRefresh.setRefreshFooter(new ClassicsFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
+        secondaryDetailsSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
 //        presenter.secondaryDetailsRec(secondaryDetailsRec,type);
     }
 

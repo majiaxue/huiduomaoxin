@@ -19,13 +19,14 @@ public class MyLocationListener extends BDAbstractLocationListener {
     public static double longitude;
     public static String city;
     public static MyLocationData locData;
-
+    public static String district;
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         int adCode = bdLocation.getLocType();
         latitude = bdLocation.getLatitude();    //获取纬度信息
         longitude = bdLocation.getLongitude();    //获取经度信息
         city = bdLocation.getCity(); //获取城市名字
+        district = bdLocation.getDistrict();//获取区
 
 
         // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -35,6 +36,6 @@ public class MyLocationListener extends BDAbstractLocationListener {
                 .direction(bdLocation.getDirection()).latitude(bdLocation.getLatitude())
                 .longitude(bdLocation.getLongitude()).build();
         LogUtil.e("--------》纬度：" + latitude + "=====经度：" + longitude + "=====城市：" + city + "-----------getLocType:" + adCode);
-        EventBus.getDefault().post(new EventBusBean(CommonResource.NETCHANGED));
+//        EventBus.getDefault().post(new EventBusBean(CommonResource.NETCHANGED));
     }
 }

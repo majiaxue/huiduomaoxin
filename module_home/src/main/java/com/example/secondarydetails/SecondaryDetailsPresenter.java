@@ -142,7 +142,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult淘宝--------------->" + result);
                     tBGoodsSearchBeans = JSON.parseArray(result, TBGoodsSearchBean.class);
                     if (tBGoodsSearchBeans != null) {
@@ -195,7 +194,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝--------------->" + errorMsg);
                 }
             }));
@@ -207,7 +205,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult京东--------------->" + result);
                     JDTabBean jdTabBeans = JSON.parseObject(result, new TypeReference<JDTabBean>() {
                     }.getType());
@@ -257,7 +254,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsErrorMsg京东--------------->" + errorMsg);
                 }
             }));
@@ -297,7 +293,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult----------->" + result);
                     SecondaryPddRecBean secondaryPddRecBean = JSON.parseObject(result, new TypeReference<SecondaryPddRecBean>() {
                     }.getType());
@@ -344,6 +339,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                     });
                                 }
                             });
+                            ProcessDialogUtil.dismissDialog();
+
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(true);
@@ -372,7 +369,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     try {
 //                        tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
@@ -427,6 +423,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
+                            ProcessDialogUtil.dismissDialog();
+
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(true);
@@ -461,7 +459,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     try {
 //                        tbGoodsRecBean = JSON.parseObject(result, new TypeReference<TBGoodsRecBean>() {
@@ -516,6 +513,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                                 }
                             });
+                            ProcessDialogUtil.dismissDialog();
+
                         } else {
                             if (getView() != null) {
                                 getView().noGoods(true);
@@ -547,7 +546,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
                     final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
                     }.getType());
@@ -581,6 +579,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                             .navigation();
                                 }
                             });
+                            ProcessDialogUtil.dismissDialog();
+
                         }
                     } else {
                         LogUtil.e("数据为空");

@@ -10,6 +10,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
+import com.example.utils.CitySPUtil;
 import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
@@ -36,6 +37,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         }
         ARouter.init(this);
         SPUtil.getInstance(this);
+        CitySPUtil.getInstance(this);
         //初始化DBFLOW
         FlowManager.init(this);
         initFresco();
