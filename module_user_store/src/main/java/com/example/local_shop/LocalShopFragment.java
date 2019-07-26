@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -117,7 +118,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     @Override
     public void initData() {
         if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-            LogUtil.e("城市"+CitySPUtil.getStringValue(CommonResource.CITY));
+            LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
             localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
         } else {
             localShopCity.setText("选择城市");
@@ -235,7 +236,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 //                localShopCity.setText(MyLocationListener.city);
 //            }
             if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-                LogUtil.e("城市"+CitySPUtil.getStringValue(CommonResource.CITY));
+                LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
                 localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
             } else {
                 localShopCity.setText("选择城市");
