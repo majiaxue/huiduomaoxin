@@ -1,4 +1,4 @@
-package com.example.Universallist;
+package com.example.universallist;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,8 +10,6 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.example.Universallist.adapter.HotRecommendRecAdapter;
-import com.example.Universallist.adapter.UniversalListRecAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotRecommendBean;
 import com.example.bean.UniversalListBean;
@@ -21,6 +19,8 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.universallist.adapter.HotRecommendRecAdapter;
+import com.example.universallist.adapter.UniversalListRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
