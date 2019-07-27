@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +25,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
 import com.example.common.CommonResource;
-import com.example.entity.EventBusBean;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.location.LocationActivity;
@@ -36,17 +36,12 @@ import com.example.utils.CitySPUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
-import com.example.utils.SPUtil;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xhb.xbanner.XBanner;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -117,7 +112,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     @Override
     public void initData() {
         if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-            LogUtil.e("城市"+CitySPUtil.getStringValue(CommonResource.CITY));
+            LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
             localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
         } else {
             localShopCity.setText("选择城市");
@@ -235,7 +230,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
 //                localShopCity.setText(MyLocationListener.city);
 //            }
             if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-                LogUtil.e("城市"+CitySPUtil.getStringValue(CommonResource.CITY));
+                LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
                 localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
             } else {
                 localShopCity.setText("选择城市");

@@ -139,7 +139,7 @@
         android:layout_marginTop="@dimen/dp_16"
         android:text="支付方式"
         android:textColor="#333333"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_15" />
 
     <LinearLayout
         android:layout_width="@dimen/dp_351"
@@ -157,8 +157,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_17"
-                android:layout_height="@dimen/dp_17"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_25"
                 android:src="@drawable/icon_weixin2" />
@@ -170,7 +170,7 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:text="微信支付"
                 android:textColor="#333333"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_14" />
 
             <View
                 android:layout_width="@dimen/dp_0"
@@ -179,8 +179,8 @@
 
             <ImageView
                 android:id="@+id/up_order_wx_img"
-                android:layout_width="@dimen/dp_14"
-                android:layout_height="@dimen/dp_14"
+                android:layout_width="@dimen/dp_17"
+                android:layout_height="@dimen/dp_17"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_27"
                 android:src="@drawable/icon_xuanzhong" />
@@ -194,8 +194,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_17"
-                android:layout_height="@dimen/dp_17"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_25"
                 android:src="@drawable/icon_zhifubao" />
@@ -207,7 +207,7 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:text="微信支付"
                 android:textColor="#333333"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_14" />
 
             <View
                 android:layout_width="@dimen/dp_0"
@@ -216,8 +216,8 @@
 
             <ImageView
                 android:id="@+id/up_order_zfb_img"
-                android:layout_width="@dimen/dp_14"
-                android:layout_height="@dimen/dp_14"
+                android:layout_width="@dimen/dp_17"
+                android:layout_height="@dimen/dp_17"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_27"
                 android:src="@drawable/icon_weixuanzhong" />

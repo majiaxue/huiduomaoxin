@@ -56,7 +56,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         if (content != null && !"".equals(content.trim())) {
             DBflowUtil.getInstance().insert(content, CommonResource.HISTORY_TBK);
         }
-
+LogUtil.e("+++++++++++++++>"+content);
         ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", position).withString("searchContent", content).navigation();
     }
 }

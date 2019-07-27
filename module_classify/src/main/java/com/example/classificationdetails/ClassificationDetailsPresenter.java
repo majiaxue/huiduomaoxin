@@ -315,12 +315,18 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 try {
                     String string = responseBody.string();
                     LogUtil.e("京东搜索:" + string);
-                    final JDGoodsRecBean jdSearchBean = JSON.parseObject(string, JDGoodsRecBean.class);
                     if (page == 1) {
                         jdList.clear();
                     }
-                    jdList.addAll(jdSearchBean.getData().getLists());
+                    org.json.JSONObject jsonObject = new org.json.JSONObject(string);
+                    String code = jsonObject.optString("code");
+                    if ("-1".equals(code)) {
 
+                    } else {
+                        final JDGoodsRecBean jdSearchBean = JSON.parseObject(string, JDGoodsRecBean.class);
+
+                        jdList.addAll(jdSearchBean.getData().getLists());
+                    }
                     if (jdWaterfallAdapter == null) {
                         jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
                         jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
@@ -376,7 +382,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             }
                         });
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -419,65 +424,70 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 if (getView() != null) {
                     getView().loadFinish();
                 }
-
+                LogUtil.e("拼多多搜索：" + result);
+                if (page == 1) {
+                    pddList.clear();
+                }
                 try {
 
                     if (result != null) {
-                        LogUtil.e("拼多多搜索：" + result);
                         SecondaryPddRecBean secondaryPddRecBean = JSON.parseObject(result, new TypeReference<SecondaryPddRecBean>() {
                         }.getType());
-                        if (page == 1) {
-                            pddList.clear();
-                        }
                         pddList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
 
-                        if (pddWaterAdapter == null) {
-                            pddWaterAdapter = new PddWaterAdapter(mContext, pddList, R.layout.item_classification_rec_grid);
-                            pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec);
-                            if (isWaterfall) {
-                                if (getView() != null) {
-                                    getView().loadPDDWaterfallRv(pddWaterAdapter);
-//                                    getView().moveTo(tbNum, isWaterfall);
-                                }
-                            } else {
+                }
 
-                                if (getView() != null) {
-                                    getView().loadPDDLstRv(pddLstAdapter);
+                try {
+
+                    if (pddWaterAdapter == null) {
+                        pddWaterAdapter = new PddWaterAdapter(mContext, pddList, R.layout.item_classification_rec_grid);
+                        pddLstAdapter = new SecondaryPddRecAdapter(mContext, pddList, R.layout.item_base_rec);
+                        if (isWaterfall) {
+                            if (getView() != null) {
+                                getView().loadPDDWaterfallRv(pddWaterAdapter);
 //                                    getView().moveTo(tbNum, isWaterfall);
-                                }
                             }
                         } else {
-                            if (isWaterfall) {
-                                pddWaterAdapter.notifyDataSetChanged();
-                            } else {
-                                pddLstAdapter.notifyDataSetChanged();
+
+                            if (getView() != null) {
+                                getView().loadPDDLstRv(pddLstAdapter);
+//                                    getView().moveTo(tbNum, isWaterfall);
                             }
                         }
-
-
-                        if (pddLstAdapter != null) {
-                            pddLstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(RecyclerView parent, View view, int position) {
-                                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                                            .withString("goods_id", pddList.get(position).getGoods_id() + "")
-                                            .withString("type", "1")
-                                            .navigation();
-                                }
-                            });
+                    } else {
+                        if (isWaterfall) {
+                            pddWaterAdapter.notifyDataSetChanged();
+                        } else {
+                            pddLstAdapter.notifyDataSetChanged();
                         }
+                    }
 
-                        if (pddWaterAdapter != null) {
-                            pddWaterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(RecyclerView parent, View view, int position) {
-                                    ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                                            .withString("goods_id", pddList.get(position).getGoods_id() + "")
-                                            .withString("type", "1")
-                                            .navigation();
-                                }
-                            });
-                        }
+
+                    if (pddLstAdapter != null) {
+                        pddLstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                        .withString("goods_id", pddList.get(position).getGoods_id() + "")
+                                        .withString("type", "1")
+                                        .navigation();
+                            }
+                        });
+                    }
+
+                    if (pddWaterAdapter != null) {
+                        pddWaterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                        .withString("goods_id", pddList.get(position).getGoods_id() + "")
+                                        .withString("type", "1")
+                                        .navigation();
+                            }
+                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

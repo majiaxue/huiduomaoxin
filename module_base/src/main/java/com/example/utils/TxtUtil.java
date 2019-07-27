@@ -8,6 +8,9 @@ import android.graphics.Shader;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.example.common.CommonResource;
+import com.example.module_base.R2;
+
 import java.math.BigDecimal;
 
 public class TxtUtil {
@@ -28,11 +31,20 @@ public class TxtUtil {
     }
 
     public static void hasClipboard(final Context context) {
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        final String string = clipboard.getText().toString();
-        isFirst = false;
-        if (!TextUtils.isEmpty(string)) {
-            PopUtils.popClipboard(context, string);
+        try {
+            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            CharSequence text = clipboard.getText();
+            if (text != null) {
+                String string = text.toString();
+                String value = SPUtil.getStringValue(CommonResource.TAN_CONTENT);
+                isFirst = false;
+                if (!TextUtils.isEmpty(string) && !string.equals(value)) {
+                    PopUtils.popClipboard(context, string);
+                    SPUtil.addParm(CommonResource.TAN_CONTENT, string);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

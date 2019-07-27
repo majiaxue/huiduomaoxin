@@ -457,7 +457,6 @@ public class PopUtils {
 
 
     public static void update(final Context context, String versions, String message, final String isQiangzhi, boolean isHas, OnClearCacheListener listener) {
-        LogUtil.e("------------>" + message);
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_geng_xin, null);
         TextView versionsText = inflate.findViewById(R.id.pop_gen_xin_versions);
         TextView messageText = inflate.findViewById(R.id.pop_gen_xin_text_message);
@@ -543,6 +542,7 @@ public class PopUtils {
         View inflate = LayoutInflater.from(context).inflate(R.layout.pop_clipboard, null);
         TextView txt = inflate.findViewById(R.id.pop_clipboard_content);
         ImageView tb = inflate.findViewById(R.id.pop_clipboard_tb);
+        ImageView cancel = inflate.findViewById(R.id.pop_clipboard_cancel);
         final ImageView pdd = inflate.findViewById(R.id.pop_clipboard_pdd);
         final ImageView jd = inflate.findViewById(R.id.pop_clipboard_jd);
 
@@ -581,6 +581,13 @@ public class PopUtils {
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/module_classify/ClassificationDetailsActivity").withInt("position", 2).withString("searchContent", content).navigation();
+                popupWindow.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 popupWindow.dismiss();
             }
         });
