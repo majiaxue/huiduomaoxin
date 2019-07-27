@@ -68,6 +68,12 @@
 -dontwarn tv.danmaku.ijk.media.player.*
 -keep interface tv.danmaku.ijk.media.player.** { *; }
 
+##########京东开普勒
+-keep class com.kepler.**{*;}
+-dontwarn com.kepler.**
+-keep class com.jingdong.jdma.**{*;}
+-dontwarn com.jingdong.jdma.**
+
 # 阿里百川
 -keepattributes Signature
 -keep class sun.misc.Unsafe { *; }

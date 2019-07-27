@@ -32,6 +32,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.CustomDialog;
 import com.example.utils.ProcessDialogUtil;
+import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
@@ -140,7 +141,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         ModuleBaseApplication.initShare();
         customDialog = new CustomDialog(this);
         customDialog.show();
-        LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList);
+        LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList+"userCode"+ SPUtil.getUserCode());
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //收益

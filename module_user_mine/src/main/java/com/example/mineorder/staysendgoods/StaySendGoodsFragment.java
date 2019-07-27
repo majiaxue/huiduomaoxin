@@ -66,8 +66,6 @@ public class StaySendGoodsFragment extends BaseFragment<StaySendGoodsView, StayS
             if (flag == 1) {
                 presenter.staySendGoodsRec();
             }
-        } else {
-            flag = 0;
         }
     }
 

@@ -63,8 +63,6 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
             if (flag == 1){
                 presenter.stayObligationRec();
             }
-        }else{
-            flag = 0;
         }
     }
 

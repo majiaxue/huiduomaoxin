@@ -10,15 +10,15 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
-import com.example.utils.ForegroundCallbacks;
 import com.example.utils.CitySPUtil;
 import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
-import com.example.utils.TxtUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.kepler.jd.Listener.AsyncInitListener;
+import com.kepler.jd.login.KeplerApiManager;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -74,6 +74,22 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 LogUtil.e("阿里百川：" + code + "-------" + msg);
             }
         });
+
+        //京东开普勒
+        KeplerApiManager.asyncInitSdk(this, "6440db418d9c43817a129e1edf928202", "0f7f4a04dcfd4f44a934e70f7e37fe28",
+                new AsyncInitListener() {
+                    @Override
+                    public void onSuccess() {
+                        LogUtil.e("京东开普勒"+ "Kepler asyncInitSdk onSuccess ");
+                    }
+                    @Override
+                    public void onFailure() {
+
+                        LogUtil.e("京东开普勒"+
+                                "Kepler asyncInitSdk 授权失败，请检查lib 工程资源引用；包名,签名证书是否和注册一致");
+
+                    }
+                });
     }
 
     private void initFresco() {

@@ -63,8 +63,6 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
             if (flag == 1) {
                 presenter.orderAllRec();
             }
-        } else {
-            flag = 0;
         }
     }
 

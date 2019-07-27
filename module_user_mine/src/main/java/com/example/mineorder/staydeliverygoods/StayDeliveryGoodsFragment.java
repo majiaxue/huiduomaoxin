@@ -63,8 +63,6 @@ public class StayDeliveryGoodsFragment extends BaseFragment<StayDeliveryGoodsVie
             if (flag == 1) {
                 presenter.stayDeliveryGoodsRec();
             }
-        }else {
-            flag =0;
         }
     }
 

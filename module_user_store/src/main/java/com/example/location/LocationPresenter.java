@@ -68,7 +68,7 @@ public class LocationPresenter extends BasePresenter<LocationView> {
     public void initView(SearchEditText locationSearch, final RecyclerView locationRecycler, final RecyclerView locationSelectRecycler, WaveSideBarView locationSideBar, final String cityName) {
 
 
-        mList.add(new RegionBean.CityBean("您正在看:" + cityName + "                             " + "点击选择区/县", Arrays.asList("")));
+        mList.add(new RegionBean.CityBean("您正在看:" + cityName, Arrays.asList("")));
         mList.add(new RegionBean.CityBean("定位", Arrays.asList(MyLocationListener.city)));
         mList.add(new RegionBean.CityBean("热门城市", Arrays.asList("北京", "上海", "广州", "深圳", "杭州", "郑州")));
 

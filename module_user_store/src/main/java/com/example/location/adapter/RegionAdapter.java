@@ -45,8 +45,9 @@ public class RegionAdapter extends MyRecyclerAdapter<RegionBean.CityBean> {
 
         holder.setText(R.id.item_letter, data.getLabel());
         RecyclerView itemRegionList = holder.getView(R.id.item_regionList);
-
+        TextView checkText = holder.getView(R.id.item_check_text);
         if (position == 0) {
+            checkText.setVisibility(View.VISIBLE);
 //            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
 //            LocationHotCityAdapter locationHotCityAdapter = new LocationHotCityAdapter(context, data.getRegion(), R.layout.item_location_hot_city_rec);
 //            itemRegionList.setLayoutManager(gridLayoutManager);

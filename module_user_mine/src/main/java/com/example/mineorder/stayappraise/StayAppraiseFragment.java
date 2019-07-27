@@ -65,8 +65,6 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
             if (flag == 1) {
                 presenter.stayAppraiseRec();
             }
-        } else {
-            flag = 0;
         }
     }
 

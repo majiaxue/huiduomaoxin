@@ -7,16 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -41,12 +39,14 @@ import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
-import com.example.utils.OnPopListener;
-import com.example.utils.PopUtils;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.kepler.jd.Listener.OpenAppAction;
+import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KelperTask;
+import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 import com.umeng.socialize.ShareAction;
@@ -54,6 +54,8 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
+
+import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,6 +75,40 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     private List<String> images = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
     private Bitmap bitmap;
+
+    /**
+     * 超时时间设定
+     */
+    public static final int timeOut = 15;
+
+    /**
+     * 这个是即时性参数  可以设置
+     */
+    KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
+
+    Handler mHandler = new Handler();
+    /**
+     * 网络请求对象
+     */
+    KelperTask mKelperTask;
+
+
+    OpenAppAction mOpenAppAction = new OpenAppAction() {
+        @Override
+        public void onStatus(final int status) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+//                        dialogShow();
+                    } else {
+                        mKelperTask = null;
+//                        dialogDiss();
+                    }
+                }
+            });
+        }
+    };
 
     public JDCommodityDetailsPresenter(Context context) {
         super(context);
@@ -232,6 +268,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                LogUtil.e("京东领劵" + result);
                 JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
                 }.getType());
                 if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
@@ -255,12 +292,31 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     public void clickLedSecurities(String clickURL) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
 
-            Intent intent = new Intent(mContext, WebViewActivity.class);
-            intent.putExtra("url", clickURL);
-            mContext.startActivity(intent);
+//            Intent intent = new Intent(mContext, WebViewActivity.class);
+//            intent.putExtra("url", clickURL);
+//            mContext.startActivity(intent);
+            try {
+                mKelperTask = KeplerApiManager.getWebViewService().openJDUrlPage(clickURL,mKeplerAttachParameter, mContext, mOpenAppAction, timeOut);
+            } catch (KeplerBufferOverflowException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+//            try {
+//                mKelperTask = KeplerApiManager
+//                        .getWebViewService()
+//                        .openItemDetailsPage(clickURL,
+//                                mKeplerAttachParameter, mContext, mOpenAppAction, timeOut);
+//            } catch (KeplerBufferOverflowException e) {
+//
+//                e.printStackTrace();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
         } else {
             ARouter.getInstance().build("/mine/login").navigation();
         }
+
     }
 
 
@@ -372,7 +428,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
                 .withText("hello")
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
                 .setCallback(shareListener).open(config);
 
     }
@@ -397,5 +453,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         public void onCancel(SHARE_MEDIA share_media) {
         }
     };
+
 
 }

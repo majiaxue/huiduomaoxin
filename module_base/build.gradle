@@ -164,4 +164,7 @@ dependencies {
 
     //webSocket
     api 'com.neovisionaries:nv-websocket-client:2.9'
+
+    //京东开普勒
+    api project(':jdsdk_lib')
 }
