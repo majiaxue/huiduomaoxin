@@ -43,6 +43,7 @@ import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.example.utils.net_change_util.NetStateChangeReceiver;
 import com.example.view.SelfDialog;
 
@@ -184,7 +185,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     @Override
     protected void onViewDestroy() {
+        LogUtil.e("-------------->mainactivity销毁了");
         mContext.unregisterReceiver(receiver);
+        SPUtil.addParm(CommonResource.TAN_CONTENT, "");
     }
 
     public void registerReceiver() {

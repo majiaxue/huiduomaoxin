@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.common.CommonResource;
+import com.example.module_base.R2;
 
 import java.math.BigDecimal;
 
@@ -36,7 +37,6 @@ public class TxtUtil {
             if (text != null) {
                 String string = text.toString();
                 String value = SPUtil.getStringValue(CommonResource.TAN_CONTENT);
-                LogUtil.e(string + "--------------------" + value);
                 isFirst = false;
                 if (!TextUtils.isEmpty(string) && !string.equals(value)) {
                     PopUtils.popClipboard(context, string);

@@ -421,7 +421,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                         boolean isCan = true;
                         for (int i = 0; i < canotClick1.size(); i++) {
                             if (canotClick1.get(i) == position) {
-                                LogUtil.e("-------------->" + canotClick1.get(i));
                                 isCan = false;
                             }
                         }

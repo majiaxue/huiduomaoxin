@@ -26,6 +26,7 @@ import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.DisplayUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -113,7 +114,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-
+LogUtil.e("1111111111---------------->"+searchContent);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         //添加间距
@@ -337,7 +338,15 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LogUtil.e("2222222222222222---------------------------->" + searchContent);
         presenter.setContent(searchContent);
+        if (position == 0) {
+            presenter.searchTB(page, null);
+        } else if (position == 1) {
+            presenter.searchPDD(page);
+        } else if (position == 2) {
+            presenter.searchJD(page, null, null);
+        }
     }
 
     @Override

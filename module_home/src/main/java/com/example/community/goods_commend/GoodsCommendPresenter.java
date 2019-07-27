@@ -269,7 +269,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
         Bitmap bitmap = ViewToBitmap.createBitmap3(mLinear, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(new UMShareListener() {
                     @Override
                     public void onStart(SHARE_MEDIA share_media) {

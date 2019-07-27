@@ -258,7 +258,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void browsingHistoryCount(int count) {
-        LogUtil.e("浏览记录数量--------->" + count);
         if (count > 99) {
             browsingHistoryCount.setText(count + "+");
         } else {
@@ -269,36 +268,30 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void shopCollectCount(int count) {
         shopCollectCount.setText(count + "");
-        LogUtil.e("店铺收藏数量--------->" + count);
     }
 
     @Override
     public void goodsCollectionCount(int count) {
         goodsCollectionCount.setText(count + "");
-        LogUtil.e("商品收藏数量--------->" + count);
     }
 
     @Override
     public void daifahuo(int count) {
-        LogUtil.e("数量1-------------->" + count);
         badge1.setBadgeNumber(count);
     }
 
     @Override
     public void daishouhuo(int count) {
-        LogUtil.e("数量2-------------->" + count);
         badge2.setBadgeNumber(count);
     }
 
     @Override
     public void daipingjia(int count) {
-        LogUtil.e("数量3-------------->" + count);
         badge3.setBadgeNumber(count);
     }
 
     @Override
     public void daifukuan(int count) {
-        LogUtil.e("数量4-------------->" + count);
         badge4.setBadgeNumber(count);
     }
 

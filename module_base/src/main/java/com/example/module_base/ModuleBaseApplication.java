@@ -10,11 +10,14 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
+import com.example.utils.AppManager;
 import com.example.utils.CitySPUtil;
+import com.example.utils.ForegroundCallbacks;
 import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
+import com.example.utils.TxtUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.kepler.jd.Listener.AsyncInitListener;
@@ -74,6 +77,9 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 LogUtil.e("阿里百川：" + code + "-------" + msg);
             }
         });
+
+        //应用回到前台监听
+        initAppStatusListener();
 
         //京东开普勒
         KeplerApiManager.asyncInitSdk(this, "6440db418d9c43817a129e1edf928202", "0f7f4a04dcfd4f44a934e70f7e37fe28",
@@ -165,5 +171,19 @@ public class ModuleBaseApplication extends MultiDexApplication {
         //如果开发者需要获得当前点的地址信息，此处必须为true
 
         mLocationClient.setLocOption(option);
+    }
+
+    private void initAppStatusListener() {
+        ForegroundCallbacks.init(this).addListener(new ForegroundCallbacks.Listener() {
+            @Override
+            public void onBecameForeground() {
+                TxtUtil.hasClipboard(AppManager.getInstance().getCurrentActivity());
+            }
+
+            @Override
+            public void onBecameBackground() {
+
+            }
+        });
     }
 }
