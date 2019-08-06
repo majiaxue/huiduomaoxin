@@ -167,6 +167,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
             }
         });
 
+        classificationSynthesize.setOnClickListener(this);
         classificationSalesVolume.setOnClickListener(this);
         classificationPrice.setOnClickListener(this);
         classificationCredit.setOnClickListener(this);
@@ -338,7 +339,6 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        LogUtil.e("2222222222222222---------------------------->" + searchContent);
         presenter.setContent(searchContent);
         if (position == 0) {
             presenter.searchTB(page, null);

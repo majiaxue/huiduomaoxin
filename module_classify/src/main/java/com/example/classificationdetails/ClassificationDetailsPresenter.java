@@ -70,6 +70,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     private int sort_type = 1;  //拼多多排序字段
 
+    private boolean isSynthesize = true;        //是否综合排序
+    private boolean synthesizeTemp = true;      //当前是否为综合排序
+
     private boolean isPositiveSalesVolume = false;  //是否销量排行
     private boolean isSalesVolumeReduce = false;     //是否销量从高到低
     private boolean saleVolumTemp = false;
@@ -578,6 +581,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     }
 
     public void changeType(int index) {
+        isSynthesize = index == 0 ? true : false;
+
         isPositiveSalesVolume = index == 1 ? !isPositiveSalesVolume : false;
         isSalesVolumeReduce = index == 1 ? !isSalesVolumeReduce : false;
         saleVolumTemp = index == 1 ? true : false;
@@ -595,6 +600,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     private void refreshData(int page) {
         if (saleVolumTemp) {
+            synthesizeTemp = false;
             if (isSalesVolumeReduce) {
                 if (goodsType == 1) {
                     searchTB(page, "total_sales_des");
@@ -615,6 +621,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 }
             }
         } else if (priceTemp) {
+            synthesizeTemp = false;
             if (isPriceReduce) {
                 if (goodsType == 1) {
                     searchTB(page, "price_des");
@@ -635,6 +642,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 }
             }
         } else if (creditTemp) {
+            synthesizeTemp = false;
             if (isCreditReduce) {
                 if (goodsType == 1) {
                     searchTB(page, null);
@@ -654,14 +662,17 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                     searchJD(page, null, null);
                 }
             }
-        } else {
-            if (goodsType == 1) {
-                searchTB(page, null);
-            } else if (goodsType == 2) {
-                sort_type = 0;
-                searchPDD(page);
-            } else if (goodsType == 3) {
-                searchJD(page, null, null);
+        } else if (isSynthesize) {
+            if (!synthesizeTemp) {
+                if (goodsType == 1) {
+                    searchTB(page, null);
+                } else if (goodsType == 2) {
+                    sort_type = 0;
+                    searchPDD(page);
+                } else if (goodsType == 3) {
+                    searchJD(page, null, null);
+                }
+                synthesizeTemp = true;
             }
         }
     }
