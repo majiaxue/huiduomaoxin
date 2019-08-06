@@ -10,7 +10,7 @@ public class AESUtils {
     /*
      * 加密用的Key 可以用26个字母和数字组成 此处使用AES-128-CBC加密模式，key需要为16位。
      */
-    private String sKey = "@l@x@y";
+    private String sKey = "@l@x@y%i$l&y@52g";
     private String ivParameter = "1234567890123456";
     private static AESUtils instance = null;
 

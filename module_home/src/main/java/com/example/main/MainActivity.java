@@ -96,7 +96,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (TxtUtil.isFirst) {
-            TxtUtil.hasClipboard(this);
+            TxtUtil.hasClipboard(this, true);
         }
     }
 

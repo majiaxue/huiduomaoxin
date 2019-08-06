@@ -106,6 +106,13 @@ public class MainPresenter extends BasePresenter<MainView> {
                     break;
                 case DOWNLOAD_FAILED:
                     Toast.makeText(mContext, "下载失败", Toast.LENGTH_LONG).show();
+                    try {
+                        String apkFile = saveFileName + newVersion + ".apk";
+                        File file = new File(apkFile);
+                        file.delete();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case PATCHEND:
                     hotFix();

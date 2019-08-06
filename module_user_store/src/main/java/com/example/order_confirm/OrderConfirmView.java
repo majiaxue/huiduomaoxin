@@ -16,4 +16,6 @@ public interface OrderConfirmView extends IView {
     void payFail();
 
     void couponChoosed(UserCouponBean coupon);
+
+    void loadFinish();
 }

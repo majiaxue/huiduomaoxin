@@ -108,7 +108,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 }
             }));
         } else {
-            Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").build();
+            Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").addParms("userCode", SPUtil.getUserCode()).build();
             ProcessDialogUtil.showProcessDialog(mContext);
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

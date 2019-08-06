@@ -39,7 +39,25 @@ public class CartBean {
         private double totalFeight; //运费
         private double totalPrice;  //小计金额
         private double disAmount;   //优惠金额
+        private String couponId;    //优惠券id
+        private double minAmount;   //优惠券最低要求金额
         private List<ItemsBean> items;
+
+        public String getCouponId() {
+            return couponId;
+        }
+
+        public void setCouponId(String couponId) {
+            this.couponId = couponId;
+        }
+
+        public double getMinAmount() {
+            return minAmount;
+        }
+
+        public void setMinAmount(double minAmount) {
+            this.minAmount = minAmount;
+        }
 
         public double getTotalPrice() {
             return totalPrice;
@@ -106,6 +124,8 @@ public class CartBean {
                     ", totalFeight=" + totalFeight +
                     ", totalPrice=" + totalPrice +
                     ", disAmount=" + disAmount +
+                    ", couponId='" + couponId + '\'' +
+                    ", minAmount=" + minAmount +
                     ", items=" + items +
                     '}';
         }

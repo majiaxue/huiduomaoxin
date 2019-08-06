@@ -333,6 +333,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                                             @Override
                                             public void onError(String errorCode, String errorMsg) {
                                                 LogUtil.e(errorCode + "------------" + errorMsg);
+                                                Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                                             }
                                         }));
                                     }
@@ -1604,7 +1605,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadCoupon(String id, String sellerId) {
-        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("goodsId", id).build();
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

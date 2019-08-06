@@ -159,10 +159,11 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         if (page == 1) {
             ProcessDialogUtil.showProcessDialog(mContext);
         }
-        Map map = MapUtil.getInstance().addParms("para", content).addParms("pageno", page).addParms("pagesize", "10").build();
+        Map map = MapUtil.getInstance().addParms("para", content).addParms("page", page).build();
         if (sort != null) {
             map.put("sort", sort);
         }
+
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHead(CommonResource.SEARCH_NEW_TB, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
@@ -204,6 +205,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                     dataBean.setZk_final_price(object.getString("zk_final_price"));
                                     dataBean.setReserve_price(object.getString("reserve_price"));
                                     dataBean.setTk_total_sales(object.getString("tk_total_sales"));
+                                    dataBean.setCoupon_start_time(object.getString("coupon_start_time"));
+                                    dataBean.setCoupon_end_time(object.getString("coupon_end_time"));
+
                                     tbList.add(dataBean);
                                 }
                             } else if ("2".equals(search_type)) {
@@ -223,6 +227,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 dataBean.setZk_final_price(data.getString("zk_final_price"));
                                 dataBean.setReserve_price(data.getString("reserve_price"));
                                 dataBean.setTk_total_sales(data.getString("volume"));
+                                dataBean.setCoupon_start_time(data.getString("coupon_start_time"));
+                                dataBean.setCoupon_end_time(data.getString("coupon_end_time"));
                                 tbList.add(dataBean);
                             }
 
@@ -233,21 +239,29 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 if (isWaterfall) {
                                     if (getView() != null) {
                                         getView().loadTBWaterfallRv(waterfallAdapter);
-//                                        getView().moveTo(tbNum, isWaterfall);
                                     }
-
                                 } else {
                                     if (getView() != null) {
                                         getView().loadTBLstRv(lstAdapter);
-//                                        getView().moveTo(tbNum, isWaterfall);
                                     }
-
                                 }
                             } else {
-                                if (isWaterfall) {
-                                    waterfallAdapter.notifyDataSetChanged();
+                                if (page == 1) {
+                                    if (isWaterfall) {
+                                        if (getView() != null) {
+                                            getView().loadTBWaterfallRv(waterfallAdapter);
+                                        }
+                                    } else {
+                                        if (getView() != null) {
+                                            getView().loadTBLstRv(lstAdapter);
+                                        }
+                                    }
                                 } else {
-                                    lstAdapter.notifyDataSetChanged();
+                                    if (isWaterfall) {
+                                        waterfallAdapter.notifyDataSetChanged();
+                                    } else {
+                                        lstAdapter.notifyDataSetChanged();
+                                    }
                                 }
                             }
 
@@ -259,6 +273,11 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                                 .withString("para", tbList.get(position).getItem_id())
                                                 .withString("shoptype", "1")
+                                                .withString("youhuiquan", tbList.get(position).getCoupon_amount())
+                                                .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
+                                                .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
+                                                .withString("commission_rate", tbList.get(position).getCommission_rate())
+                                                .withString("type", "0")
                                                 .navigation();
                                     }
                                 });
@@ -271,6 +290,11 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                                 .withString("para", tbList.get(position).getItem_id())
                                                 .withString("shoptype", "1")
+                                                .withString("youhuiquan", tbList.get(position).getCoupon_amount())
+                                                .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
+                                                .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
+                                                .withString("commission_rate", tbList.get(position).getCommission_rate())
+                                                .withString("type", "0")
                                                 .navigation();
                                     }
                                 });
@@ -332,24 +356,31 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
 
                         if (isWaterfall) {
-
                             if (getView() != null) {
                                 getView().loadJDWaterfallRv(jdWaterfallAdapter);
-//                                getView().moveTo(tbNum, isWaterfall);
                             }
-
                         } else {
-
                             if (getView() != null) {
                                 getView().loadJDLstRv(jdLstAdapter);
-//                                getView().moveTo(tbNum, isWaterfall);
                             }
                         }
                     } else {
-                        if (isWaterfall) {
-                            jdWaterfallAdapter.notifyDataSetChanged();
+                        if (page == 1) {
+                            if (isWaterfall) {
+                                if (getView() != null) {
+                                    getView().loadJDWaterfallRv(jdWaterfallAdapter);
+                                }
+                            } else {
+                                if (getView() != null) {
+                                    getView().loadJDLstRv(jdLstAdapter);
+                                }
+                            }
                         } else {
-                            jdLstAdapter.notifyDataSetChanged();
+                            if (isWaterfall) {
+                                jdWaterfallAdapter.notifyDataSetChanged();
+                            } else {
+                                jdLstAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
 
@@ -448,20 +479,29 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                         if (isWaterfall) {
                             if (getView() != null) {
                                 getView().loadPDDWaterfallRv(pddWaterAdapter);
-//                                    getView().moveTo(tbNum, isWaterfall);
                             }
                         } else {
-
                             if (getView() != null) {
                                 getView().loadPDDLstRv(pddLstAdapter);
-//                                    getView().moveTo(tbNum, isWaterfall);
                             }
                         }
                     } else {
-                        if (isWaterfall) {
-                            pddWaterAdapter.notifyDataSetChanged();
+                        if (page == 1) {
+                            if (isWaterfall) {
+                                if (getView() != null) {
+                                    getView().loadPDDWaterfallRv(pddWaterAdapter);
+                                }
+                            } else {
+                                if (getView() != null) {
+                                    getView().loadPDDLstRv(pddLstAdapter);
+                                }
+                            }
                         } else {
-                            pddLstAdapter.notifyDataSetChanged();
+                            if (isWaterfall) {
+                                pddWaterAdapter.notifyDataSetChanged();
+                            } else {
+                                pddLstAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
 

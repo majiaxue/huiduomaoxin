@@ -100,18 +100,15 @@
             android:textSize="@dimen/sp_12" />
 
         <TextView
+            android:id="@+id/confirm_order_delivery_choose_coupon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_27"
+            android:layout_weight="1"
             android:includeFontPadding="false"
             android:text="优惠￥0.00元"
             android:textColor="#666666"
             android:textSize="@dimen/sp_12" />
-
-        <View
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="@dimen/dp_0"
-            android:layout_weight="1" />
 
         <ImageView
             android:layout_width="@dimen/dp_6"
@@ -161,6 +158,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/confirm_order_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="共0件"

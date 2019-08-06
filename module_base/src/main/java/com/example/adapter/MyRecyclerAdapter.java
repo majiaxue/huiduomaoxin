@@ -1,7 +1,6 @@
 package com.example.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public ViewFourOnClickListener viewFourOnClickListener;
     public OnViewIndexClickListener viewIndexClickListener;
     public OnPopChooseListener popChooseListener;
+    public ViewThreeOnClickListener2 viewThreeOnClickListener2;
     private RecyclerView recyclerView;
 
     public MyRecyclerAdapter(Context context, List<T> mList, int mLayoutId) {
@@ -111,6 +111,10 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         void ViewThreeOnClick(View view1, View view2, View view3, int position);
     }
 
+    public interface ViewThreeOnClickListener2 extends ViewThreeOnClickListener {
+        void viewThreeOnClick2(View view1, View view2, View view3, int position, int index);
+    }
+
     public interface ViewFourOnClickListener {
         void ViewFourOnClick(View view1, View view2, View view3, View view4, int position);
     }
@@ -135,6 +139,10 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
 
     public void setViewThreeOnClickListener(ViewThreeOnClickListener listener) {
         this.viewThreeOnClickListener = listener;
+    }
+
+    public void setViewThreeOnClickListener2(ViewThreeOnClickListener2 listener) {
+        this.viewThreeOnClickListener2 = listener;
     }
 
     public void setViewFourOnClickListener(ViewFourOnClickListener listener) {
@@ -173,4 +181,5 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
     public void setOnPopChooseListener(OnPopChooseListener listener) {
         this.popChooseListener = listener;
     }
+
 }

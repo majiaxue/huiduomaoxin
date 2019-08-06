@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 
 import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
-import com.example.entity.BaseStaggeredRecBean;
 import com.example.module_base.R;
 import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
@@ -36,7 +35,8 @@ public class BaseRecStaggeredAdapter extends MyRecyclerAdapter<HotSaleBean.DataB
         }
         double returnRatio = data.getReturnRatio();
         double price = data.getPrice();
-        double predict = returnRatio * price * SPUtil.getFloatValue(CommonResource.BACKBL);
+        double predict = ArithUtil.mul(ArithUtil.mul(returnRatio / 100, price), SPUtil.getFloatValue(CommonResource.BACKBL));
+//        double predict = ArithUtil.exact(returnRatio / 100 * price * SPUtil.getFloatValue(CommonResource.BACKBL), 2);
         holder.setText(R.id.base_staggered_name, data.getName())
                 .setText(R.id.base_staggered_price, "￥" + data.getPrice())
                 .setText(R.id.base_staggered_payment_amount, data.getSale() + "人付款")

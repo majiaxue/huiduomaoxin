@@ -80,6 +80,7 @@ public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeCh
             public void onClick(View v) {
                 userInfoBean.setCheckCode(wechatCode.getText().toString());
                 userInfoBean.setPhone(wechatPhone.getText().toString());
+                userInfoBean.setInviteCode(wechatInviteCode.getText().toString());
                 presenter.login(userInfoBean);
             }
         });

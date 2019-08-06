@@ -11,9 +11,9 @@ public class CommonResource {
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
     public static final String URL_4_4001 = "http://192.168.0.194:4001";
     public static final String URL_9_4001 = "http://47.99.93.123:4001";
-    public static final String URL_4_5003 = "http://192.168.1.4:5003";
+    public static final String URL_4_5003 = "http://192.168.0.121:5003";
     public static final String URL_30_9004 = "http://192.168.1.30:9004";
-    public static final String URL_4_9005 = "http://192.168.1.16:9005";
+    public static final String URL_4_9005 = "http://192.168.0.16:9005";
     public static final String URL_17_9000 = "http://192.168.1.17:9000";
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类

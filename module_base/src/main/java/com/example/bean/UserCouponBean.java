@@ -29,7 +29,7 @@ public class UserCouponBean implements Serializable {
      * goodsCategoryId : 91
      */
 
-    private int id;
+    private String id;
     private int type;
     private String name;
     private int platform;
@@ -61,11 +61,11 @@ public class UserCouponBean implements Serializable {
         isHas = has;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
