@@ -123,7 +123,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
 
     public static void initShare() {
         PlatformConfig.setWeixin("wxf08fd2965ac9ac30", "2d54eace93a3bda15d041ee594b7eeef");
-        PlatformConfig.setQQZone("101726671","b40ba0483d5b0600110f5578ad804f27");
+        PlatformConfig.setQQZone("101726671", "b40ba0483d5b0600110f5578ad804f27");
 //        PlatformConfig.setWeixin("wx7df9caffc7db4493", "abd4af996218993f30493a732b2f964f");
     }
 
@@ -184,7 +184,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         ForegroundCallbacks.init(this).addListener(new ForegroundCallbacks.Listener() {
             @Override
             public void onBecameForeground() {
-                TxtUtil.hasClipboard(AppManager.getInstance().getCurrentActivity());
+                TxtUtil.hasClipboard(AppManager.getInstance().getCurrentActivity(), false);
             }
 
             @Override

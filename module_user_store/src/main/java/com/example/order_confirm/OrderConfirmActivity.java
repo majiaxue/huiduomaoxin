@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
@@ -84,6 +85,9 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     TextView orderConfirmSubmit;
 
     private OrderConfirmBean confirmBean;
+    private double totalMoney = 0.0;
+    private double couponMoney = 0.0;
+    private double minAmount = -125;
 
     @Override
     public int getLayoutId() {
@@ -142,8 +146,15 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
             @Override
             public void onClick(View v) {
                 if (confirmBean.getQuantity() > 1) {
-                    confirmBean.setQuantity(confirmBean.getQuantity() - 1);
-                    presenter.getPostage(confirmBean);
+                    if (minAmount != -125 && (totalMoney - confirmBean.getPrice()) >= minAmount) {
+                        confirmBean.setQuantity(confirmBean.getQuantity() - 1);
+                        presenter.getPostage(confirmBean);
+                    } else if (minAmount == -125) {
+                        confirmBean.setQuantity(confirmBean.getQuantity() - 1);
+                        presenter.getPostage(confirmBean);
+                    } else {
+                        Toast.makeText(OrderConfirmActivity.this, "不符合优惠券要求", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -170,7 +181,8 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.chooseCoupon(confirmBean);
+                orderConfirmCoupon.setEnabled(false);
+                presenter.chooseCoupon(confirmBean, totalMoney);
             }
         });
     }
@@ -188,7 +200,13 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
 
     @Override
     public void couponChoosed(UserCouponBean coupon) {
+        couponMoney = coupon.getAmount();
+        minAmount = coupon.getMinPoint();
         orderConfirmCouponTxt.setText("优惠￥" + coupon.getAmount() + "元");
+        orderConfirmTotalCoupon.setText("-￥" + coupon.getAmount());
+        confirmBean.setCouponAmount(coupon.getAmount());
+        confirmBean.setCouponId(coupon.getId());
+        orderConfirmFinalPrice.setText("" + ArithUtil.sub(Double.valueOf(orderConfirmFinalPrice.getText().toString()), coupon.getAmount()));
     }
 
     @Override
@@ -219,6 +237,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
 
     @Override
     public void loadPostage(PostageBean postageBean) {
+        totalMoney = postageBean.getTotal() - postageBean.getFeight();
         confirmBean.setFreightAmount(postageBean.getFeight());
 
         orderConfirmTotalYunfei.setText("+￥" + postageBean.getFeight());
@@ -229,17 +248,14 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         }
         orderConfirmCount.setText(postageBean.getQuantity() + "");
         orderConfirmGoodsCount.setText("共" + postageBean.getQuantity() + "件");
-        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), postageBean.getQuantity()));
-        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), postageBean.getQuantity()));
-        orderConfirmFinalPrice.setText("" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), postageBean.getQuantity()), postageBean.getFeight()));
+        orderConfirmXiaoji.setText("￥" + postageBean.getTotal());
+        orderConfirmTotalPrice.setText("￥" + totalMoney);
+        orderConfirmFinalPrice.setText(postageBean.getTotal() - couponMoney + "");
     }
 
-    private void reviseCount() {
-        orderConfirmCount.setText(confirmBean.getQuantity() + "");
-        orderConfirmGoodsCount.setText("共" + confirmBean.getQuantity() + "件");
-        orderConfirmXiaoji.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
-        orderConfirmTotalPrice.setText("￥" + ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()));
-        orderConfirmFinalPrice.setText("￥" + ArithUtil.add(ArithUtil.mul(confirmBean.getPrice(), confirmBean.getQuantity()), confirmBean.getFreightAmount()));
+    @Override
+    public void loadFinish() {
+        orderConfirmCoupon.setEnabled(true);
     }
 
     @Override

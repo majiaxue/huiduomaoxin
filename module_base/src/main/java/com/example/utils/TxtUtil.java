@@ -2,6 +2,7 @@ package com.example.utils;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -9,7 +10,6 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.common.CommonResource;
-import com.example.module_base.R2;
 
 import java.math.BigDecimal;
 
@@ -30,17 +30,21 @@ public class TxtUtil {
         return value + "人";
     }
 
-    public static void hasClipboard(final Context context) {
+    public static void hasClipboard(final Context context, boolean isMain) {
         try {
             ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             CharSequence text = clipboard.getText();
             if (text != null) {
                 String string = text.toString();
-                String value = SPUtil.getStringValue(CommonResource.TAN_CONTENT);
+                SharedPreferences sp = context.getSharedPreferences("clipboard", 0);
+                String value = sp.getString(CommonResource.TAN_CONTENT, "");
+                LogUtil.e(string + "--------------------" + value);
                 isFirst = false;
-                if (!TextUtils.isEmpty(string) && !string.equals(value)) {
-                    PopUtils.popClipboard(context, string);
-                    SPUtil.addParm(CommonResource.TAN_CONTENT, string);
+                if (!TextUtils.isEmpty(string)) {
+                    if (isMain || !string.equals(value)) {
+                        PopUtils.popClipboard(context, string);
+                        sp.edit().putString(CommonResource.TAN_CONTENT, string).commit();
+                    }
                 }
             }
         } catch (Exception e) {

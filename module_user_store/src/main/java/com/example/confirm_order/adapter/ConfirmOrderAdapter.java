@@ -19,9 +19,11 @@ public class ConfirmOrderAdapter extends MyRecyclerAdapter<CartBean.RecordsBean>
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, CartBean.RecordsBean data, final int position) {
+    public void convert(final RecyclerViewHolder holder, CartBean.RecordsBean data, final int position) {
         holder.setText(R.id.confirm_order_shop_name, data.getSellerName())
                 .setText(R.id.confirm_order_delivery_txt2, data.getTotalFeight() + "")
+                .setText(R.id.confirm_order_delivery_choose_coupon, "优惠￥" + data.getDisAmount() + "元")
+                .setText(R.id.confirm_order_count, "共" + data.getItems().size() + "件")
                 .setText(R.id.confirm_order_xiaoji, "￥" + data.getTotalPrice());
         RecyclerView rv = holder.getView(R.id.confirm_order_inside_rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -36,8 +38,8 @@ public class ConfirmOrderAdapter extends MyRecyclerAdapter<CartBean.RecordsBean>
         insideAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
             @Override
             public void ViewTwoOnClick(View view1, View view2, int index) {
-                if (twoViewClickListener != null) {
-                    twoViewClickListener.twoViewClick(view1, view2, position, index);
+                if (viewThreeOnClickListener2 != null) {
+                    viewThreeOnClickListener2.viewThreeOnClick2(view1, view2, holder.getView(R.id.confirm_order_delivery_choose_coupon), position, index);
                 }
             }
         });

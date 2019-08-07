@@ -230,7 +230,11 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                 cartParentRecAdapter.checkAll(i, false);
             }
         }
-        totalPrice();
+        updateList.clear();
+        for (int i = 0; i < dataBeanList.size(); i++) {
+            updateList.addAll(dataBeanList.get(i).getItems());
+        }
+        reviseStutas();
         if (cartParentRecAdapter != null)
             cartParentRecAdapter.notifyDataSetChanged();
 
@@ -365,27 +369,31 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
     }
 
     public void jiesuan() {
-        List<CartBean.RecordsBean> parentList = new ArrayList<>();
-        int sellId = 0;
-        for (int i = 0; i < dataBeanList.size(); i++) {
-            List<CartBean.RecordsBean.ItemsBean> list = new ArrayList<>();
-            for (int j = 0; j < dataBeanList.get(i).getItems().size(); j++) {
+        try {
+            List<CartBean.RecordsBean> parentList = new ArrayList<>();
+            int sellId = 0;
+            for (int i = 0; i < dataBeanList.size(); i++) {
+                List<CartBean.RecordsBean.ItemsBean> list = new ArrayList<>();
+                for (int j = 0; j < dataBeanList.get(i).getItems().size(); j++) {
 
-                if (0 == dataBeanList.get(i).getItems().get(j).getChecked()) {
-                    list.add(dataBeanList.get(i).getItems().get(j));
-                    if (sellId != dataBeanList.get(i).getSellerId()) {
-                        sellId = dataBeanList.get(i).getSellerId();
-                        parentList.add(dataBeanList.get(i));
+                    if (0 == dataBeanList.get(i).getItems().get(j).getChecked()) {
+                        list.add(dataBeanList.get(i).getItems().get(j));
+                        if (sellId != dataBeanList.get(i).getSellerId()) {
+                            sellId = dataBeanList.get(i).getSellerId();
+                            parentList.add(dataBeanList.get(i));
+                        }
                     }
                 }
+                if (parentList.size() > i - 1) {
+                    parentList.get(i).setItems(list);
+                }
             }
-            if (parentList.size() > i - 1) {
-                parentList.get(i).setItems(list);
-            }
+            String jsonString = JSON.toJSONString(parentList);
+            Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
+            intent.putExtra("bean", jsonString);
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        String jsonString = JSON.toJSONString(parentList);
-        Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
-        intent.putExtra("bean", jsonString);
-        mContext.startActivity(intent);
     }
 }

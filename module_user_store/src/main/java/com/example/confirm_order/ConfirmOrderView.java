@@ -13,4 +13,6 @@ public interface ConfirmOrderView extends IView {
     void noAddress();
 
     void loadPostage(double feight, double price, int number);
+
+    void couponAfter(double amount);
 }

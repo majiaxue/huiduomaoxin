@@ -3,6 +3,7 @@ package com.example.order_confirm;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -123,8 +124,6 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         } else if (!isCan) {
             Toast.makeText(mContext, "未获取到运费信息，请重试", Toast.LENGTH_SHORT).show();
         } else {
-            bean.setCouponAmount(0);
-
             ProcessDialogUtil.showProcessDialog(mContext);
             String jsonString = JSON.toJSONString(bean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
@@ -153,39 +152,49 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         }
     }
 
-    public void chooseCoupon(OrderConfirmBean confirmBean) {
-        Map map = MapUtil.getInstance().addParms("status", "0").addParms("userCode", SPUtil.getUserCode()).addParms("goodsId", confirmBean.getProductId()).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.QUERY_COUPON, map);
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("可用优惠券：" + result);
-                try {
-
-                    couponBeanList = JSON.parseArray(result, UserCouponBean.class);
-                    if (couponBeanList != null && couponBeanList.size() > 0) {
-                        PopUtil.lingquanPop(mContext, couponBeanList, new OnAdapterListener() {
-                            @Override
-                            public void setOnAdapterListener(PopupWindow popupWindow, PopLingQuanAdapter adapter) {
-                                adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                                    @Override
-                                    public void ViewOnClick(View view, int index) {
-                                        chooseCoupon = couponBeanList.get(index);
-                                        getView().couponChoosed(chooseCoupon);
-                                    }
-                                });
-                            }
-                        });
+    public void chooseCoupon(final OrderConfirmBean confirmBean, final double totalMoney) {
+        if (isCan) {
+            Map map = MapUtil.getInstance().addParms("status", "0").addParms("userCode", SPUtil.getUserCode()).addParms("sellerId", confirmBean.getSellerId()).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.QUERY_COUPON, map);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("可用优惠券：" + result);
+                    getView().loadFinish();
+                    try {
+                        couponBeanList = JSON.parseArray(result, UserCouponBean.class);
+                        if (couponBeanList != null && couponBeanList.size() > 0) {
+                            PopUtil.lingquanPop(mContext, couponBeanList, new OnAdapterListener() {
+                                @Override
+                                public void setOnAdapterListener(final PopupWindow popupWindow, PopLingQuanAdapter adapter) {
+                                    adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(RecyclerView parent, View view, int index) {
+                                            if (couponBeanList.get(index).getMinPoint() <= totalMoney) {
+                                                chooseCoupon = couponBeanList.get(index);
+                                                getView().couponChoosed(chooseCoupon);
+                                                popupWindow.dismiss();
+                                            } else {
+                                                Toast.makeText(mContext, "条件不满足", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e(errorCode + "--------------" + errorMsg);
-            }
-        }));
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    getView().loadFinish();
+                    LogUtil.e(errorCode + "--------------" + errorMsg);
+                }
+            }));
+        } else {
+            Toast.makeText(mContext, "正在获取数据，请稍后", Toast.LENGTH_SHORT).show();
+        }
     }
 }

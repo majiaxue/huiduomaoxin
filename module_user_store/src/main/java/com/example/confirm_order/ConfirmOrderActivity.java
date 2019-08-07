@@ -9,13 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.example.bean.CartBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.confirm_order.adapter.ConfirmOrderAdapter;
 import com.example.mvp.BaseActivity;
-import com.example.bean.CartBean;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.ArithUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
@@ -55,6 +54,9 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     TextView confirmOrderSubmit;
     @BindView(R2.id.confirm_order_count)
     TextView mCount;
+
+    private double couponMoney = 0.0;
+    private double totalMoney;
 
     @Override
     public int getLayoutId() {
@@ -129,10 +131,20 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
 
     @Override
     public void loadPostage(double feight, double price, int number) {
+        totalMoney = price;
         confirmOrderTotalYunfei.setText("+￥" + feight);
-        confirmOrderTotalPrice.setText("￥" + ArithUtil.sub(price, feight));
-        confirmOrderFinalPrice.setText("" + price);
+        confirmOrderTotalPrice.setText("￥" + (price - feight));
+        confirmOrderFinalPrice.setText(price - couponMoney + "");
         mCount.setText("共" + number + "件");
+    }
+
+    @Override
+    public void couponAfter(double amount) {
+        couponMoney = amount;
+        confirmOrderTotalCoupon.setText("-￥" + couponMoney);
+        if (totalMoney != 0) {
+            confirmOrderFinalPrice.setText(totalMoney - couponMoney + "");
+        }
     }
 
     @Override

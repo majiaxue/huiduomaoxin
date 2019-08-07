@@ -195,7 +195,7 @@
                             android:layout_below="@id/home_slide_indicator_point"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/dp_19"
-                            android:src="@drawable/fgdgdfg" />
+                            android:src="@drawable/newuser_gift" />
                     </RelativeLayout>
 
                     <LinearLayout

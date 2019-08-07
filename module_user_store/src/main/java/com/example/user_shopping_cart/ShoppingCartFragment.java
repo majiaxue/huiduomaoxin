@@ -109,6 +109,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
             }
         });
+
         //全选
         shoppingCartCheckAll.setOnClickListener(new View.OnClickListener() {
             @Override

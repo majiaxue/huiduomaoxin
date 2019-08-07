@@ -114,7 +114,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-LogUtil.e("1111111111---------------->"+searchContent);
+
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         //添加间距
@@ -167,6 +167,7 @@ LogUtil.e("1111111111---------------->"+searchContent);
             }
         });
 
+        classificationSynthesize.setOnClickListener(this);
         classificationSalesVolume.setOnClickListener(this);
         classificationPrice.setOnClickListener(this);
         classificationCredit.setOnClickListener(this);
@@ -338,7 +339,6 @@ LogUtil.e("1111111111---------------->"+searchContent);
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        LogUtil.e("2222222222222222---------------------------->" + searchContent);
         presenter.setContent(searchContent);
         if (position == 0) {
             presenter.searchTB(page, null);
