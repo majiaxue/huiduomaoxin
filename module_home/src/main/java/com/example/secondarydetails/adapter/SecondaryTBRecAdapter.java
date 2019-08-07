@@ -39,7 +39,7 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
         }
 
         double sub = ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0.0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0.0" : data.getCoupon_amount()));
-        double div = ArithUtil.div(Double.valueOf(data.getCommission_rate()), 10000, 2);
+        double div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(data.getCommission_rate()),0.9), 10000, 2);
         double mul = ArithUtil.mul(sub, div);//商品收益需要乘个人收益
 
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getPict_url());

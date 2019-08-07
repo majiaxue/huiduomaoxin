@@ -45,6 +45,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -97,7 +98,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
                     beanList.addAll(commodityDetailsBean.getGoods_detail_response().getGoods_details());
                     if (getView() != null) {
                         getView().CommodityDetailsList(beanList);
-                        getView().flag();
                     }
                 }
             }
@@ -121,29 +121,6 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("添加浏览记录errorMsg" + errorMsg);
-            }
-        }));
-
-    }
-
-    public void earnings() {
-        Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
-        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("收益-------->" + result);
-                if (!TextUtils.isEmpty(result)) {
-                    if (getView() != null) {
-                        getView().earnings(result);
-                        getView().flag();
-                    }
-                }
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("收益errorMsg-------->" + errorMsg);
             }
         }));
 
@@ -191,6 +168,23 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setNestedScrollingEnabled(false);
         shopParticulars.setHasFixedSize(true);
+        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Fresco.getImagePipeline().resume();
+                } else {
+                    Fresco.getImagePipeline().pause();
+                }
+//                // 查看源码可知State有三种状态：SCROLL_STATE_IDLE（静止）、SCROLL_STATE_DRAGGING（上升）、SCROLL_STATE_SETTLING（下落）
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) { // 滚动静止时才加载图片资源，极大提升流畅度
+//                    commodityDetailsRecAdapter.setScrolling(false);
+//                    commodityDetailsRecAdapter.notifyDataSetChanged(); // notify调用后onBindViewHolder会响应调用
+//                } else
+//                    mRecyclerViewAdapter.setScrolling(true);
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 

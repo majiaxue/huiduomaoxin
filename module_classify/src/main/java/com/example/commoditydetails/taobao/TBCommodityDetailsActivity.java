@@ -24,15 +24,18 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.bean.BannerImageBean;
 import com.example.bean.TBBean;
 import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBLedSecuritiesBean;
+import com.example.common.CommonResource;
 import com.example.dbflow.ShareBean;
 import com.example.dbflow.ShareUtil;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
 import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
@@ -49,6 +52,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -125,13 +129,23 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     String para;
     @Autowired(name = "shoptype")
     String shopType;
-    private TBGoodsDetailsBean tbGoodsDetailsBean;
-    private TBLedSecuritiesBean tbLedSecuritiesBean;
+    @Autowired(name = "youhuiquan")
+    double youhuiquan;
+    @Autowired(name = "coupon_start_time")
+    String coupon_start_time;
+    @Autowired(name = "coupon_end_time")
+    String coupon_end_time;
+    @Autowired(name = "commission_rate")
+    String commission_rate;
+    @Autowired(name = "type")
+    int type;
 
-    private String earnings;
     private int status = 0;
-    private String imageUrl;
     private CustomDialog customDialog;
+    private List<BannerImageBean> bannerImageBeans = new ArrayList<>();
+    //触碰标识
+    private long exitTime = 0;
+    private double div;
 
     @Override
     public int getLayoutId() {
@@ -141,28 +155,36 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        LogUtil.e("123456              " + para + "        " + shopType);
+//        LogUtil.e("123456              " + para + "        " + shopType);
         ModuleBaseApplication.initShare();
         shopXinxi.setVisibility(View.GONE);
         commodityIntoShop.setVisibility(View.GONE);
         customDialog = new CustomDialog(this);
         customDialog.show();
-        presenter.login();
-        //优惠券
-        presenter.ledSecurities(para);
 
-        presenter.historySave(para);
-        //用户收益
-        presenter.earnings();
+        presenter.login();
+
         //加载视图
         presenter.initView(para);
+
+        if (!TextUtils.isEmpty(coupon_end_time) && !TextUtils.isEmpty(coupon_start_time)) {
+            commodityCouponPrice.setText(youhuiquan + "元优惠劵");
+            commodityTime.setText("使用期限：" + coupon_start_time + "~" + coupon_end_time);
+        } else {
+            commodityDetailsNoCoupon.setVisibility(View.GONE);
+        }
+
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //字体加粗
         commodityCouponPrice.getPaint().setFakeBoldText(true);
+        //店铺头像
+        commodityShopImage.setImageResource(R.drawable.img_taobao);
         //推荐商品
         presenter.setRecommendRec(shopRecommendRec);
+
     }
+
 
     @Override
     public void initClick() {
@@ -189,78 +211,43 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 ARouter.getInstance().build("/home/main").navigation();
             }
         });
-//        //进入店铺
-//        commodityIntoShop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance()
-//                        .build("/module_classify/tshop_home")
-//                        .withString("shopId", tbGoodsDetailsBean.getN_tbk_item().getSeller_id())
-//                        .navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance()
-//                        .build("/module_classify/tshop_home")
-//                        .withString("shopId", tbGoodsDetailsBean.getN_tbk_item().getSeller_id())
-//                        .navigation();
-//            }
-//        });
-//        //进入店铺
-//        commodityShopName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ARouter.getInstance()
-//                        .build("/module_classify/tshop_home")
-//                        .withString("shopId", tbGoodsDetailsBean.getN_tbk_item().getSeller_id())
-//                        .navigation();
-//            }
-//        });
         //分享
         //立即领取
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectUrl(new OnSuccessListener() {
-                    @Override
-                    public void doLogic(String s) {
-                        //获取到重定向的url可以操作啦
-                        LogUtil.e("doLogic: " + s);
-                        presenter.jumpToTB(s);
-                    }
-                });
-
+                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+                presenter.ledSecurities(para);
             }
         });
         //分享
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.share();
+                if (1 == status) {
+                    if ((System.currentTimeMillis() - exitTime) > 3000) {
+                        presenter.ShareledSecurities(para, youhuiquan);
+                        exitTime = System.currentTimeMillis();
+                    } else {
+                        Toast.makeText(TBCommodityDetailsActivity.this, "图片生成中!请勿重复点击", Toast.LENGTH_SHORT).show();
+                    }
+//                    presenter.share();
+                }
             }
         });
         //领劵
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectUrl(new OnSuccessListener() {
-                    @Override
-                    public void doLogic(String s) {
-                        //获取到重定向的url可以操作啦
-                        LogUtil.e("doLogic: " + s);
-                        presenter.jumpToTB(s);
-                    }
-                });
+                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+                presenter.ledSecurities(para);
+
             }
         });
         //收藏
         commodityCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(CommodityDetailsActivity.this, "点击了收藏", Toast.LENGTH_SHORT).show();
                 presenter.goodsCollect(commodityCollectImage, para);
             }
         });
@@ -293,11 +280,75 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     //详情回调
     @Override
     public void tbBeanList(TBGoodsDetailsBean tbGoodsDetailsBean, List<String> imageList) {
+        customDialog.dismiss();
         try {
-            this.tbGoodsDetailsBean = tbGoodsDetailsBean;
+//            this.tbGoodsDetailsBean = tbGoodsDetailsBean;
             //详情轮播图
             List<String> images = tbGoodsDetailsBean.getN_tbk_item().getSmall_images().getString();
-            presenter.setXBanner(commodityXbanner, images);
+            for (int i = 0; i < images.size(); i++) {
+                bannerImageBeans.add(new BannerImageBean(images.get(i)));
+            }
+            presenter.setXBanner(commodityXbanner, bannerImageBeans);
+
+            commodityName.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());//名字
+            commodityNumberSold.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
+            commodityShopName.setText(tbGoodsDetailsBean.getN_tbk_item().getNick() + "");//商家名
+            String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
+
+            if (!TextUtils.isEmpty(zkFinalPrice)) {
+                if (zkFinalPrice.contains("-")) {
+                    String[] split = zkFinalPrice.split("-");
+                    if (youhuiquan != 0) {
+                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), youhuiquan);//商品价格
+                        if (0 == type) {
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                        } else {
+                            //商品佣金率
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                        }
+                        commodityPreferentialPrice.setText("￥" + sub);//优惠价
+                        commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品优惠后" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));
+                    } else {
+                        if (0 == type) {
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                        } else {
+                            //商品佣金率
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                        }
+                        commodityPreferentialPrice.setText("￥" + split[0]);//优惠价
+                        commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(Double.valueOf(split[0]), div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                    }
+
+                } else {
+                    if (youhuiquan != 0) {
+                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), youhuiquan);//商品价格
+                        if (0 == type) {
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                        } else {
+                            //商品佣金率
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                        }
+                        commodityPreferentialPrice.setText("￥" + sub);//优惠价
+                        commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + commission_rate + "商品价格" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));
+                    } else {
+                        if (0 == type) {
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                        } else {
+                            //商品佣金率
+                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                        }
+                        commodityPreferentialPrice.setText("￥" + zkFinalPrice);//优惠价
+                        commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(Double.valueOf(zkFinalPrice), div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                    }
+                }
+            }
+
 
             //商品详情图片
             if (imageList.size() != 0) {
@@ -306,135 +357,24 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 presenter.setShopParticulars(shopParticulars, images);
             }
 
+            //浏览历史
+            presenter.historySave(para);
             //收藏状态
             presenter.isCollect(commodityCollectImage, para);
-            commodityName.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());//名字
-            commodityNumberSold.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
-            commodityShopName.setText(tbGoodsDetailsBean.getN_tbk_item().getNick() + "");//商家名
-//            commodityShopImage.setImageURI(Uri.parse("https:" + tbBeanList.getData().getSeller().getShopIcon()));//商家icon
-//            shopDescribeScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(0).getScore());
-//            shopServiceScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(1).getScore());
-//            shopLogisticsScore.setText("" + tbBeanList.getData().getSeller().getEvaluates().get(2).getScore());
-            String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
-            if (!TextUtils.isEmpty(zkFinalPrice)) {
-                if (zkFinalPrice.contains("-")) {
-                    String[] split = zkFinalPrice.split("-");
-                    commodityPreferentialPrice.setText("￥" + split[0]);//优惠价
-
-                    commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-                } else {
-                    commodityPreferentialPrice.setText("￥" + zkFinalPrice);//优惠价
-                    commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void ledSecurities(TBLedSecuritiesBean tbLedSecuritiesBean) {
-        this.tbLedSecuritiesBean = tbLedSecuritiesBean;
-        this.imageUrl = tbLedSecuritiesBean.getCoupon_click_url();
-    }
-
-    @Override
-    public void earnings(String earnings) {
-        this.earnings = earnings;
-    }
-
-    @Override
     public void tBDetails() {
         status++;
-        LogUtil.e("status" + status);
-        if (status == 3) {
-//            status = 0;
-            try {
-                customDialog.dismiss();
-                String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
-                if (!TextUtils.isEmpty(zkFinalPrice)) {
-                    if (!TextUtils.isEmpty(tbLedSecuritiesBean.getCoupon_info())) {
-                        if (zkFinalPrice.contains("-")) {
-                            String[] split = zkFinalPrice.split("-");
-                            String commission_rate = tbLedSecuritiesBean.getCommission_rate();
-                            String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-
-                            if (!TextUtils.isEmpty(couponInfo)) {
-                                String substring = couponInfo.substring(couponInfo.indexOf("减"));
-                                String price = substring.substring(1, substring.indexOf("元"));
-                                double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);//用户个人收益
-                                double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));//商品价格
-                                double div = ArithUtil.div(Double.valueOf(commission_rate), 100, 2);//商品佣金率
-                                commodityPreferentialPrice.setText("￥" + sub);//优惠价
-
-                                commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-                                commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub, div), earnings1));//收益
-                                LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品佣金" + commission_rate + "商品价格" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub, div), earnings1));
-                                commodityCouponPrice.setText(price + "元");
-                                commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
-                            }
-
-                        } else {
-                            String commission_rate = tbLedSecuritiesBean.getCommission_rate();
-                            String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                            if (!TextUtils.isEmpty(couponInfo)) {
-                                String substring = couponInfo.substring(couponInfo.indexOf("减"));
-                                String price = substring.substring(1, substring.indexOf("元"));
-                                double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-                                double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));//商品价格
-                                double div = ArithUtil.div(Double.valueOf(commission_rate), 100, 2);//商品佣金率
-
-                                commodityPreferentialPrice.setText("￥" + sub);//优惠价
-                                commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                                commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub, div), earnings1));//收益
-                                LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品佣金" + commission_rate + "商品价格" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub, div), earnings1));
-                                commodityCouponPrice.setText(price + "元优惠劵");
-                                commodityTime.setText("使用期限：" + tbLedSecuritiesBean.getCoupon_start_time() + "~" + tbLedSecuritiesBean.getCoupon_end_time());
-
-                            }
-
-
-                        }
-                    } else {
-                        String commission_rate = tbLedSecuritiesBean.getCommission_rate();
-                        double earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-                        double div = ArithUtil.div(Double.valueOf(commission_rate), 100, 2);//商品佣金率
-
-                        commodityPreferentialPrice.setText("￥" + zkFinalPrice);//优惠价
-                        commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(Double.valueOf(zkFinalPrice), div), earnings1));//收益
-                        LogUtil.e("预估收益：" + "个人收益" + earnings1 + "商品佣金" + commission_rate + "商品价格" + zkFinalPrice + "最终收益" + ArithUtil.mul(ArithUtil.mul(Double.valueOf(zkFinalPrice), div), earnings1));
-                        commodityDetailsNoCoupon.setVisibility(View.GONE);
-                    }
-
-
-                }
-
-                Glide.with(this)
-                        .asBitmap()
-                        .load(tbGoodsDetailsBean.getN_tbk_item().getPict_url())
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
-                                saveImageToPhotos(bitmap);
-                            }
-
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                            }
-                        });
-            } catch (Exception e) {
-                Toast.makeText(this, "暂未找到该商品", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
     public void noCoupon(boolean noCoupon) {
         if (noCoupon) {
-            customDialog.dismiss();
+//            customDialog.dismiss();
             commodityDetailsNoCoupon.setVisibility(View.GONE);
             commodityEarnings.setVisibility(View.GONE);
         }
@@ -444,64 +384,64 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 //    public void onResume() {
 //        super.onResume();
 //        LogUtil.e("HomeFragment" + "可见");
-//        //优惠券
-//        presenter.ledSecurities(para);
 //    }
 
-    /**
-     * 保存二维码到本地相册
-     */
-    private void saveImageToPhotos(Bitmap bmp) {
-        // 首先保存图片
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        String fileName = "wwww" + ".jpg";
-        File file = new File(appDir, fileName);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 30, fos);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        presenter.viewToImage(imageUrl, file.getPath());
-        LogUtil.e("图片路径" + file.getPath());
-    }
+//    /**
+//     * 保存二维码到本地相册
+//     */
+//    private void saveImageToPhotos(Bitmap bmp) {
+//        // 首先保存图片
+//        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+//        if (!appDir.exists()) {
+//            appDir.mkdir();
+//        }
+//        String fileName = "wwww" + ".jpg";
+//        final File file = new File(appDir, fileName);
+//        try {
+//            FileOutputStream fos = new FileOutputStream(file);
+//            bmp.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+//            fos.flush();
+//            fos.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        presenter.viewToImage(imageUrl, file.getPath(),youhuiquan);
+//
+//        LogUtil.e("图片路径" + file.getPath());
+//    }
 
-    private void redirectUrl(final OnSuccessListener onSuccessListener) {
-        new AsyncTask<String, Integer, String>() {
-            @Override
-            protected String doInBackground(String... strings) {
-                HttpURLConnection conn = null;
-                try {
-                    conn = (HttpURLConnection) new URL(imageUrl).openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                conn.setInstanceFollowRedirects(false);
-                conn.setConnectTimeout(5000);
-                String url = conn.getHeaderField("Location");
-                conn.disconnect();
-                return url;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                onSuccessListener.doLogic(s);
-
-            }
-        }.execute();
-    }
-
-    private interface OnSuccessListener {
-        void doLogic(String s);
-    }
+//    private void redirectUrl(String url, final OnSuccessListener onSuccessListener) {
+//        new AsyncTask<String, Integer, String>() {
+//            @Override
+//            protected String doInBackground(String... strings) {
+//                HttpURLConnection conn = null;
+//                try {
+//                    conn = (HttpURLConnection) new URL(strings[0]).openConnection();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                conn.setInstanceFollowRedirects(false);
+//                conn.setConnectTimeout(5000);
+//                String url = conn.getHeaderField("Location");
+//                conn.disconnect();
+//                return url;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                onSuccessListener.doLogic(s);
+//
+//            }
+//        }.execute(url);
+//    }
+//
+//    private interface OnSuccessListener {
+//        void doLogic(String s);
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

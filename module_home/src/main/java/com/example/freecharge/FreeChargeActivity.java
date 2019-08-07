@@ -1,6 +1,7 @@
 package com.example.freecharge;
 
 import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,9 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.freecharge.adapter.FreeChargeAdapter;
+import com.example.freecharge.adapter.FreeChargeLookAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.TxtUtil;
 
 import butterknife.BindView;
@@ -52,6 +56,9 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
     public void initData() {
         includeTitle.setText("0元抢购免单");
         TxtUtil.txtJianbian(freeChargeActivityText, "#febc0d", "#fb3912");
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        freeChargeRec.setLayoutManager(linearLayoutManager);
+        ProcessDialogUtil.showProcessDialog(this);
         presenter.freeChargeActivity(0, freeChargeRec);
     }
 
@@ -71,6 +78,7 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
                 TxtUtil.txtJianbian(freeChargeLookBackText, "#999999", "#999999");
                 freeChargeActivityView.setVisibility(View.VISIBLE);
                 freeChargeLookBackView.setVisibility(View.INVISIBLE);
+                ProcessDialogUtil.showProcessDialog(FreeChargeActivity.this);
                 presenter.freeChargeActivity(0, freeChargeRec);
             }
         });
@@ -82,6 +90,7 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
                 TxtUtil.txtJianbian(freeChargeActivityText, "#999999", "#999999");
                 freeChargeLookBackView.setVisibility(View.VISIBLE);
                 freeChargeActivityView.setVisibility(View.INVISIBLE);
+                ProcessDialogUtil.showProcessDialog(FreeChargeActivity.this);
                 presenter.freeChargeActivity(1, freeChargeRec);
             }
         });
@@ -106,5 +115,15 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
             freeChargeRec.setVisibility(View.VISIBLE);
             freeChargeOnActivity.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void load(FreeChargeAdapter freeChargeAdapter) {
+        freeChargeRec.setAdapter(freeChargeAdapter);
+    }
+
+    @Override
+    public void load(FreeChargeLookAdapter freeChargeLookAdapter) {
+        freeChargeRec.setAdapter(freeChargeLookAdapter);
     }
 }

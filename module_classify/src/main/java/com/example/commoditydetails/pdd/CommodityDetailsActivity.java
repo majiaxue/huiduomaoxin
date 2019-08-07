@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.CommodityDetailsBean;
+import com.example.common.CommonResource;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
@@ -33,6 +34,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.CustomDialog;
 import com.example.utils.ProcessDialogUtil;
+import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
@@ -117,12 +119,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> detailsBeanList = new ArrayList<>();
     private String imageUrl;
     private int flag = 0;
-    private String earnings;
-    private double earnings1;
-    private double mul1;
-    private double mul;
-    private double div;
-    private double promotionRate;
     private File file;
     private CustomDialog customDialog;
 
@@ -146,12 +142,12 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
         //保存浏览记录
         presenter.historySave(goods_id);
-        //收益
-        presenter.earnings();
         //推荐recycler
         presenter.setRecommendRec(shopRecommendRec);
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+        //店铺头像
+        commodityShopImage.setImageResource(R.drawable.img_pinduoduo);
     }
 
     @Override
@@ -258,17 +254,17 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
         LogUtil.e("图片" + detailsBeanList.get(0).getGoods_gallery_urls().get(0));
         //到手价
-        div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
+        double div = ArithUtil.div(beanList.get(0).getMin_group_price() - beanList.get(0).getCoupon_discount(), 100, 1);
         //佣金比例
-        promotionRate = ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1);
-
+        double promotionRate = ArithUtil.mul(div, ArithUtil.div(beanList.get(0).getPromotion_rate(), 1000, 1));
 
         commodityName.setText(beanList.get(0).getGoods_name());//名字
         commodityPreferentialPrice.setText("￥" + div);//优惠价
         commodityOriginalPrice.setText("原价：￥" + ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1));//原价
         commodityNumberSold.setText("已售" + beanList.get(0).getSold_quantity() + "件");//已售
-        commodityCouponPrice.setText(ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 1), div) + "元优惠劵");
-
+        commodityCouponPrice.setText(ArithUtil.sub(ArithUtil.div(beanList.get(0).getMin_group_price(), 100, 0), div) + "元优惠劵");
+        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(promotionRate, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+        LogUtil.e("预估收益: 到手价" + div + "佣金比例" + promotionRate + "个人佣金" + SPUtil.getFloatValue(CommonResource.BACKBL));
         String startTime = MyTimeUtil.date2String(beanList.get(0).getCoupon_start_time() * 1000 + "");
         String endTime = MyTimeUtil.date2String(beanList.get(0).getCoupon_end_time() * 1000 + "");
         commodityTime.setText("有效期限：" + startTime + "~" + endTime);
@@ -292,7 +288,6 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     public void imageUri(String url) {
         this.imageUrl = url;
         //viewToImage
-//        presenter.viewToImage(url);
         Glide.with(this)
                 .asBitmap()
                 .load(detailsBeanList.get(0).getGoods_gallery_urls().get(0))
@@ -307,27 +302,10 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
                     }
                 });
+        customDialog.dismiss();
+
     }
 
-    @Override
-    public void flag() {
-        flag++;
-        if (flag == 2) {
-            customDialog.dismiss();
-            //到手价乘佣金
-            mul = ArithUtil.mul(div, promotionRate);
-            //用户佣金比例
-            earnings1 = ArithUtil.div(Double.valueOf(earnings), 100, 2);
-            //收益
-            mul1 = ArithUtil.mul(mul, earnings1);
-            commodityEarnings.setText("预估收益：￥" + mul1);//收益
-        }
-    }
-
-    @Override
-    public void earnings(String ear) {
-        this.earnings = ear;
-    }
 
     /**
      * 保存二维码到本地相册

@@ -51,7 +51,12 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
                 if (GoodsCommendPresenter.type == 0) {
 //                    new TBUtil().openTbWithGoodsId(context, data.getId());
                     if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity").withString("para", data.getId()).navigation();
+                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                .withString("para", data.getId())
+                                .withDouble("youhuiquan", Double.valueOf(data.getCouponmoney()))
+                                .withString("commission_rate", data.getTkrates())
+                                .withInt("type",0)
+                                .navigation();
                     }
                 }
             }

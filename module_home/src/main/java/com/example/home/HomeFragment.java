@@ -20,6 +20,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
@@ -196,8 +197,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                    Toast.makeText(getContext(), "正在马不停蹄滴开发中", Toast.LENGTH_SHORT).show();
-//                    ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
+//                    Toast.makeText(getContext(), "正在马不停蹄滴开发中", Toast.LENGTH_SHORT).show();
+                    ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
                 } else {
                     //是否登录
                     PopUtils.isLogin(getContext());
@@ -247,12 +248,12 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         super.onHiddenChanged(hidden);
         if (hidden) {
             //不可见
-            Log.d("HomeFragment", "hidden:" + hidden);
+            LogUtil.e("HomeFragment"+ "hidden:" + hidden);
             homeMarquee.stopFlipping();
             homeXbanner.stopAutoPlay();
         } else {
             //可见
-            Log.d("HomeFragment", "hidden:" + hidden);
+            LogUtil.e("HomeFragment"+ "hidden:" + hidden);
             homeMarquee.startFlipping();
             homeXbanner.startAutoPlay();
 //            //跑马灯
@@ -271,7 +272,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("HomeFragment", "不可见");
+        LogUtil.e("HomeFragment"+ "不可见");
         homeMarquee.stopFlipping();
         homeXbanner.stopAutoPlay();
     }
@@ -279,7 +280,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("HomeFragment", "可见");
+        LogUtil.e("HomeFragment"+ "可见");
         homeMarquee.startFlipping();
         homeXbanner.startAutoPlay();
     }

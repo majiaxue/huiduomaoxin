@@ -42,7 +42,17 @@ public class GoodGoodsAdapter extends MyRecyclerAdapter<GoodGoodsBean.NetBean> {
             public void onItemClick(RecyclerView parent, View view, int position) {
 //                new TBUtil().openTbWithGoodsId(context, data.getItem_data().get(position).getItemid());
                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity").withString("para", data.getItem_data().get(position).getItemid()).navigation();
+                    String startTime = MyTimeUtil.date2String(data.getItem_data().get(position).getCouponstarttime() + "000");
+                    String endTime = MyTimeUtil.date2String(data.getItem_data().get(position).getCouponendtime() + "000");
+                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                            .withString("para", data.getItem_data().get(position).getItemid())
+                            .withString("shoptype", data.getItem_data().get(position).getShoptype())
+                            .withDouble("youhuiquan", Double.valueOf(data.getItem_data().get(position).getCouponmoney()))
+                            .withString("coupon_start_time", startTime)
+                            .withString("coupon_end_time", endTime)
+                            .withString("commission_rate", data.getItem_data().get(position).getTkrates()*100 + "")
+                            .withInt("type", 0)
+                            .navigation();
                 }
             }
         });

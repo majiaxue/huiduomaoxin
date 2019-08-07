@@ -15,11 +15,8 @@ import java.util.List;
 public interface TBCommodityDetailsView extends IView {
     void tbBeanList(TBGoodsDetailsBean tbGoodsDetailsBean, List<String> imageList);
 
-    void ledSecurities(TBLedSecuritiesBean tbLedSecuritiesBean);
-
-    void earnings(String earnings);
-
     void tBDetails();
 
     void noCoupon(boolean noCoupon);
+
 }

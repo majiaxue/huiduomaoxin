@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_350"
                     app:AutoPlayTime="3000"
-                    app:isAutoPlay="true"
+                    app:isAutoPlay="false"
                     app:pointNormal="@drawable/shape_noraml_circle"
                     app:pointSelect="@drawable/shape_select_circle"
                     app:pointTopBottomPadding="@dimen/dp_6"></com.stx.xhb.xbanner.XBanner>
@@ -143,7 +143,8 @@
                         android:layout_below="@id/commodity_original_price"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/coupon"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="@dimen/dp_199"

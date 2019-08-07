@@ -5,7 +5,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,7 +38,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.BannerImageBean;
 import com.example.bean.TBGoodsDetailsBean;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
@@ -54,10 +62,12 @@ import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.MyTimeUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
@@ -69,6 +79,11 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,7 +104,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private List<TBGoodChoiceBean.DataBean> tbRecommendList = new ArrayList<>();
     private TBLedSecuritiesBean tbLedSecuritiesBean;
     private String num_iid;
-    private int flag = 0;
     private int number = 0;
     private Bitmap bitmap;
     private TBGoodsDetailsBean tbGoodsDetailsBean;
@@ -166,7 +180,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (getView() != null) {
                         getView().tbBeanList(tbGoodsDetailsBean, imageList);
                         getView().tBDetails();
-                        LogUtil.e("tBDetails" + "3");
                     }
                 }
             }
@@ -195,41 +208,18 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     }
 
-    //用户收益
-    public void earnings() {
-        Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
-        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("收益-------->" + result);
-                if (!TextUtils.isEmpty(result)) {
-                    if (getView() != null) {
-                        getView().earnings(result);
-                        getView().tBDetails();
-                        LogUtil.e("tBDetails" + "2");
-                    }
-                }
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("收益errorMsg-------->" + errorMsg);
-            }
-        }));
-    }
-
     //商品轮播图
-    public void setXBanner(XBanner commodityXbanner, final List<String> images) {
+    public void setXBanner(XBanner commodityXbanner, final List<BannerImageBean> images) {
 
-        commodityXbanner.setData(images, null);
-//        commodityXbanner.setBannerData(R.layout.image_fresco, images);
+//        commodityXbanner.setData(images, null);
+        commodityXbanner.setBannerData(R.layout.image_fresco, images);
         commodityXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-//                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
-//                bannerImage.setImageResource((int) images.get(position).getXBannerUrl());
-                Glide.with(mContext).load(images.get(position)).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
+                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
+//                bannerImage.setImageResource((int) images.get(position));
+                bannerImage.setImageURI(Uri.parse(images.get(position).getXBannerUrl()));
+//                Glide.with(mContext).load(images.get(position)).into((ImageView) view);
             }
         });
         // 设置XBanner的页面切换特效
@@ -258,8 +248,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
         shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
-        shopParticulars.setHasFixedSize(true);
-        shopParticulars.setAdapter(commodityDetailsRecAdapter);
+//        shopParticulars.setHasFixedSize(true);
         shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -268,9 +257,10 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 } else {
                     Fresco.getImagePipeline().pause();
                 }
-
+                super.onScrollStateChanged(recyclerView, newState);
             }
         });
+        shopParticulars.setAdapter(commodityDetailsRecAdapter);
 
     }
 
@@ -341,24 +331,22 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                         shouQuan();
                         ((Activity) mContext).finish();
                     }
+//                    getView().shouQuan();
                 } else if (result.startsWith("{\"error\":\"15\"")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
-                    flag = 1;
-                    if (getView() != null) {
-                        getView().noCoupon(true);
-                    }
+                    jumpToTB("",1);
+//                    if (getView() != null) {
+//                        getView().noCoupon(true);
+//                    }
                 } else {
                     tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
                     }.getType());
-                    flag = 2;
                     if (tbLedSecuritiesBean != null) {
                         if (getView() != null) {
                             LogUtil.e("成功");
-                            getView().ledSecurities(tbLedSecuritiesBean);
-                            getView().tBDetails();
-                            LogUtil.e("tBDetails" + "1");
+                            jumpToTB(tbLedSecuritiesBean.getLong_url(),2);
                         }
 
                     }
@@ -374,7 +362,93 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         }));
     }
 
-    public void jumpToTB(String originUrl) {
+    //获取分享url
+    public void ShareledSecurities(String para, final double youhuiquan) {
+        LogUtil.e("----------------------->" + para);
+        Map map = MapUtil.getInstance().addParms("para", para).build();
+        final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
+
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
+
+                if (result.startsWith("{\"code\":3")) {
+                    number++;
+                    if (number == 2) {
+                        shouQuan();
+                        ((Activity) mContext).finish();
+                    }
+                } else if (result.startsWith("{\"error\":\"15\"")) {
+                    Map errorMap = new Gson().fromJson(result, Map.class);
+                    LogUtil.e("errorMap---->" + errorMap.toString());
+                    num_iid = (String) errorMap.get("num_iid");
+//                    if (getView() != null) {
+//                        getView().noCoupon(true);
+//                    }
+                } else {
+                    tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
+                    }.getType());
+                    if (tbLedSecuritiesBean != null) {
+                        if (getView() != null) {
+                            LogUtil.e("成功");
+                            Glide.with(mContext)
+                                    .asBitmap()
+                                    .load(tbGoodsDetailsBean.getN_tbk_item().getPict_url())
+                                    .into(new CustomTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                                            saveImageToPhotos(bitmap,youhuiquan);
+                                        }
+
+                                        @Override
+                                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                        }
+                                    });
+                        }
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("TBCommodityDetailsErrorMsg领劵--------->" + errorMsg);
+            }
+        }));
+    }
+
+    /**
+     * 保存二维码到本地相册
+     */
+    private void saveImageToPhotos(Bitmap bmp,double youhuiquan) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = "wwww" + ".jpg";
+        final File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        viewToImage(tbLedSecuritiesBean.getCoupon_click_url(), file.getPath(), youhuiquan);
+
+        LogUtil.e("图片路径" + file.getPath());
+    }
+
+    private void jumpToTB(String originUrl, int flag) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
             if (flag == 2) {
                 //提供给三方传递配置参数
@@ -454,23 +528,17 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
+                            String startTime = MyTimeUtil.date2String(tbRecommendList.get(position).getCoupon_start_time() + "000");
+                            String endTime = MyTimeUtil.date2String(tbRecommendList.get(position).getCoupon_end_time() + "000");
                             ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                     .withString("para", tbRecommendList.get(position).getItem_id())
-                                    .withString("shoptype", tbRecommendList.get(position).getUser_type()).navigation();
-                        }
-                    });
-
-                    goodsRecommendAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                        @Override
-                        public void ViewOnClick(View view, final int index) {
-                            view.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                            .withString("para", tbRecommendList.get(index).getItem_id())
-                                            .withString("shoptype", tbRecommendList.get(index).getUser_type()).navigation();
-                                }
-                            });
+                                    .withString("shoptype", tbRecommendList.get(position).getUser_type())
+                                    .withDouble("youhuiquan", Double.valueOf(tbRecommendList.get(position).getCoupon_amount()))
+                                    .withString("coupon_start_time", startTime)
+                                    .withString("coupon_end_time", endTime)
+                                    .withString("commission_rate", tbRecommendList.get(position).getCommission_rate())
+                                    .withInt("type",1)
+                                    .navigation();
                         }
                     });
                 } else {
@@ -486,7 +554,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     //加载生成图片布局
-    public void viewToImage(String qRImage, String path) {
+    public void viewToImage(String qRImage, String path, double price) {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
         ImageView image = view.findViewById(R.id.share_image);
         TextView name = view.findViewById(R.id.share_name);
@@ -501,41 +569,27 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         if (!TextUtils.isEmpty(zkFinalPrice)) {
             if (zkFinalPrice.contains("-")) {
                 String[] split = zkFinalPrice.split("-");
-                String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                if (!TextUtils.isEmpty(couponInfo)) {
-                    String substring = couponInfo.substring(couponInfo.indexOf("减"));
-                    String price = substring.substring(1, substring.indexOf("元"));
-                    double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
-                    preferentialPrice.setText("￥" + sub);//优惠价
-                    originalPrice.setText("原价：￥" + split[0]);//原价
-                    couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]), sub));
-
-                }
-
+                double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
+                preferentialPrice.setText("￥" + sub);//优惠价
+                originalPrice.setText("原价：￥" + split[0]);//原价
+                couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]), sub));
             } else {
-                String couponInfo = tbLedSecuritiesBean.getCoupon_info();
-                if (!TextUtils.isEmpty(couponInfo)) {
-                    String substring = couponInfo.substring(couponInfo.indexOf("减"));
-                    String price = substring.substring(1, substring.indexOf("元"));
-                    double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
-                    preferentialPrice.setText("￥" + sub);//优惠价
-                    originalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                    couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), sub));
-
-                }
-
-
+                double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
+                preferentialPrice.setText("￥" + sub);//优惠价
+                originalPrice.setText("原价：￥" + zkFinalPrice);//原价
+                couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), sub));
             }
-            LogUtil.e("url主图---------->" + tbGoodsDetailsBean.getN_tbk_item().getPict_url());
-            image.setImageURI(Uri.fromFile(new File(path)));
-            name.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());
-            number.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
-            Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
-            qRCode.setImageBitmap(qr);
-            LogUtil.e("url2二维码---------->" + qRImage);
-
-            this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
         }
+        LogUtil.e("url主图---------->" + tbGoodsDetailsBean.getN_tbk_item().getPict_url());
+        image.setImageURI(Uri.fromFile(new File(path)));
+        name.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());
+        number.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
+        Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
+        qRCode.setImageBitmap(qr);
+        LogUtil.e("url2二维码---------->" + qRImage);
+
+        this.bitmap = ViewToBitmap.createBitmap3(view, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+        share();
     }
 
     //分享
@@ -552,7 +606,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
                 .setCallback(shareListener).open(config);
     }
 
@@ -576,6 +630,38 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         public void onCancel(SHARE_MEDIA share_media) {
         }
     };
+
+
+//    private void redirectUrl(String url, final OnSuccessListener onSuccessListener) {
+//        new AsyncTask<String, Integer, String>() {
+//            @Override
+//            protected String doInBackground(String... strings) {
+//                HttpURLConnection conn = null;
+//                try {
+//                    conn = (HttpURLConnection) new URL(strings[0]).openConnection();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                conn.setInstanceFollowRedirects(false);
+//                conn.setConnectTimeout(5000);
+//                String url = conn.getHeaderField("Location");
+//                conn.disconnect();
+//                return url;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                onSuccessListener.doLogic(s);
+//
+//            }
+//        }.execute(url);
+//    }
+//
+//    private interface OnSuccessListener {
+//        void doLogic(String s);
+//
+//    }
 
 
 }

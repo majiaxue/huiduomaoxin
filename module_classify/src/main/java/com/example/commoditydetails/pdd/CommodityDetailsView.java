@@ -16,7 +16,5 @@ public interface CommodityDetailsView extends IView {
 
     void imageUri(String url);
 
-    void flag();
 
-    void earnings(String ear);
 }

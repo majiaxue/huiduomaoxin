@@ -4,117 +4,58 @@ public class FreeChargeBean {
 
     /**
      * id : 5
-     * activityCode : null
-     * goodsUrl : https://mobile.yangkeduo.com/duo_coupon_landing.html?goods_id=21507593295&pid=8714264_70974453&customParameters=296548168642854912&cpsSign=CC_190713_8714264_70974453_4ddc65455607c669b72f26dddcc18c17&duoduo_type=2
-     * goodsName : 测试
-     * goodsPrice : 100
-     * goodsBackPrice : 99
-     * goodsPic : http://192.168.1.17:9000/goods/de1c2c3c9ec84702ad823a8a0798404e.png
-     * startTime : null
-     * endTime : 2019-07-13 17:48:38
-     * orderNum : 10
-     * orderResidueNum : null
-     * isOpen : 0
-     * platform : 0
-     * threshold1 : 新用户参与
+     * name : 马登男鞋礼金
+     * endTime : 2019-07-31
+     * startTime : 2019-07-01
+     * num : 1
+     * winLimit : null
+     * secure : null
+     * money : 1
+     * rightsId : null
+     * sendUrl : null
+     * tenantId : null
+     * threshold1 : 569205403851
      * threshold2 : null
      * threshold3 : null
      * threshold4 : null
-     * createTime : 2019-07-13 17:03:55
-     * activityType : 0
+     * isOpen : 0
+     * orderResidueNum : null
+     * taoPic : null
      */
 
-    private String id;
-    private String activityCode;
-    private String goodsUrl;
-    private String goodsName;
-    private String goodsPrice;
-    private String goodsOriginalPrice;
-    private String goodsBackPrice;
-    private String goodsPic;
-    private String startTime;
+    private int id;
+    private String name;
     private String endTime;
-    private int orderNum;
-    private int orderResidueNum;
-    private String isOpen;
-    private String platform;
+    private String startTime;
+    private int num;
+    private String winLimit;
+    private String secure;
+    private int money;
+    private String rightsId;
+    private String sendUrl;
+    private String tenantId;
     private String threshold1;
     private String threshold2;
     private String threshold3;
     private String threshold4;
-    private String createTime;
-    private String activityType;
+    private int isOpen;
+    private int orderResidueNum;
+    private String taoPic;
 
-    public String getGoodsOriginalPrice() {
-        return goodsOriginalPrice;
-    }
-
-    public void setGoodsOriginalPrice(String goodsOriginalPrice) {
-        this.goodsOriginalPrice = goodsOriginalPrice;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getActivityCode() {
-        return activityCode;
+    public String getName() {
+        return name;
     }
 
-    public void setActivityCode(String activityCode) {
-        this.activityCode = activityCode;
-    }
-
-    public String getGoodsUrl() {
-        return goodsUrl;
-    }
-
-    public void setGoodsUrl(String goodsUrl) {
-        this.goodsUrl = goodsUrl;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public String getGoodsPrice() {
-        return goodsPrice;
-    }
-
-    public void setGoodsPrice(String goodsPrice) {
-        this.goodsPrice = goodsPrice;
-    }
-
-    public String getGoodsBackPrice() {
-        return goodsBackPrice;
-    }
-
-    public void setGoodsBackPrice(String goodsBackPrice) {
-        this.goodsBackPrice = goodsBackPrice;
-    }
-
-    public String getGoodsPic() {
-        return goodsPic;
-    }
-
-    public void setGoodsPic(String goodsPic) {
-        this.goodsPic = goodsPic;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEndTime() {
@@ -125,36 +66,68 @@ public class FreeChargeBean {
         this.endTime = endTime;
     }
 
-    public int getOrderNum() {
-        return orderNum;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setOrderNum(int orderNum) {
-        this.orderNum = orderNum;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public int getOrderResidueNum() {
-        return orderResidueNum;
+    public int getNum() {
+        return num;
     }
 
-    public void setOrderResidueNum(int orderResidueNum) {
-        this.orderResidueNum = orderResidueNum;
+    public void setNum(int num) {
+        this.num = num;
     }
 
-    public String getIsOpen() {
-        return isOpen;
+    public String getWinLimit() {
+        return winLimit;
     }
 
-    public void setIsOpen(String isOpen) {
-        this.isOpen = isOpen;
+    public void setWinLimit(String winLimit) {
+        this.winLimit = winLimit;
     }
 
-    public String getPlatform() {
-        return platform;
+    public String getSecure() {
+        return secure;
     }
 
-    public void setPlatform(String platform) {
-        this.platform = platform;
+    public void setSecure(String secure) {
+        this.secure = secure;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public String getRightsId() {
+        return rightsId;
+    }
+
+    public void setRightsId(String rightsId) {
+        this.rightsId = rightsId;
+    }
+
+    public String getSendUrl() {
+        return sendUrl;
+    }
+
+    public void setSendUrl(String sendUrl) {
+        this.sendUrl = sendUrl;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getThreshold1() {
@@ -189,19 +162,27 @@ public class FreeChargeBean {
         this.threshold4 = threshold4;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public int getIsOpen() {
+        return isOpen;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setIsOpen(int isOpen) {
+        this.isOpen = isOpen;
     }
 
-    public String getActivityType() {
-        return activityType;
+    public int getOrderResidueNum() {
+        return orderResidueNum;
     }
 
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
+    public void setOrderResidueNum(int orderResidueNum) {
+        this.orderResidueNum = orderResidueNum;
+    }
+
+    public String getTaoPic() {
+        return taoPic;
+    }
+
+    public void setTaoPic(String taoPic) {
+        this.taoPic = taoPic;
     }
 }

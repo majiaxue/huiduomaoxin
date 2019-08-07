@@ -34,7 +34,7 @@ public class TBRecommendAdapter extends MyRecyclerAdapter<TBGoodChoiceBean.DataB
             holder.setImageResource(R.id.base_type, R.drawable.tianmao);
         }
         double sub = ArithUtil.sub(Double.valueOf(data.getZk_final_price()), Double.valueOf(data.getCoupon_amount()));
-        double mul = ArithUtil.mul(sub, ArithUtil.div(Double.valueOf(data.getCommission_rate()), 1000, 2));//商品收益需要乘个人收益
+        double mul = ArithUtil.mul(sub, ArithUtil.div(ArithUtil.mulRound(Double.valueOf(data.getCommission_rate()), 0.09), 1000, 2));//商品收益需要乘个人收益
 
         holder.setImageFresco(R.id.base_image, data.getPict_url());
         holder.setText(R.id.base_name, data.getTitle());

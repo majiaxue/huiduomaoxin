@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.JDGoodsRecBean;
+import com.example.common.CommonResource;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
@@ -144,8 +145,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList+"userCode"+ SPUtil.getUserCode());
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        //收益
-        presenter.earnings();
+        //店铺头像
+        commodityShopImage.setImageResource(R.drawable.img_jingdong);
 
         presenter.historySave(skuid);
 
@@ -165,6 +166,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.getPriceInfo().getPrice()));//原价
         commodityNumberSold.setText("已售" + listsBeanList.getInOrderCount30Days() + "件");//已售
         commodityCouponPrice.setText(ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), sub) + "元优惠劵");
+        Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
+        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(commission, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
         String startTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseStartTime());
         String endTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseEndTime());
         commodityTime.setText("有效期：" + startTime + "~" + endTime);
@@ -174,6 +177,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
         //推荐
         presenter.setRecommendRec(shopRecommendRec, listsBeanList.getCategoryInfo().getCid1Name());
+
 
     }
 
@@ -263,14 +267,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     }
 
     @Override
-    public void earnings(String earnings) {
-        customDialog.dismiss();
-        Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
-        Double aDouble = Double.valueOf(earnings) / 100;
-        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(commission, aDouble));//收益
-    }
-
-    @Override
     public void isNoGoods(boolean isNoGoods) {
         if (isNoGoods) {
             shopNoGoods.setVisibility(View.GONE);
@@ -282,6 +278,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     @Override
     public void qrImage(String url) {
         this.qRImage = url;
+        customDialog.dismiss();
         Glide.with(this)
                 .asBitmap()
                 .load(listsBeanList.getImageInfo().getImageList().get(0).getUrl())

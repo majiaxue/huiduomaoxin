@@ -198,12 +198,14 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                     dataBean.setItem_id(object.getString("item_id"));
                                     dataBean.setPict_url(object.getString("pict_url"));
                                     dataBean.setTitle(object.getString("title"));
-                                    dataBean.setCommission_rate("" + ArithUtil.div(object.getDouble("commission_rate"), 100, 1));
+                                    dataBean.setCommission_rate("" + ArithUtil.div(ArithUtil.mulRound(object.getDouble("commission_rate"),0.9), 100, 2));
                                     dataBean.setVolume(object.getString("volume"));
                                     dataBean.setCoupon_amount(object.getString("coupon_amount"));
                                     dataBean.setZk_final_price(object.getString("zk_final_price"));
                                     dataBean.setReserve_price(object.getString("reserve_price"));
                                     dataBean.setTk_total_sales(object.getString("tk_total_sales"));
+                                    dataBean.setCoupon_start_time(object.getString("coupon_start_time"));
+                                    dataBean.setCoupon_end_time(object.getString("coupon_end_time"));
                                     tbList.add(dataBean);
                                 }
                             } else if ("2".equals(search_type)) {
@@ -218,7 +220,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 dataBean.setItem_id(data.getString("num_iid"));
                                 dataBean.setPict_url(data.getString("pict_url"));
                                 dataBean.setTitle(data.getString("title"));
-                                dataBean.setCommission_rate(data.getString("commission_rate"));
+                                dataBean.setCommission_rate("" + ArithUtil.div(ArithUtil.mulRound(data.getDouble("commission_rate"),0.9), 100, 2));
                                 dataBean.setVolume(data.getString("volume"));
                                 dataBean.setZk_final_price(data.getString("zk_final_price"));
                                 dataBean.setReserve_price(data.getString("reserve_price"));

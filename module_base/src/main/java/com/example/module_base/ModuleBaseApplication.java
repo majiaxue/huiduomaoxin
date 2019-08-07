@@ -18,6 +18,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
+import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.kepler.jd.Listener.AsyncInitListener;
@@ -99,11 +100,17 @@ public class ModuleBaseApplication extends MultiDexApplication {
     }
 
     private void initFresco() {
+        //磁盘缓存的配置
+        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(this)
+                .setBaseDirectoryPath(getCacheDir())
+                .setMaxCacheSize(8*1024*1024)
+                .build();
         //对ImagePipelineConfig进行一些配置
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setDownsampleEnabled(true)              // 对图片进行自动缩放
                 .setResizeAndRotateEnabledForNetwork(true) // 对网络图片进行resize处理，减少内存消耗
                 .setBitmapsConfig(Bitmap.Config.RGB_565) //图片设置RGB_565，减小内存开销 fresco默认情况下是RGB_8888
+                .setMainDiskCacheConfig(diskCacheConfig)
                 .build();
         Fresco.initialize(this, config);
     }

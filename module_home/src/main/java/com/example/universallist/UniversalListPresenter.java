@@ -23,6 +23,7 @@ import com.example.universallist.adapter.HotRecommendRecAdapter;
 import com.example.universallist.adapter.UniversalListRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.MyTimeUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
@@ -80,9 +81,17 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
+                            String startTime = MyTimeUtil.date2String(dataBeanList.get(position).getOnline_start_time() + "000");
+                            String endTime = MyTimeUtil.date2String(dataBeanList.get(position).getOnline_end_time() + "000");
                             ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                     .withString("para", dataBeanList.get(position).getNum_iid())
-                                    .withString("shoptype", "1").navigation();
+                                    .withString("shoptype", "1")
+                                    .withDouble("youhuiquan", dataBeanList.get(position).getYouhuiquan())
+                                    .withString("coupon_start_time", startTime)
+                                    .withString("coupon_end_time", endTime)
+                                    .withString("commission_rate", dataBeanList.get(position).getCommission_rate() + "")
+                                    .withInt("type", 0)
+                                    .navigation();
                         }
                     });
                 }
@@ -120,9 +129,17 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                String startTime = MyTimeUtil.date2String(hotList.get(position).getCouponstarttime() + "000");
+                                String endTime = MyTimeUtil.date2String(hotList.get(position).getCouponendtime() + "000");
                                 ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                         .withString("para", hotList.get(position).getItemid())
-                                        .withString("shoptype", "1").navigation();
+                                        .withString("shoptype", "1")
+                                        .withDouble("youhuiquan", Double.valueOf(hotList.get(position).getCouponmoney()))
+                                        .withString("coupon_start_time", startTime)
+                                        .withString("coupon_end_time", endTime)
+                                        .withString("commission_rate", hotList.get(position).getTkrates())
+                                        .withInt("type", 0)
+                                        .navigation();
                             } else {
                                 //是否登录
                                 PopUtils.isLogin(mContext);

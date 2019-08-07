@@ -95,6 +95,8 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                 .withString("para", orderBeans.get(position).getNumIid())
                                 .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                .withString("commission_rate", Double.valueOf(orderBeans.get(position).getCommissionRate()) * 10000 + "")
+                                .withInt("type", 1)
                                 .navigation();
                     }
                 });

@@ -50,7 +50,7 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
             double couponPrice = ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0" : data.getCoupon_amount()));//商品价格
             double mul = 0;
             if (data.getCommission_rate() != null) {
-                mul = ArithUtil.mul(couponPrice, ArithUtil.div(Double.valueOf(data.getCommission_rate()), 100, 2));//商品收益需要乘个人收益
+                mul = ArithUtil.mul(couponPrice, ArithUtil.div(ArithUtil.mulRound(Double.valueOf(data.getCommission_rate()),0.9), 100, 2));//商品收益需要乘个人收益
             }
 
             holder.setImageFresco(R.id.base_image, data.getPict_url());

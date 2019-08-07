@@ -67,8 +67,8 @@ public class GoodsRecommendBean {
         private String coupon_start_fee;
         private String coupon_total_count;
         private String coupon_remain_count;
-        private String coupon_start_time;
-        private String coupon_end_time;
+        private long coupon_start_time;
+        private long coupon_end_time;
         private String shop_title;
 
         public String getItem_id() {
@@ -183,19 +183,19 @@ public class GoodsRecommendBean {
             this.coupon_remain_count = coupon_remain_count;
         }
 
-        public String getCoupon_start_time() {
+        public long getCoupon_start_time() {
             return coupon_start_time;
         }
 
-        public void setCoupon_start_time(String coupon_start_time) {
+        public void setCoupon_start_time(long coupon_start_time) {
             this.coupon_start_time = coupon_start_time;
         }
 
-        public String getCoupon_end_time() {
+        public long getCoupon_end_time() {
             return coupon_end_time;
         }
 
-        public void setCoupon_end_time(String coupon_end_time) {
+        public void setCoupon_end_time(long coupon_end_time) {
             this.coupon_end_time = coupon_end_time;
         }
 

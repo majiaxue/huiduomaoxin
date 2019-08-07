@@ -62,31 +62,39 @@
                 android:textSize="@dimen/sp_18"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/free_charge_rec_look_back_original_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/free_charge_rec_look_back_title"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_14"
-                android:layout_toRightOf="@id/free_charge_rec_look_back_preferential_price"
-                android:includeFontPadding="false"
-                android:text="￥5.99"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
-
+            <ProgressBar
+                android:id="@+id/free_charge_rec_look_back_activity_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="@dimen/dp_217"
+                android:layout_height="@dimen/dp_9"
+                android:layout_below="@id/free_charge_rec_look_back_preferential_price"
+                android:layout_marginTop="@dimen/dp_8"
+                android:max="100"
+                android:progress="50"
+                android:progressDrawable="@drawable/bg_progress" />
 
             <TextView
-                android:id="@+id/free_charge_rec_look_back_subsidy"
+                android:id="@+id/free_charge_rec_look_back_activity_order_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/free_charge_rec_look_back_original_price"
-                android:layout_marginTop="@dimen/dp_26"
+                android:layout_below="@id/free_charge_rec_look_back_activity_progress"
+                android:layout_marginTop="@dimen/dp_6"
                 android:includeFontPadding="false"
-                android:text="付款4.99元，补贴4.99元"
+                android:text="共1100单"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_10" />
 
+            <TextView
+                android:id="@+id/free_charge_rec_look_back_order_activity_order_residue_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/free_charge_rec_look_back_activity_progress"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_6"
+                android:includeFontPadding="false"
+                android:text="剩余0单"
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_10" />
         </RelativeLayout>
 
     </LinearLayout>

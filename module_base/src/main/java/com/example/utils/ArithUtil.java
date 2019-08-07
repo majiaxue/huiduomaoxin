@@ -43,6 +43,19 @@ public class ArithUtil {
     }
 
     /**
+     * 提供精确乘法运算的mul方法
+     *
+     * @param value1 被乘数
+     * @param value2 乘数
+     * @return 两个参数的积
+     */
+    public static double mulRound(double value1, double value2) {
+        BigDecimal b1 = new BigDecimal(Double.valueOf(value1));
+        BigDecimal b2 = new BigDecimal(Double.valueOf(value2));
+        return b1.multiply(b2).setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+    }
+
+    /**
      * 提供精确的除法运算方法div
      *
      * @param value1 被除数

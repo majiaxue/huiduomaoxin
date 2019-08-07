@@ -12,6 +12,7 @@ import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,6 +98,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
 
     @Override
     public void initData() {
+        ProcessDialogUtil.showProcessDialog(this);
         //查询签到任务完成度
         presenter.signQuery();
     }

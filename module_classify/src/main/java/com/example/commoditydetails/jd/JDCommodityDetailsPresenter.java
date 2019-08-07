@@ -42,6 +42,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KelperTask;
@@ -119,29 +120,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
 
     }
 
-    //收益
-    public void earnings() {
-
-        Map build = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.ESTIMATEEARN, build);
-        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("收益-------->" + result);
-                if (!result.equals("")) {
-                    if (getView() != null) {
-                        getView().earnings(result);
-                    }
-                }
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-
-            }
-        }));
-    }
-
     public void historySave(String goodsId) {
         Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 2).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
@@ -207,6 +185,23 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
         shopParticulars.setHasFixedSize(true);
+        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Fresco.getImagePipeline().resume();
+                } else {
+                    Fresco.getImagePipeline().pause();
+                }
+//                // 查看源码可知State有三种状态：SCROLL_STATE_IDLE（静止）、SCROLL_STATE_DRAGGING（上升）、SCROLL_STATE_SETTLING（下落）
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) { // 滚动静止时才加载图片资源，极大提升流畅度
+//                    commodityDetailsRecAdapter.setScrolling(false);
+//                    commodityDetailsRecAdapter.notifyDataSetChanged(); // notify调用后onBindViewHolder会响应调用
+//                } else
+//                    mRecyclerViewAdapter.setScrolling(true);
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 

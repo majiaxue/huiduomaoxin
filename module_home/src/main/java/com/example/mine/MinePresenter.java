@@ -247,7 +247,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("返佣比例errorMsg：" + errorMsg);
             }
         }));
     }

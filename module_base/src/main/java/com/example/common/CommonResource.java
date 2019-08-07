@@ -158,9 +158,9 @@ public class CommonResource {
     public static final String SIGNQUERY = "/rest/sign/query";//查询签到任务完成度
     public static final String SIGNSHARE = "/rest/sign/share";//每日分享商品
     public static final String SIGNTODAY = "/rest/sign/today";//每日签到
-    public static final String GOODSACTIVITY = "/rest/goods/activity";//免单活动
+    public static final String TAOLIJIN = "/rest/taolijin/taolijin";//免单活动
     public static final String HOMEADVERTISEBOTTOM = "/rest/parameter/homeAdvertise-bottom";//首页下方轮播图
-    public static final String TBKGOODSSALESLIST = "/rest/tbk/goods/sales_list";//首页下方轮播图
+    public static final String TBKGOODSSALESLIST = "/rest/tbk/goods/sales_list";//优选
     public static final String ADDRESSAREA = "/rest/address/area";//根据市搜索区
 
 

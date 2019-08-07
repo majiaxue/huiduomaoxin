@@ -23,6 +23,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.lang.annotation.Retention;
@@ -60,6 +61,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("PunchSignPresenterResult" + result);
                 punchSignBean = JSON.parseObject(result, new TypeReference<PunchSignBean>() {
                 }.getType());
@@ -73,7 +75,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                ProcessDialogUtil.dismissDialog();
             }
         }));
     }

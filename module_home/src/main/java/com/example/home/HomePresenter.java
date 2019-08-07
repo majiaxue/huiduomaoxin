@@ -42,6 +42,7 @@ import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.MyTimeUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
@@ -51,8 +52,11 @@ import com.stx.xhb.xbanner.transformers.Transformer;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -359,9 +363,17 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                String startTime = MyTimeUtil.date2String(goodChoiceList.get(position).getCouponstarttime() + "000");
+                                String endTime = MyTimeUtil.date2String(goodChoiceList.get(position).getCouponendtime() + "000");
                                 ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                         .withString("para", goodChoiceList.get(position).getItemid())
-                                        .withString("shoptype", "1").navigation();
+                                        .withString("shoptype", "1")
+                                        .withDouble("youhuiquan", Double.valueOf(goodChoiceList.get(position).getCouponmoney()))
+                                        .withString("coupon_start_time", startTime)
+                                        .withString("coupon_end_time", endTime)
+                                        .withString("commission_rate", goodChoiceList.get(position).getTkrates())
+                                        .withInt("type",0)
+                                        .navigation();
                             } else {
                                 //是否登录
                                 PopUtils.isLogin(mContext);
@@ -413,11 +425,18 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         goodsRecommendAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(RecyclerView parent, View view, int position) {
-
+                                String startTime = MyTimeUtil.date2String(goodList.get(position).getCoupon_start_time() + "000");
+                                String endTime = MyTimeUtil.date2String(goodList.get(position).getCoupon_end_time() + "000");
                                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
                                     ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                             .withString("para", goodList.get(position).getItem_id())
-                                            .withString("shoptype", goodList.get(position).getUser_type()).navigation();
+                                            .withString("shoptype", goodList.get(position).getUser_type())
+                                            .withDouble("youhuiquan", Double.valueOf(goodList.get(position).getCoupon_amount()))
+                                            .withString("coupon_start_time", startTime)
+                                            .withString("coupon_end_time", endTime)
+                                            .withString("commission_rate", goodList.get(position).getCommission_rate())
+                                            .withInt("type",0)
+                                            .navigation();
                                 } else {
                                     //是否登录
                                     PopUtils.isLogin(mContext);
@@ -425,24 +444,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
                             }
                         });
 
-                        goodsRecommendAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                            @Override
-                            public void ViewOnClick(View view, final int index) {
-                                view.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                                    .withString("para", goodList.get(index).getItem_id())
-                                                    .withString("shoptype", goodList.get(index).getUser_type()).navigation();
-                                        } else {
-                                            //是否登录
-                                            PopUtils.isLogin(mContext);
-                                        }
-                                    }
-                                });
-                            }
-                        });
                     } else {
                         LogUtil.e("数据为空");
                         getView().refreshSuccess();
