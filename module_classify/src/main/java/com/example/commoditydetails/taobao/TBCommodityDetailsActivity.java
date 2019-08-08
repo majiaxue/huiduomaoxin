@@ -146,6 +146,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     //触碰标识
     private long exitTime = 0;
     private double div;
+    private List<String> images;
 
     @Override
     public int getLayoutId() {
@@ -284,11 +285,16 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         try {
 //            this.tbGoodsDetailsBean = tbGoodsDetailsBean;
             //详情轮播图
-            List<String> images = tbGoodsDetailsBean.getN_tbk_item().getSmall_images().getString();
-            for (int i = 0; i < images.size(); i++) {
-                bannerImageBeans.add(new BannerImageBean(images.get(i)));
+            if (tbGoodsDetailsBean.getN_tbk_item().getSmall_images() != null) {
+                images = tbGoodsDetailsBean.getN_tbk_item().getSmall_images().getString();
+                for (int i = 0; i < images.size(); i++) {
+                    bannerImageBeans.add(new BannerImageBean(images.get(i)));
+                }
+            } else {
+                bannerImageBeans.add(new BannerImageBean(tbGoodsDetailsBean.getN_tbk_item().getPict_url()));
             }
             presenter.setXBanner(commodityXbanner, bannerImageBeans);
+
 
             commodityName.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());//名字
             commodityNumberSold.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
@@ -351,7 +357,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
 
             //商品详情图片
-            if (imageList.size() != 0) {
+            if (imageList != null && imageList.size() != 0) {
                 presenter.setShopParticulars(shopParticulars, imageList);
             } else {
                 presenter.setShopParticulars(shopParticulars, images);
@@ -363,6 +369,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             presenter.isCollect(commodityCollectImage, para);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtil.e("异常了");
         }
     }
 

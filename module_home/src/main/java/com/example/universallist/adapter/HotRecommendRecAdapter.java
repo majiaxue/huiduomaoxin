@@ -21,8 +21,8 @@ public class HotRecommendRecAdapter extends MyRecyclerAdapter<HotRecommendBean.D
 
     @Override
     public void convert(RecyclerViewHolder holder, HotRecommendBean.DataBean data, int position) {
-        double commissionRate = ArithUtil.div(Double.valueOf(data.getTkrates()), 100, 2);
-        double mul = ArithUtil.mul(commissionRate, Double.valueOf(data.getItemendprice()));
+        double commissionRate = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(data.getTkrates()),0.9), 100, 2);
+        double mul = ArithUtil.mul(commissionRate, ArithUtil.sub(Double.valueOf(data.getItemprice()),Double.valueOf(data.getCouponmoney())));
         holder.setImageFresco(R.id.universal_list_rec_image, data.getItempic());
         holder.setText(R.id.universal_list_rec_name, data.getItemtitle());
         holder.setText(R.id.universal_list_rec_price, "￥" + data.getItemprice());

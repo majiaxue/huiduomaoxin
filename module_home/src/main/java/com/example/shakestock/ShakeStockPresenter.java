@@ -46,6 +46,7 @@ import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.MyTimeUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
@@ -127,10 +128,17 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    String startTime = MyTimeUtil.date2String(videoList.get(position).getCouponstarttime() + "000");
+                                    String endTime = MyTimeUtil.date2String(videoList.get(position).getCouponendtime() + "000");
                                     ARouter.getInstance()
                                             .build("/module_classify/TBCommodityDetailsActivity")
                                             .withString("para", videoList.get(position).getItemid())
                                             .withString("shoptype", videoList.get(position).getShoptype())
+                                            .withDouble("youhuiquan", Double.valueOf(videoList.get(position).getCouponmoney()))
+                                            .withString("coupon_start_time", startTime)
+                                            .withString("coupon_end_time", endTime)
+                                            .withString("commission_rate", videoList.get(position).getTkrates())
+                                            .withInt("type",0)
                                             .navigation();
                                 }
                             });

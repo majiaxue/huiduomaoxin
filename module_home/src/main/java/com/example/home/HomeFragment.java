@@ -1,20 +1,16 @@
 package com.example.home;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
@@ -27,7 +23,6 @@ import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;
 import com.example.view.MarqueeView;
-import com.example.view.SelfDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -38,8 +33,6 @@ import com.stx.xhb.xbanner.XBanner;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 首页
@@ -79,7 +72,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @BindView(R2.id.text141_gradual_change)
     TextView text141GradualChange;
     @BindView(R2.id.home_zhong_xbanner)
-    XBanner homeZhongXbanner;
+    ViewPager homeZhongXbanner;
     @BindView(R2.id.home_hot_recommend)
     RelativeLayout homeHotRecommend;
     @BindView(R2.id.home_dou_juan_buy)

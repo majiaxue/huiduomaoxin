@@ -171,9 +171,12 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 String info = (String) jsonObject.get("info");
                 LogUtil.e("数组" + albumPics);
                 LogUtil.e("对象" + info);
-                for (int i = 0; i < albumPics.size(); i++) {
-                    imageList.add(albumPics.get(i).toString());
+                if (albumPics != null && albumPics.size() != 0) {
+                    for (int i = 0; i < albumPics.size(); i++) {
+                        imageList.add(albumPics.get(i).toString());
+                    }
                 }
+
                 if (!TextUtils.isEmpty(info)) {
                     tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
                     }.getType());
@@ -325,18 +328,18 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
 
-                if (result.startsWith("{\"code\":3")) {
+                if (result.startsWith("{code:3")) {
                     number++;
                     if (number == 2) {
                         shouQuan();
                         ((Activity) mContext).finish();
                     }
 //                    getView().shouQuan();
-                } else if (result.startsWith("{\"error\":\"15\"")) {
+                } else if (result.startsWith("{error:15")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
-                    jumpToTB("",1);
+                    jumpToTB("", 1);
 //                    if (getView() != null) {
 //                        getView().noCoupon(true);
 //                    }
@@ -346,7 +349,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (tbLedSecuritiesBean != null) {
                         if (getView() != null) {
                             LogUtil.e("成功");
-                            jumpToTB(tbLedSecuritiesBean.getLong_url(),2);
+                            jumpToTB(tbLedSecuritiesBean.getLong_url(), 2);
                         }
 
                     }
@@ -373,13 +376,13 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
 
-                if (result.startsWith("{\"code\":3")) {
+                if (result.startsWith("{code:3")) {
                     number++;
                     if (number == 2) {
                         shouQuan();
                         ((Activity) mContext).finish();
                     }
-                } else if (result.startsWith("{\"error\":\"15\"")) {
+                } else if (result.startsWith("{error:15")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
@@ -398,7 +401,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                                     .into(new CustomTarget<Bitmap>() {
                                         @Override
                                         public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
-                                            saveImageToPhotos(bitmap,youhuiquan);
+                                            saveImageToPhotos(bitmap, youhuiquan);
                                         }
 
                                         @Override
@@ -424,7 +427,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     /**
      * 保存二维码到本地相册
      */
-    private void saveImageToPhotos(Bitmap bmp,double youhuiquan) {
+    private void saveImageToPhotos(Bitmap bmp, double youhuiquan) {
         // 首先保存图片
         File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
         if (!appDir.exists()) {
@@ -537,7 +540,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                                     .withString("coupon_start_time", startTime)
                                     .withString("coupon_end_time", endTime)
                                     .withString("commission_rate", tbRecommendList.get(position).getCommission_rate())
-                                    .withInt("type",1)
+                                    .withInt("type", 1)
                                     .navigation();
                         }
                     });

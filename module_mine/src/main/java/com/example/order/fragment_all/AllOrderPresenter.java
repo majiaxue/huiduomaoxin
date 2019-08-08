@@ -26,6 +26,7 @@ import com.example.net.RetrofitUtil;
 import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
@@ -162,6 +163,8 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                 .withString("para", orderBeans.get(position).getNumIid())
                                 .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                .withString("commission_rate", ArithUtil.mul(Double.valueOf(orderBeans.get(position).getTotalCommissionRate()),10000) + "")
+                                .withInt("type", 1)
                                 .navigation();
                     }
                 });

@@ -171,20 +171,19 @@
                             android:id="@+id/home_top_rec"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_13" />
+                            android:layout_marginTop="@dimen/dp_10" />
 
                         <SeekBar
                             android:id="@+id/home_slide_indicator_point"
                             android:layout_width="@dimen/dp_40"
-                            android:layout_height="@dimen/dp_3"
+                            android:layout_height="@dimen/dp_2"
                             android:layout_below="@id/home_top_rec"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/dp_14"
-                            android:layout_marginBottom="@dimen/dp_14"
-                            android:background="@drawable/tt_bg"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginBottom="@dimen/dp_10"
                             android:focusable="true"
-                            android:maxHeight="@dimen/dp_3"
-                            android:minWidth="@dimen/dp_3"
+                            android:maxHeight="@dimen/dp_4"
+                            android:minWidth="@dimen/dp_4"
                             android:progressDrawable="@drawable/bg_fast_scroll_bar_track"
                             android:thumb="@drawable/bg_fast_scroll_bar_thumb"
                             android:visibility="visible" />
@@ -194,14 +193,13 @@
                             android:layout_height="@dimen/dp_101"
                             android:layout_below="@id/home_slide_indicator_point"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/dp_19"
                             android:src="@drawable/newuser_gift" />
                     </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_144"
-                        android:layout_marginTop="@dimen/dp_21"
+                        android:layout_height="@dimen/dp_120"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -215,7 +213,7 @@
                                 android:layout_width="@dimen/dp_23"
                                 android:layout_height="@dimen/dp_23"
                                 android:layout_marginLeft="@dimen/dp_13"
-                                android:src="@drawable/icon_baokuan"/>
+                                android:src="@drawable/icon_baokuan" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -258,7 +256,7 @@
                                 android:layout_marginLeft="@dimen/dp_10"
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:layout_toRightOf="@id/text112"
-                                android:src="@drawable/img_514"/>
+                                android:src="@drawable/img_514" />
 
                         </RelativeLayout>
 
@@ -278,7 +276,7 @@
                                 android:layout_width="@dimen/dp_23"
                                 android:layout_height="@dimen/dp_23"
                                 android:layout_marginLeft="@dimen/dp_13"
-                                android:src="@drawable/icon_douquan"/>
+                                android:src="@drawable/icon_douquan" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -321,7 +319,7 @@
                                 android:layout_marginLeft="@dimen/dp_10"
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:layout_toRightOf="@id/text122"
-                                android:src="@drawable/img_515"/>
+                                android:src="@drawable/img_515" />
 
                         </RelativeLayout>
 
@@ -334,7 +332,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_151"
+                        android:layout_height="@dimen/dp_125"
                         android:orientation="horizontal">
 
                         <RelativeLayout
@@ -349,7 +347,7 @@
                                 android:layout_height="@dimen/dp_23"
                                 android:layout_marginLeft="@dimen/dp_13"
                                 android:layout_marginTop="@dimen/dp_10"
-                                android:src="@drawable/icon_daka"/>
+                                android:src="@drawable/icon_daka" />
 
                             <TextView
                                 android:id="@+id/text131_gradual_change"
@@ -375,13 +373,13 @@
                                 android:textSize="@dimen/sp_12" />
 
                             <ImageView
-                                android:layout_width="@dimen/dp_80"
-                                android:layout_height="@dimen/dp_80"
+                                android:layout_width="@dimen/dp_83"
+                                android:layout_height="@dimen/dp_50"
                                 android:layout_below="@id/text131"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:layout_marginRight="@dimen/dp_10"
-                                android:src="@drawable/img_516"/>
+                                android:src="@drawable/img_516" />
                         </RelativeLayout>
 
                         <View
@@ -401,7 +399,7 @@
                                 android:layout_height="@dimen/dp_23"
                                 android:layout_marginLeft="@dimen/dp_13"
                                 android:layout_marginTop="@dimen/dp_10"
-                                android:src="@drawable/icon_miandan"/>
+                                android:src="@drawable/icon_miandan" />
 
                             <TextView
                                 android:id="@+id/text141_gradual_change"
@@ -427,37 +425,44 @@
                                 android:textSize="@dimen/sp_12" />
 
                             <ImageView
-                                android:layout_width="@dimen/dp_80"
-                                android:layout_height="@dimen/dp_80"
+                                android:layout_width="@dimen/dp_83"
+                                android:layout_height="@dimen/dp_50"
                                 android:layout_below="@id/text141"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:layout_marginRight="@dimen/dp_10"
-                                android:src="@drawable/img_517"/>
+                                android:src="@drawable/img_517" />
 
                         </RelativeLayout>
 
                     </LinearLayout>
 
-                    <com.stx.xhb.xbanner.XBanner
-                        android:id="@+id/home_zhong_xbanner"
+                    <FrameLayout
+                        android:id="@+id/frame_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_87"
-                        android:layout_marginTop="@dimen/dp_20"
-                        app:clipChildrenLeftRightMargin="@dimen/dp_44"
-                        app:clipChildrenTopBottomMargin="@dimen/dp_0"
-                        app:isAutoPlay="false"
-                        app:isClipChildrenMode="true"
-                        app:isHandLoop="true"
-                        app:pointsVisibility="false"></com.stx.xhb.xbanner.XBanner>
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:clipChildren="false">
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/home_zhong_xbanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_87"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginBottom="@dimen/dp_10"
+                            android:clipToPadding="false"
+                            android:layout_marginLeft="@dimen/dp_44"
+                            android:layout_marginRight="@dimen/dp_44" />
+                    </FrameLayout>
 
                     <RelativeLayout
                         android:id="@+id/home_relative2"
                         android:layout_width="@dimen/dp_350"
                         android:layout_height="@dimen/dp_173"
-                        android:layout_below="@id/home_zhong_xbanner"
+                        android:layout_below="@id/frame_layout"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/dp_25"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:background="@drawable/bg_corner_radius10"
                         android:elevation="@dimen/dp_2">
 
@@ -502,7 +507,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@id/diamond"
-                            android:layout_marginTop="@dimen/dp_30"></android.support.v7.widget.RecyclerView>
+                            android:layout_marginTop="@dimen/dp_10"></android.support.v7.widget.RecyclerView>
                     </RelativeLayout>
 
                     <RelativeLayout

@@ -11,6 +11,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.GoodGoodsBean;
 import com.example.module_home.R;
+import com.example.utils.ArithUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.SPUtil;
 
@@ -50,7 +51,7 @@ public class GoodGoodsAdapter extends MyRecyclerAdapter<GoodGoodsBean.NetBean> {
                             .withDouble("youhuiquan", Double.valueOf(data.getItem_data().get(position).getCouponmoney()))
                             .withString("coupon_start_time", startTime)
                             .withString("coupon_end_time", endTime)
-                            .withString("commission_rate", data.getItem_data().get(position).getTkrates()*100 + "")
+                            .withString("commission_rate", ArithUtil.mul(data.getItem_data().get(position).getTkrates(),100) + "")
                             .withInt("type", 0)
                             .navigation();
                 }

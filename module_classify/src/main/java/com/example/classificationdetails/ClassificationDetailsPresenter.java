@@ -229,6 +229,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 dataBean.setVolume(data.getString("volume"));
                                 dataBean.setZk_final_price(data.getString("zk_final_price"));
                                 dataBean.setReserve_price(data.getString("reserve_price"));
+                                dataBean.setCoupon_amount(data.getString("coupon_amount"));
                                 dataBean.setTk_total_sales(data.getString("volume"));
                                 dataBean.setCoupon_start_time(data.getString("coupon_start_time"));
                                 dataBean.setCoupon_end_time(data.getString("coupon_end_time"));
@@ -276,11 +277,11 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                                 .withString("para", tbList.get(position).getItem_id())
                                                 .withString("shoptype", "1")
-                                                .withString("youhuiquan", tbList.get(position).getCoupon_amount())
+                                                .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
                                                 .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
                                                 .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
                                                 .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                                .withString("type", "0")
+                                                .withInt("type", 0)
                                                 .navigation();
                                     }
                                 });
@@ -293,11 +294,11 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                                 .withString("para", tbList.get(position).getItem_id())
                                                 .withString("shoptype", "1")
-                                                .withString("youhuiquan", tbList.get(position).getCoupon_amount())
+                                                .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
                                                 .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
                                                 .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
                                                 .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                                .withString("type", "0")
+                                                .withInt("type", 0)
                                                 .navigation();
                                     }
                                 });

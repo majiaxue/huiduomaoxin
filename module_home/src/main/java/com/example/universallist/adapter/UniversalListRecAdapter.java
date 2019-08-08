@@ -21,7 +21,7 @@ public class UniversalListRecAdapter extends MyRecyclerAdapter<UniversalListBean
 
     @Override
     public void convert(RecyclerViewHolder holder, UniversalListBean.DataBean data, int position) {
-        double commissionRate = ArithUtil.div(data.getCommission_rate(), 100, 2);
+        double commissionRate =  ArithUtil.div(ArithUtil.mulRound(data.getCommission_rate(),0.9), 100, 2);
         double mul = ArithUtil.mul(commissionRate, data.getQuanhoujia());
         holder.setImageFresco(R.id.universal_list_rec_image, data.getPict_url());
         holder.setText(R.id.universal_list_rec_name, data.getTitle());

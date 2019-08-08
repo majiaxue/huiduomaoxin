@@ -2,7 +2,9 @@ package com.example.home;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,11 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -25,15 +27,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.GoodChoiceBean;
-import com.example.bean.ZBannerBean;
+import com.example.bean.GoodsRecommendBean;
 import com.example.bean.ZhongXBannerBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
-import com.example.entity.EventBusBean2;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.GoodsRecommendAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
-import com.example.bean.GoodsRecommendBean;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -45,23 +45,17 @@ import com.example.utils.MapUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.view.SelfDialog;
 import com.example.view.animation.RotateYTransformer;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.http.POST;
 
 public class HomePresenter extends BasePresenter<HomeView> {
 
@@ -73,7 +67,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private List<GoodChoiceBean.DataBean> goodChoiceList = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList;
     private GoodsRecommendAdapter goodsRecommendAdapter;
-    private List<ZBannerBean> bannerBeanList = new ArrayList<>();
+    private PagerAdapter mAdapter;
+    private List<String> images = new ArrayList<>();
 
     public HomePresenter(Context context) {
         super(context);
@@ -194,7 +189,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     }
 
-    public void setZhongXBanner(final XBanner homeZhongXbanner) {
+    public void setZhongXBanner(final ViewPager homeZhongXbanner) {
 
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.HOMEADVERTISEBOTTOM);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
@@ -206,35 +201,92 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 }.getType());
                 if (zhongXBannerBean != null) {
                     for (int i = 0; i < zhongXBannerBean.getRecords().size(); i++) {
-                        bannerBeanList.add(new ZBannerBean(zhongXBannerBean.getRecords().get(i).getPicUrl()));
+                        images.add(zhongXBannerBean.getRecords().get(i).getPicUrl());
                     }
-                    homeZhongXbanner.setBannerData(bannerBeanList);
-                    homeZhongXbanner.loadImage(new XBanner.XBannerAdapter() {
+                    homeZhongXbanner.setPageMargin(30);
+                    homeZhongXbanner.setOffscreenPageLimit(3);
+                    homeZhongXbanner.setPageTransformer(true, new RotateYTransformer());
+                    homeZhongXbanner.setAdapter(mAdapter = new PagerAdapter() {
                         @Override
-                        public void loadBanner(XBanner banner, Object model, View view, int position) {
-                            Glide.with(mContext).load(bannerBeanList.get(position).getXBannerUrl()).into((ImageView) view);
+                        public Object instantiateItem(ViewGroup container, int position) {
+                            SimpleDraweeView view = new SimpleDraweeView(mContext);
+                            view.setScaleType(SimpleDraweeView.ScaleType.FIT_XY);
+                            final int realPosition = getRealPosition(position);
+                            view.setImageURI(Uri.parse(images.get(realPosition)));
+                            container.addView(view);
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (realPosition == 0) {
 
+                                    } else if (realPosition == 1) {
+                                        ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                                    } else {
+                                        ARouter.getInstance().build("/mine/invite_friends").navigation();
+                                    }
+                                }
+                            });
+                            return view;
                         }
-                    });
-                    // 设置XBanner的页面切换特效
-//        homeZhongXbanner.setPageTransformer(Transformer.Default);
-                    homeZhongXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
-                    // 设置XBanner页面切换的时间，即动画时长
-                    homeZhongXbanner.setPageChangeDuration(1000);
 
-                    //监听广告 item 的单击事件
-                    homeZhongXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+
                         @Override
-                        public void onItemClick(XBanner banner, Object model, View view, int position) {
-                            if (position == 0){
+                        public int getItemPosition(Object object) {
+                            return POSITION_NONE;
+                        }
 
-                            }else if (position == 1){
-                                ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
-                            }else{
-                                ARouter.getInstance().build("/mine/invite_friends").navigation();
+                        @Override
+                        public void destroyItem(ViewGroup container, int position, Object object) {
+                            container.removeView((View) object);
+                        }
+
+                        @Override
+                        public int getCount() {
+                            return Integer.MAX_VALUE;
+                        }
+
+                        @Override
+                        public boolean isViewFromObject(View view, Object o) {
+                            return view == o;
+                        }
+
+                        //
+                        @Override
+                        public void startUpdate(ViewGroup container) {
+                            super.startUpdate(container);
+                            ViewPager viewPager = (ViewPager) container;
+                            int position = viewPager.getCurrentItem();
+                            if (position == 0) {
+                                position = getFirstItemPosition();
+                            } else if (position == getCount() - 1) {
+                                position = getLastItemPosition();
                             }
+                            viewPager.setCurrentItem(position, false);
+
+                        }
+
+                        //
+                        private int getRealCount() {
+                            return images.size();
+                        }
+
+                        //
+                        private int getRealPosition(int position) {
+                            return position % getRealCount();
+                        }
+
+                        //
+                        private int getFirstItemPosition() {
+                            return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount();
+                        }
+
+                        private int getLastItemPosition() {
+                            return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1;
                         }
                     });
+
+                    homeZhongXbanner.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % images.size()));//设置首个轮播显示的位置   实现左右滑动 且首页面对应的是第一个数据
+
                 }
             }
 
@@ -253,16 +305,16 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRec.setLayoutManager(gridLayoutManager);
 
         strings = new ArrayList<>();
-        strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.tb));
-        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.icon_taoqianggou));
-        strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.pdd));
-        strings.add(new BaseRecImageAndTextBean("商城", R.drawable.icon_shangcheng));
-        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.jd));
-        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.icon_xiaodian));
-        strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.tm));
-        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_99baoyou));
-        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_juhuasuan));
-        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_dakaqiandao));
+        strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.icon_taobao1));
+        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.icon_taoqianggou1));
+        strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.icon_pinduoduo1));
+        strings.add(new BaseRecImageAndTextBean("商城", R.drawable.icon_shangcheng1));
+        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.icon_jingdong1));
+        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.icon_xiaodian1));
+        strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.icon_tianmao1));
+        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_9));
+        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_juhuasuan1));
+        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_qiandao1));
         strings.add(new BaseRecImageAndTextBean("今日免单", R.drawable.icon_miandan1));
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);
@@ -372,7 +424,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                         .withString("coupon_start_time", startTime)
                                         .withString("coupon_end_time", endTime)
                                         .withString("commission_rate", goodChoiceList.get(position).getTkrates())
-                                        .withInt("type",0)
+                                        .withInt("type", 0)
                                         .navigation();
                             } else {
                                 //是否登录
@@ -435,7 +487,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                             .withString("coupon_start_time", startTime)
                                             .withString("coupon_end_time", endTime)
                                             .withString("commission_rate", goodList.get(position).getCommission_rate())
-                                            .withInt("type",0)
+                                            .withInt("type", 0)
                                             .navigation();
                                 } else {
                                     //是否登录
@@ -463,5 +515,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
         }));
 
     }
+
 
 }
