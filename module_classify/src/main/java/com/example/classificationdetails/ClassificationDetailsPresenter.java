@@ -202,7 +202,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                     dataBean.setItem_id(object.getString("item_id"));
                                     dataBean.setPict_url(object.getString("pict_url"));
                                     dataBean.setTitle(object.getString("title"));
-                                    dataBean.setCommission_rate("" + ArithUtil.div(ArithUtil.mulRound(object.getDouble("commission_rate"),0.9), 100, 2));
+                                    dataBean.setCommission_rate("" + object.getDouble("commission_rate"));
                                     dataBean.setVolume(object.getString("volume"));
                                     dataBean.setCoupon_amount(object.getString("coupon_amount"));
                                     dataBean.setZk_final_price(object.getString("zk_final_price"));
@@ -225,7 +225,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 dataBean.setItem_id(data.getString("num_iid"));
                                 dataBean.setPict_url(data.getString("pict_url"));
                                 dataBean.setTitle(data.getString("title"));
-                                dataBean.setCommission_rate("" + ArithUtil.div(ArithUtil.mulRound(data.getDouble("commission_rate"),0.9), 100, 2));
+                                dataBean.setCommission_rate("" + data.getDouble("commission_rate"));
                                 dataBean.setVolume(data.getString("volume"));
                                 dataBean.setZk_final_price(data.getString("zk_final_price"));
                                 dataBean.setReserve_price(data.getString("reserve_price"));
@@ -281,7 +281,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                                 .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
                                                 .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
                                                 .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                                .withInt("type", 0)
+                                                .withInt("type", 1)
                                                 .navigation();
                                     }
                                 });
@@ -298,7 +298,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                                 .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
                                                 .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
                                                 .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                                .withInt("type", 0)
+                                                .withInt("type", 1)
                                                 .navigation();
                                     }
                                 });

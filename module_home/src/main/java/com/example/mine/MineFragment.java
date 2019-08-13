@@ -3,6 +3,7 @@ package com.example.mine;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.StatusBarUtils;
@@ -234,8 +236,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden && !"".equals(SPUtil.getToken())) {
-
+        if (!hidden && TextUtils.isEmpty(SPUtil.getToken())) {
+            //如果该页面可见但是未登录
+            mBenri.setText("0元");
+            mBenyue.setText("0元");
+            mShangyue.setText("0元");
+        } else if (!hidden && !TextUtils.isEmpty(SPUtil.getToken())) {
+            //如果该页面可见并且已登录
         }
         if (hidden) {
             StatusBarUtils.setStatusTheme(getActivity(), true, true);
@@ -243,6 +250,17 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             if (flag) {
                 StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
             }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("HomeFragment" + "可见");
+        if (TextUtils.isEmpty(SPUtil.getToken())){
+            mBenri.setText("0元");
+            mBenyue.setText("0元");
+            mShangyue.setText("0元");
         }
     }
 

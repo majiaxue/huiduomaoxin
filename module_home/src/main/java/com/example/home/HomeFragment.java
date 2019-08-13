@@ -81,6 +81,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     RelativeLayout homePunchSign;
     @BindView(R2.id.home_free_of_charge)
     RelativeLayout homeFreeOfCharge;
+    @BindView(R2.id.home_huo_dong)
+    ImageView homeHuoDong;
 
     private int nextPage = 1;
 
@@ -112,8 +114,10 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSmartRefresh.setRefreshHeader(customHeader);
         homeSmartRefresh.setRefreshFooter(new ClassicsFooter(getContext()));
 
+
         TxtUtil.txtJianbian(text131GradualChange, "#0c53e4", "#ae3fed");
         TxtUtil.txtJianbian(text141GradualChange, "#fe5d05", "#fdb902");
+
     }
 
     @Override
@@ -143,7 +147,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSeeMoreBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 5).withInt("type",1).navigation();
+                ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 5).withInt("type", 1).navigation();
             }
         });
 
@@ -152,7 +156,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).withInt("type",2).navigation();
+                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).withInt("type", 2).navigation();
                 } else {
                     //是否登录
                     PopUtils.isLogin(getContext());
@@ -199,13 +203,27 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
             }
         });
+        //活动
+        homeHuoDong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/invite_friends").navigation();
+            }
+        });
 
         //设置上拉刷新下拉加载
         homeSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 nextPage = 1;
+                //xBanner
+                presenter.setXBanner(homeXbanner, homeTopBg);
+                //优选recycler
+                presenter.setGoodChoiceRec(homeGoodChoiceRec);
+                //推荐recycler
                 presenter.setBottomRec(nextPage, homeBottomRec);
+                presenter.setBottomRec(nextPage, homeBottomRec);
+
             }
         });
         homeSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -241,12 +259,12 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         super.onHiddenChanged(hidden);
         if (hidden) {
             //不可见
-            LogUtil.e("HomeFragment"+ "hidden:" + hidden);
+            LogUtil.e("HomeFragment" + "hidden:" + hidden);
             homeMarquee.stopFlipping();
             homeXbanner.stopAutoPlay();
         } else {
             //可见
-            LogUtil.e("HomeFragment"+ "hidden:" + hidden);
+            LogUtil.e("HomeFragment" + "hidden:" + hidden);
             homeMarquee.startFlipping();
             homeXbanner.startAutoPlay();
 //            //跑马灯
@@ -255,17 +273,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 //            presenter.setXBanner(homeXbanner, homeTopBg);
 //            //topRec
 //            presenter.setRec(homeTopRec);
-            //优选recycler
-            presenter.setGoodChoiceRec(homeGoodChoiceRec);
-            //推荐recycler
-            presenter.setBottomRec(nextPage, homeBottomRec);
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        LogUtil.e("HomeFragment"+ "不可见");
+        LogUtil.e("HomeFragment" + "不可见");
         homeMarquee.stopFlipping();
         homeXbanner.stopAutoPlay();
     }
@@ -273,7 +287,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("HomeFragment"+ "可见");
+        LogUtil.e("HomeFragment" + "可见");
         homeMarquee.startFlipping();
         homeXbanner.startAutoPlay();
     }

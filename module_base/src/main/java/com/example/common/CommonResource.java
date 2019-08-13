@@ -162,6 +162,7 @@ public class CommonResource {
     public static final String HOMEADVERTISEBOTTOM = "/rest/parameter/homeAdvertise-bottom";//首页下方轮播图
     public static final String TBKGOODSSALESLIST = "/rest/tbk/goods/sales_list";//优选
     public static final String ADDRESSAREA = "/rest/address/area";//根据市搜索区
+    public static final String HOMEADVERTISETK = "/rest/parameter/homeAdvertiseTK";   //淘客商城轮播图
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493

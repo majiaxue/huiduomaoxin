@@ -21,17 +21,17 @@ public class HotRecommendRecAdapter extends MyRecyclerAdapter<HotRecommendBean.D
 
     @Override
     public void convert(RecyclerViewHolder holder, HotRecommendBean.DataBean data, int position) {
-        double commissionRate = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(data.getTkrates()),0.9), 100, 2);
-        double mul = ArithUtil.mul(commissionRate, ArithUtil.sub(Double.valueOf(data.getItemprice()),Double.valueOf(data.getCouponmoney())));
+        double commissionRate = Double.valueOf(data.getTkrates()) / 100;
+        double mul = commissionRate * (Double.valueOf(data.getItemprice()) - Double.valueOf(data.getCouponmoney())) * 0.9;
         holder.setImageFresco(R.id.universal_list_rec_image, data.getItempic());
         holder.setText(R.id.universal_list_rec_name, data.getItemtitle());
         holder.setText(R.id.universal_list_rec_price, "￥" + data.getItemprice());
         holder.setText(R.id.universal_list_rec_payment_amount, "领劵减" + data.getCouponmoney() + "元");
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
         } else {
-            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mul(mul, 0.3));
+            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, 0.3));
         }
-        holder.setText(R.id.universal_list_rec_shengjizhuan, "升级赚" + ArithUtil.mul(mul, 0.8));
+        holder.setText(R.id.universal_list_rec_shengjizhuan, "升级赚" + ArithUtil.mulRound(mul, 0.8));
     }
 }

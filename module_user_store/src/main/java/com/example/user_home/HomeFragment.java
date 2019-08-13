@@ -117,7 +117,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         userHomeRefresh.setRefreshHeader(customHeader);
 
-
         userHomeNescroll.setOnScrollChangeListener(this);
     }
 
@@ -148,7 +147,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         userHomeXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
             @Override
             public void onItemClick(XBanner banner, Object model, View view, int position) {
-                Toast.makeText(getContext(), "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
             }
         });
 

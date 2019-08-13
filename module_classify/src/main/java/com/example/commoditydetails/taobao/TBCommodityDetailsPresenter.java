@@ -63,6 +63,7 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyTimeUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
@@ -104,7 +105,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private List<TBGoodChoiceBean.DataBean> tbRecommendList = new ArrayList<>();
     private TBLedSecuritiesBean tbLedSecuritiesBean;
     private String num_iid;
-    private int number = 0;
     private Bitmap bitmap;
     private TBGoodsDetailsBean tbGoodsDetailsBean;
     private List<String> imageList = new ArrayList<>();
@@ -126,10 +126,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onSuccess() {
-                number++;
-                if (number == 2) {
-                    shouQuan();
-                }
                 LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
             }
 
@@ -169,6 +165,8 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 JSONObject jsonObject = JSON.parseObject(result);
                 JSONArray albumPics = jsonObject.getJSONArray("albumPics");
                 String info = (String) jsonObject.get("info");
+                LogUtil.e("数组" + albumPics);
+                LogUtil.e("对象" + info);
                 if (albumPics != null && albumPics.size() != 0) {
                     for (int i = 0; i < albumPics.size(); i++) {
                         imageList.add(albumPics.get(i).toString());
@@ -246,7 +244,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 return false;
             }
         };
-        final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);
+        final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);//
         shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
 //        shopParticulars.setHasFixedSize(true);
@@ -318,25 +316,24 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //领劵
     public void ledSecurities(String para) {
         LogUtil.e("----------------------->" + para);
-        Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", "0").build();
+        Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", 0).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
-
-                if (result.startsWith("{code:3")) {
-                    number++;
-                    if (number == 2) {
-                        shouQuan();
-                        ((Activity) mContext).finish();
-                    }
-                } else if (result.startsWith("{error:15")) {
+                if (result.startsWith("{\"code\":3")) {
+                    shouQuan();
+                } else if (result.startsWith("{\"error\":15")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
                     jumpToTB("", 1);
+//                    if (getView() != null) {
+//                        getView().noCoupon(true);
+//                    }
                 } else {
                     tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
                     }.getType());
@@ -354,6 +351,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsErrorMsg领劵--------->" + errorMsg);
             }
         }));
@@ -362,21 +360,17 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //获取分享url
     public void ShareledSecurities(String para, final double youhuiquan) {
         LogUtil.e("----------------------->" + para);
-        Map map = MapUtil.getInstance().addParms("para", para).build();
+        Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", 1).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
-
-                if (result.startsWith("{code:3")) {
-                    number++;
-                    if (number == 2) {
-                        shouQuan();
-                        ((Activity) mContext).finish();
-                    }
-                } else if (result.startsWith("{error:15")) {
+                if (result.startsWith("{\"code\":3")) {
+                    shouQuan();
+                } else if (result.startsWith("{\"error\":15")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
@@ -413,6 +407,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsErrorMsg领劵--------->" + errorMsg);
             }
         }));

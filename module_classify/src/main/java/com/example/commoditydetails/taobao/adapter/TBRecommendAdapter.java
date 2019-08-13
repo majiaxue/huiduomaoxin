@@ -33,8 +33,9 @@ public class TBRecommendAdapter extends MyRecyclerAdapter<TBGoodChoiceBean.DataB
             //天猫
             holder.setImageResource(R.id.base_type, R.drawable.tianmao);
         }
-        double sub = ArithUtil.sub(Double.valueOf(data.getZk_final_price()), Double.valueOf(data.getCoupon_amount()));
-        double mul = ArithUtil.mul(sub, ArithUtil.div(ArithUtil.mulRound(Double.valueOf(data.getCommission_rate()), 0.09), 1000, 2));//商品收益需要乘个人收益
+        double sub = Double.valueOf(data.getZk_final_price()) - Double.valueOf(data.getCoupon_amount());
+        double div = Double.valueOf(data.getCommission_rate()) / 10000;
+        double mul = sub * div * 0.9;//商品收益需要乘个人收益
 
         holder.setImageFresco(R.id.base_image, data.getPict_url());
         holder.setText(R.id.base_name, data.getTitle());
@@ -44,8 +45,8 @@ public class TBRecommendAdapter extends MyRecyclerAdapter<TBGoodChoiceBean.DataB
         holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
-        holder.setText(com.example.module_base.R.id.base_estimate, "预估赚"+ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
-        holder.setText(com.example.module_base.R.id.base_upgrade, "升级赚"+ArithUtil.mul(mul,0.8));
+        holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        holder.setText(com.example.module_base.R.id.base_upgrade, "升级赚" + ArithUtil.mulRound(mul, 0.8));
 
 //        TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);
 //        viewOnClickListener.ViewOnClick(immediatelyGrab, position);

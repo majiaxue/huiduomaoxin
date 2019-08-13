@@ -9,9 +9,12 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.HotRecommendBean;
+import com.example.bean.TBGoodsRecBean;
 import com.example.bean.UniversalListBean;
 import com.example.common.CommonResource;
 import com.example.module_home.R;
@@ -19,6 +22,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.universallist.adapter.BaoYouAdapter;
 import com.example.universallist.adapter.HotRecommendRecAdapter;
 import com.example.universallist.adapter.UniversalListRecAdapter;
 import com.example.utils.LogUtil;
@@ -39,6 +43,10 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
     private String itemType;
     private List<UniversalListBean.DataBean> dataBeanList = new ArrayList<>();
     private List<HotRecommendBean.DataBean> hotList = new ArrayList<>();
+    private List<TBGoodsRecBean.DataBean> tbList = new ArrayList();
+    private BaoYouAdapter baoYouAdapter;
+    private HotRecommendRecAdapter hotRecommendRecAdapter;
+    private UniversalListRecAdapter universalListRecAdapter;
 
     public UniversalListPresenter(Context context) {
         super(context);
@@ -49,16 +57,13 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
 
     }
 
-    public void universalList(final RecyclerView universalListRec, int position, final int page) {
+    public void universalList(int position, final int page) {
         if (position == 1) {
             //淘抢购
-            itemType = "item";
-        } else if (position == 2) {
-            //9.9包邮
             itemType = "tqg";
         } else if (position == 3) {
             //聚划算
-            itemType = "ju";
+            itemType = "item";
         }
         Map map = MapUtil.getInstance().addParms("page", page).addParms("itemtype", itemType).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETITEMS, map);
@@ -74,10 +79,14 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                         dataBeanList.clear();
                     }
                     dataBeanList.addAll(universalListBean.getData());
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
-                    UniversalListRecAdapter universalListRecAdapter = new UniversalListRecAdapter(mContext, dataBeanList, R.layout.item_universal_list_rec);
-                    universalListRec.setLayoutManager(gridLayoutManager);
-                    universalListRec.setAdapter(universalListRecAdapter);
+                    if (universalListRecAdapter == null) {
+                        universalListRecAdapter = new UniversalListRecAdapter(mContext, dataBeanList, R.layout.item_universal_list_rec);
+                        if (getView() != null) {
+                            getView().loadData(universalListRecAdapter);
+                        }
+                    } else {
+                        universalListRecAdapter.notifyDataSetChanged();
+                    }
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
@@ -106,7 +115,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         }));
     }
 
-    public void hotRecommend(final RecyclerView universalListRec, final int page, int type) {
+    public void hotRecommend(final int page, int type) {
         Map map = MapUtil.getInstance().addParms("sale_type", type).addParms("min_id", page).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSALESLIST, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -121,10 +130,14 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                         hotList.clear();
                     }
                     hotList.addAll(hotRecommendBean.getData());
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
-                    universalListRec.setLayoutManager(gridLayoutManager);
-                    HotRecommendRecAdapter hotRecommendRecAdapter = new HotRecommendRecAdapter(mContext, hotList, R.layout.item_universal_list_rec);
-                    universalListRec.setAdapter(hotRecommendRecAdapter);
+                    if (hotRecommendRecAdapter == null) {
+                        hotRecommendRecAdapter = new HotRecommendRecAdapter(mContext, hotList, R.layout.item_universal_list_rec);
+                        if (getView() != null) {
+                            getView().loadData(hotRecommendRecAdapter);
+                        }
+                    } else {
+                        hotRecommendRecAdapter.notifyDataSetChanged();
+                    }
                     hotRecommendRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
@@ -158,5 +171,78 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                 getView().finishRefresh();
             }
         }));
+    }
+
+
+    public void baoyou(final int page) {
+        Map build = MapUtil.getInstance().addParms("page", page).addParms("pagesize", 20).addParms("para", "9.9").addParms("start_price", "9").addParms("end_price", "10").build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.SEARCH_NEW_TB, build);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("UniversalListPresenter9.9包邮" + result);
+                JSONObject jsonObject = JSON.parseObject(result);
+                if (result != null) {
+                    if ("0".equals(jsonObject.getString("error"))) {
+                        String search_type = jsonObject.getString("search_type");
+                        if ("1".equals(search_type)) {
+                            JSONArray resultList = jsonObject.getJSONArray("result_list");
+                            if (page == 1) {
+                                tbList.clear();
+                            }
+                            for (int i = 0; i < resultList.size(); i++) {
+                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                JSONObject object = resultList.getJSONObject(i);
+                                dataBean.setItem_id(object.getString("item_id"));
+                                dataBean.setPict_url(object.getString("pict_url"));
+                                dataBean.setTitle(object.getString("title"));
+                                dataBean.setCommission_rate("" + object.getDouble("commission_rate"));
+                                dataBean.setVolume(object.getString("volume"));
+                                dataBean.setCoupon_amount(object.getString("coupon_amount"));
+                                dataBean.setZk_final_price(object.getString("zk_final_price"));
+                                dataBean.setReserve_price(object.getString("reserve_price"));
+                                dataBean.setTk_total_sales(object.getString("tk_total_sales"));
+                                dataBean.setCoupon_start_time(object.getString("coupon_start_time"));
+                                dataBean.setCoupon_end_time(object.getString("coupon_end_time"));
+                                tbList.add(dataBean);
+                            }
+                        }
+                    }
+                    if (baoYouAdapter == null) {
+                        baoYouAdapter = new BaoYouAdapter(mContext, tbList, R.layout.item_universal_list_rec);
+                        if (getView() != null) {
+                            getView().loadData(baoYouAdapter);
+                        }
+                    } else {
+                        baoYouAdapter.notifyDataSetChanged();
+                    }
+
+                    baoYouAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", tbList.get(position).getItem_id())
+                                    .withString("shoptype", "1")
+                                    .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
+                                    .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
+                                    .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
+                                    .withString("commission_rate", tbList.get(position).getCommission_rate())
+                                    .withInt("type", 0)
+                                    .navigation();
+                        }
+                    });
+                }
+
+                getView().finishRefresh();
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("UniversalListPresenter9.9包邮errorMsg" + errorMsg);
+                getView().finishRefresh();
+            }
+        }));
+
     }
 }

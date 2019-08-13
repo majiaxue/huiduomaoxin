@@ -227,6 +227,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             public void onClick(View v) {
                 if (1 == status) {
                     if ((System.currentTimeMillis() - exitTime) > 3000) {
+                        ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
                         presenter.ShareledSecurities(para, youhuiquan);
                         exitTime = System.currentTimeMillis();
                     } else {
@@ -305,52 +306,58 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 if (zkFinalPrice.contains("-")) {
                     String[] split = zkFinalPrice.split("-");
                     if (youhuiquan != 0) {
-                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), youhuiquan);//商品价格
+                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice) , youhuiquan);//商品价格
                         if (0 == type) {
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                            div = Double.valueOf(commission_rate) / 100;
                         } else {
                             //商品佣金率
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                            div = Double.valueOf(commission_rate) / 10000;
                         }
+                        double mul = div * sub * 0.9;
                         commodityPreferentialPrice.setText("￥" + sub);//优惠价
                         commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
-                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品优惠后" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品优惠后" + sub + "最终收益" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
                     } else {
                         if (0 == type) {
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                            div = Double.valueOf(commission_rate) / 100;
                         } else {
                             //商品佣金率
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                            div = Double.valueOf(commission_rate) / 10000;
                         }
+                        double mul = div * Double.valueOf(split[0]) * 0.9;
                         commodityPreferentialPrice.setText("￥" + split[0]);//优惠价
                         commodityOriginalPrice.setText("原价：￥" + split[0]);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(Double.valueOf(split[0]), div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品优惠后" + split[0] + "最终收益" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
                     }
 
                 } else {
                     if (youhuiquan != 0) {
-                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), youhuiquan);//商品价格
+                        double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice) , youhuiquan);//商品价格
                         if (0 == type) {
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                            div = Double.valueOf(commission_rate) / 100;
                         } else {
                             //商品佣金率
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                            div = Double.valueOf(commission_rate) / 10000;
                         }
+                        double mul = div * sub * 0.9;
                         commodityPreferentialPrice.setText("￥" + sub);//优惠价
                         commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
-                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + commission_rate + "商品价格" + sub + "最终收益" + ArithUtil.mul(ArithUtil.mul(sub, div), SPUtil.getFloatValue(CommonResource.BACKBL)));
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品优惠后" + sub + "最终收益" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
                     } else {
                         if (0 == type) {
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 100, 2);
+                            div = Double.valueOf(commission_rate) / 100;
                         } else {
                             //商品佣金率
-                            div = ArithUtil.div(ArithUtil.mulRound(Double.valueOf(commission_rate), 0.9), 10000, 2);
+                            div = Double.valueOf(commission_rate) / 10000;
                         }
+                        double mul = div * Double.valueOf(zkFinalPrice) * 0.9;
                         commodityPreferentialPrice.setText("￥" + zkFinalPrice);//优惠价
                         commodityOriginalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(ArithUtil.mul(Double.valueOf(zkFinalPrice), div), SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        commodityEarnings.setText("预估收益：￥" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
+                        LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品优惠后" + zkFinalPrice + "最终收益" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
                     }
                 }
             }

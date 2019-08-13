@@ -202,13 +202,23 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         punchSignSeveralDays.setText("" + continueDay);
         punchSignJiFenZhi.setText("" + jifen);
         punchSignText1.setText("+" + punchSignBean.getSignSetting().getViewGoods());
+        if (punchSignBean.getFinish().getHistoryCount() >= 1) {
+            punchSignText11.setText("完成" + 1 + "/1");
+        } else {
+            punchSignText11.setText("完成" + 0 + "/1");
+        }
         if (punchSignBean.getResult().getViewGoods() == 1) {
             punchSignText11.setText("完成1/1");
             punchSignText111.setText("已完成");
         }
         punchSignText2.setText("+" + punchSignBean.getSignSetting().getViewMoreGoods());
         punchSignText2222.setText("每日浏览" + punchSignBean.getSignSetting().getGoodsNum() + "件商品以上");
-        punchSignText22.setText("完成" + 0 + "/" + punchSignBean.getSignSetting().getGoodsNum());
+        if (punchSignBean.getFinish().getHistoryCount() >= punchSignBean.getSignSetting().getGoodsNum()) {
+            punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
+        } else {
+            punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
+        }
+        punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
         if (punchSignBean.getResult().getViewMoreGoods() == 1) {
             punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
             punchSignText222.setText("已完成");
@@ -254,18 +264,24 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
     @Override
     public void qianDao() {
         Toast.makeText(this, "签到成功", Toast.LENGTH_SHORT).show();
-        int continueDay = punchSignBean.getFinish().getContinueDay();
-        int daySign = punchSignBean.getSignSetting().getDaySign();
-        int continueDay1 = punchSignBean.getSignSetting().getContinueDay();
-        int continueSign = punchSignBean.getSignSetting().getContinueSign();
-        int jiFen = continueDay * daySign + continueDay / continueDay1 * continueSign;
+        int continueDay = punchSignBean.getFinish().getContinueDay();//自己签到天数
+        int daySign = punchSignBean.getSignSetting().getDaySign();//每天签到积分
+        int continueDay1 = punchSignBean.getSignSetting().getContinueDay();//系统设置天数
+        int continueSign = punchSignBean.getSignSetting().getContinueSign();//连续签到积分
         int newDay = continueDay + 1;
-        int newJiFen = jiFen + daySign;
-        allJiFen = allJiFen + daySign;
+        int jiFen = continueDay * daySign + ((newDay / continueDay1) * continueSign);
+        LogUtil.e("自己签到天数" + continueDay + "每天签到积分" + daySign + "系统设置天数" + continueDay1 + "连续签到积分" + continueSign + "积分" + jiFen);
 
-        punchSignJiFen.setText("" + allJiFen);
-        punchSignSeveralDays.setText("" + newDay);
-        punchSignJiFenZhi.setText("" + newJiFen);
+        int newJiFen = jiFen + daySign;
+        if ((newDay / continueDay1) >= 1) {
+            allJiFen = allJiFen + ((newDay / continueDay1) * continueSign) + daySign;
+        } else {
+            allJiFen = allJiFen + daySign;
+        }
+
+        punchSignJiFen.setText("" + allJiFen);//签到总积分
+        punchSignSeveralDays.setText("" + newDay);//签到天数
+        punchSignJiFenZhi.setText("" + newJiFen);//签到获得积分
     }
 
     @Override

@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/user_home_top_img"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_151"
+        android:layout_height="@dimen/dp_200"
         android:scaleType="fitXY" />
 
     <include
@@ -89,16 +89,16 @@
                 <com.stx.xhb.xbanner.XBanner
                     android:id="@+id/user_home_xbanner"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_130"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_height="@dimen/dp_150"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_7"
-                    app:clipChildrenLeftRightMargin="@dimen/dp_10"
+                    app:clipChildrenLeftRightMargin="@dimen/dp_15"
                     app:clipChildrenTopBottomMargin="@dimen/dp_0"
                     app:isAutoPlay="true"
                     app:isClipChildrenMode="true"
                     app:pointNormal="@drawable/shape_noraml"
                     app:pointSelect="@drawable/shape_select"
-                    app:viewpagerMargin="@dimen/dp_20"></com.stx.xhb.xbanner.XBanner>
+                    app:viewpagerMargin="@dimen/dp_30"></com.stx.xhb.xbanner.XBanner>
 
                 <LinearLayout
                     android:layout_width="match_parent"

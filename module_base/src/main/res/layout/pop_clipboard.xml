@@ -1,69 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp_301"
-    android:layout_height="@dimen/dp_472"
+    android:layout_width="@dimen/dp_250"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="@dimen/dp_301"
-        android:layout_height="@dimen/dp_422"
-        android:background="@drawable/bg_youhuitanchuang">
+        android:layout_width="@dimen/dp_250"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_10_fff">
+
+        <ImageView
+            android:id="@+id/pop_bg_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_130"
+            android:src="@drawable/pop_bg__sousuotanhcuang" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/pop_clipboard_content"
+            android:layout_width="@dimen/dp_203"
             android:layout_height="wrap_content"
+            android:layout_below="@id/pop_bg_image"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_45"
-            android:includeFontPadding="false"
-            android:text="智能搜索优惠券"
-            android:textColor="#fdfaf9"
-            android:textSize="@dimen/sp_30" />
+            android:layout_marginTop="@dimen/dp_10"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="【拼团购】蓝月亮 洗衣液机洗深层洁净1kg*2瓶装 薰衣草香"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_14" />
 
-        <RelativeLayout
-            android:id="@+id/pop_clipboard_rela"
-            android:layout_width="@dimen/dp_300"
-            android:layout_height="@dimen/dp_197"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_108"
-            android:background="@drawable/img_xiaoxi"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/pop_clipboard_content"
-                android:layout_width="@dimen/dp_233"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/dp_46"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="【拼团购】蓝月亮 洗衣液机洗深层洁净1kg*2瓶装 薰衣草香"
-                android:textColor="#333333"
-                android:textSize="@dimen/sp_14" />
-        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/pop_clipboard_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pop_clipboard_rela"
-            android:gravity="center_vertical"
+            android:layout_below="@id/pop_clipboard_content"
+            android:layout_marginTop="@dimen/dp_23"
+            android:gravity="center"
             android:orientation="horizontal">
-
-            <View
-                android:layout_width="@dimen/dp_34"
-                android:layout_height="@dimen/dp_0" />
 
             <View
                 android:layout_width="@dimen/dp_68"
                 android:layout_height="@dimen/dp_1"
                 android:background="#eeeeee" />
-
-            <View
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_0"
-                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,18 +51,10 @@
                 android:textSize="@dimen/sp_12" />
 
             <View
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_0"
-                android:layout_weight="1" />
-
-            <View
                 android:layout_width="@dimen/dp_68"
                 android:layout_height="@dimen/dp_1"
                 android:background="#eeeeee" />
 
-            <View
-                android:layout_width="@dimen/dp_34"
-                android:layout_height="@dimen/dp_0" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pop_clipboard_linear"
             android:layout_marginTop="@dimen/dp_22"
+            android:layout_marginBottom="@dimen/dp_16"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -105,7 +76,7 @@
                     android:id="@+id/pop_clipboard_tb"
                     android:layout_width="@dimen/dp_41"
                     android:layout_height="@dimen/dp_41"
-                    android:src="@drawable/img_taobao" />
+                    android:src="@drawable/pop_icon_taobao" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -128,7 +99,7 @@
                     android:id="@+id/pop_clipboard_pdd"
                     android:layout_width="@dimen/dp_41"
                     android:layout_height="@dimen/dp_41"
-                    android:src="@drawable/img_pinduoduo" />
+                    android:src="@drawable/pop_icon_pinduoduo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,7 +122,7 @@
                     android:id="@+id/pop_clipboard_jd"
                     android:layout_width="@dimen/dp_41"
                     android:layout_height="@dimen/dp_41"
-                    android:src="@drawable/img_jingdong" />
+                    android:src="@drawable/pop_icon_jingdong" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,6 +140,6 @@
         android:layout_width="@dimen/dp_26"
         android:layout_height="@dimen/dp_26"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dp_27"
+        android:layout_marginTop="@dimen/dp_20"
         android:src="@drawable/icon_guanbi" />
 </LinearLayout>

@@ -110,11 +110,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     public void setXBanner(final XBanner homeXbanner, final ImageView homeTopBg) {
         //轮播图
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.USERSBANNER);
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9005).getDataWithout(CommonResource.HOMEADVERTISETK);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-//                LogUtil.e("homePresenterResult---------->" + result);
+                LogUtil.e("homePresenterResult轮播图---------->" + result);
                 BannerBean records = JSON.parseObject(result, BannerBean.class);
 
                 if (records != null) {
@@ -181,7 +181,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("homePresenterErrorMsg---------->" + errorMsg);
+                LogUtil.e("homePresenterErrorMsg轮播图---------->" + errorMsg);
             }
 
         }));
@@ -203,7 +203,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     for (int i = 0; i < zhongXBannerBean.getRecords().size(); i++) {
                         images.add(zhongXBannerBean.getRecords().get(i).getPicUrl());
                     }
-                    homeZhongXbanner.setPageMargin(30);
+                    homeZhongXbanner.setPageMargin(16);
                     homeZhongXbanner.setOffscreenPageLimit(3);
                     homeZhongXbanner.setPageTransformer(true, new RotateYTransformer());
                     homeZhongXbanner.setAdapter(mAdapter = new PagerAdapter() {
@@ -220,7 +220,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                     if (realPosition == 0) {
 
                                     } else if (realPosition == 1) {
-                                        ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                                        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                            ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                                        } else {
+                                            //是否登录
+                                            PopUtils.isLogin(mContext);
+                                        }
                                     } else {
                                         ARouter.getInstance().build("/mine/invite_friends").navigation();
                                     }
