@@ -18,7 +18,7 @@ public class SaleHotAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean> {
     public void convert(RecyclerViewHolder holder, HotSaleBean.DataBean data, int position) {
         holder.setImageUrl(R.id.rv_hot_image, data.getPic())
                 .setText(R.id.rv_hot_name, data.getName())
-                .setText(R.id.rv_hot_price_new, "￥" + data.getPromotionPrice())
+                .setText(R.id.rv_hot_price_new, "￥" + data.getPrice())
                 .setText(R.id.rv_hot_price_old, data.getPrice() + "")
                 .setTextLine(R.id.rv_hot_price_old);
     }

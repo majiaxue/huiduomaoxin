@@ -142,7 +142,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         ModuleBaseApplication.initShare();
         customDialog = new CustomDialog(this);
         customDialog.show();
-        LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList+"userCode"+ SPUtil.getUserCode());
+        LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList + "userCode" + SPUtil.getUserCode());
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         //店铺头像
@@ -160,7 +160,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         //商品详情图片
         presenter.setShopParticulars(shopParticulars, listsBeanList);
         sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
-
         commodityName.setText(listsBeanList.getSkuName());//名字
         commodityPreferentialPrice.setText("￥" + sub);//优惠价
         commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.getPriceInfo().getPrice()));//原价

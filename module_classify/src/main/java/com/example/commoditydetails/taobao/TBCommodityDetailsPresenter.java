@@ -169,8 +169,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                 JSONObject jsonObject = JSON.parseObject(result);
                 JSONArray albumPics = jsonObject.getJSONArray("albumPics");
                 String info = (String) jsonObject.get("info");
-                LogUtil.e("数组" + albumPics);
-                LogUtil.e("对象" + info);
                 if (albumPics != null && albumPics.size() != 0) {
                     for (int i = 0; i < albumPics.size(); i++) {
                         imageList.add(albumPics.get(i).toString());
@@ -320,7 +318,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //领劵
     public void ledSecurities(String para) {
         LogUtil.e("----------------------->" + para);
-        Map map = MapUtil.getInstance().addParms("para", para).build();
+        Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", "0").build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 
@@ -334,15 +332,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                         shouQuan();
                         ((Activity) mContext).finish();
                     }
-//                    getView().shouQuan();
                 } else if (result.startsWith("{error:15")) {
                     Map errorMap = new Gson().fromJson(result, Map.class);
                     LogUtil.e("errorMap---->" + errorMap.toString());
                     num_iid = (String) errorMap.get("num_iid");
                     jumpToTB("", 1);
-//                    if (getView() != null) {
-//                        getView().noCoupon(true);
-//                    }
                 } else {
                     tbLedSecuritiesBean = JSON.parseObject(result, new TypeReference<TBLedSecuritiesBean>() {
                     }.getType());

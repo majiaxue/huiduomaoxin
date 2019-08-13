@@ -355,10 +355,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     homeSlideIndicatorPoint.setProgress(0);
                 } else if (dx > 0) {
 //                    int ss = (int)(tt/2.3f);
-                    LogUtil.e("dx------" + "右滑");
                     homeSlideIndicatorPoint.setProgress(offset);
                 } else if (dx < 0) {
-                    LogUtil.e("dx------" + "左滑");
                     homeSlideIndicatorPoint.setProgress(offset);
                 }
             }
