@@ -1,6 +1,8 @@
 package com.example.universallist;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +14,9 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
+import com.example.universallist.adapter.BaoYouAdapter;
+import com.example.universallist.adapter.HotRecommendRecAdapter;
+import com.example.universallist.adapter.UniversalListRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.scwang.smartrefresh.header.MaterialHeader;
@@ -66,11 +71,15 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
         } else {
             includeTitle.setText("好货优选");
         }
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
+        universalListRec.setLayoutManager(gridLayoutManager);
 
         if (position >= 4) {
-            presenter.hotRecommend(universalListRec, page, type);
+            presenter.hotRecommend(page, type);
+        } else if (position == 2) {
+            presenter.baoyou(page);
         } else {
-            presenter.universalList(universalListRec, position, page);
+            presenter.universalList(position, page);
         }
         universalListSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         universalListSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
@@ -79,10 +88,12 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                if (position == 4) {
-                    presenter.hotRecommend(universalListRec, page, type);
+                if (position >= 4) {
+                    presenter.hotRecommend(page, type);
+                } else if (position == 2) {
+                    presenter.baoyou(page);
                 } else {
-                    presenter.universalList(universalListRec, position, page);
+                    presenter.universalList(position, page);
                 }
             }
         });
@@ -91,10 +102,12 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                if (position == 4) {
-                    presenter.hotRecommend(universalListRec, page, type);
+                if (position >= 4) {
+                    presenter.hotRecommend(page, type);
+                } else if (position == 2) {
+                    presenter.baoyou(page);
                 } else {
-                    presenter.universalList(universalListRec, position, page);
+                    presenter.universalList(position, page);
                 }
             }
         });
@@ -124,5 +137,20 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
     public void finishRefresh() {
         universalListSmartRefresh.finishRefresh();
         universalListSmartRefresh.finishLoadMore();
+    }
+
+    @Override
+    public void loadData(BaoYouAdapter baoYouAdapter) {
+        universalListRec.setAdapter(baoYouAdapter);
+    }
+
+    @Override
+    public void loadData(HotRecommendRecAdapter hotRecommendRecAdapter) {
+        universalListRec.setAdapter(hotRecommendRecAdapter);
+    }
+
+    @Override
+    public void loadData(UniversalListRecAdapter universalListRecAdapter) {
+        universalListRec.setAdapter(universalListRecAdapter);
     }
 }

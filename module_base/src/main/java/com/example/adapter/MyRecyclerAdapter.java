@@ -35,6 +35,11 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         inflater = LayoutInflater.from(context);
     }
 
+    public MyRecyclerAdapter(Context context, List<T> mList) {
+        this.context = context;
+        this.mList = mList;
+    }
+
     //在RecyclerView提供数据的时候调用
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

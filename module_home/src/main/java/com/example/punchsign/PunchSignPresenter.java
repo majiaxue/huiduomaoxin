@@ -85,19 +85,18 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("签到Result" + result);
+                LogUtil.e("签到Result" + result + msg);
                 if (result.contains("true")) {
                     if (getView() != null) {
                         getView().qianDao();
                     }
-                } else {
-                    Toast.makeText(mContext, "您已签到无需再签", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("签到ErrorMsg" + errorMsg);
+                Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }

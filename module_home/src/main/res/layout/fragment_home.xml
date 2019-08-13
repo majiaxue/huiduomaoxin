@@ -9,7 +9,7 @@
         android:id="@+id/home_top_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_200"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
     <include
         android:id="@+id/home_status"
@@ -75,14 +75,14 @@
 
     </RelativeLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/home_nested_scroll"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/home_smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/relative">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/home_smart_refresh"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/home_nested_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -95,9 +95,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_150"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dp_7"
                     app:clipChildrenLeftRightMargin="@dimen/dp_15"
-                    app:clipChildrenTopBottomMargin="@dimen/dp_0"
+                    app:clipChildrenTopBottomMargin="@dimen/dp_10"
                     app:isAutoPlay="true"
                     app:isClipChildrenMode="true"
                     app:pointNormal="@drawable/shape_noraml"
@@ -189,11 +188,12 @@
                             android:visibility="visible" />
 
                         <ImageView
+                            android:id="@+id/home_huo_dong"
                             android:layout_width="@dimen/dp_335"
                             android:layout_height="@dimen/dp_101"
                             android:layout_below="@id/home_slide_indicator_point"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/newuser_gift" />
+                            android:src="@drawable/bg_huodong" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -449,11 +449,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_87"
                             android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/dp_27"
                             android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginRight="@dimen/dp_27"
                             android:layout_marginBottom="@dimen/dp_10"
-                            android:clipToPadding="false"
-                            android:layout_marginLeft="@dimen/dp_44"
-                            android:layout_marginRight="@dimen/dp_44" />
+                            android:clipToPadding="false" />
                     </FrameLayout>
 
                     <RelativeLayout
@@ -534,8 +534,8 @@
                 </LinearLayout>
             </RelativeLayout>
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <ImageView
         android:id="@+id/home_gotop"

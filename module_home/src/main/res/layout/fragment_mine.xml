@@ -43,7 +43,6 @@
             android:background="@drawable/bg_10_fff"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 
             <ImageView
@@ -388,7 +387,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/bg_10_fff"
-            android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 
             <TextView
@@ -511,7 +509,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/bg_10_fff"
-            android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 
             <TextView
@@ -620,7 +617,6 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_19"
             android:background="@drawable/bg_10_fff"
-            android:elevation="@dimen/dp_4"
             android:orientation="vertical">
 
             <TextView

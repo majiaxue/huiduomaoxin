@@ -30,14 +30,14 @@ public class SecondaryPddRecAdapter extends MyRecyclerAdapter<SecondaryPddRecBea
         //拼多多
         holder.setImageResource(com.example.module_base.R.id.base_type, com.example.module_base.R.drawable.pinduoduo);
 
-        double div = ArithUtil.div(Double.valueOf(data.getMin_group_price()) - Double.valueOf(data.getCoupon_discount()), 100, 1);
-        double mul = ArithUtil.mul(div, ArithUtil.div(Double.valueOf(data.getPromotion_rate()), 1000, 1));
+        double div = ArithUtil.div(Double.valueOf(data.getMin_group_price()) - Double.valueOf(data.getCoupon_discount()), 100, 2);
+        double mul = ArithUtil.mul(div, ArithUtil.div(Double.valueOf(data.getPromotion_rate()), 1000, 2));
 
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getGoods_thumbnail_url());
         holder.setText(R.id.base_name, data.getGoods_name());
-        holder.setText(R.id.base_reduce_price, "领劵减" + ArithUtil.div(Double.valueOf(data.getCoupon_discount()), 100, 0) + "元");
+        holder.setText(R.id.base_reduce_price, "领劵减" + ArithUtil.div(Double.valueOf(data.getCoupon_discount()), 100, 2) + "元");
         holder.setText(R.id.base_preferential_price, "￥" + div);
-        holder.setText(R.id.base_original_price, "" + ArithUtil.div(Double.valueOf(data.getMin_group_price()), 100, 1));
+        holder.setText(R.id.base_original_price, "" + ArithUtil.div(Double.valueOf(data.getMin_group_price()), 100, 2));
         if (!TextUtils.isEmpty(data.getSold_quantity())){
             holder.setText(R.id.base_number, "已抢" + data.getSold_quantity());
         }else{
@@ -47,7 +47,7 @@ public class SecondaryPddRecAdapter extends MyRecyclerAdapter<SecondaryPddRecBea
         holder.setTextLine(R.id.base_original_price);
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
             holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
-            LogUtil.e("预估收益: 到手价" + div + "佣金比例" + mul + "个人佣金" + SPUtil.getFloatValue(CommonResource.BACKBL));
+//            LogUtil.e("预估收益: 到手价" + div + "佣金比例" + mul + "个人佣金" + SPUtil.getFloatValue(CommonResource.BACKBL));
         } else {
             holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mul(mul, 0.3));
         }

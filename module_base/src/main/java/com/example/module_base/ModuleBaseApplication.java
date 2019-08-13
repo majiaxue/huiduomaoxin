@@ -20,7 +20,10 @@ import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.kepler.jd.Listener.AsyncInitListener;
 import com.kepler.jd.login.KeplerApiManager;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -47,6 +50,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         CitySPUtil.getInstance(this);
         //初始化DBFLOW
         FlowManager.init(this);
+        //初始化fresco
         initFresco();
 
         IWXAPI wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
@@ -105,6 +109,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 .setBaseDirectoryPath(getCacheDir())
                 .setMaxCacheSize(8*1024*1024)
                 .build();
+
         //对ImagePipelineConfig进行一些配置
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setDownsampleEnabled(true)              // 对图片进行自动缩放
