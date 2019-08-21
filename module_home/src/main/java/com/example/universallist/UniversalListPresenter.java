@@ -41,7 +41,7 @@ import io.reactivex.Observable;
 public class UniversalListPresenter extends BasePresenter<UniversalListView> {
 
     private String itemType;
-    private List<UniversalListBean.DataBean> dataBeanList = new ArrayList<>();
+    private List<UniversalListBean.DataBean.ListBean> dataBeanList = new ArrayList<>();
     private List<HotRecommendBean.DataBean> hotList = new ArrayList<>();
     private List<TBGoodsRecBean.DataBean> tbList = new ArrayList();
     private BaoYouAdapter baoYouAdapter;
@@ -60,13 +60,13 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
     public void universalList(int position, final int page) {
         if (position == 1) {
             //淘抢购
-            itemType = "tqg";
+            itemType = "taoQiangGou";
         } else if (position == 3) {
             //聚划算
-            itemType = "item";
+            itemType = "juHuaSuan";
         }
-        Map map = MapUtil.getInstance().addParms("page", page).addParms("itemtype", itemType).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETITEMS, map);
+        Map map = MapUtil.getInstance().addParms("pageNum", page).addParms(itemType, 1).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.GETGOODSLIST, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -78,7 +78,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     if (page == 1) {
                         dataBeanList.clear();
                     }
-                    dataBeanList.addAll(universalListBean.getData());
+                    dataBeanList.addAll(universalListBean.getData().getList());
                     if (universalListRecAdapter == null) {
                         universalListRecAdapter = new UniversalListRecAdapter(mContext, dataBeanList, R.layout.item_universal_list_rec);
                         if (getView() != null) {
@@ -90,15 +90,13 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            String startTime = MyTimeUtil.date2String(dataBeanList.get(position).getOnline_start_time() + "000");
-                            String endTime = MyTimeUtil.date2String(dataBeanList.get(position).getOnline_end_time() + "000");
                             ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", dataBeanList.get(position).getNum_iid())
+                                    .withString("para", dataBeanList.get(position).getGoodsId())
                                     .withString("shoptype", "1")
-                                    .withDouble("youhuiquan", dataBeanList.get(position).getYouhuiquan())
-                                    .withString("coupon_start_time", startTime)
-                                    .withString("coupon_end_time", endTime)
-                                    .withString("commission_rate", dataBeanList.get(position).getCommission_rate() + "")
+                                    .withDouble("youhuiquan", dataBeanList.get(position).getCouponPrice())
+                                    .withString("coupon_start_time", dataBeanList.get(position).getCouponStartTime())
+                                    .withString("coupon_end_time", dataBeanList.get(position).getCouponEndTime())
+                                    .withString("commission_rate", dataBeanList.get(position).getCommissionRate() + "")
                                     .withInt("type", 0)
                                     .navigation();
                         }

@@ -34,13 +34,13 @@ public class TBRecommendAdapter extends MyRecyclerAdapter<TBGoodChoiceBean.DataB
             holder.setImageResource(R.id.base_type, R.drawable.tianmao);
         }
         double sub = Double.valueOf(data.getZk_final_price()) - Double.valueOf(data.getCoupon_amount());
-        double div = Double.valueOf(data.getCommission_rate()) / 10000;
+        double div = Double.valueOf(data.getCommission_rate()) / 100;
         double mul = sub * div * 0.9;//商品收益需要乘个人收益
 
         holder.setImageFresco(R.id.base_image, data.getPict_url());
         holder.setText(R.id.base_name, data.getTitle());
         holder.setText(R.id.base_reduce_price, "领劵减" + data.getCoupon_amount() + "元");
-        holder.setText(R.id.base_preferential_price, "￥" + sub);
+        holder.setText(R.id.base_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getZk_final_price()) , Double.valueOf(data.getCoupon_amount())));
         holder.setText(R.id.base_original_price, data.getZk_final_price());
         holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿

@@ -245,6 +245,12 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
             //隐藏
             commodityStick.setVisibility(View.GONE);
         }
+
+        if (y <= commodityName.getHeight()) {
+            commodityXbanner.stopAutoPlay();
+        } else {
+            commodityXbanner.startAutoPlay();
+        }
     }
 
     @Override

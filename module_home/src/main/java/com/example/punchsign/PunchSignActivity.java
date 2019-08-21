@@ -213,11 +213,11 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         }
         punchSignText2.setText("+" + punchSignBean.getSignSetting().getViewMoreGoods());
         punchSignText2222.setText("每日浏览" + punchSignBean.getSignSetting().getGoodsNum() + "件商品以上");
-        if (punchSignBean.getFinish().getHistoryCount() >= punchSignBean.getSignSetting().getGoodsNum()) {
-            punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
-        } else {
+//        if (punchSignBean.getFinish().getHistoryCount() >= punchSignBean.getSignSetting().getGoodsNum()) {
+//            punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
+//        } else {
             punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
-        }
+//        }
         punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
         if (punchSignBean.getResult().getViewMoreGoods() == 1) {
             punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
@@ -297,7 +297,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
             int viewMoreGoods = punchSignBean.getSignSetting().getViewMoreGoods();
             allJiFen = viewMoreGoods + allJiFen;
             punchSignJiFen.setText("" + allJiFen);
-            punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
+            punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
             punchSignText222.setText("已完成");
         }
     }

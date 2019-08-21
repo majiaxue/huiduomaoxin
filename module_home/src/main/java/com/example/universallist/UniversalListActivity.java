@@ -62,25 +62,23 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
         LogUtil.e("从哪个地方近的" + position);
         if (position == 1) {
             includeTitle.setText("淘抢购");
+            presenter.universalList(position, page);
         } else if (position == 2) {
             includeTitle.setText("9.9包邮");
+            presenter.baoyou(page);
         } else if (position == 3) {
             includeTitle.setText("聚划算");
+            presenter.universalList(position, page);
         } else if (position == 4) {
             includeTitle.setText("爆款推荐");
+            presenter.hotRecommend(page, type);
         } else {
             includeTitle.setText("好货优选");
+            presenter.hotRecommend(page, type);
         }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         universalListRec.setLayoutManager(gridLayoutManager);
 
-        if (position >= 4) {
-            presenter.hotRecommend(page, type);
-        } else if (position == 2) {
-            presenter.baoyou(page);
-        } else {
-            presenter.universalList(position, page);
-        }
         universalListSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         universalListSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
 
