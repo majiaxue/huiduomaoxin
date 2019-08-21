@@ -163,7 +163,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                 .withString("para", orderBeans.get(position).getNumIid())
                                 .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
-                                .withString("commission_rate", ArithUtil.mul(Double.valueOf(orderBeans.get(position).getTotalCommissionRate()), 10000) + "")
+                                .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
                                 .withInt("type", 1)
                                 .navigation();
                     }

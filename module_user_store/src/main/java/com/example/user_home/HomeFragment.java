@@ -54,8 +54,6 @@ import butterknife.BindView;
 public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implements HomeView, NestedScrollView.OnScrollChangeListener {
     @BindView(R2.id.user_home_back)
     ImageView userHomeBack;
-    @BindView(R2.id.user_home_top_img)
-    ImageView userHomeTopImg;
     @BindView(R2.id.user_home_search)
     TextView userHomeSearch;
     @BindView(R2.id.user_home_msg_img)
@@ -98,11 +96,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         userHomeRvHot.addItemDecoration(new SpaceItemDecoration(0, (int) getResources().getDimension(R.dimen.dp_8), 0, 0));
         userHomeRvHot.setLayoutManager(linearLayoutManager);
-
-        // 设置XBanner的页面切换特效
-        userHomeXbanner.setPageTransformer(Transformer.Default);
-        // 设置XBanner页面切换的时间，即动画时长
-        userHomeXbanner.setPageChangeDuration(1000);
 
         //新品推荐
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -202,7 +195,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void loadBanner(final List<BannerBean.RecordsBean> beanList) {
         userHomeXbanner.setBannerData(beanList);
-        Glide.with(getContext()).load(beanList.get(0).getPicBackUrl()).into(userHomeTopImg);
         userHomeXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
@@ -212,24 +204,24 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         });
 
         //banner切换image也切换
-        userHomeXbanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if (!getActivity().isFinishing()) {
-                    Glide.with(getContext()).load(beanList.get(i).getPicBackUrl()).into(userHomeTopImg);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+//        userHomeXbanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int i, float v, int i1) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int i) {
+//                if (!getActivity().isFinishing()) {
+//                    Glide.with(getContext()).load(beanList.get(i).getPicBackUrl()).into(userHomeTopImg);
+//                }
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int i) {
+//
+//            }
+//        });
     }
 
     @Override

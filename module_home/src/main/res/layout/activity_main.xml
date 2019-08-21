@@ -22,13 +22,17 @@
             style="@style/main_bottom_back"
             android:checked="true"
             android:drawableTop="@drawable/bg_home"
-            android:paddingTop="@dimen/dp_7" />
+            android:paddingTop="@dimen/dp_7"
+            android:textColor="@color/color_f23_010"
+            android:text="首页" />
 
         <RadioButton
             android:id="@+id/main_classify"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_super_brand"
-            android:paddingTop="@dimen/dp_7" />
+            android:textColor="@color/color_f23_010"
+            android:paddingTop="@dimen/dp_7"
+            android:text="品牌" />
 
         <LinearLayout
             android:id="@+id/main_user_mall"
@@ -37,9 +41,9 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_33"
-                android:src="@drawable/shangcheng" />
+                android:layout_width="@dimen/dp_43"
+                android:layout_height="@dimen/dp_43"
+                android:src="@drawable/huiyuan" />
 
         </LinearLayout>
 
@@ -47,13 +51,17 @@
             android:id="@+id/main_community"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_hairring"
-            android:paddingTop="@dimen/dp_7" />
+            android:textColor="@color/color_f23_010"
+            android:paddingTop="@dimen/dp_7"
+            android:text="社区" />
 
         <RadioButton
             android:id="@+id/main_mine"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_mine"
-            android:paddingTop="@dimen/dp_7" />
+            android:textColor="@color/color_f23_010"
+            android:paddingTop="@dimen/dp_7"
+            android:text="我的" />
     </RadioGroup>
 
 </LinearLayout>

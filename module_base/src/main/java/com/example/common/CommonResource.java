@@ -100,6 +100,7 @@ public class CommonResource {
     public static final String LOCAL_BALANCE_PAY = "/rest/localPay/localOrderPay";   //本地商城余额支付
     public static final String LIBAO_CANCEL_ORDER = "/rest/order/remove/level";     //取消礼包订单
     public static final String TKOULING = "/rest/tbk/goods/jiexitkl";           //淘口令转商品信息
+    public static final String INVITE_ERWEIMA = "/rest/share/register";         //邀请好友页面升成二维码所需地址
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

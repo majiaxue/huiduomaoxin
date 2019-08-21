@@ -28,5 +28,15 @@ public class JdFansAdapter extends MyRecyclerAdapter<JdFansOrderBean> {
                 .setImageUrl(R.id.fans_order_list_head, data.getFansIcon())
                 .setText(R.id.fans_order_list_nickname, data.getFansName())
                 .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
+
+        if ("15".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "待付款");
+        } else if ("16".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "已付款");
+        } else if ("17".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "已结算");
+        } else {
+            holder.setText(R.id.order_list_status, "已失效");
+        }
     }
 }

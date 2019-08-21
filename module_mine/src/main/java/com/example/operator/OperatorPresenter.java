@@ -2,8 +2,14 @@ package com.example.operator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -20,6 +26,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.operator.adapter.OperatorVpRvAdapter;
 import com.example.operator.adapter.YysFactorAdapter;
 import com.example.operator.adapter.YysQuanyiAdapter;
 import com.example.utils.LogUtil;
@@ -27,7 +34,9 @@ import com.example.utils.MapUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
+import com.example.utils.SpaceItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +50,8 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
     private int sort;
     private int clickPosition = 0;
     private List<UserGoodsDetail> goodsBeans;
+    private List<View> viewList = new ArrayList<>();
+    private OperatorVpRvAdapter rvAdapter;
 
     public OperatorPresenter(Context context) {
         super(context);
@@ -58,6 +69,9 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("运营商：" + result);
                 beanList = JSON.parseArray(result, OperatorBean.class);
+                initVp();
+                getFactor(0);
+
                 factorAdapter = new YysFactorAdapter(mContext, beanList, R.layout.rv_yys_factor);
 
                 factorAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
@@ -88,9 +102,6 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
                         });
                     }
                 });
-                if (getView() != null) {
-                    getView().loadFactor(factorAdapter);
-                }
             }
 
             @Override
@@ -98,6 +109,93 @@ public class OperatorPresenter extends BasePresenter<OperatorView> {
 
             }
         }));
+    }
+
+    private void initVp() {
+        for (int i = 0; i < beanList.size(); i++) {
+            List<String> dataList = new ArrayList<>();
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            View view = inflater.inflate(R.layout.vp_operator, null);
+            ImageView img = view.findViewById(R.id.vp_operator_level);
+            RecyclerView rv = view.findViewById(R.id.vp_operator_rv);
+            if (i == 0) {
+                img.setImageResource(R.drawable.vip_chuji);
+            } else if (i == 1) {
+                img.setImageResource(R.drawable.vip_zhongji);
+            } else if (i == 2) {
+                img.setImageResource(R.drawable.vip_gaoji);
+            }
+
+            GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+            rv.setLayoutManager(layoutManager);
+            rv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) mContext.getResources().getDimension(R.dimen.dp_11)));
+            if (i == 0) {
+                dataList.add("金牌");
+            } else {
+                dataList.add(beanList.get(i - 1).getName());
+            }
+            dataList.add(beanList.get(i).getSharePercent());
+            dataList.add(beanList.get(i).getSharePercent());
+            dataList.add(beanList.get(i).getPerCashs());
+            dataList.add(beanList.get(i).getPerCashs());
+            dataList.add(beanList.get(i).getSharePercent());
+            rvAdapter = new OperatorVpRvAdapter(mContext, dataList, R.layout.rv_vp_operator);
+            rv.setAdapter(rvAdapter);
+
+            viewList.add(view);
+        }
+
+        PagerAdapter pagerAdapter = new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return viewList.size();
+            }
+
+            @Override
+            public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
+                return view == o;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position,
+                                    Object object) {
+                // TODO Auto-generated method stub
+                container.removeView(viewList.get(position));
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                // TODO Auto-generated method stub
+                container.addView(viewList.get(position));
+                return viewList.get(position);
+            }
+        };
+
+        if (getView() != null) {
+            getView().loadVp(pagerAdapter);
+        }
+    }
+
+    public void getFactor(int position) {
+        StringBuffer str = new StringBuffer();
+        if (beanList.get(position).getSelfOrderNum() != null) {
+            str.append("· 自购订单数量：" + beanList.get(position).getSelfOrderNum() + "单\n");
+        }
+        if (beanList.get(position).getDirectFansNum() != null) {
+            str.append("· 邀请直属粉丝数量：" + beanList.get(position).getDirectFansNum() + "个\n");
+        }
+        if (beanList.get(position).getSelfCommission() != null) {
+            str.append("· 累计预估佣金：" + beanList.get(position).getSelfCommission() + "元\n");
+        }
+        if (beanList.get(position).getIndirectFansNum() != null) {
+            str.append("· 非直推有效粉丝：" + beanList.get(position).getIndirectFansNum() + "人\n");
+        }
+        if (beanList.get(position).getRecommendNum() != null) {
+            str.append("· 推荐运营商：" + beanList.get(position).getRecommendNum() + "个\n");
+        }
+        if (getView() != null) {
+            getView().loadFactor(str.length() == 0 ? "" : str.toString().substring(0, str.length() - 1));
+        }
     }
 
     public void inviteFans() {

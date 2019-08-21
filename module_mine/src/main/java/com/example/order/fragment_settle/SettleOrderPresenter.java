@@ -94,6 +94,8 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                 .withString("para", orderBeans.get(position).getNumIid())
                                 .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
+                                .withInt("type", 1)
                                 .navigation();
                     }
                 });
@@ -191,15 +193,19 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝图片：" + result);
-                JSONObject jsonObject = JSON.parseObject(result);
-                String info = (String) jsonObject.get("info");
+                try {
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    String info = (String) jsonObject.get("info");
 
-                if (!TextUtils.isEmpty(info)) {
-                    TBGoodsDetailsBean tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
-                    }.getType());
+                    if (!TextUtils.isEmpty(info)) {
+                        TBGoodsDetailsBean tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
+                        }.getType());
 
-                    orderBeans.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
-                    tbAdapter.notifyDataSetChanged();
+                        orderBeans.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
+                        tbAdapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

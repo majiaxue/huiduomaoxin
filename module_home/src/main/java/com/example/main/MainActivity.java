@@ -87,7 +87,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         mainUserMall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_store/UserActivity").navigation();
+                ARouter.getInstance().build("/mine/operator").navigation();
             }
         });
     }

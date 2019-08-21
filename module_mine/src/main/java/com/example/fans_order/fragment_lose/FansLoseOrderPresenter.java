@@ -213,17 +213,21 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝图片：" + result);
-                JSONObject jsonObject = JSON.parseObject(result);
-                String info = (String) jsonObject.get("info");
+                try {
+                    JSONObject jsonObject = JSON.parseObject(result);
+                    String info = (String) jsonObject.get("info");
 
-                if (!TextUtils.isEmpty(info)) {
-                    TBGoodsDetailsBean tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
-                    }.getType());
-                    if (getView() != null) {
-                        tbList.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
-                        tbFansAdapter.notifyDataSetChanged();
-                        getView().moveTo(flag);
+                    if (!TextUtils.isEmpty(info)) {
+                        TBGoodsDetailsBean tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
+                        }.getType());
+                        if (getView() != null) {
+                            tbList.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
+                            tbFansAdapter.notifyDataSetChanged();
+                            getView().moveTo(flag);
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

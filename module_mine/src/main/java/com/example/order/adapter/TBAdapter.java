@@ -41,5 +41,13 @@ public class TBAdapter extends MyRecyclerAdapter<TBOrderBean> {
 
         ImageView img = holder.getView(R.id.order_list_my_head);
         Glide.with(context).load(SPUtil.getStringValue("head")).placeholder(R.drawable.vhjfg).into(img);
+
+        if ("3".equals(data.getTkStatus())) {
+            holder.setText(R.id.order_list_status, "已结算");
+        } else if ("12".equals(data.getTkStatus())) {
+            holder.setText(R.id.order_list_status, "已付款");
+        } else if ("13".equals(data.getTkStatus())) {
+            holder.setText(R.id.order_list_status, "已失效");
+        }
     }
 }

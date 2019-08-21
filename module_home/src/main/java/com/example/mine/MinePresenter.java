@@ -3,6 +3,10 @@ package com.example.mine;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,6 +31,11 @@ import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,6 +216,19 @@ public class MinePresenter extends BasePresenter<MineView> {
                 ProcessDialogUtil.dismissDialog();
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
+                String head = SPUtil.getStringValue("head");
+                File file = new File(Environment.getExternalStorageDirectory().getPath() + "/fltk/image/" + "fltkHead.jpg");
+                if (file.exists()) {
+
+                    if (!TextUtils.isEmpty(userInfoBean.getIcon()) && userInfoBean.getIcon().equals(head)) {
+
+                    } else {
+                        downPic(userInfoBean.getIcon());
+                    }
+                } else {
+                    LogUtil.e("11111111111111111111111111");
+                    downPic(userInfoBean.getIcon());
+                }
                 SPUtil.addParm("head", userInfoBean.getIcon());
                 SPUtil.addParm("name", userInfoBean.getNickname());
                 SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
@@ -286,6 +308,45 @@ public class MinePresenter extends BasePresenter<MineView> {
             ARouter.getInstance().build("/mine/points").navigation();
         } else {
             ARouter.getInstance().build("/mine/login").navigation();
+        }
+    }
+
+    public Bitmap returnBitMap(String url) {
+        URL myFileUrl = null;
+        Bitmap bitmap = null;
+        try {
+            myFileUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    private void downPic(String url) {
+        Bitmap bitmap = returnBitMap(url);
+        File file = new File(Environment.getExternalStorageDirectory() + "/fltk/image");
+        if (file.exists()) {
+            file.mkdirs();
+        }
+        File file1 = new File(Environment.getExternalStorageDirectory() + "/fltk/image/" + "fltkHead.jpg");
+        try {
+            //文件输出流
+            FileOutputStream fileOutputStream = new FileOutputStream(file1);
+            //压缩图片，如果要保存png，就用Bitmap.CompressFormat.PNG，要保存jpg就用Bitmap.CompressFormat.JPEG,质量是100%，表示不压缩
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            //写入，这里会卡顿，因为图片较大
+            fileOutputStream.flush();
+            //记得要关闭写入流
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
     }
 }

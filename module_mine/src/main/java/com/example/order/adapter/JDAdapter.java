@@ -30,5 +30,15 @@ public class JDAdapter extends MyRecyclerAdapter<JDOrderBean> {
 
         ImageView img = holder.getView(R.id.order_list_my_head);
         Glide.with(context).load(SPUtil.getStringValue("head")).placeholder(R.drawable.vhjfg).into(img);
+
+        if ("15".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "待付款");
+        } else if ("16".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "已付款");
+        } else if ("17".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "已结算");
+        } else {
+            holder.setText(R.id.order_list_status, "已失效");
+        }
     }
 }

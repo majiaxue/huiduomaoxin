@@ -38,7 +38,7 @@ public class FansOrderBean {
     private String orderAmount;
     private String promotionRate;
     private String promotionAmount;
-    private String orderStatus;
+    private int orderStatus;
     private String orderStatusDesc;
     private String orderCreateTime;
     private String orderPayTime;
@@ -132,11 +132,11 @@ public class FansOrderBean {
         this.promotionAmount = promotionAmount;
     }
 
-    public String getOrderStatus() {
+    public int getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(int orderStatus) {
         this.orderStatus = orderStatus;
     }
 

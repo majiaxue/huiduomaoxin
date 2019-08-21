@@ -168,5 +168,28 @@ public class UIHelper {
     }
 
 
+    public static void showRules(final Context context) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_invite_rules, null);
+        ImageView img = inflate.findViewById(R.id.pop_invite_rules_cancel);
 
+        final PopupWindow popupWindow = new PopupWindow(inflate, (int) context.getResources().getDimension(R.dimen.dp_272), (int) context.getResources().getDimension(R.dimen.dp_400), true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
+        setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setTransparency(context, 1f);
+            }
+        });
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
 }

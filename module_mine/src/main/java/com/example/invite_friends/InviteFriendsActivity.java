@@ -1,34 +1,20 @@
 package com.example.invite_friends;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
-import com.example.bean.BannerBean;
 import com.example.bean.InviteBean;
-import com.example.common.CommonResource;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
-import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
-import com.example.utils.SPUtil;
 import com.example.utils.UIHelper;
-import com.example.utils.ViewToBitmap;
 import com.stx.xhb.xbanner.XBanner;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 
 import java.util.List;
 
@@ -46,12 +32,24 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
     TextView inviteFriendsLink;
     @BindView(R2.id.invite_friends_bill)
     TextView inviteFriendsBill;
-    @BindView(R2.id.invite_friends_webview1)
-    WebView webView1;
-    @BindView(R2.id.invite_friends_webview2)
-    WebView webView2;
-    @BindView(R2.id.invite_friends_webview3)
-    WebView webView3;
+    @BindView(R2.id.invite_friends_erweima1)
+    ImageView inviteFriendsErweima1;
+    @BindView(R2.id.invite_friends_rela1)
+    RelativeLayout inviteFriendsRela1;
+    @BindView(R2.id.invite_friends_erweima2)
+    ImageView inviteFriendsErweima2;
+    @BindView(R2.id.invite_friends_rela2)
+    RelativeLayout inviteFriendsRela2;
+    @BindView(R2.id.invite_friends_erweima3)
+    ImageView inviteFriendsErweima3;
+    @BindView(R2.id.invite_friends_rela3)
+    RelativeLayout inviteFriendsRela3;
+    @BindView(R2.id.invite_friends_erweima4)
+    ImageView inviteFriendsErweima4;
+    @BindView(R2.id.invite_friends_rela4)
+    RelativeLayout inviteFriendsRela4;
+    @BindView(R2.id.include_right)
+    ImageView includeRight;
 
     @Override
     public int getLayoutId() {
@@ -61,72 +59,11 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
     @Override
     public void initData() {
         includeTitle.setText("邀请好友");
+        includeRight.setImageResource(R.drawable.icon_guize);
+        includeRight.setVisibility(View.VISIBLE);
         ProcessDialogUtil.showProcessDialog(this);
-
         ModuleBaseApplication.initShare();
-
-        WebSettings settings1 = webView1.getSettings();
-        settings1.setJavaScriptEnabled(true);
-        webView1.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                webView1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        presenter.loadData(webView1);
-                    }
-                }, 1000);
-            }
-        });
-        webView1.loadUrl(CommonResource.BASEURL_4001 + "/rest/share/invite?id=1&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
-
-        WebSettings settings2 = webView2.getSettings();
-        settings2.setJavaScriptEnabled(true);
-        webView2.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                webView2.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        presenter.loadData(webView2);
-                    }
-                }, 1000);
-            }
-        });
-        webView2.loadUrl(CommonResource.BASEURL_4001 + "/rest/share/invite?id=2&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
-
-        WebSettings settings3 = webView3.getSettings();
-        settings3.setJavaScriptEnabled(true);
-        webView3.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                webView2.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        presenter.loadData(webView3);
-                    }
-                }, 1000);
-            }
-        });
-        webView3.loadUrl(CommonResource.BASEURL_4001 + "/rest/share/invite?id=3&inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
+        presenter.initPic(inviteFriendsErweima1, inviteFriendsErweima2, inviteFriendsErweima3, inviteFriendsErweima4);
 
     }
 
@@ -149,13 +86,7 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
         inviteFriendsBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (inviteFriendsBanner.getBannerCurrentItem() == 0) {
-                    presenter.share(webView1);
-                } else if (inviteFriendsBanner.getBannerCurrentItem() == 1) {
-                    presenter.share(webView2);
-                } else if (inviteFriendsBanner.getBannerCurrentItem() == 2) {
-                    presenter.share(webView3);
-                }
+                presenter.share(inviteFriendsBanner.getBannerCurrentItem());
             }
         });
 
@@ -163,6 +94,13 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
             @Override
             public void onItemClick(XBanner banner, Object model, View view, int position) {
                 UIHelper.seeBigBitmap(InviteFriendsActivity.this, ((InviteBean) model).getXBannerUrl());
+            }
+        });
+
+        includeRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.showRules(InviteFriendsActivity.this);
             }
         });
     }
@@ -177,6 +115,11 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
                 Glide.with(InviteFriendsActivity.this).load(((InviteBean) model).getXBannerUrl()).into((ImageView) view);
             }
         });
+    }
+
+    @Override
+    public void loadQRCode() {
+        presenter.createList(inviteFriendsRela1, inviteFriendsRela2, inviteFriendsRela3, inviteFriendsRela4);
     }
 
     @Override

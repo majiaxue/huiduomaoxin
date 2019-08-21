@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.bean.FansOrderCensusBean;
@@ -94,9 +95,10 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
         fansOrderSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                index = 0;
-                presenter.change(3, index);
-                fansOrderTab.getTabAt(0).select();
+//                index = 0;
+//                presenter.change(3, index);
+//                fansOrderTab.getTabAt(0).select();
+                Toast.makeText(FansOrderActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
             }
         });
     }

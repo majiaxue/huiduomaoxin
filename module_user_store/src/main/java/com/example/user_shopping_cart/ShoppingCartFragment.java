@@ -37,8 +37,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     LinearLayout shoppingCartEmpty;
     @BindView(R2.id.shopping_cart_rec)
     RecyclerView shoppingCartRec;
-    @BindView(R2.id.shopping_cart_recommend_rec)
-    RecyclerView shoppingCartRecommendRec;
     @BindView(R2.id.shopping_cart_smart_refresh)
     SmartRefreshLayout shoppingCartSmartRefresh;
     @BindView(R2.id.shopping_cart_check_all)
@@ -51,6 +49,10 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
     TextView shoppingCartCloseAccountAndDelete;
     @BindView(R2.id.cart_top)
     RelativeLayout mTop;
+    @BindView(R2.id.shopping_cart_bottom)
+    RelativeLayout mBottom;
+    @BindView(R2.id.shopping_cart_tobuy)
+    TextView mToBuy;
 
     public boolean compileStatus = true;
     //全选初始状态
@@ -68,10 +70,6 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
         EventBus.getDefault().register(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         shoppingCartRec.setLayoutManager(linearLayoutManager);
-        //商品
-//        presenter.setShoppingCartExpandableList(shoppingCartExpandableList);
-        //推荐
-        presenter.setShoppingCartRecommendRec(shoppingCartRecommendRec);
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
@@ -183,11 +181,13 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
             shoppingCartEmpty.setVisibility(View.VISIBLE);
             shoppingCartCompile.setVisibility(View.GONE);
             shoppingCartCloseAccountAndDelete.setEnabled(false);
+            mBottom.setVisibility(View.INVISIBLE);
         } else {
             shoppingCartRec.setVisibility(View.VISIBLE);
             shoppingCartEmpty.setVisibility(View.GONE);
             shoppingCartCompile.setVisibility(View.VISIBLE);
             shoppingCartCloseAccountAndDelete.setEnabled(true);
+            mBottom.setVisibility(View.VISIBLE);
         }
     }
 

@@ -27,5 +27,13 @@ public class FansOrderRvAdapter extends MyRecyclerAdapter<FansOrderBean> {
                 .setImageUrl(R.id.fans_order_list_head, data.getFansIcon())
                 .setText(R.id.fans_order_list_nickname, data.getFansName())
                 .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
+
+        if (data.getOrderStatus() == -1) {
+            holder.setText(R.id.order_list_status, "待付款");
+        } else if (data.getOrderStatus() == 0) {
+            holder.setText(R.id.order_list_status, "已付款");
+        } else if (data.getOrderStatus() == 5) {
+            holder.setText(R.id.order_list_status, "已结算");
+        }
     }
 }

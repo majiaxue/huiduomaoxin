@@ -1,15 +1,14 @@
 package com.example.operator;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v4.widget.NestedScrollView;
+import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.ali.auth.third.ui.context.CallbackContext;
@@ -17,32 +16,29 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
-import com.example.operator.adapter.YysFactorAdapter;
 import com.example.operator.adapter.YysQuanyiAdapter;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 @Route(path = "/mine/operator")
-public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresenter> implements OperatorView, NestedScrollView.OnScrollChangeListener {
+public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresenter> implements OperatorView {
     @BindView(R2.id.operator_back)
     ImageView operatorBack;
-    @BindView(R2.id.operator_rv)
-    RecyclerView mRv;
-    @BindView(R2.id.operator_invite_fans)
-    TextView operatorInviteFans;
-    @BindView(R2.id.operator_shuoming)
-    TextView operatorShuoming;
-    @BindView(R2.id.operator_scroll)
-    NestedScrollView mScorll;
-    @BindView(R2.id.operator_top)
-    RelativeLayout mTop;
-    @BindView(R2.id.operator_title)
-    TextView mTitle;
-    @BindView(R2.id.operator_status)
-    LinearLayout mStatus;
+    @BindView(R2.id.operator_vp)
+    ViewPager operatorVp;
+    @BindView(R2.id.operator_factor)
+    TextView operatorFactor;
     @BindView(R2.id.operator_goods)
     RecyclerView mGoods;
+    @BindView(R2.id.operator_rbtn1)
+    RadioButton operatorRbtn1;
+    @BindView(R2.id.operator_rbtn2)
+    RadioButton operatorRbtn2;
+    @BindView(R2.id.operator_rbtn3)
+    RadioButton operatorRbtn3;
+
 
     @Override
     public int getLayoutId() {
@@ -51,24 +47,13 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
 
     @Override
     public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        SpaceItemDecoration itemDecoration = new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_12));
-        mRv.setLayoutManager(layoutManager);
-        mRv.addItemDecoration(itemDecoration);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         mGoods.setLayoutManager(gridLayoutManager);
         mGoods.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_8)));
 
         presenter.loadData();
         presenter.loadQuanyi();
-        mScorll.setOnScrollChangeListener(this);
+
     }
 
     @Override
@@ -80,28 +65,29 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
             }
         });
 
-        //邀请粉丝
-        operatorInviteFans.setOnClickListener(new View.OnClickListener() {
+        operatorVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View v) {
-                presenter.inviteFans();
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                presenter.getFactor(i);
+                if (i == 0) {
+                    operatorRbtn1.setChecked(true);
+                } else if (i == 1) {
+                    operatorRbtn2.setChecked(true);
+                } else if (i == 2) {
+                    operatorRbtn3.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
             }
         });
-    }
-
-    @Override
-    public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        if (scrollY < 60) {
-            mTop.setBackgroundColor(Color.TRANSPARENT);
-            operatorBack.setImageResource(R.drawable.icon_fanhui_bai);
-            mTitle.setTextColor(Color.parseColor("#ffffff"));
-            mStatus.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            mTop.setBackgroundColor(Color.WHITE);
-            operatorBack.setImageResource(R.drawable.icon_fanhui);
-            mTitle.setTextColor(Color.parseColor("#333333"));
-            mStatus.setBackgroundColor(Color.WHITE);
-        }
     }
 
     @Override
@@ -110,13 +96,18 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     }
 
     @Override
-    public void loadQuanyi(YysQuanyiAdapter adapter) {
-        mGoods.setAdapter(adapter);
+    public void loadFactor(String s) {
+        operatorFactor.setText(s);
     }
 
     @Override
-    public void loadFactor(YysFactorAdapter adapter) {
-        mRv.setAdapter(adapter);
+    public void loadVp(PagerAdapter adapter) {
+        operatorVp.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadQuanyi(YysQuanyiAdapter adapter) {
+        mGoods.setAdapter(adapter);
     }
 
     @Override
