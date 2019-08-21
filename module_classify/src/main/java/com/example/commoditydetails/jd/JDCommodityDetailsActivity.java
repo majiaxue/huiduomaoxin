@@ -263,6 +263,26 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             //隐藏
             commodityStick.setVisibility(View.GONE);
         }
+
+        if (y <= commodityName.getHeight()){
+            commodityXbanner.stopAutoPlay();
+        }else{
+            commodityXbanner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LogUtil.e("HomeFragment" + "不可见");
+        commodityXbanner.stopAutoPlay();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("HomeFragment" + "可见");
+        commodityXbanner.startAutoPlay();
     }
 
     @Override

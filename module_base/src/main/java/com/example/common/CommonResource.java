@@ -145,14 +145,11 @@ public class CommonResource {
     public static final String USERCOMMENT = "/rest/user/comment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
-    public static final String YOUXUANPRODUCTS = "/rest/tbk/goods/youXuanProducts";//好货优选
     public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
-    public static final String TBKGOODSGETITEMS = "/rest/tbk/goods/getitems";//淘抢购/聚划算/9.9元淘客商品库 API
     public static final String TBKGOODSGETTRILLDATA = "/rest/tbk/goods/gettrilldata";//抖券直播
     public static final String SIGNFANS = "/rest/sign/fans";//粉丝数量"
     public static final String SIGNFIRSTORDER = "/rest/sign/first/order";//首次下单
     public static final String SIGNGOODS = "/rest/sign/goods";//每日浏览商品签到
-    public static final String SIGNHISTORY = "/rest/sign/history";//积分 积分提现记录
     public static final String SIGNINVITE = "/rest/sign/invite";//邀请好友
     public static final String SIGNORDER = "/rest/sign/order";//有效订单
     public static final String SIGNQUERY = "/rest/sign/query";//查询签到任务完成度
@@ -163,6 +160,8 @@ public class CommonResource {
     public static final String TBKGOODSSALESLIST = "/rest/tbk/goods/sales_list";//优选
     public static final String ADDRESSAREA = "/rest/address/area";//根据市搜索区
     public static final String HOMEADVERTISETK = "/rest/parameter/homeAdvertiseTK";   //淘客商城轮播图
+    public static final String GOODSDETAILS = "/rest/tbk/goods/goods_details";   //最新淘客详情接口
+    public static final String GETGOODSLIST = "/rest/tbk/goods/get_goods_list";   //淘抢购聚划算接口
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493

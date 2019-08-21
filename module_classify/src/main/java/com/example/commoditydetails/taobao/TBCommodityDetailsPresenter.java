@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,32 +32,26 @@ import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
 import com.alibaba.baichuan.android.trade.page.AlibcDetailPage;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerImageBean;
+import com.example.bean.NewTBGoodsDetailsBean;
+import com.example.bean.TBGoodChoiceBean;
 import com.example.bean.TBGoodsDetailsBean;
+import com.example.bean.TBLedSecuritiesBean;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
-import com.example.bean.TBBean;
-import com.example.bean.TBGoodChoiceBean;
-import com.example.bean.TBLedSecuritiesBean;
 import com.example.common.CommonResource;
-import com.example.dbflow.ShareBean;
 import com.example.dbflow.ShareOperationUtil;
-import com.example.dbflow.ShareUtil;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
@@ -72,7 +65,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
-import com.umeng.commonsdk.debug.E;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -83,17 +75,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import mtopsdk.common.util.StringUtils;
 import okhttp3.ResponseBody;
 
 /**
@@ -106,7 +94,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private TBLedSecuritiesBean tbLedSecuritiesBean;
     private String num_iid;
     private Bitmap bitmap;
-    private TBGoodsDetailsBean tbGoodsDetailsBean;
+    private NewTBGoodsDetailsBean tbGoodsDetailsBean;
     private List<String> imageList = new ArrayList<>();
 
     public TBCommodityDetailsPresenter(Context context) {
@@ -155,29 +143,37 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     //初始化视图
-    public void initView(final String para) {
-        Map num_iid = MapUtil.getInstance().addParms("num_iid", para).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSGETITEMDESC, num_iid);
+    public void initView(final String goodsId) {
+        Map num_iid = MapUtil.getInstance().addParms("goodsId", goodsId).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.GOODSDETAILS, num_iid);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult---------------->" + result);
-                JSONObject jsonObject = JSON.parseObject(result);
-                JSONArray albumPics = jsonObject.getJSONArray("albumPics");
-                String info = (String) jsonObject.get("info");
-                LogUtil.e("数组" + albumPics);
-                LogUtil.e("对象" + info);
-                if (albumPics != null && albumPics.size() != 0) {
-                    for (int i = 0; i < albumPics.size(); i++) {
-                        imageList.add(albumPics.get(i).toString());
-                    }
-                }
-
-                if (!TextUtils.isEmpty(info)) {
-                    tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
+//                JSONObject jsonObject = JSON.parseObject(result);
+//                JSONArray albumPics = jsonObject.getJSONArray("albumPics");
+//                String info = (String) jsonObject.get("info");
+//                LogUtil.e("数组" + albumPics);
+//                LogUtil.e("对象" + info);
+//                if (albumPics != null && albumPics.size() != 0) {
+//                    for (int i = 0; i < albumPics.size(); i++) {
+//                        imageList.add(albumPics.get(i).toString());
+//                    }
+//                }
+//
+//                if (!TextUtils.isEmpty(info)) {
+//                    tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
+//                    }.getType());
+//                    if (getView() != null) {
+//                        getView().tbBeanList(tbGoodsDetailsBean, imageList);
+//                        getView().tBDetails();
+//                    }
+//                }
+                if (result.contains("\"code\":0")) {
+                    tbGoodsDetailsBean = JSON.parseObject(result, new TypeReference<NewTBGoodsDetailsBean>() {
                     }.getType());
                     if (getView() != null) {
-                        getView().tbBeanList(tbGoodsDetailsBean, imageList);
+                        getView().tbBeanList(tbGoodsDetailsBean);
                         getView().tBDetails();
                     }
                 }
@@ -358,7 +354,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     //获取分享url
-    public void ShareledSecurities(String para, final double youhuiquan) {
+    public void ShareledSecurities(String para) {
         LogUtil.e("----------------------->" + para);
         Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", 1).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
@@ -383,20 +379,73 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (tbLedSecuritiesBean != null) {
                         if (getView() != null) {
                             LogUtil.e("成功");
-                            Glide.with(mContext)
-                                    .asBitmap()
-                                    .load(tbGoodsDetailsBean.getN_tbk_item().getPict_url())
-                                    .into(new CustomTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
-                                            saveImageToPhotos(bitmap, youhuiquan);
-                                        }
+                            if (StringUtils.isNotBlank(tbGoodsDetailsBean.getData().getMainPic())){
+                                if (!tbGoodsDetailsBean.getData().getMainPic().contains("https:")){
+                                    Glide.with(mContext)
+                                            .asBitmap()
+                                            .load("https:"+tbGoodsDetailsBean.getData().getMainPic())
+                                            .into(new CustomTarget<Bitmap>() {
+                                                @Override
+                                                public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                                                    saveImageToPhotos(bitmap);
+                                                }
 
-                                        @Override
-                                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                @Override
+                                                public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                                        }
-                                    });
+                                                }
+                                            });
+                                }else{
+                                    Glide.with(mContext)
+                                            .asBitmap()
+                                            .load(tbGoodsDetailsBean.getData().getMainPic())
+                                            .into(new CustomTarget<Bitmap>() {
+                                                @Override
+                                                public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                                                    saveImageToPhotos(bitmap);
+                                                }
+
+                                                @Override
+                                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                }
+                                            });
+                                }
+
+                            }else{
+                                if (!tbGoodsDetailsBean.getData().getMarketingMainPic().contains("https:")){
+                                    Glide.with(mContext)
+                                            .asBitmap()
+                                            .load("https:"+tbGoodsDetailsBean.getData().getMarketingMainPic())
+                                            .into(new CustomTarget<Bitmap>() {
+                                                @Override
+                                                public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                                                    saveImageToPhotos(bitmap);
+                                                }
+
+                                                @Override
+                                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                }
+                                            });
+                                }else{
+                                    Glide.with(mContext)
+                                            .asBitmap()
+                                            .load(tbGoodsDetailsBean.getData().getMarketingMainPic())
+                                            .into(new CustomTarget<Bitmap>() {
+                                                @Override
+                                                public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                                                    saveImageToPhotos(bitmap);
+                                                }
+
+                                                @Override
+                                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                }
+                                            });
+                                }
+                            }
+
                         }
 
                     }
@@ -416,7 +465,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     /**
      * 保存二维码到本地相册
      */
-    private void saveImageToPhotos(Bitmap bmp, double youhuiquan) {
+    private void saveImageToPhotos(Bitmap bmp) {
         // 首先保存图片
         File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
         if (!appDir.exists()) {
@@ -435,7 +484,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             e.printStackTrace();
         }
 
-        viewToImage(tbLedSecuritiesBean.getCoupon_click_url(), file.getPath(), youhuiquan);
+        viewToImage(tbLedSecuritiesBean.getCoupon_click_url(), file.getPath());
 
         LogUtil.e("图片路径" + file.getPath());
     }
@@ -546,7 +595,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     //加载生成图片布局
-    public void viewToImage(String qRImage, String path, double price) {
+    public void viewToImage(String qRImage, String path) {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
         ImageView image = view.findViewById(R.id.share_image);
         TextView name = view.findViewById(R.id.share_name);
@@ -557,25 +606,13 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         ImageView qRCode = view.findViewById(R.id.share_qr_code);
         //字体加中划线
         originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        String zkFinalPrice = tbGoodsDetailsBean.getN_tbk_item().getZk_final_price();
-        if (!TextUtils.isEmpty(zkFinalPrice)) {
-            if (zkFinalPrice.contains("-")) {
-                String[] split = zkFinalPrice.split("-");
-                double sub = ArithUtil.sub(Double.valueOf(split[0]), Double.valueOf(price));
-                preferentialPrice.setText("￥" + sub);//优惠价
-                originalPrice.setText("原价：￥" + split[0]);//原价
-                couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(split[0]), sub));
-            } else {
-                double sub = ArithUtil.sub(Double.valueOf(zkFinalPrice), Double.valueOf(price));
-                preferentialPrice.setText("￥" + sub);//优惠价
-                originalPrice.setText("原价：￥" + zkFinalPrice);//原价
-                couponPrice.setText("￥" + ArithUtil.sub(Double.valueOf(zkFinalPrice), sub));
-            }
-        }
-        LogUtil.e("url主图---------->" + tbGoodsDetailsBean.getN_tbk_item().getPict_url());
+        preferentialPrice.setText("￥" + tbGoodsDetailsBean.getData().getActualPrice());//优惠价
+        originalPrice.setText("原价：￥" + tbGoodsDetailsBean.getData().getOriginalPrice());//原价
+        couponPrice.setText("￥" + tbGoodsDetailsBean.getData().getCouponPrice());
+        LogUtil.e("url主图---------->" + tbGoodsDetailsBean.getData().getMainPic());
         image.setImageURI(Uri.fromFile(new File(path)));
-        name.setText(tbGoodsDetailsBean.getN_tbk_item().getTitle());
-        number.setText("已售" + tbGoodsDetailsBean.getN_tbk_item().getVolume() + "件");//已售
+        name.setText(tbGoodsDetailsBean.getData().getTitle());
+        number.setText("已售" + tbGoodsDetailsBean.getData().getMonthSales() + "件");//已售
         Bitmap qr = QRCode.createQRImage(qRImage, DisplayUtil.dip2px(mContext, 300), DisplayUtil.dip2px(mContext, 300));
         qRCode.setImageBitmap(qr);
         LogUtil.e("url2二维码---------->" + qRImage);

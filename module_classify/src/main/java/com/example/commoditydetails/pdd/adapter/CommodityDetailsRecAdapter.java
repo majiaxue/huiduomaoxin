@@ -1,24 +1,13 @@
 package com.example.commoditydetails.pdd.adapter;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.module_classify.R;
+import com.example.utils.DisplayUtil;
 import com.example.utils.FrescoUtils;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.List;
 
@@ -35,15 +24,7 @@ public class CommodityDetailsRecAdapter extends MyRecyclerAdapter<String> {
     @Override
     public void convert(RecyclerViewHolder holder, String data, int position) {
         SimpleDraweeView image = holder.getView(R.id.commodity_details_rec_image);
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(data))
-                .setProgressiveRenderingEnabled(true)
-                .build();
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setImageRequest(request)
-                .setOldController(image.getController())
-                .build();
-        image.setController(controller);
-        FrescoUtils.setControllerListener(image,data,FrescoUtils.getScreenWidth(context));
+        FrescoUtils.setControllerListener(image,data, DisplayUtil.getScreenWidth(context));
 
     }
 }
