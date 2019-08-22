@@ -1,7 +1,6 @@
 package com.example.operator;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +19,6 @@ import com.example.operator.adapter.YysQuanyiAdapter;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @Route(path = "/mine/operator")
 public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresenter> implements OperatorView {
@@ -49,7 +47,7 @@ public class OperatorActivity extends BaseActivity<OperatorView, OperatorPresent
     public void initData() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         mGoods.setLayoutManager(gridLayoutManager);
-        mGoods.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_8)));
+        mGoods.addItemDecoration(new SpaceItemDecoration(0, (int) getResources().getDimension(R.dimen.dp_10), 0, (int) getResources().getDimension(R.dimen.dp_10)));
 
         presenter.loadData();
         presenter.loadQuanyi();
