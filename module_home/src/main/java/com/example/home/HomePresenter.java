@@ -120,15 +120,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 if (records != null) {
                     if (records.getRecords() != null) {
                         beanList = records.getRecords();
-//                      homeXbanner.setData(images, null);
-//                      homeXbanner.setBannerData(R.layout.image_fresco,beanList);
                         homeXbanner.setBannerData(beanList);
                         Glide.with(mContext).load(beanList.get(0).getPicBackUrl()).into(homeTopBg);
                         homeXbanner.loadImage(new XBanner.XBannerAdapter() {
                             @Override
                             public void loadBanner(XBanner banner, Object model, View view, int position) {
-//                        SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
-//                        bannerImage.setImageURI(((BannerBean)model).getXBannerUrl());
                                 RequestOptions requestOptions = RequestOptions.centerCropTransform();
                                 Glide.with(mContext).load(((BannerBean.RecordsBean) model).getXBannerUrl())
                                         .apply(requestOptions)
@@ -139,7 +135,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         });
                         // 设置XBanner的页面切换特效
                         homeXbanner.setPageTransformer(Transformer.Default);
-//                        homeXbanner.setCustomPageTransformer(new RotateYTransformer(45f));
 
                         // 设置XBanner页面切换的时间，即动画时长
                         homeXbanner.setPageChangeDuration(1000);

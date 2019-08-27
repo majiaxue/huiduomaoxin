@@ -18,6 +18,6 @@ public class YysQuanyiAdapter extends MyRecyclerAdapter<UserGoodsDetail> {
     public void convert(RecyclerViewHolder holder, UserGoodsDetail data, int position) {
         holder.setImageUrl(R.id.rv_yys_quanyi_img, data.getPic())
                 .setText(R.id.rv_yys_quanyi_name, data.getName())
-                .setText(R.id.rv_yys_quanyi_price, data.getOriginalPrice() + "");
+                .setText(R.id.rv_yys_quanyi_price, "￥" + data.getOriginalPrice());
     }
 }

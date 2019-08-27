@@ -122,11 +122,12 @@
             android:layout_height="@dimen/dp_479"
             android:layout_marginTop="@dimen/dp_38"
             android:overScrollMode="never"
-            app:clipChildrenLeftRightMargin="@dimen/dp_51"
+            app:clipChildrenLeftRightMargin="@dimen/dp_65"
             app:clipChildrenTopBottomMargin="@dimen/dp_0"
             app:isAutoPlay="false"
             app:isClipChildrenMode="true"
             app:isClipChildrenModeLessThree="true"
+            app:isHandLoop="true"
             app:pointsVisibility="false"
             app:viewPagerClipChildren="true"
             app:viewpagerMargin="@dimen/dp_20" />

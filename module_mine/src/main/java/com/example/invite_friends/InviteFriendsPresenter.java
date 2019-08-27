@@ -68,7 +68,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
     public void shareLink() {
         UMWeb umWeb = new UMWeb(CommonResource.BASEURL_4001 + "/rest/share/register?inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE));
         umWeb.setTitle("您有一个邀请信息");
-        umWeb.setThumb(new UMImage(mContext, R.mipmap.icon_app));
+        umWeb.setThumb(new UMImage(mContext, R.drawable.icon_app));
         umWeb.setDescription("赶紧加入领取高佣吧！！！");
         new ShareAction((Activity) mContext).withMedia(umWeb)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
