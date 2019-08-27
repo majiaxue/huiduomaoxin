@@ -234,27 +234,19 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //商品详情图
     public void setShopParticulars(RecyclerView shopParticulars, List<String> itemDetail) {
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false) {
+//            @Override
+//            public boolean canScrollVertically() {
+//                return false;
+//            }
+//        };
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL,false);
         final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);//
-        shopParticulars.setLayoutManager(linearLayoutManager);
+//        linearLayoutManager.setAutoMeasureEnabled(true);
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
 //        shopParticulars.setHasFixedSize(true);
-        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Fresco.getImagePipeline().resume();
-                } else {
-                    Fresco.getImagePipeline().pause();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+        shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
 
     }

@@ -1,6 +1,7 @@
 package com.example.module_base;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -18,10 +19,18 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
+import com.facebook.cache.common.CacheEventListener;
 import com.facebook.cache.disk.DiskCacheConfig;
+import com.facebook.common.memory.MemoryTrimType;
+import com.facebook.common.memory.MemoryTrimmable;
+import com.facebook.common.memory.MemoryTrimmableRegistry;
+import com.facebook.common.memory.NoOpMemoryTrimmableRegistry;
+import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.kepler.jd.Listener.AsyncInitListener;
@@ -32,11 +41,19 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
+import java.io.File;
+import java.util.function.Supplier;
+
 import cn.jpush.android.api.JPushInterface;
 
 public class ModuleBaseApplication extends MultiDexApplication {
     public static LocationClient mLocationClient = null;
     public static boolean isDingWei = false;
+
+    public static final int MAX_DISK_SIZE = 20*ByteConstants.MB;
+    public static final int MAX_DISK_SIZE_ON_LOW_DISK_SPACE = 10*ByteConstants.MB;
+    public static final int MAX_DISK_SIZE_ON_VERY_LOW_DISK_SPACE = 5*ByteConstants.MB;
+    public static final String FRESCO_CACHE_DIR = "fresco_cache";
 
     @Override
     public void onCreate() {
@@ -66,8 +83,6 @@ public class ModuleBaseApplication extends MultiDexApplication {
         JPushInterface.init(this);
         JpushUtil.getInstance(this);
 
-        Fresco.initialize(this);
-
         //百度地图
         initLocationClient();
 
@@ -91,12 +106,13 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 new AsyncInitListener() {
                     @Override
                     public void onSuccess() {
-                        LogUtil.e("京东开普勒"+ "Kepler asyncInitSdk onSuccess ");
+                        LogUtil.e("京东开普勒" + "Kepler asyncInitSdk onSuccess ");
                     }
+
                     @Override
                     public void onFailure() {
 
-                        LogUtil.e("京东开普勒"+
+                        LogUtil.e("京东开普勒" +
                                 "Kepler asyncInitSdk 授权失败，请检查lib 工程资源引用；包名,签名证书是否和注册一致");
 
                     }
@@ -104,20 +120,26 @@ public class ModuleBaseApplication extends MultiDexApplication {
     }
 
     private void initFresco() {
-        //磁盘缓存的配置
-        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(this)
-                .setBaseDirectoryPath(getCacheDir())
-                .setMaxCacheSize(8*1024*1024)
-                .build();
 
-        //对ImagePipelineConfig进行一些配置
+//        //磁盘内存配置
+//        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(getApplicationContext())
+//                .setBaseDirectoryName(FRESCO_CACHE_DIR)
+//                .setBaseDirectoryPath(getCacheDir())
+//                .setMaxCacheSize(MAX_DISK_SIZE)
+//                .setMaxCacheSizeOnLowDiskSpace(MAX_DISK_SIZE_ON_LOW_DISK_SPACE)
+//                .setMaxCacheSizeOnVeryLowDiskSpace(MAX_DISK_SIZE_ON_VERY_LOW_DISK_SPACE)
+//                .build();
+//
+//        //对ImagePipelineConfig进行一些配置
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setDownsampleEnabled(true)              // 对图片进行自动缩放
                 .setResizeAndRotateEnabledForNetwork(true) // 对网络图片进行resize处理，减少内存消耗
                 .setBitmapsConfig(Bitmap.Config.RGB_565) //图片设置RGB_565，减小内存开销 fresco默认情况下是RGB_8888
-                .setMainDiskCacheConfig(diskCacheConfig)
+//                .setMainDiskCacheConfig(diskCacheConfig)
                 .build();
         Fresco.initialize(this, config);
+
+//        Fresco.initialize(this);
     }
 
     @Override

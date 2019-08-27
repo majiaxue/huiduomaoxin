@@ -163,6 +163,7 @@ public class CommonResource {
     public static final String HOMEADVERTISETK = "/rest/parameter/homeAdvertiseTK";   //淘客商城轮播图
     public static final String GOODSDETAILS = "/rest/tbk/goods/goods_details";   //最新淘客详情接口
     public static final String GETGOODSLIST = "/rest/tbk/goods/get_goods_list";   //淘抢购聚划算接口
+    public static final String BRANDLIST = "/rest/tbk/goods/brandList";   //品牌接口
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493

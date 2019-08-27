@@ -229,6 +229,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
         } else {
             StatusBarUtils.setStatusTheme(getActivity(), true, true);
+            StatusBarUtils.setAndroidNativeLightStatusBar(getActivity(),false);
             flag = false;
         }
     }
@@ -244,13 +245,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         } else if (!hidden && !TextUtils.isEmpty(SPUtil.getToken())) {
             //如果该页面可见并且已登录
         }
-        if (hidden) {
-            StatusBarUtils.setStatusTheme(getActivity(), true, true);
-        } else {
-            if (flag) {
-                StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
-            }
-        }
+//        if (hidden) {
+////            StatusBarUtils.setStatusTheme(getActivity(), true, true);
+//        } else {
+//            if (flag) {
+//                StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
+//            }
+//        }
     }
 
     @Override

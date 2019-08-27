@@ -9,7 +9,6 @@ import com.example.bean.GoodsRecommendBean;
 import com.example.common.CommonResource;
 import com.example.module_base.R;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;

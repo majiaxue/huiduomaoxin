@@ -21,7 +21,7 @@ public class BaoYouAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, TBGoodsRecBean.DataBean data, int position) {
-        double commissionRate = Double.valueOf(data.getCommission_rate()) / 100;
+        double commissionRate = Double.valueOf(data.getCommission_rate()) / 10000;
         double mul = commissionRate * (Double.valueOf(data.getZk_final_price()) - Double.valueOf(data.getCoupon_amount())) * 0.9;
         holder.setImageFresco(R.id.universal_list_rec_image, data.getPict_url());
         holder.setText(R.id.universal_list_rec_name, data.getTitle());

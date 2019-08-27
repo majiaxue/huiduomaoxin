@@ -63,7 +63,7 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
                 holder.setText(R.id.base_reduce_price, "领劵减" + data.getCoupon_amount() + "元");//优惠劵
             }
 
-            holder.setText(R.id.base_preferential_price, "￥" + couponPrice);//优惠价
+            holder.setText(R.id.base_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0" : data.getCoupon_amount())));//优惠价
             holder.setText(R.id.base_original_price, "￥" + data.getZk_final_price());//原价
             holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");//已抢数量
             LogUtil.e("商品佣金" + data.getCommission_rate());

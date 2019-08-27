@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,6 +43,7 @@ import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
@@ -249,6 +251,27 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 presenter.goodsCollect(commodityCollectImage, para);
             }
         });
+
+        shopParticulars.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Fresco.getImagePipeline().pause();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Fresco.getImagePipeline().pause();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Fresco.getImagePipeline().resume();
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -301,13 +324,13 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             commodityShopName.setText(tbGoodsDetailsBean.getData().getShopName() + "");//商家名
             commodityCouponPrice.setText(tbGoodsDetailsBean.getData().getCouponPrice() + "元优惠劵");
             commodityTime.setText("使用期限：" + tbGoodsDetailsBean.getData().getCouponStartTime().split(" ")[0] + "~" + tbGoodsDetailsBean.getData().getCouponEndTime().split(" ")[0]);
-            if (tbGoodsDetailsBean.getData().getCommissionRate() < 0){
-                if (type == 0){
-                    mul = tbGoodsDetailsBean.getData().getActualPrice() * ( Double.valueOf(commission_rate)/ 100) * 0.9;
-                }else {
-                    mul = tbGoodsDetailsBean.getData().getActualPrice() * ( Double.valueOf(commission_rate)/ 10000) * 0.9;
+            if (tbGoodsDetailsBean.getData().getCommissionRate() < 0) {
+                if (type == 0) {
+                    mul = tbGoodsDetailsBean.getData().getActualPrice() * (Double.valueOf(commission_rate) / 100) * 0.9;
+                } else {
+                    mul = tbGoodsDetailsBean.getData().getActualPrice() * (Double.valueOf(commission_rate) / 10000) * 0.9;
                 }
-            }else{
+            } else {
                 mul = tbGoodsDetailsBean.getData().getActualPrice() * (tbGoodsDetailsBean.getData().getCommissionRate() <= 0 ? 0 : tbGoodsDetailsBean.getData().getCommissionRate() / 100) * 0.9;
             }
             commodityPreferentialPrice.setText("￥" + tbGoodsDetailsBean.getData().getActualPrice());//优惠价

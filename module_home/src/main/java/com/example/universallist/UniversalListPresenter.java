@@ -102,13 +102,17 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                         }
                     });
                 }
-                getView().finishRefresh();
+                if(getView()!=null){
+                    getView().finishRefresh();
+                }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 ProcessDialogUtil.dismissDialog();
-                getView().finishRefresh();
+                if(getView()!=null){
+                    getView().finishRefresh();
+                }
             }
         }));
     }
@@ -160,13 +164,17 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     });
 
                 }
-                getView().finishRefresh();
+                if(getView()!=null){
+                    getView().finishRefresh();
+                }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 ProcessDialogUtil.dismissDialog();
-                getView().finishRefresh();
+                if(getView()!=null){
+                    getView().finishRefresh();
+                }
             }
         }));
     }
@@ -225,20 +233,24 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                                     .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
                                     .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
                                     .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                    .withInt("type", 0)
+                                    .withInt("type", 1)
                                     .navigation();
                         }
                     });
                 }
 
-                getView().finishRefresh();
+                if(getView()!=null){
+                    getView().finishRefresh();
+                }
 
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("UniversalListPresenter9.9包邮errorMsg" + errorMsg);
-                getView().finishRefresh();
+                if(getView()!=null){
+                    getView().finishRefresh();
+                }
             }
         }));
 

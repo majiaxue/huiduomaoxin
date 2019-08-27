@@ -37,6 +37,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -313,7 +314,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 baseRecBeanList.addAll(secondaryPddRecBean.getGoods_search_response().getGoods_list());
                                 if (baseRecAdapter == null) {
                                     baseRecAdapter = new SecondaryPddRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
-
                                     if (getView() != null) {
                                         getView().lodeRec(baseRecAdapter);
                                     }

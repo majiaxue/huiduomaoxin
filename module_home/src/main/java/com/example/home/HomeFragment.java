@@ -19,6 +19,7 @@ import com.example.mvp.BaseFragment;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
+import com.example.utils.StatusBarUtils;
 import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;

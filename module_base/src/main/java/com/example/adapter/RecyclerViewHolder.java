@@ -2,11 +2,14 @@ package com.example.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -18,15 +21,32 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.module_base.R;
+import com.example.utils.LogUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import q.rorbin.badgeview.DisplayUtil;
 
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
     private Context context;
+    private Bitmap bitmap;
 
     private RecyclerViewHolder(@NonNull View itemView, Context context) {
         super(itemView);
@@ -120,15 +140,21 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     }
 
     public RecyclerViewHolder setImageFresco(int resId, String url) {
+
         SimpleDraweeView simpleDraweeView = getView(resId);
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-//                        .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 360), DisplayUtil.dp2px(context, 200)))
+                .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 55), DisplayUtil.dp2px(context, 55)))
+                .setProgressiveRenderingEnabled(true)
                 .build();
+
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setImageRequest(request)
+                .setLowResImageRequest(ImageRequest.fromUri(url))
                 .setOldController(simpleDraweeView.getController())
+                .setAutoPlayAnimations(true)
                 .build();
         simpleDraweeView.setController(controller);
+//        simpleDraweeView.setImageURI(Uri.parse(url));
         return this;
     }
 
@@ -138,4 +164,52 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         textView.getPaint().setAntiAlias(true);// 抗锯齿
         return this;
     }
+
+    public Bitmap returnBitMap(final String url) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        return bitmap;
+    }
+
+    private static Bitmap getBitmap(String filePath, int destWidth, int destHeight) {
+        //第一次采样
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+        //获取原图的宽,高
+        int outWidth = options.outWidth;
+        int outHeight = options.outHeight;
+        //定义压缩比
+        int sampleSize = 1;
+        while (outHeight / sampleSize > destHeight || outWidth / sampleSize > destWidth) {
+            sampleSize *= 2;
+        }
+
+        //第二次采样
+        options.inJustDecodeBounds = false;
+        //设置缩放比例
+        options.inSampleSize = sampleSize;
+        return BitmapFactory.decodeFile(filePath, options);
+    }
+
+
 }

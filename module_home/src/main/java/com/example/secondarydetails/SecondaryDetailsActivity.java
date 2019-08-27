@@ -19,6 +19,7 @@ import com.example.search.SearchActivity;
 import com.example.adapter.SecondaryPddRecAdapter;
 import com.example.secondarydetails.adapter.SecondaryTBRecAdapter;
 import com.example.utils.ProcessDialogUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -49,6 +50,8 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
     @Autowired(name = "type")
     String type;
 
+    private int preScrollState;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_secondary_details;
@@ -61,11 +64,46 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
 //        type = intent.getStringExtra("type");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         secondaryDetailsRec.setLayoutManager(linearLayoutManager);
+
         presenter.initView(secondaryDetailsTab, secondaryDetailsSmartRefresh, type);
         secondaryDetailsSmartRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 球脉冲 样式
         secondaryDetailsSmartRefresh.setRefreshFooter(new ClassicsFooter(this));
 //        presenter.secondaryDetailsRec(secondaryDetailsRec,type);
+//        secondaryDetailsRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+////                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+////                    Fresco.getImagePipeline().resume();
+////                } else {
+////                    Fresco.getImagePipeline().pause();
+////                }
+//                switch (newState) {
+//                    case RecyclerView.SCROLL_STATE_IDLE://停止滑动
+//                        if (Fresco.getImagePipeline().isPaused())
+//                            Fresco.getImagePipeline().resume();
+//                        break;
+//                    case RecyclerView.SCROLL_STATE_DRAGGING:
+//                        if (preScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
+//                            //触摸滑动不需要加载
+//                            Fresco.getImagePipeline().pause();
+//                        } else {
+//                            //触摸滑动需要加载
+//                            if (Fresco.getImagePipeline().isPaused())
+//                                Fresco.getImagePipeline().resume();
+//                        }
+//                        break;
+//                    case RecyclerView.SCROLL_STATE_SETTLING://惯性滑动
+//                        Fresco.getImagePipeline().pause();
+//                        break;
+//                }
+//                preScrollState = newState;
+//            }
+//
+//        });
+
     }
 
     @Override
@@ -98,17 +136,19 @@ public class SecondaryDetailsActivity extends BaseActivity<SecondaryDetailsView,
 
     @Override
     public void lodeRec(SecondaryPddRecAdapter baseRecAdapter) {
-
+        secondaryDetailsRec.setItemViewCacheSize(20);
         secondaryDetailsRec.setAdapter(baseRecAdapter);
     }
 
     @Override
     public void lodeTBRec(SecondaryTBRecAdapter secondaryTBRecAdapter) {
+        secondaryDetailsRec.setItemViewCacheSize(20);
         secondaryDetailsRec.setAdapter(secondaryTBRecAdapter);
     }
 
     @Override
     public void lodeJDRec(SecondaryJDRecAdapter secondaryJDRecAdapter) {
+        secondaryDetailsRec.setItemViewCacheSize(20);
         secondaryDetailsRec.setAdapter(secondaryJDRecAdapter);
     }
 
