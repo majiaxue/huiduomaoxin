@@ -34,11 +34,11 @@ public class TbFansAdapter extends MyRecyclerAdapter<TbFansOrderBean> {
                 .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
 
         if ("3".equals(data.getTkStatus())) {
-            holder.setText(R.id.order_list_status, "已结算");
+            holder.setText(R.id.fans_order_list_status, "已结算");
         } else if ("12".equals(data.getTkStatus())) {
-            holder.setText(R.id.order_list_status, "已付款");
+            holder.setText(R.id.fans_order_list_status, "已付款");
         } else if ("13".equals(data.getTkStatus())) {
-            holder.setText(R.id.order_list_status, "已失效");
+            holder.setText(R.id.fans_order_list_status, "已失效");
         }
     }
 }
