@@ -35,7 +35,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -50,6 +52,8 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
     private String[] strArray = new String[]{"精选", "女装", "男装", "食品", "居家", "鞋品", "母婴", "数码", "美妆", "百货"};
     private List<SuperBean> stringList = new ArrayList<>();
     private List<Fragment> fragmentList = new ArrayList<>();
+    private Map map = new HashMap<>();
+
 
     public SuperBrandPresenter(Context context) {
         super(context);
@@ -97,6 +101,7 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
         initIndicator(superBrandTab);
 
         IndexPagerAdapter indexPagerAdapter = new IndexPagerAdapter(fm, stringList, fragmentList);
+        viewPager.setOffscreenPageLimit(8);
         viewPager.setAdapter(indexPagerAdapter);
 
         superBrandTab.setupWithViewPager(viewPager);
@@ -163,15 +168,17 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
 
     class IndexPagerAdapter extends FragmentPagerAdapter {
         private List<SuperBean> titleList;
+        private List<Fragment> fragmentList1;
 
         public IndexPagerAdapter(FragmentManager fm, List<SuperBean> titleList, List<Fragment> fragmentList) {
             super(fm);
             this.titleList = titleList;
+            this.fragmentList1 = fragmentList;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return fragmentList.get(position);
+            return fragmentList1.get(position);
         }
 
         @Override

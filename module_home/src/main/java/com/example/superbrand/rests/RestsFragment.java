@@ -60,8 +60,8 @@ public class RestsFragment extends BaseFragment<RestsView, RestsPresenter> imple
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                restsRec.setLayoutManager(linearLayoutManager);
+//                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+//                restsRec.setLayoutManager(linearLayoutManager);
                 presenter.initList(page, index);
 
             }
@@ -70,8 +70,8 @@ public class RestsFragment extends BaseFragment<RestsView, RestsPresenter> imple
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                restsRec.setLayoutManager(linearLayoutManager);
+//                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+//                restsRec.setLayoutManager(linearLayoutManager);
                 presenter.initList(page, index);
             }
         });

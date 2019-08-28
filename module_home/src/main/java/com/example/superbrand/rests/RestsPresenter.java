@@ -29,6 +29,7 @@ import io.reactivex.Observable;
 public class RestsPresenter extends BasePresenter<RestsView> {
 
     private List<RestsBean.DataBeanX> dataListBean = new ArrayList<>();
+    private RestsAdapter restsAdapter;
 
     public RestsPresenter(Context context) {
         super(context);
@@ -40,6 +41,7 @@ public class RestsPresenter extends BasePresenter<RestsView> {
     }
 
     public void initList(final int page, int index) {
+        LogUtil.e("index          "+index+"page        "+page);
         Map build = MapUtil.getInstance().addParms("min_id", page).addParms("brandcat", index).build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.BRANDLIST, build);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -55,10 +57,17 @@ public class RestsPresenter extends BasePresenter<RestsView> {
                         dataListBean.clear();
                     }
                     dataListBean.addAll(restsBean.getData());
-                    RestsAdapter restsAdapter = new RestsAdapter(mContext, dataListBean, R.layout.item_rests_rec);
-                    if (getView() != null) {
-                        getView().loadAdapter(restsAdapter);
+                    if (restsAdapter == null){
+                        LogUtil.e("1111111111111111111111111");
+                        restsAdapter = new RestsAdapter(mContext, dataListBean, R.layout.item_rests_rec);
+                        if (getView() != null) {
+                            getView().loadAdapter(restsAdapter);
+                        }
+                    }else{
+                        LogUtil.e("222222222222222222222222"+restsAdapter);
+                        restsAdapter.notifyDataSetChanged();
                     }
+
                     restsAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                         @Override
                         public void ViewOnClick(View view, final int index) {

@@ -428,7 +428,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                     getView().lodeTBRec(secondaryTBRecAdapter);
                                 }
                             } else {
-                                secondaryTBRecAdapter.notifyDataSetChanged();
+                                secondaryTBRecAdapter.notifyItemChanged(20);
                             }
 
                             secondaryTBRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
@@ -531,7 +531,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                     getView().lodeTBRec(secondaryTBRecAdapter);
                                 }
                             } else {
-                                secondaryTBRecAdapter.notifyDataSetChanged();
+                                secondaryTBRecAdapter.notifyItemChanged(20);
                             }
 
                             secondaryTBRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
@@ -608,7 +608,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         getView().lodeJDRec(secondaryJDRecAdapter);
                                     }
                                 } else {
-                                    secondaryJDRecAdapter.notifyDataSetChanged();
+                                    secondaryJDRecAdapter.notifyItemChanged(20);
                                 }
                                 secondaryJDRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                                     @Override
