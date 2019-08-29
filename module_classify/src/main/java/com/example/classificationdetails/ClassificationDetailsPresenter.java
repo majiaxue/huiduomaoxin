@@ -262,9 +262,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                     }
                                 } else {
                                     if (isWaterfall) {
-                                        waterfallAdapter.notifyDataSetChanged();
+                                        waterfallAdapter.notifyItemChanged(20);
                                     } else {
-                                        lstAdapter.notifyDataSetChanged();
+                                        lstAdapter.notifyItemChanged(20);
                                     }
                                 }
                             }
@@ -381,9 +381,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             }
                         } else {
                             if (isWaterfall) {
-                                jdWaterfallAdapter.notifyDataSetChanged();
+                                jdWaterfallAdapter.notifyItemChanged(10);
                             } else {
-                                jdLstAdapter.notifyDataSetChanged();
+                                jdLstAdapter.notifyItemChanged(10);
                             }
                         }
                     }
@@ -502,9 +502,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             }
                         } else {
                             if (isWaterfall) {
-                                pddWaterAdapter.notifyDataSetChanged();
+                                pddWaterAdapter.notifyItemChanged(10);
                             } else {
-                                pddLstAdapter.notifyDataSetChanged();
+                                pddLstAdapter.notifyItemChanged(10);
                             }
                         }
                     }

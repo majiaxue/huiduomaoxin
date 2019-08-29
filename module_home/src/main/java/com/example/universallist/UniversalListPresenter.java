@@ -85,7 +85,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                             getView().loadData(universalListRecAdapter);
                         }
                     } else {
-                        universalListRecAdapter.notifyDataSetChanged();
+                        universalListRecAdapter.notifyItemChanged(20);
                     }
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
@@ -138,7 +138,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                             getView().loadData(hotRecommendRecAdapter);
                         }
                     } else {
-                        hotRecommendRecAdapter.notifyDataSetChanged();
+                        hotRecommendRecAdapter.notifyItemChanged(20);
                     }
                     hotRecommendRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
@@ -220,7 +220,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                             getView().loadData(baoYouAdapter);
                         }
                     } else {
-                        baoYouAdapter.notifyDataSetChanged();
+                        baoYouAdapter.notifyItemChanged(20);
                     }
 
                     baoYouAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {

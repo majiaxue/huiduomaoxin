@@ -143,7 +143,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         SimpleDraweeView simpleDraweeView = getView(resId);
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-                .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 55), DisplayUtil.dp2px(context, 55)))
+                .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 100), DisplayUtil.dp2px(context, 100)))
                 .setProgressiveRenderingEnabled(true)
                 .build();
 

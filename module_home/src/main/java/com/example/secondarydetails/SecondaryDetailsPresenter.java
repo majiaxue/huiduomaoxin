@@ -318,7 +318,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                         getView().lodeRec(baseRecAdapter);
                                     }
                                 } else {
-                                    baseRecAdapter.notifyDataSetChanged();
+                                    baseRecAdapter.notifyItemChanged(20);
                                 }
 
                                 baseRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
