@@ -13,3 +13,5 @@
 .externalNativeBuild
 /app/release/*
 /app/debug/*
+/jdsdk_lib
+/.idea
