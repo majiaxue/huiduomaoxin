@@ -174,6 +174,7 @@ public class CommonResource {
     public static final String JUMP_CLASSIFY = "JUMP_CLASSIFY";
     public static final String JUMP_CART = "JUMP_CART";
     public static final String JUMP_LOCAL_SHOP = "JUMP_LOCAL_SHOP";
+    public static final String JUMP_OPERATOR = "JUMP_OPERATOR";
     public static final String TOKEN = "token";
     public static final String USERCODE = "userCode";
     public static final String USER_NAME = "userName";

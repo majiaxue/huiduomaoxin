@@ -17,6 +17,7 @@ import com.example.bean.HomePredictBean;
 import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
 import com.example.entity.BaseRecImageAndTextBean;
+import com.example.entity.EventBusBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
@@ -199,11 +200,12 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
 
     public void jumpToupYYS() {
-        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
-            ARouter.getInstance().build("/mine/login").navigation();
-        } else {
-            ARouter.getInstance().build("/mine/operator").navigation();
-        }
+        EventBus.getDefault().post(new EventBusBean(CommonResource.JUMP_OPERATOR));
+//        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+//            ARouter.getInstance().build("/mine/login").navigation();
+//        } else {
+//            ARouter.getInstance().build("/mine/operator").navigation();
+//        }
     }
 
     public void loadData() {
@@ -226,7 +228,6 @@ public class MinePresenter extends BasePresenter<MineView> {
                         downPic(userInfoBean.getIcon());
                     }
                 } else {
-                    LogUtil.e("11111111111111111111111111");
                     downPic(userInfoBean.getIcon());
                 }
                 SPUtil.addParm("head", userInfoBean.getIcon());

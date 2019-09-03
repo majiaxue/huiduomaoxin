@@ -1,12 +1,13 @@
 package com.example.buy2up;
 
-import android.content.Intent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+@Route(path = "/module_mine/buy2up")
 public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> implements Buy2UpView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
@@ -36,9 +38,9 @@ public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> im
     TextView buy2upBtn;
     @BindView(R2.id.buy2up_name)
     TextView mName;
-    @Autowired(name = "id")
-    String goodsId;
-    private UserGoodsDetail bean;
+
+    @Autowired(name = "bean")
+    UserGoodsDetail bean;
 
     @Override
     public int getLayoutId() {
@@ -47,8 +49,9 @@ public class Buy2UpActivity extends BaseActivity<Buy2UpView, Buy2UpPresenter> im
 
     @Override
     public void initData() {
-        Intent intent = getIntent();
-        bean = (UserGoodsDetail) intent.getSerializableExtra("bean");
+        ARouter.getInstance().inject(this);
+//        Intent intent = getIntent();
+//        bean = (UserGoodsDetail) intent.getSerializableExtra("bean");
         String albumPics = bean.getAlbumPics();
         String[] split = albumPics.split(",");
         List<BannerBean.RecordsBean> banner = new ArrayList<>();

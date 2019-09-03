@@ -44,5 +44,4 @@ dependencies {
         exclude group: 'com.android.support'
     }
     annotationProcessor("com.alibaba:arouter-compiler:$rootProject.arouterCompiler")
-    //    implementation (name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
 }

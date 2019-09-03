@@ -38,6 +38,7 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
+import com.example.operator_gain.OperatorGainFragment;
 import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 import com.example.utils.LogUtil;
@@ -46,6 +47,8 @@ import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.utils.net_change_util.NetStateChangeReceiver;
 import com.example.view.SelfDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,6 +68,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private HomeFragment homeFragment;
     private MineFragment mineFragment;
     private SuperBrandFragment superBrandFragment;
+    private OperatorGainFragment operatorGainFragment;
     private ProgressBar mProgress;
     private AlertDialog alertDialog;
     private String clientVersion;
@@ -131,16 +135,19 @@ public class MainPresenter extends BasePresenter<MainView> {
         homeFragment = new HomeFragment();
         mineFragment = new MineFragment();
         superBrandFragment = new SuperBrandFragment();
+        operatorGainFragment = new OperatorGainFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(resId, communityFragment)
                 .add(resId, homeFragment)
                 .add(resId, mineFragment)
+                .add(resId, operatorGainFragment)
                 .add(resId, superBrandFragment);
         transaction.show(homeFragment)
                 .hide(communityFragment)
                 .hide(mineFragment)
                 .hide(superBrandFragment)
+                .hide(operatorGainFragment)
                 .commit();
 
     }
@@ -153,6 +160,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(communityFragment)
                     .hide(mineFragment)
                     .hide(superBrandFragment)
+                    .hide(operatorGainFragment)
                     .commit();
 
         } else if (resId == R.id.main_classify) {
@@ -160,6 +168,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(communityFragment)
                     .hide(homeFragment)
                     .hide(mineFragment)
+                    .hide(operatorGainFragment)
                     .commit();
 
         } else if (resId == R.id.main_mine) {
@@ -167,6 +176,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(communityFragment)
                     .hide(superBrandFragment)
                     .hide(homeFragment)
+                    .hide(operatorGainFragment)
                     .commit();
 
         } else if (resId == R.id.main_community) {
@@ -174,6 +184,14 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(mineFragment)
                     .hide(superBrandFragment)
                     .hide(homeFragment)
+                    .hide(operatorGainFragment)
+                    .commit();
+        } else if (resId == R.id.main_operator) {
+            transaction.show(operatorGainFragment)
+                    .hide(mineFragment)
+                    .hide(superBrandFragment)
+                    .hide(homeFragment)
+                    .hide(communityFragment)
                     .commit();
         }
 
@@ -192,8 +210,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     @Override
     protected void onViewDestroy() {
-        LogUtil.e("-------------->mainactivity销毁了");
         mContext.unregisterReceiver(receiver);
+        EventBus.getDefault().unregister(this);
         SPUtil.addParm(CommonResource.TAN_CONTENT, "");
     }
 
