@@ -7,13 +7,12 @@ import android.graphics.PixelFormat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.module_home.R;
 import com.example.module_home.R2;
@@ -21,6 +20,8 @@ import com.example.mvp.BaseFragmentActivity;
 import com.example.utils.TxtUtil;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -34,8 +35,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private final int REQUEST_CODE = 0xa123;
 
-    @BindView(R2.id.main_user_mall)
-    LinearLayout mainUserMall;
     @BindView(R2.id.main_group)
     RadioGroup mainGroup;
     @Autowired(name = "type")
@@ -52,6 +51,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
         presenter.registerReceiver();
@@ -84,12 +84,13 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
             }
         });
 
-        mainUserMall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/mine/operator").navigation();
-            }
-        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.JUMP_OPERATOR.equals(eventBusBean.getMsg())) {
+            presenter.click(R.id.main_operator);
+        }
     }
 
     @Override

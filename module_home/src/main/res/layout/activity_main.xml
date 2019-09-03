@@ -23,45 +23,39 @@
             android:checked="true"
             android:drawableTop="@drawable/bg_home"
             android:paddingTop="@dimen/dp_7"
-            android:textColor="@color/color_f23_010"
-            android:text="首页" />
+            android:text="首页"
+            android:textColor="@color/color_f23_010" />
 
         <RadioButton
             android:id="@+id/main_classify"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_super_brand"
-            android:textColor="@color/color_f23_010"
             android:paddingTop="@dimen/dp_7"
-            android:text="品牌" />
+            android:text="品牌"
+            android:textColor="@color/color_f23_010" />
 
-        <LinearLayout
-            android:id="@+id/main_user_mall"
+        <RadioButton
+            android:id="@+id/main_operator"
             style="@style/main_bottom_back"
+            android:drawableTop="@drawable/huiyuan"
             android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="@dimen/dp_43"
-                android:layout_height="@dimen/dp_43"
-                android:src="@drawable/huiyuan" />
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
         <RadioButton
             android:id="@+id/main_community"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_hairring"
-            android:textColor="@color/color_f23_010"
             android:paddingTop="@dimen/dp_7"
-            android:text="社区" />
+            android:text="社区"
+            android:textColor="@color/color_f23_010" />
 
         <RadioButton
             android:id="@+id/main_mine"
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/bg_mine"
-            android:textColor="@color/color_f23_010"
             android:paddingTop="@dimen/dp_7"
-            android:text="我的" />
+            android:text="我的"
+            android:textColor="@color/color_f23_010" />
     </RadioGroup>
 
 </LinearLayout>
