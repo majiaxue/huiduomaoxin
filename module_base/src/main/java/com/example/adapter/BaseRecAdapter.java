@@ -68,7 +68,12 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
             holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");//已抢数量
             LogUtil.e("商品佣金" + data.getCommission_rate());
             if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+                if (SPUtil.getFloatValue(CommonResource.BACKBL) != 0) {
+                    holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+                } else {
+                    holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+                }
+//                LogUtil.e("预估收益:" + "商品价格" + couponPrice + "佣金" + div + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "最终金额" + "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
             } else {
                 holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
             }

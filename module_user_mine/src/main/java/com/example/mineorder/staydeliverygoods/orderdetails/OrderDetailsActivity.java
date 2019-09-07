@@ -146,8 +146,17 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
     @Override
     public void loadData(final OrderDetailBean orderDetailBean) {
 
-        final String orderSn1 = orderDetailBean.getOrderSn();
-        final String productPic = orderDetailBean.getItems().get(0).getProductPic();
+        List<OrderDetailBean.ItemsBean> items = orderDetailBean.getItems();
+        presenter.items(items, orderDetailsGoodsRec);
+
+        orderDetailsName.setText(orderDetailBean.getReceiverName());
+        orderDetailsPhone.setText(orderDetailBean.getReceiverPhone());
+        orderDetailsAddress.setText(orderDetailBean.getReceiverRegion() + orderDetailBean.getReceiverCity() + orderDetailBean.getReceiverProvince() + orderDetailBean.getOrderAddress());
+        orderDetailsGoodsPrice.setText("￥" + orderDetailBean.getTotalAmount());
+        orderDetailsFreight.setText("+￥" + orderDetailBean.getFreightAmount());
+        orderDetailsCoupon.setText("-￥" + orderDetailBean.getCouponAmount());
+        orderDetailsActualPayment.setText("￥" + orderDetailBean.getPayAmount());
+
 
         if (orderDetailBean.getStatus() == 1) {
             //待发货
@@ -175,7 +184,9 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
                 }
             });
+
         } else if (orderDetailBean.getStatus() == 2) {
+
             //待收货
             orderDetailsStatus.setText("卖家已发货");
             orderDetailsSubhead.setVisibility(View.VISIBLE);
@@ -202,8 +213,8 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
                 public void onClick(View v) {
                     ARouter.getInstance()
                             .build("/module_user_mine/LogisticsInformationActivity")
-                            .withString("orderSn", orderSn1)
-                            .withString("goodsImage", productPic)
+                            .withString("orderSn", orderDetailBean.getOrderSn())
+                            .withString("goodsImage", orderDetailBean.getItems().get(0).getProductPic())
                             .navigation();
 //
                 }
@@ -230,18 +241,6 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
                 }
             });
         }
-        orderDetailsName.setText(orderDetailBean.getReceiverName());
-        orderDetailsPhone.setText(orderDetailBean.getReceiverPhone());
-        orderDetailsAddress.setText(orderDetailBean.getReceiverRegion() + orderDetailBean.getReceiverCity() + orderDetailBean.getReceiverProvince() + orderDetailBean.getOrderAddress());
-        orderDetailsName.setText(orderDetailBean.getReceiverName());
-        orderDetailsGoodsPrice.setText("￥" + orderDetailBean.getTotalAmount());
-        orderDetailsFreight.setText("￥" + orderDetailBean.getFreightAmount());
-        orderDetailsCoupon.setText("￥" + orderDetailBean.getCouponAmount());
-        orderDetailsActualPayment.setText("￥" + orderDetailBean.getPayAmount());
-
-        List<OrderDetailBean.ItemsBean> items = orderDetailBean.getItems();
-
-        presenter.items(items, orderDetailsGoodsRec);
 
     }
 

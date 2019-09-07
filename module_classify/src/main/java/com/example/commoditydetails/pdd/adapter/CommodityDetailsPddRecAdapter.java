@@ -1,6 +1,7 @@
 package com.example.commoditydetails.pdd.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
@@ -9,6 +10,7 @@ import com.example.bean.CommodityDetailsPddRecBean;
 import com.example.common.CommonResource;
 import com.example.module_classify.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -37,7 +39,16 @@ public class CommodityDetailsPddRecAdapter extends MyRecyclerAdapter<CommodityDe
         holder.setText(R.id.base_number, "已抢" + data.getSold_quantity());
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
-        holder.setText(com.example.module_base.R.id.base_estimate, "预估赚"+ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+            if (SPUtil.getFloatValue(CommonResource.BACKBL) != 0) {
+                holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            } else {
+                holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+            }
+//            LogUtil.e("预估收益:" + "商品价格" + couponPrice + "佣金" + div + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "最终金额" + "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        } else {
+            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+        }
         holder.setText(com.example.module_base.R.id.base_upgrade, "升级赚"+ArithUtil.mul(mul,0.8));
 //        TextView immediatelyGrab = holder.getView(com.example.module_base.R.id.base_immediately_grab);
 //        viewOnClickListener.ViewOnClick(immediatelyGrab, position);

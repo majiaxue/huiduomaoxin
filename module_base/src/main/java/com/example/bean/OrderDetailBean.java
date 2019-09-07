@@ -5,14 +5,15 @@ import java.util.List;
 
 public class OrderDetailBean implements Serializable {
 
+
     /**
-     * id : 51
-     * orderSn : 19061211110001
-     * masterSn : 19061211110001
-     * userName : null
-     * userId : null
+     * id : 690
+     * orderSn : 1909051623000145
+     * masterSn : 1909051623000145
+     * userName : 13201835918
+     * userId : 298242555449966592
      * tradeStatus : 1
-     * autoTakeTime : 30
+     * autoTakeTime : 10
      * receiverPhone : 13201835918
      * receiverName : 晓玉
      * receiverRegion : 金水区
@@ -24,42 +25,45 @@ public class OrderDetailBean implements Serializable {
      * billType : null
      * billReceiverEmail : null
      * billReceiverPhone : null
-     * orderCreateTime : null
+     * orderCreateTime : 2019-09-05 16:23:17
      * orderPayTime : null
      * orderUpdateTime : null
-     * orderOutTime : null
+     * orderOutTime : 2019-09-05 16:53:17
      * receiveTime : null
      * orderOverTime : null
      * commentTime : null
      * orderPayAmount : null
-     * payAmount : null
+     * payAmount : 126
      * integrationAmount : null
      * couponAmount : 0
      * discountAmount : null
      * promotionAmount : null
-     * freightAmount : 1
-     * totalAmount : 1
+     * freightAmount : 27
+     * totalAmount : 99
      * remark :
      * payWay : null
      * sourceType : 1
      * outerTradeNo : null
-     * isRemove : null
+     * isRemove : 1
      * useIntegration : null
-     * confirmStatus : null
+     * confirmStatus : 0
      * deliverySn : null
      * deliveryCompany : null
      * prepayId : null
      * supplyId : null
      * goodsId : null
-     * goodsName : 夜店女装夜总会性感连衣裙气质大露背修身包臀开叉夜场裙子小礼服
-     * orderCategory : 0
-     * sellerId : 11
-     * sellerName : Allisjoy/舞悦时节
-     * status : 6
+     * goodsName : 凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋
+     * orderCategory : 213
+     * sellerId : 1
+     * sellerName : Allisjoy/我的时代1
+     * status : 2
      * promotionInfo : null
      * integration : null
      * receiverPostCode : null
-     * items : [{"id":14,"orderId":51,"orderSn":"19061211110001","productId":null,"productPic":"http://192.168.1.22:9000/goods/d099e84d9b294fcaabd6d91db3d16f83.jpg","productName":"夜店女装夜总会性感连衣裙气质大露背修身包臀开叉夜场裙子小礼服","productBrand":"","productSn":null,"productPrice":null,"productQuantity":1,"productSkuId":263,"productSkuCode":null,"productCategoryId":null,"sp1":"黑色","sp2":"M","sp3":"","promotionName":null,"promotionAmount":null,"couponAmount":0,"integrationAmount":null,"realAmount":1,"giftIntegration":null,"giftGrowth":null,"productAttr":"颜色：黑色，尺码：M","couponId":null,"itemDeliveryTemplateId":null,"expireDate":null}]
+     * tenantId : 1
+     * isLevelOrder : 0
+     * sellerLogo : null
+     * items : [{"id":757,"orderId":null,"orderSn":"1909051623000145","productId":56,"productPic":"http://47.99.93.123:8083/goods/75ee1d95b67642828b8b75709f40b1d1.jpg","productName":"凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋","productBrand":"","productSn":"SNQON111855695","productPrice":99,"productQuantity":1,"productSkuId":1094,"productSkuCode":null,"productCategoryId":null,"sp1":"蓝色","sp2":"m","sp3":"","promotionName":null,"promotionAmount":null,"couponAmount":0,"integrationAmount":null,"realAmount":null,"giftIntegration":null,"giftGrowth":null,"productAttr":"颜色：蓝色、尺寸：m","couponId":0,"itemDeliveryTemplateId":null,"expireDate":null,"sellerName":null}]
      */
 
     private int id;
@@ -68,53 +72,56 @@ public class OrderDetailBean implements Serializable {
     private String userName;
     private String userId;
     private int tradeStatus;
-    private long autoTakeTime;
+    private int autoTakeTime;
     private String receiverPhone;
     private String receiverName;
     private String receiverRegion;
     private String receiverCity;
     private String receiverProvince;
     private String orderAddress;
-    private String billContent;
-    private String billHeader;
-    private String billType;
-    private String billReceiverEmail;
-    private String billReceiverPhone;
+    private Object billContent;
+    private Object billHeader;
+    private Object billType;
+    private Object billReceiverEmail;
+    private Object billReceiverPhone;
     private String orderCreateTime;
-    private String orderPayTime;
-    private String orderUpdateTime;
+    private Object orderPayTime;
+    private Object orderUpdateTime;
     private String orderOutTime;
     private String receiveTime;
-    private String orderOverTime;
-    private String commentTime;
-    private Double orderPayAmount;
-    private Double payAmount;
-    private Double integrationAmount;
-    private Double couponAmount;
-    private Double discountAmount;
-    private Double promotionAmount;
-    private Double freightAmount;
-    private Double totalAmount;
+    private Object orderOverTime;
+    private Object commentTime;
+    private Object orderPayAmount;
+    private int payAmount;
+    private Object integrationAmount;
+    private int couponAmount;
+    private Object discountAmount;
+    private Object promotionAmount;
+    private int freightAmount;
+    private int totalAmount;
     private String remark;
-    private String payWay;
+    private Object payWay;
     private int sourceType;
-    private String outerTradeNo;
-    private String isRemove;
-    private String useIntegration;
-    private String confirmStatus;
-    private String deliverySn;
-    private String deliveryCompany;
-    private String prepayId;
-    private String supplyId;
-    private String goodsId;
+    private Object outerTradeNo;
+    private int isRemove;
+    private Object useIntegration;
+    private int confirmStatus;
+    private Object deliverySn;
+    private Object deliveryCompany;
+    private Object prepayId;
+    private Object supplyId;
+    private Object goodsId;
     private String goodsName;
     private int orderCategory;
     private int sellerId;
     private String sellerName;
     private int status;
-    private String promotionInfo;
-    private String integration;
-    private String receiverPostCode;
+    private Object promotionInfo;
+    private Object integration;
+    private Object receiverPostCode;
+    private int tenantId;
+    private int isLevelOrder;
+    private Object sellerLogo;
     private List<ItemsBean> items;
 
     public int getId() {
@@ -165,11 +172,11 @@ public class OrderDetailBean implements Serializable {
         this.tradeStatus = tradeStatus;
     }
 
-    public long getAutoTakeTime() {
+    public int getAutoTakeTime() {
         return autoTakeTime;
     }
 
-    public void setAutoTakeTime(long autoTakeTime) {
+    public void setAutoTakeTime(int autoTakeTime) {
         this.autoTakeTime = autoTakeTime;
     }
 
@@ -221,43 +228,43 @@ public class OrderDetailBean implements Serializable {
         this.orderAddress = orderAddress;
     }
 
-    public String getBillContent() {
+    public Object getBillContent() {
         return billContent;
     }
 
-    public void setBillContent(String billContent) {
+    public void setBillContent(Object billContent) {
         this.billContent = billContent;
     }
 
-    public String getBillHeader() {
+    public Object getBillHeader() {
         return billHeader;
     }
 
-    public void setBillHeader(String billHeader) {
+    public void setBillHeader(Object billHeader) {
         this.billHeader = billHeader;
     }
 
-    public String getBillType() {
+    public Object getBillType() {
         return billType;
     }
 
-    public void setBillType(String billType) {
+    public void setBillType(Object billType) {
         this.billType = billType;
     }
 
-    public String getBillReceiverEmail() {
+    public Object getBillReceiverEmail() {
         return billReceiverEmail;
     }
 
-    public void setBillReceiverEmail(String billReceiverEmail) {
+    public void setBillReceiverEmail(Object billReceiverEmail) {
         this.billReceiverEmail = billReceiverEmail;
     }
 
-    public String getBillReceiverPhone() {
+    public Object getBillReceiverPhone() {
         return billReceiverPhone;
     }
 
-    public void setBillReceiverPhone(String billReceiverPhone) {
+    public void setBillReceiverPhone(Object billReceiverPhone) {
         this.billReceiverPhone = billReceiverPhone;
     }
 
@@ -269,19 +276,19 @@ public class OrderDetailBean implements Serializable {
         this.orderCreateTime = orderCreateTime;
     }
 
-    public String getOrderPayTime() {
+    public Object getOrderPayTime() {
         return orderPayTime;
     }
 
-    public void setOrderPayTime(String orderPayTime) {
+    public void setOrderPayTime(Object orderPayTime) {
         this.orderPayTime = orderPayTime;
     }
 
-    public String getOrderUpdateTime() {
+    public Object getOrderUpdateTime() {
         return orderUpdateTime;
     }
 
-    public void setOrderUpdateTime(String orderUpdateTime) {
+    public void setOrderUpdateTime(Object orderUpdateTime) {
         this.orderUpdateTime = orderUpdateTime;
     }
 
@@ -301,83 +308,83 @@ public class OrderDetailBean implements Serializable {
         this.receiveTime = receiveTime;
     }
 
-    public String getOrderOverTime() {
+    public Object getOrderOverTime() {
         return orderOverTime;
     }
 
-    public void setOrderOverTime(String orderOverTime) {
+    public void setOrderOverTime(Object orderOverTime) {
         this.orderOverTime = orderOverTime;
     }
 
-    public String getCommentTime() {
+    public Object getCommentTime() {
         return commentTime;
     }
 
-    public void setCommentTime(String commentTime) {
+    public void setCommentTime(Object commentTime) {
         this.commentTime = commentTime;
     }
 
-    public Double getOrderPayAmount() {
+    public Object getOrderPayAmount() {
         return orderPayAmount;
     }
 
-    public void setOrderPayAmount(Double orderPayAmount) {
+    public void setOrderPayAmount(Object orderPayAmount) {
         this.orderPayAmount = orderPayAmount;
     }
 
-    public Double getPayAmount() {
+    public int getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(Double payAmount) {
+    public void setPayAmount(int payAmount) {
         this.payAmount = payAmount;
     }
 
-    public Double getIntegrationAmount() {
+    public Object getIntegrationAmount() {
         return integrationAmount;
     }
 
-    public void setIntegrationAmount(Double integrationAmount) {
+    public void setIntegrationAmount(Object integrationAmount) {
         this.integrationAmount = integrationAmount;
     }
 
-    public Double getCouponAmount() {
+    public int getCouponAmount() {
         return couponAmount;
     }
 
-    public void setCouponAmount(Double couponAmount) {
+    public void setCouponAmount(int couponAmount) {
         this.couponAmount = couponAmount;
     }
 
-    public Double getDiscountAmount() {
+    public Object getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Double discountAmount) {
+    public void setDiscountAmount(Object discountAmount) {
         this.discountAmount = discountAmount;
     }
 
-    public Double getPromotionAmount() {
+    public Object getPromotionAmount() {
         return promotionAmount;
     }
 
-    public void setPromotionAmount(Double promotionAmount) {
+    public void setPromotionAmount(Object promotionAmount) {
         this.promotionAmount = promotionAmount;
     }
 
-    public Double getFreightAmount() {
+    public int getFreightAmount() {
         return freightAmount;
     }
 
-    public void setFreightAmount(Double freightAmount) {
+    public void setFreightAmount(int freightAmount) {
         this.freightAmount = freightAmount;
     }
 
-    public Double getTotalAmount() {
+    public int getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(int totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -389,11 +396,11 @@ public class OrderDetailBean implements Serializable {
         this.remark = remark;
     }
 
-    public String getPayWay() {
+    public Object getPayWay() {
         return payWay;
     }
 
-    public void setPayWay(String payWay) {
+    public void setPayWay(Object payWay) {
         this.payWay = payWay;
     }
 
@@ -405,75 +412,75 @@ public class OrderDetailBean implements Serializable {
         this.sourceType = sourceType;
     }
 
-    public String getOuterTradeNo() {
+    public Object getOuterTradeNo() {
         return outerTradeNo;
     }
 
-    public void setOuterTradeNo(String outerTradeNo) {
+    public void setOuterTradeNo(Object outerTradeNo) {
         this.outerTradeNo = outerTradeNo;
     }
 
-    public String getIsRemove() {
+    public int getIsRemove() {
         return isRemove;
     }
 
-    public void setIsRemove(String isRemove) {
+    public void setIsRemove(int isRemove) {
         this.isRemove = isRemove;
     }
 
-    public String getUseIntegration() {
+    public Object getUseIntegration() {
         return useIntegration;
     }
 
-    public void setUseIntegration(String useIntegration) {
+    public void setUseIntegration(Object useIntegration) {
         this.useIntegration = useIntegration;
     }
 
-    public String getConfirmStatus() {
+    public int getConfirmStatus() {
         return confirmStatus;
     }
 
-    public void setConfirmStatus(String confirmStatus) {
+    public void setConfirmStatus(int confirmStatus) {
         this.confirmStatus = confirmStatus;
     }
 
-    public String getDeliverySn() {
+    public Object getDeliverySn() {
         return deliverySn;
     }
 
-    public void setDeliverySn(String deliverySn) {
+    public void setDeliverySn(Object deliverySn) {
         this.deliverySn = deliverySn;
     }
 
-    public String getDeliveryCompany() {
+    public Object getDeliveryCompany() {
         return deliveryCompany;
     }
 
-    public void setDeliveryCompany(String deliveryCompany) {
+    public void setDeliveryCompany(Object deliveryCompany) {
         this.deliveryCompany = deliveryCompany;
     }
 
-    public String getPrepayId() {
+    public Object getPrepayId() {
         return prepayId;
     }
 
-    public void setPrepayId(String prepayId) {
+    public void setPrepayId(Object prepayId) {
         this.prepayId = prepayId;
     }
 
-    public String getSupplyId() {
+    public Object getSupplyId() {
         return supplyId;
     }
 
-    public void setSupplyId(String supplyId) {
+    public void setSupplyId(Object supplyId) {
         this.supplyId = supplyId;
     }
 
-    public String getGoodsId() {
+    public Object getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(String goodsId) {
+    public void setGoodsId(Object goodsId) {
         this.goodsId = goodsId;
     }
 
@@ -517,28 +524,52 @@ public class OrderDetailBean implements Serializable {
         this.status = status;
     }
 
-    public String getPromotionInfo() {
+    public Object getPromotionInfo() {
         return promotionInfo;
     }
 
-    public void setPromotionInfo(String promotionInfo) {
+    public void setPromotionInfo(Object promotionInfo) {
         this.promotionInfo = promotionInfo;
     }
 
-    public String getIntegration() {
+    public Object getIntegration() {
         return integration;
     }
 
-    public void setIntegration(String integration) {
+    public void setIntegration(Object integration) {
         this.integration = integration;
     }
 
-    public String getReceiverPostCode() {
+    public Object getReceiverPostCode() {
         return receiverPostCode;
     }
 
-    public void setReceiverPostCode(String receiverPostCode) {
+    public void setReceiverPostCode(Object receiverPostCode) {
         this.receiverPostCode = receiverPostCode;
+    }
+
+    public int getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public int getIsLevelOrder() {
+        return isLevelOrder;
+    }
+
+    public void setIsLevelOrder(int isLevelOrder) {
+        this.isLevelOrder = isLevelOrder;
+    }
+
+    public Object getSellerLogo() {
+        return sellerLogo;
+    }
+
+    public void setSellerLogo(Object sellerLogo) {
+        this.sellerLogo = sellerLogo;
     }
 
     public List<ItemsBean> getItems() {
@@ -549,64 +580,66 @@ public class OrderDetailBean implements Serializable {
         this.items = items;
     }
 
-    public static class ItemsBean implements Serializable{
+    public static class ItemsBean {
         /**
-         * id : 14
-         * orderId : 51
-         * orderSn : 19061211110001
-         * productId : null
-         * productPic : http://192.168.1.22:9000/goods/d099e84d9b294fcaabd6d91db3d16f83.jpg
-         * productName : 夜店女装夜总会性感连衣裙气质大露背修身包臀开叉夜场裙子小礼服
+         * id : 757
+         * orderId : null
+         * orderSn : 1909051623000145
+         * productId : 56
+         * productPic : http://47.99.93.123:8083/goods/75ee1d95b67642828b8b75709f40b1d1.jpg
+         * productName : 凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋
          * productBrand :
-         * productSn : null
-         * productPrice : null
+         * productSn : SNQON111855695
+         * productPrice : 99
          * productQuantity : 1
-         * productSkuId : 263
+         * productSkuId : 1094
          * productSkuCode : null
          * productCategoryId : null
-         * sp1 : 黑色
-         * sp2 : M
+         * sp1 : 蓝色
+         * sp2 : m
          * sp3 :
          * promotionName : null
          * promotionAmount : null
          * couponAmount : 0
          * integrationAmount : null
-         * realAmount : 1
+         * realAmount : null
          * giftIntegration : null
          * giftGrowth : null
-         * productAttr : 颜色：黑色，尺码：M
-         * couponId : null
+         * productAttr : 颜色：蓝色、尺寸：m
+         * couponId : 0
          * itemDeliveryTemplateId : null
          * expireDate : null
+         * sellerName : null
          */
 
         private int id;
-        private int orderId;
+        private Object orderId;
         private String orderSn;
-        private String productId;
+        private int productId;
         private String productPic;
         private String productName;
         private String productBrand;
         private String productSn;
-        private String productPrice;
+        private int productPrice;
         private int productQuantity;
         private int productSkuId;
-        private String productSkuCode;
-        private String productCategoryId;
+        private Object productSkuCode;
+        private Object productCategoryId;
         private String sp1;
         private String sp2;
         private String sp3;
-        private String promotionName;
-        private String promotionAmount;
+        private Object promotionName;
+        private Object promotionAmount;
         private int couponAmount;
-        private String integrationAmount;
-        private int realAmount;
-        private String giftIntegration;
-        private String giftGrowth;
+        private Object integrationAmount;
+        private Object realAmount;
+        private Object giftIntegration;
+        private Object giftGrowth;
         private String productAttr;
-        private String couponId;
-        private String itemDeliveryTemplateId;
-        private String expireDate;
+        private int couponId;
+        private Object itemDeliveryTemplateId;
+        private Object expireDate;
+        private Object sellerName;
 
         public int getId() {
             return id;
@@ -616,11 +649,11 @@ public class OrderDetailBean implements Serializable {
             this.id = id;
         }
 
-        public int getOrderId() {
+        public Object getOrderId() {
             return orderId;
         }
 
-        public void setOrderId(int orderId) {
+        public void setOrderId(Object orderId) {
             this.orderId = orderId;
         }
 
@@ -632,11 +665,11 @@ public class OrderDetailBean implements Serializable {
             this.orderSn = orderSn;
         }
 
-        public String getProductId() {
+        public int getProductId() {
             return productId;
         }
 
-        public void setProductId(String productId) {
+        public void setProductId(int productId) {
             this.productId = productId;
         }
 
@@ -672,11 +705,11 @@ public class OrderDetailBean implements Serializable {
             this.productSn = productSn;
         }
 
-        public String getProductPrice() {
+        public int getProductPrice() {
             return productPrice;
         }
 
-        public void setProductPrice(String productPrice) {
+        public void setProductPrice(int productPrice) {
             this.productPrice = productPrice;
         }
 
@@ -696,19 +729,19 @@ public class OrderDetailBean implements Serializable {
             this.productSkuId = productSkuId;
         }
 
-        public String getProductSkuCode() {
+        public Object getProductSkuCode() {
             return productSkuCode;
         }
 
-        public void setProductSkuCode(String productSkuCode) {
+        public void setProductSkuCode(Object productSkuCode) {
             this.productSkuCode = productSkuCode;
         }
 
-        public String getProductCategoryId() {
+        public Object getProductCategoryId() {
             return productCategoryId;
         }
 
-        public void setProductCategoryId(String productCategoryId) {
+        public void setProductCategoryId(Object productCategoryId) {
             this.productCategoryId = productCategoryId;
         }
 
@@ -736,19 +769,19 @@ public class OrderDetailBean implements Serializable {
             this.sp3 = sp3;
         }
 
-        public String getPromotionName() {
+        public Object getPromotionName() {
             return promotionName;
         }
 
-        public void setPromotionName(String promotionName) {
+        public void setPromotionName(Object promotionName) {
             this.promotionName = promotionName;
         }
 
-        public String getPromotionAmount() {
+        public Object getPromotionAmount() {
             return promotionAmount;
         }
 
-        public void setPromotionAmount(String promotionAmount) {
+        public void setPromotionAmount(Object promotionAmount) {
             this.promotionAmount = promotionAmount;
         }
 
@@ -760,35 +793,35 @@ public class OrderDetailBean implements Serializable {
             this.couponAmount = couponAmount;
         }
 
-        public String getIntegrationAmount() {
+        public Object getIntegrationAmount() {
             return integrationAmount;
         }
 
-        public void setIntegrationAmount(String integrationAmount) {
+        public void setIntegrationAmount(Object integrationAmount) {
             this.integrationAmount = integrationAmount;
         }
 
-        public int getRealAmount() {
+        public Object getRealAmount() {
             return realAmount;
         }
 
-        public void setRealAmount(int realAmount) {
+        public void setRealAmount(Object realAmount) {
             this.realAmount = realAmount;
         }
 
-        public String getGiftIntegration() {
+        public Object getGiftIntegration() {
             return giftIntegration;
         }
 
-        public void setGiftIntegration(String giftIntegration) {
+        public void setGiftIntegration(Object giftIntegration) {
             this.giftIntegration = giftIntegration;
         }
 
-        public String getGiftGrowth() {
+        public Object getGiftGrowth() {
             return giftGrowth;
         }
 
-        public void setGiftGrowth(String giftGrowth) {
+        public void setGiftGrowth(Object giftGrowth) {
             this.giftGrowth = giftGrowth;
         }
 
@@ -800,28 +833,133 @@ public class OrderDetailBean implements Serializable {
             this.productAttr = productAttr;
         }
 
-        public String getCouponId() {
+        public int getCouponId() {
             return couponId;
         }
 
-        public void setCouponId(String couponId) {
+        public void setCouponId(int couponId) {
             this.couponId = couponId;
         }
 
-        public String getItemDeliveryTemplateId() {
+        public Object getItemDeliveryTemplateId() {
             return itemDeliveryTemplateId;
         }
 
-        public void setItemDeliveryTemplateId(String itemDeliveryTemplateId) {
+        public void setItemDeliveryTemplateId(Object itemDeliveryTemplateId) {
             this.itemDeliveryTemplateId = itemDeliveryTemplateId;
         }
 
-        public String getExpireDate() {
+        public Object getExpireDate() {
             return expireDate;
         }
 
-        public void setExpireDate(String expireDate) {
+        public void setExpireDate(Object expireDate) {
             this.expireDate = expireDate;
         }
+
+        public Object getSellerName() {
+            return sellerName;
+        }
+
+        public void setSellerName(Object sellerName) {
+            this.sellerName = sellerName;
+        }
+
+        @Override
+        public String toString() {
+            return "ItemsBean{" +
+                    "id=" + id +
+                    ", orderId=" + orderId +
+                    ", orderSn='" + orderSn + '\'' +
+                    ", productId=" + productId +
+                    ", productPic='" + productPic + '\'' +
+                    ", productName='" + productName + '\'' +
+                    ", productBrand='" + productBrand + '\'' +
+                    ", productSn='" + productSn + '\'' +
+                    ", productPrice=" + productPrice +
+                    ", productQuantity=" + productQuantity +
+                    ", productSkuId=" + productSkuId +
+                    ", productSkuCode=" + productSkuCode +
+                    ", productCategoryId=" + productCategoryId +
+                    ", sp1='" + sp1 + '\'' +
+                    ", sp2='" + sp2 + '\'' +
+                    ", sp3='" + sp3 + '\'' +
+                    ", promotionName=" + promotionName +
+                    ", promotionAmount=" + promotionAmount +
+                    ", couponAmount=" + couponAmount +
+                    ", integrationAmount=" + integrationAmount +
+                    ", realAmount=" + realAmount +
+                    ", giftIntegration=" + giftIntegration +
+                    ", giftGrowth=" + giftGrowth +
+                    ", productAttr='" + productAttr + '\'' +
+                    ", couponId=" + couponId +
+                    ", itemDeliveryTemplateId=" + itemDeliveryTemplateId +
+                    ", expireDate=" + expireDate +
+                    ", sellerName=" + sellerName +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDetailBean{" +
+                "id=" + id +
+                ", orderSn='" + orderSn + '\'' +
+                ", masterSn='" + masterSn + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", tradeStatus=" + tradeStatus +
+                ", autoTakeTime=" + autoTakeTime +
+                ", receiverPhone='" + receiverPhone + '\'' +
+                ", receiverName='" + receiverName + '\'' +
+                ", receiverRegion='" + receiverRegion + '\'' +
+                ", receiverCity='" + receiverCity + '\'' +
+                ", receiverProvince='" + receiverProvince + '\'' +
+                ", orderAddress='" + orderAddress + '\'' +
+                ", billContent=" + billContent +
+                ", billHeader=" + billHeader +
+                ", billType=" + billType +
+                ", billReceiverEmail=" + billReceiverEmail +
+                ", billReceiverPhone=" + billReceiverPhone +
+                ", orderCreateTime='" + orderCreateTime + '\'' +
+                ", orderPayTime=" + orderPayTime +
+                ", orderUpdateTime=" + orderUpdateTime +
+                ", orderOutTime='" + orderOutTime + '\'' +
+                ", receiveTime=" + receiveTime +
+                ", orderOverTime=" + orderOverTime +
+                ", commentTime=" + commentTime +
+                ", orderPayAmount=" + orderPayAmount +
+                ", payAmount=" + payAmount +
+                ", integrationAmount=" + integrationAmount +
+                ", couponAmount=" + couponAmount +
+                ", discountAmount=" + discountAmount +
+                ", promotionAmount=" + promotionAmount +
+                ", freightAmount=" + freightAmount +
+                ", totalAmount=" + totalAmount +
+                ", remark='" + remark + '\'' +
+                ", payWay=" + payWay +
+                ", sourceType=" + sourceType +
+                ", outerTradeNo=" + outerTradeNo +
+                ", isRemove=" + isRemove +
+                ", useIntegration=" + useIntegration +
+                ", confirmStatus=" + confirmStatus +
+                ", deliverySn=" + deliverySn +
+                ", deliveryCompany=" + deliveryCompany +
+                ", prepayId=" + prepayId +
+                ", supplyId=" + supplyId +
+                ", goodsId=" + goodsId +
+                ", goodsName='" + goodsName + '\'' +
+                ", orderCategory=" + orderCategory +
+                ", sellerId=" + sellerId +
+                ", sellerName='" + sellerName + '\'' +
+                ", status=" + status +
+                ", promotionInfo=" + promotionInfo +
+                ", integration=" + integration +
+                ", receiverPostCode=" + receiverPostCode +
+                ", tenantId=" + tenantId +
+                ", isLevelOrder=" + isLevelOrder +
+                ", sellerLogo=" + sellerLogo +
+                ", items=" + items +
+                '}';
     }
 }

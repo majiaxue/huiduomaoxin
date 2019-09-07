@@ -336,7 +336,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             commodityPreferentialPrice.setText("￥" + tbGoodsDetailsBean.getData().getActualPrice());//优惠价
             commodityOriginalPrice.setText("原价：￥" + tbGoodsDetailsBean.getData().getOriginalPrice());//原价
             commodityEarnings.setText("预估收益：￥" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
-            LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + tbGoodsDetailsBean.getData().getCouponPrice() + "商品优惠后" + tbGoodsDetailsBean.getData().getActualPrice() + "最终收益" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + tbGoodsDetailsBean.getData().getCommissionRate() + "商品优惠后" + tbGoodsDetailsBean.getData().getActualPrice() + "最终收益" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
 
             //商品详情图片
             if (StringUtils.isNotBlank(tbGoodsDetailsBean.getData().getDetailPics())) {

@@ -9,6 +9,7 @@ import com.example.bean.TBGoodsRecBean;
 import com.example.common.CommonResource;
 import com.example.module_home.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -28,11 +29,16 @@ public class BaoYouAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
         holder.setText(R.id.universal_list_rec_price, "￥" + data.getZk_final_price());
         holder.setText(R.id.universal_list_rec_payment_amount, "领劵减" + data.getCoupon_amount() + "元");
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
-        } else {
-            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, 0.3));
-        }
+            if (SPUtil.getFloatValue(CommonResource.BACKBL) != 0) {
+                holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
 
+            } else {
+                holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+            }
+//            LogUtil.e("预估收益:" + "商品价格" + couponPrice + "佣金" + div + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "最终金额" + "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+        } else {
+            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+        }
         holder.setText(R.id.universal_list_rec_shengjizhuan, "升级赚" + ArithUtil.mulRound(mul, 0.8));
     }
 }

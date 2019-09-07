@@ -55,7 +55,9 @@ public class OrderDetailsPresenter extends BasePresenter<OrderDetailsView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("订单详情：" + result);
-                OrderDetailBean orderDetailBean = JSON.parseObject(result, OrderDetailBean.class);
+                OrderDetailBean orderDetailBean = JSON.parseObject(result, new TypeReference<OrderDetailBean>() {
+                }.getType());
+                LogUtil.e("订单orderDetailBean" + orderDetailBean);
                 if (getView() != null) {
                     getView().loadData(orderDetailBean);
                 }
@@ -69,7 +71,7 @@ public class OrderDetailsPresenter extends BasePresenter<OrderDetailsView> {
     }
 
     public void items(List<OrderDetailBean.ItemsBean> items, RecyclerView orderDetailsGoodsRec) {
-
+        LogUtil.e("item" + items);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         OrderDetailsAdapter orderDetailsAdapter = new OrderDetailsAdapter(mContext, items, R.layout.item_order_details_rec);
         orderDetailsGoodsRec.setLayoutManager(linearLayoutManager);
