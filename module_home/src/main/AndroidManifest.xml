@@ -38,6 +38,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.main.WelcomeActivity"
+            android:theme="@style/SplashTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
