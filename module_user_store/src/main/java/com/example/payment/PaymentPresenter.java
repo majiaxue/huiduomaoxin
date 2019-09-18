@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
 import com.example.bean.AliPayBean;
+import com.example.bean.RedPackageBean;
 import com.example.bean.SubmitOrderBean;
 import com.example.bean.WeChatPayBean;
 import com.example.common.CommonResource;
@@ -178,5 +179,25 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 .withSerializable("bean", submitOrderBean)
                 .navigation();
         ((Activity) mContext).finish();
+    }
+
+    public void pay2(boolean isWeChat, RedPackageBean redPackageBean) {
+        if (isWeChat) {
+
+        } else {
+            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", redPackageBean.getBuyMoney()).addParms("redPackedId", redPackageBean.getId()).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.BUY_RED_PACKAGE, map);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("支付宝：" + result);
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e(errorCode + "------------" + errorMsg);
+                }
+            }));
+        }
     }
 }

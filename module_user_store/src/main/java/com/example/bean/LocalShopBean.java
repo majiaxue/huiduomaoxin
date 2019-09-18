@@ -1,9 +1,11 @@
 package com.example.bean;
 
+import com.stx.xhb.xbanner.entity.SimpleBannerInfo;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class LocalShopBean implements Serializable {
+public class LocalShopBean extends SimpleBannerInfo implements Serializable {
 
     /**
      * seller_shop_name : 123123
@@ -266,6 +268,11 @@ public class LocalShopBean implements Serializable {
 
     public void setCouponList(List<UserCouponBean> couponList) {
         this.couponList = couponList;
+    }
+
+    @Override
+    public Object getXBannerUrl() {
+        return null;
     }
 
     public static class CouponListBean implements Serializable {

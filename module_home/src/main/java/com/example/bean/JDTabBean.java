@@ -86,5 +86,24 @@ public class JDTabBean {
         public void setParentId(int parentId) {
             this.parentId = parentId;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "grade=" + grade +
+                    ", name='" + name + '\'' +
+                    ", id=" + id +
+                    ", parentId=" + parentId +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "JDTabBean{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

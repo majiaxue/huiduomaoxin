@@ -16,7 +16,6 @@ public class NetStateChangeReceiver extends BroadcastReceiver {
             NetworkType networkType = NetworkUtil.getNetworkType(context);
             LogUtil.e("当前网络：" + networkType);
             if (networkType == NetworkType.NETWORK_NO) {
-                Toast.makeText(context, "无法连接网络，请检查重试", Toast.LENGTH_LONG).show();
             } else {
                 if (ModuleBaseApplication.isDingWei) {
                     ModuleBaseApplication.mLocationClient.restart();

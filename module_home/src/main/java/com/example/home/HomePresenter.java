@@ -34,6 +34,7 @@ import com.example.entity.BaseRecImageAndTextBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.GoodsRecommendAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -383,8 +384,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 } else if (position == 8) {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 3).navigation();
                 } else if (position == 5) {
-//                    ARouter.getInstance().build("/module_user_store/LocationActivity").navigation();
-                    ARouter.getInstance().build("/module_user_store/UserActivity").withString("go", "go").navigation();
+                    ModuleBaseApplication.mLocationClient.restart();
+                    ARouter.getInstance().build("/module_local/LocalMainActivity").navigation();
+//                    ARouter.getInstance().build("/module_local/LocalMainActivity").withString("go", "go").navigation();
                 }
             }
         });

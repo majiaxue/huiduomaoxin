@@ -57,25 +57,8 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
         double mul = sub * div * 0.9;//商品收益需要乘个人收益
         holder.setImageFresco(com.example.module_base.R.id.base_image, data.getPict_url());
 
-//        Glide.with(context)
-//                .asBitmap()
-//                .load(data.getPict_url())
-//                .transform(new GlideRoundTransform(5, 0))
-//                .into(new CustomTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
-//                        Bitmap bitmap1 = compressImage(bitmap);
-//                        holder.setImageBitmap(R.id.base_image,bitmap1);
-//                    }
-//
-//                    @Override
-//                    public void onLoadCleared(@Nullable Drawable placeholder) {
-//
-//                    }
-//                });
-
         holder.setText(com.example.module_base.R.id.base_name, data.getTitle());
-        holder.setText(com.example.module_base.R.id.base_reduce_price, "领劵减" + data.getCoupon_amount() + "元");
+        holder.setText(com.example.module_base.R.id.base_reduce_price, "领劵减" + (data.getCoupon_amount() == null ? "0" : data.getCoupon_amount()) + "元");
         holder.setText(com.example.module_base.R.id.base_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0.0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0.0" : data.getCoupon_amount())));
         holder.setText(com.example.module_base.R.id.base_original_price, "￥" + data.getZk_final_price());
         holder.setText(com.example.module_base.R.id.base_number, "已抢" + data.getVolume() + "件");

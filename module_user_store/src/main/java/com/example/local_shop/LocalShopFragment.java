@@ -209,26 +209,6 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         if (!hidden && isFirst) {
             ProcessDialogUtil.showProcessDialog(getContext());
 
-//            if (TextUtils.isEmpty(MyLocationListener.city)) {
-//                // 新建一个子线程来发送消息
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            // 让ProgressDialog显示一会儿。。。。
-//                            Thread.sleep(2000);
-//                            Message message = new Message();
-//                            message.what = 1;
-//                            // 发送消息到消息队列中
-//                            handler.sendMessage(message);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }.start();
-//            } else {
-//                localShopCity.setText(MyLocationListener.city);
-//            }
             if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
                 LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
                 localShopCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));

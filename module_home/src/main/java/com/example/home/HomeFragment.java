@@ -140,7 +140,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeSeeMoreTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getActivity(), "我被点击了", Toast.LENGTH_SHORT).show();
                 ARouter.getInstance().build("/mine/messagecenter").navigation();
             }
         });
@@ -195,7 +194,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(SPUtil.getToken())) {
-//                    Toast.makeText(getContext(), "正在马不停蹄滴开发中", Toast.LENGTH_SHORT).show();
                     ARouter.getInstance().build("/module_home/FreeChargeActivity").navigation();
                 } else {
                     //是否登录
@@ -260,12 +258,10 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         super.onHiddenChanged(hidden);
         if (hidden) {
             //不可见
-            LogUtil.e("HomeFragment" + "hidden:" + hidden);
             homeMarquee.stopFlipping();
             homeXbanner.stopAutoPlay();
         } else {
             //可见
-            LogUtil.e("HomeFragment" + "hidden:" + hidden);
             homeMarquee.startFlipping();
             homeXbanner.startAutoPlay();
 //            //跑马灯
@@ -280,7 +276,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onStop() {
         super.onStop();
-        LogUtil.e("HomeFragment" + "不可见");
         homeMarquee.stopFlipping();
         homeXbanner.stopAutoPlay();
     }
@@ -288,7 +283,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.e("HomeFragment" + "可见");
         homeMarquee.startFlipping();
         homeXbanner.startAutoPlay();
     }

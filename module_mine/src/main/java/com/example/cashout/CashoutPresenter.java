@@ -94,6 +94,7 @@ public class CashoutPresenter extends BasePresenter<CashoutView> {
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e(errorCode + "-------" + errorMsg);
+                    Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }));
         }

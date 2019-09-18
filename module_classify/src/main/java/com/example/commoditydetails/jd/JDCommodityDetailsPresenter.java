@@ -14,7 +14,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -22,8 +25,10 @@ import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.SecondaryJDRecAdapter;
 import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDLedSecuritiesBean;
+import com.example.bean.JDListBean;
 import com.example.commoditydetails.jd.adapter.JDRecAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.webview.WebViewActivity;
@@ -39,10 +44,13 @@ import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnPopListener;
+import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
-import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KelperTask;
@@ -72,10 +80,10 @@ import okhttp3.ResponseBody;
  */
 public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetailsView> {
 
-    private List<String> url = new ArrayList<>();
     private List<String> images = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
     private Bitmap bitmap;
+    private JDListBean jDGoodsRecBean;
 
     /**
      * 超时时间设定
@@ -138,20 +146,12 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //商品轮播图
-    public void setXBanner(XBanner commodityXbanner, final JDGoodsRecBean.DataBean.ListsBean listsBeanList) {
-        List<JDGoodsRecBean.DataBean.ListsBean.ImageInfoBean.ImageListBean> imageList = listsBeanList.getImageInfo().getImageList();
-        for (int i = 0; i < imageList.size(); i++) {
-            url.add(imageList.get(i).getUrl());
-        }
-
-        commodityXbanner.setData(url, null);
-//        commodityXbanner.setBannerData(R.layout.image_fresco, images);
+    public void setXBanner(XBanner commodityXbanner) {
+        commodityXbanner.setData(images, null);
         commodityXbanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-//                SimpleDraweeView bannerImage = view.findViewById(R.id.banner_image);
-//                bannerImage.setImageResource((int) images.get(position).getXBannerUrl());
-                Glide.with(mContext).load(url.get(position)).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
+                Glide.with(mContext).load(images.get(position)).apply(RequestOptions.centerCropTransform()).into((ImageView) view);
             }
         });
         // 设置XBanner的页面切换特效
@@ -159,13 +159,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         // 设置XBanner页面切换的时间，即动画时长
         commodityXbanner.setPageChangeDuration(1000);
 
-        //监听广告 item 的单击事件
-//        commodityXbanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(XBanner banner, Object model, View view, int position) {
-//                Toast.makeText(mContext, "点击了第" + position + "图片", Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     //商品详情图
@@ -185,23 +178,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         shopParticulars.setLayoutManager(linearLayoutManager);
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
         shopParticulars.setHasFixedSize(true);
-        shopParticulars.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Fresco.getImagePipeline().resume();
-                } else {
-                    Fresco.getImagePipeline().pause();
-                }
-//                // 查看源码可知State有三种状态：SCROLL_STATE_IDLE（静止）、SCROLL_STATE_DRAGGING（上升）、SCROLL_STATE_SETTLING（下落）
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) { // 滚动静止时才加载图片资源，极大提升流畅度
-//                    commodityDetailsRecAdapter.setScrolling(false);
-//                    commodityDetailsRecAdapter.notifyDataSetChanged(); // notify调用后onBindViewHolder会响应调用
-//                } else
-//                    mRecyclerViewAdapter.setScrolling(true);
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
         shopParticulars.setAdapter(commodityDetailsRecAdapter);
     }
 
@@ -263,7 +239,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("京东领劵" + result);
+                LogUtil.e("京东转链------》" + result);
                 JDLedSecuritiesBean jdLedSecuritiesBean = JSON.parseObject(result, new TypeReference<JDLedSecuritiesBean>() {
                 }.getType());
                 if (jdLedSecuritiesBean != null && jdLedSecuritiesBean.getData() != null) {
@@ -286,32 +262,25 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     //点击领劵
     public void clickLedSecurities(String clickURL) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-
-//            Intent intent = new Intent(mContext, WebViewActivity.class);
-//            intent.putExtra("url", clickURL);
-//            mContext.startActivity(intent);
             try {
-                mKelperTask = KeplerApiManager.getWebViewService().openJDUrlPage(clickURL,mKeplerAttachParameter, mContext, mOpenAppAction, timeOut);
+                mKelperTask = KeplerApiManager.getWebViewService().openJDUrlPage(clickURL, mKeplerAttachParameter, mContext, mOpenAppAction, timeOut);
             } catch (KeplerBufferOverflowException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            try {
-//                mKelperTask = KeplerApiManager
-//                        .getWebViewService()
-//                        .openItemDetailsPage(clickURL,
-//                                mKeplerAttachParameter, mContext, mOpenAppAction, timeOut);
-//            } catch (KeplerBufferOverflowException e) {
-//
-//                e.printStackTrace();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
         } else {
             ARouter.getInstance().build("/mine/login").navigation();
         }
 
+//        if (!TextUtils.isEmpty(SPUtil.getToken())) {
+//
+//            Intent intent = new Intent(mContext, WebViewActivity.class);
+//            intent.putExtra("url", clickURL);
+//            mContext.startActivity(intent);
+//        } else {
+//            ARouter.getInstance().build("/mine/login").navigation();
+//        }
     }
 
 
@@ -322,17 +291,16 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult京东推荐商品--------------->" + result);
-                final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
+                final JDListBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDListBean>() {
                 }.getType());
                 if (jDGoodsRecBean != null) {
-                    if (jDGoodsRecBean.getData() != null && jDGoodsRecBean.getData().getLists() != null && jDGoodsRecBean.getData().getLists().size() != 0) {
+                    if (jDGoodsRecBean.getData() != null && jDGoodsRecBean.getData() != null && jDGoodsRecBean.getData().size() != 0) {
                         if (getView() != null) {
                             getView().isNoGoods(false);
                         }
-                        listsBeanList.clear();
-                        listsBeanList.addAll(jDGoodsRecBean.getData().getLists());
+
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                        JDRecAdapter jdRecAdapter = new JDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
+                        JDRecAdapter jdRecAdapter = new JDRecAdapter(mContext, jDGoodsRecBean.getData(), R.layout.item_base_rec);
                         shopRecommendRec.setLayoutManager(linearLayoutManager);
                         shopRecommendRec.setAdapter(jdRecAdapter);
 
@@ -345,23 +313,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                                         .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
                                         .withInt("position", position)
                                         .navigation();
-                            }
-                        });
-
-                        jdRecAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-                            @Override
-                            public void ViewOnClick(View view, final int index) {
-                                view.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ARouter.getInstance()
-                                                .build("/module_classify/JDCommodityDetailsActivity")
-                                                .withString("skuid", listsBeanList.get(index).getSkuId())
-                                                .withSerializable("jDGoodsRecBean", jDGoodsRecBean)
-                                                .withInt("position", index)
-                                                .navigation();
-                                    }
-                                });
                             }
                         });
                     } else {
@@ -384,7 +335,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     //加载生成图片布局
-    public void viewToImage(JDGoodsRecBean.DataBean.ListsBean listsBean, String qRImage, String path) {
+    public void viewToImage(JDListBean.DataBean listsBean, String qRImage, String path) {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.sharebg, null, false);
         ImageView image = view.findViewById(R.id.share_image);
         TextView name = view.findViewById(R.id.share_name);
@@ -395,7 +346,12 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         ImageView qRCode = view.findViewById(R.id.share_qr_code);
         //字体加中划线
         originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        double div = ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount()));//到手价
+        double div;
+        if (listsBean.getCouponInfo().getCouponList().size() > 0) {
+            div = ArithUtil.sub(Double.valueOf(listsBean.getPriceInfo().getPrice()), Double.valueOf(listsBean.getCouponInfo().getCouponList().get(0).getDiscount()));//到手价
+        } else {
+            div = listsBean.getPriceInfo().getPrice();
+        }
         LogUtil.e("url主图---------->" + listsBean.getImageInfo().getImageList().get(0).getUrl());
         image.setImageURI(Uri.fromFile(new File(path)));
         name.setText(listsBean.getSkuName());
@@ -423,7 +379,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, bitmap))
                 .withText("hello")
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
                 .setCallback(shareListener).open(config);
 
     }
@@ -449,5 +405,47 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         }
     };
 
+    public void loadData(String skuid) {
+        Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("skuIds", skuid).addParms("keyword", "").build();
+
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
+                ProcessDialogUtil.dismissDialog();
+                try {
+                    org.json.JSONObject jsonObject = new org.json.JSONObject(result);
+                    String code = jsonObject.optString("code");
+                    if ("-1".equals(code)) {
+                        Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
+                    } else if ("200".equals(code)) {
+                        jDGoodsRecBean = JSON.parseObject(result, JDListBean.class);
+
+
+                        List<JDListBean.DataBean.ImageInfoBean.ImageListBean> imageList = jDGoodsRecBean.getData().get(0).getImageInfo().getImageList();
+                        for (int i = 0; i < imageList.size(); i++) {
+                            images.add(imageList.get(i).getUrl());
+                        }
+
+                        CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, images, R.layout.itme_commodity_details_rec);
+                        if (getView() != null) {
+                            getView().loadUI(jDGoodsRecBean, commodityDetailsRecAdapter);
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("SecondaryDetailsErrorMsg京东商品--------------->" + errorMsg);
+                ProcessDialogUtil.dismissDialog();
+            }
+        }));
+    }
 
 }

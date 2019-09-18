@@ -9,6 +9,7 @@ import com.example.mvp.BaseFragment;
 import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
@@ -64,6 +65,7 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.e("-------------------------"+isVisibleToUser);
         if (isVisibleToUser) {
             if (flag > 0) {
                 presenter.loadData();

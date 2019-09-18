@@ -7,18 +7,19 @@ import android.widget.TextView;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.JDGoodsRecBean;
+import com.example.bean.JDListBean;
 import com.example.module_classify.R;
 import com.example.utils.ArithUtil;
 
 import java.util.List;
 
-public class JdWaterfallAdapter extends MyRecyclerAdapter<JDGoodsRecBean.DataBean.ListsBean> {
-    public JdWaterfallAdapter(Context context, List<JDGoodsRecBean.DataBean.ListsBean> mList, int mLayoutId) {
+public class JdWaterfallAdapter extends MyRecyclerAdapter<JDListBean.DataBean> {
+    public JdWaterfallAdapter(Context context, List<JDListBean.DataBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, JDGoodsRecBean.DataBean.ListsBean data, int position) {
+    public void convert(RecyclerViewHolder holder, JDListBean.DataBean data, int position) {
         holder.setImageFresco(R.id.classification_image, data.getImageInfo().getImageList().get(0).getUrl());
         holder.setText(R.id.classification_name, data.getSkuName());
         holder.setText(R.id.classification_reduce_price, "领劵减" + Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount()) + "元");

@@ -18,6 +18,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.SecondaryJDRecAdapter;
 import com.example.adapter.SecondaryPddRecAdapter;
 import com.example.bean.JDGoodsRecBean;
+import com.example.bean.JDListBean;
 import com.example.bean.PddGoodsSearchVo;
 import com.example.bean.SecondaryPddRecBean;
 import com.example.bean.TBGoodsRecBean;
@@ -55,7 +56,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
     private List<TBGoodsRecBean.DataBean> tbList = new ArrayList<>();
     private List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> pddList = new ArrayList<>();
-    private List<JDGoodsRecBean.DataBean.ListsBean> jdList = new ArrayList<>();
+    private List<JDListBean.DataBean> jdList = new ArrayList<>();
     private String[] titleArr = {"淘宝", "拼多多", "京东"};
     private BaseRecAdapter lstAdapter;
     private boolean isWaterfall = false;
@@ -343,18 +344,12 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                 try {
                     String string = responseBody.string();
                     LogUtil.e("京东搜索:" + string);
+                    final JDListBean jdSearchBean = JSON.parseObject(string, JDListBean.class);
                     if (page == 1) {
                         jdList.clear();
                     }
-                    org.json.JSONObject jsonObject = new org.json.JSONObject(string);
-                    String code = jsonObject.optString("code");
-                    if ("-1".equals(code)) {
+                    jdList.addAll(jdSearchBean.getData());
 
-                    } else {
-                        final JDGoodsRecBean jdSearchBean = JSON.parseObject(string, JDGoodsRecBean.class);
-
-                        jdList.addAll(jdSearchBean.getData().getLists());
-                    }
                     if (jdWaterfallAdapter == null) {
                         jdWaterfallAdapter = new JdWaterfallAdapter(mContext, jdList, R.layout.item_classification_rec_grid);
                         jdLstAdapter = new SecondaryJDRecAdapter(mContext, jdList, R.layout.item_base_rec);
@@ -395,9 +390,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             public void onItemClick(RecyclerView parent, View view, int position) {
                                 ARouter.getInstance()
                                         .build("/module_classify/JDCommodityDetailsActivity")
-                                        .withString("skuid", jdList.get(position).getSkuId())
-                                        .withSerializable("jDGoodsRecBean", jdList.get(position))
-                                        .withInt("position", position)
+                                        .withString("skuid", jdList.get(position).getSkuId() + "")
                                         .navigation();
                             }
                         });
@@ -410,9 +403,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             public void onItemClick(RecyclerView parent, View view, int position) {
                                 ARouter.getInstance()
                                         .build("/module_classify/JDCommodityDetailsActivity")
-                                        .withString("skuid", jdList.get(position).getSkuId())
-                                        .withSerializable("jDGoodsRecBean", jdList.get(position))
-                                        .withInt("position", position)
+                                        .withString("skuid", jdList.get(position).getSkuId() + "")
                                         .navigation();
                             }
                         });

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,12 +11,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.CartBean;
 import com.example.bean.HotSaleBean;
@@ -31,14 +25,12 @@ import com.example.net.RetrofitUtil;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
-import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.OnCountChangeListener;
 import com.example.utils.OnSelectViewListener;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.example.utils.SpaceItemDecorationLeftAndRight;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -54,7 +46,6 @@ import okhttp3.ResponseBody;
  */
 public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
-    private SpaceItemDecorationLeftAndRight spaceItemDecorationLeftAndRight;
     private CartParentRecAdapter cartParentRecAdapter;
     private List<HotSaleBean.DataBean> commendList = new ArrayList<>();
     private List<CartBean.RecordsBean> dataBeanList = new ArrayList<>();

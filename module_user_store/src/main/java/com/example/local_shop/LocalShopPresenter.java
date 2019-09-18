@@ -237,6 +237,7 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
     }
 
     public void jumpToSearch() {
+        ARouter.getInstance().build("/module_user_store/UserSearchActivity").withString("from", CommonResource.HISTORY_LOCAL).navigation();
         Intent intent = new Intent(mContext, UserSearchActivity.class);
         intent.putExtra("from", CommonResource.HISTORY_LOCAL);
         mContext.startActivity(intent);

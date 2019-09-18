@@ -1,13 +1,12 @@
 package com.example.commoditydetails.jd;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,7 +20,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.bean.JDGoodsRecBean;
+import com.example.bean.JDListBean;
+import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.common.CommonResource;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
@@ -29,14 +29,12 @@ import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
+import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.CustomDialog;
-import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
-import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -117,15 +115,15 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     TextView commodityLedSecuritiesText;
     @BindView(R2.id.commodity_shop_item)
     RelativeLayout commodityShopItem;
+    @BindView(R2.id.commodity_details_no_coupon)
+    LinearLayout mLinear;
 
     @Autowired(name = "skuid")
     String skuid;
 
 
-    @Autowired(name = "jDGoodsRecBean")
-    JDGoodsRecBean.DataBean.ListsBean listsBeanList;
+    private JDListBean listsBeanList;
 
-    private double sub;
     private String qRImage;
     private CustomDialog customDialog;
 
@@ -142,41 +140,33 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         ModuleBaseApplication.initShare();
         customDialog = new CustomDialog(this);
         customDialog.show();
-        LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList + "userCode" + SPUtil.getUserCode());
-        //字体加中划线
-        commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
-        //店铺头像
-        commodityShopImage.setImageResource(R.drawable.img_jingdong);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        shopParticulars.setLayoutManager(linearLayoutManager);
+        shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+        shopParticulars.setHasFixedSize(true);
+
+        mLinear.setVisibility(View.GONE);
+        commodityOriginalPrice.setVisibility(View.GONE);
+        commodityText.setVisibility(View.GONE);
+        shopNoGoods.setVisibility(View.GONE);
+
+        presenter.loadData(skuid);
 
         presenter.historySave(skuid);
 
-        //领劵
-        presenter.ledSecurities(listsBeanList.getMaterialUrl(), listsBeanList.getCouponInfo().getCouponList().get(0).getLink());
 
         commodityShopItem.setVisibility(View.GONE);
-        //详情轮播图
-        presenter.setXBanner(commodityXbanner, listsBeanList);
 
-        //商品详情图片
-        presenter.setShopParticulars(shopParticulars, listsBeanList);
-        sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
-        commodityName.setText(listsBeanList.getSkuName());//名字
-        commodityPreferentialPrice.setText("￥" + sub);//优惠价
-        commodityOriginalPrice.setText("原价：￥" + Double.valueOf(listsBeanList.getPriceInfo().getPrice()));//原价
-        commodityNumberSold.setText("已售" + listsBeanList.getInOrderCount30Days() + "件");//已售
-        commodityCouponPrice.setText(ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), sub) + "元优惠劵");
-        Double commission = Double.valueOf(listsBeanList.getCommissionInfo().getCommission());
-        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(commission, SPUtil.getFloatValue(CommonResource.BACKBL)));//收益
-        String startTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseStartTime());
-        String endTime = MyTimeUtil.date2String("" + listsBeanList.getCouponInfo().getCouponList().get(0).getUseEndTime());
-        commodityTime.setText("有效期：" + startTime + "~" + endTime);
+//        sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
 
         //收藏状态
         presenter.isCollect(commodityCollectImage, skuid);
-
-        //推荐
-        presenter.setRecommendRec(shopRecommendRec, listsBeanList.getCategoryInfo().getCid1Name());
-
 
     }
 
@@ -228,7 +218,11 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             @Override
             public void onClick(View v) {
 //                Toast.makeText(CommodityDetailsActivity.this, "点击了领劵", Toast.LENGTH_SHORT).show();
-                presenter.clickLedSecurities(qRImage);
+                if (listsBeanList.getData().get(0).getCouponInfo().getCouponList().size() > 0) {
+                    presenter.clickLedSecurities(qRImage);
+                } else {
+                    presenter.clickLedSecurities(listsBeanList.getData().get(0).getMaterialUrl());
+                }
             }
         });
         //收藏
@@ -263,26 +257,38 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             //隐藏
             commodityStick.setVisibility(View.GONE);
         }
+    }
 
-        if (y <= commodityName.getHeight()){
-            commodityXbanner.stopAutoPlay();
-        }else{
-            commodityXbanner.startAutoPlay();
+    @Override
+    public void loadUI(JDListBean jDGoodsRecBean, CommodityDetailsRecAdapter adapter) {
+        customDialog.dismiss();
+        listsBeanList = jDGoodsRecBean;
+        commodityName.setText(jDGoodsRecBean.getData().get(0).getSkuName());//名字
+        commodityPreferentialPrice.setText("￥" + jDGoodsRecBean.getData().get(0).getPriceInfo().getPrice());//优惠价
+//        commodityOriginalPrice.setText("原价：￥" + jDGoodsRecBean.getData().get(0).getPriceInfo().getPrice());//原价
+        commodityNumberSold.setText("已售" + jDGoodsRecBean.getData().get(0).getInOrderCount30Days() + "件");//已售
+        if (jDGoodsRecBean.getData().get(0).getCouponInfo().getCouponList().size() > 0) {
+            commodityCouponPrice.setText(jDGoodsRecBean.getData().get(0).getCouponInfo().getCouponList().get(0).getDiscount() + "元优惠劵");
+            String startTime = MyTimeUtil.date2String("" + jDGoodsRecBean.getData().get(0).getCouponInfo().getCouponList().get(0).getUseStartTime());
+            String endTime = MyTimeUtil.date2String("" + jDGoodsRecBean.getData().get(0).getCouponInfo().getCouponList().get(0).getUseEndTime());
+            commodityTime.setText("有效期：" + startTime + "~" + endTime);
+        } else {
+            commodityCouponPrice.setText("0元优惠劵");
         }
-    }
+        double commission = jDGoodsRecBean.getData().get(0).getCommissionInfo().getCommission();
+        float value = SPUtil.getFloatValue(CommonResource.BACKBL);
+        commodityEarnings.setText("预估收益：￥" + ArithUtil.mul(commission, value));//收益
+        shopParticulars.setAdapter(adapter);
+        presenter.setXBanner(commodityXbanner);
+        //领劵
+        if (listsBeanList.getData().get(0).getCouponInfo().getCouponList().size() > 0) {
+            presenter.ledSecurities(listsBeanList.getData().get(0).getMaterialUrl(), listsBeanList.getData().get(0).getCouponInfo().getCouponList().get(0).getLink());
+        } else {
+            presenter.ledSecurities(listsBeanList.getData().get(0).getMaterialUrl(), "");
+        }
+        //推荐
+//        presenter.setRecommendRec(shopRecommendRec, jDGoodsRecBean.getData().get(0).getCategoryInfo().getCid1Name());
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        LogUtil.e("HomeFragment" + "不可见");
-        commodityXbanner.stopAutoPlay();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("HomeFragment" + "可见");
-        commodityXbanner.startAutoPlay();
     }
 
     @Override
@@ -297,10 +303,9 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     @Override
     public void qrImage(String url) {
         this.qRImage = url;
-        customDialog.dismiss();
         Glide.with(this)
                 .asBitmap()
-                .load(listsBeanList.getImageInfo().getImageList().get(0).getUrl())
+                .load(listsBeanList.getData().get(0).getImageInfo().getImageList().get(0).getUrl())
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
@@ -336,14 +341,9 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             e.printStackTrace();
         }
         //shareImage.setImageURI(Uri.fromFile(new File(file.getPath())));
-        presenter.viewToImage(listsBeanList, qRImage, file.getPath());
+        presenter.viewToImage(listsBeanList.getData().get(0), qRImage, file.getPath());
         LogUtil.e("图片路径" + file.getPath());
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-    }
 
 }

@@ -1,6 +1,5 @@
 package com.example.payment;
 
-import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,12 +9,11 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.bean.ShippingAddressBean;
+import com.example.bean.RedPackageBean;
 import com.example.bean.SubmitOrderBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import butterknife.BindView;
@@ -44,6 +42,8 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     SubmitOrderBean submitOrderBean;
     @Autowired(name = "wxpay")
     String wxpay;
+    @Autowired(name = "redPackageBean")
+    RedPackageBean redPackageBean;
 
     private boolean isWeChat = true;
 
@@ -55,7 +55,11 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        paymentMoney.setText("￥" + submitOrderBean.getTotalAmount());
+        if (submitOrderBean != null) {
+            paymentMoney.setText("￥" + submitOrderBean.getTotalAmount());
+        } else if (redPackageBean != null) {
+            paymentMoney.setText("￥" + redPackageBean.getBuyMoney());
+        }
     }
 
     @Override
@@ -87,7 +91,11 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
             @Override
             public void onClick(View v) {
                 paymentBtn.setEnabled(false);
-                presenter.pay(isWeChat, submitOrderBean);
+                if (redPackageBean == null || "".equals(redPackageBean)) {
+                    presenter.pay(isWeChat, submitOrderBean);
+                } else {
+                    presenter.pay2(isWeChat, redPackageBean);
+                }
             }
         });
     }

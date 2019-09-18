@@ -12,7 +12,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.FansOrderBean;
 import com.example.bean.JdFansOrderBean;
-import com.example.bean.TBBean;
 import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TbFansOrderBean;
 import com.example.common.CommonResource;
@@ -56,58 +55,68 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
 
     }
 
-    public void loadData(final int page) {
+    public void loadData(final int page, int type) {
         ProcessDialogUtil.showProcessDialog(mContext);
         if (FansOrderActivity.index == 0) {
-            scOrder(page);
+//            scOrder(page, type);
         } else if (FansOrderActivity.index == 1) {
-            tbOrder(page);
+            tbOrder(page, type);
         } else if (FansOrderActivity.index == 2) {
-            jdOrder(page);
+            jdOrder(page, type);
         } else if (FansOrderActivity.index == 3) {
-            pddOrder(page);
+            pddOrder(page, type);
         }
 
     }
 
-    private void tbOrder(final int page) {
+    private void tbOrder(final int page, final int type) {
         Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("pageSize", "10").addParms("type", "1").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝粉丝订单：" + result);
-                if (getView() != null) {
-                    getView().loadSuccess();
-                }
-                if (page == 1) {
-                    tbList.clear();
-                }
-                flag = tbList.size();
-                List<TbFansOrderBean> orderBeans = JSON.parseArray(result, TbFansOrderBean.class);
-                tbList.addAll(orderBeans);
+                try {
 
-                for (int i = 0; i < orderBeans.size(); i++) {
-                    getTbPic(orderBeans.get(i), i);
-                }
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
+                    if (page == 1) {
+                        tbList.clear();
+                    }
+                    flag = tbList.size();
+                    List<TbFansOrderBean> orderBeans = JSON.parseArray(result, TbFansOrderBean.class);
+                    tbList.addAll(orderBeans);
 
-                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
-                if (getView() != null) {
-                    getView().loadTb(tbFansAdapter);
+                    for (int i = 0; i < orderBeans.size(); i++) {
+                        getTbPic(orderBeans.get(i), i);
+                    }
+                    if (type == 0) {
+                        tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                        if (getView() != null) {
+                            getView().loadTb(tbFansAdapter);
+                        }
+                    } else {
+                        tbFansAdapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("淘宝全部：" + errorCode + "--------" + errorMsg);
+                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
                 if (getView() != null) {
+                    getView().loadTb(tbFansAdapter);
                     getView().loadSuccess();
                 }
             }
         }));
     }
 
-    private void jdOrder(final int page) {
+    private void jdOrder(final int page, final int type) {
         Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("pageSize", "10").addParms("type", "2").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -121,29 +130,29 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
                     jdList.clear();
                 }
                 jdList.addAll(JSON.parseArray(result, JdFansOrderBean.class));
-                if (jdAdapter == null) {
+                if (type == 0) {
                     jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
                     if (getView() != null) {
                         getView().loadJd(jdAdapter);
                     }
                 } else {
-                    if (getView() != null) {
-                        getView().loadJd(jdAdapter);
-                    }
+                    jdAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("京东全部：" + errorCode + "--------" + errorMsg);
+                jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
                 if (getView() != null) {
+                    getView().loadJd(jdAdapter);
                     getView().loadSuccess();
                 }
             }
         }));
     }
 
-    private void pddOrder(final int page) {
+    private void pddOrder(final int page, final int type) {
         Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("pageSize", "10").addParms("type", "3").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -158,15 +167,13 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
                     pddList.clear();
                 }
                 pddList.addAll(JSON.parseArray(result, FansOrderBean.class));
-                if (pddAdapter == null) {
+                if (type == 0) {
                     pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
                     if (getView() != null) {
                         getView().loadFansRv(pddAdapter);
                     }
                 } else {
-                    if (getView() != null) {
-                        getView().loadFansRv(pddAdapter);
-                    }
+                    pddAdapter.notifyDataSetChanged();
                 }
 
                 pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
@@ -180,14 +187,16 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("拼多多全部：" + errorCode + "--------" + errorMsg);
+                pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
                 if (getView() != null) {
+                    getView().loadFansRv(pddAdapter);
                     getView().loadSuccess();
                 }
             }
         }));
     }
 
-    private void scOrder(final int page) {
+    private void scOrder(final int page, int type) {
         Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("pageSize", "10").addParms("type", "0").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -224,11 +233,10 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
                     if (!TextUtils.isEmpty(info)) {
                         TBGoodsDetailsBean tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
                         }.getType());
-                        if (getView() != null) {
-                            tbList.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
-                            tbFansAdapter.notifyDataSetChanged();
-                            getView().moveTo(flag);
-                        }
+
+                        tbList.get(flag + position).setImage(tbGoodsDetailsBean.getN_tbk_item().getPict_url());
+                        tbFansAdapter.notifyDataSetChanged();
+                        getView().moveTo(flag);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

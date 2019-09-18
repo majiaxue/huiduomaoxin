@@ -1,17 +1,9 @@
 package com.example.commoditydetails.taobao;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,22 +14,13 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.bean.BannerImageBean;
 import com.example.bean.NewTBGoodsDetailsBean;
-import com.example.bean.TBBean;
-import com.example.bean.TBGoodsDetailsBean;
-import com.example.bean.TBLedSecuritiesBean;
 import com.example.common.CommonResource;
-import com.example.dbflow.ShareBean;
-import com.example.dbflow.ShareUtil;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
-import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
 import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
@@ -48,13 +31,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,10 +143,10 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         customDialog = new CustomDialog(this);
         customDialog.show();
 
-        presenter.login();
+        presenter.login(para);
 
         //加载视图
-        presenter.initView(para);
+//        presenter.initView(para);
 
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -302,6 +278,11 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public TBCommodityDetailsPresenter createPresenter() {
         return new TBCommodityDetailsPresenter(this);
+    }
+
+    @Override
+    public void finishLoad() {
+        customDialog.dismiss();
     }
 
     //详情回调

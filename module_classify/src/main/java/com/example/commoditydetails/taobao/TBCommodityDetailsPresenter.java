@@ -2,6 +2,7 @@ package com.example.commoditydetails.taobao;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -56,10 +57,12 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyTimeUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
+import com.example.view.SelfDialog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
@@ -96,6 +99,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private Bitmap bitmap;
     private NewTBGoodsDetailsBean tbGoodsDetailsBean;
     private List<String> imageList = new ArrayList<>();
+    private int temp = 0;
 
     public TBCommodityDetailsPresenter(Context context) {
         super(context);
@@ -106,7 +110,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     }
 
-    public void login() {
+    public void login(final String para) {
 
         final AlibcLogin alibcLogin = AlibcLogin.getInstance();
 
@@ -115,12 +119,48 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess() {
                 LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
+                initView(para);
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 Toast.makeText(mContext, "登录失败 ",
                         Toast.LENGTH_LONG).show();
+                if (getView() != null) {
+                    getView().finishLoad();
+                }
+                final SelfDialog selfDialog = new SelfDialog(mContext);
+                selfDialog.setTitle("提示");
+                selfDialog.setMessage("淘宝授权失败，请重试");
+                selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        selfDialog.dismiss();
+                        ((Activity) mContext).finish();
+                    }
+                });
+
+                selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        temp = 1;
+                        login(para);
+                        selfDialog.dismiss();
+                    }
+                });
+                selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        PopUtils.setTransparency(mContext, 1f);
+                        if (temp == 0) {
+                            ((Activity) mContext).finish();
+                        }
+                    }
+                });
+
+                PopUtils.setTransparency(mContext, 0.3f);
+                selfDialog.show();
+                temp = 0;
             }
         });
     }
@@ -150,25 +190,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("TBCommodityDetailsResult---------------->" + result);
-//                JSONObject jsonObject = JSON.parseObject(result);
-//                JSONArray albumPics = jsonObject.getJSONArray("albumPics");
-//                String info = (String) jsonObject.get("info");
-//                LogUtil.e("数组" + albumPics);
-//                LogUtil.e("对象" + info);
-//                if (albumPics != null && albumPics.size() != 0) {
-//                    for (int i = 0; i < albumPics.size(); i++) {
-//                        imageList.add(albumPics.get(i).toString());
-//                    }
-//                }
-//
-//                if (!TextUtils.isEmpty(info)) {
-//                    tbGoodsDetailsBean = JSON.parseObject(info, new TypeReference<TBGoodsDetailsBean>() {
-//                    }.getType());
-//                    if (getView() != null) {
-//                        getView().tbBeanList(tbGoodsDetailsBean, imageList);
-//                        getView().tBDetails();
-//                    }
-//                }
+
                 if (result.contains("\"code\":0")) {
                     tbGoodsDetailsBean = JSON.parseObject(result, new TypeReference<NewTBGoodsDetailsBean>() {
                     }.getType());
@@ -240,7 +262,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 //                return false;
 //            }
 //        };
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);//
 //        linearLayoutManager.setAutoMeasureEnabled(true);
 //        linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -371,11 +393,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (tbLedSecuritiesBean != null) {
                         if (getView() != null) {
                             LogUtil.e("成功");
-                            if (StringUtils.isNotBlank(tbGoodsDetailsBean.getData().getMainPic())){
-                                if (!tbGoodsDetailsBean.getData().getMainPic().contains("https:")){
+                            if (StringUtils.isNotBlank(tbGoodsDetailsBean.getData().getMainPic())) {
+                                if (!tbGoodsDetailsBean.getData().getMainPic().contains("https:")) {
                                     Glide.with(mContext)
                                             .asBitmap()
-                                            .load("https:"+tbGoodsDetailsBean.getData().getMainPic())
+                                            .load("https:" + tbGoodsDetailsBean.getData().getMainPic())
                                             .into(new CustomTarget<Bitmap>() {
                                                 @Override
                                                 public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
@@ -387,7 +409,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                                                 }
                                             });
-                                }else{
+                                } else {
                                     Glide.with(mContext)
                                             .asBitmap()
                                             .load(tbGoodsDetailsBean.getData().getMainPic())
@@ -404,11 +426,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                                             });
                                 }
 
-                            }else{
-                                if (!tbGoodsDetailsBean.getData().getMarketingMainPic().contains("https:")){
+                            } else {
+                                if (!tbGoodsDetailsBean.getData().getMarketingMainPic().contains("https:")) {
                                     Glide.with(mContext)
                                             .asBitmap()
-                                            .load("https:"+tbGoodsDetailsBean.getData().getMarketingMainPic())
+                                            .load("https:" + tbGoodsDetailsBean.getData().getMarketingMainPic())
                                             .into(new CustomTarget<Bitmap>() {
                                                 @Override
                                                 public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
@@ -420,7 +442,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                                                 }
                                             });
-                                }else{
+                                } else {
                                     Glide.with(mContext)
                                             .asBitmap()
                                             .load(tbGoodsDetailsBean.getData().getMarketingMainPic())

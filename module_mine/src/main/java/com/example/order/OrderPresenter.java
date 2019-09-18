@@ -97,6 +97,7 @@ public class OrderPresenter extends BasePresenter<OrderView> {
     }
 
     private void addFlag(int position) {
+
         if (position == 0) {
             payOrderFragment.addFlag();
             settleOrderFragment.addFlag();

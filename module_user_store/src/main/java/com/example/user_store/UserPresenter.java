@@ -56,6 +56,7 @@ public class UserPresenter extends BasePresenter<UserView> {
                 .add(resId, shoppingCartFragment)
                 .add(resId, mineFragment)
                 .add(resId, localShopFragment);
+
         transaction.show(homeFragment)
                 .hide(classifyFragment)
                 .hide(shoppingCartFragment)

@@ -134,7 +134,6 @@ public class SuperBrandPresenter extends BasePresenter<SuperBrandView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("超级品牌------>" + result);
                 final List<SuperBrandBean> superBrandBeans = JSON.parseArray(result, SuperBrandBean.class);
-                LogUtil.e("superBrandBeans-------------->" + superBrandBeans);
 
                 SuperBrandRecAdapter superBrandRecAdapter = new SuperBrandRecAdapter(mContext, superBrandBeans, R.layout.item_super_brand_rec);
                 if (getView() != null) {

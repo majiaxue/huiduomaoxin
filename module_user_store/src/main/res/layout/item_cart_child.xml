@@ -16,8 +16,8 @@
             android:id="@+id/cart_child_check"
             android:layout_width="@dimen/dp_29"
             android:layout_height="@dimen/dp_29"
-            android:padding="@dimen/dp_5"
             android:layout_marginLeft="@dimen/dp_7"
+            android:padding="@dimen/dp_5"
             android:src="@drawable/icon_weixuanzhong" />
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -50,7 +50,8 @@
                 android:layout_marginTop="@dimen/dp_11"
                 android:background="@drawable/bg_linear5f5"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/cart_child_colour"

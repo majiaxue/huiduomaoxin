@@ -74,9 +74,9 @@ public class OperatorGainFragment extends BaseFragment<OperatorGainView, Operato
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            presenter.loadData();
             if (isFirst) {
                 presenter.loadQuanyi();
+                presenter.loadData();
             }
             isFirst = false;
         }

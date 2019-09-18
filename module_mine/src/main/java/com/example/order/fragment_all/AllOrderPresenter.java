@@ -13,7 +13,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDOrderBean;
 import com.example.bean.MyOrderBean;
-import com.example.bean.TBBean;
 import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBOrderBean;
 import com.example.common.CommonResource;
@@ -26,7 +25,6 @@ import com.example.net.RetrofitUtil;
 import com.example.order.adapter.JDAdapter;
 import com.example.order.adapter.RvListAdapter;
 import com.example.order.adapter.TBAdapter;
-import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
@@ -148,27 +146,31 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝全部订单：" + result);
-                orderBeans = JSON.parseArray(result, TBOrderBean.class);
-                tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
-                if (getView() != null) {
-                    getView().loadTB(tbAdapter);
-                }
+                try {
 
-                for (int i = 0; i < orderBeans.size(); i++) {
-                    getTbPic(orderBeans.get(i), i);
-                }
-                tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", orderBeans.get(position).getNumIid())
-                                .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
-                                .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
-                                .withInt("type", 1)
-                                .navigation();
+                    orderBeans = JSON.parseArray(result, TBOrderBean.class);
+                    tbAdapter = new TBAdapter(mContext, orderBeans, R.layout.rv_order_list);
+                    if (getView() != null) {
+                        getView().loadTB(tbAdapter);
                     }
-                });
 
+                    for (int i = 0; i < orderBeans.size(); i++) {
+                        getTbPic(orderBeans.get(i), i);
+                    }
+                    tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", orderBeans.get(position).getNumIid())
+                                    .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                    .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
+                                    .withInt("type", 1)
+                                    .navigation();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

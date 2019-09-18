@@ -1,11 +1,12 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
-    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
-    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
-    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
+    public static final String BASEURL_9001 = "http://192.168.0.121:9001";   //商品//47.99.93.123
+    public static final String BASEURL_4001 = "http://192.168.0.121:4001";   //用户
+    public static final String BASEURL_9003 = "http://192.168.0.121:9003";   //商家
+    public static final String BASEURL_9004 = "http://192.168.0.121:9004";   //订单
+    public static final String BASEURL_9005 = "http://192.168.0.121:9005";   //参数
+    public static final String BASEURL_9010 = "http://192.168.0.121:9010";  //本地小店
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -69,8 +70,8 @@ public class CommonResource {
     public static final String SEARCHTBGOODS = "/rest/tbk/goods/sellerTbkList"; //搜索淘宝商品
     public static final String SEARCH_NEW_TB = "/rest/tbk/goods/sellerTbkList_1";   //搜索淘宝商品（新）  关键词 淘口令  链接
     public static final String SEARCHPDDGOODS = "/rest/pdd/goods/pddgoods";      //搜索拼多多商品
-    public static final String SEARCHJDGOODS = "/rest/jd/goodsList";            //搜索京东商品
-    public static final String TIXIAN = "/rest/user/cashOut/aliPay  ";          //提现
+    public static final String SEARCHJDGOODS = "/rest/jd/goodsListByJD";            //搜索京东商品
+    public static final String TIXIAN = "/rest/user/cashOut/aliPay";          //提现
     public static final String MESSAGELIST = "/rest/user/message";             //消息列表
     public static final String COLLECT_SHOP = "/rest/user/seller";              //收藏店铺
     public static final String IWANTUP = "/rest/user/level/info";               //我要升级
@@ -101,6 +102,13 @@ public class CommonResource {
     public static final String LIBAO_CANCEL_ORDER = "/rest/order/remove/level";     //取消礼包订单
     public static final String TKOULING = "/rest/tbk/goods/jiexitkl";           //淘口令转商品信息
     public static final String INVITE_ERWEIMA = "/rest/share/register";         //邀请好友页面升成二维码所需地址
+    public static final String LOCAL_GET_ORDER = "/rest/local-order";           //附近小店  获取订单列表
+    public static final String LOCAL_GET_HONGBAO = "/rest/local/redpacked/all";     //附近小店  获取红包信息
+    public static final String BUY_RED_PACKAGE = "/rest/local/alipay/redpacked";    //附近小店  购买红包
+    public static final String LOCAL_SHOP = "/rest/local/shop-category/";       //附近小店 店铺详情
+    public static final String LOCAL_CART_ADD = "/rest/local/shop-car/add";     //附近小店 购物车 增加商品
+    public static final String LOCAL_CART_MINUS = "/rest/local/shop-car/minus"; //附近小店 购物车 减少商品
+    public static final String LOCAL_SUBMIT_ORDER = "/rest/local-order";        //附近小店 提交订单
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -137,7 +145,7 @@ public class CommonResource {
     public static final String JDGETCATEGORY = "/rest/jd/getCategory";//获取京东商品类目
     public static final String JDGETGOODSDETAIL = "/rest/jd/getGoodsDetail";//获取京东商品详情
     public static final String JDGETGOODSMARKETLINK = "/rest/jd/getGoodsMarketLink";//获取京东商品推广链接
-    public static final String JDGOODSLIST = "/rest/jd/goodsList";//获取京东带优惠券的商品API
+    public static final String JDGOODSLIST = "/rest/jd/goodsListByJD";//获取京东带优惠券的商品API
     public static final String SELLERSTATE = "/rest/seller/state";//判断商家是否已经入驻
     public static final String ESTIMATEEARN = "/rest/estimateEarn";//第三方商品预估赚接口调用---预估赚
     public static final String ORDERREMOVE = "/rest/user/order/remove";//逻辑删除多用户商城用户订单
@@ -195,5 +203,7 @@ public class CommonResource {
     public static final String CITY = "city";      //网络发生变化，重新定位
     public static final String TAN_CONTENT = "tan_content";     //粘贴板内容
     public static final String ISTAN = "isTan";     //粘贴板内容是否弹过popupwindow
+    public static final String SELLERID = "sellerId";   //店铺ID
+    public static final String SUBMIT_ORDER = "submitOrder";    //提交订单
 
 }

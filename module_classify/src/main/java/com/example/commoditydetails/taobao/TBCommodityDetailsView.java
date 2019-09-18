@@ -20,4 +20,5 @@ public interface TBCommodityDetailsView extends IView {
 
     void noCoupon(boolean noCoupon);
 
+    void finishLoad();
 }

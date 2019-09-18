@@ -155,23 +155,28 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("tb粉丝订单shixiao：" + result);
-                if (getView() != null) {
-                    getView().loadSuccess();
-                }
-                if (page == 1) {
-                    tbList.clear();
-                }
-                flag = tbList.size();
-                List<TbFansOrderBean> orderBeans = JSON.parseArray(result, TbFansOrderBean.class);
-                tbList.addAll(orderBeans);
+                try {
 
-                for (int i = 0; i < orderBeans.size(); i++) {
-                    getTbPic(orderBeans.get(i), i);
-                }
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
+                    if (page == 1) {
+                        tbList.clear();
+                    }
+                    flag = tbList.size();
+                    List<TbFansOrderBean> orderBeans = JSON.parseArray(result, TbFansOrderBean.class);
+                    tbList.addAll(orderBeans);
 
-                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
-                if (getView() != null) {
-                    getView().loadTb(tbFansAdapter);
+                    for (int i = 0; i < orderBeans.size(); i++) {
+                        getTbPic(orderBeans.get(i), i);
+                    }
+
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

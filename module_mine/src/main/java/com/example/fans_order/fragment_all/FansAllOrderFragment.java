@@ -59,12 +59,12 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
         //设置 Footer 为 默认 样式
         orderListRefresh.setRefreshFooter(new ClassicsFooter(getActivity()));
 
-        presenter.loadData(page);
+        presenter.loadData(page, 0);
     }
 
     public void setOrigin() {
         page = 1;
-        presenter.loadData(page);
+        presenter.loadData(page, 0);
     }
 
     @Override
@@ -74,14 +74,14 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page);
+                presenter.loadData(page, 1);
             }
         });
         orderListRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page);
+                presenter.loadData(page, 1);
             }
         });
     }

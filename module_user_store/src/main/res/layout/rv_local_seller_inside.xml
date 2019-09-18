@@ -10,6 +10,7 @@
         android:layout_height="@dimen/dp_17"
         android:background="@drawable/bg_0505_fd3c15_border"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:paddingLeft="@dimen/dp_5"
         android:paddingRight="@dimen/dp_5"
         android:text="满50减19"

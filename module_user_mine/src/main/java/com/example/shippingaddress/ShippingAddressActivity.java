@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_user_mine.R;
@@ -31,6 +31,9 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
     @BindView(R2.id.shipping_address_button)
     TextView shippingAddressButton;
 
+    @Autowired(name = "from")
+    String from;
+
 
     @Override
     public int getLayoutId() {
@@ -39,7 +42,7 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
 
     @Override
     public void initData() {
-        presenter.setShippingAddressRec(shippingAddressRec);
+        presenter.setShippingAddressRec(shippingAddressRec, from);
     }
 
     @Override
@@ -73,6 +76,6 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
     @Override
     protected void onRestart() {
         super.onRestart();
-        presenter.setShippingAddressRec(shippingAddressRec);
+        presenter.setShippingAddressRec(shippingAddressRec, from);
     }
 }

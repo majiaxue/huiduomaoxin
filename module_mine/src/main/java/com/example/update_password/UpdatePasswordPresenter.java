@@ -31,12 +31,14 @@ public class UpdatePasswordPresenter extends BasePresenter<UpdatePasswordView> {
     }
 
     public void commit(String old, String first, String second, UserInfoBean bean) {
-        if (bean.getPassword() == null || "".equals(bean.getPassword())) {
-            if ("".equals(first) || "".equals(second)) {
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.password_cannot_empty), Toast.LENGTH_SHORT).show();
-            } else if (!first.equals(second)) {
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.password_no_same), Toast.LENGTH_SHORT).show();
-            } else {
+        if ("".equals(first) || "".equals(second)) {
+            Toast.makeText(mContext, mContext.getResources().getString(R.string.password_cannot_empty), Toast.LENGTH_SHORT).show();
+        } else if (!first.equals(second)) {
+            Toast.makeText(mContext, mContext.getResources().getString(R.string.password_no_same), Toast.LENGTH_SHORT).show();
+        } else if (first.length() < 6 || first.length() > 20) {
+            Toast.makeText(mContext, "请输入6-20位字符", Toast.LENGTH_SHORT).show();
+        } else {
+            if (bean.getPassword() == null || "".equals(bean.getPassword())) {
                 bean.setPassword(first);
                 bean.setNewPassword(second);
                 String s = JSON.toJSONString(bean);
@@ -53,14 +55,9 @@ public class UpdatePasswordPresenter extends BasePresenter<UpdatePasswordView> {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         LogUtil.e(errorCode + "------" + errorMsg);
+                        Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 }));
-            }
-        } else {
-            if ("".equals(first) || "".equals(second) || "".equals(old)) {
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.password_cannot_empty), Toast.LENGTH_SHORT).show();
-            } else if (!first.equals(second)) {
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.password_no_same), Toast.LENGTH_SHORT).show();
             } else {
                 bean.setOldPassword(old);
                 bean.setPassword(first);
@@ -79,6 +76,7 @@ public class UpdatePasswordPresenter extends BasePresenter<UpdatePasswordView> {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         LogUtil.e(errorCode + "------" + errorMsg);
+                        Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 }));
             }

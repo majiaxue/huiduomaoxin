@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.common.CommonResource;
 import com.example.dbflow.DBflowUtil;
 import com.example.mvp.BaseActivity;
@@ -16,6 +18,7 @@ import com.example.view.FlowLayout;
 
 import butterknife.BindView;
 
+@Route(path = "/module_user_store/UserSearchActivity")
 public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchPresenter> implements UserSearchView {
     @BindView(R2.id.user_search_back)
     ImageView searchBack;
@@ -28,7 +31,8 @@ public class UserSearchActivity extends BaseActivity<UserSearchView, UserSearchP
     @BindView(R2.id.user_search_flow_layout)
     FlowLayout searchFlowLayout;
 
-    private String from;
+    @Autowired(name = "from")
+    String from;
 
     @Override
     public int getLayoutId() {

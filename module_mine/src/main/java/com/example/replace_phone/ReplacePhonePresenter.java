@@ -43,7 +43,7 @@ public class ReplacePhonePresenter extends BasePresenter<ReplacePhoneView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }));
         } else {
@@ -74,6 +74,7 @@ public class ReplacePhonePresenter extends BasePresenter<ReplacePhoneView> {
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e(errorCode + "-------" + errorMsg);
+                    Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }));
         }

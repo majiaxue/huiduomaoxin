@@ -36,6 +36,7 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
     TabLayout orderTab;
     @BindView(R2.id.order_viewpager)
     ViewPager orderViewpager;
+
     @Autowired(name = "type")
     int type;
 

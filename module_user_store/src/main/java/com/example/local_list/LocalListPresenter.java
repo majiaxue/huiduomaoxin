@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalShopBean;
@@ -169,8 +170,9 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
     }
 
     public void jumpToSearch() {
-        Intent intent = new Intent(mContext, UserSearchActivity.class);
-        intent.putExtra("from", CommonResource.HISTORY_LOCAL);
-        mContext.startActivity(intent);
+        ARouter.getInstance().build("/module_user_store/UserSearchActivity").withString("from", CommonResource.HISTORY_LOCAL).navigation();
+//        Intent intent = new Intent(mContext, UserSearchActivity.class);
+//        intent.putExtra("from", CommonResource.HISTORY_LOCAL);
+//        mContext.startActivity(intent);
     }
 }

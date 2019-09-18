@@ -436,5 +436,6 @@
 	<dimen name="sp_38">43.7760sp</dimen>
 	<dimen name="sp_40">46.0800sp</dimen>
 	<dimen name="sp_42">48.3840sp</dimen>
+	<dimen name="sp_45">51.8400sp</dimen>
 	<dimen name="sp_48">55.2960sp</dimen>
 </resources>
