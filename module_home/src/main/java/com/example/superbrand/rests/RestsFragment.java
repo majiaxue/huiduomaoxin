@@ -2,6 +2,7 @@ package com.example.superbrand.rests;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
 import com.example.superbrand.adapter.RestsAdapter;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -49,7 +51,9 @@ public class RestsFragment extends BaseFragment<RestsView, RestsPresenter> imple
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         restsRec.setLayoutManager(linearLayoutManager);
 //        presenter.initList(index);
-        ProcessDialogUtil.showProcessDialog(getContext());
+//        ProcessDialogUtil.showProcessDialog(getContext());
+//        WaitDialog.show((AppCompatActivity)getActivity(),null);
+
         presenter.initList(page, index);
 
         restsSmartRefresh.setRefreshHeader(new MaterialHeader(getContext()));

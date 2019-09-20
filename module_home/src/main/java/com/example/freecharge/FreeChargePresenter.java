@@ -55,7 +55,7 @@ public class FreeChargePresenter extends BasePresenter<FreeChargeView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("FreeChargePresenterResult" + result);
                 final List<FreeChargeBean> freeChargeBeans = JSON.parseArray(result, FreeChargeBean.class);
                 if (freeChargeBeans.size() != 0) {
@@ -99,7 +99,7 @@ public class FreeChargePresenter extends BasePresenter<FreeChargeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("FreeChargePresenterErrorMsg" + errorMsg);
             }
         }));

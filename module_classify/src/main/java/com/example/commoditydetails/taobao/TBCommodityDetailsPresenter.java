@@ -310,7 +310,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
                 if (result.startsWith("{\"code\":3")) {
                     shouQuan();
@@ -339,7 +339,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsErrorMsg领劵--------->" + errorMsg);
             }
         }));
@@ -354,7 +354,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsResult领劵--------->" + result);
                 if (result.startsWith("{\"code\":3")) {
                     shouQuan();
@@ -448,7 +448,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("TBCommodityDetailsErrorMsg领劵--------->" + errorMsg);
             }
         }));

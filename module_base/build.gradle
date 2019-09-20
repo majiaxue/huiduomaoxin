@@ -167,4 +167,7 @@ dependencies {
 
     //京东开普勒
     api project(':jdsdk_lib')
+
+    //dialogV3
+    api 'com.kongzue.dialog_v3:dialog:3.1.1'
 }

@@ -2,6 +2,7 @@ package com.example.collection;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -56,7 +58,9 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
         includeTitle.setText("我的收藏");
         includeRightBtn.setText("编辑");
         includeRightBtn.setVisibility(View.VISIBLE);
-        ProcessDialogUtil.showProcessDialog(this);
+//        ProcessDialogUtil.showProcessDialog(this);
+        WaitDialog.show(this,null);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         collectionRv.setLayoutManager(layoutManager);

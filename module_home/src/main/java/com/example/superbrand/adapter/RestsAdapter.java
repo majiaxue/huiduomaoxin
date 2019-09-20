@@ -33,7 +33,7 @@ public class RestsAdapter extends MyRecyclerAdapter<RestsBean.DataBeanX> {
 
         RecyclerView goodsRec = holder.getView(R.id.rests_rec_goods_rec);
         if (data.getItem().size()!=0 && data.getItem() !=null){
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, data.getItem().size(), LinearLayoutManager.VERTICAL, false);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
             goodsRec.setLayoutManager(gridLayoutManager);
         }else{
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);

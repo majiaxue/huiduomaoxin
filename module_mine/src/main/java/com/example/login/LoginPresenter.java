@@ -3,6 +3,7 @@ package com.example.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -24,6 +25,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -76,14 +78,16 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     public void sendCode() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.WXLOGIN_CODE, map);//"http://192.168.1.9:4001"
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
                 LogUtil.e("denglu:" + result);
@@ -124,13 +128,15 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         } else if ("".equals(password) || password == null) {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("password", password).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.LOGIN_PHONE, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    ProcessDialogUtil.dismissDialog();
+//                    ProcessDialogUtil.dismissDialog();
                     UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                     }.getType());
                     LogUtil.e("登录：" + userInfoBean);
@@ -148,7 +154,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    ProcessDialogUtil.dismissDialog();
+//                    ProcessDialogUtil.dismissDialog();
                     LogUtil.e("登录：" + errorCode + "-------" + errorMsg);
                     if (errorCode.equals("1")) {
                         Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();

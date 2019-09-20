@@ -5,6 +5,7 @@ import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.json.JSONObject;
 
@@ -36,7 +37,8 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
      */
     @Override
     public void onNext(ResponseBody responseBody) {
-        ProcessDialogUtil.dismissDialog();
+//        ProcessDialogUtil.dismissDialog();
+        WaitDialog.dismiss();
         try {
             String string = responseBody.string();
 
@@ -65,7 +67,8 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
      */
     @Override
     public void onError(Throwable e) {
-        ProcessDialogUtil.dismissDialog();
+//        ProcessDialogUtil.dismissDialog();
+        WaitDialog.dismiss();
         try {
 
             if (e instanceof SocketTimeoutException) {//请求超时

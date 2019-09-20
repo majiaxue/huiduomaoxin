@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.example.utils.MapUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -196,7 +198,9 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
             starFlag = false;
             if (!isZh) {
                 isZh = true;
-                ProcessDialogUtil.showProcessDialog(mContext);
+//                ProcessDialogUtil.showProcessDialog(mContext);
+                WaitDialog.show((AppCompatActivity)mContext,null);
+
                 initSeller("", "", 1, MyLocationListener.longitude, MyLocationListener.latitude);
             }
         } else if (index == 1) {
@@ -208,7 +212,9 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
                 isDistanceJin = !isDistanceJin;
             }
             distanceFlag = true;
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             initSeller(isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, 1, MyLocationListener.longitude, MyLocationListener.latitude);
         } else if (index == 2) {
             isZh = false;
@@ -219,7 +225,9 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
                 isStarMore = !isStarMore;
             }
             starFlag = true;
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, 1, MyLocationListener.longitude, MyLocationListener.latitude);
         }
 

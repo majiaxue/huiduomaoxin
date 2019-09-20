@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
@@ -39,6 +40,7 @@ import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -76,7 +78,9 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     public void setShoppingCartRec() {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             final Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
             RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {
 

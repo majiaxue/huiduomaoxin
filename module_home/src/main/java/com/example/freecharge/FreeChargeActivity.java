@@ -1,6 +1,7 @@
 package com.example.freecharge;
 
 import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.TxtUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import butterknife.BindView;
 
@@ -58,7 +60,9 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
         TxtUtil.txtJianbian(freeChargeActivityText, "#febc0d", "#fb3912");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         freeChargeRec.setLayoutManager(linearLayoutManager);
-        ProcessDialogUtil.showProcessDialog(this);
+//        ProcessDialogUtil.showProcessDialog(this);
+        WaitDialog.show(this,null);
+
         presenter.freeChargeActivity(0, freeChargeRec);
     }
 
@@ -78,7 +82,9 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
                 TxtUtil.txtJianbian(freeChargeLookBackText, "#999999", "#999999");
                 freeChargeActivityView.setVisibility(View.VISIBLE);
                 freeChargeLookBackView.setVisibility(View.INVISIBLE);
-                ProcessDialogUtil.showProcessDialog(FreeChargeActivity.this);
+//                ProcessDialogUtil.showProcessDialog(FreeChargeActivity.this);
+                WaitDialog.show(FreeChargeActivity.this,null);
+
                 presenter.freeChargeActivity(0, freeChargeRec);
             }
         });
@@ -90,7 +96,9 @@ public class FreeChargeActivity extends BaseActivity<FreeChargeView, FreeChargeP
                 TxtUtil.txtJianbian(freeChargeActivityText, "#999999", "#999999");
                 freeChargeLookBackView.setVisibility(View.VISIBLE);
                 freeChargeActivityView.setVisibility(View.INVISIBLE);
-                ProcessDialogUtil.showProcessDialog(FreeChargeActivity.this);
+//                ProcessDialogUtil.showProcessDialog(FreeChargeActivity.this);
+                WaitDialog.show(FreeChargeActivity.this,null);
+
                 presenter.freeChargeActivity(1, freeChargeRec);
             }
         });

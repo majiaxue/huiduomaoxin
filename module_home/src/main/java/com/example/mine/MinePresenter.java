@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -210,14 +212,18 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());//"http://192.168.1.9:4001"
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
+                LogUtil.e("成功");
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
+                LogUtil.e("userInfoBean"+userInfoBean);
                 String head = SPUtil.getStringValue("head");
                 File file = new File(Environment.getExternalStorageDirectory().getPath() + "/fltk/image/" + "fltkHead.jpg");
                 if (file.exists()) {
@@ -246,7 +252,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("个人信息" + errorCode + "---------" + errorMsg);
                 SPUtil.addParm(CommonResource.TOKEN, "");
 //                if ("2".equals(errorCode)) {

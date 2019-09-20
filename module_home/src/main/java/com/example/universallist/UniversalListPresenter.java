@@ -70,7 +70,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("UniversalListPresenterResult" + result);
                 UniversalListBean universalListBean = JSON.parseObject(result, new TypeReference<UniversalListBean>() {
                 }.getType());
@@ -109,7 +109,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if(getView()!=null){
                     getView().finishRefresh();
                 }
@@ -123,7 +123,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("hotRecommend：" + result);
                 HotRecommendBean hotRecommendBean = JSON.parseObject(result, new TypeReference<HotRecommendBean>() {
                 }.getType());
@@ -171,7 +171,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if(getView()!=null){
                     getView().finishRefresh();
                 }

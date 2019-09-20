@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -45,6 +46,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
 
@@ -145,7 +147,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     int type;
 
     private int status = 0;
-    private CustomDialog customDialog;
+//    private CustomDialog customDialog;
     private List<BannerImageBean> bannerImageBeans = new ArrayList<>();
     private List<String> images = new ArrayList<>();
     //触碰标识
@@ -164,8 +166,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         ModuleBaseApplication.initShare();
         shopXinxi.setVisibility(View.GONE);
         commodityIntoShop.setVisibility(View.GONE);
-        customDialog = new CustomDialog(this);
-        customDialog.show();
+//        customDialog = new CustomDialog(this);
+//        customDialog.show();
+        WaitDialog.show(this,null);
 
         presenter.login();
 
@@ -214,7 +217,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+//                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+                WaitDialog.show(TBCommodityDetailsActivity.this,null);
+
                 presenter.ledSecurities(para);
             }
         });
@@ -224,7 +229,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             public void onClick(View v) {
                 if (1 == status) {
                     if ((System.currentTimeMillis() - exitTime) > 3000) {
-                        ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+//                        ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+                        WaitDialog.show(TBCommodityDetailsActivity.this,null);
                         presenter.ShareledSecurities(para);
                         exitTime = System.currentTimeMillis();
                     } else {
@@ -238,7 +244,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+//                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+                WaitDialog.show(TBCommodityDetailsActivity.this,null);
+
                 presenter.ledSecurities(para);
 //                jumpToTB(tbLedSecuritiesBean.getLong_url(), 2);
 
@@ -307,7 +315,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     //详情回调
     @Override
     public void tbBeanList(NewTBGoodsDetailsBean tbGoodsDetailsBean) {
-        customDialog.dismiss();
+//        customDialog.dismiss();
         try {
 //            this.tbGoodsDetailsBean = tbGoodsDetailsBean;
             //轮播图

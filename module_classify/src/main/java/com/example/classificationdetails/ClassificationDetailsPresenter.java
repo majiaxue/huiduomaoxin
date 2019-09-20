@@ -2,6 +2,7 @@ package com.example.classificationdetails;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -160,7 +162,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     public void searchTB(final int page, String sort) {
         goodsType = 1;
         if (page == 1) {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
         }
         Map map = MapUtil.getInstance().addParms("para", content).addParms("page", page).build();
         if (sort != null) {
@@ -171,7 +175,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("淘宝搜索：" + result);
                 if (getView() != null) {
                     getView().loadFinish();
@@ -313,7 +317,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -324,7 +328,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     public void searchJD(final int page, String sort, String sortName) {
         goodsType = 3;
         if (page == 1) {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
         }
 
         Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageIndex", page).addParms("pageSize", "10").addParms("isCoupon", "1").build();
@@ -336,7 +342,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -424,7 +430,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(Throwable e) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -440,7 +446,9 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     public void searchPDD(final int page) {
         goodsType = 2;
         if (page == 1) {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
         }
 
         PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
@@ -455,7 +463,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -540,7 +548,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }

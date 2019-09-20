@@ -3,6 +3,7 @@ package com.example.order_confirm;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -29,6 +30,7 @@ import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,9 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     }
 
     public void getAddress() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -124,7 +128,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         } else if (!isCan) {
             Toast.makeText(mContext, "未获取到运费信息，请重试", Toast.LENGTH_SHORT).show();
         } else {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
             String jsonString = JSON.toJSONString(bean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());

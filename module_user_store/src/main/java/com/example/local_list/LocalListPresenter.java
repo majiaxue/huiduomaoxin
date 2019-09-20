@@ -2,6 +2,7 @@ package com.example.local_list;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -22,6 +23,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,7 +130,9 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
             starFlag = false;
             if (!isZh) {
                 isZh = true;
-                ProcessDialogUtil.showProcessDialog(mContext);
+//                ProcessDialogUtil.showProcessDialog(mContext);
+                WaitDialog.show((AppCompatActivity)mContext,null);
+
                 loadData(type, search, "", "", 1, label);
             }
         } else if (index == 1) {
@@ -140,7 +144,9 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
                 isDistanceJin = !isDistanceJin;
             }
             distanceFlag = true;
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             loadData(type, search, isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, 1, label);
         } else if (index == 2) {
             isZh = false;
@@ -151,7 +157,9 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
                 isStarMore = !isStarMore;
             }
             starFlag = true;
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             loadData(type, search, isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, 1, label);
         }
 

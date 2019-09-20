@@ -1,6 +1,7 @@
 package com.example.punchsign;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +100,9 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
 
     @Override
     public void initData() {
-        ProcessDialogUtil.showProcessDialog(this);
+//        ProcessDialogUtil.showProcessDialog(this);
+        WaitDialog.show(this,null);
+
         //查询签到任务完成度
         presenter.signQuery();
     }

@@ -1,9 +1,8 @@
 package com.example.mvp;
 
 
-import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.entity.EventBusBean;
 import com.example.utils.AppManager;
@@ -16,7 +15,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity<V extends IView, P extends BasePresenter> extends Activity implements BaseMVP<V, P> {
+public abstract class BaseActivity<V extends IView, P extends BasePresenter> extends AppCompatActivity implements BaseMVP<V, P> {
     protected P presenter;
 
     @Override
@@ -57,7 +56,7 @@ public abstract class BaseActivity<V extends IView, P extends BasePresenter> ext
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ProcessDialogUtil.dismissDialog();
+//        ProcessDialogUtil.dismissDialog();
         if (presenter != null) {
             AppManager.getInstance().finishActivity(this);
             //Activity销毁时的调用，让具体实现BasePresenter中onViewDestroy()方法做出决定

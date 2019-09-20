@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.HomePredictBean;
 import com.example.bean.UserInfoBean;
+import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;

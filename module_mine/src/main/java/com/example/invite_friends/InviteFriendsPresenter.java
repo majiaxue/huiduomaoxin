@@ -45,7 +45,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             if (msg.what == 0x111) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 getView().loadBanner(beanList);
             }
         }
@@ -60,7 +60,7 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
 //        beanList.add(new InviteBean(bitmap2));
 //        beanList.add(new InviteBean(bitmap3));
         if (getView() != null && beanList.size() == 3) {
-            ProcessDialogUtil.dismissDialog();
+//            ProcessDialogUtil.dismissDialog();
             getView().loadBanner(beanList);
         }
     }

@@ -3,6 +3,7 @@ package com.example.net;
 import com.example.common.CommonResource;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -31,6 +32,7 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onNext(ResponseBody responseBody) {
+        WaitDialog.dismiss();
         try {
             String string = responseBody.string();
             if (string.indexOf("error_response") != -1) {
@@ -53,6 +55,7 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onError(Throwable e) {
+        WaitDialog.dismiss();
         try {
             if (e instanceof SocketTimeoutException) {//请求超时
             } else if (e instanceof ConnectException) {//网络连接超时
@@ -71,6 +74,6 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-        ProcessDialogUtil.dismissDialog();
+//        ProcessDialogUtil.dismissDialog();
     }
 }

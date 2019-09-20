@@ -1,6 +1,7 @@
 package com.example.predict.tb;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
 import com.example.bean.PredictBean;
@@ -13,6 +14,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.Map;
 
@@ -29,7 +31,9 @@ public class TBPresenter extends BasePresenter<TBView> {
     }
 
     public void loadData() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Map map = MapUtil.getInstance().addParms("type", "1").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETPREDICT, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

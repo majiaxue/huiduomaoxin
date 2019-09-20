@@ -1,6 +1,7 @@
 package com.example.fans_order.fragment_pay;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +62,9 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
     }
 
     public void loadData(final int page) {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         if (FansOrderActivity.index == 0) {
             scOrder(page);
         } else if (FansOrderActivity.index == 1) {

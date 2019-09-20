@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import com.example.utils.SPUtil;
 import com.example.utils.UIHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.io.File;
 import java.util.Map;
@@ -222,7 +224,8 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         String jsonString = JSON.toJSONString(userInfoBean);
         Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
 
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putData(CommonResource.REVISEINFO, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -241,7 +244,8 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void loadData() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

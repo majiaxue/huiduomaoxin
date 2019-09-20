@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -23,6 +24,7 @@ import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -73,14 +75,16 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
         this.type = type;
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + levelId + "&productName=枫林淘客-" + name);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("微信支付-------------->" + result);
 
-                    ProcessDialogUtil.dismissDialog();
+//                    ProcessDialogUtil.dismissDialog();
                     try {
                         String[] split = result.split("-----");
                         orderSn = split[1];
@@ -112,7 +116,8 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
                 }
             }));
         } else {
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID));
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override

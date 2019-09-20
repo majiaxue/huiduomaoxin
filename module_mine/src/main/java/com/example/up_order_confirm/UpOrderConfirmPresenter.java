@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -26,6 +27,7 @@ import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -75,7 +77,9 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
     };
 
     public void getAddress() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -111,7 +115,9 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
             String jsonString = JSON.toJSONString(bean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
 
-            ProcessDialogUtil.showProcessDialog(mContext);
+//            ProcessDialogUtil.showProcessDialog(mContext);
+            WaitDialog.show((AppCompatActivity)mContext,null);
+
             if (isWeChat) {
                 final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
@@ -120,7 +126,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                     @Override
                     public void onSuccess(String result, String msg) {
                         LogUtil.e("微信支付-------------->" + result);
-                        ProcessDialogUtil.dismissDialog();
+//                        ProcessDialogUtil.dismissDialog();
                         try {
                             String[] split = result.split("-----");
                             orderSn = split[1];
@@ -147,7 +153,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         getView().callBack();
-                        ProcessDialogUtil.dismissDialog();
+//                        ProcessDialogUtil.dismissDialog();
                         LogUtil.e(errorCode + "------------" + errorMsg);
                     }
                 }));
@@ -156,7 +162,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                 RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
-                        ProcessDialogUtil.dismissDialog();
+//                        ProcessDialogUtil.dismissDialog();
                         LogUtil.e("付款：" + result);
                         try {
 
@@ -174,7 +180,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         getView().callBack();
-                        ProcessDialogUtil.dismissDialog();
+//                        ProcessDialogUtil.dismissDialog();
                     }
                 }));
             }

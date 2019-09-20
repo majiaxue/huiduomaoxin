@@ -1,6 +1,7 @@
 package com.example.mineorder.orderall;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
 import com.google.gson.Gson;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,9 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
     }
 
     public void orderAllRec() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
 
@@ -57,7 +61,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("OrderAllPresenterResult-------->" + result);
 //                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -279,7 +283,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("OrderAllPresenterError-------->" + errorMsg);
             }
         }));

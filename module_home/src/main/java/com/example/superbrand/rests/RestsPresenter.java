@@ -47,7 +47,7 @@ public class RestsPresenter extends BasePresenter<RestsView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("RestsPresenter" + result);
                 if (result.contains("\"code\":1")) {
                     final RestsBean restsBean = JSON.parseObject(result, new TypeReference<RestsBean>() {
@@ -74,7 +74,7 @@ public class RestsPresenter extends BasePresenter<RestsView> {
                             view.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(mContext, "点击了我", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(mContext, "点击了我", Toast.LENGTH_SHORT).show();
                                     ARouter.getInstance()
                                             .build("/module_classify/tshop_home")
                                             .withString("url", restsBean.getData().get(index).getItem().get(0).getCouponurl())
@@ -95,7 +95,7 @@ public class RestsPresenter extends BasePresenter<RestsView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("RestsPresenterErrorMsg" + errorMsg);
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().refreshSuccess();
                 }

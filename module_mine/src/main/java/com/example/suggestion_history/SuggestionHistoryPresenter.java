@@ -1,6 +1,7 @@
 package com.example.suggestion_history;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
 import com.example.bean.FeedBackHistoryBean;
@@ -14,6 +15,7 @@ import com.example.suggestion_history.adapter.SuggestionHistoryAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.List;
 
@@ -31,7 +33,9 @@ public class SuggestionHistoryPresenter extends BasePresenter<SuggestionHistoryV
     }
 
     public void loadData() {
-        ProcessDialogUtil.showProcessDialog(mContext);
+//        ProcessDialogUtil.showProcessDialog(mContext);
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.QUERYSUGGESTION, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

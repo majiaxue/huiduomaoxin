@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.example.utils.CustomDialog;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
 
@@ -127,7 +129,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
     private double sub;
     private String qRImage;
-    private CustomDialog customDialog;
+//    private CustomDialog customDialog;
 
 
     @Override
@@ -140,8 +142,10 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
         ModuleBaseApplication.initShare();
-        customDialog = new CustomDialog(this);
-        customDialog.show();
+//        customDialog = new CustomDialog(this);
+//        customDialog.show();
+        WaitDialog.show(this,null);
+
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList + "userCode" + SPUtil.getUserCode());
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -297,7 +301,7 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
     @Override
     public void qrImage(String url) {
         this.qRImage = url;
-        customDialog.dismiss();
+//        customDialog.dismiss();
         Glide.with(this)
                 .asBitmap()
                 .load(listsBeanList.getImageInfo().getImageList().get(0).getUrl())

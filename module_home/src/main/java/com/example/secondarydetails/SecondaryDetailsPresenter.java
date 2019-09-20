@@ -2,6 +2,7 @@ package com.example.secondarydetails;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -63,7 +65,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     private List<TBGoodsRecBean.DataBean> tbGoodsList = new ArrayList<>();
     private List<JDTabBean.DataBean> jdTabList = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
-    private CustomDialog customDialog = new CustomDialog(mContext);
+//    private CustomDialog customDialog = new CustomDialog(mContext);
     private String name;
     private SecondaryJDRecAdapter secondaryJDRecAdapter;
     private SecondaryTBRecAdapter secondaryTBRecAdapter;
@@ -79,7 +81,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     }
 
     public void initView(final TabLayout secondaryDetailsTab, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
-        customDialog.show();
+//        customDialog.show();
+        WaitDialog.show((AppCompatActivity)mContext,null);
+
         if (type.equals("2")) {
             //拼多多
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
@@ -102,7 +106,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             secondaryDetailsTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
-                                    customDialog.show();
+//                                    customDialog.show();
+                                    WaitDialog.show((AppCompatActivity)mContext,null);
+
                                     //拼多多,淘宝,京东,page用来刷新,type用来分辨
                                     page = 1;
                                     initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, tab.getPosition());
@@ -156,7 +162,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             secondaryDetailsTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
-                                    customDialog.show();
+//                                    customDialog.show();
+                                    WaitDialog.show((AppCompatActivity)mContext,null);
+
                                     page = 1;
                                     //拼多多,淘宝,京东,page用来刷新,type用来分辨
                                     initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, tab.getPosition());
@@ -213,7 +221,9 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                             secondaryDetailsTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
-                                    customDialog.show();
+//                                    customDialog.show();
+                                    WaitDialog.show((AppCompatActivity)mContext,null);
+
                                     //拼多多,淘宝,京东,page用来刷新,type用来分辨
                                     page = 1;
                                     initList(catsListBeans, tBGoodsSearchBeans, jdTabList, page, type, tab.getPosition());
@@ -284,7 +294,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(pddGoods, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult----------->" + result);
                     try {
                         SecondaryPddRecBean secondaryPddRecBean = JSON.parseObject(result, new TypeReference<SecondaryPddRecBean>() {
@@ -354,7 +364,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsError----------->" + errorMsg);
                 }
 
@@ -372,7 +382,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onSuccess(String result, String msg) {
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     try {
                         JSONObject jsonObject = JSON.parseObject(result);
@@ -456,7 +466,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                 }
             }));
         } else if ("6".equals(type)) {
@@ -473,7 +483,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onSuccess(String result, String msg) {
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult淘宝商品--------------->" + result);
                     try {
                         JSONObject jsonObject = JSON.parseObject(result);
@@ -556,7 +566,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                 }
             }));
         } else if (type.equals("4")) {
@@ -566,7 +576,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
                     final JDGoodsRecBean jDGoodsRecBean = JSON.parseObject(result, new TypeReference<JDGoodsRecBean>() {
                     }.getType());
@@ -621,7 +631,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    customDialog.dismiss();
+//                    customDialog.dismiss();
                     LogUtil.e("SecondaryDetailsErrorMsg京东商品--------------->" + errorMsg);
                 }
             }));
