@@ -51,8 +51,6 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
     public void setShippingAddressRec(final RecyclerView shippingAddressRec) {
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ADDRESSSHOW, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
-
-
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("ShippingAddressResult----->" + result);

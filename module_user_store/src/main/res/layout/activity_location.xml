@@ -14,9 +14,7 @@
         android:background="@drawable/bg_dingwei"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/location_include"
-            layout="@layout/include_status" />
+        <include layout="@layout/include_status" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -71,8 +71,8 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
         presenter.setShippingAddressRec(shippingAddressRec);
     }
 }

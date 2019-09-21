@@ -63,7 +63,6 @@
                 android:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/shopping_cart_empty_img"
                     android:layout_width="@dimen/dp_215"
                     android:layout_height="@dimen/dp_218"
                     android:layout_marginTop="@dimen/dp_22"

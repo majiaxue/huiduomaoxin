@@ -78,7 +78,6 @@
 
 
             <TextView
-                android:id="@+id/free_charge_rec_activity_subsidy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/free_charge_rec_activity_original_price"

@@ -8,7 +8,6 @@
     <include layout="@layout/include_status" />
 
     <RelativeLayout
-        android:id="@+id/operator_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45">
 
@@ -31,7 +30,6 @@
     </RelativeLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/operator_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
