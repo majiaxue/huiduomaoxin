@@ -210,7 +210,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         super.onHiddenChanged(hidden);
         if (!hidden && isFirst) {
 //            ProcessDialogUtil.showProcessDialog(getContext());
-            WaitDialog.show((AppCompatActivity)getActivity(),null);
+//            WaitDialog.show((AppCompatActivity)getActivity(),null);
 
 //            if (TextUtils.isEmpty(MyLocationListener.city)) {
 //                // 新建一个子线程来发送消息
