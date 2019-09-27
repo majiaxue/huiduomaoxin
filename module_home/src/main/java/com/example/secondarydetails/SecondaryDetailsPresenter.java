@@ -35,6 +35,7 @@ import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.kongzue.dialog.v3.WaitDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -82,8 +83,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
     public void initView(final TabLayout secondaryDetailsTab, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
 //        customDialog.show();
-        WaitDialog.show((AppCompatActivity)mContext,null);
-
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
         if (type.equals("2")) {
             //拼多多
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
@@ -107,7 +108,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
 //                                    customDialog.show();
-                                    WaitDialog.show((AppCompatActivity)mContext,null);
+//                                    WaitDialog.show((AppCompatActivity)mContext,null);
+                                    ProcessDialogUtil.showProcessDialog(mContext);
 
                                     //拼多多,淘宝,京东,page用来刷新,type用来分辨
                                     page = 1;
@@ -163,7 +165,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
 //                                    customDialog.show();
-                                    WaitDialog.show((AppCompatActivity)mContext,null);
+//                                    WaitDialog.show((AppCompatActivity)mContext,null);
+                                    ProcessDialogUtil.showProcessDialog(mContext);
 
                                     page = 1;
                                     //拼多多,淘宝,京东,page用来刷新,type用来分辨
@@ -222,7 +225,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
 //                                    customDialog.show();
-                                    WaitDialog.show((AppCompatActivity)mContext,null);
+//                                    WaitDialog.show((AppCompatActivity)mContext,null);
+                                    ProcessDialogUtil.showProcessDialog(mContext);
 
                                     //拼多多,淘宝,京东,page用来刷新,type用来分辨
                                     page = 1;

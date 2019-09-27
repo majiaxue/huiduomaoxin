@@ -60,8 +60,8 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-//        ProcessDialogUtil.showProcessDialog(this);
-        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
 
         LogUtil.e("从哪个地方近的" + position);
         if (position == 1) {

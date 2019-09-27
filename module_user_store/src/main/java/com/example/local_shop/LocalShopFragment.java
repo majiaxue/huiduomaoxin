@@ -209,7 +209,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && isFirst) {
-//            ProcessDialogUtil.showProcessDialog(getContext());
+            ProcessDialogUtil.showProcessDialog(getContext());
 //            WaitDialog.show((AppCompatActivity)getActivity(),null);
 
 //            if (TextUtils.isEmpty(MyLocationListener.city)) {

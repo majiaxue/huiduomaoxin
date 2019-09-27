@@ -144,7 +144,8 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         ModuleBaseApplication.initShare();
 //        customDialog = new CustomDialog(this);
 //        customDialog.show();
-        WaitDialog.show(this,null);
+//        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
 
         LogUtil.e("京东+++++++++++++" + skuid + "             " + listsBeanList + "userCode" + SPUtil.getUserCode());
         //字体加中划线

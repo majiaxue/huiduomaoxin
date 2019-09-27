@@ -212,7 +212,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
-//        ProcessDialogUtil.showProcessDialog(mContext);
+        ProcessDialogUtil.showProcessDialog(mContext);
 //        WaitDialog.show((AppCompatActivity)mContext,null);
 
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());//"http://192.168.1.9:4001"

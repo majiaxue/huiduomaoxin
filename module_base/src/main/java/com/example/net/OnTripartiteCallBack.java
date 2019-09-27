@@ -32,7 +32,9 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onNext(ResponseBody responseBody) {
-        WaitDialog.dismiss();
+        ProcessDialogUtil.dismissDialog();
+
+//        WaitDialog.dismiss();
         try {
             String string = responseBody.string();
             if (string.indexOf("error_response") != -1) {
@@ -55,7 +57,9 @@ public class OnTripartiteCallBack extends DisposableObserver<ResponseBody> {
 
     @Override
     public void onError(Throwable e) {
-        WaitDialog.dismiss();
+        ProcessDialogUtil.dismissDialog();
+
+//        WaitDialog.dismiss();
         try {
             if (e instanceof SocketTimeoutException) {//请求超时
             } else if (e instanceof ConnectException) {//网络连接超时

@@ -130,8 +130,8 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
             starFlag = false;
             if (!isZh) {
                 isZh = true;
-//                ProcessDialogUtil.showProcessDialog(mContext);
-                WaitDialog.show((AppCompatActivity)mContext,null);
+                ProcessDialogUtil.showProcessDialog(mContext);
+//                WaitDialog.show((AppCompatActivity)mContext,null);
 
                 loadData(type, search, "", "", 1, label);
             }
@@ -144,8 +144,8 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
                 isDistanceJin = !isDistanceJin;
             }
             distanceFlag = true;
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             loadData(type, search, isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, 1, label);
         } else if (index == 2) {
@@ -157,8 +157,8 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
                 isStarMore = !isStarMore;
             }
             starFlag = true;
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             loadData(type, search, isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, 1, label);
         }

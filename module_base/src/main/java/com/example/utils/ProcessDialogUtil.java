@@ -68,7 +68,12 @@ public class ProcessDialogUtil {
         if (customDialog != null && customDialog.isShowing()) {
             Activity activity = customDialog.getOwnerActivity();
             if (null != activity && !activity.isFinishing()) {
-                customDialog.dismiss();
+                try {
+                    Thread.sleep(500);
+                    customDialog.dismiss();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         customDialog = null;

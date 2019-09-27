@@ -60,8 +60,8 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
     }
 
     public void loadData(final int page) {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         if (FansOrderActivity.index == 0) {
             scOrder(page);

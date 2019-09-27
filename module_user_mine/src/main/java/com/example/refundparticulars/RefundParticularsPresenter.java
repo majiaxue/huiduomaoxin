@@ -17,6 +17,7 @@ import com.example.net.RetrofitUtil;
 import com.example.refundparticulars.adapter.RefundParticularsRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
 import com.kongzue.dialog.v3.WaitDialog;
@@ -45,7 +46,8 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
 
     public void initView(String orderSn) {
 //        customDialog.show();
-        WaitDialog.show((AppCompatActivity)mContext,null);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
 
         Map map = MapUtil.getInstance().addParms("orderSn", orderSn).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.RETURNTABLE, map, SPUtil.getToken());

@@ -224,8 +224,8 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         String jsonString = JSON.toJSONString(userInfoBean);
         Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
 
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putData(CommonResource.REVISEINFO, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -244,8 +244,8 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void loadData() {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

@@ -78,8 +78,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     public void sendCode() {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         String wx_code = SPUtil.getStringValue("wx_code");
         Map map = MapUtil.getInstance().addParms("code", wx_code).build();
@@ -128,8 +128,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         } else if ("".equals(password) || password == null) {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             Map map = MapUtil.getInstance().addParms("phone", phone).addParms("password", password).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.LOGIN_PHONE, map);

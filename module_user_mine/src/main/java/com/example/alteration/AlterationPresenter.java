@@ -19,6 +19,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
 import com.kongzue.dialog.v3.WaitDialog;
@@ -49,7 +50,8 @@ public class AlterationPresenter extends BasePresenter<AlterationView> {
 
     public void alterationRec(final RecyclerView alterationRec) {
 //        customDialog.show();
-        WaitDialog.show((AppCompatActivity)mContext,null);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
 
         Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.RETURNTABLE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {

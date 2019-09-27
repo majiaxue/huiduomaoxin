@@ -57,8 +57,8 @@ public class LoseOrderPresenter extends BasePresenter<LoseOrderView> {
     }
 
     public void loadData() {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         if (OrderActivity.index == 0) {
             scOrder();

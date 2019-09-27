@@ -58,8 +58,8 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
         includeTitle.setText("我的收藏");
         includeRightBtn.setText("编辑");
         includeRightBtn.setVisibility(View.VISIBLE);
-//        ProcessDialogUtil.showProcessDialog(this);
-        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

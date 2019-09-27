@@ -65,8 +65,8 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
         includeTitle.setText("邀请好友");
         includeRight.setImageResource(R.drawable.icon_guize);
         includeRight.setVisibility(View.VISIBLE);
-//        ProcessDialogUtil.showProcessDialog(this);
-        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
 
         ModuleBaseApplication.initShare();
         presenter.initPic(inviteFriendsErweima1, inviteFriendsErweima2, inviteFriendsErweima3, inviteFriendsErweima4);

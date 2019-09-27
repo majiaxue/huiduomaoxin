@@ -51,8 +51,8 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
     }
 
     public void orderAllRec() {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.ORDERALL, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {

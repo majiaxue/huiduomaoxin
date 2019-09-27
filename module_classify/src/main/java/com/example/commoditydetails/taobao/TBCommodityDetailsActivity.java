@@ -168,7 +168,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityIntoShop.setVisibility(View.GONE);
 //        customDialog = new CustomDialog(this);
 //        customDialog.show();
-        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
 
         presenter.login();
 
@@ -217,8 +218,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
-                WaitDialog.show(TBCommodityDetailsActivity.this,null);
+                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+//                WaitDialog.show(TBCommodityDetailsActivity.this,null);
 
                 presenter.ledSecurities(para);
             }
@@ -229,8 +230,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             public void onClick(View v) {
                 if (1 == status) {
                     if ((System.currentTimeMillis() - exitTime) > 3000) {
-//                        ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
-                        WaitDialog.show(TBCommodityDetailsActivity.this,null);
+                        ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+//                        WaitDialog.show(TBCommodityDetailsActivity.this,null);
                         presenter.ShareledSecurities(para);
                         exitTime = System.currentTimeMillis();
                     } else {
@@ -244,8 +245,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
         commodityLedSecurities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
-                WaitDialog.show(TBCommodityDetailsActivity.this,null);
+                ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
+//                WaitDialog.show(TBCommodityDetailsActivity.this,null);
 
                 presenter.ledSecurities(para);
 //                jumpToTB(tbLedSecuritiesBean.getLong_url(), 2);

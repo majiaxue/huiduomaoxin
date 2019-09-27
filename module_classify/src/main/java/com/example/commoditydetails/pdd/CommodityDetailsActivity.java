@@ -137,7 +137,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         ModuleBaseApplication.initShare();
 //        customDialog = new CustomDialog(this);
 //        customDialog.show();
-        WaitDialog.show(this,null);
+//        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
 
         LogUtil.e("goods_id" + goods_id);
         commodityIntoShop.setVisibility(View.INVISIBLE);

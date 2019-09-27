@@ -62,8 +62,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
     }
 
     public void loadData(String searchString, String categoryId, boolean isHotSale) {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         searchInfo = searchString == null ? "" : searchString;
         id = categoryId == null ? "" : categoryId;
@@ -233,8 +233,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
             map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", page).addParms("categoryId", id).build();
         }
 
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

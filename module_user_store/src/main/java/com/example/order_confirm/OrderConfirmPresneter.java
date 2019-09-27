@@ -64,8 +64,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     }
 
     public void getAddress() {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -128,8 +128,8 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
         } else if (!isCan) {
             Toast.makeText(mContext, "未获取到运费信息，请重试", Toast.LENGTH_SHORT).show();
         } else {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
             String jsonString = JSON.toJSONString(bean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.COMMIT_ORDER, requestBody, SPUtil.getToken());

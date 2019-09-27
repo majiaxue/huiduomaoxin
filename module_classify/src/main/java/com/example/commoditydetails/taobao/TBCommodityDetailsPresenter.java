@@ -40,7 +40,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerImageBean;
 import com.example.bean.NewTBGoodsDetailsBean;
 import com.example.bean.TBGoodChoiceBean;
-import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBLedSecuritiesBean;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
@@ -56,11 +55,9 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
@@ -240,7 +237,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 //                return false;
 //            }
 //        };
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         final CommodityDetailsRecAdapter commodityDetailsRecAdapter = new CommodityDetailsRecAdapter(mContext, itemDetail, R.layout.itme_commodity_details_rec);//
 //        linearLayoutManager.setAutoMeasureEnabled(true);
 //        linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -371,11 +368,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (tbLedSecuritiesBean != null) {
                         if (getView() != null) {
                             LogUtil.e("成功");
-                            if (StringUtils.isNotBlank(tbGoodsDetailsBean.getData().getMainPic())){
-                                if (!tbGoodsDetailsBean.getData().getMainPic().contains("https:")){
+                            if (StringUtils.isNotBlank(tbGoodsDetailsBean.getData().getMainPic())) {
+                                if (!tbGoodsDetailsBean.getData().getMainPic().contains("https:")) {
                                     Glide.with(mContext)
                                             .asBitmap()
-                                            .load("https:"+tbGoodsDetailsBean.getData().getMainPic())
+                                            .load("https:" + tbGoodsDetailsBean.getData().getMainPic())
                                             .into(new CustomTarget<Bitmap>() {
                                                 @Override
                                                 public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
@@ -387,7 +384,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                                                 }
                                             });
-                                }else{
+                                } else {
                                     Glide.with(mContext)
                                             .asBitmap()
                                             .load(tbGoodsDetailsBean.getData().getMainPic())
@@ -404,11 +401,11 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                                             });
                                 }
 
-                            }else{
-                                if (!tbGoodsDetailsBean.getData().getMarketingMainPic().contains("https:")){
+                            } else {
+                                if (!tbGoodsDetailsBean.getData().getMarketingMainPic().contains("https:")) {
                                     Glide.with(mContext)
                                             .asBitmap()
-                                            .load("https:"+tbGoodsDetailsBean.getData().getMarketingMainPic())
+                                            .load("https:" + tbGoodsDetailsBean.getData().getMarketingMainPic())
                                             .into(new CustomTarget<Bitmap>() {
                                                 @Override
                                                 public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
@@ -420,7 +417,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                                                 }
                                             });
-                                }else{
+                                } else {
                                     Glide.with(mContext)
                                             .asBitmap()
                                             .load(tbGoodsDetailsBean.getData().getMarketingMainPic())

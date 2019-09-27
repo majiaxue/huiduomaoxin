@@ -77,8 +77,8 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
     };
 
     public void getAddress() {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -115,8 +115,8 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
             String jsonString = JSON.toJSONString(bean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
 
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             if (isWeChat) {
                 final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);

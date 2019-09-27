@@ -51,7 +51,7 @@ public class RestsFragment extends BaseFragment<RestsView, RestsPresenter> imple
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         restsRec.setLayoutManager(linearLayoutManager);
 //        presenter.initList(index);
-//        ProcessDialogUtil.showProcessDialog(getContext());
+        ProcessDialogUtil.showProcessDialog(getContext());
 //        WaitDialog.show((AppCompatActivity)getActivity(),null);
 
         presenter.initList(page, index);

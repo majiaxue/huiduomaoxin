@@ -75,8 +75,8 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
         this.type = type;
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + levelId + "&productName=枫林淘客-" + name);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
@@ -116,8 +116,8 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
                 }
             }));
         } else {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID));
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override

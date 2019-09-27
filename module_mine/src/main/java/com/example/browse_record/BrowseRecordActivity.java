@@ -48,8 +48,8 @@ public class BrowseRecordActivity extends BaseActivity<BrowseRecordView, BrowseR
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         browseRecordRv.setLayoutManager(layoutManager);
-//        ProcessDialogUtil.showProcessDialog(this);
-        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
 
         presenter.loadData(page);
 

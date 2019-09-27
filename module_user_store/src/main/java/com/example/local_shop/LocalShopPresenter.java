@@ -198,8 +198,8 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
             starFlag = false;
             if (!isZh) {
                 isZh = true;
-//                ProcessDialogUtil.showProcessDialog(mContext);
-                WaitDialog.show((AppCompatActivity)mContext,null);
+                ProcessDialogUtil.showProcessDialog(mContext);
+//                WaitDialog.show((AppCompatActivity)mContext,null);
 
                 initSeller("", "", 1, MyLocationListener.longitude, MyLocationListener.latitude);
             }
@@ -212,8 +212,8 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
                 isDistanceJin = !isDistanceJin;
             }
             distanceFlag = true;
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             initSeller(isDistanceJin ? LocalShopFragment.ASC : LocalShopFragment.DESC, LocalShopFragment.DISTANCE, 1, MyLocationListener.longitude, MyLocationListener.latitude);
         } else if (index == 2) {
@@ -225,8 +225,8 @@ public class LocalShopPresenter extends BasePresenter<LocalShopView> {
                 isStarMore = !isStarMore;
             }
             starFlag = true;
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             initSeller(isStarMore ? LocalShopFragment.DESC : LocalShopFragment.ASC, LocalShopFragment.STAR, 1, MyLocationListener.longitude, MyLocationListener.latitude);
         }

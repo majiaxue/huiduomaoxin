@@ -28,6 +28,7 @@ import com.example.net.RetrofitUtil;
 import com.example.bean.RefundApplyVo;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -108,7 +109,8 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
         includeTitle.setText("退款申请");
         ARouter.getInstance().inject(this);
 //        customDialog = new CustomDialog(this);
-        WaitDialog.show(this,null);
+//        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
 
         LogUtil.e("beanList退款申请" + mineOrderBean1);
         if ("1".equals(type)) {
@@ -167,7 +169,8 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                     Toast.makeText(RefundActivity.this, "请选择退款类型", Toast.LENGTH_SHORT).show();
                 } else {
 //                    customDialog.show();
-                    WaitDialog.show(RefundActivity.this,null);
+//                    WaitDialog.show(RefundActivity.this,null);
+                    ProcessDialogUtil.showProcessDialog(RefundActivity.this);
 
                     if ("1".equals(type)) {
                         RefundApplyVo refundApplyVo = new RefundApplyVo();

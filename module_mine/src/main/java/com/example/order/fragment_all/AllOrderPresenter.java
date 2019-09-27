@@ -57,8 +57,8 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
     }
 
     public void loadData(int index) {
-//        ProcessDialogUtil.showProcessDialog(mContext);
-        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         if (index == 0) {
             scOrder();

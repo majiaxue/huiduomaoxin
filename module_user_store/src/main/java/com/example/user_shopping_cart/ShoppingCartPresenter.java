@@ -78,8 +78,8 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
 
     public void setShoppingCartRec() {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             final Observable<ResponseBody> cart = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getDataWithout(CommonResource.CARTLIST + "/" + SPUtil.getUserCode() + "/" + 1);
             RetrofitUtil.getInstance().toSubscribe(cart, new OnMyCallBack(new OnDataListener() {

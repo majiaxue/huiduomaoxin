@@ -162,8 +162,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     public void searchTB(final int page, String sort) {
         goodsType = 1;
         if (page == 1) {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
         }
         Map map = MapUtil.getInstance().addParms("para", content).addParms("page", page).build();
@@ -328,8 +328,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     public void searchJD(final int page, String sort, String sortName) {
         goodsType = 3;
         if (page == 1) {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
         }
 
@@ -446,8 +446,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
     public void searchPDD(final int page) {
         goodsType = 2;
         if (page == 1) {
-//            ProcessDialogUtil.showProcessDialog(mContext);
-            WaitDialog.show((AppCompatActivity)mContext,null);
+            ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
 
         }
 

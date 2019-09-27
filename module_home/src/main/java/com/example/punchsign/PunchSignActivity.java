@@ -100,8 +100,8 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
 
     @Override
     public void initData() {
-//        ProcessDialogUtil.showProcessDialog(this);
-        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
 
         //查询签到任务完成度
         presenter.signQuery();
