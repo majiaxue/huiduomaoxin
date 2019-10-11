@@ -46,7 +46,7 @@
             android:layout_width="@dimen/dp_68"
             android:layout_height="@dimen/dp_25"
             android:layout_marginRight="@dimen/dp_16"
-            android:background="@drawable/button_shanchu"
+            android:background="@drawable/bg_5_e85330_f4bb43"
             android:gravity="center"
             android:text="删除"
             android:textColor="@color/codeText"

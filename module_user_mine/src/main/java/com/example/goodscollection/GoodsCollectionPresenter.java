@@ -1,6 +1,7 @@
 package com.example.goodscollection;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -23,8 +24,10 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,9 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
     }
 
     public void setGoodsCollectionRec(final RecyclerView goodsCollectionRec) {
+//        WaitDialog.show((AppCompatActivity) mContext, null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GOODSCOLLECTION, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
             @Override

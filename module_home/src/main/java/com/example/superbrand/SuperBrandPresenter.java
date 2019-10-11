@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ import com.example.superbrand.rests.RestsFragment;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

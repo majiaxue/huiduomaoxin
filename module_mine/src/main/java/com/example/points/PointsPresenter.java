@@ -2,6 +2,7 @@ package com.example.points;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -16,6 +17,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.Map;
 
@@ -37,6 +39,8 @@ public class PointsPresenter extends BasePresenter<PointsView> {
 
     public void getData() {
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETPOINTS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

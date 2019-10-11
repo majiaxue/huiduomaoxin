@@ -121,7 +121,6 @@
                         android:layout_below="@id/commodity_text"
                         android:layout_marginLeft="@dimen/dp_17"
                         android:layout_marginTop="@dimen/dp_12"
-                        android:layout_marginBottom="@dimen/dp_18"
                         android:textColor="#999999"
                         android:textSize="@dimen/sp_12" />
 
@@ -140,7 +139,8 @@
                         android:id="@+id/commodity_details_no_coupon"
                         android:layout_width="@dimen/dp_343"
                         android:layout_height="@dimen/dp_70"
-                        android:layout_below="@id/commodity_original_price"
+                        android:layout_marginTop="@dimen/dp_18"
+                        android:layout_below="@id/commodity_number_sold"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/coupon"
                         android:orientation="horizontal"

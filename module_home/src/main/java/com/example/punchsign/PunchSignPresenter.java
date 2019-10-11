@@ -61,7 +61,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("PunchSignPresenterResult" + result);
                 punchSignBean = JSON.parseObject(result, new TypeReference<PunchSignBean>() {
                 }.getType());
@@ -75,7 +75,7 @@ public class PunchSignPresenter extends BasePresenter<PunchSignView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
             }
         }));
     }

@@ -1,5 +1,6 @@
 package com.example.shippingaddress.amendaddress;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,8 +16,8 @@ import com.alibaba.fastjson.JSON;
 import com.example.bean.AmendAddressBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.common.CommonResource;
-import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
+import com.example.module_user_mine.R;
 import com.example.mvp.BaseActivity;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -170,7 +171,17 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         amendAddressSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (PhoneNumUtil.isMobileNO(amendAddressPhone.getText().toString())) {
+                if (TextUtils.isEmpty(amendAddressName.getText().toString())) {
+                    Toast.makeText(AmendAddressActivity.this, "请输入姓名", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(amendAddressPhone.getText().toString())) {
+                    Toast.makeText(AmendAddressActivity.this, "手机号不能为空", Toast.LENGTH_SHORT).show();
+                } else if (!PhoneNumUtil.isMobileNO(amendAddressPhone.getText().toString())) {
+                    Toast.makeText(AmendAddressActivity.this, "手机号格式不正确", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(amendAddressCity.getText().toString()) && TextUtils.isEmpty(amendAddressArea.getText().toString())) {
+                    Toast.makeText(AmendAddressActivity.this, "请选择地址", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(amendAddressDetailed.getText().toString())) {
+                    Toast.makeText(AmendAddressActivity.this, "请填写详细地址", Toast.LENGTH_SHORT).show();
+                } else {
                     AmendAddressBean amendAddressBean = new AmendAddressBean();
                     amendAddressBean.setId(shippingAddressBeanList.get(position).getId());
                     amendAddressBean.setUserCode(shippingAddressBeanList.get(position).getUserCode());
@@ -210,8 +221,6 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
                         }
                     }));
 
-                } else {
-                    Toast.makeText(AmendAddressActivity.this, "手机号格式不正确", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -41,7 +41,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerImageBean;
 import com.example.bean.NewTBGoodsDetailsBean;
 import com.example.bean.TBGoodChoiceBean;
-import com.example.bean.TBGoodsDetailsBean;
 import com.example.bean.TBLedSecuritiesBean;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.taobao.adapter.TBRecommendAdapter;
@@ -63,7 +62,6 @@ import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
 import com.example.view.SelfDialog;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
@@ -126,9 +124,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             public void onFailure(int code, String msg) {
                 Toast.makeText(mContext, "登录失败 ",
                         Toast.LENGTH_LONG).show();
-                if (getView() != null) {
-                    getView().finishLoad();
-                }
+
                 final SelfDialog selfDialog = new SelfDialog(mContext);
                 selfDialog.setTitle("提示");
                 selfDialog.setMessage("淘宝授权失败，请重试");

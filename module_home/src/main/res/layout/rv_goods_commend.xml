@@ -95,7 +95,6 @@
 
 
     <View
-        android:id="@+id/rv_goods_commend_temp2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_8"
         android:layout_below="@id/rv_goods_commend_profit"

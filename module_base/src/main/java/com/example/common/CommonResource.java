@@ -67,7 +67,6 @@ public class CommonResource {
     public static final String GETPREDICT = "/rest/user/settlement";            //预估收益
     public static final String HOME_PREDICT = "/rest/user/settlement/total";    //首页获取预估数据
     public static final String GETOPER = "/rest/user/getOperLevel";             //获取运营商等级列表
-    public static final String SEARCHTBGOODS = "/rest/tbk/goods/sellerTbkList"; //搜索淘宝商品
     public static final String SEARCH_NEW_TB = "/rest/tbk/goods/sellerTbkList_1";   //搜索淘宝商品（新）  关键词 淘口令  链接
     public static final String SEARCHPDDGOODS = "/rest/pdd/goods/pddgoods";      //搜索拼多多商品
     public static final String SEARCHJDGOODS = "/rest/jd/goodsListByJD";            //搜索京东商品
@@ -146,7 +145,6 @@ public class CommonResource {
     public static final String TBKGOODSGETITEMDESC = "/rest/tbk/goods/getItemDesc";//商品详情接口功能（店铺信息/产品介绍/主图视频/SKU）
     public static final String TBKGOODSGETGYURLBYALL = "/rest/tbk/goods/getgyurlbyall";//转链接API
     public static final String TBKGOODSTBCATEGOTY = "/rest/tbk/goods/tbcategoty";//tb分类
-    public static final String TBKGOODSSELLERTBKLIST = "/rest/tbk/goods/sellerTbkList";//获取全网淘客商品API
     public static final String SUPERGRAND = "/rest/tbk/goods/superGrand";//超级品牌
     public static final String JDGETCATEGORY = "/rest/jd/getCategory";//获取京东商品类目
     public static final String JDGETGOODSDETAIL = "/rest/jd/getGoodsDetail";//获取京东商品详情

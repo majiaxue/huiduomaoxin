@@ -34,15 +34,15 @@ import java.util.List;
  * Created by cuihaohao on 2019/6/6
  * Describe:
  */
-public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
+public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListBean> {
 
 
-    public SecondaryTBRecAdapter(Context context, List<TBGoodsRecBean.DataBean> mList, int mLayoutId) {
+    public SecondaryTBRecAdapter(Context context, List<TBGoodsRecBean.ResultListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(final RecyclerViewHolder holder, TBGoodsRecBean.DataBean data, int position) {
+    public void convert(final RecyclerViewHolder holder, TBGoodsRecBean.ResultListBean data, int position) {
         // 1表示天猫，0表示淘宝产品
         if ("0".equals(data.getUser_type())) {
             //淘宝
@@ -65,7 +65,11 @@ public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.Data
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         holder.setTextLine(R.id.base_original_price);
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            if (SPUtil.getFloatValue(CommonResource.BACKBL) != 0) {
+                holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            } else {
+                holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+            }
 //            LogUtil.e("预估收益：" + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "商品佣金" + div + "商品价格" + sub + "最终收益" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
         } else {
             holder.setText(com.example.module_base.R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));

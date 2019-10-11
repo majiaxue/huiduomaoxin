@@ -26,7 +26,6 @@
             android:layout_weight="1" />
 
         <CheckBox
-            android:id="@+id/popup_item_goods_classify_check"
             android:layout_width="@dimen/dp_19"
             android:layout_height="@dimen/dp_19"
             android:layout_marginRight="@dimen/dp_15"

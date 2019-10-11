@@ -36,7 +36,6 @@ public class SuperBrandFragment extends BaseFragment<SuperBrandView, SuperBrandP
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, LinearLayoutManager.VERTICAL, false);
         superBrandRec.setLayoutManager(gridLayoutManager);
         presenter.initView(superBrandTab, getChildFragmentManager(), superBrandViewpager);
-        presenter.initList(0);
     }
 
     @Override
@@ -63,6 +62,8 @@ public class SuperBrandFragment extends BaseFragment<SuperBrandView, SuperBrandP
         } else {
             //可见
             StatusBarUtils.setAndroidNativeLightStatusBar(getActivity(), false);
+            presenter.initList(0);
+
         }
     }
 

@@ -88,7 +88,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/pop_clipboard_pdd_linear"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -111,7 +110,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/pop_clipboard_jd_linear"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -133,14 +133,6 @@ dependencies {
     //倒计时
     api 'com.github.iwgang:countdownview:2.1.6'
 
-    //友盟
-    api files('libs/umeng-common-2.0.2.jar')
-    api files('libs/umeng-share-core-6.9.4.jar')
-    api files('libs/umeng-share-QQ-simplify-6.9.4.jar')
-    api files('libs/umeng-share-wechat-simplify-6.9.4.jar')
-    api files('libs/umeng-shareboard-widget-6.9.4.jar')
-    api files('libs/umeng-sharetool-6.9.4.jar')
-
     //zxing二维码
     api 'com.google.zxing:core:3.4.0'
 
@@ -167,4 +159,17 @@ dependencies {
 
     //京东开普勒
     api project(':jdsdk_lib')
+
+    //dialogV3
+    api 'com.kongzue.dialog_v3:dialog:3.1.1'
+
+    //友盟
+    api files('libs/umeng-common-2.1.0.jar')
+    api files('libs/umeng-share-core-6.9.6.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.6.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.6.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.6.jar')
+    api files('libs/umeng-shareboard-widget-6.9.6.jar')
+    api files('libs/umeng-sharetool-6.9.6.jar')
+    implementation files('libs/umeng-common-2.1.0.jar')
 }

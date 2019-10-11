@@ -34,7 +34,7 @@ public class CustomDialog extends Dialog {
         SimpleDraweeView dialogGif = findViewById(R.id.dialog_gif);
         Uri uri = new Uri.Builder()
                 .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-                .path(String.valueOf(R.drawable.loading1))
+                .path(String.valueOf(R.drawable.dialog_gif1))
                 .build();
         DraweeController draweeController =
                 Fresco.newDraweeControllerBuilder()
@@ -44,9 +44,7 @@ public class CustomDialog extends Dialog {
         dialogGif.setController(draweeController);
 
         setCanceledOnTouchOutside(true);
-//        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-//        attributes.alpha=0.8f;
-//        getWindow().setAttributes(attributes);
+
         setCancelable(false);
     }
 }

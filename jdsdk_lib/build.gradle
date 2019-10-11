@@ -21,11 +21,11 @@ android {
         release {
 //            minifyEnabled false
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            minifyEnabled true
-            consumerProguardFiles 'proguard-rules.pro'
         }
-        debug {
-            minifyEnabled false
+    }
+	sourceSets{
+        main{
+            jniLibs.srcDirs = ['libs']
         }
     }
     compileOptions {
@@ -38,6 +38,7 @@ dependencies {
     //    compile fileTree(dir: 'libs', include: ['*.jar'])
     api files('libs/jdmasdk.jar')
     api files('libs/JDSDK_h.jar')
+    api files('libs/cps_1.0.0.jar')
 }
 
 println "Lib_end： $name"

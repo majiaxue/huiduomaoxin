@@ -38,8 +38,7 @@
                         android:id="@+id/local_store_img"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_115"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/img_504" />
+                        android:scaleType="fitXY" />
 
                     <ImageView
                         android:id="@+id/local_store_back"

@@ -1,6 +1,7 @@
 package com.example.refundparticulars;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -16,8 +17,10 @@ import com.example.net.RetrofitUtil;
 import com.example.refundparticulars.adapter.RefundParticularsRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +33,7 @@ import io.reactivex.Observable;
  */
 public class RefundParticularsPresenter extends BasePresenter<RefundParticularsView> {
 
-    private CustomDialog customDialog = new CustomDialog(mContext);
+//    private CustomDialog customDialog = new CustomDialog(mContext);
 
     public RefundParticularsPresenter(Context context) {
         super(context);
@@ -42,13 +45,16 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
     }
 
     public void initView(String orderSn) {
-        customDialog.show();
+//        customDialog.show();
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+        ProcessDialogUtil.showProcessDialog(mContext);
+
         Map map = MapUtil.getInstance().addParms("orderSn", orderSn).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.RETURNTABLE, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                customDialog.dismiss();
+//                customDialog.dismiss();
                 LogUtil.e("RefundParticularsResult------------->" + result);
 //                List<AlterationBean> list = JSON.parseArray(result, AlterationBean.class);
                 AlterationBean alterationBean = JSON.parseObject(result, new TypeReference<AlterationBean>() {
@@ -62,7 +68,7 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                customDialog.dismiss();
+//                customDialog.dismiss();
                 LogUtil.e("RefundParticularsErrorMsg------------->" + errorMsg);
             }
         }));

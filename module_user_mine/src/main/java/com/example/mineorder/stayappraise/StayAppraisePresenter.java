@@ -1,6 +1,7 @@
 package com.example.mineorder.stayappraise;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
 import com.google.gson.Gson;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +50,14 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
     public void stayAppraiseRec() {
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Map map = MapUtil.getInstance().addParms("status", 3).build();
         Observable<ResponseBody> headWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.ORDERSTATUS, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("stayAppraiseRec" + result);
 //                MineOrderBean mineOrderBean = JSON.parseObject(result, new TypeReference<MineOrderBean>() {
 //                }.getType());
@@ -90,7 +94,7 @@ public class StayAppraisePresenter extends BasePresenter<StayAppraiseView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("stayAppraiseErrorMsg------->" + errorMsg);
             }
         }));

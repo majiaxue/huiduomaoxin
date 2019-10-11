@@ -43,7 +43,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
     private String itemType;
     private List<UniversalListBean.DataBean.ListBean> dataBeanList = new ArrayList<>();
     private List<HotRecommendBean.DataBean> hotList = new ArrayList<>();
-    private List<TBGoodsRecBean.DataBean> tbList = new ArrayList();
+    private List<TBGoodsRecBean.ResultListBean> tbList = new ArrayList();
     private BaoYouAdapter baoYouAdapter;
     private HotRecommendRecAdapter hotRecommendRecAdapter;
     private UniversalListRecAdapter universalListRecAdapter;
@@ -70,7 +70,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("UniversalListPresenterResult" + result);
                 UniversalListBean universalListBean = JSON.parseObject(result, new TypeReference<UniversalListBean>() {
                 }.getType());
@@ -90,31 +90,27 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            if (TextUtils.isEmpty(SPUtil.getToken())) {
-                                PopUtils.isLogin(mContext);
-                            } else {
-                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                        .withString("para", dataBeanList.get(position).getGoodsId())
-                                        .withString("shoptype", "1")
-                                        .withDouble("youhuiquan", dataBeanList.get(position).getCouponPrice())
-                                        .withString("coupon_start_time", dataBeanList.get(position).getCouponStartTime())
-                                        .withString("coupon_end_time", dataBeanList.get(position).getCouponEndTime())
-                                        .withString("commission_rate", dataBeanList.get(position).getCommissionRate() + "")
-                                        .withInt("type", 0)
-                                        .navigation();
-                            }
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", dataBeanList.get(position).getGoodsId())
+                                    .withString("shoptype", "1")
+                                    .withDouble("youhuiquan", dataBeanList.get(position).getCouponPrice())
+                                    .withString("coupon_start_time", dataBeanList.get(position).getCouponStartTime())
+                                    .withString("coupon_end_time", dataBeanList.get(position).getCouponEndTime())
+                                    .withString("commission_rate", dataBeanList.get(position).getCommissionRate() + "")
+                                    .withInt("type", 0)
+                                    .navigation();
                         }
                     });
                 }
-                if (getView() != null) {
+                if(getView()!=null){
                     getView().finishRefresh();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
-                if (getView() != null) {
+//                ProcessDialogUtil.dismissDialog();
+                if(getView()!=null){
                     getView().finishRefresh();
                 }
             }
@@ -127,7 +123,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("hotRecommend：" + result);
                 HotRecommendBean hotRecommendBean = JSON.parseObject(result, new TypeReference<HotRecommendBean>() {
                 }.getType());
@@ -168,15 +164,15 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     });
 
                 }
-                if (getView() != null) {
+                if(getView()!=null){
                     getView().finishRefresh();
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
-                if (getView() != null) {
+//                ProcessDialogUtil.dismissDialog();
+                if(getView()!=null){
                     getView().finishRefresh();
                 }
             }
@@ -201,19 +197,21 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                                 tbList.clear();
                             }
                             for (int i = 0; i < resultList.size(); i++) {
-                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
-                                JSONObject object = resultList.getJSONObject(i);
-                                dataBean.setItem_id(object.getString("item_id"));
-                                dataBean.setPict_url(object.getString("pict_url"));
-                                dataBean.setTitle(object.getString("title"));
-                                dataBean.setCommission_rate("" + object.getDouble("commission_rate"));
-                                dataBean.setVolume(object.getString("volume"));
-                                dataBean.setCoupon_amount(object.getString("coupon_amount"));
-                                dataBean.setZk_final_price(object.getString("zk_final_price"));
-                                dataBean.setReserve_price(object.getString("reserve_price"));
-                                dataBean.setTk_total_sales(object.getString("tk_total_sales"));
-                                dataBean.setCoupon_start_time(object.getString("coupon_start_time"));
-                                dataBean.setCoupon_end_time(object.getString("coupon_end_time"));
+                                TBGoodsRecBean.ResultListBean dataBean = new TBGoodsRecBean.ResultListBean();
+                                JSONObject jsonObject1 = resultList.getJSONObject(i);
+                                dataBean.setItem_id(jsonObject1.getString("item_id"));
+                                dataBean.setPict_url(jsonObject1.getString("pict_url"));
+                                dataBean.setTitle(jsonObject1.getString("title"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
+                                dataBean.setVolume(jsonObject1.getString("volume"));
+                                dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
+                                dataBean.setUser_type(jsonObject1.getString("user_type"));
+                                dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
+                                dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
+                                dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                                dataBean.setCoupon_start_time(jsonObject1.getString("coupon_start_time"));
+                                dataBean.setCoupon_end_time(jsonObject1.getString("coupon_end_time"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
                                 tbList.add(dataBean);
                             }
                         }
@@ -230,24 +228,20 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     baoYouAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            if (TextUtils.isEmpty(SPUtil.getToken())) {
-                                PopUtils.isLogin(mContext);
-                            } else {
-                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                        .withString("para", tbList.get(position).getItem_id())
-                                        .withString("shoptype", "1")
-                                        .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
-                                        .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
-                                        .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
-                                        .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                        .withInt("type", 1)
-                                        .navigation();
-                            }
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", tbList.get(position).getItem_id())
+                                    .withString("shoptype", "1")
+                                    .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
+                                    .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
+                                    .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
+                                    .withString("commission_rate", tbList.get(position).getCommission_rate())
+                                    .withInt("type", 1)
+                                    .navigation();
                         }
                     });
                 }
 
-                if (getView() != null) {
+                if(getView()!=null){
                     getView().finishRefresh();
                 }
 
@@ -256,7 +250,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("UniversalListPresenter9.9包邮errorMsg" + errorMsg);
-                if (getView() != null) {
+                if(getView()!=null){
                     getView().finishRefresh();
                 }
             }

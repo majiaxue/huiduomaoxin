@@ -55,7 +55,7 @@ public abstract class BaseFragmentActivity<V extends IView, P extends BasePresen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ProcessDialogUtil.dismissDialog();
+//        ProcessDialogUtil.dismissDialog();
         if (presenter != null) {
             AppManager.getInstance().finishActivity(this);
             //Activity销毁时的调用，让具体实现BasePresenter中onViewDestroy()方法做出决定

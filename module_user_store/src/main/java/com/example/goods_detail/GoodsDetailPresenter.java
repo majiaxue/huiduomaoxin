@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -57,6 +58,7 @@ import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagFlowLayout;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -125,6 +127,8 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void loadData(String id) {
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getHeadWithout(CommonResource.GETGOODSDETAIL + "/" + id, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

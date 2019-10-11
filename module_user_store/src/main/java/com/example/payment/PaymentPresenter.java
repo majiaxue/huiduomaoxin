@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -27,6 +28,7 @@ import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -112,6 +114,8 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         } else {
             Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").addParms("userCode", SPUtil.getUserCode()).build();
             ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
+
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.TOPAY, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override

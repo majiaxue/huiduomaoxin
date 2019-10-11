@@ -2,6 +2,7 @@ package com.example.classificationdetails;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ import okhttp3.ResponseBody;
  */
 public class ClassificationDetailsPresenter extends BasePresenter<ClassificationDetailsView> {
 
-    private List<TBGoodsRecBean.DataBean> tbList = new ArrayList<>();
+    private List<TBGoodsRecBean.ResultListBean> tbList = new ArrayList<>();
     private List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> pddList = new ArrayList<>();
     private List<JDListBean.DataBean> jdList = new ArrayList<>();
     private String[] titleArr = {"淘宝", "拼多多", "京东"};
@@ -162,6 +164,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         goodsType = 1;
         if (page == 1) {
             ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
+
         }
         Map map = MapUtil.getInstance().addParms("para", content).addParms("page", page).build();
         if (sort != null) {
@@ -172,7 +176,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("淘宝搜索：" + result);
                 if (getView() != null) {
                     getView().loadFinish();
@@ -191,7 +195,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             if ("1".equals(search_type)) {
                                 JSONArray resultList = jsonObject.getJSONArray("result_list");
                                 for (int i = 0; i < resultList.size(); i++) {
-                                    TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                    TBGoodsRecBean.ResultListBean dataBean = new TBGoodsRecBean.ResultListBean();
                                     JSONObject object = resultList.getJSONObject(i);
 
                                     String coupon_info = object.getString("coupon_info");
@@ -216,7 +220,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 }
                             } else if ("2".equals(search_type)) {
                                 JSONObject data = jsonObject.getJSONObject("data");
-                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                TBGoodsRecBean.ResultListBean dataBean = new TBGoodsRecBean.ResultListBean();
                                 String coupon_info = data.getString("coupon_info");
                                 if (!TextUtils.isEmpty(coupon_info)) {
                                     String[] split = coupon_info.split("减");
@@ -314,7 +318,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -326,6 +330,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         goodsType = 3;
         if (page == 1) {
             ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
+
         }
 
         Map map = MapUtil.getInstance().addParms("keyword", content).addParms("pageIndex", page).addParms("pageSize", "10").addParms("isCoupon", "1").build();
@@ -432,6 +438,8 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         goodsType = 2;
         if (page == 1) {
             ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
+
         }
 
         PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
@@ -446,7 +454,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -531,7 +539,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }

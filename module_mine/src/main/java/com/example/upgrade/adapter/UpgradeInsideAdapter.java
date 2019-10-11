@@ -15,6 +15,6 @@ public class UpgradeInsideAdapter extends MyRecyclerAdapter<String> {
 
     @Override
     public void convert(RecyclerViewHolder holder, String data, int position) {
-        holder.setTextFormHtml(R.id.rv_upgrade_inside_txt, data);
+//        holder.setTextFormHtml(R.id.rv_upgrade_inside_txt, data);
     }
 }

@@ -13,8 +13,8 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/dialog_gif"
-            android:layout_width="@dimen/dp_66"
-            android:layout_height="@dimen/dp_66" />
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100" />
 
         <TextView
             android:layout_width="wrap_content"

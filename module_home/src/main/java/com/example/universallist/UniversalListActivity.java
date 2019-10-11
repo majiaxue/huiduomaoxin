@@ -1,6 +1,7 @@
 package com.example.universallist;
 
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.example.universallist.adapter.HotRecommendRecAdapter;
 import com.example.universallist.adapter.UniversalListRecAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -59,6 +61,8 @@ public class UniversalListActivity extends BaseActivity<UniversalListView, Unive
     public void initData() {
         ARouter.getInstance().inject(this);
         ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
+
         LogUtil.e("从哪个地方近的" + position);
         if (position == 1) {
             includeTitle.setText("淘抢购");

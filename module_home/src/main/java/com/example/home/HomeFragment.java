@@ -103,12 +103,10 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         presenter.setZhongXBanner(homeZhongXbanner);
         //topRec
         presenter.setRec(homeTopRec, homeSlideIndicatorPoint);
-
-        //优选recycler
+//优选recycler
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
         //推荐recycler
         presenter.setBottomRec(nextPage, homeBottomRec);
-
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
@@ -221,7 +219,6 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                 presenter.setGoodChoiceRec(homeGoodChoiceRec);
                 //推荐recycler
                 presenter.setBottomRec(nextPage, homeBottomRec);
-                presenter.setBottomRec(nextPage, homeBottomRec);
 
             }
         });
@@ -260,16 +257,11 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             //不可见
             homeMarquee.stopFlipping();
             homeXbanner.stopAutoPlay();
+
         } else {
             //可见
             homeMarquee.startFlipping();
             homeXbanner.startAutoPlay();
-//            //跑马灯
-//            presenter.setViewSingleLine();
-            //xBanner
-//            presenter.setXBanner(homeXbanner, homeTopBg);
-//            //topRec
-//            presenter.setRec(homeTopRec);
         }
     }
 

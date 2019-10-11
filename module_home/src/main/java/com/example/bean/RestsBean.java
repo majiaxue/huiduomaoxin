@@ -542,7 +542,7 @@ public class RestsBean {
             private String itempic_copy;
             private String shoptype;
             private String is_foreshow;
-            private int videoid;
+            private String videoid;
             private String activityid;
             private String activity_type;
             private String shopid;
@@ -667,11 +667,11 @@ public class RestsBean {
                 this.is_foreshow = is_foreshow;
             }
 
-            public int getVideoid() {
+            public String getVideoid() {
                 return videoid;
             }
 
-            public void setVideoid(int videoid) {
+            public void setVideoid(String videoid) {
                 this.videoid = videoid;
             }
 

@@ -1,6 +1,7 @@
 package com.example.cashout;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.bean.UserInfoBean;
@@ -16,6 +17,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.Map;
 
@@ -34,6 +36,8 @@ public class CashoutPresenter extends BasePresenter<CashoutView> {
 
     public void loadData() {
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETBALANCE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

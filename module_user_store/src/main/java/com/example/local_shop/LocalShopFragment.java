@@ -3,6 +3,7 @@ package com.example.local_shop;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
 import com.example.view.CustomHeader;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -208,6 +210,7 @@ public class LocalShopFragment extends BaseFragment<LocalShopView, LocalShopPres
         super.onHiddenChanged(hidden);
         if (!hidden && isFirst) {
             ProcessDialogUtil.showProcessDialog(getContext());
+//            WaitDialog.show((AppCompatActivity)getActivity(),null);
 
             if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
                 LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));

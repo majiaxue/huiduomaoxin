@@ -16,15 +16,15 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/15
  * Describe:
  */
-public class ClassificationRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
+public class ClassificationRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListBean> {
 
 
-    public ClassificationRecAdapter(Context context, List<TBGoodsRecBean.DataBean> mList, int mLayoutId) {
+    public ClassificationRecAdapter(Context context, List<TBGoodsRecBean.ResultListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, TBGoodsRecBean.DataBean data, final int position) {
+    public void convert(RecyclerViewHolder holder, TBGoodsRecBean.ResultListBean data, final int position) {
         try {
 
             holder.setImageFresco(R.id.classification_image, data.getPict_url());

@@ -9,6 +9,7 @@ import com.example.bean.GoodsRecommendBean;
 import com.example.common.CommonResource;
 import com.example.module_base.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -44,8 +45,12 @@ public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodsRecommendBean.
         holder.setText(R.id.base_original_price, "￥" + data.getZk_final_price());//原价
         holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");//已抢数量
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
-//            LogUtil.e("预估收益:" + "商品价格" + couponPrice + "商品乘佣金" + mul + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "最终金额" + "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            if (SPUtil.getFloatValue(CommonResource.BACKBL) != 0) {
+                holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            } else {
+                holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+            }
+            LogUtil.e("预估收益:" + "商品价格" + couponPrice + "佣金" + div + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "最终金额" + "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
         } else {
             holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
         }

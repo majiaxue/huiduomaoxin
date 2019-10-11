@@ -49,7 +49,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("收藏列表：" + result);
                 if (result != null) {
                     if (page == 1) {
@@ -73,7 +73,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                ProcessDialogUtil.dismissDialog();
+//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish(dataList.size());
                 }

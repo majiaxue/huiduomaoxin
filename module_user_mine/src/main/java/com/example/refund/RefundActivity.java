@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,9 +28,11 @@ import com.example.net.RetrofitUtil;
 import com.example.bean.RefundApplyVo;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.CustomDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +97,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
 
     private List<String> images = new ArrayList<>();
-    private CustomDialog customDialog;
+//    private CustomDialog customDialog;
 
     @Override
     public int getLayoutId() {
@@ -105,7 +108,10 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     public void initData() {
         includeTitle.setText("退款申请");
         ARouter.getInstance().inject(this);
-        customDialog = new CustomDialog(this);
+//        customDialog = new CustomDialog(this);
+//        WaitDialog.show(this,null);
+        ProcessDialogUtil.showProcessDialog(this);
+
         LogUtil.e("beanList退款申请" + mineOrderBean1);
         if ("1".equals(type)) {
             refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
@@ -162,7 +168,10 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                 } else if (refundTypeText.getText().toString().equals("点击选择")) {
                     Toast.makeText(RefundActivity.this, "请选择退款类型", Toast.LENGTH_SHORT).show();
                 } else {
-                    customDialog.show();
+//                    customDialog.show();
+//                    WaitDialog.show(RefundActivity.this,null);
+                    ProcessDialogUtil.showProcessDialog(RefundActivity.this);
+
                     if ("1".equals(type)) {
                         RefundApplyVo refundApplyVo = new RefundApplyVo();
                         refundApplyVo.setOrderId(mineOrderBean1.getOrderList().get(position).getOrderId() + "");
@@ -184,7 +193,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                             @Override
                             public void onSuccess(String result, String msg) {
                                 LogUtil.e("退款申请--------->" + result);
-                                customDialog.dismiss();
+//                                customDialog.dismiss();
                                 if ("true".equals(result)) {
                                     ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
                                 }
@@ -193,7 +202,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
                             @Override
                             public void onError(String errorCode, String errorMsg) {
-                                customDialog.dismiss();
+//                                customDialog.dismiss();
                                 LogUtil.e("退款申请errorMsg--------->" + errorMsg);
                             }
                         }));
@@ -219,7 +228,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                             @Override
                             public void onSuccess(String result, String msg) {
                                 LogUtil.e("退款申请--------->" + result);
-                                customDialog.dismiss();
+//                                customDialog.dismiss();
                                 if ("true".equals(result)) {
                                     ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
                                 }
@@ -228,7 +237,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
                             @Override
                             public void onError(String errorCode, String errorMsg) {
-                                customDialog.dismiss();
+//                                customDialog.dismiss();
                                 LogUtil.e("退款申请errorMsg--------->" + errorMsg);
                                 Toast.makeText(RefundActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                             }

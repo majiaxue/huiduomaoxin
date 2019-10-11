@@ -2,6 +2,7 @@ package com.example.confirm_order;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -31,6 +32,7 @@ import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,6 +192,8 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             orderBean.setOrderRequestItems(list);
 
             ProcessDialogUtil.showProcessDialog(mContext);
+//            WaitDialog.show((AppCompatActivity)mContext,null);
+
             String jsonString = JSON.toJSONString(orderBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.CART_SUBMIT_ORDER, requestBody, SPUtil.getToken());
@@ -217,6 +221,8 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
 
     public void getAddress() {
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

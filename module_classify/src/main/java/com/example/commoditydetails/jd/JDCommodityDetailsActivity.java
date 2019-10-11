@@ -153,7 +153,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         shopParticulars.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
         shopParticulars.setHasFixedSize(true);
 
-        mLinear.setVisibility(View.GONE);
         commodityOriginalPrice.setVisibility(View.GONE);
         commodityText.setVisibility(View.GONE);
         shopNoGoods.setVisibility(View.GONE);
@@ -277,7 +276,9 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
             String endTime = MyTimeUtil.date2String("" + jDGoodsRecBean.getData().get(0).getCouponInfo().getCouponList().get(0).getUseEndTime());
             commodityTime.setText("有效期：" + startTime + "~" + endTime);
         } else {
-            commodityCouponPrice.setText("0元优惠劵");
+            commodityCouponPrice.setText("暂无优惠券");
+            commodityTime.setText("*注:分享或购买后可获得佣金");
+            commodityImmediatelyReceive.setText("立即购买");
         }
         double commission = jDGoodsRecBean.getData().get(0).getCommissionInfo().getCommission();
         float value = SPUtil.getFloatValue(CommonResource.BACKBL);

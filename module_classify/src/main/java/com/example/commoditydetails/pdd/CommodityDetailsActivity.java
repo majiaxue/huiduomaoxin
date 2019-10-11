@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,8 +36,10 @@ import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.stx.xhb.xbanner.XBanner;
 import com.umeng.socialize.UMShareAPI;
 
@@ -121,7 +124,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
     private String imageUrl;
     private int flag = 0;
     private File file;
-    private CustomDialog customDialog;
+//    private CustomDialog customDialog;
 
 
     @Override
@@ -134,8 +137,8 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         ARouter.getInstance().inject(this);
         AppManager.getInstance().addGoodsActivity(this);
         ModuleBaseApplication.initShare();
-        customDialog = new CustomDialog(this);
-        customDialog.show();
+        ProcessDialogUtil.showProcessDialog(this);
+
         LogUtil.e("goods_id" + goods_id);
         commodityIntoShop.setVisibility(View.INVISIBLE);
         //加载视图
@@ -312,7 +315,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
 
                     }
                 });
-        customDialog.dismiss();
+//        customDialog.dismiss();
 
     }
 

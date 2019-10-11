@@ -61,10 +61,7 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
         includeTitle.setText("商品收藏");
         includeRightBtn.setText("编辑");
         includeRightBtn.setVisibility(View.VISIBLE);
-        presenter.setGoodsCollectionRec(goodsCollectionRec);
 
-        //为您推荐
-        presenter.setGoodsCollectionBottomRec(goodsCollectionBottomRec);
     }
 
     @Override
@@ -168,5 +165,8 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     protected void onResume() {
         super.onResume();
         presenter.setGoodsCollectionRec(goodsCollectionRec);
+
+        //为您推荐
+        presenter.setGoodsCollectionBottomRec(goodsCollectionBottomRec);
     }
 }

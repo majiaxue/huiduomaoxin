@@ -1,5 +1,6 @@
 package com.example.invite_friends;
 
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.UIHelper;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.stx.xhb.xbanner.XBanner;
 
 import java.util.List;
@@ -64,6 +66,8 @@ public class InviteFriendsActivity extends BaseActivity<InviteFriendsView, Invit
         includeRight.setImageResource(R.drawable.icon_guize);
         includeRight.setVisibility(View.VISIBLE);
         ProcessDialogUtil.showProcessDialog(this);
+//        WaitDialog.show(this,null);
+
         ModuleBaseApplication.initShare();
         presenter.initPic(inviteFriendsErweima1, inviteFriendsErweima2, inviteFriendsErweima3, inviteFriendsErweima4);
 

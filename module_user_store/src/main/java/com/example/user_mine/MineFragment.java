@@ -76,7 +76,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     TextView browsingHistoryCount;
 
     private boolean flag = false;
-    private Badge badge1,badge2,badge3,badge4;
+    private Badge badge1, badge2, badge3, badge4;
 
     @Override
     public int getLayoutId() {
@@ -89,7 +89,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             userMineName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
             userMineId.setText("UID：" + SPUtil.getStringValue(CommonResource.USER_INVITE));
             mineHeader.setImageURI(Uri.parse(SPUtil.getStringValue(CommonResource.USER_PIC)));
-        }else{
+        } else {
             userMineName.setText("请注册/登陆");
             userMineId.setText("");
             mineHeader.setImageResource(R.drawable.vhjfg);
@@ -138,110 +138,175 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void initClick() {
 
-        if (TextUtils.isEmpty(SPUtil.getToken())){
-            userMineName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        userMineName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
                     ARouter.getInstance().build("/mine/login").navigation();
                 }
-            });
-        }
+            }
+        });
 
         //商品收藏
         userMineGoodsCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/GoodsCollectionActivity").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/GoodsCollectionActivity").navigation();
+                }
             }
         });
         //店铺收藏
         userMineShopCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/ShopCollectActivity").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/ShopCollectActivity").navigation();
+
+                }
             }
         });
         //收货地址
         userMineShippingAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/ShippingAddressActivity").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/ShippingAddressActivity").navigation();
+
+                }
             }
         });
         //商家申请
         userMineBusinessApplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.businessApplication();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    presenter.businessApplication();
+
+                }
             }
         });
         //消息通知
         userMineMessageNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/mine/messagecenter").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/mine/messagecenter").navigation();
+
+                }
             }
         });
         //优惠劵
         userMineDiscountCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/CouponActivity").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/CouponActivity").navigation();
+                }
             }
         });
         //全部订单
         userMineMyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 0).navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 0).navigation();
+
+                }
             }
         });
         //待付款
         userMineDaifukuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 1).navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 1).navigation();
+
+                }
             }
         });
         //待发货
         userMineDaifahuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 2).navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 2).navigation();
+                }
             }
         });
         //待收货
         userMineDaishouhuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 3).navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 3).navigation();
+
+                }
             }
         });
         //待评价
         userMineDaipingjia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 4).navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/MineOrderActivity").withInt("type", 4).navigation();
+                }
             }
         });
         //退货/售后
         userMineShouhou.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/AlterationActivity").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/AlterationActivity").navigation();
+                }
             }
         });
         //浏览记录
         userMineBrowsingHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/BrowsingHistoryActivity").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/module_user_mine/BrowsingHistoryActivity").navigation();
+
+                }
             }
         });
         userMineUpYys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/mine/operator").navigation();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                }else{
+                    ARouter.getInstance().build("/mine/operator").navigation();
+
+                }
             }
         });
     }
@@ -317,7 +382,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             presenter.mineOrderAll();
         }
     }
-
 
 
 }

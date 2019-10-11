@@ -28,7 +28,11 @@ public class UniversalListRecAdapter extends MyRecyclerAdapter<UniversalListBean
         holder.setText(R.id.universal_list_rec_price, "￥" + data.getOriginalPrice());
         holder.setText(R.id.universal_list_rec_payment_amount, "领劵减" + data.getCouponPrice() + "元");
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            if (SPUtil.getFloatValue(CommonResource.BACKBL) != 0) {
+                holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
+            } else {
+                holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, 0.3));
+            }
         } else {
             holder.setText(R.id.universal_list_rec_yuguzhuan, "预估赚" + ArithUtil.mulRound(mul, 0.3));
         }

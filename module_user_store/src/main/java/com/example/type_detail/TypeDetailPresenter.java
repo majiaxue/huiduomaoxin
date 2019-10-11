@@ -2,6 +2,7 @@ package com.example.type_detail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -23,6 +24,7 @@ import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
 
     public void loadData(String searchString, String categoryId, boolean isHotSale) {
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
+
         searchInfo = searchString == null ? "" : searchString;
         id = categoryId == null ? "" : categoryId;
         Map map;
@@ -230,6 +234,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         }
 
         ProcessDialogUtil.showProcessDialog(mContext);
+//        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

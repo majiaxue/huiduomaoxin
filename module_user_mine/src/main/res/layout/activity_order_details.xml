@@ -72,16 +72,14 @@
                         android:id="@+id/order_details_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="付韶"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_15" />
 
                     <TextView
                         android:id="@+id/order_details_phone"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dp_10"
-                        android:text="177****6722"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_15" />
                 </LinearLayout>
@@ -92,7 +90,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_22"
                     android:layout_marginTop="@dimen/dp_27"
-                    android:text="河南省郑州市金水区金成国际广场3号楼204室"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_15" />
 
@@ -148,7 +145,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
-                        android:text="￥118.00"
                         android:textColor="#e85130"
                         android:textSize="@dimen/sp_12" />
 
@@ -183,7 +179,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
-                        android:text="+￥0.00"
                         android:textColor="#e85130"
                         android:textSize="@dimen/sp_12" />
 
@@ -218,7 +213,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
-                        android:text="-￥10.00"
                         android:textColor="#e85130"
                         android:textSize="@dimen/sp_12" />
 
@@ -260,7 +254,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
-                        android:text="￥108.00"
                         android:textColor="#e85130"
                         android:textSize="@dimen/sp_12" />
 
