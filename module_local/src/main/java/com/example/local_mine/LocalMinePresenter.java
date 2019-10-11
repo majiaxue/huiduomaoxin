@@ -1,9 +1,12 @@
 package com.example.local_mine;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.example.bean.ApplicationBean;
 import com.example.bean.RedPackageBean;
 import com.example.common.CommonResource;
 import com.example.module_local.R;
@@ -12,8 +15,11 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.MapUtil;
+import com.example.utils.SPUtil;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -60,6 +66,34 @@ public class LocalMinePresenter extends BasePresenter<LocalMineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e(errorCode + "--------------" + errorMsg);
+            }
+        }));
+    }
+
+    //查询商家申请
+    public void businessApplication() {
+        Map build = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
+        Observable<ResponseBody> data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERSTATE, build);
+        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("查询商家申请" + result);
+                ApplicationBean applicationBean = JSON.parseObject(result, new TypeReference<ApplicationBean>() {
+                }.getType());
+                if (applicationBean != null) {
+                    String data1 = applicationBean.getData();
+                    LogUtil.e("mineFragment" + data1);
+                    if (data1.equals("2") || data1.equals("3")) {
+                        ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
+                    } else {
+                        Toast.makeText(mContext, "您已经是商家了无需申请!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------------------->" + errorMsg);
             }
         }));
     }

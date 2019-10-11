@@ -25,32 +25,32 @@ public class MyOrderBean {
      * pid : 123
      */
 
-    private int id;
+    private String id;
     private String orderSn;
-    private int goodsId;
+    private String goodsId;
     private String goodsName;
     private String goodsThumbnailUrl;
-    private int goodsQuantity;
+    private String goodsQuantity;
     private int goodsPrice;
     private int orderAmount;
     private int promotionRate;
     private int promotionAmount;
     private int orderStatus;
     private String orderStatusDesc;
-    private int orderCreateTime;
-    private int orderPayTime;
-    private int orderGroupSuccessTime;
-    private int orderVerifyTime;
-    private int orderModifyAt;
+    private String orderCreateTime;
+    private String orderPayTime;
+    private String orderGroupSuccessTime;
+    private String orderVerifyTime;
+    private String orderModifyAt;
     private String customParameters;
     private String userCode;
     private String pid;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -62,11 +62,11 @@ public class MyOrderBean {
         this.orderSn = orderSn;
     }
 
-    public int getGoodsId() {
+    public String getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(int goodsId) {
+    public void setGoodsId(String goodsId) {
         this.goodsId = goodsId;
     }
 
@@ -86,11 +86,11 @@ public class MyOrderBean {
         this.goodsThumbnailUrl = goodsThumbnailUrl;
     }
 
-    public int getGoodsQuantity() {
+    public String getGoodsQuantity() {
         return goodsQuantity;
     }
 
-    public void setGoodsQuantity(int goodsQuantity) {
+    public void setGoodsQuantity(String goodsQuantity) {
         this.goodsQuantity = goodsQuantity;
     }
 
@@ -142,43 +142,43 @@ public class MyOrderBean {
         this.orderStatusDesc = orderStatusDesc;
     }
 
-    public int getOrderCreateTime() {
+    public String getOrderCreateTime() {
         return orderCreateTime;
     }
 
-    public void setOrderCreateTime(int orderCreateTime) {
+    public void setOrderCreateTime(String orderCreateTime) {
         this.orderCreateTime = orderCreateTime;
     }
 
-    public int getOrderPayTime() {
+    public String getOrderPayTime() {
         return orderPayTime;
     }
 
-    public void setOrderPayTime(int orderPayTime) {
+    public void setOrderPayTime(String orderPayTime) {
         this.orderPayTime = orderPayTime;
     }
 
-    public int getOrderGroupSuccessTime() {
+    public String getOrderGroupSuccessTime() {
         return orderGroupSuccessTime;
     }
 
-    public void setOrderGroupSuccessTime(int orderGroupSuccessTime) {
+    public void setOrderGroupSuccessTime(String orderGroupSuccessTime) {
         this.orderGroupSuccessTime = orderGroupSuccessTime;
     }
 
-    public int getOrderVerifyTime() {
+    public String getOrderVerifyTime() {
         return orderVerifyTime;
     }
 
-    public void setOrderVerifyTime(int orderVerifyTime) {
+    public void setOrderVerifyTime(String orderVerifyTime) {
         this.orderVerifyTime = orderVerifyTime;
     }
 
-    public int getOrderModifyAt() {
+    public String getOrderModifyAt() {
         return orderModifyAt;
     }
 
-    public void setOrderModifyAt(int orderModifyAt) {
+    public void setOrderModifyAt(String orderModifyAt) {
         this.orderModifyAt = orderModifyAt;
     }
 

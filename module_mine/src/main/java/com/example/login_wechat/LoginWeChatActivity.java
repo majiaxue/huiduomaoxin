@@ -1,10 +1,12 @@
 package com.example.login_wechat;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.UserInfoBean;
@@ -78,10 +80,16 @@ public class LoginWeChatActivity extends BaseActivity<LoginWeChatView, LoginWeCh
         wechatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userInfoBean.setCheckCode(wechatCode.getText().toString());
-                userInfoBean.setPhone(wechatPhone.getText().toString());
-                userInfoBean.setInviteCode(wechatInviteCode.getText().toString());
-                presenter.login(userInfoBean);
+                if (TextUtils.isEmpty(wechatPhone.getText().toString())) {
+                    Toast.makeText(LoginWeChatActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(wechatCode.getText().toString())) {
+                    Toast.makeText(LoginWeChatActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
+                } else {
+                    userInfoBean.setCheckCode(wechatCode.getText().toString());
+                    userInfoBean.setPhone(wechatPhone.getText().toString());
+                    userInfoBean.setInviteCode(wechatInviteCode.getText().toString());
+                    presenter.login(userInfoBean);
+                }
             }
         });
 

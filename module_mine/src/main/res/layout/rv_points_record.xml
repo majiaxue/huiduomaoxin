@@ -50,7 +50,8 @@
             android:layout_height="wrap_content"
             android:text="110"
             android:textColor="#fb3912"
-            android:textSize="@dimen/sp_24" />
+            android:textSize="@dimen/sp_24"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,6 +59,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:text="（当前积分）"
             android:textColor="#999999"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

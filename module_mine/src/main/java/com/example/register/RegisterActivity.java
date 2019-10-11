@@ -1,9 +1,11 @@
 package com.example.register;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -82,7 +84,13 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.toRegister(registerPhone.getText().toString(), registerPassword.getText().toString(), registerCode.getText().toString(), registerInviteCode.getText().toString());
+                if (!presenter.isRead) {
+                    Toast.makeText(RegisterActivity.this, "请勾选用户协议", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(registerPassword.getText().toString())) {
+                    Toast.makeText(RegisterActivity.this, "请设置密码", Toast.LENGTH_SHORT).show();
+                } else {
+                    presenter.toRegister(registerPhone.getText().toString(), registerPassword.getText().toString(), registerCode.getText().toString(), registerInviteCode.getText().toString());
+                }
             }
         });
     }

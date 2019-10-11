@@ -41,6 +41,7 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
 
     @Override
     public void initData() {
+        flag++;
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
@@ -65,10 +66,15 @@ public class SettleOrderFragment extends BaseFragment<SettleOrderView, SettleOrd
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        LogUtil.e("-------------------------"+isVisibleToUser);
+
         if (isVisibleToUser) {
             if (flag > 0) {
-                presenter.loadData();
+                try {
+                    Thread.sleep(1000);
+                    presenter.loadData();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } else {
                 flag++;
             }

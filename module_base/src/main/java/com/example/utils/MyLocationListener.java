@@ -20,6 +20,7 @@ public class MyLocationListener extends BDAbstractLocationListener {
     public static String city;
     public static MyLocationData locData;
     public static String district;
+
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         int adCode = bdLocation.getLocType();
@@ -28,6 +29,7 @@ public class MyLocationListener extends BDAbstractLocationListener {
         city = bdLocation.getCity(); //获取城市名字
         district = bdLocation.getDistrict();//获取区
 
+        EventBus.getDefault().post(new EventBusBean(CommonResource.DINGWEI));
 
         // 此处设置开发者获取到的方向信息，顺时针0-360
         locData = new MyLocationData.Builder()

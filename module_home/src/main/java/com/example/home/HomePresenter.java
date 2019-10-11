@@ -214,7 +214,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                 @Override
                                 public void onClick(View v) {
                                     if (realPosition == 0) {
-
+                                        ARouter.getInstance().build("/mine/invite_friends").navigation();
                                     } else if (realPosition == 1) {
                                         if (!TextUtils.isEmpty(SPUtil.getToken())) {
                                             ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
@@ -223,7 +223,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                                             PopUtils.isLogin(mContext);
                                         }
                                     } else {
-                                        ARouter.getInstance().build("/mine/invite_friends").navigation();
+
                                     }
                                 }
                             });
@@ -384,9 +384,38 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 } else if (position == 8) {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 3).navigation();
                 } else if (position == 5) {
-                    ModuleBaseApplication.mLocationClient.restart();
-                    ARouter.getInstance().build("/module_local/LocalMainActivity").navigation();
-//                    ARouter.getInstance().build("/module_local/LocalMainActivity").withString("go", "go").navigation();
+                    if (TextUtils.isEmpty(SPUtil.getToken())) {
+                        PopUtils.isLogin(mContext);
+                    } else {
+                        ModuleBaseApplication.mLocationClient.restart();
+                        ARouter.getInstance().build("/module_local/LocalMainActivity").navigation();
+                    }
+//                    final SelfDialog selfDialog = new SelfDialog(mContext);
+//                    selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+//                        @Override
+//                        public void onNoClick() {
+//                            selfDialog.dismiss();
+//                        }
+//                    });
+//
+//                    selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+//                        @Override
+//                        public void onYesClick() {
+//                            selfDialog.dismiss();
+//                        }
+//                    });
+//
+//                    selfDialog.setMessage("开发中...");
+//                    selfDialog.setTitle("提示");
+//                    selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                        @Override
+//                        public void onDismiss(DialogInterface dialog) {
+//                            PopUtils.setTransparency(mContext, 1.0f);
+//                        }
+//                    });
+//
+//                    selfDialog.show();
+//                    PopUtils.setTransparency(mContext, 0.3f);
                 }
             }
         });

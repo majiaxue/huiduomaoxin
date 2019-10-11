@@ -93,6 +93,12 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
     }
 
     @Override
+    public void loadFinish() {
+        mRefresh.finishRefresh();
+        mRefresh.finishLoadMore();
+    }
+
+    @Override
     public void loadRv(LocalOrderAdapter adapter) {
         localOrderRvList.setAdapter(adapter);
     }

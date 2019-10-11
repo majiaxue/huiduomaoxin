@@ -18,12 +18,14 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.bean.CheckUpBean;
 import com.example.common.CommonResource;
@@ -187,12 +189,17 @@ public class MainPresenter extends BasePresenter<MainView> {
                     .hide(operatorGainFragment)
                     .commit();
         } else if (resId == R.id.main_operator) {
-            transaction.show(operatorGainFragment)
-                    .hide(mineFragment)
-                    .hide(superBrandFragment)
-                    .hide(homeFragment)
-                    .hide(communityFragment)
-                    .commit();
+            if (TextUtils.isEmpty(SPUtil.getToken())) {
+                getView().toHome();
+                ARouter.getInstance().build("/mine/login").navigation();
+            } else {
+                transaction.show(operatorGainFragment)
+                        .hide(mineFragment)
+                        .hide(superBrandFragment)
+                        .hide(homeFragment)
+                        .hide(communityFragment)
+                        .commit();
+            }
         }
 
     }
@@ -444,7 +451,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     public void installAPK() {
         File apkFile = new File(saveFileName + newVersion + ".apk");
         if (!apkFile.exists()) {
-            return;
+            apkFile.mkdirs();
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //判断是否是AndroidN以及更高的版本

@@ -11,7 +11,6 @@ import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.local_store.adapter.ShoppingRightAdapter;
 import com.example.module_local.R;
-import com.example.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +45,9 @@ public class SortDetailFragment extends BaseFragment<SortDetailPresenter, String
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void msgEventBus(EventBusBean eventBusBean) {
         if (CommonResource.SUBMIT_ORDER.equals(eventBusBean.getMsg())) {
-            presenter.submitOrder(mDatas);
+            presenter.loadCart();
+        } else if (CommonResource.UPCART.equals(eventBusBean.getCode())) {
+            String result = eventBusBean.getMsg();
         }
     }
 

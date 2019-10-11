@@ -12,9 +12,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.FansOrderBean;
 import com.example.bean.JdFansOrderBean;
-import com.example.bean.TBBean;
 import com.example.bean.TBGoodsDetailsBean;
-import com.example.bean.TBOrderBean;
 import com.example.bean.TbFansOrderBean;
 import com.example.common.CommonResource;
 import com.example.fans_order.FansOrderActivity;
@@ -62,7 +60,7 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
     public void loadData(final int page) {
         ProcessDialogUtil.showProcessDialog(mContext);
         if (FansOrderActivity.index == 0) {
-            scOrder(page);
+//            scOrder(page);
         } else if (FansOrderActivity.index == 1) {
             tbOrder(page);
         } else if (FansOrderActivity.index == 2) {
@@ -73,7 +71,7 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
     }
 
     private void pddOrder(final int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", "3").build();
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 0).addParms("pageSize", "10").addParms("type", "3").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -98,22 +96,34 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
                         getView().loadFansRv(pddAdapter);
                     }
                 }
-                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
-                    }
-                });
+//                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(RecyclerView parent, View view, int position) {
+//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
+//                    }
+//                });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "-------拼多多已付款-----" + errorMsg);
+                if (tbFansAdapter == null) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
+                }
             }
         }));
     }
 
     private void jdOrder(final int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", "2").build();
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 1).addParms("pageSize", "10").addParms("type", "2").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -140,6 +150,14 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------京东已付款------" + errorMsg);
+                if (jdAdapter == null) {
+                    jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadJd(jdAdapter);
+                    }
+                }
+
                 if (getView() != null) {
                     getView().loadSuccess();
                 }
@@ -155,7 +173,6 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("tb粉丝订单fukuan：" + result);
                 try {
-
                     if (getView() != null) {
                         getView().loadSuccess();
                     }
@@ -181,7 +198,18 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e(errorCode + "--------淘宝已付款------" + errorMsg);
+                if (tbFansAdapter == null) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
+                }
             }
         }));
     }

@@ -90,19 +90,23 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     universalListRecAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", dataBeanList.get(position).getGoodsId())
-                                    .withString("shoptype", "1")
-                                    .withDouble("youhuiquan", dataBeanList.get(position).getCouponPrice())
-                                    .withString("coupon_start_time", dataBeanList.get(position).getCouponStartTime())
-                                    .withString("coupon_end_time", dataBeanList.get(position).getCouponEndTime())
-                                    .withString("commission_rate", dataBeanList.get(position).getCommissionRate() + "")
-                                    .withInt("type", 0)
-                                    .navigation();
+                            if (TextUtils.isEmpty(SPUtil.getToken())) {
+                                PopUtils.isLogin(mContext);
+                            } else {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", dataBeanList.get(position).getGoodsId())
+                                        .withString("shoptype", "1")
+                                        .withDouble("youhuiquan", dataBeanList.get(position).getCouponPrice())
+                                        .withString("coupon_start_time", dataBeanList.get(position).getCouponStartTime())
+                                        .withString("coupon_end_time", dataBeanList.get(position).getCouponEndTime())
+                                        .withString("commission_rate", dataBeanList.get(position).getCommissionRate() + "")
+                                        .withInt("type", 0)
+                                        .navigation();
+                            }
                         }
                     });
                 }
-                if(getView()!=null){
+                if (getView() != null) {
                     getView().finishRefresh();
                 }
             }
@@ -110,7 +114,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 ProcessDialogUtil.dismissDialog();
-                if(getView()!=null){
+                if (getView() != null) {
                     getView().finishRefresh();
                 }
             }
@@ -164,7 +168,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     });
 
                 }
-                if(getView()!=null){
+                if (getView() != null) {
                     getView().finishRefresh();
                 }
             }
@@ -172,7 +176,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 ProcessDialogUtil.dismissDialog();
-                if(getView()!=null){
+                if (getView() != null) {
                     getView().finishRefresh();
                 }
             }
@@ -226,20 +230,24 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                     baoYouAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", tbList.get(position).getItem_id())
-                                    .withString("shoptype", "1")
-                                    .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
-                                    .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
-                                    .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
-                                    .withString("commission_rate", tbList.get(position).getCommission_rate())
-                                    .withInt("type", 1)
-                                    .navigation();
+                            if (TextUtils.isEmpty(SPUtil.getToken())) {
+                                PopUtils.isLogin(mContext);
+                            } else {
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", tbList.get(position).getItem_id())
+                                        .withString("shoptype", "1")
+                                        .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
+                                        .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
+                                        .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
+                                        .withString("commission_rate", tbList.get(position).getCommission_rate())
+                                        .withInt("type", 1)
+                                        .navigation();
+                            }
                         }
                     });
                 }
 
-                if(getView()!=null){
+                if (getView() != null) {
                     getView().finishRefresh();
                 }
 
@@ -248,7 +256,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("UniversalListPresenter9.9包邮errorMsg" + errorMsg);
-                if(getView()!=null){
+                if (getView() != null) {
                     getView().finishRefresh();
                 }
             }

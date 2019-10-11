@@ -25,9 +25,8 @@ public class JDAdapter extends MyRecyclerAdapter<JDOrderBean> {
                 .setText(R.id.order_list_price, "￥" + data.getPrice())
                 .setText(R.id.order_list_count, "x" + data.getSkuNum())
                 .setImageUrl(R.id.order_list_img, data.getImage())
-                .setText(R.id.order_list_total, "共" + data.getSkuNum() + "件商品  合计：￥" + ArithUtil.mul(data.getPrice(), data.getSkuNum()))
+                .setText(R.id.order_list_total, "共" + data.getSkuNum() + "件商品  合计：￥" + (data.getPrice() * data.getSkuNum()))
                 .setText(R.id.order_list_predict, "预计收益" + ArithUtil.mul(SPUtil.getFloatValue("back"), data.getActualFee()) + "元");
-
         ImageView img = holder.getView(R.id.order_list_my_head);
         Glide.with(context).load(SPUtil.getStringValue("head")).placeholder(R.drawable.vhjfg).into(img);
 
@@ -35,7 +34,7 @@ public class JDAdapter extends MyRecyclerAdapter<JDOrderBean> {
             holder.setText(R.id.order_list_status, "待付款");
         } else if ("16".equals(data.getOrderValidCode())) {
             holder.setText(R.id.order_list_status, "已付款");
-        } else if ("17".equals(data.getOrderValidCode())) {
+        } else if ("18".equals(data.getOrderValidCode()) || "17".equals(data.getOrderValidCode())) {
             holder.setText(R.id.order_list_status, "已结算");
         } else {
             holder.setText(R.id.order_list_status, "已失效");

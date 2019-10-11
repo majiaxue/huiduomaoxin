@@ -1,7 +1,6 @@
 package com.example.local_home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
@@ -16,7 +15,6 @@ import com.example.bean.BannerBean;
 import com.example.bean.LocalNavbarBean;
 import com.example.bean.LocalShopBean;
 import com.example.common.CommonResource;
-import com.example.local_detail.LocalDetailActivity;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
 import com.example.local_home.adapter.ZhongBannerAdapter;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
@@ -28,6 +26,8 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(this);
     }
 
     public void loadData(final int page, double lon, double lat) {
@@ -85,7 +85,7 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
 //                            Intent intent = new Intent(mContext, LocalDetailActivity.class);
 //                            intent.putExtra("bean", shopBeans.get(position));
 //                            mContext.startActivity(intent);
-                            ARouter.getInstance().build("/module_local/LocalStoreActivity").withString("sellerId", shopBeans.get(position).getId()).navigation();
+                            ARouter.getInstance().build("/module_local/LocalStoreActivity").withSerializable("bean", shopBeans.get(position)).navigation();
                         }
                     });
 

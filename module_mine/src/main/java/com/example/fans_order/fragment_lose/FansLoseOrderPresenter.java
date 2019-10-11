@@ -60,7 +60,7 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
     public void loadData(final int page) {
         ProcessDialogUtil.showProcessDialog(mContext);
         if (FansOrderActivity.index == 0) {
-            scOrder(page);
+//            scOrder(page);
         } else if (FansOrderActivity.index == 1) {
             tbOrder(page);
         } else if (FansOrderActivity.index == 2) {
@@ -96,18 +96,26 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
                         getView().loadFansRv(pddAdapter);
                     }
                 }
-                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
-                    }
-                });
+//                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(RecyclerView parent, View view, int position) {
+//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
+//                    }
+//                });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                if (getView() != null) {
-                    getView().loadSuccess();
+                if (tbFansAdapter == null) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
                 }
             }
         }));
@@ -141,6 +149,13 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                if (jdAdapter == null) {
+                    jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadJd(jdAdapter);
+                    }
+                }
+
                 if (getView() != null) {
                     getView().loadSuccess();
                 }
@@ -156,7 +171,6 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("tb粉丝订单shixiao：" + result);
                 try {
-
                     if (getView() != null) {
                         getView().loadSuccess();
                     }
@@ -182,8 +196,16 @@ public class FansLoseOrderPresenter extends BasePresenter<FansLoseOrderView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                if (getView() != null) {
-                    getView().loadSuccess();
+                if (tbFansAdapter == null) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
                 }
             }
         }));

@@ -27,7 +27,7 @@
         android:minWidth="@dimen/dp_61"
         android:paddingLeft="@dimen/dp_11"
         android:paddingRight="@dimen/dp_10"
-        android:text="100"
+        android:text="分享"
         android:textColor="#fc5917"
         android:textSize="@dimen/sp_13" />
 

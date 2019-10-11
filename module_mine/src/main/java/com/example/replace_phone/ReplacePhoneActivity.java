@@ -1,21 +1,22 @@
 package com.example.replace_phone;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bean.UserInfoBean;
+import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
-import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 修改手机号
@@ -61,7 +62,11 @@ public class ReplacePhoneActivity extends BaseActivity<ReplacePhoneView, Replace
         phoneGetCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getCodeNum(phoneNewNum.getText().toString());
+                if (!TextUtils.isEmpty(SPUtil.getStringValue(CommonResource.USER_PHONE)) && !SPUtil.getStringValue(CommonResource.USER_PHONE).equals(phoneOldNum.getText().toString())) {
+                    Toast.makeText(ReplacePhoneActivity.this, "原手机号不正确", Toast.LENGTH_SHORT).show();
+                } else {
+                    presenter.getCodeNum(phoneNewNum.getText().toString());
+                }
             }
         });
 

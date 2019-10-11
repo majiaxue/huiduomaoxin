@@ -94,6 +94,11 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     }
 
     @Override
+    public void toHome() {
+        mainGroup.check(R.id.main_home);
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (TxtUtil.isFirst) {

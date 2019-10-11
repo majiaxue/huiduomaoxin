@@ -9,4 +9,6 @@ import java.util.List;
 public interface LocalStoreView extends IView {
 
     void loadData(List<LocalStoreBean> localStoreBeans);
+
+    void upMoney(double money, int size);
 }

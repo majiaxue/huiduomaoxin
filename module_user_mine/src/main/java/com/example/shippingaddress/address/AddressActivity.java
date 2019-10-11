@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
@@ -20,6 +21,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.bean.AddressInfo;
 import com.example.utils.LogUtil;
+import com.example.utils.PhoneNumUtil;
 import com.example.utils.SPUtil;
 
 import butterknife.BindView;
@@ -94,48 +96,51 @@ public class AddressActivity extends BaseActivity<AddressView, AddressPresenter>
         addressSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddressInfo addressInfo = new AddressInfo();
-                addressInfo.setAddressName(addressName.getText().toString());
-                addressInfo.setAddressPhone(addressPhone.getText().toString());
-                addressInfo.setAddressProvince(addressProvince.getText().toString());
-                addressInfo.setAddressCity(addressCity.getText().toString());
-                addressInfo.setAddressArea(addressArea.getText().toString());
-                addressInfo.setAddressDetail(addressDetailed.getText().toString());
-                if (addressHome.isChecked()) {
-                    addressInfo.setAddressTips("1");
-                } else if (addressCompany.isChecked()) {
-                    addressInfo.setAddressTips("2");
-                } else if (addressSchool.isChecked()) {
-                    addressInfo.setAddressTips("3");
-                }
+                if (PhoneNumUtil.isMobileNO(addressPhone.getText().toString())) {
+                    AddressInfo addressInfo = new AddressInfo();
+                    addressInfo.setAddressName(addressName.getText().toString());
+                    addressInfo.setAddressPhone(addressPhone.getText().toString());
+                    addressInfo.setAddressProvince(addressProvince.getText().toString());
+                    addressInfo.setAddressCity(addressCity.getText().toString());
+                    addressInfo.setAddressArea(addressArea.getText().toString());
+                    addressInfo.setAddressDetail(addressDetailed.getText().toString());
+                    if (addressHome.isChecked()) {
+                        addressInfo.setAddressTips("1");
+                    } else if (addressCompany.isChecked()) {
+                        addressInfo.setAddressTips("2");
+                    } else if (addressSchool.isChecked()) {
+                        addressInfo.setAddressTips("3");
+                    }
 
-                if (addressSwitch.isChecked()) {
-                    addressInfo.setAddressDefault("1");
-                } else {
-                    addressInfo.setAddressDefault("0");
-                }
+                    if (addressSwitch.isChecked()) {
+                        addressInfo.setAddressDefault("1");
+                    } else {
+                        addressInfo.setAddressDefault("0");
+                    }
 
 
-                String jsonString = JSON.toJSONString(addressInfo);
-                LogUtil.e("SecondaryDetailsJson----------->" + jsonString);
-                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-                final Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHeadWithBody(CommonResource.ADDRESSADD, body, SPUtil.getToken());
-                RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
-                    @Override
-                    public void onSuccess(String result, String msg) {
-                        LogUtil.e("AddressResult---------------->" + result);
-                        if (result.equals("true")) {
-                            finish();
+                    String jsonString = JSON.toJSONString(addressInfo);
+                    LogUtil.e("SecondaryDetailsJson----------->" + jsonString);
+                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+                    final Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHeadWithBody(CommonResource.ADDRESSADD, body, SPUtil.getToken());
+                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                        @Override
+                        public void onSuccess(String result, String msg) {
+                            LogUtil.e("AddressResult---------------->" + result);
+                            if (result.equals("true")) {
+                                finish();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        LogUtil.e("AddressErrorMsg---------------->" + errorMsg);
-                    }
-                }));
+                        @Override
+                        public void onError(String errorCode, String errorMsg) {
+                            LogUtil.e("AddressErrorMsg---------------->" + errorMsg);
+                        }
+                    }));
 
-
+                } else {
+                    Toast.makeText(AddressActivity.this, "手机号格式不正确", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

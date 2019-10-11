@@ -72,7 +72,7 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
     }
 
     private void tbOrder() {
-        Map map = MapUtil.getInstance().addParms("status", 1).addParms("type", 0).build();
+        Map map = MapUtil.getInstance().addParms("status", 1).addParms("type", 0).addParms("current", "1").addParms("pageSize", "1000").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -113,13 +113,13 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
     }
 
     private void jdOrder() {
-        Map map = MapUtil.getInstance().addParms("status", 1).addParms("type", 1).build();
+        Map map = MapUtil.getInstance().addParms("status", 1).addParms("type", 1).addParms("current", "1").addParms("pageSize", "1000").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("jd已结算：" + result);
-                List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
+                final List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
                 for (int i = 0; i < jdOrderBeans.size(); i++) {
                     String image = jdOrderBeans.get(i).getImage();
                     String[] split = image.split(" imgUrl=");
@@ -133,10 +133,9 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
                 jdAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        JDGoodsRecBean.DataBean.ListsBean bean = new JDGoodsRecBean.DataBean.ListsBean();
-
-//                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
-//                                .withString("")
+                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
+                                .withString("skuid", jdOrderBeans.get(position).getSkuId())
+                                .navigation();
                     }
                 });
             }
@@ -152,7 +151,7 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
     }
 
     private void pddOrder() {
-        Map map = MapUtil.getInstance().addParms("status", 1).addParms("type", 2).build();
+        Map map = MapUtil.getInstance().addParms("status", 1).addParms("type", 2).addParms("current", "1").addParms("pageSize", "1000").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_PDD_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

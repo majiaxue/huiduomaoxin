@@ -60,7 +60,7 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
     public void loadData(final int page) {
         ProcessDialogUtil.showProcessDialog(mContext);
         if (FansOrderActivity.index == 0) {
-            scOrder(page);
+//            scOrder(page);
         } else if (FansOrderActivity.index == 1) {
             tbOrder(page);
         } else if (FansOrderActivity.index == 2) {
@@ -72,7 +72,7 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
     }
 
     private void pddOrder(final int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", "3").build();
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 1).addParms("pageSize", "10").addParms("type", "3").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -97,16 +97,22 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
                         getView().loadFansRv(pddAdapter);
                     }
                 }
-                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
-                    }
-                });
+//                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(RecyclerView parent, View view, int position) {
+//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
+//                    }
+//                });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                if (pddAdapter == null) {
+                    pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadFansRv(pddAdapter);
+                    }
+                }
                 if (getView() != null) {
                     getView().loadSuccess();
                 }
@@ -115,7 +121,7 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
     }
 
     private void jdOrder(final int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", "2").build();
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 0).addParms("pageSize", "10").addParms("type", "2").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -142,6 +148,16 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                if (jdAdapter == null) {
+                    jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadJd(jdAdapter);
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadJd(jdAdapter);
+                    }
+                }
                 if (getView() != null) {
                     getView().loadSuccess();
                 }
@@ -157,7 +173,6 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
             public void onSuccess(String result, String msg) {
                 LogUtil.e("tb粉丝订单jiesuan：" + result);
                 try {
-
                     if (getView() != null) {
                         getView().loadSuccess();
                     }
@@ -183,15 +198,23 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                if (getView() != null) {
-                    getView().loadSuccess();
+                if (tbFansAdapter == null) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadSuccess();
+                    }
                 }
             }
         }));
     }
 
     private void scOrder(int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", "0").build();
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 0).addParms("pageSize", "10").addParms("type", "0").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

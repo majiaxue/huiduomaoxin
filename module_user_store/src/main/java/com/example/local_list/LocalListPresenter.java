@@ -95,9 +95,10 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
                         sellerAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(RecyclerView parent, View view, int position) {
-                                Intent intent = new Intent(mContext, LocalDetailActivity.class);
-                                intent.putExtra("bean", shopBeans.get(position));
-                                mContext.startActivity(intent);
+//                                Intent intent = new Intent(mContext, LocalDetailActivity.class);
+//                                intent.putExtra("bean", shopBeans.get(position));
+//                                mContext.startActivity(intent);
+                                ARouter.getInstance().build("/module_local/LocalStoreActivity").withSerializable("bean", shopBeans.get(position)).navigation();
                             }
                         });
                     } else {

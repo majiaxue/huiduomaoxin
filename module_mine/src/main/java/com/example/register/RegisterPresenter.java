@@ -2,6 +2,7 @@ package com.example.register;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -27,7 +28,7 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 public class RegisterPresenter extends BasePresenter<RegisterView> {
-    private boolean isRead = true;
+    public boolean isRead = true;
 
     public RegisterPresenter(Context context) {
         super(context);
@@ -70,37 +71,41 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
     }
 
     public void toRegister(String phone, String password, String code, String inviteCode) {
-        RegisterBean registerBean;
-        if ("".equals(inviteCode)) {
-            registerBean = new RegisterBean(phone, code, password);
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
         } else {
-            registerBean = new RegisterBean(phone, code, password, inviteCode);
+            RegisterBean registerBean;
+            if ("".equals(inviteCode)) {
+                registerBean = new RegisterBean(phone, code, password);
+            } else {
+                registerBean = new RegisterBean(phone, code, password, inviteCode);
+            }
+            String jsonString = JSON.toJSONString(registerBean);
+            Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
+            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.PHONEREGISTER, map);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("注册：" + result);
+                    UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
+                    }.getType());
+                    SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
+                    SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
+                    SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
+                    SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
+                    SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
+                    SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+
+                    JpushUtil.setAlias(userInfoBean.getUserCode());
+                    ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
+                    ((Activity) mContext).finish();
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
+                }
+            }));
         }
-        String jsonString = JSON.toJSONString(registerBean);
-        Map map = MapUtil.getInstance().addParms("memberStr", jsonString).build();
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postData(CommonResource.PHONEREGISTER, map);
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("注册：" + result);
-                UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
-                }.getType());
-                SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
-                SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
-                SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
-                SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
-                SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
-                SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
-
-                JpushUtil.setAlias(userInfoBean.getUserCode());
-                ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
-                ((Activity) mContext).finish();
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "" + errorMsg, Toast.LENGTH_SHORT).show();
-            }
-        }));
     }
 }

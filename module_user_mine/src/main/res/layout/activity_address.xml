@@ -64,6 +64,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:hint="请填写收货人手机号"
+            android:inputType="phone"
             android:paddingTop="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_10"
             android:textColorHint="#666666"

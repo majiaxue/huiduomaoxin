@@ -35,7 +35,7 @@ public class LocalShopBean extends SimpleBannerInfo implements Serializable {
      * couponList : [{"id":17,"type":1,"name":"2222","platform":1,"count":null,"amount":222,"perLimit":1,"minPoint":22,"startTime":"2019-07-31 00:00:00","endTime":"2019-07-31 00:00:00","useType":0,"note":"222","publishCount":222,"useCount":null,"receiveCount":null,"enableTime":null,"code":null,"memberLevel":null,"sellerId":94,"sellerName":"","goodsId":null,"goodsCategoryId":null}]
      */
 
-    private String seller_shop_name;
+    private String seller_shop_name;    //店铺名字
     private String seller_id_back_card_url;
     private String distance;
     private String seller_introduce;
@@ -45,7 +45,7 @@ public class LocalShopBean extends SimpleBannerInfo implements Serializable {
     private String seller_addredd;
     private String update_time;
     private String user_code;
-    private String seller_name;
+    private String seller_name; //经营者名字
     private String seller_type;
     private String seller_phone;
     private String id;

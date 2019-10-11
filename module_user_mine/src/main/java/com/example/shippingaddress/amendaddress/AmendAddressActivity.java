@@ -8,9 +8,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
+import com.example.bean.AmendAddressBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
@@ -19,8 +21,8 @@ import com.example.mvp.BaseActivity;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.bean.AmendAddressBean;
 import com.example.utils.LogUtil;
+import com.example.utils.PhoneNumUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
@@ -119,7 +121,7 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         amendAddressWhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupAddressWhere(amendAddressProvince,amendAddressCity,amendAddressArea);
+                presenter.popupAddressWhere(amendAddressProvince, amendAddressCity, amendAddressArea);
             }
         });
 
@@ -168,45 +170,49 @@ public class AmendAddressActivity extends BaseActivity<AmendAddressView, AmendAd
         amendAddressSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AmendAddressBean amendAddressBean = new AmendAddressBean();
-                amendAddressBean.setId(shippingAddressBeanList.get(position).getId());
-                amendAddressBean.setUserCode(shippingAddressBeanList.get(position).getUserCode());
-                LogUtil.e("userCode------>" + shippingAddressBeanList.get(position).getUserCode());
-                amendAddressBean.setAddressName(amendAddressName.getText().toString());
-                amendAddressBean.setAddressPhone(amendAddressPhone.getText().toString());
-                amendAddressBean.setAddressProvince(amendAddressProvince.getText().toString());
-                amendAddressBean.setAddressCity(amendAddressCity.getText().toString());
-                amendAddressBean.setAddressArea(amendAddressArea.getText().toString());
-                amendAddressBean.setAddressDetail(amendAddressDetailed.getText().toString());
-                if (amendAddressHome.isChecked()) {
-                    amendAddressBean.setAddressTips(1);
-                } else if (amendAddressCompany.isChecked()) {
-                    amendAddressBean.setAddressTips(2);
-                } else if (amendAddressSchool.isChecked()) {
-                    amendAddressBean.setAddressTips(3);
-                }
-                if (amendAddressSwitch.isChecked()) {
-                    amendAddressBean.setAddressDefault(1);
+                if (PhoneNumUtil.isMobileNO(amendAddressPhone.getText().toString())) {
+                    AmendAddressBean amendAddressBean = new AmendAddressBean();
+                    amendAddressBean.setId(shippingAddressBeanList.get(position).getId());
+                    amendAddressBean.setUserCode(shippingAddressBeanList.get(position).getUserCode());
+                    LogUtil.e("userCode------>" + shippingAddressBeanList.get(position).getUserCode());
+                    amendAddressBean.setAddressName(amendAddressName.getText().toString());
+                    amendAddressBean.setAddressPhone(amendAddressPhone.getText().toString());
+                    amendAddressBean.setAddressProvince(amendAddressProvince.getText().toString());
+                    amendAddressBean.setAddressCity(amendAddressCity.getText().toString());
+                    amendAddressBean.setAddressArea(amendAddressArea.getText().toString());
+                    amendAddressBean.setAddressDetail(amendAddressDetailed.getText().toString());
+                    if (amendAddressHome.isChecked()) {
+                        amendAddressBean.setAddressTips(1);
+                    } else if (amendAddressCompany.isChecked()) {
+                        amendAddressBean.setAddressTips(2);
+                    } else if (amendAddressSchool.isChecked()) {
+                        amendAddressBean.setAddressTips(3);
+                    }
+                    if (amendAddressSwitch.isChecked()) {
+                        amendAddressBean.setAddressDefault(1);
+                    } else {
+                        amendAddressBean.setAddressDefault(0);
+                    }
+                    String amendAddressJson = JSON.toJSONString(amendAddressBean);
+                    LogUtil.e("AmendAddressActivityJson----------->" + amendAddressJson);
+                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), amendAddressJson);
+                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putDataBody(CommonResource.AMENDADDRESS, body, SPUtil.getToken());
+                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                        @Override
+                        public void onSuccess(String result, String msg) {
+                            LogUtil.e("AmendAddressActivityResult----------->" + result);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(String errorCode, String errorMsg) {
+                            LogUtil.e("AmendAddressActivityErrorMsg----------->" + errorMsg);
+                        }
+                    }));
+
                 } else {
-                    amendAddressBean.setAddressDefault(0);
+                    Toast.makeText(AmendAddressActivity.this, "手机号格式不正确", Toast.LENGTH_SHORT).show();
                 }
-                String amendAddressJson = JSON.toJSONString(amendAddressBean);
-                LogUtil.e("AmendAddressActivityJson----------->" + amendAddressJson);
-                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), amendAddressJson);
-                Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).putDataBody(CommonResource.AMENDADDRESS, body, SPUtil.getToken());
-                RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
-                    @Override
-                    public void onSuccess(String result, String msg) {
-                        LogUtil.e("AmendAddressActivityResult----------->" + result);
-                        finish();
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        LogUtil.e("AmendAddressActivityErrorMsg----------->" + errorMsg);
-                    }
-                }));
-
             }
         });
     }

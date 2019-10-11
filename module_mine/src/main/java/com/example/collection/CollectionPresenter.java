@@ -20,7 +20,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.example.utils.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                     }
                 }
                 if (getView() != null) {
-                    getView().loadFinish();
+                    getView().loadFinish(dataList.size());
                 }
             }
 
@@ -76,7 +75,7 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
             public void onError(String errorCode, String errorMsg) {
                 ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
-                    getView().loadFinish();
+                    getView().loadFinish(dataList.size());
                 }
             }
         }));
@@ -173,13 +172,15 @@ public class CollectionPresenter extends BasePresenter<CollectionView> {
                                 .build("/module_classify/TBCommodityDetailsActivity")
                                 .withString("para", dataList.get(position).getGoodsId() + "")
                                 .withString("shoptype", "1")
+                                .withString("commission_rate", "25")
+                                .withString("type", "0")
                                 .navigation();
                     } else if (dataList.get(position).getType() == 2) {
                         //拼多多
                         ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId() + "").navigation();
                     } else {
                         //京东
-
+                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity").withString("skuid", dataList.get(position).getGoodsId() + "").navigation();
                     }
                 }
             }

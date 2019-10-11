@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.bean.LocalShopBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
@@ -14,6 +15,10 @@ import com.example.view.RatingBarView;
 
 import butterknife.BindView;
 
+/**
+ * 本地商城评价
+ */
+@Route(path = "/module_user_store/LocalAssessActivity")
 public class LocalAssessActivity extends BaseActivity<LocalAssessView, LocalAssessPresenter> implements LocalAssessView {
     @BindView(R2.id.include_back)
     ImageView includeBack;

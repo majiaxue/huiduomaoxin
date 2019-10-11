@@ -107,13 +107,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("jd订单：" + result);
-                List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
-//                for (int i = 0; i < jdOrderBeans.size(); i++) {
-//                    String image = jdOrderBeans.get(i).getImage();
-//                    String[] split = image.split(" imgUrl=");
-//                    String[] split1 = split[1].split(",");
-//                    jdOrderBeans.get(i).setImage(split1[0]);
-//                }
+                final List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
 
                 JDAdapter jdAdapter = new JDAdapter(mContext, jdOrderBeans, R.layout.rv_order_list);
                 getView().loadJD(jdAdapter);
@@ -121,10 +115,9 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                 jdAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        JDGoodsRecBean.DataBean.ListsBean bean = new JDGoodsRecBean.DataBean.ListsBean();
-
-//                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
-//                                .withString("")
+                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
+                                .withString("skuid", jdOrderBeans.get(position).getSkuId())
+                                .navigation();
                     }
                 });
             }

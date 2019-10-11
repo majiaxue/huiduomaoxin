@@ -42,15 +42,11 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
 
     public void loadData(final int page) {
         Map map = MapUtil.getInstance().addParms("type", "1").addParms("current", page).build();
-        final Date date = new Date();
-        final long time = date.getTime();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.BROWSE_LIST, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                Date date1 = new Date();
-                long time1 = date1.getTime();
-                LogUtil.e("开始：" + time + "-----结束：" + time1 + "------相差：" + (time1 - time));
+
                 LogUtil.e("浏览记录：" + result);
                 if (getView() != null) {
                     getView().loadFinish();
@@ -97,13 +93,15 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
                             .build("/module_classify/TBCommodityDetailsActivity")
                             .withString("para", dataList.get(position).getGoodsId() + "")
                             .withString("shoptype", "1")
+                            .withString("commission_rate","25")
+                            .withString("type","0")
                             .navigation();
                 } else if (dataList.get(position).getType() == 2) {
                     //拼多多
                     ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", dataList.get(position).getGoodsId() + "").navigation();
                 } else {
                     //京东
-
+                    ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity").withString("skuid", dataList.get(position).getGoodsId() + "").navigation();
                 }
             }
         });

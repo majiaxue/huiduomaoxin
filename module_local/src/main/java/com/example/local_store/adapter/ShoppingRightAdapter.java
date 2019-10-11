@@ -2,7 +2,10 @@ package com.example.local_store.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -10,13 +13,21 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.example.bean.GoodsToCartBean;
+import com.example.adapter.MyRecyclerAdapter;
+import com.example.bean.KeyValueBean;
+import com.example.bean.LocalCartBean;
 import com.example.bean.LocalStoreBean;
+import com.example.bean.PopGuiGeBean;
+import com.example.bean.TxtAndChooseBean;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_store.ShoppingRight.RvAdapter;
 import com.example.local_store.ShoppingRight.RvHolder;
 import com.example.local_store.ShoppingRight.RvListener;
@@ -26,8 +37,14 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.OnChooseSpecsListener;
+import com.example.utils.OnPopListener;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -40,8 +57,19 @@ import okhttp3.ResponseBody;
  */
 
 public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
+
+    private List<LocalCartBean> cartBeanList = new ArrayList<>();
+
     public ShoppingRightAdapter(Context context, List<LocalStoreBean.ListBean> list, RvListener listener, ShopOnClickListtener shopOnClickListtener) {
         super(context, list, listener, shopOnClickListtener);
+    }
+
+    public ShoppingRightAdapter() {
+    }
+
+    public void setCartBeanList(List<LocalCartBean> cartBeanList) {
+        this.cartBeanList = cartBeanList;
+        LogUtil.e("~~~~~~~~~~~~~~~~~~>" + cartBeanList.size());
     }
 
     @Override
@@ -97,7 +125,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 case 1:
                     Glide.with(mContext).load(commodity.getPics()).into(pic);
                     name.setText(commodity.getName());
-                    if (TextUtils.isEmpty(commodity.getDiscountPrice())) {
+                    if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
                         newPrice.setText("￥" + commodity.getPrice());
                         oldPrice.setVisibility(View.GONE);
                     } else {
@@ -123,41 +151,198 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            addGoods(commodity);
+                            View inflate = LayoutInflater.from(mContext).inflate(com.example.module_base.R.layout.pop_choose_specs, null);
+                            ImageView img = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_img);
+                            final ImageView cancel = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_cancel);
+                            TextView name = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_name);
+                            final TextView price = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_price);
+                            final TextView btn = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_btn);
+                            RecyclerView rv = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_rv);
 
-                            int currentCount = commodity.getCount();
-                            if (currentCount == 0) {
-                                minus.setAnimation(getShowAnimation());
-                                count.setAnimation(getShowAnimation());
+                            Glide.with(mContext).load(commodity.getPics()).into(img);
+                            name.setText(commodity.getName());
+                            String parameter = commodity.getParameter();
+                            final String specification = commodity.getSpecification();
+                            if (TextUtils.isEmpty(parameter) && TextUtils.isEmpty(specification)) {
+                                LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount() + "");
+                                goodsToCartBean.setLocalGoodsPic(commodity.getPics());
+                                goodsToCartBean.setLocalGoodsName(commodity.getName());
+                                if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
+                                    goodsToCartBean.setPrice(Double.valueOf(commodity.getPrice()));
+                                } else {
+                                    goodsToCartBean.setPrice(Double.valueOf(commodity.getDiscountPrice()));
+                                }
+                                goodsToCartBean.setLocalGoodsSpecification(commodity.getSelectSpec());
+                                addGoods(goodsToCartBean, commodity);
+                            } else {
+                                final List<PopGuiGeBean> dataList = new ArrayList<>();
+
+                                List<KeyValueBean> keyValueBeans = new ArrayList<>();
+                                List<KeyValueBean> valueBeans = new ArrayList<>();
+
+                                final List<String> chooseList = new ArrayList<>();
+                                if (!TextUtils.isEmpty(parameter)) {
+                                    keyValueBeans.addAll(JSON.parseArray(parameter, KeyValueBean.class));
+                                }
+
+                                if (!TextUtils.isEmpty(specification)) {
+                                    valueBeans.addAll(JSON.parseArray(specification, KeyValueBean.class));
+                                }
+
+                                if (valueBeans.size() > 0) {
+                                    List<TxtAndChooseBean> contentList = new ArrayList<>();
+                                    for (int i = 0; i < valueBeans.size(); i++) {
+                                        contentList.add(new TxtAndChooseBean(valueBeans.get(i).getKey(), valueBeans.get(i).getValue(), false));
+                                    }
+                                    dataList.add(new PopGuiGeBean("规格", contentList));
+                                }
+
+                                for (int i = 0; i < keyValueBeans.size(); i++) {
+                                    List<TxtAndChooseBean> contentList = new ArrayList<>();
+                                    String value = keyValueBeans.get(i).getValue();
+                                    contentList.clear();
+                                    String[] split = value.split(",");
+                                    for (int j = 0; j < split.length; j++) {
+                                        contentList.add(new TxtAndChooseBean(split[j], false));
+                                    }
+                                    dataList.add(new PopGuiGeBean(keyValueBeans.get(i).getKey(), contentList));
+                                }
+
+                                for (int i = 0; i < dataList.size(); i++) {
+                                    chooseList.add("");
+                                }
+
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                                rv.setLayoutManager(layoutManager);
+                                LocalChooseSpecsAdapter chooseSpecsAdapter = new LocalChooseSpecsAdapter(mContext, dataList, R.layout.rv_pop_choose_specs, new OnChooseSpecsListener() {
+                                    @Override
+                                    public void setOnChooseAdapter(final LocalChooseSpecsInsideAdapter adapter, final int index) {
+                                        adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(RecyclerView parent, View view, int position2) {
+                                                for (int i = 0; i < dataList.size(); i++) {
+                                                    if (i == index) {
+                                                        for (int j = 0; j < dataList.get(i).getContent().size(); j++) {
+                                                            if (j == position2) {
+                                                                dataList.get(i).getContent().get(j).setChoose(true);
+                                                                chooseList.set(i, dataList.get(i).getContent().get(j).getTitle());
+                                                            } else {
+                                                                dataList.get(i).getContent().get(j).setChoose(false);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                adapter.notifyDataSetChanged();
+
+                                                if (index == 0) {
+                                                    if (!TextUtils.isEmpty(specification)) {
+                                                        price.setText("￥" + dataList.get(index).getContent().get(position2).getPrice());
+                                                    } else {
+                                                        if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
+                                                            price.setText("￥" + commodity.getPrice());
+                                                        } else {
+                                                            price.setText("￥" + commodity.getDiscountPrice());
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                        });
+                                    }
+                                });
+                                rv.setAdapter(chooseSpecsAdapter);
+
+                                PopUtils.createPop(mContext, inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
+                                    @Override
+                                    public void setOnPop(final PopupWindow pop) {
+                                        cancel.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                pop.dismiss();
+                                            }
+                                        });
+
+                                        btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                StringBuffer sb = new StringBuffer();
+                                                for (int i = 0; i < chooseList.size(); i++) {
+                                                    if (i == chooseList.size() - 1) {
+                                                        sb.append(chooseList.get(i));
+                                                    } else {
+                                                        if (i == 0 && !TextUtils.isEmpty(specification)) {
+                                                            commodity.setSelectSpec(chooseList.get(i));
+                                                        } else {
+                                                            sb.append(chooseList.get(i) + "-");
+                                                        }
+                                                    }
+                                                    if (TextUtils.isEmpty(chooseList.get(i))) {
+                                                        btn.setEnabled(true);
+                                                        Toast.makeText(mContext, "请选择规格", Toast.LENGTH_SHORT).show();
+                                                        return;
+                                                    }
+                                                }
+                                                commodity.setSelectName(commodity.getName() + "-" + sb.toString());
+
+
+                                                boolean hasSame = false;
+                                                int tempPosition = 0;
+                                                for (int i = 0; i < cartBeanList.size(); i++) {
+                                                    if ((commodity.getSelectName() != null && commodity.getSelectName().equals(cartBeanList.get(i).getLocalGoodsName()))
+                                                            || (commodity.getSelectSpec() != null && commodity.getSelectSpec().equals(cartBeanList.get(i).getLocalGoodsSpecification()))) {
+                                                        hasSame = true;
+                                                        tempPosition = i;
+//                                                            addGoods(cartBeanList.get(i), commodity);
+                                                        break;
+                                                    }
+                                                }
+                                                if (!hasSame) {
+                                                    LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount() + "");
+                                                    goodsToCartBean.setLocalGoodsPic(commodity.getPics());
+                                                    goodsToCartBean.setLocalGoodsName(commodity.getSelectName());
+                                                    if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
+                                                        goodsToCartBean.setPrice(Double.valueOf(commodity.getPrice()));
+                                                    } else {
+                                                        goodsToCartBean.setPrice(Double.valueOf(commodity.getDiscountPrice()));
+                                                    }
+                                                    goodsToCartBean.setLocalGoodsSpecification(commodity.getSelectSpec());
+                                                    addGoods(goodsToCartBean, commodity);
+                                                } else {
+                                                    addGoods(cartBeanList.get(tempPosition), commodity);
+                                                }
+
+
+                                                pop.dismiss();
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                            currentCount++;
-                            minus.setEnabled(true);
-                            shopOnClickListtener.startPlace(add);
-                            count.setText(currentCount + "");
-                            commodity.setCount(currentCount);
-                            isShow(commodity);
-                            notifyDataSetChanged();
+
+
                         }
                     });
 
                     minus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            minusGoods(commodity);
-
-                            add.setEnabled(true);
-                            Integer currentCount = commodity.getCount();
-                            currentCount--;
-                            if (currentCount <= 0) {
-                                currentCount = 0;
-                                minus.setEnabled(false);
-                                minus.setAnimation(getHiddenAnimation());
-                                count.setAnimation(getHiddenAnimation());
+                            int temp = 0;
+                            int tempPosition = 0;
+                            LogUtil.e("------------->" + cartBeanList.size());
+                            for (int i = 0; i < cartBeanList.size(); i++) {
+                                LogUtil.e("===========>" + cartBeanList.get(i));
+                                if (commodity.getId().equals(cartBeanList.get(i).getLocalGoodsId())) {
+                                    temp++;
+                                }
                             }
-                            count.setText(currentCount + "");
-                            commodity.setCount(currentCount);
-                            isShow(commodity);
-                            notifyDataSetChanged();
+                            LogUtil.e("--------->" + temp + "==============" + tempPosition);
+                            if (temp > 1) {
+                                Toast.makeText(mContext, "多件不同规格商品要从购物车操作", Toast.LENGTH_SHORT).show();
+                            } else if (temp == 1) {
+                                minusGoods(cartBeanList.get(tempPosition), commodity);
+                                add.setEnabled(false);
+                                minus.setEnabled(false);
+                            }
                         }
                     });
             }
@@ -173,8 +358,9 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
             }
         }
 
-        private void addGoods(LocalStoreBean.ListBean data) {
-            GoodsToCartBean goodsToCartBean = new GoodsToCartBean(SPUtil.getStringValue(CommonResource.SELLERID), data.getId(), SPUtil.getUserCode(), data.getCount() + "");
+        private void addGoods(LocalCartBean goodsToCartBean, final LocalStoreBean.ListBean data) {
+
+
             String jsonString = JSON.toJSONString(goodsToCartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_CART_ADD, requestBody);
@@ -182,17 +368,35 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("添加商品：" + result);
+                    cartBeanList = JSON.parseArray(result, LocalCartBean.class);
+                    add.setEnabled(true);
+                    minus.setEnabled(true);
+                    int currentCount = data.getCount();
+                    if (currentCount == 0) {
+                        minus.setAnimation(getShowAnimation());
+                        count.setAnimation(getShowAnimation());
+                    }
+                    currentCount++;
+//                    shopOnClickListtener.startPlace(add);
+                    count.setText(currentCount + "");
+                    data.setCount(currentCount);
+                    isShow(data);
+                    notifyDataSetChanged();
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
                 }
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    add.setEnabled(true);
+                    minus.setEnabled(true);
+                    Toast.makeText(mContext, "添加失败", Toast.LENGTH_SHORT).show();
                     LogUtil.e(errorCode + "--------------" + errorMsg);
                 }
             }));
         }
 
-        private void minusGoods(LocalStoreBean.ListBean data) {
-            GoodsToCartBean goodsToCartBean = new GoodsToCartBean(SPUtil.getStringValue(CommonResource.SELLERID), data.getId(), SPUtil.getUserCode(), data.getCount() + "");
+        private void minusGoods(LocalCartBean goodsToCartBean, final LocalStoreBean.ListBean data) {
+
             String jsonString = JSON.toJSONString(goodsToCartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_CART_MINUS, requestBody);
@@ -200,11 +404,28 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("去掉商品：" + result);
+                    add.setEnabled(true);
+                    minus.setEnabled(true);
+                    Integer currentCount = data.getCount();
+                    currentCount--;
+                    if (currentCount <= 0) {
+                        currentCount = 0;
+                        minus.setEnabled(false);
+                        minus.setAnimation(getHiddenAnimation());
+                        count.setAnimation(getHiddenAnimation());
+                    }
+                    count.setText(currentCount + "");
+                    data.setCount(currentCount);
+                    isShow(data);
+                    notifyDataSetChanged();
                 }
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
                     LogUtil.e(errorCode + "--------------" + errorMsg);
+                    Toast.makeText(mContext, "操作失败", Toast.LENGTH_SHORT).show();
+                    add.setEnabled(true);
+                    minus.setEnabled(true);
                 }
             }));
         }

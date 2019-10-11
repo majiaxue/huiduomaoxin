@@ -87,6 +87,9 @@ public class LocalStoreBean {
         private String monthSales;
         private String parameter;
         private String specification;
+        /**
+         * 是否强烈推荐  0：不是  1：是
+         */
         private String recommend;
         private String price;
         private String discountPrice;
@@ -98,6 +101,8 @@ public class LocalStoreBean {
         private boolean isTitle;
         private String tag;
         private int count;
+        private String selectName;
+        private String selectSpec;
 
         public ListBean() {
         }
@@ -106,6 +111,22 @@ public class LocalStoreBean {
             this.name = name;
             this.isTitle = isTitle;
             this.tag = tag;
+        }
+
+        public String getSelectName() {
+            return selectName;
+        }
+
+        public void setSelectName(String selectName) {
+            this.selectName = selectName;
+        }
+
+        public String getSelectSpec() {
+            return selectSpec;
+        }
+
+        public void setSelectSpec(String selectSpec) {
+            this.selectSpec = selectSpec;
         }
 
         public boolean isTitle() {
@@ -273,8 +294,8 @@ public class LocalStoreBean {
                     ", parameter='" + parameter + '\'' +
                     ", specification='" + specification + '\'' +
                     ", recommend='" + recommend + '\'' +
-                    ", price=" + price +
-                    ", discountPrice=" + discountPrice +
+                    ", price='" + price + '\'' +
+                    ", discountPrice='" + discountPrice + '\'' +
                     ", pics='" + pics + '\'' +
                     ", status='" + status + '\'' +
                     ", tenantId='" + tenantId + '\'' +
@@ -282,7 +303,38 @@ public class LocalStoreBean {
                     ", isTitle=" + isTitle +
                     ", tag='" + tag + '\'' +
                     ", count=" + count +
+                    ", selectName='" + selectName + '\'' +
+                    ", selectSpec='" + selectSpec + '\'' +
                     '}';
+        }
+
+        public static class MyParameter {
+            private String key;
+            private String value;
+
+            public String getKey() {
+                return key;
+            }
+
+            public void setKey(String key) {
+                this.key = key;
+            }
+
+            public String getValue() {
+                return value;
+            }
+
+            public void setValue(String value) {
+                this.value = value;
+            }
+
+            @Override
+            public String toString() {
+                return "Parameter{" +
+                        "key='" + key + '\'' +
+                        ", value='" + value + '\'' +
+                        '}';
+            }
         }
     }
 }

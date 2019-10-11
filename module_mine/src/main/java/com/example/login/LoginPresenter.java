@@ -99,6 +99,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+                    SPUtil.addParm(CommonResource.USER_PHONE, userInfoBean.getPhone());
 
                     JpushUtil.setAlias(userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
@@ -140,6 +141,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+                    SPUtil.addParm(CommonResource.USER_PHONE, userInfoBean.getPhone());
 
                     JpushUtil.setAlias(userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();

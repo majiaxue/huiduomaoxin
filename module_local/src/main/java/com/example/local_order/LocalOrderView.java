@@ -10,4 +10,6 @@ public interface LocalOrderView extends IView {
     void changeType(int position);
 
     void loadRv(LocalOrderAdapter adapter);
+
+    void loadFinish();
 }

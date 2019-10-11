@@ -160,7 +160,17 @@ public class LocalOrderBean implements Serializable {
      */
     private SellerInfo sellerInfo;
 
+    private String sellerName;
+
     private List<LocalOrderItemListBean> localOrderItemList;
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
 
     public String getId() {
         return id;
@@ -462,8 +472,8 @@ public class LocalOrderBean implements Serializable {
         private String id;
         private String orderSn;
         private String goodsId;
-        private String goodsNum;
-        private double goodsPrice;
+        private int goodsNum;
+        private String goodsPrice;
         private String goodsSpec;
         private String goodsName;
         private String goodsPic;
@@ -492,19 +502,19 @@ public class LocalOrderBean implements Serializable {
             this.goodsId = goodsId;
         }
 
-        public String getGoodsNum() {
+        public int getGoodsNum() {
             return goodsNum;
         }
 
-        public void setGoodsNum(String goodsNum) {
+        public void setGoodsNum(int goodsNum) {
             this.goodsNum = goodsNum;
         }
 
-        public double getGoodsPrice() {
+        public String getGoodsPrice() {
             return goodsPrice;
         }
 
-        public void setGoodsPrice(double goodsPrice) {
+        public void setGoodsPrice(String goodsPrice) {
             this.goodsPrice = goodsPrice;
         }
 

@@ -135,11 +135,4 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
     public UserPresenter createPresenter() {
         return new UserPresenter(this);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("本地商城可见");
-        ModuleBaseApplication.mLocationClient.restart();
-    }
 }

@@ -154,7 +154,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_69"
         android:background="#f5f5f5"
-        android:overScrollMode="never" />
+        android:overScrollMode="never"
+        android:visibility="gone" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/goods_commend_refresh"

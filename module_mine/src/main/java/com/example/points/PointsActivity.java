@@ -2,6 +2,7 @@ package com.example.points;
 
 import android.content.Intent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -110,12 +111,13 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s != null) {
+                if (!TextUtils.isEmpty(s)) {
                     if ("0".equals(s.toString())) {
                         pointsEdit.setText("");
                     } else if (bean.getMember().getIntegration() != null) {
                         if (Double.valueOf(s.toString()) > Double.valueOf(bean.getMember().getIntegration())) {
                             pointsEdit.setText(bean.getMember().getIntegration());
+                            pointsEdit.setSelection(pointsEdit.getText().length());
                         }
                     }
                 }

@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDListBean;
 import com.example.module_classify.R;
 import com.example.utils.ArithUtil;
@@ -22,7 +21,9 @@ public class JdWaterfallAdapter extends MyRecyclerAdapter<JDListBean.DataBean> {
     public void convert(RecyclerViewHolder holder, JDListBean.DataBean data, int position) {
         holder.setImageFresco(R.id.classification_image, data.getImageInfo().getImageList().get(0).getUrl());
         holder.setText(R.id.classification_name, data.getSkuName());
-        holder.setText(R.id.classification_reduce_price, "领劵减" + Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount()) + "元");
+        if (data.getCouponInfo() != null && data.getCouponInfo().getCouponList() != null && data.getCouponInfo().getCouponList().size() > 0) {
+            holder.setText(R.id.classification_reduce_price, "领劵减" + Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount()) + "元");
+        }
         holder.setText(R.id.classification_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getPriceInfo().getPrice()), Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount())));
         holder.setText(R.id.classification_original_price, "" + Double.valueOf(data.getPriceInfo().getPrice()) + "");
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿

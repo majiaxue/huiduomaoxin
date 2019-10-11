@@ -82,6 +82,7 @@ public class LoginWeChatPresenter extends BasePresenter<LoginWeChatView> {
                     SPUtil.addParm(CommonResource.USER_PIC, userInfoBean1.getIcon());
                     SPUtil.addParm(CommonResource.USER_INVITE, userInfoBean1.getInviteCode());
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean1.getLevelId());
+                    SPUtil.addParm(CommonResource.USER_PHONE, userInfoBean1.getPhone());
 
                     JpushUtil.setAlias(userInfoBean1.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();

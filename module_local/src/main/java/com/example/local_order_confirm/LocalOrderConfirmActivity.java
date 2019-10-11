@@ -1,23 +1,40 @@
 package com.example.local_order_confirm;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.bean.LocalOrderBean;
 import com.example.bean.ShippingAddressBean;
+import com.example.local_order_confirm.adapter.LocalOrderConfirmAdapter;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
 
+@Route(path = "/module_local/LocalOrderConfirmActivity")
 public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmView, LocalOrderConfirmPresenter> implements LocalOrderConfirmView {
     @BindView(R2.id.include_back2)
     ImageView includeBack2;
     @BindView(R2.id.include_title2)
     TextView includeTitle2;
+    @BindView(R2.id.local_order_confirm_name)
+    TextView localOrderConfirmName;
+    @BindView(R2.id.local_order_confirm_phone)
+    TextView localOrderConfirmPhone;
+    @BindView(R2.id.local_order_confirm_detail)
+    TextView localOrderConfirmDetail;
     @BindView(R2.id.local_order_confirm_add)
     TextView localOrderConfirmAdd;
     @BindView(R2.id.local_order_confirm_time)
@@ -28,14 +45,8 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
     LinearLayout localOrderConfirmChoosePay;
     @BindView(R2.id.local_order_confirm_shop)
     TextView localOrderConfirmShop;
-    @BindView(R2.id.local_order_confirm_img)
-    ImageView localOrderConfirmImg;
-    @BindView(R2.id.local_order_confirm_title)
-    TextView localOrderConfirmTitle;
-    @BindView(R2.id.local_order_confirm_count)
-    TextView localOrderConfirmCount;
-    @BindView(R2.id.local_order_confirm_money)
-    TextView localOrderConfirmMoney;
+    @BindView(R2.id.local_order_confirm_rv)
+    RecyclerView mRv;
     @BindView(R2.id.local_order_confirm_peisong)
     TextView localOrderConfirmPeisong;
     @BindView(R2.id.local_order_confirm_peisongfei)
@@ -48,6 +59,14 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
     TextView localOrderConfirmFinalMoney;
     @BindView(R2.id.local_order_confirm_btn)
     TextView localOrderConfirmBtn;
+    @BindView(R2.id.local_order_confirm_rela)
+    RelativeLayout mRela;
+
+    @Autowired(name = "bean")
+    LocalOrderBean bean;
+
+    private boolean isWechat = false;
+    private boolean hasAddress = false;
 
     @Override
     public int getLayoutId() {
@@ -56,15 +75,65 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
+        includeTitle2.setText("订单确认");
 
+        localOrderConfirmTotalMoney.setText("￥" + bean.getTotalMoney());
+        localOrderConfirmFinalMoney.setText("￥" + bean.getTotalMoney());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRv.setLayoutManager(layoutManager);
+        mRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_10)));
+        presenter.initRv(bean.getLocalOrderItemList());
+        localOrderConfirmShop.setText(bean.getSellerName());
+
+        presenter.getAddress();
     }
 
     @Override
     public void initClick() {
+        includeBack2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         localOrderConfirmAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.chooseAddress();
+            }
+        });
+
+        mRela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.chooseAddress();
+            }
+        });
+
+        localOrderConfirmChoosePay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isWechat) {
+                    isWechat = false;
+                    localOrderConfirmType.setText("支付宝");
+                } else {
+                    isWechat = true;
+                    localOrderConfirmType.setText("微信");
+                }
+            }
+        });
+
+        localOrderConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hasAddress) {
+                    localOrderConfirmBtn.setEnabled(false);
+                    presenter.toPay(isWechat, bean);
+                } else {
+                    Toast.makeText(LocalOrderConfirmActivity.this, "请添加收货地址", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -73,9 +142,50 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
+            hasAddress = true;
+            mRela.setVisibility(View.VISIBLE);
             ShippingAddressBean addressBean = (ShippingAddressBean) data.getSerializableExtra("address");
+            localOrderConfirmAdd.setVisibility(View.GONE);
+            localOrderConfirmName.setText(addressBean.getAddressName());
+            localOrderConfirmPhone.setText(addressBean.getAddressPhone());
+            localOrderConfirmDetail.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
 
+            bean.setUserName(addressBean.getAddressName());
+            bean.setUserPhone(addressBean.getAddressPhone());
+            bean.setUserAddress(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
         }
+    }
+
+    @Override
+    public void loadFinish() {
+        localOrderConfirmBtn.setEnabled(true);
+    }
+
+    @Override
+    public void loadAddress(ShippingAddressBean addressBean) {
+        hasAddress = true;
+        localOrderConfirmAdd.setVisibility(View.GONE);
+        mRela.setVisibility(View.VISIBLE);
+        localOrderConfirmName.setText(addressBean.getAddressName());
+        localOrderConfirmPhone.setText(addressBean.getAddressPhone());
+        localOrderConfirmDetail.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
+
+        bean.setUserName(addressBean.getAddressName());
+        bean.setUserPhone(addressBean.getAddressPhone());
+        bean.setUserAddress(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
+
+    }
+
+    @Override
+    public void noAddress() {
+        localOrderConfirmAdd.setVisibility(View.VISIBLE);
+        mRela.setVisibility(View.GONE);
+        hasAddress = false;
+    }
+
+    @Override
+    public void loadRv(LocalOrderConfirmAdapter adapter) {
+        mRv.setAdapter(adapter);
     }
 
     @Override

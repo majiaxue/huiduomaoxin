@@ -3,10 +3,10 @@ package com.example.local_store;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,8 +14,11 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.example.bean.LocalShopBean;
 import com.example.bean.LocalStoreBean;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_store.ShoppingRight.CheckListener;
 import com.example.local_store.ShoppingRight.GoodsView;
 import com.example.local_store.ShoppingRight.ItemHeaderDecoration;
@@ -23,12 +26,16 @@ import com.example.local_store.ShoppingRight.RvListener;
 import com.example.local_store.ShoppingRight.ShopOnClickListtener;
 import com.example.local_store.ShoppingRight.SortAdapter;
 import com.example.local_store.ShoppingRight.SortDetailFragment;
+import com.example.local_store.adapter.LocalStoreCommendAdapter;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +58,6 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     RecyclerView localStoreRvCommend;
     @BindView(R2.id.local_store_rv_left)
     RecyclerView localStoreRvLeft;
-    @BindView(R2.id.local_store_rv_right)
-    FrameLayout localStoreRvRight;
     @BindView(R2.id.local_store_total_money)
     TextView localStoreTotalMoney;
     @BindView(R2.id.local_store_btn)
@@ -60,8 +65,8 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     @BindView(R2.id.local_store_bottom)
     LinearLayout localStoreBottom;
 
-    @Autowired(name = "sellerId")
-    String sellerId;
+    @Autowired(name = "bean")
+    LocalShopBean bean;
     private LinearLayoutManager leftLayoutManager;
 
     private int[] startP = new int[2];
@@ -75,6 +80,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     private SortAdapter mSortAdapter;
     private List<LocalStoreBean> localStoreBeans;
     private List<List<LocalStoreBean.ListBean>> list = new ArrayList<>();
+    private LocalStoreCommendAdapter commendAdapter;
 
     @Override
     public int getLayoutId() {
@@ -84,7 +90,9 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        SPUtil.addParm(CommonResource.SELLERID, sellerId);
+        EventBus.getDefault().register(this);
+        SPUtil.addParm(CommonResource.SELLERID, bean.getId());
+        SPUtil.addParm(CommonResource.SELLERNAME, bean.getSeller_shop_name());
         leftLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         localStoreRvLeft.setLayoutManager(leftLayoutManager);
         localStoreRvLeft.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_10)));
@@ -94,8 +102,15 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
         localStoreRvCommend.addItemDecoration(new SpaceItemDecoration(0, (int) getResources().getDimension(R.dimen.dp_7), 0, 0));
 
         mViewGroup = (ViewGroup) getWindow().getDecorView();
+        Glide.with(this).load(bean.getSeller_logo()).into(localStoreLogo);
+        String sellerpics = bean.getSellerpics();
+        if (!TextUtils.isEmpty(sellerpics)) {
+            String[] split = sellerpics.split(",");
+            Glide.with(this).load(split[0]).into(localStoreImg);
+        }
 
-        presenter.loadData(sellerId);
+        presenter.loadData(bean.getId());
+        presenter.loadCart(bean.getId());
     }
 
     @Override
@@ -110,9 +125,21 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
         localStoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.submitOrder();
+                EventBus.getDefault().post(new EventBusBean(CommonResource.SUBMIT_ORDER));
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.UPCART.equals(eventBusBean.getCode())) {
+            presenter.upCart(eventBusBean.getMsg());
+        }
+    }
+
+    @Override
+    public void upMoney(double money, int size) {
+        localStoreTotalMoney.setText("￥" + money);
     }
 
     @Override
@@ -174,6 +201,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
                 setChecked(position, isScroll);
             }
         });
+
     }
 
     private void setChecked(int position, boolean isLeft) {

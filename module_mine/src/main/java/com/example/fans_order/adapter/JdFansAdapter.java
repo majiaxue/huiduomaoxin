@@ -22,7 +22,7 @@ public class JdFansAdapter extends MyRecyclerAdapter<JdFansOrderBean> {
                 .setImageUrl(R.id.fans_order_list_img, data.getImage())
                 .setText(R.id.fans_order_list_price, "￥" + data.getPrice())
                 .setText(R.id.fans_order_list_count, "x" + data.getSkuNum())
-                .setText(R.id.fans_order_list_total, "共" + data.getSkuNum() + "件商品  合计：￥" + ArithUtil.add(Double.valueOf(data.getPrice()), Double.valueOf(data.getSkuNum())))
+                .setText(R.id.fans_order_list_total, "共" + data.getSkuNum() + "件商品  合计：￥" + ArithUtil.mul(Double.valueOf(data.getPrice()), Double.valueOf(data.getSkuNum())))
                 .setText(R.id.fans_order_list_time, "购买时间：" + MyTimeUtil.date2String(data.getOrderTime()))
                 .setImageResource(R.id.fans_order_list_type, R.drawable.icon_jd)
                 .setImageUrl(R.id.fans_order_list_head, data.getFansIcon())
@@ -30,13 +30,13 @@ public class JdFansAdapter extends MyRecyclerAdapter<JdFansOrderBean> {
                 .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
 
         if ("15".equals(data.getOrderValidCode())) {
-            holder.setText(R.id.order_list_status, "待付款");
+            holder.setText(R.id.fans_order_list_status, "待付款");
         } else if ("16".equals(data.getOrderValidCode())) {
-            holder.setText(R.id.order_list_status, "已付款");
-        } else if ("17".equals(data.getOrderValidCode())) {
-            holder.setText(R.id.order_list_status, "已结算");
+            holder.setText(R.id.fans_order_list_status, "已付款");
+        } else if ("17".equals(data.getOrderValidCode()) || "18".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.fans_order_list_status, "已结算");
         } else {
-            holder.setText(R.id.order_list_status, "已失效");
+            holder.setText(R.id.fans_order_list_status, "已失效");
         }
     }
 }

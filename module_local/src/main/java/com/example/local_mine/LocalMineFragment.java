@@ -61,14 +61,13 @@ public class LocalMineFragment extends BaseFragment<LocalMineView, LocalMinePres
             @Override
             public void onItemClick(XBanner banner, Object model, View view, int position) {
                 presenter.jumpToWallet();
-                startActivity(new Intent(getContext(), CouponWalletActivity.class));
             }
         });
 
         localMineShangjiaruzhu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
+                presenter.businessApplication();
             }
         });
 

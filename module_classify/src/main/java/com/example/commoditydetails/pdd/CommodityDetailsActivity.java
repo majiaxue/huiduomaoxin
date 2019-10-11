@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,10 +31,10 @@ import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AppManager;
 import com.example.utils.ArithUtil;
+import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.CustomDialog;
-import com.example.utils.ProcessDialogUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
@@ -180,8 +181,11 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(CommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    PopUtils.isLogin(CommodityDetailsActivity.this);
+                } else {
+                    presenter.share();
+                }
             }
         });
         //立即领取

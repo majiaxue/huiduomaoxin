@@ -25,6 +25,9 @@ public abstract class RvAdapter<T> extends RecyclerView.Adapter<RvHolder> {
         this.shopOnClickListtener = shopOnClickListtener;
     }
 
+    public RvAdapter() {
+    }
+
     @Override
     public RvHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(getLayoutId(viewType), parent, false);

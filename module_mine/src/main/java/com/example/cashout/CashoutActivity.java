@@ -1,11 +1,13 @@
 package com.example.cashout;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
@@ -64,7 +66,15 @@ public class CashoutActivity extends BaseActivity<CashoutView, CashoutPresenter>
         cashoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.tixian(cashoutEdit.getText().toString(), cashoutZFB.getText().toString(), cashoutName.getText().toString());
+                if (TextUtils.isEmpty(cashoutEdit.getText())) {
+                    Toast.makeText(CashoutActivity.this, "请输入金额", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (Double.valueOf(cashoutEdit.getText().toString()) > Double.valueOf(balance)) {
+                        Toast.makeText(CashoutActivity.this, "余额不足", Toast.LENGTH_SHORT).show();
+                    } else {
+                        presenter.tixian(cashoutEdit.getText().toString(), cashoutZFB.getText().toString(), cashoutName.getText().toString());
+                    }
+                }
             }
         });
 

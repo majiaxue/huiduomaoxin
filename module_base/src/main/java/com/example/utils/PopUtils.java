@@ -23,9 +23,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.adapter.PopQuanyiAdapter;
 import com.example.adapter.PopUpAdapter;
+import com.example.bean.LocalStoreBean;
 import com.example.bean.OperatorBean;
 import com.example.common.CommonResource;
 import com.example.module_base.R;
@@ -591,5 +593,19 @@ public class PopUtils {
                 popupWindow.dismiss();
             }
         });
+    }
+
+    public static void popChooseSpecs(final Context context, LocalStoreBean.ListBean commodity) {
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_choose_specs, null);
+        ImageView img = inflate.findViewById(R.id.pop_choose_specs_img);
+        ImageView cancel = inflate.findViewById(R.id.pop_choose_specs_cancel);
+        TextView name = inflate.findViewById(R.id.pop_choose_specs_name);
+        TextView price = inflate.findViewById(R.id.pop_choose_specs_price);
+        TextView btn = inflate.findViewById(R.id.pop_choose_specs_btn);
+        RecyclerView rv = inflate.findViewById(R.id.pop_choose_specs_rv);
+
+        String parameter = commodity.getParameter();
+        String specification = commodity.getSpecification();
+        String jsonString = JSON.toJSONString(parameter);
     }
 }

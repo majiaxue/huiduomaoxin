@@ -15,6 +15,7 @@ import com.example.mvp.BaseFragment;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.ArithUtil;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -220,7 +221,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
 
     @Override
     public void totalPrice(double price) {
-        shoppingCartTotal.setText("" + price);
+        shoppingCartTotal.setText("" + ArithUtil.exact(price, 2));
     }
 
     @Override

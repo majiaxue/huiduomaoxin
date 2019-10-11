@@ -2,11 +2,13 @@ package com.example.setting;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
@@ -128,7 +130,11 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
         settingPreserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.preserve(settingNickName.getText().toString(), settingPersonalitySign.getText().toString());
+                if (TextUtils.isEmpty(settingNickName.getText().toString())) {
+                    Toast.makeText(SettingActivity.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+                } else {
+                    presenter.preserve(settingNickName.getText().toString(), settingPersonalitySign.getText().toString());
+                }
             }
         });
 

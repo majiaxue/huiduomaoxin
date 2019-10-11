@@ -82,6 +82,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("微信支付-------------->" + result);
+                    getView().callBack();
                     try {
 
                         WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
@@ -97,7 +98,6 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
                         api.sendReq(request);
                         SPUtil.addParm("wxpay", "1");
-                        getView().callBack();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -105,6 +105,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    getView().callBack();
                     LogUtil.e(errorCode + "------------" + errorMsg);
                 }
             }));
@@ -115,6 +116,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
+                    getView().callBack();
                     LogUtil.e("支付宝：" + result);
                     AliPayBean aliPayBean = JSON.parseObject(result, AliPayBean.class);
                     info = aliPayBean.getBody();
@@ -124,7 +126,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-
+                    getView().callBack();
                 }
             }));
 

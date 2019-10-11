@@ -42,7 +42,8 @@
             android:button="@null"
             android:drawableTop="@drawable/selector_market"
             android:gravity="center"
-            android:paddingTop="@dimen/dp_8" />
+            android:paddingTop="@dimen/dp_8"
+            android:visibility="gone" />
 
         <RadioButton
             android:id="@+id/user_shopping_cart"

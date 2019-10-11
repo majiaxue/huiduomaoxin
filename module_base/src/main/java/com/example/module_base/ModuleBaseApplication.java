@@ -1,8 +1,10 @@
 package com.example.module_base;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
@@ -19,20 +21,9 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
-import com.facebook.cache.common.CacheEventListener;
-import com.facebook.cache.disk.DiskCacheConfig;
-import com.facebook.common.memory.MemoryTrimType;
-import com.facebook.common.memory.MemoryTrimmable;
-import com.facebook.common.memory.MemoryTrimmableRegistry;
-import com.facebook.common.memory.NoOpMemoryTrimmableRegistry;
 import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.kepler.jd.Listener.AsyncInitListener;
 import com.kepler.jd.login.KeplerApiManager;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -41,82 +32,81 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
-import java.io.File;
-import java.util.function.Supplier;
-
 import cn.jpush.android.api.JPushInterface;
 
 public class ModuleBaseApplication extends MultiDexApplication {
     public static LocationClient mLocationClient = null;
     public static boolean isDingWei = false;
 
-    public static final int MAX_DISK_SIZE = 20*ByteConstants.MB;
-    public static final int MAX_DISK_SIZE_ON_LOW_DISK_SPACE = 10*ByteConstants.MB;
-    public static final int MAX_DISK_SIZE_ON_VERY_LOW_DISK_SPACE = 5*ByteConstants.MB;
-    public static final String FRESCO_CACHE_DIR = "fresco_cache";
 
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LogUtil.isDebug(this)) {
-            ARouter.openLog();  //开启打印日志
-            ARouter.openDebug();// 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
-        }
-        ARouter.init(this);
-        SPUtil.getInstance(this);
-        CitySPUtil.getInstance(this);
-        //初始化DBFLOW
-        FlowManager.init(this);
-        //初始化fresco
-        initFresco();
 
-        IWXAPI wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
-        wxapi.registerApp(CommonResource.WXAPPID);
+        String processName = getCurProcessName(this);
+        if (!TextUtils.isEmpty(processName)) {
+            if (processName.equals(getPackageName())) {
+                if (LogUtil.isDebug(this)) {
+                    ARouter.openLog();  //开启打印日志
+                    ARouter.openDebug();// 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+                }
+                ARouter.init(this);
+                SPUtil.getInstance(this);
+                CitySPUtil.getInstance(this);
+                //初始化DBFLOW
+                FlowManager.init(this);
+                //初始化fresco
+                initFresco();
 
-        //友盟
-        UMConfigure.init(this, CommonResource.U_APPKEY, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
-        initShare();
-        UMConfigure.setLogEnabled(true);
+                IWXAPI wxapi = WXAPIFactory.createWXAPI(this, CommonResource.WXAPPID, false);
+                wxapi.registerApp(CommonResource.WXAPPID);
 
-        //极光推送
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
-        JpushUtil.getInstance(this);
+                //友盟
+                UMConfigure.init(this, CommonResource.U_APPKEY, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+                initShare();
+                UMConfigure.setLogEnabled(true);
 
-        //百度地图
-        initLocationClient();
+                //极光推送
+                JPushInterface.setDebugMode(true);
+                JPushInterface.init(this);
+                JpushUtil.getInstance(this);
 
-        AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
-            @Override
-            public void onSuccess() {
-                LogUtil.e("阿里百川初始化成功");
-            }
+                //百度地图
+                initLocationClient();
 
-            @Override
-            public void onFailure(int code, String msg) {
-                LogUtil.e("阿里百川：" + code + "-------" + msg);
-            }
-        });
-
-        //应用回到前台监听
-        initAppStatusListener();
-
-        //京东开普勒
-        KeplerApiManager.asyncInitSdk(this, "6440db418d9c43817a129e1edf928202", "0f7f4a04dcfd4f44a934e70f7e37fe28",
-                new AsyncInitListener() {
+                AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
                     @Override
                     public void onSuccess() {
-                        LogUtil.e("京东开普勒" + "Kepler asyncInitSdk onSuccess ");
+                        LogUtil.e("阿里百川初始化成功");
                     }
 
                     @Override
-                    public void onFailure() {
-
-                        LogUtil.e("京东开普勒" +
-                                "Kepler asyncInitSdk 授权失败，请检查lib 工程资源引用；包名,签名证书是否和注册一致");
-
+                    public void onFailure(int code, String msg) {
+                        LogUtil.e("阿里百川：" + code + "-------" + msg);
                     }
                 });
+
+                //应用回到前台监听
+                initAppStatusListener();
+
+                //京东开普勒
+                KeplerApiManager.asyncInitSdk(this, "6440db418d9c43817a129e1edf928202", "0f7f4a04dcfd4f44a934e70f7e37fe28",
+                        new AsyncInitListener() {
+                            @Override
+                            public void onSuccess() {
+                                LogUtil.e("京东开普勒" + "Kepler asyncInitSdk onSuccess ");
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                                LogUtil.e("京东开普勒" +
+                                        "Kepler asyncInitSdk 授权失败，请检查lib 工程资源引用；包名,签名证书是否和注册一致");
+
+                            }
+                        });
+            }
+        }
     }
 
     private void initFresco() {
@@ -219,5 +209,27 @@ public class ModuleBaseApplication extends MultiDexApplication {
 
             }
         });
+    }
+
+    /**
+     * 获得当前进程的名字
+     *
+     * @param context
+     * @return 进程号
+     */
+    public static String getCurProcessName(Context context) {
+
+        int pid = android.os.Process.myPid();
+
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
     }
 }

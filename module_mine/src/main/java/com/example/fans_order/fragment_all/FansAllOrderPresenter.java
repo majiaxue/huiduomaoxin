@@ -107,11 +107,16 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("淘宝全部：" + errorCode + "--------" + errorMsg);
-                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                if (tbFansAdapter == null) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                    }
+                }
                 if (getView() != null) {
-                    getView().loadTb(tbFansAdapter);
                     getView().loadSuccess();
                 }
+
             }
         }));
     }
@@ -143,9 +148,14 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("京东全部：" + errorCode + "--------" + errorMsg);
-                jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
+                if (jdAdapter == null) {
+                    jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadJd(jdAdapter);
+                    }
+                }
+
                 if (getView() != null) {
-                    getView().loadJd(jdAdapter);
                     getView().loadSuccess();
                 }
             }
@@ -176,20 +186,25 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
                     pddAdapter.notifyDataSetChanged();
                 }
 
-                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
-                    }
-                });
+//                pddAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(RecyclerView parent, View view, int position) {
+//                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity").withString("goods_id", pddList.get(position).getGoodsId() + "").navigation();
+//                    }
+//                });
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("拼多多全部：" + errorCode + "--------" + errorMsg);
-                pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
+                if (pddAdapter == null) {
+                    pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadFansRv(pddAdapter);
+                    }
+                }
+
                 if (getView() != null) {
-                    getView().loadFansRv(pddAdapter);
                     getView().loadSuccess();
                 }
             }

@@ -15,5 +15,5 @@ public interface CollectionView extends IView {
 
     void loadUI(CollectionAdapter adapter);
 
-    void loadFinish();
+    void loadFinish(int size);
 }

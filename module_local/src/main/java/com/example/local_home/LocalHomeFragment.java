@@ -25,6 +25,7 @@ import com.example.bean.BannerBean;
 import com.example.bean.LocalShopBean;
 import com.example.bean.UserCouponBean;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
 import com.example.local_home.adapter.ZhongBannerAdapter;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
@@ -46,6 +47,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xhb.xbanner.XBanner;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -81,6 +86,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     @BindView(R2.id.local_home_refresh)
     SmartRefreshLayout mRefresh;
 
+    private List<LocalShopBean> zhongList;
     private static int REQUESTCODE = 0;
     private boolean isFirst = true;
     private int page = 1;
@@ -92,6 +98,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
         if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
             LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
             localHomeCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
@@ -172,6 +179,20 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 presenter.jumpToSearch();
             }
         });
+
+        LocalHomeZhongBanner.setOnItemClickListener(new XBanner.OnItemClickListener() {
+            @Override
+            public void onItemClick(XBanner banner, Object model, View view, int position) {
+                ARouter.getInstance().build("/module_local/LocalStoreActivity").withSerializable("bean", zhongList.get(position)).navigation();
+            }
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.DINGWEI.equals(eventBusBean.getMsg())) {
+            localHomeCity.setText(MyLocationListener.district);
+        }
     }
 
     @Override
@@ -221,6 +242,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
 
     @Override
     public void loadZhongBanner(List<LocalShopBean> zhongList) {
+        this.zhongList = zhongList;
         LocalHomeZhongBanner.setBannerData(R.layout.local_home_xbanner, zhongList);
         LocalHomeZhongBanner.loadImage(new XBanner.XBannerAdapter() {
             @Override

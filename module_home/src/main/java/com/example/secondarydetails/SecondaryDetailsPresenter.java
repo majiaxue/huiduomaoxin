@@ -374,7 +374,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
             }));
         } else if ("0".equals(type)) {
             //淘宝
-
             Map map = MapUtil.getInstance().addParms("cat", tBGoodsSearchBeans.get(position).getCategory_id()).addParms("pageno", page).addParms("istmall", false).build();
             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TBKGOODSSELLERTBKLIST, map);
             RetrofitUtil.getInstance().toSubscribe(dataWithout1, new OnTripartiteCallBack(new OnDataListener() {

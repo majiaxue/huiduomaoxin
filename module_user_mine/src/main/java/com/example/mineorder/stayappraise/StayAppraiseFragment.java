@@ -60,7 +60,6 @@ public class StayAppraiseFragment extends BaseFragment<StayAppraiseView, StayApp
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        LogUtil.e("11111111111" + isVisibleToUser);
         if (isVisibleToUser) {
             if (flag == 1) {
                 presenter.stayAppraiseRec();

@@ -1,6 +1,5 @@
 package com.example.collection;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @Route(path = "/mine/collection")
 public class CollectionActivity extends BaseActivity<CollectionView, CollectionPresenter> implements CollectionView {
@@ -145,9 +143,14 @@ public class CollectionActivity extends BaseActivity<CollectionView, CollectionP
     }
 
     @Override
-    public void loadFinish() {
+    public void loadFinish(int size) {
         mRefresh.finishLoadMore();
         mRefresh.finishRefresh();
+        if (size > 0) {
+            includeRightBtn.setVisibility(View.VISIBLE);
+        } else {
+            includeRightBtn.setVisibility(View.GONE);
+        }
     }
 
     @Override

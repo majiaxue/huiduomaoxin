@@ -66,6 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_35"
+        android:layout_marginBottom="@dimen/dp_15"
         android:orientation="horizontal">
 
         <TextView
@@ -110,7 +111,6 @@
         android:id="@+id/rv_local_order_list_temp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
-        android:layout_marginTop="@dimen/dp_15"
         android:background="#dedede" />
 
     <LinearLayout

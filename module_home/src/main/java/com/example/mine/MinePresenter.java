@@ -233,9 +233,9 @@ public class MinePresenter extends BasePresenter<MineView> {
                 SPUtil.addParm("head", userInfoBean.getIcon());
                 SPUtil.addParm("name", userInfoBean.getNickname());
                 SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
-                if (temp == 0) {
-                    getBackBili();
-                }
+
+                getBackBili();
+
                 getPredict();
                 temp += 1;
                 LogUtil.e("个人信息：" + result);

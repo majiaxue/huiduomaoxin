@@ -1,12 +1,12 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.0.121:9001";   //商品//47.99.93.123
-    public static final String BASEURL_4001 = "http://192.168.0.121:4001";   //用户
-    public static final String BASEURL_9003 = "http://192.168.0.121:9003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.0.121:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.0.121:9005";   //参数
-    public static final String BASEURL_9010 = "http://192.168.0.121:9010";  //本地小店
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
+    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
+    public static final String BASEURL_9010 = "http://47.99.93.123:9010";  //本地小店
 
     public static final String URL_30_9001 = "http://192.168.1.30:9001";
     public static final String URL_4_9001 = "http://192.168.1.4:9001";
@@ -109,6 +109,12 @@ public class CommonResource {
     public static final String LOCAL_CART_ADD = "/rest/local/shop-car/add";     //附近小店 购物车 增加商品
     public static final String LOCAL_CART_MINUS = "/rest/local/shop-car/minus"; //附近小店 购物车 减少商品
     public static final String LOCAL_SUBMIT_ORDER = "/rest/local-order";        //附近小店 提交订单
+    public static final String LOCAL_GET_CART = "/rest/local/shopcar/";         //附近小店  查询购物车
+    public static final String LOCAL_ALI_PAY = "/rest/local/alipay/redpacked";  //附近小店  支付宝支付
+    public static final String LOCAL_WX_PAY = "/rest/local/wxpay/redpacked";    //附近小店  微信支付
+    public static final String LOCAL_CANCEL_ORDER = "/rest/local-order/cancel";   //附近小店  取消订单
+    public static final String LOCAL_CONFIRM_ORDER = "/rest/local-order/ok/";       //附近小店  确认收货
+    public static final String LOCAL_TUIKUAN = "/rest/local-order/return";          //附近小店  申请退款
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -188,6 +194,7 @@ public class CommonResource {
     public static final String USER_NAME = "userName";
     public static final String USER_PIC = "userPic";
     public static final String USER_INVITE = "userInvite";
+    public static final String USER_PHONE = "userPhone";
     public static final String BACKBL = "back";     //佣金比例
     public static final String LEVELID = "levelId";
     public static final String U_APPKEY = "5d0c57294ca35786440001c6";
@@ -204,6 +211,9 @@ public class CommonResource {
     public static final String TAN_CONTENT = "tan_content";     //粘贴板内容
     public static final String ISTAN = "isTan";     //粘贴板内容是否弹过popupwindow
     public static final String SELLERID = "sellerId";   //店铺ID
+    public static final String SELLERNAME = "sellerName";   //店铺名字
     public static final String SUBMIT_ORDER = "submitOrder";    //提交订单
+    public static final String DINGWEI = "dingwei";
+    public static final String UPCART = "up_cart";      //刷新购物车
 
 }

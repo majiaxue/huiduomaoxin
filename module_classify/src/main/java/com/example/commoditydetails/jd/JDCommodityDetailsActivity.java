@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +33,7 @@ import com.example.utils.ArithUtil;
 import com.example.utils.CustomDialog;
 import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
@@ -199,9 +201,11 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
         commodityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(JDCommodityDetailsActivity.this, "暂时不能分享", Toast.LENGTH_SHORT).show();
-                presenter.share();
-
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    PopUtils.isLogin(JDCommodityDetailsActivity.this);
+                } else {
+                    presenter.share();
+                }
             }
         });
 

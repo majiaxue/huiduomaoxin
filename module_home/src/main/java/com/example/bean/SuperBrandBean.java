@@ -16,27 +16,27 @@ public class SuperBrandBean {
      * tenantId : 1
      */
 
-    private int id;
-    private int categoryId;
+    private String id;
+    private String categoryId;
     private String pic;
     private String sellerName;
     private String address;
-    private int ratio;
-    private int tenantId;
+    private String ratio;
+    private String tenantId;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -64,19 +64,19 @@ public class SuperBrandBean {
         this.address = address;
     }
 
-    public int getRatio() {
+    public String getRatio() {
         return ratio;
     }
 
-    public void setRatio(int ratio) {
+    public void setRatio(String ratio) {
         this.ratio = ratio;
     }
 
-    public int getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(int tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
