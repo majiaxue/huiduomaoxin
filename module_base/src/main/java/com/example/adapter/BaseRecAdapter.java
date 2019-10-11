@@ -16,22 +16,22 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/15
  * Describe:
  */
-public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
+public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListBean> {
 
     private String type;
 
-    public BaseRecAdapter(Context context, List<TBGoodsRecBean.DataBean> mList, int mLayoutId) {
+    public BaseRecAdapter(Context context, List<TBGoodsRecBean.ResultListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
-    public BaseRecAdapter(Context context, List<TBGoodsRecBean.DataBean> mList, int mLayoutId, String type) {
+    public BaseRecAdapter(Context context, List<TBGoodsRecBean.ResultListBean> mList, int mLayoutId, String type) {
         super(context, mList, mLayoutId);
         this.type = type;
     }
 
 
     @Override
-    public void convert(RecyclerViewHolder holder, TBGoodsRecBean.DataBean data, final int position) {
+    public void convert(RecyclerViewHolder holder, TBGoodsRecBean.ResultListBean data, final int position) {
         try {
 
             if (type != null && type.equals("0")) {

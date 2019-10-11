@@ -43,7 +43,7 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
     private String itemType;
     private List<UniversalListBean.DataBean.ListBean> dataBeanList = new ArrayList<>();
     private List<HotRecommendBean.DataBean> hotList = new ArrayList<>();
-    private List<TBGoodsRecBean.DataBean> tbList = new ArrayList();
+    private List<TBGoodsRecBean.ResultListBean> tbList = new ArrayList();
     private BaoYouAdapter baoYouAdapter;
     private HotRecommendRecAdapter hotRecommendRecAdapter;
     private UniversalListRecAdapter universalListRecAdapter;
@@ -197,19 +197,21 @@ public class UniversalListPresenter extends BasePresenter<UniversalListView> {
                                 tbList.clear();
                             }
                             for (int i = 0; i < resultList.size(); i++) {
-                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
-                                JSONObject object = resultList.getJSONObject(i);
-                                dataBean.setItem_id(object.getString("item_id"));
-                                dataBean.setPict_url(object.getString("pict_url"));
-                                dataBean.setTitle(object.getString("title"));
-                                dataBean.setCommission_rate("" + object.getDouble("commission_rate"));
-                                dataBean.setVolume(object.getString("volume"));
-                                dataBean.setCoupon_amount(object.getString("coupon_amount"));
-                                dataBean.setZk_final_price(object.getString("zk_final_price"));
-                                dataBean.setReserve_price(object.getString("reserve_price"));
-                                dataBean.setTk_total_sales(object.getString("tk_total_sales"));
-                                dataBean.setCoupon_start_time(object.getString("coupon_start_time"));
-                                dataBean.setCoupon_end_time(object.getString("coupon_end_time"));
+                                TBGoodsRecBean.ResultListBean dataBean = new TBGoodsRecBean.ResultListBean();
+                                JSONObject jsonObject1 = resultList.getJSONObject(i);
+                                dataBean.setItem_id(jsonObject1.getString("item_id"));
+                                dataBean.setPict_url(jsonObject1.getString("pict_url"));
+                                dataBean.setTitle(jsonObject1.getString("title"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
+                                dataBean.setVolume(jsonObject1.getString("volume"));
+                                dataBean.setCoupon_amount(jsonObject1.getString("coupon_amount"));
+                                dataBean.setUser_type(jsonObject1.getInteger("user_type"));
+                                dataBean.setZk_final_price(jsonObject1.getString("zk_final_price"));
+                                dataBean.setReserve_price(jsonObject1.getString("reserve_price"));
+                                dataBean.setTk_total_sales(jsonObject1.getString("tk_total_sales"));
+                                dataBean.setCoupon_start_time(jsonObject1.getString("coupon_start_time"));
+                                dataBean.setCoupon_end_time(jsonObject1.getString("coupon_end_time"));
+                                dataBean.setCommission_rate(jsonObject1.getString("commission_rate"));
                                 tbList.add(dataBean);
                             }
                         }

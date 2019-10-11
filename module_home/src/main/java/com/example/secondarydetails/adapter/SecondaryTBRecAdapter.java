@@ -34,15 +34,15 @@ import java.util.List;
  * Created by cuihaohao on 2019/6/6
  * Describe:
  */
-public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
+public class SecondaryTBRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListBean> {
 
 
-    public SecondaryTBRecAdapter(Context context, List<TBGoodsRecBean.DataBean> mList, int mLayoutId) {
+    public SecondaryTBRecAdapter(Context context, List<TBGoodsRecBean.ResultListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(final RecyclerViewHolder holder, TBGoodsRecBean.DataBean data, int position) {
+    public void convert(final RecyclerViewHolder holder, TBGoodsRecBean.ResultListBean data, int position) {
         // 1表示天猫，0表示淘宝产品
         if ("0".equals(data.getUser_type())) {
             //淘宝

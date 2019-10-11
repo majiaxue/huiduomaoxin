@@ -14,14 +14,14 @@ import com.example.utils.SPUtil;
 
 import java.util.List;
 
-public class BaoYouAdapter extends MyRecyclerAdapter<TBGoodsRecBean.DataBean> {
+public class BaoYouAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListBean> {
 
-    public BaoYouAdapter(Context context, List<TBGoodsRecBean.DataBean> mList, int mLayoutId) {
+    public BaoYouAdapter(Context context, List<TBGoodsRecBean.ResultListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, TBGoodsRecBean.DataBean data, int position) {
+    public void convert(RecyclerViewHolder holder, TBGoodsRecBean.ResultListBean data, int position) {
         double commissionRate = Double.valueOf(data.getCommission_rate()) / 10000;
         double mul = commissionRate * (Double.valueOf(data.getZk_final_price()) - Double.valueOf(data.getCoupon_amount())) * 0.9;
         holder.setImageFresco(R.id.universal_list_rec_image, data.getPict_url());

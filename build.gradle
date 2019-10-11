@@ -4,7 +4,8 @@ buildscript {
     repositories {
         google()
         jcenter()
-
+        //U盟
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.3'
@@ -27,7 +28,8 @@ allprojects {
         flatDir { dirs 'libs' }
         //阿里百川
         maven { url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/" }
-
+        //U盟
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 
@@ -40,7 +42,7 @@ ext {
     minSdkVersion = 19
     targetSdkVersion = 28
     versionCode = 2
-    versionName = "2.4.6"
+    versionName = "2.4.7"
     butterknifeVersion = "9.0.0"
     isDebugType = true
     arouterApi = "1.4.1"

@@ -55,7 +55,7 @@ import okhttp3.ResponseBody;
  */
 public class ClassificationDetailsPresenter extends BasePresenter<ClassificationDetailsView> {
 
-    private List<TBGoodsRecBean.DataBean> tbList = new ArrayList<>();
+    private List<TBGoodsRecBean.ResultListBean> tbList = new ArrayList<>();
     private List<SecondaryPddRecBean.GoodsSearchResponseBean.GoodsListBean> pddList = new ArrayList<>();
     private List<JDGoodsRecBean.DataBean.ListsBean> jdList = new ArrayList<>();
     private String[] titleArr = {"淘宝", "拼多多", "京东"};
@@ -194,7 +194,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                             if ("1".equals(search_type)) {
                                 JSONArray resultList = jsonObject.getJSONArray("result_list");
                                 for (int i = 0; i < resultList.size(); i++) {
-                                    TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                    TBGoodsRecBean.ResultListBean dataBean = new TBGoodsRecBean.ResultListBean();
                                     JSONObject object = resultList.getJSONObject(i);
 
                                     String coupon_info = object.getString("coupon_info");
@@ -219,7 +219,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                 }
                             } else if ("2".equals(search_type)) {
                                 JSONObject data = jsonObject.getJSONObject("data");
-                                TBGoodsRecBean.DataBean dataBean = new TBGoodsRecBean.DataBean();
+                                TBGoodsRecBean.ResultListBean dataBean = new TBGoodsRecBean.ResultListBean();
                                 String coupon_info = data.getString("coupon_info");
                                 if (!TextUtils.isEmpty(coupon_info)) {
                                     String[] split = coupon_info.split("减");
@@ -342,7 +342,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
         RetrofitUtil.getInstance().toSubscribe(observable, new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
-//                ProcessDialogUtil.dismissDialog();
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
@@ -430,7 +430,7 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
 
             @Override
             public void onError(Throwable e) {
-//                ProcessDialogUtil.dismissDialog();
+                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().loadFinish();
                 }
