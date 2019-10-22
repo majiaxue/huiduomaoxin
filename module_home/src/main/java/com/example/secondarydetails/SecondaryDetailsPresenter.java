@@ -82,7 +82,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     public void initView(final TabLayout secondaryDetailsTab, final SmartRefreshLayout secondaryDetailsSmartRefresh, final String type) {
         smartRefresh = secondaryDetailsSmartRefresh;
         ProcessDialogUtil.showProcessDialog(mContext);
-        if (type.equals("6")) {
+        if (type.equals("2")) {
             //拼多多
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.GOODSCATS);
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -136,7 +136,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
                 }
             }));
-        } else if (type.equals("0") || type.equals("2")) {
+        } else if (type.equals("0") || type.equals("6")) {
             //淘宝
             Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.TBKGOODSTBCATEGOTY);
             RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
@@ -291,8 +291,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
     //京东
 
     private void initList(List<SecondaryTabBean.GoodsOptGetResponseBean.GoodsOptListBean> catsListBeans, List<TBGoodsSearchBean> tBGoodsSearchBeans, List<JDTabBean.DataBean> jdTabList, final int page, final String type, int position) {
-        //0淘宝 2 天猫  4京东 6拼多多
-        if ("6".equals(type)) {
+        //0淘宝 2 拼多多  4京东 6天猫
+        if ("2".equals(type)) {
             LogUtil.e("------------------------------->" + catsListBeans.get(position).getOpt_id());
             PddGoodsSearchVo pddGoodsSearchVo = new PddGoodsSearchVo();
             pddGoodsSearchVo.setPage(page);
@@ -375,7 +375,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     if (baseRecAdapter == null) {
                         baseRecAdapter = new SecondaryPddRecAdapter(mContext, baseRecBeanList, R.layout.item_base_rec);
                         if (getView() != null) {
-                            getView().lodeRec(baseRecAdapter);
+                            getView().noGoods(true);
+//                            getView().lodeRec(baseRecAdapter);
                         }
                     } else {
                         baseRecAdapter.notifyDataSetChanged();
@@ -483,7 +484,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     if (secondaryTBRecAdapter == null) {
                         secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
                         if (getView() != null) {
-                            getView().lodeTBRec(secondaryTBRecAdapter);
+                            getView().noGoods(true);
+//                            getView().lodeTBRec(secondaryTBRecAdapter);
                         }
                     } else {
                         secondaryTBRecAdapter.notifyDataSetChanged();
@@ -491,7 +493,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     LogUtil.e("SecondaryDetailsErrorMsg淘宝商品--------------->" + errorMsg);
                 }
             }));
-        } else if ("2".equals(type)) {
+        } else if ("6".equals(type)) {
             //天猫
             Map map = MapUtil.getInstance().addParms("para", tBGoodsSearchBeans.get(position).getCat_name()).addParms("page", page).addParms("istmall", true).build();
             Observable<ResponseBody> dataWithout1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.SEARCH_NEW_TB, map);
@@ -591,7 +593,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     if (secondaryTBRecAdapter == null) {
                         secondaryTBRecAdapter = new SecondaryTBRecAdapter(mContext, tbGoodsList, R.layout.item_base_rec);
                         if (getView() != null) {
-                            getView().lodeTBRec(secondaryTBRecAdapter);
+                            getView().noGoods(true);
+//                            getView().lodeTBRec(secondaryTBRecAdapter);
                         }
                     } else {
                         secondaryTBRecAdapter.notifyDataSetChanged();
@@ -684,7 +687,8 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     if (secondaryJDRecAdapter == null) {
                         secondaryJDRecAdapter = new SecondaryJDRecAdapter(mContext, listsBeanList, R.layout.item_base_rec);
                         if (getView() != null) {
-                            getView().lodeJDRec(secondaryJDRecAdapter);
+                            getView().noGoods(true);
+//                            getView().lodeJDRec(secondaryJDRecAdapter);
                         }
                     } else {
                         secondaryJDRecAdapter.notifyDataSetChanged();

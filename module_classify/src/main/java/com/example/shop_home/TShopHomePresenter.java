@@ -1,12 +1,10 @@
 package com.example.shop_home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.alibaba.baichuan.android.trade.AlibcTrade;
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.baichuan.trade.biz.login.AlibcLogin;
+import com.alibaba.baichuan.trade.biz.login.AlibcLoginCallback;
 import com.example.mvp.BasePresenter;
 import com.example.utils.LogUtil;
 
@@ -24,10 +22,10 @@ public class TShopHomePresenter extends BasePresenter<TShopHomeView> {
 
         final AlibcLogin alibcLogin = AlibcLogin.getInstance();
 
-        alibcLogin.showLogin((Activity) mContext, new AlibcLoginCallback() {
+        alibcLogin.showLogin(new AlibcLoginCallback() {
 
             @Override
-            public void onSuccess() {
+            public void onSuccess(int loginResult, String openId, String userNick) {
 
                 LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
 

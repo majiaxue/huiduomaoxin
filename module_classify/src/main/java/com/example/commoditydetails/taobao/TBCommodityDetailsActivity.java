@@ -137,10 +137,10 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
         ProcessDialogUtil.showProcessDialog(this);
 
-        presenter.login(para);
+//        presenter.login(para);
 
         //加载视图
-//        presenter.initView(para);
+        presenter.initView(para);
 
         //字体加中划线
         commodityOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -179,15 +179,13 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 ARouter.getInstance().build("/home/main").navigation();
             }
         });
-        //分享
+
         //立即领取
         commodityImmediatelyReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
-//                WaitDialog.show(TBCommodityDetailsActivity.this,null);
-
-                presenter.ledSecurities(para);
+                presenter.login(para, "ling");
             }
         });
         //分享
@@ -197,13 +195,11 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
                 if (1 == status) {
                     if ((System.currentTimeMillis() - exitTime) > 3000) {
                         ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
-//                        WaitDialog.show(TBCommodityDetailsActivity.this,null);
-                        presenter.ShareledSecurities(para);
+                        presenter.login(para, "share");
                         exitTime = System.currentTimeMillis();
                     } else {
                         Toast.makeText(TBCommodityDetailsActivity.this, "图片生成中!请勿重复点击", Toast.LENGTH_SHORT).show();
                     }
-//                    presenter.share();
                 }
             }
         });
@@ -212,10 +208,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             @Override
             public void onClick(View v) {
                 ProcessDialogUtil.showProcessDialog(TBCommodityDetailsActivity.this);
-//                WaitDialog.show(TBCommodityDetailsActivity.this,null);
-
-                presenter.ledSecurities(para);
-//                jumpToTB(tbLedSecuritiesBean.getLong_url(), 2);
+                presenter.login(para, "ling");
 
             }
         });

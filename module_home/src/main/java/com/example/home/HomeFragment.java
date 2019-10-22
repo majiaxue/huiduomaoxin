@@ -204,7 +204,11 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeHuoDong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/mine/invite_friends").navigation();
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/invite_friends").navigation();
+                } else {
+                    PopUtils.isLogin(getContext());
+                }
             }
         });
 

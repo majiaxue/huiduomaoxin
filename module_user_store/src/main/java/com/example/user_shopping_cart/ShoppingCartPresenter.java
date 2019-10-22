@@ -317,16 +317,15 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
             for (int i = 0; i < dataBeanList.size(); i++) {
                 List<CartBean.RecordsBean.ItemsBean> list = new ArrayList<>();
                 for (int j = 0; j < dataBeanList.get(i).getItems().size(); j++) {
-
                     if (0 == dataBeanList.get(i).getItems().get(j).getChecked()) {
                         list.add(dataBeanList.get(i).getItems().get(j));
-                        if (sellId != dataBeanList.get(i).getSellerId()) {
-                            sellId = dataBeanList.get(i).getSellerId();
+                        sellId = dataBeanList.get(i).getSellerId();
+                        if (sellId == dataBeanList.get(i).getSellerId()) {
                             parentList.add(dataBeanList.get(i));
                         }
                     }
                 }
-                if (parentList.size() > i - 1) {
+                if (parentList.size() > i) {
                     parentList.get(i).setItems(list);
                 }
             }

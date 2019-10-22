@@ -2,7 +2,6 @@ package com.example.commoditydetails.taobao;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,16 +21,16 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTrade;
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
-import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
-import com.alibaba.baichuan.android.trade.model.TradeResult;
 import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
 import com.alibaba.baichuan.android.trade.page.AlibcDetailPage;
-import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.alibaba.baichuan.trade.biz.AlibcConstants;
+import com.alibaba.baichuan.trade.biz.context.AlibcTradeResult;
+import com.alibaba.baichuan.trade.biz.core.taoke.AlibcTaokeParams;
+import com.alibaba.baichuan.trade.biz.login.AlibcLogin;
+import com.alibaba.baichuan.trade.biz.login.AlibcLoginCallback;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
@@ -56,12 +55,10 @@ import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyTimeUtil;
-import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
-import com.example.view.SelfDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.stx.xhb.xbanner.XBanner;
@@ -96,7 +93,6 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private String num_iid;
     private Bitmap bitmap;
     private NewTBGoodsDetailsBean tbGoodsDetailsBean;
-    private List<String> imageList = new ArrayList<>();
     private int temp = 0;
 
     public TBCommodityDetailsPresenter(Context context) {
@@ -108,57 +104,69 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
     }
 
-    public void login(final String para) {
-
+    public void login(final String para, final String type) {
         final AlibcLogin alibcLogin = AlibcLogin.getInstance();
 
-        alibcLogin.showLogin((Activity) mContext, new AlibcLoginCallback() {
+        if (!alibcLogin.isLogin()) {
+            alibcLogin.showLogin(new AlibcLoginCallback() {
 
-            @Override
-            public void onSuccess() {
-                LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
-                initView(para);
+                @Override
+                public void onSuccess(int loginResult, String openId, String userNick) {
+                    LogUtil.e("获取淘宝用户信息: " + AlibcLogin.getInstance().getSession());
+                    if ("share".equals(type)) {
+                        ShareledSecurities(para);
+                    } else if ("ling".equals(type)) {
+                        ledSecurities(para);
+                    }
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+                    Toast.makeText(mContext, "登录失败 ", Toast.LENGTH_LONG).show();
+//                    if (getView() != null) {
+//                        getView().finishLoad();
+//                    }
+//                    final SelfDialog selfDialog = new SelfDialog(mContext);
+//                    selfDialog.setTitle("提示");
+//                    selfDialog.setMessage("淘宝授权失败，请重试");
+//                    selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
+//                        @Override
+//                        public void onYesClick() {
+//                            selfDialog.dismiss();
+//                            ((Activity) mContext).finish();
+//                        }
+//                    });
+//
+//                    selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
+//                        @Override
+//                        public void onNoClick() {
+//                            temp = 1;
+//                            login(para, type);
+//                            selfDialog.dismiss();
+//                        }
+//                    });
+//                    selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                        @Override
+//                        public void onDismiss(DialogInterface dialog) {
+//                            PopUtils.setTransparency(mContext, 1f);
+//                            if (temp == 0) {
+//                                ((Activity) mContext).finish();
+//                            }
+//                        }
+//                    });
+//
+//                    PopUtils.setTransparency(mContext, 0.3f);
+//                    selfDialog.show();
+//                    temp = 0;
+                }
+            });
+        } else {
+            if ("share".equals(type)) {
+                ShareledSecurities(para);
+            } else if ("ling".equals(type)) {
+                ledSecurities(para);
             }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                Toast.makeText(mContext, "登录失败 ",
-                        Toast.LENGTH_LONG).show();
-
-                final SelfDialog selfDialog = new SelfDialog(mContext);
-                selfDialog.setTitle("提示");
-                selfDialog.setMessage("淘宝授权失败，请重试");
-                selfDialog.setYesOnclickListener("取消", new SelfDialog.onYesOnclickListener() {
-                    @Override
-                    public void onYesClick() {
-                        selfDialog.dismiss();
-                        ((Activity) mContext).finish();
-                    }
-                });
-
-                selfDialog.setNoOnclickListener("确定", new SelfDialog.onNoOnclickListener() {
-                    @Override
-                    public void onNoClick() {
-                        temp = 1;
-                        login(para);
-                        selfDialog.dismiss();
-                    }
-                });
-                selfDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        PopUtils.setTransparency(mContext, 1f);
-                        if (temp == 0) {
-                            ((Activity) mContext).finish();
-                        }
-                    }
-                });
-
-                PopUtils.setTransparency(mContext, 0.3f);
-                selfDialog.show();
-                temp = 0;
-            }
-        });
+        }
     }
 
     private void shouQuan() {
@@ -502,30 +510,31 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     private void jumpToTB(String originUrl, int flag) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
             if (flag == 2) {
+
                 //提供给三方传递配置参数
                 Map<String, String> exParams = new HashMap<>();
                 exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
-                //打开指定页面
-                AlibcPage alibcPage = new AlibcPage(originUrl);
-                LogUtil.e("GotoTB" + flag + "        " + originUrl);
+
+
                 //设置页面打开方式
-                AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+                AlibcShowParams showParams = new AlibcShowParams();
+                showParams.setOpenType(OpenType.Auto);
 
-                //使用百川sdk提供默认的Activity打开detail
-                AlibcTrade.show((Activity) mContext, alibcPage, showParams, null, exParams,
-                        new AlibcTradeCallback() {
-                            @Override
-                            public void onTradeSuccess(TradeResult tradeResult) {
-                                //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                                LogUtil.e(tradeResult.toString());
-                            }
+                AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+                taokeParams.setPid("mm_112883640_11584347_72287650277");
 
-                            @Override
-                            public void onFailure(int code, String msg) {
-                                //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                                LogUtil.e("阿里百川" + code + "         " + msg);
-                            }
-                        });
+                AlibcTrade.openByUrl((Activity) mContext, "", originUrl, null, null, null, showParams, taokeParams, exParams, new AlibcTradeCallback() {
+                    @Override
+                    public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
+
             } else if (flag == 1) {
                 //提供给三方传递配置参数
                 Map<String, String> exParams = new HashMap<>();
@@ -533,25 +542,25 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                 //打开指定页面
                 AlibcBasePage detailPage = new AlibcDetailPage(num_iid);
-                LogUtil.e("GotoTB" + flag + "        " + num_iid);
+
                 //设置页面打开方式
-                AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+                AlibcShowParams showParams = new AlibcShowParams(OpenType.Native);
 
-                //使用百川sdk提供默认的Activity打开detail
-                AlibcTrade.show((Activity) mContext, detailPage, showParams, null, exParams,
-                        new AlibcTradeCallback() {
-                            @Override
-                            public void onTradeSuccess(TradeResult tradeResult) {
-                                //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                                LogUtil.e(tradeResult.toString());
-                            }
+                AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+                taokeParams.setPid("mm_112883640_11584347_72287650277");
 
-                            @Override
-                            public void onFailure(int code, String msg) {
-                                //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                                LogUtil.e("阿里百川" + code + "         " + msg);
-                            }
-                        });
+                AlibcTrade.openByBizCode((Activity) mContext, detailPage, null, null, null, "shop", showParams, taokeParams, exParams, new AlibcTradeCallback() {
+                    @Override
+                    public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
+
             }
         } else {
             ARouter.getInstance().build("/mine/login").navigation();

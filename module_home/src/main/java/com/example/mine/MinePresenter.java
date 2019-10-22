@@ -213,17 +213,15 @@ public class MinePresenter extends BasePresenter<MineView> {
     public void loadData() {
         LogUtil.e("token--->" + SPUtil.getToken());
         ProcessDialogUtil.showProcessDialog(mContext);
-//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.GETUSERINFO, SPUtil.getToken());//"http://192.168.1.9:4001"
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-//                ProcessDialogUtil.dismissDialog();
-                LogUtil.e("成功");
+                LogUtil.e("个人信息：" + result);
                 UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                 }.getType());
-                LogUtil.e("userInfoBean"+userInfoBean);
+
                 String head = SPUtil.getStringValue("head");
                 File file = new File(Environment.getExternalStorageDirectory().getPath() + "/fltk/image/" + "fltkHead.jpg");
                 if (file.exists()) {
@@ -244,7 +242,7 @@ public class MinePresenter extends BasePresenter<MineView> {
 
                 getPredict();
                 temp += 1;
-                LogUtil.e("个人信息：" + result);
+
                 if (getView() != null) {
                     getView().loginSuccess(userInfoBean);
                 }
@@ -252,14 +250,12 @@ public class MinePresenter extends BasePresenter<MineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("个人信息" + errorCode + "---------" + errorMsg);
                 SPUtil.addParm(CommonResource.TOKEN, "");
-//                if ("2".equals(errorCode)) {
+
                 if (getView() != null) {
                     getView().onError();
                 }
-//                }
             }
         }));
     }

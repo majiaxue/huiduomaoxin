@@ -1,9 +1,5 @@
 package com.example.shop_home;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -13,21 +9,18 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ali.auth.third.ui.webview.TaeWebView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
-import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
-import com.alibaba.baichuan.android.trade.model.AlibcTaokeParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
-import com.alibaba.baichuan.android.trade.model.TradeResult;
 import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
-import com.alibaba.baichuan.android.trade.page.AlibcDetailPage;
-import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.alibaba.baichuan.android.trade.page.AlibcShopPage;
+import com.alibaba.baichuan.trade.biz.AlibcConstants;
+import com.alibaba.baichuan.trade.biz.context.AlibcTradeResult;
+import com.alibaba.baichuan.trade.biz.core.taoke.AlibcTaokeParams;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -37,12 +30,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @Route(path = "/module_classify/tshop_home")
 public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePresenter> implements TShopHomeView {
     @BindView(R2.id.tshop_home_webview)
-    TaeWebView webView;
+    WebView webView;
     @BindView(R2.id.include_back)
     ImageView includeBack;
     @BindView(R2.id.include_title)
@@ -118,16 +110,6 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
                             .navigation();
                 }
 
-//                try {
-//                    if (!url.startsWith("https://")) {
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                        startActivity(intent);
-//                        return false;
-//                    }
-//                } catch (Exception e) {
-//                    return false;
-//                }
-
                 view.loadUrl(url);
                 return false;
             }
@@ -148,19 +130,19 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
             Map<String, String> exParams = new HashMap<>();
             exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
-            //实例化店铺打开page
-//        AlibcBasePage shopPage = new AlibcShopPage(shopId);
-            //实例化URL打开page
-            AlibcBasePage page = new AlibcPage(url);
 
             //设置页面打开方式
-            AlibcShowParams showParams = new AlibcShowParams(OpenType.H5, false);
+            AlibcShowParams showParams = new AlibcShowParams();
+            showParams.setOpenType(OpenType.Auto);
 
-            //使用百川sdk提供默认的Activity打开detail
-            AlibcTrade.show(this, webView, webViewClient, webChromeClient, page, showParams, null, exParams, new AlibcTradeCallback() {
+            AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+            taokeParams.setPid("mm_112883640_11584347_72287650277");
+
+
+            AlibcTrade.openByUrl(this, "", url, webView, webViewClient, webChromeClient, showParams, taokeParams, exParams, new AlibcTradeCallback() {
                 @Override
-                public void onTradeSuccess(TradeResult tradeResult) {
-                    LogUtil.e("------>" + tradeResult.toString());
+                public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
                 }
 
                 @Override
@@ -168,32 +150,34 @@ public class TShopHomeActivity extends BaseActivity<TShopHomeView, TShopHomePres
 
                 }
             });
-        }else{
+
+        } else {
 
             //提供给三方传递配置参数
             Map<String, String> exParams = new HashMap<>();
             exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
             //打开指定页面
-            AlibcBasePage detailPage = new AlibcDetailPage(shopId);
+            AlibcBasePage detailPage = new AlibcShopPage(shopId);
+
             //设置页面打开方式
-            AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+            AlibcShowParams showParams = new AlibcShowParams();
+            showParams.setOpenType(OpenType.Auto);
 
-            //使用百川sdk提供默认的Activity打开detail
-            AlibcTrade.show(this, detailPage, showParams, null, exParams,
-                    new AlibcTradeCallback() {
-                        @Override
-                        public void onTradeSuccess(TradeResult tradeResult) {
-                            //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                            LogUtil.e(tradeResult.toString());
-                        }
+            AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+            taokeParams.setPid("mm_112883640_11584347_72287650277");
 
-                        @Override
-                        public void onFailure(int code, String msg) {
-                            //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                            LogUtil.e("阿里百川" + code + "         " + msg);
-                        }
-                    });
+            AlibcTrade.openByBizCode(this, detailPage, webView, webViewClient, webChromeClient, "shop", showParams, taokeParams, exParams, new AlibcTradeCallback() {
+                @Override
+                public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+
+                }
+            });
 
         }
     }

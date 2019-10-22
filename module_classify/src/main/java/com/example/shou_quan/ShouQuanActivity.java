@@ -5,18 +5,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.ali.auth.third.ui.webview.TaeWebView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
-import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
-import com.alibaba.baichuan.android.trade.model.TradeResult;
-import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
-import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.alibaba.baichuan.trade.biz.AlibcConstants;
+import com.alibaba.baichuan.trade.biz.context.AlibcTradeResult;
+import com.alibaba.baichuan.trade.biz.core.taoke.AlibcTaokeParams;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
 import com.example.mvp.BaseActivity;
@@ -31,7 +29,7 @@ import butterknife.BindView;
 @Route(path = "/module_classify/shouquan")
 public class ShouQuanActivity extends BaseActivity<ShouQuanView, ShouQuanPresenter> implements ShouQuanView {
     @BindView(R2.id.shouquan_webview)
-    TaeWebView webView;
+    WebView webView;
 
     @Autowired(name = "url")
     String url;
@@ -86,16 +84,16 @@ public class ShouQuanActivity extends BaseActivity<ShouQuanView, ShouQuanPresent
         Map<String, String> exParams = new HashMap<>();
         exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
-        //实例化URL打开page
-        AlibcBasePage page = new AlibcPage(url);
+        AlibcShowParams showParams = new AlibcShowParams();
+        showParams.setOpenType(OpenType.Auto);
 
-        //设置页面打开方式
-        AlibcShowParams showParams = new AlibcShowParams(OpenType.H5, false);
+        AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+        taokeParams.setPid("mm_112883640_11584347_72287650277");
 
-        //使用百川sdk提供默认的Activity打开detail
-        AlibcTrade.show(this, webView, webViewClient, webChromeClient, page, showParams, null, exParams, new AlibcTradeCallback() {
+
+        AlibcTrade.openByUrl(this, url, url, webView, webViewClient, webChromeClient, showParams, taokeParams, exParams, new AlibcTradeCallback() {
             @Override
-            public void onTradeSuccess(TradeResult tradeResult) {
+            public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
 
             }
 

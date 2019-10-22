@@ -6,8 +6,8 @@
 
     <include layout="@layout/include_status" />
 
-    <com.ali.auth.third.ui.webview.TaeWebView
+    <WebView
         android:id="@+id/shouquan_webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.ali.auth.third.ui.webview.TaeWebView>
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -7,11 +7,11 @@ import android.view.View;
 
 import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
-import com.alibaba.baichuan.android.trade.constants.AlibcConstants;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
-import com.alibaba.baichuan.android.trade.model.TradeResult;
-import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.alibaba.baichuan.trade.biz.AlibcConstants;
+import com.alibaba.baichuan.trade.biz.context.AlibcTradeResult;
+import com.alibaba.baichuan.trade.biz.core.taoke.AlibcTaokeParams;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.FreeChargeBean;
@@ -48,7 +48,7 @@ public class FreeChargePresenter extends BasePresenter<FreeChargeView> {
 
     public void freeChargeActivity(final int activityType, final RecyclerView freeChargeRec) {
         Map type = MapUtil.getInstance().addParms("type", activityType).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TAOLIJIN,type);
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.TAOLIJIN, type);
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -62,7 +62,7 @@ public class FreeChargePresenter extends BasePresenter<FreeChargeView> {
                     if (activityType == 0) {
                         if (freeChargeAdapter == null) {
                             freeChargeAdapter = new FreeChargeAdapter(mContext, freeChargeBeans, R.layout.item_free_charge_activity_rec);
-                        }else{
+                        } else {
                             freeChargeAdapter.notifyDataSetChanged();
                         }
                         getView().load(freeChargeAdapter);
@@ -81,7 +81,7 @@ public class FreeChargePresenter extends BasePresenter<FreeChargeView> {
                     } else {
                         if (freeChargeLookAdapter == null) {
                             freeChargeLookAdapter = new FreeChargeLookAdapter(mContext, freeChargeBeans, R.layout.item_free_charge_look_back_rec);
-                        }else{
+                        } else {
                             freeChargeLookAdapter.notifyDataSetChanged();
                         }
                         getView().load(freeChargeLookAdapter);
@@ -103,29 +103,29 @@ public class FreeChargePresenter extends BasePresenter<FreeChargeView> {
     }
 
     private void jumpToTB(String originUrl) {
-        //提供给三方传递配置参数
         Map<String, String> exParams = new HashMap<>();
         exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
-        //打开指定页面
-        AlibcPage alibcPage = new AlibcPage(originUrl);
+
+
         //设置页面打开方式
-        AlibcShowParams showParams = new AlibcShowParams(OpenType.Native, false);
+        AlibcShowParams showParams = new AlibcShowParams();
+        showParams.setOpenType(OpenType.Native);
 
-        //使用百川sdk提供默认的Activity打开detail
-        AlibcTrade.show((Activity) mContext, alibcPage, showParams, null, exParams,
-                new AlibcTradeCallback() {
-                    @Override
-                    public void onTradeSuccess(TradeResult tradeResult) {
-                        //打开电商组件，用户操作中成功信息回调。tradeResult：成功信息（结果类型：加购，支付；支付结果）
-                        LogUtil.e(tradeResult.toString());
-                    }
+        AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+        taokeParams.setPid("mm_112883640_11584347_72287650277");
 
-                    @Override
-                    public void onFailure(int code, String msg) {
-                        //打开电商组件，用户操作中错误信息回调。code：错误码；msg：错误信息
-                        LogUtil.e("阿里百川" + code + "         " + msg);
-                    }
-                });
+
+        AlibcTrade.openByUrl((Activity) mContext, "", originUrl, null, null, null, showParams, taokeParams, exParams, new AlibcTradeCallback() {
+            @Override
+            public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
     }
 
 

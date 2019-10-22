@@ -119,8 +119,8 @@ public class ModuleBaseApplication extends MultiDexApplication {
 //                .setMaxCacheSizeOnLowDiskSpace(MAX_DISK_SIZE_ON_LOW_DISK_SPACE)
 //                .setMaxCacheSizeOnVeryLowDiskSpace(MAX_DISK_SIZE_ON_VERY_LOW_DISK_SPACE)
 //                .build();
-//
-//        //对ImagePipelineConfig进行一些配置
+
+        //对ImagePipelineConfig进行一些配置
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setDownsampleEnabled(true)              // 对图片进行自动缩放
                 .setResizeAndRotateEnabledForNetwork(true) // 对网络图片进行resize处理，减少内存消耗
@@ -129,7 +129,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 .build();
         Fresco.initialize(this, config);
 
-//        Fresco.initialize(this);
+        Fresco.initialize(this);
     }
 
     @Override

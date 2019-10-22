@@ -13,6 +13,7 @@ import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
+import com.example.utils.PhoneNumUtil;
 
 import butterknife.BindView;
 
@@ -84,7 +85,11 @@ public class RegisterActivity extends BaseActivity<RegisterView, RegisterPresent
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!presenter.isRead) {
+                if (!PhoneNumUtil.isMobileNO(registerPhone.getText().toString())) {
+                    Toast.makeText(RegisterActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(registerCode.getText().toString())) {
+                    Toast.makeText(RegisterActivity.this, "请输入邀请码", Toast.LENGTH_SHORT).show();
+                } else if (!presenter.isRead) {
                     Toast.makeText(RegisterActivity.this, "请勾选用户协议", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(registerPassword.getText().toString())) {
                     Toast.makeText(RegisterActivity.this, "请设置密码", Toast.LENGTH_SHORT).show();
