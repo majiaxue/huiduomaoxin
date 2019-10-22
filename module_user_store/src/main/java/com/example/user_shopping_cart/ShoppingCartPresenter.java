@@ -314,10 +314,10 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
         try {
             List<CartBean.RecordsBean> parentList = new ArrayList<>();
             int sellId = 0;
+            int flag = 0;
             for (int i = 0; i < dataBeanList.size(); i++) {
                 List<CartBean.RecordsBean.ItemsBean> list = new ArrayList<>();
                 for (int j = 0; j < dataBeanList.get(i).getItems().size(); j++) {
-
                     if (0 == dataBeanList.get(i).getItems().get(j).getChecked()) {
                         list.add(dataBeanList.get(i).getItems().get(j));
                         if (sellId != dataBeanList.get(i).getSellerId()) {
@@ -326,8 +326,9 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                         }
                     }
                 }
-                if (parentList.size() > i - 1) {
-                    parentList.get(i).setItems(list);
+                if (list.size() > 0) {
+                    parentList.get(flag).setItems(list);
+                    flag++;
                 }
             }
             String jsonString = JSON.toJSONString(parentList);
@@ -336,6 +337,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
             mContext.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtil.e("99999999999999999++++++++++++" + e.getMessage());
         }
     }
 }
