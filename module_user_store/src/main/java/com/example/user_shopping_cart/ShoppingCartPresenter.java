@@ -314,19 +314,22 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
         try {
             List<CartBean.RecordsBean> parentList = new ArrayList<>();
             int sellId = 0;
+            int flag = 0;
             for (int i = 0; i < dataBeanList.size(); i++) {
                 List<CartBean.RecordsBean.ItemsBean> list = new ArrayList<>();
                 for (int j = 0; j < dataBeanList.get(i).getItems().size(); j++) {
+
                     if (0 == dataBeanList.get(i).getItems().get(j).getChecked()) {
                         list.add(dataBeanList.get(i).getItems().get(j));
-                        sellId = dataBeanList.get(i).getSellerId();
-                        if (sellId == dataBeanList.get(i).getSellerId()) {
+                        if (sellId != dataBeanList.get(i).getSellerId()) {
+                            sellId = dataBeanList.get(i).getSellerId();
                             parentList.add(dataBeanList.get(i));
                         }
                     }
                 }
-                if (parentList.size() > i) {
-                    parentList.get(i).setItems(list);
+                if (list.size() > 0) {
+                    parentList.get(flag).setItems(list);
+                    flag++;
                 }
             }
             String jsonString = JSON.toJSONString(parentList);
