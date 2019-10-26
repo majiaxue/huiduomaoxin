@@ -1,7 +1,6 @@
 package com.example.cashout;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.bean.UserInfoBean;
@@ -17,7 +16,6 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.Map;
 
@@ -80,8 +78,10 @@ public class CashoutPresenter extends BasePresenter<CashoutView> {
     }
 
     public void tixian(String money, String zfb, String name) {
-        if ("".equals(zfb.trim()) || "".equals(name.trim()) || "".equals(money) || "0".equals(money) || "0.".equals(money)) {
+        if ("".equals(zfb.trim()) || "".equals(name.trim()) || "".equals(money)) {
             Toast.makeText(mContext, "请把信息填写完整", Toast.LENGTH_SHORT).show();
+        } else if ("0".equals(money) || "0.".equals(money)) {
+            Toast.makeText(mContext, "提现金额不能为0", Toast.LENGTH_SHORT).show();
         } else if (ArithUtil.exact(Double.valueOf(money), 2) == 0.0) {
             Toast.makeText(mContext, "提现金额不能为0", Toast.LENGTH_SHORT).show();
         } else {

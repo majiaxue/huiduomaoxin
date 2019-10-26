@@ -33,7 +33,7 @@ public class SCPresenter extends BasePresenter<SCView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("pdd:" + result);
+                LogUtil.e("sc:" + result);
                 PredictBean predictBean = JSON.parseObject(result, PredictBean.class);
                 if (getView()!= null) {
                     getView().loadUI(predictBean);

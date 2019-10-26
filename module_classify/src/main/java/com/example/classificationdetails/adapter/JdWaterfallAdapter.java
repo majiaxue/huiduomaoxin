@@ -23,8 +23,8 @@ public class JdWaterfallAdapter extends MyRecyclerAdapter<JDListBean.DataBean> {
         holder.setText(R.id.classification_name, data.getSkuName());
         if (data.getCouponInfo() != null && data.getCouponInfo().getCouponList() != null && data.getCouponInfo().getCouponList().size() > 0) {
             holder.setText(R.id.classification_reduce_price, "领劵减" + Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount()) + "元");
+            holder.setText(R.id.classification_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getPriceInfo().getPrice()), Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount())));
         }
-        holder.setText(R.id.classification_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getPriceInfo().getPrice()), Double.valueOf(data.getCouponInfo().getCouponList().get(0).getDiscount())));
         holder.setText(R.id.classification_original_price, "" + Double.valueOf(data.getPriceInfo().getPrice()) + "");
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
         TextView originalPrice = holder.getView(R.id.classification_original_price);

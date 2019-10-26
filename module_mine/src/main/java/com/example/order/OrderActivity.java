@@ -136,8 +136,8 @@ public class OrderActivity extends BaseFragmentActivity<OrderView, OrderPresente
 
         orderTb.setBackgroundResource(position == 0 ? R.drawable.predict_xuan_left : 0);
         orderPdd.setBackgroundResource(position == 1 ? R.drawable.predict_xuan : 0);
-        orderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan : 0);
-        orderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
+        orderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan_right : 0);
+//        orderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
     }
 
     @Override

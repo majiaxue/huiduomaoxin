@@ -117,15 +117,21 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
 
         fansOrderTb.setBackgroundResource(position == 0 ? R.drawable.predict_xuan_left : 0);
         fansOrderPdd.setBackgroundResource(position == 1 ? R.drawable.predict_xuan : 0);
-        fansOrderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan : 0);
-        fansOrderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
+        fansOrderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan_right : 0);
+//        fansOrderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
     }
 
     @Override
     public void loadCensus(FansOrderCensusBean bean) {
-        fansOrderTxt1.setText(bean.getTotalCount() + "");
-        fansOrderTxt2.setText(bean.getTotalAmount() + "");
-        fansOrderTxt3.setText(bean.getTotalBackMoney() + "");
+        if (index == 3) {
+            fansOrderTxt1.setText(bean.getTotalCount() + "");
+            fansOrderTxt2.setText(bean.getTotalAmount() / 100 + "");
+            fansOrderTxt3.setText(bean.getTotalBackMoney() / 100 + "");
+        } else {
+            fansOrderTxt1.setText(bean.getTotalCount() + "");
+            fansOrderTxt2.setText(bean.getTotalAmount() + "");
+            fansOrderTxt3.setText(bean.getTotalBackMoney() + "");
+        }
     }
 
     @Override

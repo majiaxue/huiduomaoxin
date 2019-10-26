@@ -50,7 +50,6 @@ public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodsRecommendBean.
             } else {
                 holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
             }
-            LogUtil.e("预估收益:" + "商品价格" + couponPrice + "佣金" + div + "个人收益" + SPUtil.getFloatValue(CommonResource.BACKBL) + "最终金额" + "预估赚" + ArithUtil.mul(mul, SPUtil.getFloatValue(CommonResource.BACKBL)));
         } else {
             holder.setText(R.id.base_estimate, "预估赚" + ArithUtil.mulRound(mul, 0.3));
         }

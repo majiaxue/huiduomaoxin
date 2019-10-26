@@ -72,7 +72,8 @@
             <View
                 android:layout_width="@dimen/dp_1"
                 android:layout_height="match_parent"
-                android:background="#dedede" />
+                android:background="#dedede"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/fans_order_sc"
@@ -83,7 +84,8 @@
                 android:gravity="center"
                 android:text="@string/shangcheng"
                 android:textColor="#222222"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_14"
+                android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>
 

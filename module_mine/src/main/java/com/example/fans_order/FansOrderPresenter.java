@@ -46,7 +46,7 @@ public class FansOrderPresenter extends BasePresenter<FansOrderView> {
 
     @Override
     protected void onViewDestroy() {
-
+        FansOrderActivity.index = 1;
     }
 
     public void initTabLayout(final TabLayout orderTab) {
