@@ -30,6 +30,7 @@
         android:layout_height="@dimen/dp_49"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <LinearLayout

@@ -35,14 +35,23 @@ public class SCPresenter extends BasePresenter<SCView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("pdd:" + result);
                 PredictBean predictBean = JSON.parseObject(result, PredictBean.class);
-                if (getView()!= null) {
-                    getView().loadUI(predictBean);
+                if (predictBean != null) {
+                    if (getView() != null) {
+                        getView().loadUI(predictBean);
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadUI();
+                    }
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("pddErrorMsg:" + errorMsg);
+                if (getView() != null) {
+                    getView().loadUI();
+                }
             }
         }));
     }

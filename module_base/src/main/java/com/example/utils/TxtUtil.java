@@ -35,7 +35,7 @@ public class TxtUtil {
             ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             CharSequence text = clipboard.getText();
             if (text != null) {
-                String string = text.toString();
+                String string = text.toString().trim().replace(" ", "");
                 SharedPreferences sp = context.getSharedPreferences("clipboard", 0);
                 String value = sp.getString(CommonResource.TAN_CONTENT, "");
                 LogUtil.e(string + "--------------------" + value);

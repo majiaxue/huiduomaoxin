@@ -38,10 +38,7 @@ public class ShopCollectActivity extends BaseActivity<ShopCollectView, ShopColle
     @Override
     public void initData() {
         includeTitle.setText("店铺收藏");
-        //店铺
-        presenter.initShopCollectRec(shopCollectRec);
-        //为你推荐
-        presenter.shopCollectBottomRec(shopCollectBottomRec);
+
     }
 
     @Override
@@ -64,4 +61,12 @@ public class ShopCollectActivity extends BaseActivity<ShopCollectView, ShopColle
         return new ShopCollectPresenter(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //店铺
+        presenter.initShopCollectRec(shopCollectRec);
+        //为你推荐
+        presenter.shopCollectBottomRec(shopCollectBottomRec);
+    }
 }

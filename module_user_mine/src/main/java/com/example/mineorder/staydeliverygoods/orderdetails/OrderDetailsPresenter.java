@@ -1,6 +1,7 @@
 package com.example.mineorder.staydeliverygoods.orderdetails;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -29,6 +30,7 @@ import com.example.utils.SpaceItemDecorationLeftAndRight;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.iwgang.countdownview.CountdownView;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 

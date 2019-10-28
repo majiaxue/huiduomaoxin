@@ -35,14 +35,24 @@ public class JDPresenter extends BasePresenter<JDView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("jd:" + result);
                 PredictBean predictBean = JSON.parseObject(result, PredictBean.class);
-                if (getView()!= null) {
-                    getView().loadUI(predictBean);
+                if (predictBean != null) {
+                    if (getView() != null) {
+                        getView().loadUI(predictBean);
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadUI();
+                    }
                 }
+
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("jdError:" + errorMsg);
+                if (getView() != null) {
+                    getView().loadUI();
+                }
             }
         }));
     }

@@ -5,4 +5,6 @@ import com.example.mvp.IView;
 
 public interface TBView extends IView {
     void loadUI(PredictBean predictBean);
+
+    void loadUI();
 }

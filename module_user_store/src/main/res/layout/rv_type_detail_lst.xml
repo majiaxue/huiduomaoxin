@@ -100,6 +100,7 @@
                 android:background="@drawable/bg_5_fb4_feb"
                 android:gravity="center"
                 android:text="进店"
+                android:visibility="gone"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_12" />
         </RelativeLayout>

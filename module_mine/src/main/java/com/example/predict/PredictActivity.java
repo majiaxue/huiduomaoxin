@@ -15,6 +15,9 @@ import com.example.mvp.BaseFragmentActivity;
 
 import butterknife.BindView;
 
+/**
+ * 收益报表
+ */
 @Route(path = "/mine/predict")
 public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPresenter> implements PredictView {
     @BindView(R2.id.predict_back)

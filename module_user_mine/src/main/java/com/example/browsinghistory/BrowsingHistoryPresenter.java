@@ -55,6 +55,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
                 BrowsingHistoryBean browsingHistoryBean = JSON.parseObject(result, new TypeReference<BrowsingHistoryBean>() {
                 }.getType());
                 if (browsingHistoryBean != null) {
+                    getView().empty(false);
                     parentBeanList.clear();
                     parentBeanList.addAll(browsingHistoryBean.getRecords());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -76,6 +77,8 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
 
                         }
                     });
+                }else{
+                    getView().empty(true);
                 }
 
             }
@@ -83,6 +86,7 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("browsingHistoryRecErrorMsg------------->" + errorMsg);
+                getView().empty(true);
             }
         }));
 

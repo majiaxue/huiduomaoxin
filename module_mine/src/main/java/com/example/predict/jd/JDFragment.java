@@ -59,6 +59,19 @@ public class JDFragment extends BaseFragment<JDView, JDPresenter> implements JDV
     }
 
     @Override
+    public void loadUI() {
+        predictTotalMoney.setText("0");
+        predictBenJiesuan.setText("0");
+        predictShangJiesuan.setText("0");
+        predictBenFukuan.setText("0");
+        predictShangFukuan.setText("0");
+        predictFukuanshuJin.setText("0");
+        predictFukuanshuZuo.setText("0");
+        predictYongjinJin.setText("0");
+        predictYongjinZuo.setText("0");
+    }
+
+    @Override
     public JDView createView() {
         return this;
     }

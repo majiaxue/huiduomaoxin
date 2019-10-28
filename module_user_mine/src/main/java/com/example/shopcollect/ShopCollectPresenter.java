@@ -66,76 +66,82 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                 LogUtil.e("result--------->" + result);
                 ShopCollectBean shopCollectBean = JSON.parseObject(result, new TypeReference<ShopCollectBean>() {
                 }.getType());
+                if (shopCollectBean != null) {
+                    dataBeanList.clear();
+                    dataBeanList.addAll(shopCollectBean.getRecords());
 
-                dataBeanList.clear();
-                dataBeanList.addAll(shopCollectBean.getRecords());
+                    linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    shopCollectRec.setLayoutManager(linearLayoutManager);
+                    shopCollectAdapter = new ShopCollectAdapter(mContext, dataBeanList, R.layout.item_shop_collect_rec);
+                    shopCollectRec.setAdapter(shopCollectAdapter);
+                    shopCollectAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+//                            Toast.makeText(mContext, "进入店铺", Toast.LENGTH_SHORT).show();
+                            ARouter.getInstance().build("/module_user_store/ShopHomeActivity")
+                                    .withString("shop_name", dataBeanList.get(position).getSellerName())
+                                    .withString("shop_icon", dataBeanList.get(position).getSellerLogo())
+                                    .withString("sellerId", dataBeanList.get(position).getId() + "")
+                                    .withInt("type", 1).navigation();
+                        }
+                    });
+                    shopCollectAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
+                        @Override
+                        public void ViewTwoOnClick(View view1, View view2, final int position) {
+                            view1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-                linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                shopCollectRec.setLayoutManager(linearLayoutManager);
-                shopCollectAdapter = new ShopCollectAdapter(mContext, dataBeanList, R.layout.item_shop_collect_rec);
-                shopCollectRec.setAdapter(shopCollectAdapter);
-                shopCollectAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        Toast.makeText(mContext, "进入店铺", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                shopCollectAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {
-                    @Override
-                    public void ViewTwoOnClick(View view1, View view2, final int position) {
-                        view1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                                }
+                            });
+                            view2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //取消店铺
+                                    final SelfDialog selfDialog = new SelfDialog(mContext);
+                                    selfDialog.setTitle("提示");
+                                    selfDialog.setMessage("您确定要取消关注此店铺吗？");
+                                    selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+                                        @Override
+                                        public void onYesClick() {
+                                            int favoriteId = dataBeanList.get(position).getId();
+                                            LogUtil.e("shopCollect--------->" + favoriteId);
+                                            Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).deleteDataWithout(CommonResource.SHOPDELETE + "/" + favoriteId, SPUtil.getToken());
+                                            RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                                @Override
+                                                public void onSuccess(String result, String msg) {
+                                                    LogUtil.e("shopCollect--------->" + msg);
+                                                    dataBeanList.remove(position);
+                                                    shopCollectAdapter.notifyDataSetChanged();
+                                                    shopCollectRec.closeMenu();
+                                                    selfDialog.dismiss();
+                                                    PopUtils.setTransparency(mContext, 1f);
+                                                }
 
-                            }
-                        });
-                        view2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //取消店铺
-                                final SelfDialog selfDialog = new SelfDialog(mContext);
-                                selfDialog.setTitle("提示");
-                                selfDialog.setMessage("您确定要取消关注此店铺吗？");
-                                selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
-                                    @Override
-                                    public void onYesClick() {
-                                        int favoriteId = dataBeanList.get(position).getId();
-                                        LogUtil.e("shopCollect--------->" + favoriteId);
-                                        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).deleteDataWithout(CommonResource.SHOPDELETE + "/" + favoriteId, SPUtil.getToken());
-                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-                                            @Override
-                                            public void onSuccess(String result, String msg) {
-                                                LogUtil.e("shopCollect--------->" + msg);
-                                                dataBeanList.remove(position);
-                                                shopCollectAdapter.notifyDataSetChanged();
-                                                shopCollectRec.closeMenu();
-                                                selfDialog.dismiss();
-                                                PopUtils.setTransparency(mContext, 1f);
-                                            }
-
-                                            @Override
-                                            public void onError(String errorCode, String errorMsg) {
-                                                LogUtil.e("shopCollect--------->" + errorMsg);
-                                            }
-                                        }));
+                                                @Override
+                                                public void onError(String errorCode, String errorMsg) {
+                                                    LogUtil.e("shopCollect--------->" + errorMsg);
+                                                }
+                                            }));
 
 
-                                    }
-                                });
-                                selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-                                    @Override
-                                    public void onNoClick() {
-                                        selfDialog.dismiss();
-                                        shopCollectRec.closeMenu();
-                                        PopUtils.setTransparency(mContext, 1f);
-                                    }
-                                });
-                                PopUtils.setTransparency(mContext, 0.3f);
-                                selfDialog.show();
-                            }
-                        });
-                    }
-                });
+                                        }
+                                    });
+                                    selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+                                        @Override
+                                        public void onNoClick() {
+                                            selfDialog.dismiss();
+                                            shopCollectRec.closeMenu();
+                                            PopUtils.setTransparency(mContext, 1f);
+                                        }
+                                    });
+                                    PopUtils.setTransparency(mContext, 0.3f);
+                                    selfDialog.show();
+                                }
+                            });
+                        }
+                    });
+                }
             }
 
             @Override

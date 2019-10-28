@@ -59,7 +59,7 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
     public void jumpToShop(String sellerId) {
         Intent intent = new Intent(mContext, ShopHomeActivity.class);
-        intent.putExtra("sellId", sellerId);
+        intent.putExtra("shop_id", sellerId);
         mContext.startActivity(intent);
     }
 

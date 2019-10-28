@@ -8,5 +8,8 @@ import com.example.mvp.IView;
  */
 public interface BrowsingHistoryView extends IView {
     void isCompile(boolean isCompile);
+
     void isCheckAll(boolean isCheckAll);
+
+    void empty(boolean isEmpty);
 }

@@ -1436,7 +1436,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         Intent intent = new Intent(mContext, ShopHomeActivity.class);
         intent.putExtra("shop_name", userGoodsDetail.getSellerName());
         intent.putExtra("shop_icon", userGoodsDetail.getSellerLogo());
-        intent.putExtra("shop_id", userGoodsDetail.getSellerId());
+        intent.putExtra("shop_id", userGoodsDetail.getSellerId() + "");
         intent.putExtra("number", TxtUtil.parse(userGoodsDetail.getSellerFavoriteNum()));
         mContext.startActivity(intent);
     }

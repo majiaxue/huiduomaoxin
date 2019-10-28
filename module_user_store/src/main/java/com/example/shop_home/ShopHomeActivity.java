@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.mvp.BaseFragmentActivity;
@@ -16,7 +17,7 @@ import com.example.user_store.R;
 import com.example.user_store.R2;
 
 import butterknife.BindView;
-
+@Route(path = "/module_user_store/ShopHomeActivity")
 public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHomePresneter> implements ShopHomeView {
     @BindView(R2.id.shop_home_back)
     ImageView shopHomeBack;
@@ -37,11 +38,15 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     @BindView(R2.id.shop_home_more)
     ImageView mMore;
     @Autowired(name = "sellerId")
-    public int shop_id;
+    String shop_id;
     @Autowired(name = "shop_name")
-    public String shop_name;
+    String shop_name;
     @Autowired(name = "shop_icon")
-    public String shop_icon;
+    String shop_icon;
+    @Autowired(name = "type")
+    int type;
+
+    private int flag = 0;
 
     @Override
     public int getLayoutId() {
@@ -51,19 +56,22 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
+        flag = type;
         Intent intent = getIntent();
-        String shop_name = intent.getStringExtra("shop_name");
-        String shop_icon = intent.getStringExtra("shop_icon");
-        shop_id = intent.getIntExtra("shop_id", 0);
+        if (0 == flag) {
+            shop_name = intent.getStringExtra("shop_name");
+            shop_icon = intent.getStringExtra("shop_icon");
+            shop_id = intent.getStringExtra("shop_id");
+        }
         String number = intent.getStringExtra("number");
         Glide.with(this).load(shop_icon).into(shopHomeStoreImage);
         shopHomeStoreName.setText(shop_name);
         shopHomeStoreCollectNumber.setText(number + "收藏");
 
-        presenter.initTabLayout(shopHomeTab, shop_id);
-        presenter.initViewPager(getSupportFragmentManager());
+//        presenter.initTabLayout(shopHomeTab, shop_id);
+        presenter.initViewPager(getSupportFragmentManager(),shop_id);
 
-        shopHomeVp.setOffscreenPageLimit(2);
+        shopHomeVp.setOffscreenPageLimit(1);
         shopHomeTab.setupWithViewPager(shopHomeVp);
     }
 

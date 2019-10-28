@@ -310,12 +310,11 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
     public void shareCount(int count) {
         Toast.makeText(this, "任务已完成", Toast.LENGTH_SHORT).show();
         int shareGoods = punchSignBean.getSignSetting().getShareGoods();
-        int resultShareGoods = punchSignBean.getResult().getShareGoods();
         int allShareJiFen = shareGoods * count;
         allJiFen = allShareJiFen + allJiFen;
         punchSignJiFen.setText("" + allJiFen);
         punchSignText33.setText("完成" + count + "/" + punchSignBean.getSignSetting().getShareNum());
-        if ((resultShareGoods + 1) == 3) {
+        if (count >= punchSignBean.getSignSetting().getShareNum()) {
             punchSignText333.setText("已完成");
         } else {
             punchSignText333.setText("完成");
