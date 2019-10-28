@@ -2,7 +2,6 @@ package com.example.user_store;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ import com.example.entity.EventBusBean2;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.mvp.BaseFragmentActivity;
 import com.example.user_classify.ClassifyFragment;
-import com.example.utils.LogUtil;
 import com.example.view.WindowInsetsFrameLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,7 +23,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 多用户商城主界面
@@ -68,7 +65,7 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
         presenter.loadData(getSupportFragmentManager(), R.id.user_frame);
         presenter.initNotification();
         ModuleBaseApplication.mLocationClient.restart();
-        if ("go".equals(goLocalShop)){
+        if ("go".equals(goLocalShop)) {
             presenter.click(R.id.user_local_shop);
             userLocalShop.setChecked(true);
         }
@@ -118,6 +115,8 @@ public class UserActivity extends BaseFragmentActivity<UserView, UserPresenter> 
             ClassifyFragment.position = eventBusBean2.getPosition();
             userClassify.setChecked(true);
             presenter.click(R.id.user_classify);
+        } else if ("toBuy".equals(eventBusBean2.getMsg())) {
+            presenter.setBack();
         }
     }
 

@@ -58,8 +58,6 @@ public class PayOrderPresenter extends BasePresenter<PayOrderView> {
 
     public void loadData() {
         ProcessDialogUtil.showProcessDialog(mContext);
-//        WaitDialog.show((AppCompatActivity)mContext,null);
-
         if (OrderActivity.index == 0) {
             scOrder();
         } else if (OrderActivity.index == 1) {
@@ -125,12 +123,12 @@ public class PayOrderPresenter extends BasePresenter<PayOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("已付款：" + result);
                 final List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
-                for (int i = 0; i < jdOrderBeans.size(); i++) {
-                    String image = jdOrderBeans.get(i).getImage();
-                    String[] split = image.split(" imgUrl=");
-                    String[] split1 = split[1].split(",");
-                    jdOrderBeans.get(i).setImage(split1[0]);
-                }
+//                for (int i = 0; i < jdOrderBeans.size(); i++) {
+//                    String image = jdOrderBeans.get(i).getImage();
+//                    String[] split = image.split(" imgUrl=");
+//                    String[] split1 = split[1].split(",");
+//                    jdOrderBeans.get(i).setImage(split1[0]);
+//                }
 
                 JDAdapter jdAdapter = new JDAdapter(mContext, jdOrderBeans, R.layout.rv_order_list);
                 getView().loadJD(jdAdapter);

@@ -76,7 +76,7 @@ public class FansSettleOrderPresenter extends BasePresenter<FansSettleOrderView>
     }
 
     private void pddOrder(final int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 1).addParms("pageSize", "10").addParms("type", "3").build();
+        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 0).addParms("pageSize", "10").addParms("type", "3").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

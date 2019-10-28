@@ -42,12 +42,12 @@ public class LoseOrderFragment extends BaseFragment<LoseOrderView, LoseOrderPres
 
     @Override
     public void initData() {
-        flag++;
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderListRv.setLayoutManager(layoutManager);
         orderListRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
-
+        flag++;
+        presenter.loadData();
 
     }
 

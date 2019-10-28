@@ -147,7 +147,7 @@ public class UIHelper {
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     Uri uri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        uri = FileProvider.getUriForFile(context.getApplicationContext(), "com.lxy.taobaoke.provider", file1);
+                        uri = FileProvider.getUriForFile(context.getApplicationContext(), context.getPackageName(), file1);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     } else {
                         uri = Uri.fromFile(file1);

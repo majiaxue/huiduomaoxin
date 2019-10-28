@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
+import com.example.entity.EventBusBean2;
 import com.example.mvp.BaseFragment;
 import com.example.user_shopping_cart.adapter.CartParentRecAdapter;
 import com.example.user_store.R;
@@ -132,6 +133,13 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 presenter.setShoppingCartRec();
+            }
+        });
+
+        mToBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new EventBusBean2("toBuy", 1));
             }
         });
     }

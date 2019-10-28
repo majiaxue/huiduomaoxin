@@ -6,7 +6,6 @@ import android.content.Context;
 public class ProcessDialogUtil {
 
     private static CustomDialog customDialog;
-    private static Context mContext;
 
     /**
      * 显示进度对话框，用于串行请求
@@ -15,7 +14,6 @@ public class ProcessDialogUtil {
      */
     public static void showProcessDialog(final Context context) {
         if (context instanceof Activity) {
-            mContext = context;
             Activity activity = (Activity) context;
             if (null != activity && !activity.isFinishing()) {
                 if (customDialog == null) {
@@ -24,7 +22,6 @@ public class ProcessDialogUtil {
                 if (!customDialog.isShowing()) {
                     customDialog.show();
                     customDialog.setOwnerActivity(activity);
-                    PopUtils.setTransparency(mContext, 0.3f);
                 }
             }
         }
@@ -74,7 +71,6 @@ public class ProcessDialogUtil {
                 try {
                     Thread.sleep(500);
                     customDialog.dismiss();
-                    PopUtils.setTransparency(mContext, 1.0f);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
