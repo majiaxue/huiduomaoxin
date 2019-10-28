@@ -124,14 +124,13 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
     @Override
     public void loadCensus(FansOrderCensusBean bean) {
         if (index == 3) {
-            fansOrderTxt1.setText(bean.getTotalCount() + "");
             fansOrderTxt2.setText(bean.getTotalAmount() / 100 + "");
-            fansOrderTxt3.setText(bean.getTotalBackMoney() / 100 + "");
         } else {
-            fansOrderTxt1.setText(bean.getTotalCount() + "");
             fansOrderTxt2.setText(bean.getTotalAmount() + "");
-            fansOrderTxt3.setText(bean.getTotalBackMoney() + "");
         }
+        fansOrderTxt1.setText(bean.getTotalCount() + "");
+        fansOrderTxt3.setText(bean.getTotalBackMoney() + "");
+
     }
 
     @Override

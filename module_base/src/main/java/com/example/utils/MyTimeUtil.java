@@ -8,8 +8,8 @@ public class MyTimeUtil {
     /**
      * 时间戳转时间
      *
-     * @param time 1541569323155
-     * @return 2018-11-07 13:42:03
+     * @param time 1541569323
+     * @return 2018-11-07
      */
     public static String date2String(String time) {
         if (time != null) {

@@ -19,10 +19,10 @@ public class FansOrderRvAdapter extends MyRecyclerAdapter<FansOrderBean> {
     public void convert(RecyclerViewHolder holder, FansOrderBean data, int position) {
         holder.setText(R.id.fans_order_list_name, data.getGoodsName())
                 .setImageUrl(R.id.fans_order_list_img, data.getGoodsThumbnailUrl())
-                .setText(R.id.fans_order_list_price, "￥" + (Double.valueOf(data.getGoodsPrice() == null ? "0" : data.getGoodsPrice()) / 100))
+                .setText(R.id.fans_order_list_price, "￥" + Double.valueOf(data.getGoodsPrice() == null ? "0" : data.getGoodsPrice()))
                 .setText(R.id.fans_order_list_count, "x" + data.getGoodsQuantity())
-                .setText(R.id.fans_order_list_total, "共" + data.getGoodsQuantity() + "件商品  合计：￥" + (Double.valueOf(data.getOrderAmount() == null ? "0" : data.getOrderAmount()) / 100))
-                .setText(R.id.fans_order_list_time, "购买时间：" + MyTimeUtil.date2String(data.getOrderCreateTime()))
+                .setText(R.id.fans_order_list_total, "共" + data.getGoodsQuantity() + "件商品  合计：￥" + Double.valueOf(data.getOrderAmount() == null ? "0" : data.getOrderAmount()))
+                .setText(R.id.fans_order_list_time, "购买时间：" + MyTimeUtil.date2StringLong(data.getOrderCreateTime()))
                 .setImageResource(R.id.fans_order_list_type, R.drawable.icon_pdd)
                 .setImageUrl(R.id.fans_order_list_head, data.getFansIcon())
                 .setText(R.id.fans_order_list_nickname, data.getFansName())
