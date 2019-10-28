@@ -127,12 +127,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                 .setBadgeTextSize(9, true)
                 .setShowShadow(false)
                 .setGravityOffset(10, 0, true);
-
-
-//        presenter.goodsCollectionCount();
-//        presenter.shopCollectCount();
-//        presenter.browsingHistoryCount();
-//        presenter.mineOrderAll();
     }
 
     @Override
@@ -381,6 +375,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             presenter.browsingHistoryCount();
             presenter.mineOrderAll();
         }
+
     }
 
 

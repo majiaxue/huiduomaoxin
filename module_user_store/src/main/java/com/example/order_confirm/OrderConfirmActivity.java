@@ -231,7 +231,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         confirmBean.setReceiverCity(addressBean.getAddressCity());
         confirmBean.setReceiverRegion(addressBean.getAddressArea());
         confirmBean.setOrderAddress(addressBean.getAddressDetail());
-
+        orderConfirmChooseAddress.setVisibility(View.GONE);
         presenter.getPostage(confirmBean);
     }
 

@@ -130,6 +130,7 @@ public class GoodsCollectionPresenter extends BasePresenter<GoodsCollectionView>
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("setGoodsCollectionRecError------->" + errorCode);
                 LogUtil.e("setGoodsCollectionRecError------->" + errorMsg);
+                getView().empty(true);
             }
         }));
 

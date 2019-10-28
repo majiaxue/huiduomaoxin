@@ -30,7 +30,6 @@
                     android:layout_marginLeft="@dimen/dp_40"
                     android:layout_marginTop="@dimen/dp_30"
                     android:includeFontPadding="false"
-                    android:text="卖家已发货"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_16" />
 
@@ -42,7 +41,6 @@
                     android:layout_alignLeft="@id/order_details_status"
                     android:layout_marginTop="@dimen/dp_8"
                     android:includeFontPadding="false"
-                    android:text="还剩10天10小时自动收货"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_12" />
 

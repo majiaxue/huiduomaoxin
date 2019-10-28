@@ -39,17 +39,25 @@ public class TBPresenter extends BasePresenter<TBView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-
                 LogUtil.e("tb:" + result);
                 PredictBean predictBean = JSON.parseObject(result, PredictBean.class);
-                if (getView() != null) {
-                    getView().loadUI(predictBean);
+                if (predictBean != null) {
+                    if (getView() != null) {
+                        getView().loadUI(predictBean);
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().loadUI();
+                    }
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("tbErrorMsg:" + errorMsg);
+                if (getView() != null) {
+                    getView().loadUI();
+                }
             }
         }));
     }

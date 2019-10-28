@@ -110,6 +110,7 @@
         app:tabMode="fixed"
         app:tabRippleColor="@android:color/transparent"
         app:tabSelectedTextColor="#fd3c15"
+        android:visibility="gone"
         app:tabTextColor="#ffffff" />
 
     <android.support.v4.view.ViewPager

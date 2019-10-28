@@ -510,7 +510,8 @@
                     android:gravity="center"
                     android:text="联系客服"
                     android:textColor="@color/codeText"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_12"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/goods_detail_shop_attention"

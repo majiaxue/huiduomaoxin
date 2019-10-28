@@ -126,6 +126,7 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
         confirmOrderName.setText(addressBean.getAddressName());
         confirmOrderPhone.setText(addressBean.getAddressPhone());
         mDetail.setText(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
+        confirmOrderChooseAddress.setVisibility(View.GONE);
         presenter.getPostage(addressBean.getAddressProvince());
     }
 

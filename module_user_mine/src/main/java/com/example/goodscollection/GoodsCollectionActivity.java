@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.BaseRecStaggeredAdapter;
 import com.example.goodscollection.adapter.GoodsCollectionRecAdapter;
 import com.example.module_user_mine.R;
@@ -76,7 +77,9 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
             @Override
             public void onClick(View v) {
                 //去商品页
-                Toast.makeText(GoodsCollectionActivity.this, "点击了", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(GoodsCollectionActivity.this, "点击了", Toast.LENGTH_SHORT).show();
+                ARouter.getInstance().build("/module_user_store/typeDetail").withBoolean("hotSale", true).navigation();
+
             }
         });
         //编辑
@@ -151,8 +154,11 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
     public void empty(boolean isEmpty) {
         if (isEmpty) {
             goodsCollectionEmpty.setVisibility(View.VISIBLE);
+            includeRightBtn.setVisibility(View.GONE);
+
         } else {
             goodsCollectionEmpty.setVisibility(View.GONE);
+            includeRightBtn.setVisibility(View.VISIBLE);
         }
     }
 

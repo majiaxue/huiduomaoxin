@@ -132,4 +132,16 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
             isCheckAllParent = true;
         }
     }
+
+    @Override
+    public void empty(boolean isEmpty) {
+        if (isEmpty) {
+            browsingHistoryRec.setVisibility(View.VISIBLE);
+            includeRightBtn.setVisibility(View.GONE);
+
+        } else {
+            browsingHistoryRec.setVisibility(View.GONE);
+            includeRightBtn.setVisibility(View.VISIBLE);
+        }
+    }
 }

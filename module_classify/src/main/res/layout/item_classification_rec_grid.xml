@@ -34,7 +34,6 @@
                 android:layout_centerHorizontal="true"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="【3瓶装】小紫瓶保湿乳液学生适用紫瓶保湿乳液"
                 android:textColor="#222222"
                 android:textSize="@dimen/sp_12" />
 
@@ -57,7 +56,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="￥39"
                     android:textColor="#fb4119"
                     android:textSize="@dimen/sp_14" />
 
@@ -66,7 +64,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:text="￥89"
                     android:textColor="#999999"
                     android:textSize="@dimen/sp_12" />
 
@@ -85,7 +82,6 @@
                     android:layout_height="@dimen/dp_25"
                     android:background="@drawable/bg_text_gray"
                     android:gravity="center"
-                    android:text="领券减50元"
                     android:textColor="#666666"
                     android:textSize="@dimen/sp_10" />
 

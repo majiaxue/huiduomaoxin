@@ -90,6 +90,8 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("setGoodsCollectionRecError------->" + errorCode);
+                getView().goodsCollectionCount(0);
+
             }
         }));
 
@@ -120,6 +122,8 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("errorMSG----->" + errorMsg);
+                getView().shopCollectCount(0);
+
             }
         }));
     }
@@ -150,6 +154,8 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("browsingHistoryRecErrorMsg------------->" + errorMsg);
+                getView().browsingHistoryCount(0);
+
             }
         }));
 
@@ -220,12 +226,21 @@ public class MinePresenter extends BasePresenter<MineView> {
                     count3 = 0;
                     getView().daifahuo(count1);
                     count1 = 0;
+                } else {
+                    getView().daishouhuo(0);
+                    getView().daifukuan(0);
+                    getView().daipingjia(0);
+                    getView().daifahuo(0);
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("OrderAllPresenterError-------->" + errorMsg);
+                getView().daishouhuo(0);
+                getView().daifukuan(0);
+                getView().daipingjia(0);
+                getView().daifahuo(0);
             }
         }));
     }

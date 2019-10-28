@@ -37,7 +37,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 
 public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
-    private String[] titleArr = {"首页", "宝贝"};
+//    private String[] titleArr = {"首页", "宝贝"};
     private List<Fragment> fragmentList = new ArrayList<>();
 
     public ShopHomePresneter(Context context) {
@@ -49,64 +49,65 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
 
     }
 
-    public void initTabLayout(final TabLayout intoShopTab, int shop_id) {
-        for (String title : titleArr) {
-            intoShopTab.addTab(intoShopTab.newTab().setText(title));
-        }
+//    public void initTabLayout(final TabLayout intoShopTab, String shop_id) {
+//        for (String title : titleArr) {
+//            intoShopTab.addTab(intoShopTab.newTab().setText(title));
+//        }
+//
+//        intoShopTab.addTab(intoShopTab.newTab().setText("首页"));
+//        intoShopTab.addTab(intoShopTab.newTab().setText("宝贝"));
+//
+////        fragmentList.add(new ShopFirstFragment());
+//        fragmentList.add(new ShopTreasureFragment(shop_id + ""));
+//
+//        intoShopTab.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    //了解源码得知 线的宽度是根据 tabView的宽度来设置的
+//                    LinearLayout mTabStrip = (LinearLayout) intoShopTab.getChildAt(0);
+//
+//                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+//                        View tabView = mTabStrip.getChildAt(i);
+//
+//                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
+//                        Field mTextViewField =
+//                                tabView.getClass().getDeclaredField("mTextView");
+//                        mTextViewField.setAccessible(true);
+//
+//                        TextView mTextView = (TextView) mTextViewField.get(tabView);
+//
+//                        tabView.setPadding(0, 0, 0, 0);
+//
+//                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
+//                        int width = 0;
+//                        width = mTextView.getWidth();
+//                        if (width == 0) {
+//                            mTextView.measure(0, 0);
+//                            width = mTextView.getMeasuredWidth();
+//                        }
+//
+//                        //设置tab左右间距为10dp  注意这里不能使用Padding
+//                        // 因为源码中线的宽度是根据 tabView的宽度来设置的
+//                        LinearLayout.LayoutParams params =
+//                                (LinearLayout.LayoutParams) tabView.getLayoutParams();
+//                        params.width = width;
+//                        tabView.setLayoutParams(params);
+//
+//                        tabView.invalidate();
+//                    }
+//
+//                } catch (Exception e) {
+//
+//                }
+//            }
+//        });
+//
+//    }
 
-        intoShopTab.addTab(intoShopTab.newTab().setText("首页"));
-        intoShopTab.addTab(intoShopTab.newTab().setText("宝贝"));
-
-        fragmentList.add(new ShopFirstFragment());
-        fragmentList.add(new ShopTreasureFragment(shop_id + ""));
-
-        intoShopTab.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //了解源码得知 线的宽度是根据 tabView的宽度来设置的
-                    LinearLayout mTabStrip = (LinearLayout) intoShopTab.getChildAt(0);
-
-                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-                        View tabView = mTabStrip.getChildAt(i);
-
-                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
-                        Field mTextViewField =
-                                tabView.getClass().getDeclaredField("mTextView");
-                        mTextViewField.setAccessible(true);
-
-                        TextView mTextView = (TextView) mTextViewField.get(tabView);
-
-                        tabView.setPadding(0, 0, 0, 0);
-
-                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
-                        int width = 0;
-                        width = mTextView.getWidth();
-                        if (width == 0) {
-                            mTextView.measure(0, 0);
-                            width = mTextView.getMeasuredWidth();
-                        }
-
-                        //设置tab左右间距为10dp  注意这里不能使用Padding
-                        // 因为源码中线的宽度是根据 tabView的宽度来设置的
-                        LinearLayout.LayoutParams params =
-                                (LinearLayout.LayoutParams) tabView.getLayoutParams();
-                        params.width = width;
-                        tabView.setLayoutParams(params);
-
-                        tabView.invalidate();
-                    }
-
-                } catch (Exception e) {
-
-                }
-            }
-        });
-
-    }
-
-    public void initViewPager(FragmentManager fm) {
-        ShopHomeVPAdapter intoShopVPAdapter = new ShopHomeVPAdapter(fm, fragmentList, titleArr);
+    public void initViewPager(FragmentManager fm,String shopId) {
+        fragmentList.add(new ShopTreasureFragment(shopId + ""));
+        ShopHomeVPAdapter intoShopVPAdapter = new ShopHomeVPAdapter(fm, fragmentList);
         getView().loadVP(intoShopVPAdapter);
     }
 
@@ -125,7 +126,7 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
         });
     }
 
-    public void collectShop(int shop_id) {
+    public void collectShop(String shop_id) {
         Map map = MapUtil.getInstance().addParms("sellerId", shop_id).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT_SHOP, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

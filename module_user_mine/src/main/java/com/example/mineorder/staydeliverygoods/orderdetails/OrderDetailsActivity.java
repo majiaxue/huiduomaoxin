@@ -23,6 +23,7 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.text.ParseException;
@@ -83,6 +84,9 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
     @Autowired(name = "orderSn")
     String orderSn;
 
+    private int status;
+    private OrderDetailBean orderDetailBean;
+    private CountDownTimer countDownTimer;
 
     @Override
     public int getLayoutId() {
@@ -122,6 +126,65 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             }
         });
 
+        orderDetailsLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (1 == status) {
+                    //申请退款
+                    ARouter.getInstance()
+                            .build("/module_user_mine/RefundActivity")
+                            .withSerializable("orderDetailBean", orderDetailBean)
+                            .withString("type", "2")
+                            .navigation();
+                } else {
+                    //查看物流
+                    ARouter.getInstance()
+                            .build("/module_user_mine/LogisticsInformationActivity")
+                            .withString("orderSn", orderDetailBean.getOrderSn())
+                            .withString("goodsImage", orderDetailBean.getItems().get(0).getProductPic())
+                            .navigation();
+                }
+            }
+        });
+        //提醒发货
+        orderDetailsRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (1 == status) {
+                    Toast.makeText(OrderDetailsActivity.this, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ProcessDialogUtil.showProcessDialog(OrderDetailsActivity.this);
+                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.ORDERCONFIRM + "/" + orderDetailBean.getItems().get(0).getOrderId(), SPUtil.getToken());
+                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+                        @Override
+                        public void onSuccess(String result, String msg) {
+                            LogUtil.e("确认收货---->" + result);
+                            if ("true".equals(result)) {
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorCode, String errorMsg) {
+                            LogUtil.e("确认收货error---->" + errorMsg);
+                        }
+                    }));
+                }
+
+            }
+        });
+        //申请退款
+        orderDetailsRefund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance()
+                        .build("/module_user_mine/RefundActivity")
+                        .withSerializable("orderDetailBean", orderDetailBean)
+                        .withString("type", "2")
+                        .navigation();
+            }
+        });
+
     }
 
     @Override
@@ -145,6 +208,8 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
     @Override
     public void loadData(final OrderDetailBean orderDetailBean) {
+        this.orderDetailBean = orderDetailBean;
+        this.status = orderDetailBean.getStatus();
 
         List<OrderDetailBean.ItemsBean> items = orderDetailBean.getItems();
         presenter.items(items, orderDetailsGoodsRec);
@@ -165,26 +230,6 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             orderDetailsRefund.setVisibility(View.GONE);
             orderDetailsLeft.setText("申请退款");
             orderDetailsRight.setText("提醒发货");
-            //申请退款
-            orderDetailsLeft.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ARouter.getInstance()
-                            .build("/module_user_mine/RefundActivity")
-                            .withSerializable("orderDetailBean", orderDetailBean)
-                            .withString("type", "2")
-                            .navigation();
-                }
-            });
-            //提醒发货
-            orderDetailsRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(OrderDetailsActivity.this, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
         } else if (orderDetailBean.getStatus() == 2) {
 
             //待收货
@@ -195,51 +240,6 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             orderDetailsLeft.setText("查看物流");
             orderDetailsRight.setText("确认收货");
             time(orderDetailBean.getReceiveTime());
-            //申请退款
-            orderDetailsRefund.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ARouter.getInstance()
-                            .build("/module_user_mine/RefundActivity")
-                            .withSerializable("orderDetailBean", orderDetailBean)
-                            .withString("type", "2")
-                            .navigation();
-                }
-            });
-
-            //查看物流
-            orderDetailsLeft.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ARouter.getInstance()
-                            .build("/module_user_mine/LogisticsInformationActivity")
-                            .withString("orderSn", orderDetailBean.getOrderSn())
-                            .withString("goodsImage", orderDetailBean.getItems().get(0).getProductPic())
-                            .navigation();
-//
-                }
-            });
-            //确认收货
-            orderDetailsRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.ORDERCONFIRM + "/" + orderDetailBean.getItems().get(0).getOrderId(), SPUtil.getToken());
-                    RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
-                        @Override
-                        public void onSuccess(String result, String msg) {
-                            LogUtil.e("确认收货---->" + result);
-                            if ("true".equals(result)) {
-                                finish();
-                            }
-                        }
-
-                        @Override
-                        public void onError(String errorCode, String errorMsg) {
-                            LogUtil.e("确认收货error---->" + errorMsg);
-                        }
-                    }));
-                }
-            });
         }
 
     }
@@ -250,7 +250,8 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
         LogUtil.e("firstTime----------->" + timeStamp);
         long time = timeStamp - System.currentTimeMillis();
         LogUtil.e("time------------->" + time / 1000);
-        CountDownTimer countDownTimer = new CountDownTimer(time, 1000) {//第一个参数表示总时间，第二个参数表示间隔时间。
+        //第一个参数表示总时间，第二个参数表示间隔时间。
+        countDownTimer = new CountDownTimer(time, 1000) {//第一个参数表示总时间，第二个参数表示间隔时间。
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -285,5 +286,11 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        countDownTimer.cancel();
     }
 }
