@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.ali_account.AliAccountActivity;
@@ -114,11 +115,14 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
                 if (!TextUtils.isEmpty(s)) {
                     if ("0".equals(s.toString())) {
                         pointsEdit.setText("");
-                    } else if (bean.getMember().getIntegration() != null) {
+                    } else if (bean.getMember().getIntegration() != null && Double.valueOf(bean.getMember().getIntegration()) != 0) {
                         if (Double.valueOf(s.toString()) > Double.valueOf(bean.getMember().getIntegration())) {
                             pointsEdit.setText(bean.getMember().getIntegration());
                             pointsEdit.setSelection(pointsEdit.getText().length());
                         }
+                    } else {
+                        pointsEdit.setText("");
+                        Toast.makeText(PointsActivity.this, "积分不足", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -147,8 +151,7 @@ public class PointsActivity extends BaseActivity<PointsView, PointsPresenter> im
         } else {
             pointsZfbAccount.setText(pointsBean.getMember().getRealName() + "    " + pointsBean.getMember().getAliAccount());
         }
-        if (pointsBean.getIntegrationConf() != null) {
-
+        if (pointsBean.getMember().getIntegration() != null) {
             pointsMyPoints.setText(pointsBean.getMember().getIntegration() == null ? "剩余积分0，" : "剩余积分" + pointsBean.getMember().getIntegration() + "，");
             pointsRules.setText(pointsBean.getIntegrationConf().getRatio() + "积分=1元，最小提现金额为" + pointsBean.getIntegrationConf().getMin() + "个积分，手续费为" + pointsBean.getIntegrationConf().getServiceRatio() + "%，提现必须是" + pointsBean.getIntegrationConf().getMultiple() + "的倍数");
         }
