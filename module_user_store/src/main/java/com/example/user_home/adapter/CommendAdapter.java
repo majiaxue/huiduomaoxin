@@ -10,6 +10,7 @@ import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;

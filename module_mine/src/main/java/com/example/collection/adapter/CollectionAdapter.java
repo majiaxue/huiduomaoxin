@@ -71,8 +71,12 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
             holder.setImageResource(R.id.rv_collection_type, R.drawable.pinduoduo);
             holder.setText(R.id.rv_collection_name, data.getGoodsName())
                     .setText(R.id.rv_collection_preferential_price, "￥" + ArithUtil.exact(data.getGroupPrice() == null ? 0 : data.getGroupPrice() * 0.01, 1))
-                    .setText(R.id.rv_collection_number, "已抢" + data.getQuantity() == null ? "0" : data.getQuantity() + "件")
                     .setImageFresco(R.id.rv_collection_image, data.getImage());
+            if (data.getQuantity() == null || "null".equals(data.getQuantity())) {
+                holder.setText(R.id.rv_collection_number, "已抢0件");
+            } else {
+                holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
+            }
         }
 
     }

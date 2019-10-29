@@ -6,7 +6,6 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.TbFansOrderBean;
 import com.example.module_mine.R;
-import com.example.utils.LogUtil;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class TbFansAdapter extends MyRecyclerAdapter<TbFansOrderBean> {
                 .setText(R.id.fans_order_list_nickname, data.getFansName())
                 .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
 
-        if ("3".equals(data.getTkStatus()) || "14".equals(data.getTkStatus())) {
+        if ("3".equals(data.getTkStatus())) {
             holder.setText(R.id.fans_order_list_status, "已结算");
         } else if ("12".equals(data.getTkStatus())) {
             holder.setText(R.id.fans_order_list_status, "已付款");

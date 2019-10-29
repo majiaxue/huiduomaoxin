@@ -30,12 +30,14 @@ public class FansOrderRvAdapter extends MyRecyclerAdapter<FansOrderBean> {
 
         if (data.getOrderStatus() == -1) {
             holder.setText(R.id.fans_order_list_status, "待付款");
-        } else if (data.getOrderStatus() == 0 || data.getOrderStatus() == 1) {
+        } else if (data.getOrderStatus() == 0) {
             holder.setText(R.id.fans_order_list_status, "已付款");
         } else if (data.getOrderStatus() == 5 || data.getOrderStatus() == 3) {
             holder.setText(R.id.fans_order_list_status, "已结算");
         } else if (data.getOrderStatus() == 4 || data.getOrderStatus() == 8) {
             holder.setText(R.id.fans_order_list_status, "已失效");
+        } else if (data.getOrderStatus() == 1) {
+            holder.setText(R.id.fans_order_list_status, "已成团");
         }
     }
 }
