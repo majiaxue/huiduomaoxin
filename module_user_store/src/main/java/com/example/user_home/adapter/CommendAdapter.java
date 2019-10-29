@@ -23,7 +23,7 @@ public class CommendAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean> {
     @Override
     public void convert(RecyclerViewHolder holder, HotSaleBean.DataBean data, int position) {
         float value = SPUtil.getFloatValue(CommonResource.BACKBL);
-        double predict = ArithUtil.mul(ArithUtil.mul(data.getPrice(), data.getReturnRatio() * 1.0 / 100), value);
+        double predict = ArithUtil.mul(ArithUtil.mul(data.getPrice(), data.getReturnRatio()), value);
         holder.setText(R.id.rv_commend_name, data.getName())
                 .setText(R.id.rv_commend_price, "￥" + data.getPrice())
                 .setText(R.id.rv_commend_count, data.getSale() + "人付款")

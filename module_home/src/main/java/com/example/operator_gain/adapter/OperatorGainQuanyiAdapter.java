@@ -20,7 +20,7 @@ public class OperatorGainQuanyiAdapter extends MyRecyclerAdapter<String> {
             holder.setText(R.id.rv_vp_operator_gain_txt1, data);
             holder.setText(R.id.rv_vp_operator_gain_txt2, "所有权益");
         } else if (position == 1) {
-            holder.setImageResource(R.id.rv_vp_operator_gain_img, R.drawable.icon_zimai);
+            holder.setImageResource(R.id.rv_vp_operator_gain_img, R.drawable.icon_zimai1);
             holder.setText(R.id.rv_vp_operator_gain_txt1, "自买返佣");
             holder.setText(R.id.rv_vp_operator_gain_txt2, "收益提升" + data + "%");
         } else if (position == 2) {
@@ -28,7 +28,7 @@ public class OperatorGainQuanyiAdapter extends MyRecyclerAdapter<String> {
             holder.setText(R.id.rv_vp_operator_gain_txt1, "分享返佣");
             holder.setText(R.id.rv_vp_operator_gain_txt2, "收益提升" + data + "%");
         } else if (position == 3) {
-            holder.setImageResource(R.id.rv_vp_operator_gain_img, R.drawable.icon_zhijiehuiyuan);
+            holder.setImageResource(R.id.rv_vp_operator_gain_img, R.drawable.icon_zhijiehuiyuan1);
             holder.setText(R.id.rv_vp_operator_gain_txt1, "直接会员出单");
             if (data == null) {
                 holder.setText(R.id.rv_vp_operator_gain_txt2, "奖励0%");

@@ -125,6 +125,8 @@ public class GoodsCollectionActivity extends BaseActivity<GoodsCollectionView, G
 
     @Override
     public void isCompile(boolean isCompile) {
+        goodsCollectionRec.setFocusable(true);
+        goodsCollectionRec.setFocusableInTouchMode(true);
         if (isCompile) {
             includeRightBtn.setText("完成");
             goodsCollectionBottom.setVisibility(View.VISIBLE);
