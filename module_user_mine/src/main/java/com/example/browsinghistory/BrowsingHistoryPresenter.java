@@ -51,7 +51,6 @@ public class BrowsingHistoryPresenter extends BasePresenter<BrowsingHistoryView>
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("browsingHistoryRecResult------------->" + result);
-                LogUtil.e("browsingHistoryRecMsg------------->" + msg);
                 BrowsingHistoryBean browsingHistoryBean = JSON.parseObject(result, new TypeReference<BrowsingHistoryBean>() {
                 }.getType());
                 if (browsingHistoryBean != null) {

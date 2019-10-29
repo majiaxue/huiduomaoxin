@@ -17,6 +17,7 @@ import com.example.user_store.R;
 import com.example.user_store.R2;
 
 import butterknife.BindView;
+
 @Route(path = "/module_user_store/ShopHomeActivity")
 public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHomePresneter> implements ShopHomeView {
     @BindView(R2.id.shop_home_back)
@@ -66,10 +67,10 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
         String number = intent.getStringExtra("number");
         Glide.with(this).load(shop_icon).into(shopHomeStoreImage);
         shopHomeStoreName.setText(shop_name);
-        shopHomeStoreCollectNumber.setText(number + "收藏");
+        shopHomeStoreCollectNumber.setText(number == null ? "0" : number + "收藏");
 
 //        presenter.initTabLayout(shopHomeTab, shop_id);
-        presenter.initViewPager(getSupportFragmentManager(),shop_id);
+        presenter.initViewPager(getSupportFragmentManager(), shop_id);
 
         shopHomeVp.setOffscreenPageLimit(1);
         shopHomeTab.setupWithViewPager(shopHomeVp);

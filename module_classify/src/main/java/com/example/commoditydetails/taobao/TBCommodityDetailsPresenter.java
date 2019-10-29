@@ -285,7 +285,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
         RetrofitUtil.getInstance().toSubscribe(headWithout, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                LogUtil.e("TBCommodityDetailsResult收藏------->" + result);
+                LogUtil.e("是否收藏------->" + result);
                 if (result.equals("true")) {
                     commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
                 } else {
@@ -295,7 +295,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                LogUtil.e("TBCommodityDetailsErrorMsg收藏------------>" + errorMsg);
+                LogUtil.e("是否收藏失败------------>" + errorMsg);
             }
         }));
     }
@@ -308,7 +308,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
             RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
-                    LogUtil.e("TBCommodityDetailsResult点击收藏----->" + result);
+                    LogUtil.e("收藏成功----->" + result);
                     if (result.equals("true")) {
                         commodityCollectImage.setImageResource(R.drawable.icon_shoucang2);
                     } else {
@@ -318,7 +318,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
-                    LogUtil.e("TBCommodityDetailsErrorMsg点击收藏----->" + errorMsg);
+                    LogUtil.e("收藏失败----->" + errorMsg);
 
                 }
             }));

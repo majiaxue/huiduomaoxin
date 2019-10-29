@@ -53,6 +53,9 @@ public class PaySuccessPresenter extends BasePresenter<PaySuccessView> {
         } else if ("cart".equals(bean.getProductName())) {
             ARouter.getInstance().build("/module_user_mine/MineOrderActivity").navigation();
             ((Activity) mContext).finish();
+        } else {
+            ARouter.getInstance().build("/module_user_mine/MineOrderActivity").navigation();
+            ((Activity) mContext).finish();
         }
     }
 
