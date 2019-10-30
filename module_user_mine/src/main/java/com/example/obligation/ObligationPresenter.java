@@ -33,6 +33,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 import com.example.utils.TxtUtil;
@@ -63,6 +64,7 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
     }
 
     public void initView(String orderSn) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + orderSn, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -76,7 +78,7 @@ public class ObligationPresenter extends BasePresenter<ObligationView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                LogUtil.e("订单详情失败：" + errorMsg);
             }
         }));
     }

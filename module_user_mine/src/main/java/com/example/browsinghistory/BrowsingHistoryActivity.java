@@ -50,7 +50,7 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
     public void initData() {
         includeRightBtn.setText("编辑");
         includeTitle.setText("浏览记录");
-        includeRightBtn.setVisibility(View.VISIBLE);
+//        includeRightBtn.setVisibility(View.VISIBLE);
         presenter.browsingHistoryRec(browsingHistoryRec);
     }
 
@@ -136,11 +136,11 @@ public class BrowsingHistoryActivity extends BaseActivity<BrowsingHistoryView, B
     @Override
     public void empty(boolean isEmpty) {
         if (isEmpty) {
-            browsingHistoryRec.setVisibility(View.VISIBLE);
+            browsingHistoryRec.setVisibility(View.GONE);
             includeRightBtn.setVisibility(View.GONE);
 
         } else {
-            browsingHistoryRec.setVisibility(View.GONE);
+            browsingHistoryRec.setVisibility(View.VISIBLE);
             includeRightBtn.setVisibility(View.VISIBLE);
         }
     }

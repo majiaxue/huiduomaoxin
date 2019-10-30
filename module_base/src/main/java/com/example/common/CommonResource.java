@@ -1,7 +1,7 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123//
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123//192.168.0.195
     public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.17
     public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
     public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
@@ -42,7 +42,7 @@ public class CommonResource {
     public static final String COLLECT = "/rest/user/product";      //商品收藏
     public static final String PAYSUCCESS = "/rest/order/modifyOrder";      //支付成功 修改订单状态
     public static final String COLLECT_LIST = "/rest/user/product/all";     //收藏列表---淘宝客
-    public static final String BROWSE_LIST = "/rest/user/history/all";     //浏览记录
+    public static final String BROWSE_LIST = "/rest/user/history/all ";     //浏览记录
     public static final String ORDER_DETAIL = "/rest/order/viewOrderInfo";     //订单详情
     public static final String ADD_CART = "/rest/order/addCar";         //添加商品到购物车
     public static final String REVISE_CART_ITEM = "/rest/order/updateCarItem";  //修改购物车条目状态

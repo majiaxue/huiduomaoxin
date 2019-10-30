@@ -92,13 +92,13 @@ public class OrderDetailBean implements Serializable {
     private Object orderOverTime;
     private Object commentTime;
     private Object orderPayAmount;
-    private int payAmount;
+    private double payAmount;
     private Object integrationAmount;
-    private int couponAmount;
-    private Object discountAmount;
-    private Object promotionAmount;
-    private int freightAmount;
-    private int totalAmount;
+    private double couponAmount;
+    private double discountAmount;
+    private double promotionAmount;
+    private double freightAmount;
+    private double totalAmount;
     private String remark;
     private Object payWay;
     private int sourceType;
@@ -332,11 +332,11 @@ public class OrderDetailBean implements Serializable {
         this.orderPayAmount = orderPayAmount;
     }
 
-    public int getPayAmount() {
+    public double getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(int payAmount) {
+    public void setPayAmount(double payAmount) {
         this.payAmount = payAmount;
     }
 
@@ -348,43 +348,43 @@ public class OrderDetailBean implements Serializable {
         this.integrationAmount = integrationAmount;
     }
 
-    public int getCouponAmount() {
+    public double getCouponAmount() {
         return couponAmount;
     }
 
-    public void setCouponAmount(int couponAmount) {
+    public void setCouponAmount(double couponAmount) {
         this.couponAmount = couponAmount;
     }
 
-    public Object getDiscountAmount() {
+    public double getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Object discountAmount) {
+    public void setDiscountAmount(double discountAmount) {
         this.discountAmount = discountAmount;
     }
 
-    public Object getPromotionAmount() {
+    public double getPromotionAmount() {
         return promotionAmount;
     }
 
-    public void setPromotionAmount(Object promotionAmount) {
+    public void setPromotionAmount(double promotionAmount) {
         this.promotionAmount = promotionAmount;
     }
 
-    public int getFreightAmount() {
+    public double getFreightAmount() {
         return freightAmount;
     }
 
-    public void setFreightAmount(int freightAmount) {
+    public void setFreightAmount(double freightAmount) {
         this.freightAmount = freightAmount;
     }
 
-    public int getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(int totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -620,7 +620,7 @@ public class OrderDetailBean implements Serializable {
         private String productName;
         private String productBrand;
         private String productSn;
-        private int productPrice;
+        private double productPrice;
         private int productQuantity;
         private int productSkuId;
         private Object productSkuCode;
@@ -629,10 +629,10 @@ public class OrderDetailBean implements Serializable {
         private String sp2;
         private String sp3;
         private Object promotionName;
-        private Object promotionAmount;
-        private int couponAmount;
-        private Object integrationAmount;
-        private Object realAmount;
+        private double promotionAmount;
+        private double couponAmount;
+        private double integrationAmount;
+        private double realAmount;
         private Object giftIntegration;
         private Object giftGrowth;
         private String productAttr;
@@ -705,11 +705,11 @@ public class OrderDetailBean implements Serializable {
             this.productSn = productSn;
         }
 
-        public int getProductPrice() {
+        public double getProductPrice() {
             return productPrice;
         }
 
-        public void setProductPrice(int productPrice) {
+        public void setProductPrice(double productPrice) {
             this.productPrice = productPrice;
         }
 
@@ -777,35 +777,35 @@ public class OrderDetailBean implements Serializable {
             this.promotionName = promotionName;
         }
 
-        public Object getPromotionAmount() {
+        public double getPromotionAmount() {
             return promotionAmount;
         }
 
-        public void setPromotionAmount(Object promotionAmount) {
+        public void setPromotionAmount(double promotionAmount) {
             this.promotionAmount = promotionAmount;
         }
 
-        public int getCouponAmount() {
+        public double getCouponAmount() {
             return couponAmount;
         }
 
-        public void setCouponAmount(int couponAmount) {
+        public void setCouponAmount(double couponAmount) {
             this.couponAmount = couponAmount;
         }
 
-        public Object getIntegrationAmount() {
+        public double getIntegrationAmount() {
             return integrationAmount;
         }
 
-        public void setIntegrationAmount(Object integrationAmount) {
+        public void setIntegrationAmount(double integrationAmount) {
             this.integrationAmount = integrationAmount;
         }
 
-        public Object getRealAmount() {
+        public double getRealAmount() {
             return realAmount;
         }
 
-        public void setRealAmount(Object realAmount) {
+        public void setRealAmount(double realAmount) {
             this.realAmount = realAmount;
         }
 
