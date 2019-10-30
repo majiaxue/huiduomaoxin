@@ -8,6 +8,7 @@ import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class TypeDetailLstAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean
     @Override
     public void convert(RecyclerViewHolder holder, HotSaleBean.DataBean data, int position) {
         float value = SPUtil.getFloatValue(CommonResource.BACKBL);
-        double predict = ArithUtil.mul(ArithUtil.mul(value, data.getReturnRatio()), data.getPrice());
+        double predict = ArithUtil.mul(ArithUtil.mul(value, data.getReturnRatio() / 100), data.getPrice());
 
         holder.setImageFresco(R.id.type_detail_lst_image, data.getPic())
                 .setText(R.id.type_detail_lst_name, data.getName())

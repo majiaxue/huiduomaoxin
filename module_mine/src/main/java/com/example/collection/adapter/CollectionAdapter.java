@@ -52,7 +52,7 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
             } else {
                 holder.setText(R.id.rv_collection_preferential_price, "￥" + normalPrice);
             }
-            holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() == null ? "0" : data.getQuantity() + "件");
+            holder.setText(R.id.rv_collection_number, "已抢" + (data.getQuantity() == null ? "0" : data.getQuantity().split("\\.")[0]) + "件");
             holder.setImageFresco(R.id.rv_collection_image, data.getImage());
         } else if (data.getType() == 1) {
             //京东
@@ -60,7 +60,7 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
             holder.setText(R.id.rv_collection_name, data.getGoodsName());
             holder.setText(R.id.rv_collection_preferential_price, "￥" + data.getNormalPrice());
             if (!TextUtils.isEmpty(data.getQuantity())) {
-                holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() == null ? "0" : data.getQuantity() + "件");
+                holder.setText(R.id.rv_collection_number, "已抢" + (data.getQuantity() == null ? "0" : data.getQuantity().split("\\.")[0]) + "件");
             } else {
                 holder.setText(R.id.rv_collection_number, "已抢0件");
             }
@@ -75,7 +75,7 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
             if (data.getQuantity() == null || "null".equals(data.getQuantity())) {
                 holder.setText(R.id.rv_collection_number, "已抢0件");
             } else {
-                holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
+                holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity().split("\\.")[0] + "件");
             }
         }
 

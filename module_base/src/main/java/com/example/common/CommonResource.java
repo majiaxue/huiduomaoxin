@@ -107,6 +107,7 @@ public class CommonResource {
     public static final String LOCAL_CANCEL_ORDER = "/rest/local-order/cancel";   //附近小店  取消订单
     public static final String LOCAL_CONFIRM_ORDER = "/rest/local-order/ok/";       //附近小店  确认收货
     public static final String LOCAL_TUIKUAN = "/rest/local-order/return";          //附近小店  申请退款
+    public static final String USER_ISCOLLECT = "/rest/user/favorite/seller";       //多用户商城 店铺是否收藏
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -183,8 +184,8 @@ public class CommonResource {
     public static final String JUMP_OPERATOR = "JUMP_OPERATOR";
     public static final String TOKEN = "token";
     public static final String USERCODE = "userCode";
-    public static final String USER_NAME = "userName";
-    public static final String USER_PIC = "userPic";
+    public static final String USER_NAME = "name";
+    public static final String USER_PIC = "head";
     public static final String USER_INVITE = "userInvite";
     public static final String USER_PHONE = "userPhone";
     public static final String BACKBL = "back";     //佣金比例

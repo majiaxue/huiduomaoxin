@@ -61,7 +61,6 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
 
     public void loadData(final int page) {
         ProcessDialogUtil.showProcessDialog(mContext);
-//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         if (FansOrderActivity.index == 0) {
 //            scOrder(page);

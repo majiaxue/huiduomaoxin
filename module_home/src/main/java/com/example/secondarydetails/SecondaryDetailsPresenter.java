@@ -203,6 +203,7 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
         } else if (type.equals("4")) {
             //京东
+            LogUtil.e("111111111111111111111111111111111");
             final Map map = MapUtil.getInstance().addParms("grade", 0).addParms("parentId", 0).build();
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGETCATEGORY, map);
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
@@ -214,7 +215,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
                     }.getType());
                     if (jdTabBeans != null) {
                         if (jdTabBeans.getData() != null && jdTabBeans.getData().size() != 0) {
-//                            jdTabList.clear();
                             jdTabList.addAll(jdTabBeans.getData());
                             for (int i = 0; i < jdTabList.size(); i++) {
                                 secondaryDetailsTab.addTab(secondaryDetailsTab.newTab().setText(jdTabList.get(i).getName()));

@@ -111,7 +111,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 0;
-                presenter.changeTyep(index);
+                presenter.changeTyep(index,sellerId);
             }
         });
 
@@ -119,7 +119,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 1;
-                presenter.changeTyep(index);
+                presenter.changeTyep(index,sellerId);
             }
         });
 
@@ -127,7 +127,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 2;
-                presenter.changeTyep(index);
+                presenter.changeTyep(index,sellerId);
             }
         });
 
@@ -135,7 +135,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 3;
-                presenter.changeTyep(index);
+                presenter.changeTyep(index,sellerId);
             }
         });
 

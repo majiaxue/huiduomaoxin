@@ -138,9 +138,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 @Override
                 public void onSuccess(String result, String msg) {
 //                    ProcessDialogUtil.dismissDialog();
+                    LogUtil.e("登录：" + result);
                     UserInfoBean userInfoBean = new Gson().fromJson(result, new TypeToken<UserInfoBean>() {
                     }.getType());
-                    LogUtil.e("登录：" + userInfoBean);
+
                     SPUtil.addParm(CommonResource.TOKEN, "JWT " + userInfoBean.getToken());
                     SPUtil.addParm(CommonResource.USERCODE, userInfoBean.getUserCode());
                     SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());

@@ -10,7 +10,6 @@ import com.example.bean.HotSaleBean;
 import com.example.common.CommonResource;
 import com.example.user_store.R;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class CommendAdapter extends MyRecyclerAdapter<HotSaleBean.DataBean> {
     @Override
     public void convert(RecyclerViewHolder holder, HotSaleBean.DataBean data, int position) {
         float value = SPUtil.getFloatValue(CommonResource.BACKBL);
-        double predict = ArithUtil.mul(ArithUtil.mul(data.getPrice(), data.getReturnRatio()), value);
+        double predict = ArithUtil.mul(ArithUtil.mul(data.getPrice(), data.getReturnRatio() / 100), value);
         holder.setText(R.id.rv_commend_name, data.getName())
                 .setText(R.id.rv_commend_price, "￥" + data.getPrice())
                 .setText(R.id.rv_commend_count, data.getSale() + "人付款")

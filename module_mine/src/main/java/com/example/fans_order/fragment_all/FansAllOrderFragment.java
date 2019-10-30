@@ -10,7 +10,6 @@ import com.example.fans_order.adapter.TbFansAdapter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragment;
-import com.example.order.adapter.RvListAdapter;
 import com.example.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -59,7 +58,7 @@ public class FansAllOrderFragment extends BaseFragment<FansAllOrderView, FansAll
         //设置 Footer 为 默认 样式
         orderListRefresh.setRefreshFooter(new ClassicsFooter(getActivity()));
 
-        presenter.loadData(page, 0);
+        presenter.loadData(1, 0);
     }
 
     public void setOrigin() {
