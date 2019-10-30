@@ -24,6 +24,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecorationLeftAndRight;
 
@@ -52,6 +53,7 @@ public class OrderDetailsPresenter extends BasePresenter<OrderDetailsView> {
     }
 
     public void initView(String orderSn) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getHeadWithout(CommonResource.ORDER_DETAIL + "/" + orderSn, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -85,6 +87,7 @@ public class OrderDetailsPresenter extends BasePresenter<OrderDetailsView> {
     public void orderDetailsRecommendRec(final RecyclerView orderDetailsRecommendRec) {
 
 //        Map map = MapUtil.getInstance().addParms("searchInfo", "两件套").build();
+        ProcessDialogUtil.showProcessDialog(mContext);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getDataWithout(CommonResource.HOTNEWSEARCH);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
 

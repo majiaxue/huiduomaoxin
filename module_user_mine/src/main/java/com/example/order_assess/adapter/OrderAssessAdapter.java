@@ -12,13 +12,13 @@ import com.example.module_user_mine.R;
 
 import java.util.List;
 
-public class OrderAssessAdapter extends MyRecyclerAdapter<Uri> {
-    public OrderAssessAdapter(Context context, List<Uri> mList, int mLayoutId) {
+public class OrderAssessAdapter extends MyRecyclerAdapter<String> {
+    public OrderAssessAdapter(Context context, List<String> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, Uri data, int position) {
+    public void convert(RecyclerViewHolder holder, String data, int position) {
         Glide.with(context).load(data).into((ImageView) holder.getView(R.id.rv_order_assess_img));
         holder.getView(R.id.rv_order_assess_delete).setVisibility(View.VISIBLE);
         if (viewOnClickListener != null) {

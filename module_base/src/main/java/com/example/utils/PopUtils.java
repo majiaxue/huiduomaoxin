@@ -33,6 +33,7 @@ import com.example.common.CommonResource;
 import com.example.module_base.R;
 import com.example.utils.adapter.VPBigPicAdapter;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,10 +128,10 @@ public class PopUtils {
         });
     }
 
-    public static void seeBigImg(final Context context, Uri uri) {
+    public static void seeBigImg(final Context context, String uri) {
         View inflate = LayoutInflater.from(context).inflate(com.example.module_base.R.layout.pop_full_image, null);
         ImageView img = inflate.findViewById(com.example.module_base.R.id.pop_full_img);
-        Glide.with(context).load(uri).into(img);
+        Glide.with(context).load(Uri.parse(uri)).into(img);
 
         final PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(true);

@@ -291,6 +291,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        countDownTimer.onFinish();
         countDownTimer.cancel();
     }
 }

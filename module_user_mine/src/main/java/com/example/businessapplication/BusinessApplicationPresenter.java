@@ -271,16 +271,14 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("popupGoodsClassify" + result);
-//                        PopupGoodsClassBean popupGoodsClassBean = JSON.parseObject(result, new TypeReference<PopupGoodsClassBean>() {
-//                        }.getType());
-                List<PopupGoodsClassBean> popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
+                final List<PopupGoodsClassBean> popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
                 if (popupGoodsClassBeans.size() != 0) {
                     final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
                     TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
                     TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
                     final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
                     final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
-
+                    final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     classifyRec.setLayoutManager(linearLayoutManager);
                     popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
@@ -298,12 +296,31 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                                 }
                             });
 
-//                popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(RecyclerView parent, View view, int position) {
-//
-//                    }
-//                });
+                            popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(RecyclerView parent, View view, int position) {
+                                    for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                                        if (position == i) {
+                                            popupGoodsClassBeans.get(i).setCheck(true);
+                                        } else {
+                                            popupGoodsClassBeans.get(i).setCheck(false);
+                                        }
+                                    }
+                                    popupGoodsClassifyAdapter.notifyDataSetChanged();
+                                }
+                            });
+
+                            textView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                                        if (popupGoodsClassBeans.get(i).isCheck()) {
+                                            businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
+                                        }
+                                    }
+                                    pop.dismiss();
+                                }
+                            });
 
                         }
                     });
