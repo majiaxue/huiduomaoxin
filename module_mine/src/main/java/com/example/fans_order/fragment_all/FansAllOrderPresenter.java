@@ -74,6 +74,7 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
     }
 
     private void tbOrder(final int page, final int type) {
+        LogUtil.e("---------------page:" + page);
         Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("pageSize", "10").addParms("type", "1").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

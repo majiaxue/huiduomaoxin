@@ -116,7 +116,6 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
 
             ProcessDialogUtil.showProcessDialog(mContext);
-//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             if (isWeChat) {
                 final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);

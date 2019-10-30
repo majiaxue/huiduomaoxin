@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
@@ -332,10 +333,14 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                     flag++;
                 }
             }
-            String jsonString = JSON.toJSONString(parentList);
-            Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
-            intent.putExtra("bean", jsonString);
-            mContext.startActivity(intent);
+            if (parentList.size() > 0) {
+                String jsonString = JSON.toJSONString(parentList);
+                Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
+                intent.putExtra("bean", jsonString);
+                mContext.startActivity(intent);
+            } else {
+                Toast.makeText(mContext, "请选择商品", Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

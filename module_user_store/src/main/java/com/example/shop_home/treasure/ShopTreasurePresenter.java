@@ -56,7 +56,7 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
     }
 
     public void loadData(String sellerId, final int page) {
-        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2").build();
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -137,24 +137,24 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
         Map map;
         if (saleVolumTemp) {
             if (isSalesVolumeReduce) {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleDesc", "1").addParms("pageNum", page).build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleDesc", "1").addParms("pageNum", page).addParms("pageSize", "2000").build();
             } else {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleAsc", "1").addParms("pageNum", page).build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleAsc", "1").addParms("pageNum", page).addParms("pageSize", "2000").build();
             }
         } else if (priceTemp) {
             if (isPriceReduce) {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceDesc", "1").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceDesc", "1").addParms("pageSize", "2000").build();
             } else {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceAsc", "1").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceAsc", "1").addParms("pageSize", "2000").build();
             }
         } else if (creditTemp) {
             if (isCreditReduce) {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
             } else {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
             }
         } else {
-            map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).build();
+            map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
         }
 
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
