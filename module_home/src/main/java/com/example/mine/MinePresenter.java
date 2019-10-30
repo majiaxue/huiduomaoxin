@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -30,7 +29,6 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -234,8 +232,8 @@ public class MinePresenter extends BasePresenter<MineView> {
                 } else {
                     downPic(userInfoBean.getIcon());
                 }
-                SPUtil.addParm("head", userInfoBean.getIcon());
-                SPUtil.addParm("name", userInfoBean.getNickname());
+                SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
+                SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
                 SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
 
                 getBackBili();

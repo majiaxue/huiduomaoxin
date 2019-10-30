@@ -47,7 +47,6 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     @Autowired(name = "type")
     int type;
 
-    private int flag = 0;
 
     @Override
     public int getLayoutId() {
@@ -57,9 +56,8 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        flag = type;
         Intent intent = getIntent();
-        if (0 == flag) {
+        if (1 != type) {
             shop_name = intent.getStringExtra("shop_name");
             shop_icon = intent.getStringExtra("shop_icon");
             shop_id = intent.getStringExtra("shop_id");
@@ -74,6 +72,8 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
 
         shopHomeVp.setOffscreenPageLimit(1);
         shopHomeTab.setupWithViewPager(shopHomeVp);
+
+        presenter.isCollect(shop_id);
     }
 
     @Override
@@ -109,8 +109,12 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     }
 
     @Override
-    public void collectSuccess() {
-        shopHomeCollectStore.setText("已收藏");
+    public void isCollect(String result) {
+        if ("true".equals(result)) {
+            shopHomeCollectStore.setText("取消收藏");
+        } else if ("false".equals(result)) {
+            shopHomeCollectStore.setText("收藏");
+        }
     }
 
     @Override

@@ -234,7 +234,6 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         }
 
         ProcessDialogUtil.showProcessDialog(mContext);
-//        WaitDialog.show((AppCompatActivity)mContext,null);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

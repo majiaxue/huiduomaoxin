@@ -1,15 +1,11 @@
 package com.example.shop_home;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.common.CommonResource;
@@ -18,26 +14,24 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.shop_home.adapter.ShopHomeVPAdapter;
-import com.example.shop_home.first_page.ShopFirstFragment;
 import com.example.shop_home.treasure.ShopTreasureFragment;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtil;
 import com.example.utils.SPUtil;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
-//    private String[] titleArr = {"首页", "宝贝"};
+    //    private String[] titleArr = {"首页", "宝贝"};
     private List<Fragment> fragmentList = new ArrayList<>();
 
     public ShopHomePresneter(Context context) {
@@ -105,7 +99,7 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
 //
 //    }
 
-    public void initViewPager(FragmentManager fm,String shopId) {
+    public void initViewPager(FragmentManager fm, String shopId) {
         fragmentList.add(new ShopTreasureFragment(shopId + ""));
         ShopHomeVPAdapter intoShopVPAdapter = new ShopHomeVPAdapter(fm, fragmentList);
         getView().loadVP(intoShopVPAdapter);
@@ -132,8 +126,9 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                Toast.makeText(mContext, "收藏成功", Toast.LENGTH_SHORT).show();
-                getView().collectSuccess();
+                LogUtil.e("收藏商品：" + result + "------------" + msg);
+                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                getView().isCollect(result);
             }
 
             @Override
@@ -168,4 +163,22 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
 
         }
     };
+
+    public void isCollect(String shop_id) {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.USER_ISCOLLECT + "/" + shop_id, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("是否收藏：" + result);
+                if (getView() != null) {
+                    getView().isCollect(result);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "---------------" + errorMsg);
+            }
+        }));
+    }
 }

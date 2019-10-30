@@ -109,8 +109,6 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
 
     @Autowired(name = "para")
     String para;
-    @Autowired(name = "commission_rate")
-    String commission_rate;
     @Autowired(name = "type")
     int type;
 
@@ -294,9 +292,9 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             commodityTime.setText("使用期限：" + tbGoodsDetailsBean.getData().getCouponStartTime().split(" ")[0] + "~" + tbGoodsDetailsBean.getData().getCouponEndTime().split(" ")[0]);
             if (tbGoodsDetailsBean.getData().getCommissionRate() < 0) {
                 if (type == 0) {
-                    mul = tbGoodsDetailsBean.getData().getActualPrice() * (Double.valueOf(commission_rate) / 100) * 0.9;
+                    mul = tbGoodsDetailsBean.getData().getActualPrice() * (tbGoodsDetailsBean.getData().getCommissionRate() / 100) * 0.9;
                 } else {
-                    mul = tbGoodsDetailsBean.getData().getActualPrice() * (Double.valueOf(commission_rate) / 10000) * 0.9;
+                    mul = tbGoodsDetailsBean.getData().getActualPrice() * (tbGoodsDetailsBean.getData().getCommissionRate() / 10000) * 0.9;
                 }
             } else {
                 mul = tbGoodsDetailsBean.getData().getActualPrice() * (tbGoodsDetailsBean.getData().getCommissionRate() <= 0 ? 0 : tbGoodsDetailsBean.getData().getCommissionRate() / 100) * 0.9;
