@@ -204,6 +204,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                             public void onError(String errorCode, String errorMsg) {
 //                                customDialog.dismiss();
                                 LogUtil.e("退款申请errorMsg--------->" + errorMsg);
+                                Toast.makeText(RefundActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                             }
                         }));
 
@@ -218,7 +219,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
                         refundApplyVo.setProductPrice(orderDetailBean.getPayAmount());
                         refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
-                        refundApplyVo.setSellerId(orderDetailBean.getSellerId()+"");
+                        refundApplyVo.setSellerId(orderDetailBean.getSellerId() + "");
 //                        refundApplyVo.setReturnName(orderDetailBean.getReceiverName());
 //                        refundApplyVo.setReturnPhone(orderDetailBean.getReceiverPhone());
                         String jsonString = JSON.toJSONString(refundApplyVo);

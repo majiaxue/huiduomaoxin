@@ -184,6 +184,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
                             String msg1 = businessApplicationBean.getMsg();
                             if (msg1.equals("success")) {
+                                Toast.makeText(BusinessApplicationActivity.this, "商家申请成功", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {
                                 Toast.makeText(BusinessApplicationActivity.this, msg1, Toast.LENGTH_SHORT).show();
