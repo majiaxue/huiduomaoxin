@@ -2,7 +2,6 @@ package com.example.points;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -17,7 +16,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.Map;
 
@@ -93,6 +91,7 @@ public class PointsPresenter extends BasePresenter<PointsView> {
                             @Override
                             public void onError(String errorCode, String errorMsg) {
                                 LogUtil.e(errorCode + "------------" + errorMsg);
+                                Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
                             }
                         }));
                     }

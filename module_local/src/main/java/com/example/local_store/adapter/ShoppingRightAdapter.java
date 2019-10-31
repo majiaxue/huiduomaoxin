@@ -69,7 +69,6 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
 
     public void setCartBeanList(List<LocalCartBean> cartBeanList) {
         this.cartBeanList = cartBeanList;
-        LogUtil.e("~~~~~~~~~~~~~~~~~~>" + cartBeanList.size());
     }
 
     @Override
@@ -328,14 +327,11 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                         public void onClick(View v) {
                             int temp = 0;
                             int tempPosition = 0;
-                            LogUtil.e("------------->" + cartBeanList.size());
                             for (int i = 0; i < cartBeanList.size(); i++) {
-                                LogUtil.e("===========>" + cartBeanList.get(i));
                                 if (commodity.getId().equals(cartBeanList.get(i).getLocalGoodsId())) {
                                     temp++;
                                 }
                             }
-                            LogUtil.e("--------->" + temp + "==============" + tempPosition);
                             if (temp > 1) {
                                 Toast.makeText(mContext, "多件不同规格商品要从购物车操作", Toast.LENGTH_SHORT).show();
                             } else if (temp == 1) {
@@ -359,7 +355,6 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
         }
 
         private void addGoods(LocalCartBean goodsToCartBean, final LocalStoreBean.ListBean data) {
-
 
             String jsonString = JSON.toJSONString(goodsToCartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
