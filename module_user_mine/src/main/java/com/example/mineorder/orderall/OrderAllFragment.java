@@ -48,12 +48,14 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
         return new OrderAllPresenter(getContext());
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        LogUtil.e("setUserVisibleHint-------->全部订单当前可见");
-//        presenter.orderAllRec(orderAllRec);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("setUserVisibleHint-------->全部订单当前可见");
+        if (flag == 1){
+            presenter.orderAllRec();
+        }
+    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

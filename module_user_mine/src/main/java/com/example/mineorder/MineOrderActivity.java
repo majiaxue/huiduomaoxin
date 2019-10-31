@@ -1,6 +1,5 @@
 package com.example.mineorder;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragmentActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 我的订单页面

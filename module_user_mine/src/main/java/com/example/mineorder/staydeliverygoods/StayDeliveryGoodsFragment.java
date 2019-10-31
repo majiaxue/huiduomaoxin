@@ -48,12 +48,14 @@ public class StayDeliveryGoodsFragment extends BaseFragment<StayDeliveryGoodsVie
         return new StayDeliveryGoodsPresenter(getContext());
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        LogUtil.e("setUserVisibleHint-------->待收货当前可见");
-//        presenter.stayDeliveryGoodsRec(stayDeliveryGoodsRec);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("setUserVisibleHint-------->待收货当前可见");
+        if (flag == 1){
+            presenter.stayDeliveryGoodsRec();
+        }
+    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

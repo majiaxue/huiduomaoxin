@@ -1,12 +1,14 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.0.164:9001";   //商品//47.99.93.123//192.168.0.195
-    public static final String BASEURL_4001 = "http://192.168.0.164:4001";   //用户192.168.0.164
-    public static final String BASEURL_9003 = "http://192.168.0.164:9003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.0.164:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.0.164:9005";   //参数
-    public static final String BASEURL_9010 = "http://192.168.0.164:9010";  //本地小店
+    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123//192.168.0.17
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
+    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
+    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
+    public static final String BASEURL_9010 = "http://47.99.93.123:9010";  //本地小店
+    public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
+
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
@@ -65,6 +67,7 @@ public class CommonResource {
     public static final String MESSAGELIST = "/rest/user/message";             //消息列表
     public static final String COLLECT_SHOP = "/rest/user/seller";              //收藏店铺
     public static final String IWANTUP = "/rest/user/level/info";               //我要升级
+    public static final String UP_PAY = "/rest/alipay/upLevelSign";             // 升级运营商/等级 支付
     public static final String SHOUQUAN = "/rest/tbk/goods/weiYi";           //转链授权
     public static final String GET_SHARE_URL = "/rest/share/invite";        //获取分享链接
     public static final String UP_JUSTNOW = "/rest/user/level/up";          //立即升级
@@ -146,7 +149,7 @@ public class CommonResource {
     public static final String ORDERREMOVE = "/rest/user/order/remove";//逻辑删除多用户商城用户订单
     public static final String REFUNDAPPLY = "/rest/order/refundApply";     //退款申请
     public static final String ORDERCONFIRM = "/rest/order/confirm";        //确定收货
-    public static final String USERCOMMENT = "/rest/user/comment";      //立即评价
+    public static final String USERCOMMENT = "/rest/order/addComment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
     public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
@@ -167,6 +170,7 @@ public class CommonResource {
     public static final String GOODSDETAILS = "/rest/tbk/goods/goods_details";   //最新淘客详情接口
     public static final String GETGOODSLIST = "/rest/tbk/goods/get_goods_list";   //淘抢购聚划算接口
     public static final String BRANDLIST = "/rest/tbk/goods/brandList";   //品牌接口
+    public static final String UPLOADORDER = "/file/upload/order";      //上传头像
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493

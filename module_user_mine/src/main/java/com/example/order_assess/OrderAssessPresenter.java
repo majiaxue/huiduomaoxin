@@ -14,10 +14,17 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
+import com.example.net.OnDataListener;
+import com.example.net.OnMyCallBack;
+import com.example.net.RetrofitUtil;
 import com.example.order_assess.adapter.OrderAssessAdapter;
+import com.example.utils.LogUtil;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.PopUtils;
 
@@ -25,11 +32,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+
 public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
-    private List<Uri> uriList = new ArrayList<>();
+    private List<String> uriList = new ArrayList<>();
     private OrderAssessAdapter adapter;
     private Uri fileUri;
     private String filePath = Environment.getExternalStorageDirectory() + "/fltk/image";
+    private int flag = 0;
+    private File file;
 
     public OrderAssessPresenter(Context context) {
         super(context);
@@ -109,12 +124,14 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
         getView().takePhoto(captureIntent);
+        flag = 1;
     }
 
     private void openPhotoAlbum() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         getView().photoAlbum(intent);
+        flag = 2;
     }
 
     public void parseUri(Intent intent) {
@@ -149,16 +166,58 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
                 }
             }
         }
-        getView().imageUri(fileUri);
         updateList();
     }
 
     public void updateList() {
-        uriList.add(fileUri);
-        getView().imageUri(fileUri);
-        fileUri = null;
-        adapter.notifyDataSetChanged();
-        isSHowAdd();
+        //        getView().imageUri(fileUri);
+        uploadPictures();
+    }
+
+    private void uploadPictures() {
+        LogUtil.e("图片1111" + fileUri);
+        if (1 == flag) {
+            String photoPath = null;
+            Cursor cursor = mContext.getContentResolver().query(fileUri, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                photoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                LogUtil.e("photopath:------------" + photoPath);
+            }
+            file = new File(photoPath + "");
+        } else if (2 == flag) {
+            String realFilePath = getRealFilePath(mContext, fileUri);
+            file = new File(realFilePath);
+        }
+//        LogUtil.e("图片2222" + realFilePath);
+        //将文件转化为RequestBody对象
+        //需要在表单中进行文件上传时，就需要使用该格式：multipart/form-data
+        RequestBody imgBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        //将文件转化为MultipartBody.Part
+        //第一个参数：上传文件的key；第二个参数：文件名；第三个参数：RequestBody对象
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), imgBody);
+        Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4000).postFile(CommonResource.UPLOADORDER, filePart);
+        RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("上传图片" + result);
+                JSONObject jsonObject = JSON.parseObject(result);
+                String ngUrl = jsonObject.getString("ngUrl");
+                String bucketName = jsonObject.getString("bucketName");
+                String fileName = jsonObject.getString("fileName");
+                if (getView() != null) {
+                    getView().imagePath(ngUrl + "/" + bucketName + "/" + fileName);
+                }
+                uriList.add(ngUrl + "/" + bucketName + "/" + fileName);
+                adapter.notifyDataSetChanged();
+                isSHowAdd();
+                fileUri = null;
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e("上传图片" + errorCode + errorMsg);
+            }
+        }));
     }
 
     private void isSHowAdd() {
@@ -172,5 +231,28 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
                 getView().showAdd();
             }
         }
+    }
+
+    public static String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if (scheme == null)
+            data = uri.getPath();
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+            data = uri.getPath();
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
     }
 }

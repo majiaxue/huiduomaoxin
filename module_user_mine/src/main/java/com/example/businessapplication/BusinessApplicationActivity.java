@@ -27,6 +27,7 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.PhoneNumUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -137,8 +138,19 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     Toast.makeText(BusinessApplicationActivity.this, "请输入正确的手机号!", Toast.LENGTH_SHORT).show();
                 } else if ("点击选择".equals(businessApplicationAddressProvince.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请选择地址!", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(map.get("0"))) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请选择头像", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(map.get("1"))) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请上传身份证正面", Toast.LENGTH_SHORT).show();
+
+                } else if (TextUtils.isEmpty(map.get("2"))) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请上传身份证背面", Toast.LENGTH_SHORT).show();
+
+                } else if (TextUtils.isEmpty(map.get("3"))) {
+                    Toast.makeText(BusinessApplicationActivity.this, "请上传营业执照", Toast.LENGTH_SHORT).show();
+
                 } else {
-//                    ProcessDialogUtil.showProcessDialog(BusinessApplicationActivity.this);
+                    ProcessDialogUtil.showProcessDialog(BusinessApplicationActivity.this);
                     SellerVo sellerVo = new SellerVo();
                     sellerVo.setUserCode(SPUtil.getUserCode());//SPUtil.getUserCode()"297881222686703616"
                     sellerVo.setSellerLogo(map.get("0"));
@@ -235,10 +247,10 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                 if (businessApplicationShopTypeText.getText().toString().equals("点击选择")) {
                     Toast.makeText(BusinessApplicationActivity.this, "请先选择商家类型!", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (businessApplicationShopTypeText.getText().toString().equals("线上商家")){
-                        presenter.popupGoodsClassify(businessApplicationShopClassifyText,0);
-                    }else if (businessApplicationShopTypeText.getText().toString().equals("本地商家")){
-                        presenter.popupGoodsClassify(businessApplicationShopClassifyText,1);
+                    if (businessApplicationShopTypeText.getText().toString().equals("线上商家")) {
+                        presenter.popupGoodsClassify(businessApplicationShopClassifyText, 0);
+                    } else if (businessApplicationShopTypeText.getText().toString().equals("本地商家")) {
+                        presenter.popupGoodsClassify(businessApplicationShopClassifyText, 1);
                     }
                 }
             }

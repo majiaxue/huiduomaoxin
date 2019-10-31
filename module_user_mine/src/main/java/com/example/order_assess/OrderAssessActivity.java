@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -29,10 +30,13 @@ import com.example.order_assess.adapter.OrderAssessAdapter;
 import com.example.bean.CommentVo;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.RatingBarView;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -137,34 +141,46 @@ public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAsse
         orderAssessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProcessDialogUtil.showProcessDialog(OrderAssessActivity.this);
                 CommentVo commentVo = new CommentVo();
-                commentVo.setMemberNickName("123");
-                commentVo.setMemberIcon("123");
-                commentVo.setStar(orderAssessStar.getStarCount());
-                commentVo.setContent(orderAssessEdit.getText().toString());
-                commentVo.setPicList(images);
-                LogUtil.e("listImages"+images);
+                commentVo.setIcon(SPUtil.getStringValue(CommonResource.USER_PIC));
+                commentVo.setNickname(SPUtil.getStringValue(CommonResource.USER_NAME));
+                commentVo.setSppf(orderAssessStar.getStarCount());
+                commentVo.setInfo(orderAssessEdit.getText().toString());
+                if (images.size() != 0) {
+                    LogUtil.e("listImages" + images);
+                    String[] strings = images.toArray(new String[images.size()]);
+                    commentVo.setPics(StringUtils.join(strings));
+                } else {
+                    commentVo.setPics("");
+                }
                 commentVo.setProductId(beanList.getOrderItems().get(position).getProductId() + "");
-                commentVo.setProductName(beanList.getOrderItems().get(position).getProductName());
-                commentVo.setProductAttribute(beanList.getOrderItems().get(position).getProductAttr());
-                commentVo.setSellerDescribe(orderAssessDepict.getStarCount());
-                commentVo.setSellerLogistics(orderAssessLogistics.getStarCount());
-                commentVo.setSellerServer(orderAssessService.getStarCount());
+                commentVo.setOrderSn(beanList.getOrderItems().get(position).getOrderSn());
+                commentVo.setOrderItemId(beanList.getOrderItems().get(position).getId() + "");
+                commentVo.setPjpf(orderAssessDepict.getStarCount());
+                commentVo.setWlpf(orderAssessLogistics.getStarCount());
+                commentVo.setFwpf(orderAssessService.getStarCount());
+                if (isNiming) {
+                    commentVo.setIsAnonymous(1);
+                } else {
+                    commentVo.setIsAnonymous(0);
+                }
+                commentVo.setAttr(beanList.getOrderItems().get(position).getProductAttr());
                 String jsonString = JSON.toJSONString(commentVo);
                 RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-                Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postHeadWithBody(CommonResource.USERCOMMENT, requestBody, SPUtil.getToken());
+                Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithBody(CommonResource.USERCOMMENT, requestBody);
                 RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
                         LogUtil.e("评论成功----->" + result + msg);
-                        if (result.indexOf("true") != -1) {
-                            finish();
-                        }
+                        Toast.makeText(OrderAssessActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        LogUtil.e("评论成功----->" + errorMsg);
+                        LogUtil.e("评论失败----->" + errorMsg);
+                        Toast.makeText(OrderAssessActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 }));
             }
@@ -207,17 +223,28 @@ public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAsse
     }
 
     @Override
-    public void imageUri(Uri uri) {
-        LogUtil.e("图片--------->" + uri);
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            String base64 = ImageUtil.bitmapToBase64(bitmap);
-            LogUtil.e("image64--------->" + base64);
-            images.add(base64);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void listImage(List<String> listImage) {
+        images.clear();
+        images.addAll(listImage);
     }
+
+    @Override
+    public void imagePath(String path) {
+        images.add(path);
+    }
+
+//    @Override
+//    public void imageUri(Uri uri) {
+//        LogUtil.e("图片--------->" + uri);
+//        try {
+//            Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
+//            String base64 = ImageUtil.bitmapToBase64(bitmap);
+//            LogUtil.e("image64--------->" + base64);
+//            images.add(base64);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

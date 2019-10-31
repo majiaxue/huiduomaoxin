@@ -110,7 +110,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
         ARouter.getInstance().inject(this);
 //        customDialog = new CustomDialog(this);
 //        WaitDialog.show(this,null);
-        ProcessDialogUtil.showProcessDialog(this);
+//        ProcessDialogUtil.showProcessDialog(this);
 
         LogUtil.e("beanList退款申请" + mineOrderBean1);
         if ("1".equals(type)) {
@@ -196,8 +196,8 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 //                                customDialog.dismiss();
                                 if ("true".equals(result)) {
                                     ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
+                                    finish();
                                 }
-                                finish();
                             }
 
                             @Override
@@ -231,8 +231,8 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 //                                customDialog.dismiss();
                                 if ("true".equals(result)) {
                                     ARouter.getInstance().build("/module_user_mine/RefundSucceedActivity").navigation();
+                                    finish();
                                 }
-                                finish();
                             }
 
                             @Override

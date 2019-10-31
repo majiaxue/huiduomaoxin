@@ -580,7 +580,7 @@ public class OrderDetailBean implements Serializable {
         this.items = items;
     }
 
-    public static class ItemsBean {
+    public static class ItemsBean implements Serializable {
         /**
          * id : 757
          * orderId : null

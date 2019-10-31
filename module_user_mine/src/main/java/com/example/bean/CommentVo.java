@@ -9,128 +9,110 @@ import java.util.List;
  */
 public class CommentVo {
     /**
+     * 名称
+     */
+    private String icon;
+    /**
+     * 头像
+     */
+    private String nickname;
+    /**
+     * 信息
+     */
+    private String info;
+    /**
+     * 图片集合','分割
+     */
+    private String pics;
+    /**
+     * 订单管理SN
+     */
+    private String orderSn;
+    /**
+     * 订单ITEM,,ID
+     */
+    private String orderItemId;
+    /**
      *
-     */
-    private Long id;
-    /**
-     * 用户昵称
-     */
-    private String memberNickName;
-    /**
-     * 评论用户头像
-     */
-    private String memberIcon;
-    /**
-     * 评价星数：0->5
-     */
-    private Integer star;
-    /**
-     * 内容
-     */
-    private String content;
-    /**
-     * 上传图片地址，以逗号隔开
-     */
-    private List<String> picList;
-    /**
-     * 商品ID
      */
     private String productId;
     /**
-     * 商品名称
+     * 评价评分
      */
-    private String productName;
+    private Integer pjpf;
     /**
-     * 购买时的商品属性
+     *服务评分
      */
-    private String productAttribute;
+    private Integer fwpf;
     /**
-     * 评价的ip
+     *商品评分
      */
-    private String memberIp;
+    private Integer sppf;
     /**
-     * 是否显示
+     *物流评分
      */
-    private int showStatus;
+    private Integer wlpf;
     /**
-     * 评论数
+     * 是否匿名评价 0->否1 ->是
      */
-    private int collectCount;
-    /**
-     * 评论浏览数
-     */
-    private int readCount;
-    /**
-     * 回复数
-     */
-    private int replayCount;
-    /**
-     * 评论时间
-     */
-    private String createTime;
-    /**
-     * 商家ID
-     */
-    private Long sellerId;
-    /**
-     * 描述星数：0->5
-     */
-    private int sellerDescribe;
-    /**
-     * 物流星数：0->5
-     */
-    private int sellerLogistics;
-    /**
-     * 服务星数：0->5
-     */
-    private int sellerServer;
+    private Integer isAnonymous;
 
-    public Long getId() {
-        return id;
+    private String attr;
+
+    public String getAttr() {
+        return attr;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAttr(String attr) {
+        this.attr = attr;
     }
 
-    public String getMemberNickName() {
-        return memberNickName;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setMemberNickName(String memberNickName) {
-        this.memberNickName = memberNickName;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public String getMemberIcon() {
-        return memberIcon;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setMemberIcon(String memberIcon) {
-        this.memberIcon = memberIcon;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public Integer getStar() {
-        return star;
+    public String getInfo() {
+        return info;
     }
 
-    public void setStar(Integer star) {
-        this.star = star;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
-    public String getContent() {
-        return content;
+    public String getPics() {
+        return pics;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setPics(String pics) {
+        this.pics = pics;
     }
 
-    public List<String> getPicList() {
-        return picList;
+    public String getOrderSn() {
+        return orderSn;
     }
 
-    public void setPicList(List<String> picList) {
-        this.picList = picList;
+    public void setOrderSn(String orderSn) {
+        this.orderSn = orderSn;
+    }
+
+    public String getOrderItemId() {
+        return orderItemId;
+    }
+
+    public void setOrderItemId(String orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public String getProductId() {
@@ -141,99 +123,43 @@ public class CommentVo {
         this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public Integer getPjpf() {
+        return pjpf;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setPjpf(Integer pjpf) {
+        this.pjpf = pjpf;
     }
 
-    public String getProductAttribute() {
-        return productAttribute;
+    public Integer getFwpf() {
+        return fwpf;
     }
 
-    public void setProductAttribute(String productAttribute) {
-        this.productAttribute = productAttribute;
+    public void setFwpf(Integer fwpf) {
+        this.fwpf = fwpf;
     }
 
-    public String getMemberIp() {
-        return memberIp;
+    public Integer getSppf() {
+        return sppf;
     }
 
-    public void setMemberIp(String memberIp) {
-        this.memberIp = memberIp;
+    public void setSppf(Integer sppf) {
+        this.sppf = sppf;
     }
 
-    public int getShowStatus() {
-        return showStatus;
+    public Integer getWlpf() {
+        return wlpf;
     }
 
-    public void setShowStatus(int showStatus) {
-        this.showStatus = showStatus;
+    public void setWlpf(Integer wlpf) {
+        this.wlpf = wlpf;
     }
 
-    public int getCollectCount() {
-        return collectCount;
+    public Integer getIsAnonymous() {
+        return isAnonymous;
     }
 
-    public void setCollectCount(int collectCount) {
-        this.collectCount = collectCount;
-    }
-
-    public int getReadCount() {
-        return readCount;
-    }
-
-    public void setReadCount(int readCount) {
-        this.readCount = readCount;
-    }
-
-    public int getReplayCount() {
-        return replayCount;
-    }
-
-    public void setReplayCount(int replayCount) {
-        this.replayCount = replayCount;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Long sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public int getSellerDescribe() {
-        return sellerDescribe;
-    }
-
-    public void setSellerDescribe(int sellerDescribe) {
-        this.sellerDescribe = sellerDescribe;
-    }
-
-    public int getSellerLogistics() {
-        return sellerLogistics;
-    }
-
-    public void setSellerLogistics(int sellerLogistics) {
-        this.sellerLogistics = sellerLogistics;
-    }
-
-    public int getSellerServer() {
-        return sellerServer;
-    }
-
-    public void setSellerServer(int sellerServer) {
-        this.sellerServer = sellerServer;
+    public void setIsAnonymous(Integer isAnonymous) {
+        this.isAnonymous = isAnonymous;
     }
 }

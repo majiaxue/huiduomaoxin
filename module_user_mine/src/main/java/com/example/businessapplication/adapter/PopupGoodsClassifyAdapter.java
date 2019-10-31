@@ -17,6 +17,11 @@ public class PopupGoodsClassifyAdapter extends MyRecyclerAdapter<PopupGoodsClass
 
     @Override
     public void convert(RecyclerViewHolder holder, PopupGoodsClassBean data, int position) {
-        holder.setText(R.id.popup_item_goods_classify_text,data.getSellerCategoryName());
+        if (data.isCheck()) {
+            holder.setImageResource(R.id.popup_item_goods_classify_check, R.drawable.icon_xuanzhong);
+        } else {
+            holder.setImageResource(R.id.popup_item_goods_classify_check, R.drawable.icon_weixuanzhong);
+        }
+        holder.setText(R.id.popup_item_goods_classify_text, data.getSellerCategoryName());
     }
 }

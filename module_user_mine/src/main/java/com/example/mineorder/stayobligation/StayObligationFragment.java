@@ -48,12 +48,14 @@ public class StayObligationFragment extends BaseFragment<StayObligationView, Sta
         return new StayObligationPresenter(getContext());
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        LogUtil.e("setUserVisibleHint-------->待付款当前可见");
-//        presenter.stayObligationRec(stayObligationRec);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("setUserVisibleHint-------->待付款当前可见");
+        if (flag == 1){
+            presenter.stayObligationRec();
+        }
+    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

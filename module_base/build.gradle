@@ -177,4 +177,7 @@ dependencies {
     api files('libs/umeng-shareboard-widget-6.9.6.jar')
     api files('libs/umeng-sharetool-6.9.6.jar')
     implementation files('libs/umeng-common-2.1.0.jar')
+
+    //
+    api 'org.apache.commons:commons-lang3:3.7'
 }

@@ -606,7 +606,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PopUtils.seeBigImg(mContext, Uri.parse(sp1Position == -1 ? userGoodsDetail.getPic() : sp1List.get(sp1Position).getPicUrl()));
+                        PopUtils.seeBigImg(mContext, sp1Position == -1 ? userGoodsDetail.getPic() : sp1List.get(sp1Position).getPicUrl());
                     }
                 });
 
