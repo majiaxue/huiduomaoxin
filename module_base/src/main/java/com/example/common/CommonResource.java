@@ -1,12 +1,12 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.0.17:9001";   //商品//47.99.93.123//192.168.0.195
-    public static final String BASEURL_4001 = "http://192.168.0.17:4001";   //用户192.168.0.17
-    public static final String BASEURL_9003 = "http://192.168.0.17:9003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.0.17:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.0.17:9005";   //参数
-    public static final String BASEURL_9010 = "http://192.168.0.17:9010";  //本地小店
+    public static final String BASEURL_9001 = "http://192.168.0.164:9001";   //商品//47.99.93.123//192.168.0.195
+    public static final String BASEURL_4001 = "http://192.168.0.164:4001";   //用户192.168.0.164
+    public static final String BASEURL_9003 = "http://192.168.0.164:9003";   //商家
+    public static final String BASEURL_9004 = "http://192.168.0.164:9004";   //订单
+    public static final String BASEURL_9005 = "http://192.168.0.164:9005";   //参数
+    public static final String BASEURL_9010 = "http://192.168.0.164:9010";  //本地小店
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/rest/goods";  //获取商品详情
