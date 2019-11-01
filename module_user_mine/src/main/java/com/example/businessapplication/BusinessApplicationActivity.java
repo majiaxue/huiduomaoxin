@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.bean.BusinessApplicationBean;
@@ -36,7 +37,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -90,6 +90,9 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     @BindView(R2.id.business_application_shop_type)
     LinearLayout businessApplicationShopType;
 
+    @Autowired(name = "from")
+    String from;
+
     private final int TAKE_PHOTO_CODE = 0x111;
     private final int PHOTO_ALBUM_CODE = 0x222;
     private final int CROP_CODE = 0x333;
@@ -106,7 +109,9 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
     @Override
     public void initData() {
+        ARouter.getInstance().inject(this);
         includeTitle.setText("商家申请");
+
     }
 
     @Override
@@ -158,7 +163,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     sellerVo.setSellerIdBackCardUrl(map.get("2"));
                     sellerVo.setSellerBusinessLicenseUrl(map.get("3"));
                     sellerVo.setSellerFoodSafetyPermitUrl(map.get("4"));
-                    LogUtil.e("map------------>" + map.get("0"));
+
                     if (businessApplicationShopTypeText.getText().toString().equals("线上商家")) {
                         sellerVo.setSellerType("0");
                     } else if (businessApplicationShopTypeText.getText().toString().equals("本地商家")) {
@@ -170,7 +175,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     sellerVo.setSellerPhone(businessApplicationPhone.getText().toString());
                     sellerVo.setSellerAddredd(businessApplicationAddressProvince.getText().toString() + " " + businessApplicationAddressCity.getText().toString() + " " + businessApplicationAddressArea.getText().toString() + " " + businessApplicationDetailAddress.getText().toString());
                     String sellerVoJson = JSON.toJSONString(sellerVo);
-                    LogUtil.e("SecondaryDetailsJson----------->" + sellerVoJson);
+
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
                     Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body, SPUtil.getToken());
@@ -178,7 +183,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                         @Override
                         public void onSuccess(String result, String msg) {
                             LogUtil.e("BusinessApplicationResult----------->" + result);
-//                            ProcessDialogUtil.dismissDialog();
                             BusinessApplicationBean businessApplicationBean = JSON.parseObject(result, new TypeReference<BusinessApplicationBean>() {
                             }.getType());
 
@@ -245,6 +249,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopClassify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                businessApplicationShopClassify.setEnabled(false);
                 if (businessApplicationShopTypeText.getText().toString().equals("点击选择")) {
                     Toast.makeText(BusinessApplicationActivity.this, "请先选择商家类型!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -267,7 +272,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupGoodsType(businessApplicationShopTypeText);
+                presenter.popupGoodsType(businessApplicationShopTypeText, from);
             }
         });
     }
@@ -292,51 +297,45 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         startActivityForResult(intent, PHOTO_ALBUM_CODE);
     }
 
+    @Override
+    public void kedian() {
+        businessApplicationShopClassify.setEnabled(true);
+    }
 
     @Override
     public void selectPhoto(Uri uri) {
         if (type == 1) {
             businessApplicationFrontPhoto.setImageURI(uri);
-            LogUtil.e("111身份证正面------>" + uri);
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-                LogUtil.e("111身份证正面------>" + bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         } else if (type == 2) {
             businessApplicationVersoPhoto.setImageURI(uri);
-            LogUtil.e("111身份证反面------>" + uri);
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-                LogUtil.e("111身份证反面------>" + bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         } else if (type == 3) {
             businessApplicationBusinessLicense.setImageURI(uri);
-            LogUtil.e("111营业执照------>" + uri);
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-                LogUtil.e("111营业执照------>" + bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         } else if (type == 4) {
             businessApplicationFoodSafetyPermit.setImageURI(uri);
-            LogUtil.e("111食品安全许可证------>" + uri);
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-                LogUtil.e("111食品安全许可证------>" + bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         } else {
             businessApplicationIcon.setImageURI(uri);
-            LogUtil.e("111商家logo------>" + uri);
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-                LogUtil.e("111商家logo------>" + bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -348,19 +347,14 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         this.base64 = bitmap;
         if (type == 1) {
             map.put("1", bitmap.replace("\n", ""));
-            LogUtil.e("111身份证正面222------>" + bitmap);
         } else if (type == 2) {
             map.put("2", bitmap.replace("\n", ""));
-            LogUtil.e("111身份证反面222------>" + bitmap);
         } else if (type == 3) {
             map.put("3", bitmap.replace("\n", ""));
-            LogUtil.e("111营业执照222------>" + bitmap);
         } else if (type == 4) {
             map.put("4", bitmap.replace("\n", ""));
-            LogUtil.e("111食品安全许可证222------>" + bitmap);
         } else {
             map.put("0", bitmap.replace("\n", ""));
-            LogUtil.e("111商家logo222------>" + bitmap.replace("\n", ""));
         }
     }
 

@@ -1,24 +1,21 @@
 package com.example.businessapplication;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,10 +24,8 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.CityBean;
 import com.example.bean.PopupGoodsClassBean;
@@ -54,11 +49,8 @@ import com.example.view.addressselect.OnItemClickListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -284,47 +276,63 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                     popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
                     classifyRec.setAdapter(popupGoodsClassifyAdapter);
 
-                    PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
+                    final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    popupWindow.setOutsideTouchable(true);
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
+                    popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+                    PopUtils.setTransparency(mContext, 0.3f);
+
+                    imageClose.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void setOnPop(final PopupWindow pop) {
-
-
-                            imageClose.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pop.dismiss();
-                                }
-                            });
-
-                            popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(RecyclerView parent, View view, int position) {
-                                    for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
-                                        if (position == i) {
-                                            popupGoodsClassBeans.get(i).setCheck(true);
-                                        } else {
-                                            popupGoodsClassBeans.get(i).setCheck(false);
-                                        }
-                                    }
-                                    popupGoodsClassifyAdapter.notifyDataSetChanged();
-                                }
-                            });
-
-                            textView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
-                                        if (popupGoodsClassBeans.get(i).isCheck()) {
-                                            businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
-                                        }
-                                    }
-                                    pop.dismiss();
-                                }
-                            });
-
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
                         }
                     });
-                    PopUtils.setTransparency(mContext, 0.3f);
+
+                    popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                                if (position == i) {
+                                    popupGoodsClassBeans.get(i).setCheck(true);
+                                } else {
+                                    popupGoodsClassBeans.get(i).setCheck(false);
+                                }
+                            }
+                            popupGoodsClassifyAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    textView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                                if (popupGoodsClassBeans.get(i).isCheck()) {
+                                    businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
+                                }
+                            }
+                            popupWindow.dismiss();
+                        }
+                    });
+
+                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            getView().kedian();
+                            PopUtils.setTransparency(mContext, 1.0f);
+                        }
+                    });
+
+//                    PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
+//                        @Override
+//                        public void setOnPop(final PopupWindow pop) {
+//
+//
+//
+//
+//                        }
+//                    });
 
                 }
             }
@@ -338,7 +346,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
 
     }
 
-    public void popupGoodsType(final TextView businessApplicationShopTypeText) {
+    public void popupGoodsType(final TextView businessApplicationShopTypeText, String from) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_type, null);
         TextView text = view.findViewById(R.id.popup_select_goods_type_text);
         TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
@@ -347,6 +355,12 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         final RadioButton but1 = view.findViewById(R.id.popup_select_goods_type_but1);
         final RadioButton but2 = view.findViewById(R.id.popup_select_goods_type_but2);
         String textCause = businessApplicationShopTypeText.getText().toString();
+
+        if (CommonResource.HISTORY_LOCAL.equals(from)) {
+            but1.setVisibility(View.GONE);
+        } else if ("shop".equals(from)) {
+            but2.setVisibility(View.GONE);
+        }
         if (textCause.equals(but1.getText().toString())) {
             but1.setChecked(true);
         } else if (textCause.equals(but2.getText().toString())) {

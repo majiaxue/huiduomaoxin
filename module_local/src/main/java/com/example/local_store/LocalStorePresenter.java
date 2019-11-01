@@ -40,7 +40,6 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
 
     public LocalStorePresenter(Context context) {
         super(context);
-
     }
 
     @Override
@@ -49,7 +48,6 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
         SPUtil.addParm(CommonResource.SELLERID, "");
         SPUtil.addParm(CommonResource.SELLERNAME, "");
     }
-
 
     public void loadData(final String id) {
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getDataWithout(CommonResource.LOCAL_SHOP + id);
