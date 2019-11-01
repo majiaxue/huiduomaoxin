@@ -51,8 +51,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_30"
                     android:background="@null"
+                    android:gravity="right"
                     android:hint="请输入店铺名称"
                     android:textColorHint="#999999"
+                    android:textCursorDrawable="@drawable/edit_cursor"
                     android:textSize="@dimen/sp_12" />
 
             </LinearLayout>
@@ -153,8 +155,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_30"
                     android:background="@null"
+                    android:gravity="right"
                     android:hint="请输入姓名"
                     android:textColorHint="#999999"
+                    android:textCursorDrawable="@drawable/edit_cursor"
                     android:textSize="@dimen/sp_12" />
 
             </LinearLayout>
@@ -183,9 +187,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_30"
                     android:background="@null"
+                    android:digits="1234567890"
+                    android:gravity="right"
                     android:hint="请输入联系方式"
+                    android:inputType="phone"
                     android:maxLength="11"
+                    android:maxLines="1"
                     android:textColorHint="#999999"
+                    android:textCursorDrawable="@drawable/edit_cursor"
                     android:textSize="@dimen/sp_12" />
 
             </LinearLayout>
@@ -271,6 +280,7 @@
                     android:hint="街道、楼牌号等"
                     android:padding="@dimen/dp_10"
                     android:textColorHint="#999999"
+                    android:textCursorDrawable="@drawable/edit_cursor"
                     android:textSize="@dimen/sp_12" />
 
             </LinearLayout>

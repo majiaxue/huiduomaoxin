@@ -2,7 +2,7 @@ package com.example.common;
 
 public class CommonResource {
     public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123//192.168.0.17
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.164
     public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
     public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
     public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数

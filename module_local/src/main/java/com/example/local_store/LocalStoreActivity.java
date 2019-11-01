@@ -78,9 +78,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     private int targetPosition;//点击左边某一个具体的item的位置
     private boolean isMoved;
     private SortAdapter mSortAdapter;
-    private List<LocalStoreBean> localStoreBeans;
     private List<List<LocalStoreBean.ListBean>> list = new ArrayList<>();
-    private LocalStoreCommendAdapter commendAdapter;
 
     @Override
     public int getLayoutId() {

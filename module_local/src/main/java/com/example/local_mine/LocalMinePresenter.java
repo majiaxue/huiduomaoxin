@@ -84,7 +84,7 @@ public class LocalMinePresenter extends BasePresenter<LocalMineView> {
                     String data1 = applicationBean.getData();
                     LogUtil.e("mineFragment" + data1);
                     if (data1.equals("2") || data1.equals("3")) {
-                        ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").navigation();
+                        ARouter.getInstance().build("/module_user_mine/BusinessApplicationActivity").withString("from", CommonResource.HISTORY_LOCAL).navigation();
                     } else {
                         Toast.makeText(mContext, "您已经是商家了无需申请!", Toast.LENGTH_SHORT).show();
                     }
