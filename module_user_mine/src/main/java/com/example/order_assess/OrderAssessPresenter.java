@@ -179,12 +179,6 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
     private void uploadPictures() {
         LogUtil.e("图片1111" + fileUri);
         if (1 == flag) {
-//            String photoPath = null;
-////            Cursor cursor = mContext.getContentResolver().query(fileUri, null, null, null, null);
-////            if (cursor != null && cursor.moveToFirst()) {
-////                photoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-////                LogUtil.e("photopath:------------" + photoPath);
-////            }
             imgBody = RequestBody.create(MediaType.parse("multipart/form-data"), file1);
             filePart = MultipartBody.Part.createFormData("file", file1.getName(), imgBody);
 
