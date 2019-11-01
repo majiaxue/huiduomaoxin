@@ -44,7 +44,9 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
     private Uri fileUri;
     private String filePath = Environment.getExternalStorageDirectory() + "/fltk/image";
     private int flag = 0;
-    private File file;
+    private File file1;
+    private RequestBody imgBody;
+    private MultipartBody.Part filePart;
 
     public OrderAssessPresenter(Context context) {
         super(context);
@@ -112,14 +114,14 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
         if (!file0.exists()) {
             file0.mkdirs();
         }
-        File file = new File(filePath, System.currentTimeMillis() + ".jpg");
+        file1 = new File(filePath, System.currentTimeMillis() + ".jpg");
 
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            fileUri = FileProvider.getUriForFile(mContext.getApplicationContext(), mContext.getPackageName(), file);
+            fileUri = FileProvider.getUriForFile(mContext.getApplicationContext(), mContext.getPackageName(), file1);
             captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         } else {
-            fileUri = Uri.fromFile(file);
+            fileUri = Uri.fromFile(file1);
         }
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
@@ -177,24 +179,26 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
     private void uploadPictures() {
         LogUtil.e("图片1111" + fileUri);
         if (1 == flag) {
-            String photoPath = null;
-            Cursor cursor = mContext.getContentResolver().query(fileUri, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                photoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                LogUtil.e("photopath:------------" + photoPath);
-            }
-            file = new File(photoPath + "");
+//            String photoPath = null;
+////            Cursor cursor = mContext.getContentResolver().query(fileUri, null, null, null, null);
+////            if (cursor != null && cursor.moveToFirst()) {
+////                photoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+////                LogUtil.e("photopath:------------" + photoPath);
+////            }
+            imgBody = RequestBody.create(MediaType.parse("multipart/form-data"), file1);
+            filePart = MultipartBody.Part.createFormData("file", file1.getName(), imgBody);
+
         } else if (2 == flag) {
             String realFilePath = getRealFilePath(mContext, fileUri);
-            file = new File(realFilePath);
+            File file = new File(realFilePath);
+            //        LogUtil.e("图片2222" + realFilePath);
+            //将文件转化为RequestBody对象
+            //需要在表单中进行文件上传时，就需要使用该格式：multipart/form-data
+            imgBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            //将文件转化为MultipartBody.Part
+            //第一个参数：上传文件的key；第二个参数：文件名；第三个参数：RequestBody对象
+            filePart = MultipartBody.Part.createFormData("file", file.getName(), imgBody);
         }
-//        LogUtil.e("图片2222" + realFilePath);
-        //将文件转化为RequestBody对象
-        //需要在表单中进行文件上传时，就需要使用该格式：multipart/form-data
-        RequestBody imgBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        //将文件转化为MultipartBody.Part
-        //第一个参数：上传文件的key；第二个参数：文件名；第三个参数：RequestBody对象
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), imgBody);
         Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4000).postFile(CommonResource.UPLOADORDER, filePart);
         RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
             @Override
