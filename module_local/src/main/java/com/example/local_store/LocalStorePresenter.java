@@ -50,6 +50,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void loadData(final String id) {
+        LogUtil.e("---------------------->"+id);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getDataWithout(CommonResource.LOCAL_SHOP + id);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
 
@@ -60,6 +61,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
                 localStoreBeans = JSON.parseArray(result, LocalStoreBean.class);
 
                 if (flag == 2) {
+                    ShoppingRightAdapter.setCartBeanList(localCartBeans);
                     relevance();
                 }
             }
@@ -81,12 +83,10 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("购物车：" + result);
-                flag++;
                 localCartBeans = JSON.parseArray(result, LocalCartBean.class);
-                ShoppingRightAdapter rightAdapter = new ShoppingRightAdapter();
-                rightAdapter.setCartBeanList(localCartBeans);
-
+                flag++;
                 if (flag == 2) {
+                    ShoppingRightAdapter.setCartBeanList(localCartBeans);
                     relevance();
                 }
             }

@@ -21,8 +21,6 @@ public interface LocalHomeView extends IView {
 
     void loadBanner(List<BannerBean.RecordsBean> beanList);
 
-    void loadHistory(ZhongBannerAdapter adapter);
-
     void loadZhongBanner(List<LocalShopBean> zhongList);
 
     void loadCommend(LocalHomeCommendAdapter adapter);

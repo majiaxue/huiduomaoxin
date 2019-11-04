@@ -58,7 +58,7 @@ import okhttp3.ResponseBody;
 
 public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
 
-    private List<LocalCartBean> cartBeanList = new ArrayList<>();
+    public static List<LocalCartBean> cartBeanList = new ArrayList<>();
 
     public ShoppingRightAdapter(Context context, List<LocalStoreBean.ListBean> list, RvListener listener, ShopOnClickListtener shopOnClickListtener) {
         super(context, list, listener, shopOnClickListtener);
@@ -67,8 +67,8 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
     public ShoppingRightAdapter() {
     }
 
-    public void setCartBeanList(List<LocalCartBean> cartBeanList) {
-        this.cartBeanList = cartBeanList;
+    public static void setCartBeanList(List<LocalCartBean> data) {
+        cartBeanList = data;
     }
 
     @Override
@@ -327,11 +327,14 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                         public void onClick(View v) {
                             int temp = 0;
                             int tempPosition = 0;
+                            LogUtil.e("========================>" + cartBeanList.size());
                             for (int i = 0; i < cartBeanList.size(); i++) {
                                 if (commodity.getId().equals(cartBeanList.get(i).getLocalGoodsId())) {
                                     temp++;
+                                    tempPosition = i;
                                 }
                             }
+                            LogUtil.e("------------------------>" + temp);
                             if (temp > 1) {
                                 Toast.makeText(mContext, "多件不同规格商品要从购物车操作", Toast.LENGTH_SHORT).show();
                             } else if (temp == 1) {

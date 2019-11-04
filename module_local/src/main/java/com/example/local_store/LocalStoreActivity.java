@@ -89,7 +89,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     public void initData() {
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
-        SPUtil.addParm(CommonResource.SELLERID, bean.getId());
+        SPUtil.addParm(CommonResource.SELLERID, bean.getPigxx_id());
         SPUtil.addParm(CommonResource.SELLERNAME, bean.getSeller_shop_name());
         leftLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         localStoreRvLeft.setLayoutManager(leftLayoutManager);
@@ -107,8 +107,8 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
             Glide.with(this).load(split[0]).into(localStoreImg);
         }
 
-        presenter.loadData(bean.getId());
-        presenter.loadCart(bean.getId());
+        presenter.loadData(bean.getPigxx_id());
+        presenter.loadCart(bean.getPigxx_id());
     }
 
     @Override

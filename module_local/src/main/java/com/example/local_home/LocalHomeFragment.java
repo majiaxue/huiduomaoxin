@@ -65,10 +65,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     ImageView localHomeMsg;
     @BindView(R2.id.local_home_search)
     LinearLayout localHomeSearch;
-    @BindView(R2.id.local_home_history_rv)
-    RecyclerView localHomeHistoryRv;
-    @BindView(R2.id.local_home_zhankai)
-    ImageView localHomeZhankai;
     @BindView(R2.id.local_home_xbanner)
     XBanner localHomeXbanner;
     @BindView(R2.id.local_home_navbar)
@@ -121,8 +117,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 return false;
             }
         };
-        localHomeHistoryRv.setLayoutManager(layoutManager1);
-        localHomeHistoryRv.addItemDecoration(new SpaceItemDecoration(0, (int) getContext().getResources().getDimension(R.dimen.dp_20), 0, 0));
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
@@ -296,11 +290,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 Glide.with(getContext()).load(((LocalShopBean) model).getSeller_logo()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(com.example.user_store.R.dimen.dp_10))).into(img);
             }
         });
-    }
-
-    @Override
-    public void loadHistory(ZhongBannerAdapter adapter) {
-        localHomeHistoryRv.setAdapter(adapter);
     }
 
     @Override

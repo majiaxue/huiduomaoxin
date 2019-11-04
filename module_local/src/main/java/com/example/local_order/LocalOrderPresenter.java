@@ -33,6 +33,7 @@ import com.example.utils.OnPopListener;
 import com.example.utils.PopUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
+import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.SelfDialog;
 
@@ -41,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
@@ -93,7 +96,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         });
     }
 
-    public void loadData(String status, final int page) {
+    public void loadData(final String status, final int page) {
         this.status = status;
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).build();
@@ -293,7 +296,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
      * @param selfDialog
      */
     private void confirmOrder(LocalOrderBean localOrderBean, final SelfDialog selfDialog) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getDataWithout(CommonResource.LOCAL_CONFIRM_ORDER + "/" + localOrderBean.getOrderSn() + "/" + localOrderBean.getId());
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getDataWithout(CommonResource.LOCAL_CONFIRM_ORDER + localOrderBean.getOrderSn() + "/" + localOrderBean.getId());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -356,26 +359,29 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                         if (TextUtils.isEmpty(reason[0])) {
                             Toast.makeText(mContext, "请选择退款原因", Toast.LENGTH_SHORT).show();
                         } else {
-                            refund(localOrderBean, reason[0]);
+                            refund(localOrderBean, reason[0], pop);
                         }
                     }
                 });
             }
         });
-
-
     }
 
     /**
      * 退款
      */
-    private void refund(final LocalOrderBean localOrderBean, String reason) {
-        Map map = MapUtil.getInstance().addParms("orderSn", localOrderBean.getOrderSn()).addParms("orderId", localOrderBean.getId()).addParms("reason", reason).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_TUIKUAN, map);
+    private void refund(final LocalOrderBean localOrderBean, String reason, final PopupWindow pop) {
+        localOrderBean.setNote(reason);
+        String jsonString = JSON.toJSONString(localOrderBean);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+//        Map map = MapUtil.getInstance().addParms("orderSn", localOrderBean.getOrderSn()).addParms("orderId", localOrderBean.getId()).addParms("reason", reason).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postHeadWithBody(CommonResource.LOCAL_TUIKUAN, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("退款：" + result);
+                pop.dismiss();
+                loadData(status, 1);
             }
 
             @Override

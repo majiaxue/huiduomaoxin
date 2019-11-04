@@ -11,7 +11,6 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.order_detail.OrderDetailActivity;
 import com.example.user_store.UserActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
@@ -46,9 +45,13 @@ public class PaySuccessPresenter extends BasePresenter<PaySuccessView> {
 
     public void jumpToOrder(SubmitOrderBean bean) {
         if ("goods".equals(bean.getProductName())) {
-            Intent intent = new Intent(mContext, OrderDetailActivity.class);
-            intent.putExtra("bean", bean);
-            mContext.startActivity(intent);
+//            Intent intent = new Intent(mContext, OrderDetailActivity.class);
+//            intent.putExtra("bean", bean);
+//            mContext.startActivity(intent);
+            ARouter.getInstance()
+                    .build("/module_user_mine/OrderDetailsActivity")
+                    .withString("orderSn", bean.getMasterNo())
+                    .navigation();
             ((Activity) mContext).finish();
         } else if ("cart".equals(bean.getProductName())) {
             ARouter.getInstance().build("/module_user_mine/MineOrderActivity").navigation();

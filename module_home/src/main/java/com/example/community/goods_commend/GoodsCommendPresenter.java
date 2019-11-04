@@ -207,7 +207,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
     }
 
     public void ledTb(String para) {
-        Map map = MapUtil.getInstance().addParms("para", para).build();
+        Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", "1").build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 

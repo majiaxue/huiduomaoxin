@@ -2,14 +2,11 @@ package com.example.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -21,25 +18,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.module_base.R;
-import com.example.utils.LogUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import q.rorbin.badgeview.DisplayUtil;
 
@@ -142,7 +126,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public RecyclerViewHolder setImageFresco(int resId, String url) {
 
         SimpleDraweeView simpleDraweeView = getView(resId);
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url == null ? "" : url))
                 .setResizeOptions(new ResizeOptions(DisplayUtil.dp2px(context, 100), DisplayUtil.dp2px(context, 100)))
                 .setProgressiveRenderingEnabled(true)
                 .build();

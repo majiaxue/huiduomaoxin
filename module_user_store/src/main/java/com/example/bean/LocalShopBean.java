@@ -60,7 +60,16 @@ public class LocalShopBean extends SimpleBannerInfo implements Serializable {
     private String seller_logo;
     private String seller_lat;
     private String sellerpics;
+    private String pigxx_id;
     private List<UserCouponBean> couponList;
+
+    public String getPigxx_id() {
+        return pigxx_id;
+    }
+
+    public void setPigxx_id(String pigxx_id) {
+        this.pigxx_id = pigxx_id;
+    }
 
     public String getSellerpics() {
         return sellerpics;
@@ -557,6 +566,7 @@ public class LocalShopBean extends SimpleBannerInfo implements Serializable {
                 ", seller_logo='" + seller_logo + '\'' +
                 ", seller_lat='" + seller_lat + '\'' +
                 ", sellerpics='" + sellerpics + '\'' +
+                ", pigxx_id='" + pigxx_id + '\'' +
                 ", couponList=" + couponList +
                 '}';
     }

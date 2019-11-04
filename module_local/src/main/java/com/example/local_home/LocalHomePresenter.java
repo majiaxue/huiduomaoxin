@@ -173,16 +173,10 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
     }
 
     public void initHistory() {
-        historyList.add("猜你喜欢");
         historyList.add("麻辣香锅");
         historyList.add("螺蛳粉");
         historyList.add("洋葱木耳");
-        ZhongBannerAdapter zhongBannerAdapter = new ZhongBannerAdapter(mContext, historyList, R.layout.rv_textview);
-        if (getView() != null) {
-            getView().loadHistory(zhongBannerAdapter);
-        }
 
-        historyList.remove(0);
         LocalHomeCommendAdapter commendAdapter = new LocalHomeCommendAdapter(mContext, historyList, R.layout.rv_local_home_commend);
         if (getView() != null) {
             getView().loadCommend(commendAdapter);
