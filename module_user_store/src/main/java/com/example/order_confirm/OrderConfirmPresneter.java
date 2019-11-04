@@ -125,8 +125,10 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
     public void submit(final OrderConfirmBean bean) {
         if (bean.getReceiverProvince() == null || "".equals(bean.getReceiverProvince())) {
             Toast.makeText(mContext, "请选择收货地址", Toast.LENGTH_SHORT).show();
+            getView().payFail();
         } else if (!isCan) {
             Toast.makeText(mContext, "未获取到运费信息，请重试", Toast.LENGTH_SHORT).show();
+            getView().payFail();
         } else {
             ProcessDialogUtil.showProcessDialog(mContext);
 //            WaitDialog.show((AppCompatActivity)mContext,null);

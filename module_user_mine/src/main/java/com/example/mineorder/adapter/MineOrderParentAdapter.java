@@ -35,8 +35,30 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
         if (data.getStatus() == 1) {
             //1待发货
             holder.setText(R.id.mine_order_parent_status, "买家已付款");
-            holder.setText(R.id.mine_order_parent_btn_left, "申请退款");
-            holder.setText(R.id.mine_order_parent_btn_right, "提醒发货");
+            if (0 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_btn_left, "等待卖家处理");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else if (1 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_btn_left, "退货中");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else if (2 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_btn_left, "退货完成");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else if (3 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_btn_left, "卖家已拒绝");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else {
+                holder.setText(R.id.mine_order_parent_btn_left, "申请退款");
+                holder.setText(R.id.mine_order_parent_btn_right, "提醒发货");
+            }
         } else if (data.getStatus() == 3) {
             //3待评论
             holder.setText(R.id.mine_order_parent_status, "交易成功");

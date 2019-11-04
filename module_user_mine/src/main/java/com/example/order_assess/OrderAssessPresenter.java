@@ -199,13 +199,13 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("上传图片" + result);
                 JSONObject jsonObject = JSON.parseObject(result);
-                String ngUrl = jsonObject.getString("ngUrl");
+//                String ngUrl = jsonObject.getString("ngUrl");
                 String bucketName = jsonObject.getString("bucketName");
                 String fileName = jsonObject.getString("fileName");
                 if (getView() != null) {
-                    getView().imagePath(ngUrl + "/" + bucketName + "/" + fileName);
+                    getView().imagePath("http://47.99.93.123:8083" + "/" + bucketName + "/" + fileName);
                 }
-                uriList.add(ngUrl + "/" + bucketName + "/" + fileName);
+                uriList.add("http://47.99.93.123:8083" + "/" + bucketName + "/" + fileName);
                 adapter.notifyDataSetChanged();
                 isSHowAdd();
                 fileUri = null;
