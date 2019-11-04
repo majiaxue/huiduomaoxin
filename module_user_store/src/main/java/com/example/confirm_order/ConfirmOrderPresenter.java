@@ -80,6 +80,8 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                                     dataList.get(outside).getItems().get(inside).setQuantity(dataList.get(outside).getItems().get(inside).getQuantity() - 1);
                                     getPostage(addressBean.getAddressProvince());
                                 }
+                                reviseStutas(dataList.get(outside).getItems());
+
                             } else {
                                 Toast.makeText(mContext, "不符合条件", Toast.LENGTH_SHORT).show();
                             }
@@ -95,6 +97,8 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                         if (isCan) {
                             dataList.get(outside).getItems().get(inside).setQuantity(dataList.get(outside).getItems().get(inside).getQuantity() + 1);
                             getPostage(addressBean.getAddressProvince());
+                            reviseStutas(dataList.get(outside).getItems());
+
                         } else {
                             Toast.makeText(mContext, "正在获取数据，请稍后", Toast.LENGTH_SHORT).show();
                         }
@@ -116,6 +120,23 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             }
         });
     }
+
+    private void reviseStutas(List<CartBean.RecordsBean.ItemsBean> dataList) {
+        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithList(CommonResource.REVISE_CART_ITEM, dataList, SPUtil.getToken());
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("修改状态：" + result);
+//                getView().totalPrice(totalPrice);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+
+            }
+        }));
+    }
+
 
     public void chooseCoupon(int sellerId, final int outside, final View chooseCoupon) {
         Map map = MapUtil.getInstance().addParms("status", "0").addParms("userCode", SPUtil.getUserCode()).addParms("sellerId", sellerId).build();

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -109,6 +110,8 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                         mineOrderParentAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                             @Override
                             public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                                final TextView left = view2.findViewById(R.id.mine_order_parent_btn_left);
+
                                 //去店铺
                                 view1.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -124,12 +127,14 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                         @Override
                                         public void onClick(View v) {
 //                                            Toast.makeText(mContext, "申请退款", Toast.LENGTH_SHORT).show();
-                                            ARouter.getInstance()
-                                                    .build("/module_user_mine/RefundActivity")
-                                                    .withSerializable("mineOrderBean", mineOrderBean)
-                                                    .withInt("position", position)
-                                                    .withString("type", "0")
-                                                    .navigation();
+                                            if ("申请退款".equals(left.getText().toString())) {
+                                                ARouter.getInstance()
+                                                        .build("/module_user_mine/RefundActivity")
+                                                        .withSerializable("mineOrderBean", mineOrderBean)
+                                                        .withInt("position", position)
+                                                        .withString("type", "0")
+                                                        .navigation();
+                                            }
                                         }
                                     });
                                     //提醒发货

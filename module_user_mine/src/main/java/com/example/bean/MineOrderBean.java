@@ -38,7 +38,16 @@ public class MineOrderBean implements Serializable {
         private double totalAmount;
         private int totalCount;
         private String sellerId;
+        private int backStatus;
         private List<OrderItemsBean> orderItems;
+
+        public int getBackStatus() {
+            return backStatus;
+        }
+
+        public void setBackStatus(int backStatus) {
+            this.backStatus = backStatus;
+        }
 
         public int getOrderId() {
             return orderId;
