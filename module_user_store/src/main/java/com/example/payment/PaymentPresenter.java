@@ -78,7 +78,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-            Map map = MapUtil.getInstance().addParms("totalAmout", submitOrderBean.getTotalAmount()).addParms("orderSn", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").build();
+            Map map = MapUtil.getInstance().addParms("totalAmout", submitOrderBean.getTotalAmount()).addParms("orderSn", submitOrderBean.getMasterNo()).addParms("productName", CommonResource.PROJECTNAME).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.WXPAY, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
@@ -112,7 +112,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 }
             }));
         } else {
-            Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", "枫林淘客").addParms("userCode", SPUtil.getUserCode()).build();
+            Map map = MapUtil.getInstance().addParms("totalAmount", submitOrderBean.getTotalAmount()).addParms("masterNo", submitOrderBean.getMasterNo()).addParms("productName", CommonResource.PROJECTNAME).addParms("userCode", SPUtil.getUserCode()).build();
             ProcessDialogUtil.showProcessDialog(mContext);
 //            WaitDialog.show((AppCompatActivity)mContext,null);
 

@@ -2,7 +2,6 @@ package com.example.confirm_order;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -26,13 +25,13 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.user_store.R;
+import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +79,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                                     dataList.get(outside).getItems().get(inside).setQuantity(dataList.get(outside).getItems().get(inside).getQuantity() - 1);
                                     getPostage(addressBean.getAddressProvince());
                                 }
+                                ProcessDialogUtil.showProcessDialog(mContext);
                                 reviseStutas(dataList.get(outside).getItems());
 
                             } else {
@@ -96,6 +96,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     public void onClick(View v) {
                         if (isCan) {
                             dataList.get(outside).getItems().get(inside).setQuantity(dataList.get(outside).getItems().get(inside).getQuantity() + 1);
+                            ProcessDialogUtil.showProcessDialog(mContext);
                             getPostage(addressBean.getAddressProvince());
                             reviseStutas(dataList.get(outside).getItems());
 
@@ -213,7 +214,6 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
             orderBean.setOrderRequestItems(list);
 
             ProcessDialogUtil.showProcessDialog(mContext);
-//            WaitDialog.show((AppCompatActivity)mContext,null);
 
             String jsonString = JSON.toJSONString(orderBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
@@ -299,7 +299,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                         }
                     }
                     dataList.get(j).setTotalFeight(feight);
-                    dataList.get(j).setTotalPrice(totalPrice);
+                    dataList.get(j).setTotalPrice(ArithUtil.exact(totalPrice, 2));
                 }
                 orderAdapter.notifyDataSetChanged();
                 jisuan(postageBean);

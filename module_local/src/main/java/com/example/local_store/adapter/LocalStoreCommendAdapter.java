@@ -106,7 +106,7 @@ public class LocalStoreCommendAdapter extends MyRecyclerAdapter<LocalStoreBean.L
     }
 
     private void addGoods(LocalStoreBean.ListBean data) {
-        LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), data.getId(), SPUtil.getUserCode(), data.getCount() + "");
+        LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), data.getId(), SPUtil.getUserCode(), data.getCount());
         String jsonString = JSON.toJSONString(goodsToCartBean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_CART_ADD, requestBody);
@@ -124,7 +124,7 @@ public class LocalStoreCommendAdapter extends MyRecyclerAdapter<LocalStoreBean.L
     }
 
     private void minusGoods(LocalStoreBean.ListBean data) {
-        LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), data.getId(), SPUtil.getUserCode(), data.getCount() + "");
+        LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), data.getId(), SPUtil.getUserCode(), data.getCount());
         String jsonString = JSON.toJSONString(goodsToCartBean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_CART_MINUS, requestBody);

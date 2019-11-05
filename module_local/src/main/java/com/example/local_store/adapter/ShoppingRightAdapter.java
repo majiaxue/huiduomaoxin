@@ -163,7 +163,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                             String parameter = commodity.getParameter();
                             final String specification = commodity.getSpecification();
                             if (TextUtils.isEmpty(parameter) && TextUtils.isEmpty(specification)) {
-                                LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount() + "");
+                                LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount());
                                 goodsToCartBean.setLocalGoodsPic(commodity.getPics());
                                 goodsToCartBean.setLocalGoodsName(commodity.getName());
                                 if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
@@ -296,7 +296,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                                     }
                                                 }
                                                 if (!hasSame) {
-                                                    LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount() + "");
+                                                    LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount());
                                                     goodsToCartBean.setLocalGoodsPic(commodity.getPics());
                                                     goodsToCartBean.setLocalGoodsName(commodity.getSelectName());
                                                     if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
@@ -416,6 +416,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     data.setCount(currentCount);
                     isShow(data);
                     notifyDataSetChanged();
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
                 }
 
                 @Override

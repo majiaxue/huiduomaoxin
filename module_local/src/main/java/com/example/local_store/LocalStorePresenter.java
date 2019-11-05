@@ -1,16 +1,14 @@
 package com.example.local_store;
 
 import android.content.Context;
-import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalCartBean;
 import com.example.bean.LocalStoreBean;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_store.adapter.LocalStoreCommendAdapter;
 import com.example.local_store.adapter.ShoppingRightAdapter;
-import com.example.module_local.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -50,7 +48,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void loadData(final String id) {
-        LogUtil.e("---------------------->"+id);
+        LogUtil.e("---------------------->" + id);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getDataWithout(CommonResource.LOCAL_SHOP + id);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
 
@@ -83,6 +81,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("购物车：" + result);
+                EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
                 localCartBeans = JSON.parseArray(result, LocalCartBean.class);
                 flag++;
                 if (flag == 2) {
@@ -119,10 +118,11 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void upCart(String msg) {
+        LogUtil.e("----------------------->" + msg);
         List<LocalCartBean> cartBeanList = JSON.parseArray(msg, LocalCartBean.class);
         double money = 0.0;
         for (int i = 0; i < cartBeanList.size(); i++) {
-            money += cartBeanList.get(i).getPrice();
+            money += (cartBeanList.get(i).getPrice() * cartBeanList.get(i).getNum());
         }
         getView().upMoney(ArithUtil.exact(money, 2), cartBeanList.size());
     }

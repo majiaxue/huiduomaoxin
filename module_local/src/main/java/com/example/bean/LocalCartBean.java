@@ -16,7 +16,7 @@ public class LocalCartBean {
     private String localSellerId;
     private String localGoodsId;
     private String userCode;
-    private String num;
+    private int num;
     private String createTime;
     private String updateTime;
     /**
@@ -42,7 +42,7 @@ public class LocalCartBean {
     public LocalCartBean() {
     }
 
-    public LocalCartBean(String localSellerId, String localGoodsId, String userCode, String num) {
+    public LocalCartBean(String localSellerId, String localGoodsId, String userCode, int num) {
         this.localSellerId = localSellerId;
         this.localGoodsId = localGoodsId;
         this.userCode = userCode;
@@ -81,11 +81,11 @@ public class LocalCartBean {
         this.userCode = userCode;
     }
 
-    public String getNum() {
+    public int getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(int num) {
         this.num = num;
     }
 

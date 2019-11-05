@@ -15,6 +15,7 @@ import com.example.confirm_order.adapter.ConfirmOrderAdapter;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.ArithUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
@@ -134,8 +135,8 @@ public class ConfirmOrderActivity extends BaseActivity<ConfirmOrderView, Confirm
     public void loadPostage(double feight, double price, int number) {
         totalMoney = price;
         confirmOrderTotalYunfei.setText("+￥" + feight);
-        confirmOrderTotalPrice.setText("￥" + (price - feight));
-        confirmOrderFinalPrice.setText(price - couponMoney + "");
+        confirmOrderTotalPrice.setText("￥" + ArithUtil.sub(price, feight));
+        confirmOrderFinalPrice.setText(ArithUtil.sub(price, couponMoney) + "");
         mCount.setText("共" + number + "件");
     }
 

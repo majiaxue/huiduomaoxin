@@ -57,7 +57,7 @@ public class BrowseRecordPresenter extends BasePresenter<BrowseRecordView> {
                         dataList.clear();
                     }
                     dataList.addAll(JSON.parseArray(result, MyCollectBean.class));
-                    LogUtil.e("changdu:" + dataList.size());
+
                     if (recordAdapter == null) {
                         recordAdapter = new BrowseRecordAdapter(mContext, dataList, R.layout.rv_collection);
                         if (getView() != null) {

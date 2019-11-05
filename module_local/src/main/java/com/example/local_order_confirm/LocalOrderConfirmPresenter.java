@@ -127,7 +127,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                         LocalGetOrderSnBean localGetOrderSnBean = (LocalGetOrderSnBean) baseEntity.getData();
                         Map map = MapUtil.getInstance()
                                 .addParms("totalAmount", localGetOrderSnBean.getTotalMoney())
-                                .addParms("productName", "枫林淘客")
+                                .addParms("productName", CommonResource.PROJECTNAME)
                                 .addParms("orderFlag", true)
                                 .addParms("orderSn", localGetOrderSnBean.getOrderSn())
                                 .addParms("redPackedId", "")
@@ -159,7 +159,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                     .addParms("totalAmount", bean.getTotalMoney())
                     .addParms("orderSn", bean.getOrderSn())
                     .addParms("redPackedId", "")
-                    .addParms("productName", "枫林淘客")
+                    .addParms("productName", CommonResource.PROJECTNAME)
                     .addParms("orderFlag", true)
                     .addParms("userCode", SPUtil.getUserCode())
                     .build();
