@@ -28,30 +28,27 @@ public class RestsAdapter extends MyRecyclerAdapter<RestsBean.DataBeanX> {
         holder.setImageFresco(R.id.rests_rec_shop_icon, data.getBrand_logo());
         holder.setText(R.id.rests_rec_shop_name, data.getTb_brand_name());
 
-        viewOnClickListener.ViewOnClick(holder.getView(R.id.rests_rec_shop_id),position);
+        viewOnClickListener.ViewOnClick(holder.getView(R.id.rests_rec_shop_id), position);
 
 
         RecyclerView goodsRec = holder.getView(R.id.rests_rec_goods_rec);
-        if (data.getItem().size()!=0 && data.getItem() !=null){
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
-            goodsRec.setLayoutManager(gridLayoutManager);
-        }else{
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
-            goodsRec.setLayoutManager(gridLayoutManager);
-        }
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
+        goodsRec.setLayoutManager(gridLayoutManager);
+
         RestsGoodsAdapter restsGoodsAdapter = new RestsGoodsAdapter(context, data.getItem(), R.layout.itme_rests_rec_goods_rec);
         goodsRec.setAdapter(restsGoodsAdapter);
 
         restsGoodsAdapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                if (!TextUtils.isEmpty(SPUtil.getToken())){
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
                     ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                             .withString("para", data.getItem().get(position).getItemid())
                             .withString("commission_rate", data.getItem().get(position).getTkrates())
                             .withInt("type", 0)
                             .navigation();
-                }else{
+                } else {
                     ARouter.getInstance().build("/mine/login").navigation();
                 }
 

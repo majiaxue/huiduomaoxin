@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_40"
-                android:text="服务热线：400-111-222"
+                android:text="@string/service_phone"
                 android:textColor="#333333"
                 android:textSize="@dimen/sp_14" />
 

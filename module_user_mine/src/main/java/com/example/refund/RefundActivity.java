@@ -184,7 +184,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setProductPrice(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPrice());
                         refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
                         refundApplyVo.setSellerId(mineOrderBean1.getOrderList().get(position).getSellerId());
-                        LogUtil.e("---------------------->" + refundApplyVo);
+
 //                        refundApplyVo.setReturnName(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).get);
 //                        refundApplyVo.setReturnPhone(mineOrderBean1.getReceiverPhone());
                         String jsonString = JSON.toJSONString(refundApplyVo);

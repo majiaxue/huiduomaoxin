@@ -115,14 +115,14 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
         orderDetailsContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call("18818814558");
+                call(CommonResource.SERVICE_PHONE);
             }
         });
 
         orderDetailsConsultCustomerService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call("18503735075");
+                call("CommonResource.SERVICE_PHONE");
             }
         });
 

@@ -34,9 +34,9 @@ public class UserCouponBean implements Serializable {
     private String name;
     private int platform;
     private Integer count;
-    private int amount;
-    private int perLimit;
-    private int minPoint;
+    private double amount;
+    private double perLimit;
+    private double minPoint;
     private String startTime;
     private String endTime;
     private int useType;
@@ -47,19 +47,11 @@ public class UserCouponBean implements Serializable {
     private String enableTime;
     private String code;
     private String memberLevel;
-    private int sellerId;
+    private String sellerId;
     private String sellerName;
-    private int goodsId;
-    private int goodsCategoryId;
+    private String goodsId;
+    private String goodsCategoryId;
     private boolean isHas;
-
-    public boolean isHas() {
-        return isHas;
-    }
-
-    public void setHas(boolean has) {
-        isHas = has;
-    }
 
     public String getId() {
         return id;
@@ -101,27 +93,27 @@ public class UserCouponBean implements Serializable {
         this.count = count;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public int getPerLimit() {
+    public double getPerLimit() {
         return perLimit;
     }
 
-    public void setPerLimit(int perLimit) {
+    public void setPerLimit(double perLimit) {
         this.perLimit = perLimit;
     }
 
-    public int getMinPoint() {
+    public double getMinPoint() {
         return minPoint;
     }
 
-    public void setMinPoint(int minPoint) {
+    public void setMinPoint(double minPoint) {
         this.minPoint = minPoint;
     }
 
@@ -205,11 +197,11 @@ public class UserCouponBean implements Serializable {
         this.memberLevel = memberLevel;
     }
 
-    public int getSellerId() {
+    public String getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
 
@@ -221,20 +213,28 @@ public class UserCouponBean implements Serializable {
         this.sellerName = sellerName;
     }
 
-    public int getGoodsId() {
+    public String getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(int goodsId) {
+    public void setGoodsId(String goodsId) {
         this.goodsId = goodsId;
     }
 
-    public int getGoodsCategoryId() {
+    public String getGoodsCategoryId() {
         return goodsCategoryId;
     }
 
-    public void setGoodsCategoryId(int goodsCategoryId) {
+    public void setGoodsCategoryId(String goodsCategoryId) {
         this.goodsCategoryId = goodsCategoryId;
+    }
+
+    public boolean isHas() {
+        return isHas;
+    }
+
+    public void setHas(boolean has) {
+        isHas = has;
     }
 
     @Override

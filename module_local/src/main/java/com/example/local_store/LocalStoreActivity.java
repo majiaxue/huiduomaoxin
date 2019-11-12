@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.example.bean.LocalCartBean;
 import com.example.bean.LocalShopBean;
 import com.example.bean.LocalStoreBean;
 import com.example.common.CommonResource;
@@ -29,6 +30,7 @@ import com.example.local_store.ShoppingRight.SortDetailFragment;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragmentActivity;
+import com.example.utils.OnUpdateCountListener;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 
@@ -257,5 +259,9 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
         //获取购物车坐标
         view.getLocationOnScreen(endP);
         endWidth = view.getWidth();
+    }
+
+    public void updateCount(List<LocalCartBean.InsideCart> data, OnUpdateCountListener listener) {
+        presenter.cartPop(data, listener);
     }
 }

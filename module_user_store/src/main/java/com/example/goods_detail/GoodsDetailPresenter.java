@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -58,7 +57,6 @@ import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagFlowLayout;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -1641,7 +1639,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
 
     public void callServe() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + "18503735075");
+        Uri data = Uri.parse("tel:" + CommonResource.SERVICE_PHONE);
         intent.setData(data);
         mContext.startActivity(intent);
     }

@@ -213,5 +213,6 @@ public class CommonResource {
     public static final String DINGWEI = "dingwei";
     public static final String UPCART = "up_cart";      //刷新购物车
     public static final String PROJECTNAME = "枫林淘客";
+    public static final String SERVICE_PHONE = "18503735075";
 
 }

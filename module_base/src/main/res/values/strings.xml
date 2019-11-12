@@ -58,4 +58,5 @@
     <string name="quanyishuoming">权益说明：</string>
     <string name="upgrade_just">立即升级</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="service_phone">服务热线：18503735075</string>
 </resources>
