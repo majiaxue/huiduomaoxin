@@ -91,64 +91,36 @@ public class AssessBean {
          * sellerServer : 1
          */
 
-        private int id;
-        private String memberNickName;
-        private String memberIcon;
-        private int star;
-        private String content;
+        private String id;
+        private String info;
         private String pics;
-        private int productId;
-        private String productName;
-        private String productAttribute;
-        private String memberIp;
-        private int showStatus;
-        private int collectCount;
-        private int readCount;
-        private int replayCount;
-        private String createTime;
-        private int sellerId;
-        private int sellerDescribe;
-        private int sellerLogistics;
-        private int sellerServer;
+        private String orderSn;
+        private String orderItemId;
+        private String productId;
+        private int pjpf;
+        private int fwpf;
+        private int sppf;
+        private int wlpf;
+        private String isAnonymous;
+        private String icon;
+        private String nickname;
+        private String ceatedTime;
+        private String attr;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
-        public String getMemberNickName() {
-            return memberNickName;
+        public String getInfo() {
+            return info;
         }
 
-        public void setMemberNickName(String memberNickName) {
-            this.memberNickName = memberNickName;
-        }
-
-        public String getMemberIcon() {
-            return memberIcon;
-        }
-
-        public void setMemberIcon(String memberIcon) {
-            this.memberIcon = memberIcon;
-        }
-
-        public int getStar() {
-            return star;
-        }
-
-        public void setStar(int star) {
-            this.star = star;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
+        public void setInfo(String info) {
+            this.info = info;
         }
 
         public String getPics() {
@@ -159,108 +131,121 @@ public class AssessBean {
             this.pics = pics;
         }
 
-        public int getProductId() {
+        public String getOrderSn() {
+            return orderSn;
+        }
+
+        public void setOrderSn(String orderSn) {
+            this.orderSn = orderSn;
+        }
+
+        public String getOrderItemId() {
+            return orderItemId;
+        }
+
+        public void setOrderItemId(String orderItemId) {
+            this.orderItemId = orderItemId;
+        }
+
+        public String getProductId() {
             return productId;
         }
 
-        public void setProductId(int productId) {
+        public void setProductId(String productId) {
             this.productId = productId;
         }
 
-        public String getProductName() {
-            return productName;
+        public int getPjpf() {
+            return pjpf;
         }
 
-        public void setProductName(String productName) {
-            this.productName = productName;
+        public void setPjpf(int pjpf) {
+            this.pjpf = pjpf;
         }
 
-        public String getProductAttribute() {
-            return productAttribute;
+        public int getFwpf() {
+            return fwpf;
         }
 
-        public void setProductAttribute(String productAttribute) {
-            this.productAttribute = productAttribute;
+        public void setFwpf(int fwpf) {
+            this.fwpf = fwpf;
         }
 
-        public String getMemberIp() {
-            return memberIp;
+        public int getSppf() {
+            return sppf;
         }
 
-        public void setMemberIp(String memberIp) {
-            this.memberIp = memberIp;
+        public void setSppf(int sppf) {
+            this.sppf = sppf;
         }
 
-        public int getShowStatus() {
-            return showStatus;
+        public int getWlpf() {
+            return wlpf;
         }
 
-        public void setShowStatus(int showStatus) {
-            this.showStatus = showStatus;
+        public void setWlpf(int wlpf) {
+            this.wlpf = wlpf;
         }
 
-        public int getCollectCount() {
-            return collectCount;
+        public String getIsAnonymous() {
+            return isAnonymous;
         }
 
-        public void setCollectCount(int collectCount) {
-            this.collectCount = collectCount;
+        public void setIsAnonymous(String isAnonymous) {
+            this.isAnonymous = isAnonymous;
         }
 
-        public int getReadCount() {
-            return readCount;
+        public String getIcon() {
+            return icon;
         }
 
-        public void setReadCount(int readCount) {
-            this.readCount = readCount;
+        public void setIcon(String icon) {
+            this.icon = icon;
         }
 
-        public int getReplayCount() {
-            return replayCount;
+        public String getNickname() {
+            return nickname;
         }
 
-        public void setReplayCount(int replayCount) {
-            this.replayCount = replayCount;
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
 
-        public String getCreateTime() {
-            return createTime;
+        public String getCeatedTime() {
+            return ceatedTime;
         }
 
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
+        public void setCeatedTime(String ceatedTime) {
+            this.ceatedTime = ceatedTime;
         }
 
-        public int getSellerId() {
-            return sellerId;
+        public String getAttr() {
+            return attr;
         }
 
-        public void setSellerId(int sellerId) {
-            this.sellerId = sellerId;
+        public void setAttr(String attr) {
+            this.attr = attr;
         }
 
-        public int getSellerDescribe() {
-            return sellerDescribe;
-        }
-
-        public void setSellerDescribe(int sellerDescribe) {
-            this.sellerDescribe = sellerDescribe;
-        }
-
-        public int getSellerLogistics() {
-            return sellerLogistics;
-        }
-
-        public void setSellerLogistics(int sellerLogistics) {
-            this.sellerLogistics = sellerLogistics;
-        }
-
-        public int getSellerServer() {
-            return sellerServer;
-        }
-
-        public void setSellerServer(int sellerServer) {
-            this.sellerServer = sellerServer;
+        @Override
+        public String toString() {
+            return "RecordsBean{" +
+                    "id='" + id + '\'' +
+                    ", info='" + info + '\'' +
+                    ", pics='" + pics + '\'' +
+                    ", orderSn='" + orderSn + '\'' +
+                    ", orderItemId='" + orderItemId + '\'' +
+                    ", productId='" + productId + '\'' +
+                    ", pjpf=" + pjpf +
+                    ", fwpf='" + fwpf + '\'' +
+                    ", sppf='" + sppf + '\'' +
+                    ", wlpf='" + wlpf + '\'' +
+                    ", isAnonymous=" + isAnonymous +
+                    ", icon=" + icon +
+                    ", nickname=" + nickname +
+                    ", ceatedTime=" + ceatedTime +
+                    ", attr='" + attr + '\'' +
+                    '}';
         }
     }
 }

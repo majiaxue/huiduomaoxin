@@ -1,12 +1,9 @@
 package com.example.search;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.common.CommonResource;
@@ -17,7 +14,6 @@ import com.example.mvp.BasePresenter;
 import com.example.utils.LogUtil;
 import com.example.view.FlowLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

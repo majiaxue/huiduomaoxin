@@ -1,13 +1,10 @@
 package com.example.local_store.ShoppingRight;
 
 
-import android.text.TextUtils;
-
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.bean.LocalCartBean;
 import com.example.bean.LocalOrderBean;
-import com.example.bean.LocalStoreBean;
 import com.example.common.CommonResource;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -40,8 +37,8 @@ public class SortDetailPresenter extends BasePresenter {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("购物车：" + result);
-                List<LocalCartBean> localCartBeans = JSON.parseArray(result, LocalCartBean.class);
-                submitOrder(localCartBeans);
+                LocalCartBean localCartBeans = JSON.parseObject(result, LocalCartBean.class);
+                submitOrder(localCartBeans.getLocalShopcarList());
             }
 
             @Override
@@ -51,7 +48,7 @@ public class SortDetailPresenter extends BasePresenter {
         }));
     }
 
-    public void submitOrder(List<LocalCartBean> data) {
+    public void submitOrder(List<LocalCartBean.InsideCart> data) {
         List<LocalOrderBean.LocalOrderItemListBean> list = new ArrayList<>();
         double price = 0;
         boolean hasGoods = false;

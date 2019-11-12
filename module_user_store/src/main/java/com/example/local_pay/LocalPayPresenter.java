@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -34,10 +33,11 @@ import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
-import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Map;
@@ -60,7 +60,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(this);
     }
 
     @SuppressLint("HandlerLeak")
@@ -120,7 +120,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
         if (type == 0) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-            Map map = MapUtil.getInstance().addParms("totalAmout", money).addParms("orderSn", orderSn).addParms("productName", "枫林淘客").build();
+            Map map = MapUtil.getInstance().addParms("totalAmout", money).addParms("orderSn", orderSn).addParms("productName", CommonResource.PROJECTNAME).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.WXPAY, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
@@ -153,7 +153,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
                 }
             }));
         } else if (type == 1) {
-            Map map = MapUtil.getInstance().addParms("totalAmount", money).addParms("masterNo", orderSn).addParms("productName", "枫林淘客").addParms("userCode", SPUtil.getUserCode()).build();
+            Map map = MapUtil.getInstance().addParms("totalAmount", money).addParms("masterNo", orderSn).addParms("productName", CommonResource.PROJECTNAME).addParms("userCode", SPUtil.getUserCode()).build();
             ProcessDialogUtil.showProcessDialog(mContext);
 //            WaitDialog.show((AppCompatActivity)mContext,null);
 
@@ -176,7 +176,7 @@ public class LocalPayPresenter extends BasePresenter<LocalPayView> {
             }));
         } else if (type == 2) {
             Map map = MapUtil.getInstance().addParms("masterNo", orderSn).addParms("totalAmount", money)
-                    .addParms("productName", "枫林淘客").addParms("userCode", SPUtil.getUserCode()).addParms("sellerId", sellerId).build();
+                    .addParms("productName", CommonResource.PROJECTNAME).addParms("userCode", SPUtil.getUserCode()).addParms("sellerId", sellerId).build();
             if (chooseCoupon != null) {
                 map.put("couponId", chooseCoupon.getId());
             }

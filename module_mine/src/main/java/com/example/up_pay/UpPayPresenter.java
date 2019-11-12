@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -24,7 +23,6 @@ import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
-import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -78,7 +76,7 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
             ProcessDialogUtil.showProcessDialog(mContext);
 //            WaitDialog.show((AppCompatActivity)mContext,null);
 
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + levelId + "&productName=枫林淘客-" + name);
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_WXPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + levelId + "&productName=" + CommonResource.PROJECTNAME + "-" + name);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -86,9 +84,7 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
 
 //                    ProcessDialogUtil.dismissDialog();
                     try {
-                        String[] split = result.split("-----");
-                        orderSn = split[1];
-                        WeChatPayBean payBean = JSON.parseObject(split[0], WeChatPayBean.class);
+                        WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
 
                         PayReq request = new PayReq();
                         request.appId = payBean.getAppid();
@@ -98,6 +94,7 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
                         request.nonceStr = payBean.getNoncestr();
                         request.timeStamp = payBean.getTimestamp();
                         request.sign = payBean.getSign();
+                        orderSn = payBean.getLevelOrderSn();
 
                         api.registerApp(CommonResource.WXAPPID);
                         api.sendReq(request);
@@ -117,7 +114,6 @@ public class UpPayPresenter extends BasePresenter<UpPayView> {
             }));
         } else {
             ProcessDialogUtil.showProcessDialog(mContext);
-//            WaitDialog.show((AppCompatActivity)mContext,null);
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postDataWithout(CommonResource.LIBAO_ZFBPAY + "?userCode=" + SPUtil.getUserCode() + "&totalAmount=" + money + "&levelId=" + SPUtil.getStringValue(CommonResource.LEVELID));
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override

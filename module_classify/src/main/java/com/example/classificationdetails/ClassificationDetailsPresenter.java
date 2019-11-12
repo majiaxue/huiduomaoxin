@@ -281,11 +281,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                     public void onItemClick(RecyclerView parent, View view, int position) {
                                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                                 .withString("para", tbList.get(position).getItem_id())
-                                                .withString("shoptype", "1")
-                                                .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
-                                                .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
-                                                .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
-                                                .withString("commission_rate", tbList.get(position).getCommission_rate())
                                                 .withInt("type", 1)
                                                 .navigation();
                                     }
@@ -298,11 +293,6 @@ public class ClassificationDetailsPresenter extends BasePresenter<Classification
                                     public void onItemClick(RecyclerView parent, View view, int position) {
                                         ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
                                                 .withString("para", tbList.get(position).getItem_id())
-                                                .withString("shoptype", "1")
-                                                .withDouble("youhuiquan", Double.valueOf(tbList.get(position).getCoupon_amount()))
-                                                .withString("coupon_start_time", tbList.get(position).getCoupon_start_time())
-                                                .withString("coupon_end_time", tbList.get(position).getCoupon_end_time())
-                                                .withString("commission_rate", tbList.get(position).getCommission_rate())
                                                 .withInt("type", 1)
                                                 .navigation();
                                     }

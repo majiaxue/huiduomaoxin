@@ -91,9 +91,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @BindView(R2.id.classification_refresh)
     SmartRefreshLayout mRefresh;
 
-    private boolean salesvolume = true;
-    private boolean price = true;
-    private boolean credit = true;
+
     @Autowired(name = "searchContent")
     String searchContent;
     @Autowired(name = "position")
@@ -140,6 +138,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
         mRefresh.setRefreshHeader(new MaterialHeader(this));
         //设置 Footer 为 默认 样式
         mRefresh.setRefreshFooter(new ClassicsFooter(this));
+        LogUtil.e("----------------------->" + searchContent);
     }
 
     @Override
@@ -339,6 +338,7 @@ public class ClassificationDetailsActivity extends BaseActivity<ClassificationDe
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LogUtil.e("=========================>" + searchContent);
         presenter.setContent(searchContent);
         if (position == 0) {
             presenter.searchTB(page, null);

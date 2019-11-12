@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.MyOrderBean;
+import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.utils.ArithUtil;
 import com.example.utils.SPUtil;
@@ -21,7 +22,7 @@ public class RvListAdapter extends MyRecyclerAdapter<MyOrderBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, MyOrderBean data, int position) {
-        holder.setText(R.id.order_list_my_name, SPUtil.getStringValue("name"))
+        holder.setText(R.id.order_list_my_name, SPUtil.getStringValue(CommonResource.USER_NAME))
                 .setText(R.id.order_list_name, data.getGoodsName())
                 .setText(R.id.order_list_price, "￥" + (data.getGoodsPrice() * 1.0 / 100))
                 .setText(R.id.order_list_count, "x" + data.getGoodsQuantity())
@@ -30,7 +31,7 @@ public class RvListAdapter extends MyRecyclerAdapter<MyOrderBean> {
                 .setText(R.id.order_list_predict, "预计收益" + ArithUtil.mul(SPUtil.getFloatValue("back"), data.getPromotionAmount() * 1.0 / 100) + "元");
 
         ImageView img = holder.getView(R.id.order_list_my_head);
-        Glide.with(context).load(SPUtil.getStringValue("head")).placeholder(R.drawable.vhjfg).into(img);
+        Glide.with(context).load(SPUtil.getStringValue(CommonResource.USER_PIC)).placeholder(R.drawable.vhjfg).into(img);
 
         if (data.getOrderStatus() == -1) {
             holder.setText(R.id.order_list_status, "待付款");

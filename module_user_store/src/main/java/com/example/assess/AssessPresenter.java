@@ -18,7 +18,6 @@ import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.PopUtils;
-import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +66,8 @@ public class AssessPresenter extends BasePresenter<AssessView> {
             }
         });
 
-        Map map = MapUtil.getInstance().addParms("page", page).addParms("pageSize", "10").build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.GETASSESS + "/" + id, map, SPUtil.getToken());
+        Map map = MapUtil.getInstance().addParms("current", page).addParms("productId", id).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getData(CommonResource.GETUSERASSESS, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

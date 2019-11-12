@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.bean.AssessBean;
-import com.example.bean.LocalShopBean;
+import com.example.bean.LocalOrderBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -30,18 +30,27 @@ public class LocalAssessPresenter extends BasePresenter<LocalAssessView> {
 
     }
 
-    public void commit(int totalStarCount, int serveStarCount, int descriptionStarCount, String edit, LocalShopBean bean) {
+    public void commit(int totalStarCount, int serveStarCount, int descriptionStarCount, String edit, LocalOrderBean bean) {
         if (totalStarCount == 0 || serveStarCount == 0 || descriptionStarCount == 0) {
             Toast.makeText(mContext, "请先打分", Toast.LENGTH_SHORT).show();
         } else {
             AssessBean.RecordsBean assessBean = new AssessBean.RecordsBean();
-            assessBean.setMemberNickName(SPUtil.getStringValue(CommonResource.USER_NAME));
-            assessBean.setMemberIcon(SPUtil.getStringValue(CommonResource.USER_PIC));
-            assessBean.setStar(totalStarCount);
-            assessBean.setSellerServer(serveStarCount);
-            assessBean.setSellerDescribe(descriptionStarCount);
-            assessBean.setContent(edit);
-            assessBean.setSellerId(Integer.valueOf(bean.getId()));
+            assessBean.setNickname(SPUtil.getStringValue(CommonResource.USER_NAME));
+            assessBean.setIcon(SPUtil.getStringValue(CommonResource.USER_PIC));
+            assessBean.setPjpf(totalStarCount);
+            assessBean.setFwpf(serveStarCount);
+            assessBean.setSppf(descriptionStarCount);
+            assessBean.setInfo(edit);
+//            assessBean.setSellerId(Integer.valueOf(bean.getLocalSellerId()));
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < bean.getLocalOrderItemList().size(); i++) {
+                if (i == bean.getLocalOrderItemList().size() - 1) {
+                    sb.append(bean.getLocalOrderItemList().get(i).getGoodsName() + "-" + bean.getLocalOrderItemList().get(i).getGoodsSpec());
+                } else {
+                    sb.append(bean.getLocalOrderItemList().get(i).getGoodsName() + "-" + bean.getLocalOrderItemList().get(i).getGoodsSpec() + ",");
+                }
+            }
+            assessBean.setAttr(sb.toString());
             String jsonString = JSON.toJSONString(assessBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).postDataWithBody(CommonResource.GETASSESS, requestBody);

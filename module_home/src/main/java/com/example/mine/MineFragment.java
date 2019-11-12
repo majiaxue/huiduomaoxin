@@ -246,24 +246,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         } else if (!hidden && !TextUtils.isEmpty(SPUtil.getToken())) {
             //如果该页面可见并且已登录
         }
-//        if (hidden) {
-////            StatusBarUtils.setStatusTheme(getActivity(), true, true);
-//        } else {
-//            if (flag) {
-//                StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
-//            }
-//        }
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("HomeFragment" + "可见");
-        if (TextUtils.isEmpty(SPUtil.getToken())){
-            mBenri.setText("0元");
-            mBenyue.setText("0元");
-            mShangyue.setText("0元");
-        }
     }
 
     @Override

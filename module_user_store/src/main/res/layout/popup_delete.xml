@@ -16,6 +16,7 @@
             android:src="@drawable/background_shanchudingdan" />
 
         <TextView
+            android:id="@+id/popup_delete_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

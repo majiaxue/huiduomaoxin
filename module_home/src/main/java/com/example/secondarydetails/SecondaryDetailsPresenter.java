@@ -203,7 +203,6 @@ public class SecondaryDetailsPresenter extends BasePresenter<SecondaryDetailsVie
 
         } else if (type.equals("4")) {
             //京东
-            LogUtil.e("111111111111111111111111111111111");
             final Map map = MapUtil.getInstance().addParms("grade", 0).addParms("parentId", 0).build();
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGETCATEGORY, map);
             RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {

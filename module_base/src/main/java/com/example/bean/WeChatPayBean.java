@@ -24,6 +24,15 @@ public class WeChatPayBean {
     private String sign;
     private String signType;
     private String timestamp;
+    private String levelOrderSn;
+
+    public String getLevelOrderSn() {
+        return levelOrderSn;
+    }
+
+    public void setLevelOrderSn(String levelOrderSn) {
+        this.levelOrderSn = levelOrderSn;
+    }
 
     public String getAppid() {
         return appid;
@@ -100,6 +109,7 @@ public class WeChatPayBean {
                 ", sign='" + sign + '\'' +
                 ", signType='" + signType + '\'' +
                 ", timestamp='" + timestamp + '\'' +
+                ", levelOrderSn='" + levelOrderSn + '\'' +
                 '}';
     }
 }

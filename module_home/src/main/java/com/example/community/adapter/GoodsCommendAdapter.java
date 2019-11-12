@@ -48,16 +48,13 @@ public class GoodsCommendAdapter extends MyRecyclerAdapter<CommunityLocalBean> {
         adapter.setOnItemClick(new OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                if (GoodsCommendPresenter.type == 0) {
-//                    new TBUtil().openTbWithGoodsId(context, data.getId());
-                    if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", data.getId())
-                                .withDouble("youhuiquan", Double.valueOf(data.getCouponmoney()))
-                                .withString("commission_rate", data.getTkrates())
-                                .withInt("type",0)
-                                .navigation();
-                    }
+                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                            .withString("para", data.getId())
+                            .withDouble("youhuiquan", Double.valueOf(data.getCouponmoney()))
+                            .withString("commission_rate", data.getTkrates())
+                            .withInt("type", 0)
+                            .navigation();
                 }
             }
         });

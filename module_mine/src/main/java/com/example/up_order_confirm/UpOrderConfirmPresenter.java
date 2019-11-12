@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -27,7 +26,6 @@ import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
-import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -120,16 +118,13 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
             if (isWeChat) {
                 final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.LIBAO_WXPAY + "?totalAmount=" + bean.getPrice() + "&userCode=" + SPUtil.getUserCode() + "&levelId=" + levelId + "&productName=枫林淘客-" + name + "&type=1", requestBody, SPUtil.getToken());
+                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.LIBAO_WXPAY + "?totalAmount=" + bean.getPrice() + "&userCode=" + SPUtil.getUserCode() + "&levelId=" + levelId + "&productName=" + CommonResource.PROJECTNAME + "-" + name + "&type=1", requestBody, SPUtil.getToken());
                 RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                     @Override
                     public void onSuccess(String result, String msg) {
                         LogUtil.e("微信支付-------------->" + result);
-//                        ProcessDialogUtil.dismissDialog();
                         try {
-                            String[] split = result.split("-----");
-                            orderSn = split[1];
-                            WeChatPayBean payBean = JSON.parseObject(split[0], WeChatPayBean.class);
+                            WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
 
                             PayReq request = new PayReq();
                             request.appId = payBean.getAppid();
@@ -139,6 +134,7 @@ public class UpOrderConfirmPresenter extends BasePresenter<UpOrderConfirmView> {
                             request.nonceStr = payBean.getNoncestr();
                             request.timeStamp = payBean.getTimestamp();
                             request.sign = payBean.getSign();
+                            orderSn = payBean.getLevelOrderSn();
 
                             api.registerApp(CommonResource.WXAPPID);
                             api.sendReq(request);

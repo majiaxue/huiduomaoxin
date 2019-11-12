@@ -17,7 +17,7 @@
         android:id="@+id/rv_local_home_commend_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="@dimen/dp_3"
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:maxLines="1"

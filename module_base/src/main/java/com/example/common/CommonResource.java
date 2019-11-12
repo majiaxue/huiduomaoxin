@@ -44,7 +44,7 @@ public class CommonResource {
     public static final String COLLECT = "/rest/user/product";      //商品收藏
     public static final String PAYSUCCESS = "/rest/order/modifyOrder";      //支付成功 修改订单状态
     public static final String COLLECT_LIST = "/rest/user/product/all";     //收藏列表---淘宝客
-    public static final String BROWSE_LIST = "/rest/user/history/all ";     //浏览记录
+    public static final String BROWSE_LIST = "/rest/user/history/all";     //浏览记录
     public static final String ORDER_DETAIL = "/rest/order/viewOrderInfo";     //订单详情
     public static final String ADD_CART = "/rest/order/addCar";         //添加商品到购物车
     public static final String REVISE_CART_ITEM = "/rest/order/updateCarItem";  //修改购物车条目状态
@@ -57,6 +57,7 @@ public class CommonResource {
     public static final String FANS_TOTAL_MONEY = "/rest/user/fans/totalMoney";     //查询粉丝订单成交金额
     public static final String COUPON_KELING = "/rest/seller/goods-coupons";        //可领优惠券
     public static final String GETASSESS = "/rest/comment";                    //获取商品评论
+    public static final String GETUSERASSESS = "/rest/order/page";              //获取多用户商城评论列表
     public static final String GETPREDICT = "/rest/user/settlement";            //预估收益
     public static final String HOME_PREDICT = "/rest/user/settlement/total";    //首页获取预估数据
     public static final String GETOPER = "/rest/user/getOperLevel";             //获取运营商等级列表
@@ -108,6 +109,9 @@ public class CommonResource {
     public static final String LOCAL_CONFIRM_ORDER = "/rest/local-order/ok/";       //附近小店  确认收货
     public static final String LOCAL_TUIKUAN = "/rest/local-order/return";          //附近小店  申请退款
     public static final String USER_ISCOLLECT = "/rest/user/favorite/seller";       //多用户商城 店铺是否收藏
+    public static final String LOCAL_SELLERS = "/rest/seller/localSeller";          //本地商家
+    public static final String HOT_SELLERS = "/rest/seller/hotSeller";              //热门商家
+    public static final String CANCEL_ORDER = "/rest/order/cancel";                 //多用户商城   取消订单
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -208,5 +212,6 @@ public class CommonResource {
     public static final String SUBMIT_ORDER = "submitOrder";    //提交订单
     public static final String DINGWEI = "dingwei";
     public static final String UPCART = "up_cart";      //刷新购物车
+    public static final String PROJECTNAME = "枫林淘客";
 
 }

@@ -49,7 +49,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
 
     private List<CommunityLocalBean> dataList = new ArrayList<>();
     private GoodsCommendAdapter commendAdapter;
-    public static int type = 0;   //淘宝：0  京东：1  拼多多：2
+    //    public static int type = 0;   //淘宝：0  京东：1  拼多多：2
     private GoodsCommendBean commendBean;
     private TBUtil tbUtil = new TBUtil();
 
@@ -77,7 +77,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
         titleAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-                type = position;
+//                type = position;
                 for (int i = 0; i < titleList.size(); i++) {
                     titleList.get(i).setCheck(i == position);
                 }
@@ -97,7 +97,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
      * @param page
      */
     public void initData(final int page) {
-        Map map = MapUtil.getInstance().addParms("community_type", "0").addParms("mall_type", type).addParms("page", page).build();
+        Map map = MapUtil.getInstance().addParms("community_type", "0").addParms("mall_type", 0).addParms("page", page).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.COMMUNITY, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -165,13 +165,13 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
                                     if (!TextUtils.isEmpty(SPUtil.getToken())) {
                                         btn = v;
                                         v.setEnabled(false);
-                                        if (type == 0) {
-                                            tbZL(dataList.get(index).getId());
-                                        } else if (type == 1) {
-
-                                        } else if (type == 2) {
-                                            ledPdd(dataList.get(index).getId());
-                                        }
+//                                        if (type == 0) {
+                                        tbZL(dataList.get(index).getId());
+//                                        } else if (type == 1) {
+//
+//                                        } else if (type == 2) {
+//                                            ledPdd(dataList.get(index).getId());
+//                                        }
 
                                         getView().loadShareInfo(dataList.get(index));
                                     } else {
@@ -207,16 +207,15 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
     }
 
     public void ledTb(String para) {
-        Map map = MapUtil.getInstance().addParms("para", para).build();
+        Map map = MapUtil.getInstance().addParms("para", para).addParms("flag", "1").build();
         final Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postHead(CommonResource.TBKGOODSGETGYURLBYALL, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("淘宝转链--------->" + result);
-
+                number++;
                 if (result.startsWith("{\"code\":3")) {
-                    number++;
                     if (number == 2) {
                         tbUtil.shouQuan();
                         btn.setEnabled(true);
@@ -232,6 +231,7 @@ public class GoodsCommendPresenter extends BasePresenter<GoodsCommendView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                btn.setEnabled(true);
                 LogUtil.e(errorCode + "---------------" + errorMsg);
             }
         }));

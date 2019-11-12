@@ -24,6 +24,7 @@ import com.example.module_local.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
+import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
@@ -126,6 +127,8 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                         LocalGetOrderSnBean localGetOrderSnBean = (LocalGetOrderSnBean) baseEntity.getData();
                         Map map = MapUtil.getInstance()
                                 .addParms("totalAmount", localGetOrderSnBean.getTotalMoney())
+                                .addParms("productName", CommonResource.PROJECTNAME)
+                                .addParms("orderFlag", true)
                                 .addParms("orderSn", localGetOrderSnBean.getOrderSn())
                                 .addParms("redPackedId", "")
                                 .addParms("userCode", SPUtil.getUserCode())
@@ -156,6 +159,8 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                     .addParms("totalAmount", bean.getTotalMoney())
                     .addParms("orderSn", bean.getOrderSn())
                     .addParms("redPackedId", "")
+                    .addParms("productName", CommonResource.PROJECTNAME)
+                    .addParms("orderFlag", true)
                     .addParms("userCode", SPUtil.getUserCode())
                     .build();
             if (isWechat) {
@@ -169,7 +174,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
     private void wxpay(Map map) {
         final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_WX_PAY, map);
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("微信支付：" + result);
@@ -196,7 +201,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
 
     private void alipay(Map map) {
 
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_ALI_PAY, map);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_ALI_PAY, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

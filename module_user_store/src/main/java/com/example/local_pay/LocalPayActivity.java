@@ -21,6 +21,7 @@ import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.LogUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -72,6 +73,7 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
 
     @Override
     public void initData() {
+//        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         bean = (LocalShopBean) intent.getSerializableExtra("bean");
         includeTitle.setText("确认支付");

@@ -1,16 +1,14 @@
 package com.example.local_store;
 
 import android.content.Context;
-import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalCartBean;
 import com.example.bean.LocalStoreBean;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_store.adapter.LocalStoreCommendAdapter;
 import com.example.local_store.adapter.ShoppingRightAdapter;
-import com.example.module_local.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -29,7 +27,7 @@ import okhttp3.ResponseBody;
 
 public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     private int flag = 0;
-    private List<LocalCartBean> localCartBeans;
+    private List<LocalCartBean.InsideCart> localCartBeans;
     private List<LocalStoreBean> localStoreBeans;
     private List<LocalStoreBean.ListBean> recommendList = new ArrayList<>();
 
@@ -60,6 +58,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
                 localStoreBeans = JSON.parseArray(result, LocalStoreBean.class);
 
                 if (flag == 2) {
+                    ShoppingRightAdapter.setCartBeanList(localCartBeans);
                     relevance();
                 }
             }
@@ -81,12 +80,13 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("购物车：" + result);
+                LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
+                LocalCartBean cartBean = JSON.parseObject(result, LocalCartBean.class);
+                localCartBeans = cartBean.getLocalShopcarList();
                 flag++;
-                localCartBeans = JSON.parseArray(result, LocalCartBean.class);
-                ShoppingRightAdapter rightAdapter = new ShoppingRightAdapter();
-                rightAdapter.setCartBeanList(localCartBeans);
-
                 if (flag == 2) {
+                    ShoppingRightAdapter.setCartBeanList(localCartBeans);
                     relevance();
                 }
             }
@@ -119,10 +119,11 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void upCart(String msg) {
-        List<LocalCartBean> cartBeanList = JSON.parseArray(msg, LocalCartBean.class);
+
+        List<LocalCartBean.InsideCart> cartBeanList = JSON.parseArray(msg, LocalCartBean.InsideCart.class);
         double money = 0.0;
         for (int i = 0; i < cartBeanList.size(); i++) {
-            money += cartBeanList.get(i).getPrice();
+            money += (cartBeanList.get(i).getPrice() * cartBeanList.get(i).getNum());
         }
         getView().upMoney(ArithUtil.exact(money, 2), cartBeanList.size());
     }

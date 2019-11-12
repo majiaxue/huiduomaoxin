@@ -147,16 +147,20 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (confirmBean.getQuantity() > 1) {
-                    if (minAmount != -125 && (totalMoney - confirmBean.getPrice()) >= minAmount) {
-                        confirmBean.setQuantity(confirmBean.getQuantity() - 1);
-                        presenter.getPostage(confirmBean);
-                    } else if (minAmount == -125) {
-                        confirmBean.setQuantity(confirmBean.getQuantity() - 1);
-                        presenter.getPostage(confirmBean);
-                    } else {
-                        Toast.makeText(OrderConfirmActivity.this, "不符合优惠券要求", Toast.LENGTH_SHORT).show();
+                if (presenter.isCan) {
+                    if (confirmBean.getQuantity() > 1) {
+                        if (minAmount != -125 && (totalMoney - confirmBean.getPrice()) >= minAmount) {
+                            confirmBean.setQuantity(confirmBean.getQuantity() - 1);
+                            presenter.getPostage(confirmBean);
+                        } else if (minAmount == -125) {
+                            confirmBean.setQuantity(confirmBean.getQuantity() - 1);
+                            presenter.getPostage(confirmBean);
+                        } else {
+                            Toast.makeText(OrderConfirmActivity.this, "不符合优惠券要求", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } else {
+                    Toast.makeText(OrderConfirmActivity.this, "没有收货地址或未获取到运费", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -164,9 +168,13 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (confirmBean.getQuantity() < confirmBean.getStock()) {
-                    confirmBean.setQuantity(confirmBean.getQuantity() + 1);
-                    presenter.getPostage(confirmBean);
+                if (presenter.isCan) {
+                    if (confirmBean.getQuantity() < confirmBean.getStock()) {
+                        confirmBean.setQuantity(confirmBean.getQuantity() + 1);
+                        presenter.getPostage(confirmBean);
+                    }
+                } else {
+                    Toast.makeText(OrderConfirmActivity.this, "没有收货地址或未获取到运费", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -9,6 +9,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.CartBean;
 import com.example.user_store.R;
+import com.example.utils.ArithUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ConfirmOrderAdapter extends MyRecyclerAdapter<CartBean.RecordsBean>
                 .setText(R.id.confirm_order_delivery_txt2, data.getTotalFeight() + "")
                 .setText(R.id.confirm_order_delivery_choose_coupon, "优惠￥" + data.getDisAmount() + "元")
                 .setText(R.id.confirm_order_count, "共" + data.getItems().size() + "件")
-                .setText(R.id.confirm_order_xiaoji, "￥" + data.getTotalPrice());
+                .setText(R.id.confirm_order_xiaoji, "￥" + ArithUtil.exact(data.getTotalPrice(), 2));
         RecyclerView rv = holder.getView(R.id.confirm_order_inside_rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

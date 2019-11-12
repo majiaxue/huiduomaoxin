@@ -148,7 +148,6 @@ public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAsse
                 commentVo.setSppf(orderAssessStar.getStarCount());
                 commentVo.setInfo(orderAssessEdit.getText().toString());
                 if (images.size() != 0) {
-                    LogUtil.e("listImages" + images);
                     String[] strings = images.toArray(new String[images.size()]);
                     commentVo.setPics(StringUtils.join(strings));
                 } else {

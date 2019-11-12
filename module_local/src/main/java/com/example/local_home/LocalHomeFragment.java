@@ -23,13 +23,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
 import com.example.bean.LocalShopBean;
+import com.example.bean.LocalShopCommendBean;
 import com.example.bean.UserCouponBean;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
-import com.example.local_home.adapter.ZhongBannerAdapter;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
+import com.example.local_store.ShoppingRight.ShopRightSpaceItemDecoration;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_local.R;
 import com.example.module_local.R2;
@@ -65,10 +66,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     ImageView localHomeMsg;
     @BindView(R2.id.local_home_search)
     LinearLayout localHomeSearch;
-    @BindView(R2.id.local_home_history_rv)
-    RecyclerView localHomeHistoryRv;
-    @BindView(R2.id.local_home_zhankai)
-    ImageView localHomeZhankai;
     @BindView(R2.id.local_home_xbanner)
     XBanner localHomeXbanner;
     @BindView(R2.id.local_home_navbar)
@@ -100,7 +97,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     public void initData() {
         EventBus.getDefault().register(this);
         if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-            LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
+            LogUtil.e("城市----------->" + CitySPUtil.getStringValue(CommonResource.CITY));
             localHomeCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
         } else {
             localHomeCity.setText("选择城市");
@@ -111,9 +108,9 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         localHomeRvShop.setLayoutManager(linearLayoutManager);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        localHomeCommendRv.setLayoutManager(gridLayoutManager);
-//        localHomeCommendRv.addItemDecoration(new ShopRightSpaceItemDecoration(0, (int) getContext().getResources().getDimension(R.dimen.dp_4), 0, 0));
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        localHomeCommendRv.setLayoutManager(linearLayoutManager1);
+        localHomeCommendRv.addItemDecoration(new SpaceItemDecoration(0, (int) getContext().getResources().getDimension(R.dimen.dp_4), 0, 0));
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false) {
             @Override
@@ -121,8 +118,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 return false;
             }
         };
-        localHomeHistoryRv.setLayoutManager(layoutManager1);
-        localHomeHistoryRv.addItemDecoration(new SpaceItemDecoration(0, (int) getContext().getResources().getDimension(R.dimen.dp_20), 0, 0));
 
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
@@ -135,10 +130,9 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
         presenter.loadData(page, MyLocationListener.longitude, MyLocationListener.latitude);
         presenter.getXBanner();
         presenter.isOpenLocation();
-        presenter.initHistory();
+        presenter.initCommend(MyLocationListener.longitude, MyLocationListener.latitude, CitySPUtil.getStringValue(CommonResource.CITY));
 
         if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-            LogUtil.e("城市" + CitySPUtil.getStringValue(CommonResource.CITY));
             localHomeCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
         } else if (!TextUtils.isEmpty(MyLocationListener.district)) {
             localHomeCity.setText(MyLocationListener.district);
@@ -184,6 +178,13 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
             @Override
             public void onItemClick(XBanner banner, Object model, View view, int position) {
                 ARouter.getInstance().build("/module_local/LocalStoreActivity").withSerializable("bean", zhongList.get(position)).navigation();
+            }
+        });
+
+        localHomeMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/messagecenter").navigation();
             }
         });
     }
@@ -236,7 +237,8 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     }
 
     @Override
-    public void loadCommend(LocalHomeCommendAdapter adapter) {
+    public void loadCommend(LocalShopCommendBean shopCommendBean, LocalHomeCommendAdapter adapter) {
+        localHomeCommendShop.setText(shopCommendBean.getSellerName());
         localHomeCommendRv.setAdapter(adapter);
     }
 
@@ -296,11 +298,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 Glide.with(getContext()).load(((LocalShopBean) model).getSeller_logo()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(com.example.user_store.R.dimen.dp_10))).into(img);
             }
         });
-    }
-
-    @Override
-    public void loadHistory(ZhongBannerAdapter adapter) {
-        localHomeHistoryRv.setAdapter(adapter);
     }
 
     @Override

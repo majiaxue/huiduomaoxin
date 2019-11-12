@@ -35,7 +35,7 @@ public class BrowseRecordAdapter extends MyRecyclerAdapter<MyCollectBean> {
             } else {
                 holder.setText(R.id.rv_collection_preferential_price, "￥" + normalPrice);
             }
-            holder.setText(R.id.rv_collection_number, "已抢" + data.getQuantity() + "件");
+            holder.setText(R.id.rv_collection_number, "已抢" + (data.getQuantity().split("\\.")[0]) + "件");
             holder.setImageFresco(R.id.rv_collection_image, data.getImage());
         } else if (data.getType() == 1) {
             //京东

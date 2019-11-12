@@ -58,7 +58,7 @@ import okhttp3.ResponseBody;
 
 public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
 
-    private List<LocalCartBean> cartBeanList = new ArrayList<>();
+    public static List<LocalCartBean.InsideCart> cartBeanList = new ArrayList<>();
 
     public ShoppingRightAdapter(Context context, List<LocalStoreBean.ListBean> list, RvListener listener, ShopOnClickListtener shopOnClickListtener) {
         super(context, list, listener, shopOnClickListtener);
@@ -67,8 +67,8 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
     public ShoppingRightAdapter() {
     }
 
-    public void setCartBeanList(List<LocalCartBean> cartBeanList) {
-        this.cartBeanList = cartBeanList;
+    public static void setCartBeanList(List<LocalCartBean.InsideCart> data) {
+        cartBeanList = data;
     }
 
     @Override
@@ -163,7 +163,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                             String parameter = commodity.getParameter();
                             final String specification = commodity.getSpecification();
                             if (TextUtils.isEmpty(parameter) && TextUtils.isEmpty(specification)) {
-                                LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount() + "");
+                                LocalCartBean.InsideCart goodsToCartBean = new LocalCartBean.InsideCart(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount());
                                 goodsToCartBean.setLocalGoodsPic(commodity.getPics());
                                 goodsToCartBean.setLocalGoodsName(commodity.getName());
                                 if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
@@ -296,7 +296,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                                     }
                                                 }
                                                 if (!hasSame) {
-                                                    LocalCartBean goodsToCartBean = new LocalCartBean(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount() + "");
+                                                    LocalCartBean.InsideCart goodsToCartBean = new LocalCartBean.InsideCart(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount());
                                                     goodsToCartBean.setLocalGoodsPic(commodity.getPics());
                                                     goodsToCartBean.setLocalGoodsName(commodity.getSelectName());
                                                     if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
@@ -330,8 +330,10 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                             for (int i = 0; i < cartBeanList.size(); i++) {
                                 if (commodity.getId().equals(cartBeanList.get(i).getLocalGoodsId())) {
                                     temp++;
+                                    tempPosition = i;
                                 }
                             }
+
                             if (temp > 1) {
                                 Toast.makeText(mContext, "多件不同规格商品要从购物车操作", Toast.LENGTH_SHORT).show();
                             } else if (temp == 1) {
@@ -354,7 +356,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
             }
         }
 
-        private void addGoods(LocalCartBean goodsToCartBean, final LocalStoreBean.ListBean data) {
+        private void addGoods(LocalCartBean.InsideCart goodsToCartBean, final LocalStoreBean.ListBean data) {
 
             String jsonString = JSON.toJSONString(goodsToCartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
@@ -363,7 +365,8 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("添加商品：" + result);
-                    cartBeanList = JSON.parseArray(result, LocalCartBean.class);
+                    LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                    cartBeanList = localCartBean.getLocalShopcarList();
                     add.setEnabled(true);
                     minus.setEnabled(true);
                     int currentCount = data.getCount();
@@ -390,7 +393,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
             }));
         }
 
-        private void minusGoods(LocalCartBean goodsToCartBean, final LocalStoreBean.ListBean data) {
+        private void minusGoods(LocalCartBean.InsideCart goodsToCartBean, final LocalStoreBean.ListBean data) {
 
             String jsonString = JSON.toJSONString(goodsToCartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
@@ -413,6 +416,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     data.setCount(currentCount);
                     isShow(data);
                     notifyDataSetChanged();
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
                 }
 
                 @Override

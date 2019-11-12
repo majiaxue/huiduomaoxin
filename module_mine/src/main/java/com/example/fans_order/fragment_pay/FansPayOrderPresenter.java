@@ -1,16 +1,11 @@
 package com.example.fans_order.fragment_pay;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.FansOrderBean;
 import com.example.bean.JdFansOrderBean;
 import com.example.bean.TBGoodsDetailsBean;
@@ -30,7 +25,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,16 +104,10 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e(errorCode + "-------拼多多已付款-----" + errorMsg);
-                if (tbFansAdapter == null) {
-                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
-                    if (getView() != null) {
-                        getView().loadTb(tbFansAdapter);
-                        getView().loadSuccess();
-                    }
-                } else {
-                    if (getView() != null) {
-                        getView().loadSuccess();
-                    }
+                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                if (getView() != null) {
+                    getView().loadTb(tbFansAdapter);
+                    getView().loadSuccess();
                 }
             }
         }));
@@ -154,14 +142,9 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e(errorCode + "--------京东已付款------" + errorMsg);
-                if (jdAdapter == null) {
-                    jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
-                    if (getView() != null) {
-                        getView().loadJd(jdAdapter);
-                    }
-                }
-
+                jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
                 if (getView() != null) {
+                    getView().loadJd(jdAdapter);
                     getView().loadSuccess();
                 }
             }
@@ -202,34 +185,11 @@ public class FansPayOrderPresenter extends BasePresenter<FansPayOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e(errorCode + "--------淘宝已付款------" + errorMsg);
-                if (tbFansAdapter == null) {
-                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
-                    if (getView() != null) {
-                        getView().loadTb(tbFansAdapter);
-                        getView().loadSuccess();
-                    }
-                } else {
-                    if (getView() != null) {
-                        getView().loadSuccess();
-                    }
+                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                if (getView() != null) {
+                    getView().loadTb(tbFansAdapter);
+                    getView().loadSuccess();
                 }
-            }
-        }));
-    }
-
-    private void scOrder(int page) {
-        Map map = MapUtil.getInstance().addParms("currentPage", page).addParms("status", 2).addParms("pageSize", "10").addParms("type", "0").build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.QUERY_FANS_ORDER, map, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("粉丝订单fukuan：" + result);
-
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-
             }
         }));
     }

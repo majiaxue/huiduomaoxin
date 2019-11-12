@@ -72,12 +72,12 @@ public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPr
             }
         });
 
-        predictSc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.change(3);
-            }
-        });
+//        predictSc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                presenter.change(3);
+//            }
+//        });
     }
 
     @Override
@@ -85,12 +85,12 @@ public class PredictActivity extends BaseFragmentActivity<PredictView, PredictPr
         predictTb.setTextColor(Color.parseColor(type == 0 ? "#ffffff" : "#222222"));
         predictPdd.setTextColor(Color.parseColor(type == 1 ? "#ffffff" : "#222222"));
         predictJd.setTextColor(Color.parseColor(type == 2 ? "#ffffff" : "#222222"));
-        predictSc.setTextColor(Color.parseColor(type == 3 ? "#ffffff" : "#222222"));
+//        predictSc.setTextColor(Color.parseColor(type == 3 ? "#ffffff" : "#222222"));
 
         predictTb.setBackgroundResource(type == 0 ? R.drawable.predict_xuan_left : 0);
         predictPdd.setBackgroundResource(type == 1 ? R.drawable.predict_xuan : 0);
-        predictJd.setBackgroundResource(type == 2 ? R.drawable.predict_xuan : 0);
-        predictSc.setBackgroundResource(type == 3 ? R.drawable.predict_xuan_right : 0);
+        predictJd.setBackgroundResource(type == 2 ? R.drawable.predict_xuan_right : 0);
+//        predictSc.setBackgroundResource(type == 3 ? R.drawable.predict_xuan_right : 0);
     }
 
     @Override

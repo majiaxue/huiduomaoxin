@@ -34,30 +34,33 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
         right = holder.getView(R.id.mine_order_parent_btn_right);
         if (data.getStatus() == 1) {
             //1待发货
-            holder.setText(R.id.mine_order_parent_status, "买家已付款");
             if (0 == data.getBackStatus()) {
-                holder.setText(R.id.mine_order_parent_btn_left, "等待卖家处理");
+                holder.setText(R.id.mine_order_parent_status, "待处理");
+                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
 //            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (1 == data.getBackStatus()) {
-                holder.setText(R.id.mine_order_parent_btn_left, "退货中");
+                holder.setText(R.id.mine_order_parent_status, "退货中");
+                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
 //            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (2 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_btn_left, "退货完成");
 //            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setText("删除订单");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (3 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_btn_left, "卖家已拒绝");
 //            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
                 left.setVisibility(View.VISIBLE);
-                right.setVisibility(View.GONE);
+                right.setVisibility(View.VISIBLE);
             } else {
                 holder.setText(R.id.mine_order_parent_btn_left, "申请退款");
                 holder.setText(R.id.mine_order_parent_btn_right, "提醒发货");
+                holder.setText(R.id.mine_order_parent_status, "买家已付款");
             }
         } else if (data.getStatus() == 3) {
             //3待评论
@@ -69,19 +72,46 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
         } else if (data.getStatus() == 6) {
             //6待付款
             holder.setText(R.id.mine_order_parent_status, "等待买家付款");
-            holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
+            holder.setText(R.id.mine_order_parent_btn_left, "取消订单");
             holder.setText(R.id.mine_order_parent_btn_right, "付款");
         } else if (data.getStatus() == 2) {
             //2待收货
-            holder.setText(R.id.mine_order_parent_status, "卖家已发货");
-            holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
-            holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+            if (0 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_status, "待处理");
+                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else if (1 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_status, "退货中");
+                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else if (2 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_btn_left, "退货完成");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setText("删除订单");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.GONE);
+            } else if (3 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_btn_left, "卖家已拒绝");
+//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.VISIBLE);
+                holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
+                holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+            } else {
+                holder.setText(R.id.mine_order_parent_status, "卖家已发货");
+                holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
+                holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+            }
         } else if (data.getStatus() == 4 || data.getStatus() == 5) {
             //45 已失效
             holder.setText(R.id.mine_order_parent_status, "已失效");
             holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
             holder.setText(R.id.mine_order_parent_btn_right, "再次购买");
-        }else if (data.getStatus() == 7){
+        } else if (data.getStatus() == 7) {
             //7 已评价
             holder.setText(R.id.mine_order_parent_status, "已评价");
             holder.setText(R.id.mine_order_parent_btn_left, "已评价");

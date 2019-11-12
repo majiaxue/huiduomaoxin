@@ -72,12 +72,12 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
     public void click() {
         adapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
             @Override
-            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+            public void ViewThreeOnClick(final View view1, final View view2, final View view3, final int position) {
                 view1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         clickPosition = position;
-                        upJustNow("0", position);
+                        upJustNow("0", position, view1);
                     }
                 });
 
@@ -85,7 +85,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                     @Override
                     public void onClick(View v) {
                         clickPosition = position;
-                        upJustNow("1", position);
+                        upJustNow("1", position, view2);
                     }
                 });
 
@@ -101,9 +101,9 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
                                     public void onClick(View v) {
                                         pop.dismiss();
                                         if ("0".equals(beanList.get(position).getUpType())) {
-                                            upJustNow("1", position);
+                                            upJustNow("1", position, view3);
                                         } else {
-                                            upJustNow("0", position);
+                                            upJustNow("0", position, view3);
                                         }
                                     }
                                 });
@@ -128,7 +128,7 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
      * @param flag     点击按钮   0:立即升级   1:支付(前端用)
      * @param position
      */
-    private void upJustNow(final String flag, final int position) {
+    private void upJustNow(final String flag, final int position, View view) {
         Map map = MapUtil.getInstance().addParms("levelId", beanList.get(position).getId()).addParms("payType", flag).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.UP_JUSTNOW, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

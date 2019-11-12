@@ -2,8 +2,8 @@ package com.example.local_home;
 
 import com.example.bean.BannerBean;
 import com.example.bean.LocalShopBean;
+import com.example.bean.LocalShopCommendBean;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
-import com.example.local_home.adapter.ZhongBannerAdapter;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.mvp.IView;
@@ -21,9 +21,7 @@ public interface LocalHomeView extends IView {
 
     void loadBanner(List<BannerBean.RecordsBean> beanList);
 
-    void loadHistory(ZhongBannerAdapter adapter);
-
     void loadZhongBanner(List<LocalShopBean> zhongList);
 
-    void loadCommend(LocalHomeCommendAdapter adapter);
+    void loadCommend(LocalShopCommendBean shopCommendBean, LocalHomeCommendAdapter adapter);
 }

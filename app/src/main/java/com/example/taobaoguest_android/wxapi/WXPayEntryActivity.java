@@ -54,6 +54,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 } else if ("4".equals(wxpay)) {
                     SPUtil.addParm("wxpay", "5");
                     EventBus.getDefault().post(new EventBusBean(CommonResource.WXPAY_SUCCESS_UP));
+                } else if ("6".equals(wxpay)) {
+                    SPUtil.addParm("wxpay","7");
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.WXPAY_SUCCESS_LOCAL));
                 }
 
                 finish();
