@@ -1,7 +1,6 @@
 package com.example.order.fragment_all;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDOrderBean;
 import com.example.bean.MyOrderBean;
 import com.example.bean.TBGoodsDetailsBean;
@@ -30,7 +28,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +41,7 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
     private List<TBOrderBean> orderBeans;
     private TBAdapter tbAdapter;
     private int flag = 0;
+    private long currentTime = 0;//判断点击时间间隔
 
     public AllOrderPresenter(Context context) {
         super(context);
@@ -83,12 +81,16 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                     getView().loadMineRv(adapter);
                 }
 
+
                 adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                                .withString("goods_id", dataList.get(position).getGoodsId() + "")
-                                .navigation();
+                        if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                            currentTime = System.currentTimeMillis();
+                            ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                    .withString("goods_id", dataList.get(position).getGoodsId() + "")
+                                    .navigation();
+                        }
                     }
                 });
             }
@@ -119,9 +121,12 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                 jdAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
-                                .withString("skuid", jdOrderBeans.get(position).getSkuId())
-                                .navigation();
+                        if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                            currentTime = System.currentTimeMillis();
+                            ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
+                                    .withString("skuid", jdOrderBeans.get(position).getSkuId())
+                                    .navigation();
+                        }
                     }
                 });
             }
@@ -157,12 +162,15 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                     tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                    .withString("para", orderBeans.get(position).getNumIid())
-                                    .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
-                                    .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
-                                    .withInt("type", 1)
-                                    .navigation();
+                            if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                                currentTime = System.currentTimeMillis();
+                                ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                        .withString("para", orderBeans.get(position).getNumIid())
+                                        .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                        .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
+                                        .withInt("type", 1)
+                                        .navigation();
+                            }
                         }
                     });
                 } catch (Exception e) {

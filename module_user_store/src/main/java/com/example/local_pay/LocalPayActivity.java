@@ -73,7 +73,7 @@ public class LocalPayActivity extends BaseActivity<LocalPayView, LocalPayPresent
 
     @Override
     public void initData() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         bean = (LocalShopBean) intent.getSerializableExtra("bean");
         includeTitle.setText("确认支付");

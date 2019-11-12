@@ -3,7 +3,7 @@ package com.example.common;
 public class CommonResource {
     public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123//192.168.0.17
     public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.164
-    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家192.168.0.183
     public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单
     public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
     public static final String BASEURL_9010 = "http://47.99.93.123:9010";  //本地小店
@@ -57,6 +57,7 @@ public class CommonResource {
     public static final String FANS_TOTAL_MONEY = "/rest/user/fans/totalMoney";     //查询粉丝订单成交金额
     public static final String COUPON_KELING = "/rest/seller/goods-coupons";        //可领优惠券
     public static final String GETASSESS = "/rest/comment";                    //获取商品评论
+    public static final String GETUSERASSESS = "/rest/order/page";              //获取多用户商城评论列表
     public static final String GETPREDICT = "/rest/user/settlement";            //预估收益
     public static final String HOME_PREDICT = "/rest/user/settlement/total";    //首页获取预估数据
     public static final String GETOPER = "/rest/user/getOperLevel";             //获取运营商等级列表
@@ -108,6 +109,9 @@ public class CommonResource {
     public static final String LOCAL_CONFIRM_ORDER = "/rest/local-order/ok/";       //附近小店  确认收货
     public static final String LOCAL_TUIKUAN = "/rest/local-order/return";          //附近小店  申请退款
     public static final String USER_ISCOLLECT = "/rest/user/favorite/seller";       //多用户商城 店铺是否收藏
+    public static final String LOCAL_SELLERS = "/rest/seller/localSeller";          //本地商家
+    public static final String HOT_SELLERS = "/rest/seller/hotSeller";              //热门商家
+    public static final String CANCEL_ORDER = "/rest/order/cancel";                 //多用户商城   取消订单
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

@@ -56,13 +56,15 @@ public class LocalOrderAdapter extends MyRecyclerAdapter<LocalOrderBean> {
                 holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
                         .setText(R.id.rv_local_order_list_confirm, "确认收货")
                         .setText(R.id.rv_local_order_list_status, "配送中");
-            } else if ("3".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
-                holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
-                        .setText(R.id.rv_local_order_list_confirm, "确认收货")
-                        .setText(R.id.rv_local_order_list_status, "待评价");
-            } else if ("4".equals(data.getStatus())) {
+            }
+//            else if ("3".equals(data.getStatus())) {
+//                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
+//                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
+//                holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
+//                        .setText(R.id.rv_local_order_list_confirm, "去评价")
+//                        .setText(R.id.rv_local_order_list_status, "待评价");
+//            }
+            else if ("4".equals(data.getStatus()) || "3".equals(data.getStatus())) {
                 holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
                 holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
                 holder.setText(R.id.rv_local_order_list_status, "已完成");

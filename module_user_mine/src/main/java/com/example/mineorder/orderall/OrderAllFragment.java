@@ -49,18 +49,8 @@ public class OrderAllFragment extends BaseFragment<OrderAllView, OrderAllPresent
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.e("setUserVisibleHint-------->全部订单当前可见");
-        if (flag == 1){
-            presenter.orderAllRec();
-        }
-    }
-
-    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        LogUtil.e("11111111111" + isVisibleToUser);
         if (isVisibleToUser) {
             if (flag == 1) {
                 presenter.orderAllRec();

@@ -25,7 +25,7 @@
                 android:divider="@null"
                 android:listSelector="@android:color/transparent"
                 android:overScrollMode="never"
-                android:scrollbars="none"></ListView>
+                android:scrollbars="none" />
 
             <View
                 android:layout_width="@dimen/dp_0"

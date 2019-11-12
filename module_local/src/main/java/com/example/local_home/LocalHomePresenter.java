@@ -14,9 +14,9 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerBean;
 import com.example.bean.LocalNavbarBean;
 import com.example.bean.LocalShopBean;
+import com.example.bean.LocalShopCommendBean;
 import com.example.common.CommonResource;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
-import com.example.local_home.adapter.ZhongBannerAdapter;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.module_local.R;
@@ -92,7 +92,6 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
                     if (shopBeans.size() == 0 && getView() != null) {
                         getView().noData();
                     }
-                    initZhongBanner();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -107,16 +106,6 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
             }
         }));
 
-    }
-
-    public void initZhongBanner() {
-        List<LocalShopBean> zhongList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            zhongList.add(shopBeans.get(i));
-        }
-        if (getView() != null) {
-            getView().loadZhongBanner(zhongList);
-        }
     }
 
     public void getXBanner() {
@@ -172,15 +161,47 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
         }));
     }
 
-    public void initHistory() {
-        historyList.add("麻辣香锅");
-        historyList.add("螺蛳粉");
-        historyList.add("洋葱木耳");
+    public void initCommend(double lon, double lat, String city) {
+        Map map = MapUtil.getInstance().addParms("lon", lon).addParms("lat", lat).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.HOT_SELLERS, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("热门商家：" + result);
+                List<LocalShopBean> hotShopBean = JSON.parseArray(result, LocalShopBean.class);
+                if (getView() != null) {
+                    getView().loadZhongBanner(hotShopBean);
+                }
+            }
 
-        LocalHomeCommendAdapter commendAdapter = new LocalHomeCommendAdapter(mContext, historyList, R.layout.rv_local_home_commend);
-        if (getView() != null) {
-            getView().loadCommend(commendAdapter);
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "-----------------" + errorMsg);
+            }
+        }));
+
+        if (city != null && city.indexOf("市") != -1) {
+            city = city.replace("市", "");
         }
+        Map map1 = MapUtil.getInstance().addParms("city", city).build();
+        Observable<ResponseBody> observable1 = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LOCAL_SELLERS, map1);
+        RetrofitUtil.getInstance().toSubscribe(observable1, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("本地商家推荐：" + result);
+                List<LocalShopCommendBean> localShopCommendBean = JSON.parseArray(result, LocalShopCommendBean.class);
+                List<LocalShopCommendBean.GoodsListBean> goodsList = localShopCommendBean.get(0).getGoodsList();
+                LocalHomeCommendAdapter commendAdapter = new LocalHomeCommendAdapter(mContext, goodsList, R.layout.rv_local_home_commend);
+                if (getView() != null) {
+                    getView().loadCommend(localShopCommendBean.get(0), commendAdapter);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "----------------" + errorMsg);
+            }
+        }));
     }
 
     public void isOpenLocation() {

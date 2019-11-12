@@ -67,11 +67,12 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
 
         orderAdapter.setViewThreeOnClickListener2(new MyRecyclerAdapter.ViewThreeOnClickListener2() {
             @Override
-            public void viewThreeOnClick2(View minus, View add, final View chooseCoupon, final int outside, final int inside) {
+            public void viewThreeOnClick2(final View minus, final View add, final View chooseCoupon, final int outside, final int inside) {
                 minus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (isCan) {
+                            minus.setEnabled(false);
                             if (dataList.get(outside).getTotalPrice() - dataList.get(outside).getItems().get(inside).getPrice() >= dataList.get(outside).getMinAmount()) {
                                 if (dataList.get(outside).getItems().get(inside).getQuantity() <= 1) {
                                     dataList.get(outside).getItems().get(inside).setQuantity(1);
@@ -80,7 +81,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                                     getPostage(addressBean.getAddressProvince());
                                 }
                                 ProcessDialogUtil.showProcessDialog(mContext);
-                                reviseStutas(dataList.get(outside).getItems());
+                                reviseStutas(dataList.get(outside).getItems(), minus);
 
                             } else {
                                 Toast.makeText(mContext, "不符合条件", Toast.LENGTH_SHORT).show();
@@ -95,10 +96,11 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
                     @Override
                     public void onClick(View v) {
                         if (isCan) {
+                            add.setEnabled(false);
                             dataList.get(outside).getItems().get(inside).setQuantity(dataList.get(outside).getItems().get(inside).getQuantity() + 1);
                             ProcessDialogUtil.showProcessDialog(mContext);
                             getPostage(addressBean.getAddressProvince());
-                            reviseStutas(dataList.get(outside).getItems());
+                            reviseStutas(dataList.get(outside).getItems(), add);
 
                         } else {
                             Toast.makeText(mContext, "正在获取数据，请稍后", Toast.LENGTH_SHORT).show();
@@ -122,18 +124,18 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         });
     }
 
-    private void reviseStutas(List<CartBean.RecordsBean.ItemsBean> dataList) {
+    private void reviseStutas(List<CartBean.RecordsBean.ItemsBean> dataList, final View view) {
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithList(CommonResource.REVISE_CART_ITEM, dataList, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("修改状态：" + result);
-//                getView().totalPrice(totalPrice);
+                view.setEnabled(true);
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-
+                view.setEnabled(true);
             }
         }));
     }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
@@ -26,12 +24,12 @@ public class AssessAdapter extends MyRecyclerAdapter<AssessBean.RecordsBean> {
 
     @Override
     public void convert(final RecyclerViewHolder holder, AssessBean.RecordsBean data, final int position) {
-        holder.setImageUrlCircular(R.id.rv_assess_header, data.getMemberIcon())
-                .setText(R.id.rv_assess_name, data.getMemberNickName())
-                .setText(R.id.rv_assess_content, data.getContent())
-                .setText(R.id.rv_assess_time, data.getCreateTime() + data.getProductAttribute());
+        holder.setImageUrlCircular(R.id.rv_assess_header, data.getIcon())
+                .setText(R.id.rv_assess_name, data.getNickname())
+                .setText(R.id.rv_assess_content, data.getInfo())
+                .setText(R.id.rv_assess_time, data.getCeatedTime() + data.getAttr());
         RatingBarView ratingBar = holder.getView(R.id.rv_assess_ratingbar);
-        ratingBar.setStar(data.getStar(), false);
+        ratingBar.setStar(data.getSppf(), false);
         ratingBar.setClickable(false);
 
         String pics = data.getPics();

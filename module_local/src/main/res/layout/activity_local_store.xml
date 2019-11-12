@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:orientation="vertical">
 
     <android.support.design.widget.CoordinatorLayout
@@ -45,7 +47,7 @@
                         android:layout_width="@dimen/dp_30"
                         android:layout_height="@dimen/dp_30"
                         android:layout_marginLeft="@dimen/dp_15"
-                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_25"
                         android:fitsSystemWindows="true"
                         android:src="@drawable/fanhui_circle" />
 
@@ -196,6 +198,8 @@
         android:layout_height="@dimen/dp_60"
         android:layout_gravity="bottom"
         android:background="#595959"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

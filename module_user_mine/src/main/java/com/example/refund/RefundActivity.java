@@ -184,6 +184,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setProductPrice(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPrice());
                         refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
                         refundApplyVo.setSellerId(mineOrderBean1.getOrderList().get(position).getSellerId());
+                        LogUtil.e("---------------------->" + refundApplyVo);
 //                        refundApplyVo.setReturnName(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).get);
 //                        refundApplyVo.setReturnPhone(mineOrderBean1.getReceiverPhone());
                         String jsonString = JSON.toJSONString(refundApplyVo);
@@ -210,7 +211,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
                     } else {
                         RefundApplyVo refundApplyVo = new RefundApplyVo();
-                        refundApplyVo.setOrderId(orderDetailBean.getItems().get(0).getOrderId() + "");
+                        refundApplyVo.setOrderId(orderDetailBean.getId() + "");
                         refundApplyVo.setProductId(orderDetailBean.getItems().get(0).getProductId() + "");
                         refundApplyVo.setProductName(orderDetailBean.getItems().get(0).getProductName());
                         refundApplyVo.setOrderSn(orderDetailBean.getItems().get(0).getOrderSn());

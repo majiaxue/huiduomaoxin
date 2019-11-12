@@ -154,9 +154,9 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                                         refundPop(localOrderBeans.get(position));
                                         break;
 
-                                    case "3":
-                                        refundPop(localOrderBeans.get(position));
-                                        break;
+//                                    case "3":
+//                                        refundPop(localOrderBeans.get(position));
+//                                        break;
                                     default:
                                         break;
                                 }
@@ -180,7 +180,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                                         break;
 
                                     case "3":
-                                        confrimOrderTip(localOrderBeans.get(position));
+                                        ARouter.getInstance().build("/module_user_store/LocalAssessActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
                                         break;
                                     default:
                                         break;

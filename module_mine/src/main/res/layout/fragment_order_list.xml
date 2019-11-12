@@ -11,5 +11,5 @@
         android:layout_marginLeft="@dimen/dp_14"
         android:layout_marginTop="@dimen/dp_19"
         android:layout_marginRight="@dimen/dp_14"
-        android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
+        android:overScrollMode="never" />
 </LinearLayout>

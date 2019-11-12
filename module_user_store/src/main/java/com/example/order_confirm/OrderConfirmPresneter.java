@@ -65,7 +65,6 @@ public class OrderConfirmPresneter extends BasePresenter<OrderConfirmView> {
 
     public void getAddress() {
         ProcessDialogUtil.showProcessDialog(mContext);
-//        WaitDialog.show((AppCompatActivity)mContext,null);
 
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.MOREN_ADDRESS, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {

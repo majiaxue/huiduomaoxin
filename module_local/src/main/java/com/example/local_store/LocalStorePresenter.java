@@ -27,7 +27,7 @@ import okhttp3.ResponseBody;
 
 public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     private int flag = 0;
-    private List<LocalCartBean> localCartBeans;
+    private List<LocalCartBean.InsideCart> localCartBeans;
     private List<LocalStoreBean> localStoreBeans;
     private List<LocalStoreBean.ListBean> recommendList = new ArrayList<>();
 
@@ -48,7 +48,6 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void loadData(final String id) {
-        LogUtil.e("---------------------->" + id);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getDataWithout(CommonResource.LOCAL_SHOP + id);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
 
@@ -81,8 +80,10 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("购物车：" + result);
-                EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
-                localCartBeans = JSON.parseArray(result, LocalCartBean.class);
+                LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
+                LocalCartBean cartBean = JSON.parseObject(result, LocalCartBean.class);
+                localCartBeans = cartBean.getLocalShopcarList();
                 flag++;
                 if (flag == 2) {
                     ShoppingRightAdapter.setCartBeanList(localCartBeans);
@@ -118,8 +119,8 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void upCart(String msg) {
-        LogUtil.e("----------------------->" + msg);
-        List<LocalCartBean> cartBeanList = JSON.parseArray(msg, LocalCartBean.class);
+
+        List<LocalCartBean.InsideCart> cartBeanList = JSON.parseArray(msg, LocalCartBean.InsideCart.class);
         double money = 0.0;
         for (int i = 0; i < cartBeanList.size(); i++) {
             money += (cartBeanList.get(i).getPrice() * cartBeanList.get(i).getNum());

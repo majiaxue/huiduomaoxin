@@ -128,7 +128,7 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        LogUtil.e("传数据:---------->ID" + para);
+        LogUtil.e("传数据:---------->ID:" + para);
         ModuleBaseApplication.initShare();
         shopXinxi.setVisibility(View.GONE);
         commodityIntoShop.setVisibility(View.GONE);

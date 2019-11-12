@@ -196,21 +196,24 @@ public class MinePresenter extends BasePresenter<MineView> {
                 MineOrderCountBean mineOrderBean = new Gson().fromJson(result, MineOrderCountBean.class);
                 if (mineOrderBean != null && mineOrderBean.getOrderList().size() != 0) {
                     for (int i = 0; i < mineOrderBean.getOrderList().size(); i++) {
-                        if (mineOrderBean.getOrderList().get(i).getStatus() == 2) {
-                            //2待收货
-                            count2++;
-                        }
-                        if (mineOrderBean.getOrderList().get(i).getStatus() == 6) {
-                            //6待付款
-                            count6++;
-                        }
-                        if (mineOrderBean.getOrderList().get(i).getStatus() == 3) {
-                            //3待评论
-                            count3++;
-                        }
-                        if (mineOrderBean.getOrderList().get(i).getStatus() == 1) {
-                            //1待发货
-                            count1++;
+
+                        if (mineOrderBean.getOrderList().get(i).getBackStatus() == -1) {
+                            if (mineOrderBean.getOrderList().get(i).getStatus() == 2) {
+                                //2待收货
+                                count2++;
+                            }
+                            if (mineOrderBean.getOrderList().get(i).getStatus() == 6) {
+                                //6待付款
+                                count6++;
+                            }
+                            if (mineOrderBean.getOrderList().get(i).getStatus() == 3) {
+                                //3待评论
+                                count3++;
+                            }
+                            if (mineOrderBean.getOrderList().get(i).getStatus() == 1) {
+                                //1待发货
+                                count1++;
+                            }
                         }
                     }
                     getView().daishouhuo(count2);

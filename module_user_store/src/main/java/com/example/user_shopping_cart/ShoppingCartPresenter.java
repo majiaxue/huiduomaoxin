@@ -80,7 +80,7 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
                     if (cartBean != null) {
                         dataBeanList.clear();
                         dataBeanList.addAll(cartBean.getRecords());
-//                updateIsAll();
+
                         totalPrice();
                         if (dataBeanList.size() == 0) {
                             getView().isHide(true);
@@ -188,6 +188,8 @@ public class ShoppingCartPresenter extends BasePresenter<ShoppingCartView> {
         View view = LayoutInflater.from(mContext).inflate(R.layout.popup_delete, null, false);
         TextView confirm = view.findViewById(R.id.popup_delete_confirm);
         TextView cancel = view.findViewById(R.id.popup_delete_cancel);
+        TextView content = view.findViewById(R.id.popup_delete_content);
+        content.setText("您确认删除宝贝吗？");
 
         popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(false);

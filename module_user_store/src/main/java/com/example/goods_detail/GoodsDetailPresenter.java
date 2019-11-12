@@ -137,7 +137,6 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
                 userGoodsDetail = JSON.parseObject(result, new TypeReference<UserGoodsDetail>() {
                 }.getType());
 
-
                 dataList = userGoodsDetail.getSkuStockList();
 
                 //规格缩略图

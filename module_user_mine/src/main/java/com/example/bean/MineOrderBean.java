@@ -20,6 +20,13 @@ public class MineOrderBean implements Serializable {
         this.orderList = orderList;
     }
 
+    @Override
+    public String toString() {
+        return "MineOrderBean{" +
+                "orderList=" + orderList +
+                '}';
+    }
+
     public static class OrderListBean implements Serializable {
         /**
          * orderId : 37
@@ -39,7 +46,16 @@ public class MineOrderBean implements Serializable {
         private int totalCount;
         private String sellerId;
         private int backStatus;
+        private String orderSn;
         private List<OrderItemsBean> orderItems;
+
+        public String getOrderSn() {
+            return orderSn;
+        }
+
+        public void setOrderSn(String orderSn) {
+            this.orderSn = orderSn;
+        }
 
         public int getBackStatus() {
             return backStatus;
@@ -111,6 +127,22 @@ public class MineOrderBean implements Serializable {
 
         public void setOrderItems(List<OrderItemsBean> orderItems) {
             this.orderItems = orderItems;
+        }
+
+        @Override
+        public String toString() {
+            return "OrderListBean{" +
+                    "orderId=" + orderId +
+                    ", sellerName='" + sellerName + '\'' +
+                    ", goodsName='" + goodsName + '\'' +
+                    ", status=" + status +
+                    ", totalAmount=" + totalAmount +
+                    ", totalCount=" + totalCount +
+                    ", sellerId='" + sellerId + '\'' +
+                    ", backStatus=" + backStatus +
+                    ", orderSn='" + orderSn + '\'' +
+                    ", orderItems=" + orderItems +
+                    '}';
         }
 
         public static class OrderItemsBean implements Serializable {
@@ -386,6 +418,39 @@ public class MineOrderBean implements Serializable {
 
             public void setExpireDate(Object expireDate) {
                 this.expireDate = expireDate;
+            }
+
+            @Override
+            public String toString() {
+                return "OrderItemsBean{" +
+                        "id=" + id +
+                        ", orderId=" + orderId +
+                        ", orderSn='" + orderSn + '\'' +
+                        ", productId=" + productId +
+                        ", productPic='" + productPic + '\'' +
+                        ", productName='" + productName + '\'' +
+                        ", productBrand='" + productBrand + '\'' +
+                        ", productSn='" + productSn + '\'' +
+                        ", productPrice=" + productPrice +
+                        ", productQuantity=" + productQuantity +
+                        ", productSkuId=" + productSkuId +
+                        ", productSkuCode='" + productSkuCode + '\'' +
+                        ", productCategoryId=" + productCategoryId +
+                        ", sp1='" + sp1 + '\'' +
+                        ", sp2='" + sp2 + '\'' +
+                        ", sp3='" + sp3 + '\'' +
+                        ", promotionName='" + promotionName + '\'' +
+                        ", promotionAmount=" + promotionAmount +
+                        ", couponAmount=" + couponAmount +
+                        ", integrationAmount=" + integrationAmount +
+                        ", realAmount=" + realAmount +
+                        ", giftIntegration=" + giftIntegration +
+                        ", giftGrowth=" + giftGrowth +
+                        ", productAttr='" + productAttr + '\'' +
+                        ", couponId=" + couponId +
+                        ", itemDeliveryTemplateId=" + itemDeliveryTemplateId +
+                        ", expireDate=" + expireDate +
+                        '}';
             }
         }
     }

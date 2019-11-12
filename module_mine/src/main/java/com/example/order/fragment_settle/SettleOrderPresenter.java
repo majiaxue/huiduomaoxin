@@ -1,7 +1,6 @@
 package com.example.order.fragment_settle;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
-import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDOrderBean;
 import com.example.bean.MyOrderBean;
 import com.example.bean.TBGoodsDetailsBean;
@@ -31,7 +29,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +42,7 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
     private TBAdapter tbAdapter;
     private List<TBOrderBean> orderBeans;
     private int flag = 0;
+    private long currentTime = 0;//判断点击时间间隔
 
     public SettleOrderPresenter(Context context) {
         super(context);
@@ -95,12 +93,15 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
                 tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
-                                .withString("para", orderBeans.get(position).getNumIid())
-                                .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
-                                .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
-                                .withInt("type", 1)
-                                .navigation();
+                        if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                            currentTime = System.currentTimeMillis();
+                            ARouter.getInstance().build("/module_classify/TBCommodityDetailsActivity")
+                                    .withString("para", orderBeans.get(position).getNumIid())
+                                    .withString("shoptype", "淘宝".equals(orderBeans.get(position).getOrderType()) ? "1" : "0")
+                                    .withString("commission_rate", Double.valueOf(orderBeans.get(position).getTotalCommissionRate()) + "")
+                                    .withInt("type", 1)
+                                    .navigation();
+                        }
                     }
                 });
             }
@@ -124,12 +125,6 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("jd已结算：" + result);
                 final List<JDOrderBean> jdOrderBeans = JSON.parseArray(result, JDOrderBean.class);
-//                for (int i = 0; i < jdOrderBeans.size(); i++) {
-//                    String image = jdOrderBeans.get(i).getImage();
-//                    String[] split = image.split(" imgUrl=");
-//                    String[] split1 = split[1].split(",");
-//                    jdOrderBeans.get(i).setImage(split1[0]);
-//                }
 
                 JDAdapter jdAdapter = new JDAdapter(mContext, jdOrderBeans, R.layout.rv_order_list);
                 getView().loadJD(jdAdapter);
@@ -137,9 +132,12 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
                 jdAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
-                                .withString("skuid", jdOrderBeans.get(position).getSkuId())
-                                .navigation();
+                        if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                            currentTime = System.currentTimeMillis();
+                            ARouter.getInstance().build("/module_classify/JDCommodityDetailsActivity")
+                                    .withString("skuid", jdOrderBeans.get(position).getSkuId())
+                                    .navigation();
+                        }
                     }
                 });
             }
@@ -171,9 +169,12 @@ public class SettleOrderPresenter extends BasePresenter<SettleOrderView> {
                 adapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
-                                .withString("goods_id", dataList.get(position).getGoodsId() + "")
-                                .navigation();
+                        if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                            currentTime = System.currentTimeMillis();
+                            ARouter.getInstance().build("/module_classify/CommodityDetailsActivity")
+                                    .withString("goods_id", dataList.get(position).getGoodsId() + "")
+                                    .navigation();
+                        }
                     }
                 });
             }

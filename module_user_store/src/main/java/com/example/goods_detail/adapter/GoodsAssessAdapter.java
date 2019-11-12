@@ -16,8 +16,8 @@ public class GoodsAssessAdapter extends MyRecyclerAdapter<AssessBean.RecordsBean
 
     @Override
     public void convert(RecyclerViewHolder holder, AssessBean.RecordsBean data, int position) {
-        holder.setText(R.id.rv_goods_assess_name, data.getMemberNickName())
-                .setText(R.id.rv_goods_assess_content, data.getContent())
-                .setImageUrl(R.id.rv_goods_assess_img, data.getMemberIcon());
+        holder.setText(R.id.rv_goods_assess_name, data.getNickname())
+                .setText(R.id.rv_goods_assess_content, data.getInfo())
+                .setImageUrl(R.id.rv_goods_assess_img, data.getIcon());
     }
 }

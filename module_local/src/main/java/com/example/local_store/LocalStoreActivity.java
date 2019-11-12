@@ -26,7 +26,6 @@ import com.example.local_store.ShoppingRight.RvListener;
 import com.example.local_store.ShoppingRight.ShopOnClickListtener;
 import com.example.local_store.ShoppingRight.SortAdapter;
 import com.example.local_store.ShoppingRight.SortDetailFragment;
-import com.example.local_store.adapter.LocalStoreCommendAdapter;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragmentActivity;
@@ -64,6 +63,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     TextView localStoreBtn;
     @BindView(R2.id.local_store_bottom)
     LinearLayout localStoreBottom;
+
 
     @Autowired(name = "bean")
     LocalShopBean bean;

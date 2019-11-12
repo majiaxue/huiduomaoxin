@@ -133,4 +133,24 @@ public class RefundApplyVo {
     public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
+
+    @Override
+    public String toString() {
+        return "RefundApplyVo{" +
+                "orderId='" + orderId + '\'' +
+                ", productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", orderSn='" + orderSn + '\'' +
+                ", proofPics=" + proofPics +
+                ", productPic='" + productPic + '\'' +
+                ", reason='" + reason + '\'' +
+                ", memberUsername='" + memberUsername + '\'' +
+                ", returnPhone='" + returnPhone + '\'' +
+                ", returnName='" + returnName + '\'' +
+                ", productCount=" + productCount +
+                ", productPrice=" + productPrice +
+                ", productRealPrice=" + productRealPrice +
+                ", sellerId='" + sellerId + '\'' +
+                '}';
+    }
 }
