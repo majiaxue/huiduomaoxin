@@ -116,6 +116,7 @@ public class OrderDetailBean implements Serializable {
     private int sellerId;
     private String sellerName;
     private int status;
+    private int backStatus;
     private Object promotionInfo;
     private Object integration;
     private Object receiverPostCode;
@@ -123,6 +124,14 @@ public class OrderDetailBean implements Serializable {
     private int isLevelOrder;
     private Object sellerLogo;
     private List<ItemsBean> items;
+
+    public int getBackStatus() {
+        return backStatus;
+    }
+
+    public void setBackStatus(int backStatus) {
+        this.backStatus = backStatus;
+    }
 
     public int getId() {
         return id;
