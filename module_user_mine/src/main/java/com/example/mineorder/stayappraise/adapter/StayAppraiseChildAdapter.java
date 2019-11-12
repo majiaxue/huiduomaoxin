@@ -1,6 +1,7 @@
 package com.example.mineorder.stayappraise.adapter;
 
 import android.content.Context;
+import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;

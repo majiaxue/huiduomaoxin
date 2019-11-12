@@ -14,6 +14,7 @@ public class RefundApplyVo {
     private List<String> proofPics;//凭证图片,分割
     private String productPic;//商品主图
     private String reason;//退款原因
+    private String returnType;//退款类型
     private String memberUsername;//会员用户名
     private String returnPhone;//退货人电话
     private String returnName;//退货人姓名
@@ -21,6 +22,32 @@ public class RefundApplyVo {
     private double productPrice;//商品单价
     private double productRealPrice;//商品实际支付单价
     private String sellerId;//商家ID
+    private double returnAmount;
+    private String description;
+
+    public double getReturnAmount() {
+        return returnAmount;
+    }
+
+    public void setReturnAmount(double returnAmount) {
+        this.returnAmount = returnAmount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
+    }
 
     public String getOrderId() {
         return orderId;

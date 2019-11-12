@@ -32,46 +32,24 @@
             android:textColor="#333333"
             android:textSize="@dimen/sp_13" />
 
-        <LinearLayout
-            android:layout_width="@dimen/dp_145"
-            android:layout_height="@dimen/dp_21"
+        <TextView
+            android:id="@+id/refund_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/refund_goods_name"
             android:layout_alignLeft="@id/refund_goods_name"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/bg_linear5f5"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="颜色："
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/refund_colour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="白色"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="，尺码："
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/refund_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXL"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_12" />
-        </LinearLayout>
+            android:ellipsize="end"
+            android:maxWidth="@dimen/dp_200"
+            android:minLines="1"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_3"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_3"
+            android:text="XXXL"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_12" />
 
     </RelativeLayout>
 
@@ -183,19 +161,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="￥"
-            android:textColor="#fd3c15"
-            android:textSize="@dimen/sp_12" />
 
-        <TextView
+        <EditText
             android:id="@+id/refund_sum_text"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
-            android:text="520"
-            android:textColor="#fd3c15"
+            android:background="@null"
+            android:digits="0123456789"
+            android:gravity="center|right"
+            android:hint="请输入退款金额"
+            android:inputType="numberDecimal"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:textColor="#999999"
             android:textSize="@dimen/sp_12" />
 
 

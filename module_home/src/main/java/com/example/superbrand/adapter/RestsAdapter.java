@@ -32,10 +32,8 @@ public class RestsAdapter extends MyRecyclerAdapter<RestsBean.DataBeanX> {
 
 
         RecyclerView goodsRec = holder.getView(R.id.rests_rec_goods_rec);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3, LinearLayoutManager.VERTICAL, false);
         goodsRec.setLayoutManager(gridLayoutManager);
-
         RestsGoodsAdapter restsGoodsAdapter = new RestsGoodsAdapter(context, data.getItem(), R.layout.itme_rests_rec_goods_rec);
         goodsRec.setAdapter(restsGoodsAdapter);
 

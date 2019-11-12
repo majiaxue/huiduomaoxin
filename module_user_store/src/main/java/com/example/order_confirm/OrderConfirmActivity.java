@@ -20,6 +20,8 @@ import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.ArithUtil;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 
 @Route(path = "/user/order_confirm")
@@ -245,6 +247,8 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
 
     @Override
     public void loadPostage(PostageBean postageBean) {
+        DecimalFormat df = new DecimalFormat("0.00");//格式化，区小数后两位
+
         totalMoney = postageBean.getTotal() - postageBean.getFeight();
         confirmBean.setFreightAmount(postageBean.getFeight());
 
@@ -256,9 +260,9 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         }
         orderConfirmCount.setText(postageBean.getQuantity() + "");
         orderConfirmGoodsCount.setText("共" + postageBean.getQuantity() + "件");
-        orderConfirmXiaoji.setText("￥" + postageBean.getTotal());
-        orderConfirmTotalPrice.setText("￥" + totalMoney);
-        orderConfirmFinalPrice.setText(postageBean.getTotal() - couponMoney + "");
+        orderConfirmXiaoji.setText("￥" + df.format(postageBean.getTotal()));
+        orderConfirmTotalPrice.setText("￥" + df.format(totalMoney));
+        orderConfirmFinalPrice.setText(df.format(postageBean.getTotal() - couponMoney) + "");
     }
 
     @Override

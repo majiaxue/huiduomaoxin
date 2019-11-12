@@ -57,8 +57,6 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     SimpleDraweeView refundImage;
     @BindView(R2.id.refund_goods_name)
     TextView refundGoodsName;
-    @BindView(R2.id.refund_colour)
-    TextView refundColour;
     @BindView(R2.id.refund_size)
     TextView refundSize;
     @BindView(R2.id.refund_cause_text)
@@ -70,7 +68,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     @BindView(R2.id.refund_type)
     LinearLayout refundType;
     @BindView(R2.id.refund_sum_text)
-    TextView refundSumText;
+    EditText refundSumText;
     @BindView(R2.id.refund_explain_edit)
     EditText refundExplainEdit;
     @BindView(R2.id.refund_add_photo)
@@ -112,19 +110,18 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 //        WaitDialog.show(this,null);
 //        ProcessDialogUtil.showProcessDialog(this);
 
-        LogUtil.e("beanList退款申请" + mineOrderBean1);
+        LogUtil.e("mineOrderBean1退款申请" + mineOrderBean1);
+        LogUtil.e("orderDetailBean退款申请" + orderDetailBean);
         if ("1".equals(type)) {
-            refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
+//            refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
             refundImage.setImageURI(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPic());
             refundGoodsName.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductName());
-            refundColour.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getSp1());
-            refundSize.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getSp2());
+            refundSize.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductAttr());
         } else {
-            refundSumText.setText("" + orderDetailBean.getPayAmount());
+//            refundSumText.setText("" + orderDetailBean.getPayAmount());
             refundImage.setImageURI(orderDetailBean.getItems().get(0).getProductPic());
             refundGoodsName.setText(orderDetailBean.getItems().get(0).getProductName());
-            refundColour.setText(orderDetailBean.getItems().get(0).getSp1());
-            refundSize.setText(orderDetailBean.getItems().get(0).getSp2());
+            refundSize.setText(orderDetailBean.getItems().get(0).getProductAttr());
         }
 
     }
@@ -167,6 +164,12 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                     Toast.makeText(RefundActivity.this, "请选择退款原因", Toast.LENGTH_SHORT).show();
                 } else if (refundTypeText.getText().toString().equals("点击选择")) {
                     Toast.makeText(RefundActivity.this, "请选择退款类型", Toast.LENGTH_SHORT).show();
+                } else if ("".equals(refundSumText.getText().toString())) {
+                    Toast.makeText(RefundActivity.this, "请输入退款金额", Toast.LENGTH_SHORT).show();
+                } else if ("0".equals(refundSumText.getText().toString())) {
+                    Toast.makeText(RefundActivity.this, "退款金额不能为0", Toast.LENGTH_SHORT).show();
+                } else if (".0".equals(refundSumText.getText().toString())) {
+                    Toast.makeText(RefundActivity.this, "退款金额不正确", Toast.LENGTH_SHORT).show();
                 } else {
 //                    customDialog.show();
 //                    WaitDialog.show(RefundActivity.this,null);
@@ -182,12 +185,19 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setReason(refundCauseText.getText().toString());
                         refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
                         refundApplyVo.setProductPrice(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPrice());
+                        refundApplyVo.setReturnAmount(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setDescription(refundExplainEdit.getText().toString() == null ? "" : refundExplainEdit.getText().toString());
                         refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
                         refundApplyVo.setSellerId(mineOrderBean1.getOrderList().get(position).getSellerId());
-
-//                        refundApplyVo.setReturnName(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).get);
-//                        refundApplyVo.setReturnPhone(mineOrderBean1.getReceiverPhone());
+                        if ("退货退款".equals(refundTypeText.getText().toString())) {
+                            refundApplyVo.setReturnType("0");
+                        } else if ("未收货".equals(refundTypeText.getText().toString())) {
+                            refundApplyVo.setReturnType("1");
+                        } else if ("只退款".equals(refundTypeText.getText().toString())) {
+                            refundApplyVo.setReturnType("2");
+                        }
                         String jsonString = JSON.toJSONString(refundApplyVo);
+                        LogUtil.e("退款申请参数" + jsonString);
                         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
                         Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.REFUNDAPPLY, requestBody, SPUtil.getToken());
                         RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
@@ -211,7 +221,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
                     } else {
                         RefundApplyVo refundApplyVo = new RefundApplyVo();
-                        refundApplyVo.setOrderId(orderDetailBean.getId() + "");
+                        refundApplyVo.setOrderId(orderDetailBean.getItems().get(0).getOrderId() + "");
                         refundApplyVo.setProductId(orderDetailBean.getItems().get(0).getProductId() + "");
                         refundApplyVo.setProductName(orderDetailBean.getItems().get(0).getProductName());
                         refundApplyVo.setOrderSn(orderDetailBean.getItems().get(0).getOrderSn());
@@ -219,11 +229,19 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setReason(refundCauseText.getText().toString());
                         refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
                         refundApplyVo.setProductPrice(orderDetailBean.getPayAmount());
+                        refundApplyVo.setReturnAmount(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setDescription(refundExplainEdit.getText().toString() == null ? "" : refundExplainEdit.getText().toString());
                         refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
                         refundApplyVo.setSellerId(orderDetailBean.getSellerId() + "");
-//                        refundApplyVo.setReturnName(orderDetailBean.getReceiverName());
-//                        refundApplyVo.setReturnPhone(orderDetailBean.getReceiverPhone());
+                        if ("退货退款".equals(refundTypeText.getText().toString())) {
+                            refundApplyVo.setReturnType("0");
+                        } else if ("未收货".equals(refundTypeText.getText().toString())) {
+                            refundApplyVo.setReturnType("1");
+                        } else if ("只退款".equals(refundTypeText.getText().toString())) {
+                            refundApplyVo.setReturnType("2");
+                        }
                         String jsonString = JSON.toJSONString(refundApplyVo);
+                        LogUtil.e("退款申请参数" + jsonString);
                         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
                         Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithBody(CommonResource.REFUNDAPPLY, requestBody, SPUtil.getToken());
                         RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {

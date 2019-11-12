@@ -130,12 +130,13 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             @Override
             public void onClick(View v) {
                 if (1 == status) {
-                    //申请退款
-                    ARouter.getInstance()
-                            .build("/module_user_mine/RefundActivity")
-                            .withSerializable("orderDetailBean", orderDetailBean)
-                            .withString("type", "2")
-                            .navigation();
+                    if ("申请退款".equals(orderDetailsRefund.getText().toString())) {
+                        ARouter.getInstance()
+                                .build("/module_user_mine/RefundActivity")
+                                .withSerializable("orderDetailBean", orderDetailBean)
+                                .withString("type", "2")
+                                .navigation();
+                    }
                 } else {
                     //查看物流
                     ARouter.getInstance()
@@ -177,11 +178,13 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
         orderDetailsRefund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance()
-                        .build("/module_user_mine/RefundActivity")
-                        .withSerializable("orderDetailBean", orderDetailBean)
-                        .withString("type", "2")
-                        .navigation();
+                if ("申请退款".equals(orderDetailsRefund.getText().toString())) {
+                    ARouter.getInstance()
+                            .build("/module_user_mine/RefundActivity")
+                            .withSerializable("orderDetailBean", orderDetailBean)
+                            .withString("type", "2")
+                            .navigation();
+                }
             }
         });
 
@@ -228,7 +231,17 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             orderDetailsStatus.setText("购买成功（待发货）");
             orderDetailsSubhead.setVisibility(View.GONE);
             orderDetailsRefund.setVisibility(View.GONE);
-            orderDetailsLeft.setText("申请退款");
+            if (0 == orderDetailBean.getBackStatus()) {
+                orderDetailsLeft.setText("等待卖家处理");
+            } else if (1 == orderDetailBean.getBackStatus()) {
+                orderDetailsLeft.setText("退货中");
+            } else if (2 == orderDetailBean.getBackStatus()) {
+                orderDetailsLeft.setText("退货完成");
+            } else if (3 == orderDetailBean.getBackStatus()) {
+                orderDetailsLeft.setText("卖家已拒绝");
+            } else {
+                orderDetailsLeft.setText("申请退款");
+            }
             orderDetailsRight.setText("提醒发货");
         } else if (orderDetailBean.getStatus() == 2) {
 
@@ -236,7 +249,17 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             orderDetailsStatus.setText("卖家已发货");
             orderDetailsSubhead.setVisibility(View.VISIBLE);
             orderDetailsRefund.setVisibility(View.VISIBLE);
-            orderDetailsRefund.setText("申请退款");
+            if (0 == orderDetailBean.getBackStatus()) {
+                orderDetailsRefund.setText("等待卖家处理");
+            } else if (1 == orderDetailBean.getBackStatus()) {
+                orderDetailsRefund.setText("退货中");
+            } else if (2 == orderDetailBean.getBackStatus()) {
+                orderDetailsRefund.setText("退货完成");
+            } else if (3 == orderDetailBean.getBackStatus()) {
+                orderDetailsRefund.setText("卖家已拒绝");
+            } else {
+                orderDetailsRefund.setText("申请退款");
+            }
             orderDetailsLeft.setText("查看物流");
             orderDetailsRight.setText("确认收货");
             time(orderDetailBean.getReceiveTime());
@@ -291,7 +314,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (countDownTimer !=null){
+        if (countDownTimer != null) {
             countDownTimer.onFinish();
             countDownTimer.cancel();
         }

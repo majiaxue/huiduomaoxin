@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_164"
-            android:text="您确认删除订单吗？"
+            android:text="您确认删除宝贝吗？"
             android:textColor="#ffffff"
             android:textSize="@dimen/sp_16" />
 
