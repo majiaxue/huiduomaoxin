@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -28,7 +27,6 @@ import com.example.utils.PopUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.example.view.SelfDialog;
-import com.kongzue.dialog.v3.WaitDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -78,7 +76,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-            Map map = MapUtil.getInstance().addParms("totalAmout", submitOrderBean.getTotalAmount()).addParms("orderSn", submitOrderBean.getMasterNo()).addParms("productName", CommonResource.PROJECTNAME).build();
+            Map map = MapUtil.getInstance().addParms("totalAmout", submitOrderBean.getTotalAmount()).addParms("orderSn", submitOrderBean.getMasterNo()).addParms("productName", CommonResource.PROJECTNAME).addParms("orderFlag", true).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.WXPAY, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
@@ -189,7 +187,41 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
     public void pay2(boolean isWeChat, RedPackageBean redPackageBean) {
         if (isWeChat) {
+            final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
+            Map map = MapUtil.getInstance().addParms("totalAmount", redPackageBean.getBuyMoney()).addParms("orderSn", "").addParms("productName", CommonResource.PROJECTNAME).addParms("orderFlag", false).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_WX_PAY, map);
+            RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("微信支付-------------->" + result);
+                    getView().callBack();
+                    try {
+
+                        WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
+
+                        PayReq request = new PayReq();
+                        request.appId = payBean.getAppid();
+                        request.partnerId = payBean.getPartnerid();
+                        request.prepayId = payBean.getPrepayid();
+                        request.packageValue = "Sign=WXPay";
+                        request.nonceStr = payBean.getNoncestr();
+                        request.timeStamp = payBean.getTimestamp();
+                        request.sign = payBean.getSign();
+
+                        api.sendReq(request);
+                        SPUtil.addParm("wxpay", "1");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    getView().callBack();
+                    LogUtil.e(errorCode + "------------" + errorMsg);
+                }
+            }));
         } else {
             Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", redPackageBean.getBuyMoney()).addParms("redPackedId", redPackageBean.getId()).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.BUY_RED_PACKAGE, map);
@@ -197,10 +229,16 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("支付宝：" + result);
+                    getView().callBack();
+                    AliPayBean aliPayBean = JSON.parseObject(result, AliPayBean.class);
+                    info = aliPayBean.getBody();
+                    Thread thread = new Thread(payRunnable);
+                    thread.start();
                 }
 
                 @Override
                 public void onError(String errorCode, String errorMsg) {
+                    getView().callBack();
                     LogUtil.e(errorCode + "------------" + errorMsg);
                 }
             }));

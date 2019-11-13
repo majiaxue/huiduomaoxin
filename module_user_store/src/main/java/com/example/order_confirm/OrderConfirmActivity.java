@@ -85,6 +85,8 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     TextView orderConfirmFinalPrice;
     @BindView(R2.id.order_confirm_submit)
     TextView orderConfirmSubmit;
+    @BindView(R2.id.local_order_confirm_coupon_money)
+    LinearLayout mCouponList;
 
     private OrderConfirmBean confirmBean;
     private double totalMoney = 0.0;

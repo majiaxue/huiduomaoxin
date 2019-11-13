@@ -80,6 +80,7 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
 
         localOrderConfirmTotalMoney.setText("￥" + bean.getTotalMoney());
         localOrderConfirmFinalMoney.setText("￥" + bean.getTotalMoney());
+        localOrderConfirmReduceMoney.setText("-￥" + bean.getSellerManJian());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRv.setLayoutManager(layoutManager);
         mRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_10)));

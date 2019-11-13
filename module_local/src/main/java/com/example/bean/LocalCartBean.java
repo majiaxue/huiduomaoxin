@@ -5,7 +5,25 @@ import java.util.List;
 public class LocalCartBean {
 
     private String totalMoney;
+    private String minPoint;
+    private String amount;
     private List<InsideCart> localShopcarList;
+
+    public String getMinPoint() {
+        return minPoint;
+    }
+
+    public void setMinPoint(String minPoint) {
+        this.minPoint = minPoint;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
 
     public String getTotalMoney() {
         return totalMoney;
@@ -27,6 +45,8 @@ public class LocalCartBean {
     public String toString() {
         return "LocalCartBean{" +
                 "totalMoney='" + totalMoney + '\'' +
+                ", minPoint='" + minPoint + '\'' +
+                ", amount='" + amount + '\'' +
                 ", localShopcarList=" + localShopcarList +
                 '}';
     }

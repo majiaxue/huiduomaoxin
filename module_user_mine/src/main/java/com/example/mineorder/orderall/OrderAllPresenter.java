@@ -349,6 +349,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("取消申请退款：" + result);
+                orderAllRec();
             }
 
             @Override

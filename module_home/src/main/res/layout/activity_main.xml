@@ -34,19 +34,15 @@
         <!--android:text="品牌"-->
         <!--android:textColor="@color/color_f23_010" />-->
 
-        <RelativeLayout
+        <Button
             android:id="@+id/main_shangcheng"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="@dimen/dp_2"
-                android:src="@drawable/icon_shangcheng1" />
-        </RelativeLayout>
+            style="@style/main_bottom_back"
+            android:background="@null"
+            android:drawableTop="@drawable/shangcheng0"
+            android:gravity="center"
+            android:paddingTop="@dimen/dp_7"
+            android:text="商城"
+            android:textColor="#010101" />
 
         <RadioButton
             android:id="@+id/main_operator"

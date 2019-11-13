@@ -220,6 +220,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("添加商品：" + result);
                 LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                SPUtil.addParm(CommonResource.LOCAL_SELLER_MANJIAN, localCartBean.getAmount());
                 localCartBeans.clear();
                 localCartBeans.addAll(localCartBean.getLocalShopcarList());
                 popLocalCartAdapter.notifyDataSetChanged();
@@ -248,6 +249,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("去掉商品：" + result);
                 LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                SPUtil.addParm(CommonResource.LOCAL_SELLER_MANJIAN, localCartBean.getAmount());
                 localCartBeans.clear();
                 localCartBeans.addAll(localCartBean.getLocalShopcarList());
                 popLocalCartAdapter.notifyDataSetChanged();
