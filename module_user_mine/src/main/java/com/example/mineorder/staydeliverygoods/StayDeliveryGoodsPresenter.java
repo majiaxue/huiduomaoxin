@@ -87,7 +87,7 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                             view2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (listBeans.get(position).getBackStatus() == 0 || listBeans.get(position).getBackStatus() == 1) {
+                                    if (listBeans.get(position).getBackStatus() == 0) {
                                         //取消申请
                                         Map map = MapUtil.getInstance().addParms("orderSn", listBeans.get(position).getOrderSn()).build();
                                         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.CANCEL_TUIKUAN, map);

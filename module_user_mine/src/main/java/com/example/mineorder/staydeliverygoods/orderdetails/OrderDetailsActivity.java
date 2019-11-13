@@ -239,7 +239,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
                 orderDetailsLeft.setText("退货完成");
             } else if (3 == orderDetailBean.getBackStatus()) {
                 orderDetailsLeft.setText("卖家已拒绝");
-            } else {
+            } else if (-1 == orderDetailBean.getBackStatus()){
                 orderDetailsLeft.setText("申请退款");
             }
             orderDetailsRight.setText("提醒发货");
@@ -257,7 +257,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
                 orderDetailsRefund.setText("退货完成");
             } else if (3 == orderDetailBean.getBackStatus()) {
                 orderDetailsRefund.setText("卖家已拒绝");
-            } else {
+            } else if (-1 == orderDetailBean.getBackStatus()){
                 orderDetailsRefund.setText("申请退款");
             }
             orderDetailsLeft.setText("查看物流");

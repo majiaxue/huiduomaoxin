@@ -121,11 +121,11 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                     view2.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            if (listBeans.get(position).getBackStatus() == 0 || listBeans.get(position).getBackStatus() == 1) {
+                                            if (listBeans.get(position).getBackStatus() == 0) {
                                                 cancelShenqing(listBeans.get(position).getOrderSn());
                                             } else if (listBeans.get(position).getBackStatus() == 2) {
                                                 deleteOrder(position);
-                                            } else {
+                                            } else if (listBeans.get(position).getBackStatus() == -1) {
                                                 if ("申请退款".equals(left.getText().toString())) {
                                                     ARouter.getInstance()
                                                             .build("/module_user_mine/RefundActivity")

@@ -54,10 +54,14 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                 holder.setText(R.id.mine_order_parent_status, "卖家已拒绝");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.VISIBLE);
-            } else {
+            } else if (-1 == data.getBackStatus()) {
                 left.setText("申请退款");
                 right.setText("提醒发货");
                 holder.setText(R.id.mine_order_parent_status, "买家已付款");
+            } else {
+                right.setText("提醒发货");
+                holder.setText(R.id.mine_order_parent_status, "买家已付款");
+                left.setVisibility(View.VISIBLE);
             }
         } else if (data.getStatus() == 3) {
             //3待评论
@@ -140,7 +144,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                     btnLeft.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if ("再次购买".equals(btnLeft.getText().toString())){
+                            if ("再次购买".equals(btnLeft.getText().toString())) {
                                 //再次购买
                                 ARouter.getInstance()
                                         .build("/module_user_store/GoodsDetailActivity")
@@ -156,14 +160,14 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                     btnRight.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if ("立即评价".equals(btnRight.getText().toString())){
+                            if ("立即评价".equals(btnRight.getText().toString())) {
                                 //立即评价
                                 ARouter.getInstance()
                                         .build("/module_user_mine/OrderAssessActivity")
                                         .withInt("position", position)
                                         .withSerializable("beanList", data)
                                         .navigation();
-                            }else{
+                            } else {
                                 //再次购买
                                 ARouter.getInstance()
                                         .build("/module_user_store/GoodsDetailActivity")
