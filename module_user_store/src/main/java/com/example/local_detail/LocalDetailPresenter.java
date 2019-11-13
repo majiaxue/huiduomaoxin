@@ -162,7 +162,7 @@ public class LocalDetailPresenter extends BasePresenter<LocalDetailView> {
 
     public void callPhone() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:18503735075");
+        Uri data = Uri.parse("tel:" + CommonResource.SERVICE_PHONE);
         intent.setData(data);
         mContext.startActivity(intent);
     }

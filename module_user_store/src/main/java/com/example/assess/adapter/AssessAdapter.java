@@ -25,7 +25,7 @@ public class AssessAdapter extends MyRecyclerAdapter<AssessBean.RecordsBean> {
     @Override
     public void convert(final RecyclerViewHolder holder, AssessBean.RecordsBean data, final int position) {
         holder.setImageUrlCircular(R.id.rv_assess_header, data.getIcon())
-                .setText(R.id.rv_assess_name, data.getNickname())
+                .setText(R.id.rv_assess_name, "1".equals(data.getIsAnonymous()) ? "匿名用户" : data.getNickname())
                 .setText(R.id.rv_assess_content, data.getInfo())
                 .setText(R.id.rv_assess_time, data.getCeatedTime() + data.getAttr());
         RatingBarView ratingBar = holder.getView(R.id.rv_assess_ratingbar);

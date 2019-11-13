@@ -69,7 +69,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private CommunityFragment communityFragment;
     private HomeFragment homeFragment;
     private MineFragment mineFragment;
-    private SuperBrandFragment superBrandFragment;
+//    private SuperBrandFragment superBrandFragment;
     private OperatorGainFragment operatorGainFragment;
     private ProgressBar mProgress;
     private AlertDialog alertDialog;
@@ -136,19 +136,19 @@ public class MainPresenter extends BasePresenter<MainView> {
         communityFragment = new CommunityFragment();
         homeFragment = new HomeFragment();
         mineFragment = new MineFragment();
-        superBrandFragment = new SuperBrandFragment();
+//        superBrandFragment = new SuperBrandFragment();
         operatorGainFragment = new OperatorGainFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(resId, communityFragment)
                 .add(resId, homeFragment)
                 .add(resId, mineFragment)
-                .add(resId, operatorGainFragment)
-                .add(resId, superBrandFragment);
+                .add(resId, operatorGainFragment);
+//                .add(resId, superBrandFragment);
         transaction.show(homeFragment)
                 .hide(communityFragment)
                 .hide(mineFragment)
-                .hide(superBrandFragment)
+//                .hide(superBrandFragment)
                 .hide(operatorGainFragment)
                 .commit();
 
@@ -161,22 +161,24 @@ public class MainPresenter extends BasePresenter<MainView> {
             transaction.show(homeFragment)
                     .hide(communityFragment)
                     .hide(mineFragment)
-                    .hide(superBrandFragment)
+//                    .hide(superBrandFragment)
                     .hide(operatorGainFragment)
                     .commit();
 
-        } else if (resId == R.id.main_classify) {
-            transaction.show(superBrandFragment)
-                    .hide(communityFragment)
-                    .hide(homeFragment)
-                    .hide(mineFragment)
-                    .hide(operatorGainFragment)
-                    .commit();
-
-        } else if (resId == R.id.main_mine) {
+        }
+//        else if (resId == R.id.main_classify) {
+//            transaction.show(superBrandFragment)
+//                    .hide(communityFragment)
+//                    .hide(homeFragment)
+//                    .hide(mineFragment)
+//                    .hide(operatorGainFragment)
+//                    .commit();
+//
+//        }
+        else if (resId == R.id.main_mine) {
             transaction.show(mineFragment)
                     .hide(communityFragment)
-                    .hide(superBrandFragment)
+//                    .hide(superBrandFragment)
                     .hide(homeFragment)
                     .hide(operatorGainFragment)
                     .commit();
@@ -184,7 +186,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         } else if (resId == R.id.main_community) {
             transaction.show(communityFragment)
                     .hide(mineFragment)
-                    .hide(superBrandFragment)
+//                    .hide(superBrandFragment)
                     .hide(homeFragment)
                     .hide(operatorGainFragment)
                     .commit();
@@ -195,7 +197,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             } else {
                 transaction.show(operatorGainFragment)
                         .hide(mineFragment)
-                        .hide(superBrandFragment)
+//                        .hide(superBrandFragment)
                         .hide(homeFragment)
                         .hide(communityFragment)
                         .commit();
