@@ -114,7 +114,7 @@ public class StayObligationPresenter extends BasePresenter<StayObligationView> {
                                 @Override
                                 public void onClick(View v) {
                                     SubmitOrderBean submitOrderBean = new SubmitOrderBean();
-                                    submitOrderBean.setTotalAmount(listBeans.get(position).getTotalAmount());
+                                    submitOrderBean.setTotalAmount(listBeans.get(position).getPayAmount());
                                     submitOrderBean.setMasterNo(listBeans.get(position).getOrderItems().get(0).getOrderSn());
                                     ARouter.getInstance().build("/module_user_store/PaymentActivity")
                                             .withSerializable("submitOrderBean", submitOrderBean)

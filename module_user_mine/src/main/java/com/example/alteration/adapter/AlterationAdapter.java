@@ -15,14 +15,14 @@ import java.util.List;
  * Created by cuihaohao on 2019/5/27
  * Describe:
  */
-public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean.RBean> {
+public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean> {
 
-    public AlterationAdapter(Context context, List<AlterationBean.RBean> mList, int mLayoutId) {
+    public AlterationAdapter(Context context, List<AlterationBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, AlterationBean.RBean data, int position) {
+    public void convert(RecyclerViewHolder holder, AlterationBean data, int position) {
         holder.setText(R.id.alteration_rec_shop_name, data.getSellerName());
         if ("0".equals(data.getReturnType())) {
             //退货退款

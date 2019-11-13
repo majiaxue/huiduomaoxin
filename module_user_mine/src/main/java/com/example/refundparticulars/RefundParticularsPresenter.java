@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.bean.AlterationBean;
+import com.example.bean.RefundParticularsBean;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
@@ -50,18 +51,18 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
         ProcessDialogUtil.showProcessDialog(mContext);
 
         Map map = MapUtil.getInstance().addParms("orderSn", orderSn).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.RETURNTABLE, map, SPUtil.getToken());
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHead(CommonResource.RETURNINFO, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
 //                customDialog.dismiss();
                 LogUtil.e("RefundParticularsResult------------->" + result);
 //                List<AlterationBean> list = JSON.parseArray(result, AlterationBean.class);
-                AlterationBean alterationBean = JSON.parseObject(result, new TypeReference<AlterationBean>() {
+                RefundParticularsBean refundParticularsBean = JSON.parseObject(result, new TypeReference<RefundParticularsBean>() {
                 }.getType());
-                if (alterationBean != null && alterationBean.getR().size() != 0) {
+                if (refundParticularsBean != null) {
                     if (getView() != null) {
-                        getView().initView(alterationBean.getR());
+                        getView().initView(refundParticularsBean);
                     }
                 }
             }
@@ -75,7 +76,7 @@ public class RefundParticularsPresenter extends BasePresenter<RefundParticularsV
 
     }
 
-    public void goodsList(RecyclerView refundParticularsRec, List<AlterationBean.RBean.ItemlistBean> itemList) {
+    public void goodsList(RecyclerView refundParticularsRec, List<RefundParticularsBean.ItemlistBean> itemList) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         refundParticularsRec.setLayoutManager(linearLayoutManager);
         RefundParticularsRecAdapter refundParticularsRecAdapter = new RefundParticularsRecAdapter(mContext, itemList, R.layout.item_refund_particulars_rec);

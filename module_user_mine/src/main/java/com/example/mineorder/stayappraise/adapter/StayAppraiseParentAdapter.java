@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -49,29 +51,43 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
         stayAppraiseChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
             @Override
             public void ViewTwoOnClick(View view1, View view2, final int position) {
-                view1.setOnClickListener(new View.OnClickListener() {
+                final TextView btnLeft = view1.findViewById(R.id.stay_appraise_child_btn_left);
+                final TextView btnRight = view1.findViewById(R.id.stay_appraise_child_btn_right);
+                btnLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //再次购买
-                        ARouter.getInstance()
-                                .build("/module_user_store/GoodsDetailActivity")
-                                .withString("id", data.getOrderItems().get(position).getProductId() + "")
-                                .withString("sellerId", data.getSellerId())
-                                .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
-                                .navigation();
+                        if ("再次购买".equals(btnLeft.getText().toString())){
+                            //再次购买
+                            ARouter.getInstance()
+                                    .build("/module_user_store/GoodsDetailActivity")
+                                    .withString("id", data.getOrderItems().get(position).getProductId() + "")
+                                    .withString("sellerId", data.getSellerId())
+                                    .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
+                                    .navigation();
+                        }
+
                     }
                 });
 
-                view2.setOnClickListener(new View.OnClickListener() {
+                btnRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //立即评价
-                        ARouter.getInstance()
-                                .build("/module_user_mine/OrderAssessActivity")
-                                .withInt("position", position)
-                                .withSerializable("beanList", data)
-                                .navigation();
-
+                        if ("立即评价".equals(btnRight.getText().toString())){
+                            //立即评价
+                            ARouter.getInstance()
+                                    .build("/module_user_mine/OrderAssessActivity")
+                                    .withInt("position", position)
+                                    .withSerializable("beanList", data)
+                                    .navigation();
+                        }else{
+                            //再次购买
+                            ARouter.getInstance()
+                                    .build("/module_user_store/GoodsDetailActivity")
+                                    .withString("id", data.getOrderItems().get(position).getProductId() + "")
+                                    .withString("sellerId", data.getSellerId())
+                                    .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
+                                    .navigation();
+                        }
                     }
                 });
             }

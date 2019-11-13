@@ -23,6 +23,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
 
     private TextView left;
     private TextView right;
+    private boolean isComment = false;
 
     public MineOrderParentAdapter(Context context, List<MineOrderBean.OrderListBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
@@ -36,91 +37,96 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             //1待发货
             if (0 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "待处理");
-                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setText("取消申请");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (1 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "退货中");
-                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setText("取消申请");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (2 == data.getBackStatus()) {
-                holder.setText(R.id.mine_order_parent_btn_left, "退货完成");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                holder.setText(R.id.mine_order_parent_status, "退货完成");
                 left.setText("删除订单");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (3 == data.getBackStatus()) {
-                holder.setText(R.id.mine_order_parent_btn_left, "卖家已拒绝");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                holder.setText(R.id.mine_order_parent_status, "卖家已拒绝");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.VISIBLE);
-            } else {
-                holder.setText(R.id.mine_order_parent_btn_left, "申请退款");
-                holder.setText(R.id.mine_order_parent_btn_right, "提醒发货");
+            } else if (-1 == data.getBackStatus()) {
+                left.setText("申请退款");
+                right.setText("提醒发货");
                 holder.setText(R.id.mine_order_parent_status, "买家已付款");
+            } else {
+                right.setText("提醒发货");
+                holder.setText(R.id.mine_order_parent_status, "买家已付款");
+                left.setVisibility(View.VISIBLE);
             }
         } else if (data.getStatus() == 3) {
             //3待评论
             holder.setText(R.id.mine_order_parent_status, "交易成功");
-//            holder.setText(R.id.mine_order_parent_btn_left, "再次购买");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
             left.setVisibility(View.GONE);
             right.setVisibility(View.GONE);
         } else if (data.getStatus() == 6) {
             //6待付款
             holder.setText(R.id.mine_order_parent_status, "等待买家付款");
-            holder.setText(R.id.mine_order_parent_btn_left, "取消订单");
-            holder.setText(R.id.mine_order_parent_btn_right, "付款");
+            left.setText("取消订单");
+            right.setText("付款");
         } else if (data.getStatus() == 2) {
             //2待收货
             if (0 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "待处理");
-                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setText("取消申请");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (1 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "退货中");
-                holder.setText(R.id.mine_order_parent_btn_left, "取消申请");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                left.setText("取消申请");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (2 == data.getBackStatus()) {
-                holder.setText(R.id.mine_order_parent_btn_left, "退货完成");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                holder.setText(R.id.mine_order_parent_status, "退货完成");
                 left.setText("删除订单");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (3 == data.getBackStatus()) {
-                holder.setText(R.id.mine_order_parent_btn_left, "卖家已拒绝");
-//            holder.setText(R.id.mine_order_parent_btn_right, "立即评价");
+                holder.setText(R.id.mine_order_parent_status, "卖家已拒绝");
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.VISIBLE);
-                holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
-                holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+                left.setText("查看物流");
+                right.setText("确认收货");
             } else {
                 holder.setText(R.id.mine_order_parent_status, "卖家已发货");
-                holder.setText(R.id.mine_order_parent_btn_left, "查看物流");
-                holder.setText(R.id.mine_order_parent_btn_right, "确认收货");
+                left.setText("查看物流");
+                right.setText("确认收货");
             }
         } else if (data.getStatus() == 4 || data.getStatus() == 5) {
             //45 已失效
             holder.setText(R.id.mine_order_parent_status, "已失效");
-            holder.setText(R.id.mine_order_parent_btn_left, "删除订单");
-            holder.setText(R.id.mine_order_parent_btn_right, "再次购买");
+            left.setText("删除订单");
+            right.setText("再次购买");
         } else if (data.getStatus() == 7) {
             //7 已评价
             holder.setText(R.id.mine_order_parent_status, "已评价");
-            holder.setText(R.id.mine_order_parent_btn_left, "已评价");
-            right.setVisibility(View.GONE);
+            for (int i = 0; i < data.getOrderItems().size(); i++) {
+                if (0 != data.getOrderItems().get(i).getIsComment()) {
+                    isComment = true;
+                }
+            }
+            if (isComment) {
+                left.setText("已评价");
+                right.setVisibility(View.GONE);
+            } else {
+                left.setVisibility(View.GONE);
+                right.setVisibility(View.GONE);
+            }
+
         }
 
         holder.setText(R.id.mine_order_parent_shop, data.getSellerName());
 
-        holder.setText(R.id.mine_order_parent_total, "共" + data.getTotalCount() + "件商品  合计：￥" + data.getTotalAmount());
+        holder.setText(R.id.mine_order_parent_total, "共" + data.getTotalCount() + "件商品  合计：￥" + data.getPayAmount());
 
         viewThreeOnClickListener.ViewThreeOnClick(holder.getView(R.id.mine_order_parent_shop), holder.getView(R.id.mine_order_parent_btn_left), holder.getView(R.id.mine_order_parent_btn_right), position);
 
@@ -133,29 +139,43 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             stayAppraiseChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
                 @Override
                 public void ViewTwoOnClick(View view1, View view2, final int position) {
-                    view1.setOnClickListener(new View.OnClickListener() {
+                    final TextView btnLeft = view1.findViewById(R.id.stay_appraise_child_btn_left);
+                    final TextView btnRight = view1.findViewById(R.id.stay_appraise_child_btn_right);
+                    btnLeft.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //再次购买
-                            ARouter.getInstance()
-                                    .build("/module_user_store/GoodsDetailActivity")
-                                    .withString("id", data.getOrderItems().get(position).getProductId() + "")
-                                    .withString("sellerId", data.getSellerId())
-                                    .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
-                                    .navigation();
+                            if ("再次购买".equals(btnLeft.getText().toString())) {
+                                //再次购买
+                                ARouter.getInstance()
+                                        .build("/module_user_store/GoodsDetailActivity")
+                                        .withString("id", data.getOrderItems().get(position).getProductId() + "")
+                                        .withString("sellerId", data.getSellerId())
+                                        .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
+                                        .navigation();
+                            }
+
                         }
                     });
 
-                    view2.setOnClickListener(new View.OnClickListener() {
+                    btnRight.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //立即评价
-                            ARouter.getInstance()
-                                    .build("/module_user_mine/OrderAssessActivity")
-                                    .withInt("position", position)
-                                    .withSerializable("beanList", data)
-                                    .navigation();
-
+                            if ("立即评价".equals(btnRight.getText().toString())) {
+                                //立即评价
+                                ARouter.getInstance()
+                                        .build("/module_user_mine/OrderAssessActivity")
+                                        .withInt("position", position)
+                                        .withSerializable("beanList", data)
+                                        .navigation();
+                            } else {
+                                //再次购买
+                                ARouter.getInstance()
+                                        .build("/module_user_store/GoodsDetailActivity")
+                                        .withString("id", data.getOrderItems().get(position).getProductId() + "")
+                                        .withString("sellerId", data.getSellerId())
+                                        .withString("commendId", data.getOrderItems().get(position).getProductCategoryId() + "")
+                                        .navigation();
+                            }
                         }
                     });
                 }

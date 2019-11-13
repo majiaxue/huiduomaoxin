@@ -8,56 +8,46 @@ import java.util.List;
  */
 public class AlterationBean {
 
-
-    private List<RBean> r;
-
-    public List<RBean> getR() {
-        return r;
-    }
-
-    public void setR(List<RBean> r) {
-        this.r = r;
-    }
-
-    public static class RBean {
         /**
-         * id : 31
-         * orderId : 189
+         * id : 969
+         * orderId : null
          * companyAddressId : null
-         * productId : 56
-         * orderSn : 19061914200001
-         * createTime : 2019-07-03 14:04:46
-         * memberUsername : 18639488962
+         * productId : null
+         * orderSn : 1911121409000124
+         * createTime : null
+         * memberUsername : null
+         * userCode : null
          * returnAmount : null
          * returnName : null
          * returnPhone : null
-         * status : 8
+         * status : 5
          * handleTime : null
          * productPic : null
-         * productName : 凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋
+         * productName : null
          * productAttr : null
          * productCount : null
-         * productPrice : 88
-         * productRealPrice : 99
-         * reason : 拍错/多拍/不想要
+         * productPrice : null
+         * productRealPrice : null
+         * reason : null
          * description : null
-         * proofPics : http://172.16.240.23:9000/order/785f00829af14e9f83fa4f7ae64f179f..jpg,http://172.16.240.23:9000/order/7b8c4e3f302647458635d5f76a5c4866..jpg
+         * proofPics : null
          * handleNote : null
          * handleMan : null
          * receiveMan : null
-         * receiveTime : null
+         * receiveTime : 2019-11-27 14:09:22
          * receiveNote : null
-         * sellerId : null
+         * sellerId : 1
          * returnType : null
-         * sellerName : Allisjoy/我的时代
-         * receiverPhone : 18818881888
-         * receiverName : 辅助
+         * items : null
+         * sellerName : Allisjoy/我的时代1
+         * receiverPhone : 18639488962
+         * receiverName : 崔
          * receiverRegion : 金水区
          * receiverCity : 郑州
          * receiverProvince : 河南省
-         * orderAddress : 金城国际广场
+         * orderAddress : 招银大厦
          * payWay : null
-         * itemlist : [{"id":null,"orderId":null,"orderSn":null,"productId":null,"productPic":"http://47.99.93.123:8083/goods/8f49f74d0df943c484d1a48ac226d05d.jpg","productName":"凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋","productBrand":null,"productSn":null,"productPrice":88,"productQuantity":1,"productSkuId":null,"productSkuCode":null,"productCategoryId":null,"sp1":null,"sp2":null,"sp3":null,"promotionName":null,"promotionAmount":null,"couponAmount":null,"StringegrationAmount":null,"realAmount":null,"giftStringegration":null,"giftGrowth":null,"productAttr":null,"couponId":null,"itemDeliveryTemplateId":null,"expireDate":null}]
+         * itemlist : [{"id":null,"orderId":null,"orderSn":null,"productId":null,"productPic":"http://47.99.93.123:8083/goods/a65ca237ea414d2797f5e420e56d4aac.jpg","productName":"【12期分期免息 每月低至649元】Apple/苹果 iPhone Xs 移动联通电信全网通4G手机 苹果Xs","productBrand":null,"productSn":null,"productPrice":0.01,"productQuantity":1,"productSkuId":null,"productSkuCode":null,"productCategoryId":null,"sp1":null,"sp2":null,"sp3":null,"promotionName":null,"promotionAmount":null,"couponAmount":null,"integrationAmount":null,"realAmount":null,"giftIntegration":null,"giftGrowth":null,"productAttr":"容量：土豪金、颜色：64","couponId":null,"itemDeliveryTemplateId":null,"expireDate":null,"freightAmount":null}]
          */
 
         private String id;
@@ -67,6 +57,7 @@ public class AlterationBean {
         private String orderSn;
         private String createTime;
         private String memberUsername;
+        private String userCode;
         private String returnAmount;
         private String returnName;
         private String returnPhone;
@@ -86,8 +77,9 @@ public class AlterationBean {
         private String receiveMan;
         private String receiveTime;
         private String receiveNote;
-        private String sellerId;
-        private String returnType;
+        private int sellerId;
+        private int returnType;
+        private String items;
         private String sellerName;
         private String receiverPhone;
         private String receiverName;
@@ -152,6 +144,14 @@ public class AlterationBean {
 
         public void setMemberUsername(String memberUsername) {
             this.memberUsername = memberUsername;
+        }
+
+        public String getUserCode() {
+            return userCode;
+        }
+
+        public void setUserCode(String userCode) {
+            this.userCode = userCode;
         }
 
         public String getReturnAmount() {
@@ -306,20 +306,28 @@ public class AlterationBean {
             this.receiveNote = receiveNote;
         }
 
-        public String getSellerId() {
+        public int getSellerId() {
             return sellerId;
         }
 
-        public void setSellerId(String sellerId) {
+        public void setSellerId(int sellerId) {
             this.sellerId = sellerId;
         }
 
-        public String getReturnType() {
+        public int getReturnType() {
             return returnType;
         }
 
-        public void setReturnType(String returnType) {
+        public void setReturnType(int returnType) {
             this.returnType = returnType;
+        }
+
+        public String getItems() {
+            return items;
+        }
+
+        public void setItems(String items) {
+            this.items = items;
         }
 
         public String getSellerName() {
@@ -400,11 +408,11 @@ public class AlterationBean {
              * orderId : null
              * orderSn : null
              * productId : null
-             * productPic : http://47.99.93.123:8083/goods/8f49f74d0df943c484d1a48ac226d05d.jpg
-             * productName : 凉鞋女夏平底ins潮女士百搭2019新款夏季网红超火时尚运动沙滩鞋
+             * productPic : http://47.99.93.123:8083/goods/a65ca237ea414d2797f5e420e56d4aac.jpg
+             * productName : 【12期分期免息 每月低至649元】Apple/苹果 iPhone Xs 移动联通电信全网通4G手机 苹果Xs
              * productBrand : null
              * productSn : null
-             * productPrice : 88
+             * productPrice : 0.01
              * productQuantity : 1
              * productSkuId : null
              * productSkuCode : null
@@ -415,14 +423,15 @@ public class AlterationBean {
              * promotionName : null
              * promotionAmount : null
              * couponAmount : null
-             * StringegrationAmount : null
+             * integrationAmount : null
              * realAmount : null
-             * giftStringegration : null
+             * giftIntegration : null
              * giftGrowth : null
-             * productAttr : null
+             * productAttr : 容量：土豪金、颜色：64
              * couponId : null
              * itemDeliveryTemplateId : null
              * expireDate : null
+             * freightAmount : null
              */
 
             private String id;
@@ -433,8 +442,8 @@ public class AlterationBean {
             private String productName;
             private String productBrand;
             private String productSn;
-            private String productPrice;
-            private String productQuantity;
+            private double productPrice;
+            private int productQuantity;
             private String productSkuId;
             private String productSkuCode;
             private String productCategoryId;
@@ -444,14 +453,15 @@ public class AlterationBean {
             private String promotionName;
             private String promotionAmount;
             private String couponAmount;
-            private String StringegrationAmount;
+            private String integrationAmount;
             private String realAmount;
-            private String giftStringegration;
+            private String giftIntegration;
             private String giftGrowth;
             private String productAttr;
             private String couponId;
             private String itemDeliveryTemplateId;
             private String expireDate;
+            private String freightAmount;
 
             public String getId() {
                 return id;
@@ -517,19 +527,19 @@ public class AlterationBean {
                 this.productSn = productSn;
             }
 
-            public String getProductPrice() {
+            public double getProductPrice() {
                 return productPrice;
             }
 
-            public void setProductPrice(String productPrice) {
+            public void setProductPrice(double productPrice) {
                 this.productPrice = productPrice;
             }
 
-            public String getProductQuantity() {
+            public int getProductQuantity() {
                 return productQuantity;
             }
 
-            public void setProductQuantity(String productQuantity) {
+            public void setProductQuantity(int productQuantity) {
                 this.productQuantity = productQuantity;
             }
 
@@ -605,12 +615,12 @@ public class AlterationBean {
                 this.couponAmount = couponAmount;
             }
 
-            public String getStringegrationAmount() {
-                return StringegrationAmount;
+            public String getIntegrationAmount() {
+                return integrationAmount;
             }
 
-            public void setStringegrationAmount(String StringegrationAmount) {
-                this.StringegrationAmount = StringegrationAmount;
+            public void setIntegrationAmount(String integrationAmount) {
+                this.integrationAmount = integrationAmount;
             }
 
             public String getRealAmount() {
@@ -621,12 +631,12 @@ public class AlterationBean {
                 this.realAmount = realAmount;
             }
 
-            public String getGiftStringegration() {
-                return giftStringegration;
+            public String getGiftIntegration() {
+                return giftIntegration;
             }
 
-            public void setGiftStringegration(String giftStringegration) {
-                this.giftStringegration = giftStringegration;
+            public void setGiftIntegration(String giftIntegration) {
+                this.giftIntegration = giftIntegration;
             }
 
             public String getGiftGrowth() {
@@ -669,88 +679,91 @@ public class AlterationBean {
                 this.expireDate = expireDate;
             }
 
+            public String getFreightAmount() {
+                return freightAmount;
+            }
+
+            public void setFreightAmount(String freightAmount) {
+                this.freightAmount = freightAmount;
+            }
+
             @Override
             public String toString() {
                 return "ItemlistBean{" +
-                        "id='" + id + '\'' +
-                        ", orderId='" + orderId + '\'' +
-                        ", orderSn='" + orderSn + '\'' +
-                        ", productId='" + productId + '\'' +
+                        "id=" + id +
+                        ", orderId=" + orderId +
+                        ", orderSn=" + orderSn +
+                        ", productId=" + productId +
                         ", productPic='" + productPic + '\'' +
                         ", productName='" + productName + '\'' +
-                        ", productBrand='" + productBrand + '\'' +
-                        ", productSn='" + productSn + '\'' +
+                        ", productBrand=" + productBrand +
+                        ", productSn=" + productSn +
                         ", productPrice=" + productPrice +
                         ", productQuantity=" + productQuantity +
-                        ", productSkuId='" + productSkuId + '\'' +
-                        ", productSkuCode='" + productSkuCode + '\'' +
-                        ", productCategoryId='" + productCategoryId + '\'' +
-                        ", sp1='" + sp1 + '\'' +
-                        ", sp2='" + sp2 + '\'' +
-                        ", sp3='" + sp3 + '\'' +
-                        ", promotionName='" + promotionName + '\'' +
-                        ", promotionAmount='" + promotionAmount + '\'' +
-                        ", couponAmount='" + couponAmount + '\'' +
-                        ", StringegrationAmount='" + StringegrationAmount + '\'' +
-                        ", realAmount='" + realAmount + '\'' +
-                        ", giftStringegration='" + giftStringegration + '\'' +
-                        ", giftGrowth='" + giftGrowth + '\'' +
+                        ", productSkuId=" + productSkuId +
+                        ", productSkuCode=" + productSkuCode +
+                        ", productCategoryId=" + productCategoryId +
+                        ", sp1=" + sp1 +
+                        ", sp2=" + sp2 +
+                        ", sp3=" + sp3 +
+                        ", promotionName=" + promotionName +
+                        ", promotionAmount=" + promotionAmount +
+                        ", couponAmount=" + couponAmount +
+                        ", integrationAmount=" + integrationAmount +
+                        ", realAmount=" + realAmount +
+                        ", giftIntegration=" + giftIntegration +
+                        ", giftGrowth=" + giftGrowth +
                         ", productAttr='" + productAttr + '\'' +
-                        ", couponId='" + couponId + '\'' +
-                        ", itemDeliveryTemplateId='" + itemDeliveryTemplateId + '\'' +
-                        ", expireDate='" + expireDate + '\'' +
+                        ", couponId=" + couponId +
+                        ", itemDeliveryTemplateId=" + itemDeliveryTemplateId +
+                        ", expireDate=" + expireDate +
+                        ", freightAmount=" + freightAmount +
                         '}';
             }
         }
 
-        @Override
-        public String toString() {
-            return "RBean{" +
-                    "id=" + id +
-                    ", orderId=" + orderId +
-                    ", companyAddressId='" + companyAddressId + '\'' +
-                    ", productId=" + productId +
-                    ", orderSn='" + orderSn + '\'' +
-                    ", createTime='" + createTime + '\'' +
-                    ", memberUsername='" + memberUsername + '\'' +
-                    ", returnAmount='" + returnAmount + '\'' +
-                    ", returnName='" + returnName + '\'' +
-                    ", returnPhone='" + returnPhone + '\'' +
-                    ", status=" + status +
-                    ", handleTime='" + handleTime + '\'' +
-                    ", productPic='" + productPic + '\'' +
-                    ", productName='" + productName + '\'' +
-                    ", productAttr='" + productAttr + '\'' +
-                    ", productCount='" + productCount + '\'' +
-                    ", productPrice=" + productPrice +
-                    ", productRealPrice=" + productRealPrice +
-                    ", reason='" + reason + '\'' +
-                    ", description='" + description + '\'' +
-                    ", proofPics='" + proofPics + '\'' +
-                    ", handleNote='" + handleNote + '\'' +
-                    ", handleMan='" + handleMan + '\'' +
-                    ", receiveMan='" + receiveMan + '\'' +
-                    ", receiveTime='" + receiveTime + '\'' +
-                    ", receiveNote='" + receiveNote + '\'' +
-                    ", sellerId='" + sellerId + '\'' +
-                    ", returnType='" + returnType + '\'' +
-                    ", sellerName='" + sellerName + '\'' +
-                    ", receiverPhone='" + receiverPhone + '\'' +
-                    ", receiverName='" + receiverName + '\'' +
-                    ", receiverRegion='" + receiverRegion + '\'' +
-                    ", receiverCity='" + receiverCity + '\'' +
-                    ", receiverProvince='" + receiverProvince + '\'' +
-                    ", orderAddress='" + orderAddress + '\'' +
-                    ", payWay='" + payWay + '\'' +
-                    ", itemlist=" + itemlist +
-                    '}';
-        }
-    }
-
     @Override
     public String toString() {
         return "AlterationBean{" +
-                "r=" + r +
+                "id=" + id +
+                ", orderId=" + orderId +
+                ", companyAddressId=" + companyAddressId +
+                ", productId=" + productId +
+                ", orderSn='" + orderSn + '\'' +
+                ", createTime=" + createTime +
+                ", memberUsername=" + memberUsername +
+                ", userCode=" + userCode +
+                ", returnAmount=" + returnAmount +
+                ", returnName=" + returnName +
+                ", returnPhone=" + returnPhone +
+                ", status=" + status +
+                ", handleTime=" + handleTime +
+                ", productPic=" + productPic +
+                ", productName=" + productName +
+                ", productAttr=" + productAttr +
+                ", productCount=" + productCount +
+                ", productPrice=" + productPrice +
+                ", productRealPrice=" + productRealPrice +
+                ", reason=" + reason +
+                ", description=" + description +
+                ", proofPics=" + proofPics +
+                ", handleNote=" + handleNote +
+                ", handleMan=" + handleMan +
+                ", receiveMan=" + receiveMan +
+                ", receiveTime='" + receiveTime + '\'' +
+                ", receiveNote=" + receiveNote +
+                ", sellerId=" + sellerId +
+                ", returnType=" + returnType +
+                ", items=" + items +
+                ", sellerName='" + sellerName + '\'' +
+                ", receiverPhone='" + receiverPhone + '\'' +
+                ", receiverName='" + receiverName + '\'' +
+                ", receiverRegion='" + receiverRegion + '\'' +
+                ", receiverCity='" + receiverCity + '\'' +
+                ", receiverProvince='" + receiverProvince + '\'' +
+                ", orderAddress='" + orderAddress + '\'' +
+                ", payWay=" + payWay +
+                ", itemlist=" + itemlist +
                 '}';
     }
 }

@@ -164,14 +164,9 @@
 
         <TextView
             android:id="@+id/refund_sum_text"
-            android:layout_width="@dimen/dp_200"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:digits="0123456789"
-            android:gravity="center|right"
-            android:inputType="numberDecimal"
-            android:paddingTop="@dimen/dp_10"
-            android:paddingBottom="@dimen/dp_10"
             android:textColor="#999999"
             android:textSize="@dimen/sp_12" />
 

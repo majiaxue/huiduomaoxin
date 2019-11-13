@@ -67,6 +67,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
     @Autowired(name = "orderSn")
     String orderSn;
 
+    private OrderDetailBean orderDetailBean;
 
     @Override
     public int getLayoutId() {
@@ -123,6 +124,19 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
                 presenter.popupCancellationOrder();
             }
         });
+
+        //付款
+        obligationPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SubmitOrderBean submitOrderBean = new SubmitOrderBean();
+                submitOrderBean.setTotalAmount(orderDetailBean.getPayAmount());
+                submitOrderBean.setMasterNo(orderDetailBean.getMasterSn());
+                ARouter.getInstance().build("/module_user_store/PaymentActivity")
+                        .withSerializable("submitOrderBean", submitOrderBean)
+                        .navigation();
+            }
+        });
     }
 
     @Override
@@ -137,6 +151,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
 
     @Override
     public void loadData(final OrderDetailBean orderDetailBean) {
+        this.orderDetailBean = orderDetailBean;
         time(orderDetailBean.getOrderOutTime());
         obligationName.setText(orderDetailBean.getReceiverName());
         obligationPhone.setText(orderDetailBean.getReceiverPhone());
@@ -150,20 +165,6 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
         List<OrderDetailBean.ItemsBean> items = orderDetailBean.getItems();
 
         presenter.items(items, obligationGoodsRec);
-
-        //付款
-        obligationPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SubmitOrderBean submitOrderBean = new SubmitOrderBean();
-                submitOrderBean.setTotalAmount(orderDetailBean.getTotalAmount());
-                submitOrderBean.setMasterNo(orderDetailBean.getMasterSn());
-                ARouter.getInstance().build("/module_user_store/PaymentActivity")
-                        .withSerializable("submitOrderBean", submitOrderBean)
-                        .navigation();
-            }
-        });
-
 
     }
 
