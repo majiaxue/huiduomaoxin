@@ -24,10 +24,10 @@ public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean> {
     @Override
     public void convert(RecyclerViewHolder holder, AlterationBean data, int position) {
         holder.setText(R.id.alteration_rec_shop_name, data.getSellerName());
-        if ("0".equals(data.getReturnType())) {
+        if (0 == data.getReturnType()) {
             //退货退款
             holder.setText(R.id.alteration_rec_type, "退货退款");
-        } else if ("1".equals(data.getReturnType())) {
+        } else if (1 == data.getReturnType()) {
             //未收货
             holder.setText(R.id.alteration_rec_type, "未收货");
         } else {
