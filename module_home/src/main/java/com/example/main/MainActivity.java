@@ -8,8 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -40,7 +40,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     @BindView(R2.id.main_group)
     RadioGroup mainGroup;
     @BindView(R2.id.main_shangcheng)
-    RelativeLayout mRela;
+    Button mRela;
     @Autowired(name = "type")
     String type;
 

@@ -3,6 +3,7 @@ package com.example.local_order_confirm;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.LocalOrderBean;
+import com.example.bean.RedPackageBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.local_order_confirm.adapter.LocalOrderConfirmAdapter;
 import com.example.module_local.R;
@@ -61,6 +63,10 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
     TextView localOrderConfirmBtn;
     @BindView(R2.id.local_order_confirm_rela)
     RelativeLayout mRela;
+    @BindView(R2.id.local_order_confirm_coupon_money)
+    LinearLayout mCoupon;
+    @BindView(R2.id.local_order_confirm_coupon_money_txt)
+    TextView mCouponTxt;
 
     @Autowired(name = "bean")
     LocalOrderBean bean;
@@ -80,6 +86,7 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
 
         localOrderConfirmTotalMoney.setText("￥" + bean.getTotalMoney());
         localOrderConfirmFinalMoney.setText("￥" + bean.getTotalMoney());
+        localOrderConfirmReduceMoney.setText("-￥" + (TextUtils.isEmpty(bean.getSellerManJian()) ? "0" : bean.getSellerManJian()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRv.setLayoutManager(layoutManager);
         mRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_10)));
@@ -87,6 +94,7 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
         localOrderConfirmShop.setText(bean.getSellerName());
 
         presenter.getAddress();
+        presenter.getCouponList();
     }
 
     @Override
@@ -136,6 +144,13 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
                 }
             }
         });
+
+        mCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.couponPop();
+            }
+        });
     }
 
     @Override
@@ -174,6 +189,13 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
         bean.setUserPhone(addressBean.getAddressPhone());
         bean.setUserAddress(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
 
+    }
+
+    @Override
+    public void loadCoupon(RedPackageBean chooseRedPacgage) {
+        mCouponTxt.setText("-￥" + chooseRedPacgage.getMoney());
+        localOrderConfirmTotalMoney.setText("￥" + (bean.getTotalMoney() * 1000 - Double.valueOf(chooseRedPacgage.getMoney()) * 1000) / 1000);
+        localOrderConfirmFinalMoney.setText("￥" + (bean.getTotalMoney() * 1000 - Double.valueOf(chooseRedPacgage.getMoney()) * 1000) / 1000);
     }
 
     @Override

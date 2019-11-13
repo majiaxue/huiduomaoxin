@@ -1606,7 +1606,7 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void loadCoupon(String id, String sellerId) {
-        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).build();
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("platform", "2").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getHead(CommonResource.COUPON_KELING, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

@@ -157,6 +157,8 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                             final TextView price = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_price);
                             final TextView btn = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_btn);
                             RecyclerView rv = inflate.findViewById(com.example.module_base.R.id.pop_choose_specs_rv);
+                            //选中商品的价格
+                            final String[] currentPrice = {"0"};
 
                             Glide.with(mContext).load(commodity.getPics()).into(img);
                             name.setText(commodity.getName());
@@ -236,11 +238,14 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                                 if (index == 0) {
                                                     if (!TextUtils.isEmpty(specification)) {
                                                         price.setText("￥" + dataList.get(index).getContent().get(position2).getPrice());
+                                                        currentPrice[0] = dataList.get(index).getContent().get(position2).getPrice();
                                                     } else {
                                                         if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
                                                             price.setText("￥" + commodity.getPrice());
+                                                            currentPrice[0] = commodity.getPrice();
                                                         } else {
                                                             price.setText("￥" + commodity.getDiscountPrice());
+                                                            currentPrice[0] = commodity.getDiscountPrice();
                                                         }
                                                     }
                                                 }
@@ -299,11 +304,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                                     LocalCartBean.InsideCart goodsToCartBean = new LocalCartBean.InsideCart(SPUtil.getStringValue(CommonResource.SELLERID), commodity.getId(), SPUtil.getUserCode(), commodity.getCount());
                                                     goodsToCartBean.setLocalGoodsPic(commodity.getPics());
                                                     goodsToCartBean.setLocalGoodsName(commodity.getSelectName());
-                                                    if (TextUtils.isEmpty(commodity.getDiscountPrice()) || "0".equals(commodity.getDiscountPrice())) {
-                                                        goodsToCartBean.setPrice(Double.valueOf(commodity.getPrice()));
-                                                    } else {
-                                                        goodsToCartBean.setPrice(Double.valueOf(commodity.getDiscountPrice()));
-                                                    }
+                                                    goodsToCartBean.setPrice(Double.valueOf(currentPrice[0]));
 
                                                     goodsToCartBean.setLocalGoodsSpecification(commodity.getSelectSpec());
                                                     addGoods(goodsToCartBean, commodity);
@@ -366,6 +367,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("添加商品：" + result);
                     LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                    SPUtil.addParm(CommonResource.LOCAL_SELLER_MANJIAN, localCartBean.getAmount());
                     cartBeanList = localCartBean.getLocalShopcarList();
                     add.setEnabled(true);
                     minus.setEnabled(true);
@@ -403,6 +405,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("去掉商品：" + result);
                     LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
+                    SPUtil.addParm(CommonResource.LOCAL_SELLER_MANJIAN, localCartBean.getAmount());
                     add.setEnabled(true);
                     minus.setEnabled(true);
                     Integer currentCount = data.getCount();

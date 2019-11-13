@@ -162,7 +162,17 @@ public class LocalOrderBean implements Serializable {
 
     private String sellerName;
 
+    private String sellerManJian;
+
     private List<LocalOrderItemListBean> localOrderItemList;
+
+    public String getSellerManJian() {
+        return sellerManJian;
+    }
+
+    public void setSellerManJian(String sellerManJian) {
+        this.sellerManJian = sellerManJian;
+    }
 
     public String getSellerName() {
         return sellerName;
