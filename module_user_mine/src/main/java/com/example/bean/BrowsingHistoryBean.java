@@ -19,6 +19,13 @@ public class BrowsingHistoryBean {
         this.records = records;
     }
 
+    @Override
+    public String toString() {
+        return "BrowsingHistoryBean{" +
+                "records=" + records +
+                '}';
+    }
+
     public static class RecordsBean {
         /**
          * createTime : 2019-06-02 00:00:00
@@ -51,6 +58,15 @@ public class BrowsingHistoryBean {
 
         public void setItem(List<ItemBean> item) {
             this.item = item;
+        }
+
+        @Override
+        public String toString() {
+            return "RecordsBean{" +
+                    "createTime='" + createTime + '\'' +
+                    ", isCheck=" + isCheck +
+                    ", item=" + item +
+                    '}';
         }
 
         public static class ItemBean {
@@ -107,10 +123,10 @@ public class BrowsingHistoryBean {
              * historyId : 9
              */
 
-            private int id;
-            private int productCategoryId;
-            private int feightTemplateId;
-            private int productAttributeCategoryId;
+            private String id;
+            private String productCategoryId;
+            private String feightTemplateId;
+            private String productAttributeCategoryId;
             private String name;
             private String pic;
             private String productSn;
@@ -121,14 +137,14 @@ public class BrowsingHistoryBean {
             private int verifyStatus;
             private int sort;
             private int sale;
-            private int price;
-            private int promotionPrice;
+            private double price;
+            private double promotionPrice;
             private int giftGrowth;
             private int giftPoint;
             private int usePointLimit;
             private String subTitle;
             private String description;
-            private int originalPrice;
+            private double originalPrice;
             private int stock;
             private int lowStock;
             private String unit;
@@ -157,43 +173,35 @@ public class BrowsingHistoryBean {
             private int historyId;
             private boolean isCheck;
 
-            public boolean isCheck() {
-                return isCheck;
-            }
-
-            public void setCheck(boolean check) {
-                isCheck = check;
-            }
-
-            public int getId() {
+            public String getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(String id) {
                 this.id = id;
             }
 
-            public int getProductCategoryId() {
+            public String getProductCategoryId() {
                 return productCategoryId;
             }
 
-            public void setProductCategoryId(int productCategoryId) {
+            public void setProductCategoryId(String productCategoryId) {
                 this.productCategoryId = productCategoryId;
             }
 
-            public int getFeightTemplateId() {
+            public String getFeightTemplateId() {
                 return feightTemplateId;
             }
 
-            public void setFeightTemplateId(int feightTemplateId) {
+            public void setFeightTemplateId(String feightTemplateId) {
                 this.feightTemplateId = feightTemplateId;
             }
 
-            public int getProductAttributeCategoryId() {
+            public String getProductAttributeCategoryId() {
                 return productAttributeCategoryId;
             }
 
-            public void setProductAttributeCategoryId(int productAttributeCategoryId) {
+            public void setProductAttributeCategoryId(String productAttributeCategoryId) {
                 this.productAttributeCategoryId = productAttributeCategoryId;
             }
 
@@ -277,19 +285,19 @@ public class BrowsingHistoryBean {
                 this.sale = sale;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return price;
             }
 
-            public void setPrice(int price) {
+            public void setPrice(double price) {
                 this.price = price;
             }
 
-            public int getPromotionPrice() {
+            public double getPromotionPrice() {
                 return promotionPrice;
             }
 
-            public void setPromotionPrice(int promotionPrice) {
+            public void setPromotionPrice(double promotionPrice) {
                 this.promotionPrice = promotionPrice;
             }
 
@@ -333,11 +341,11 @@ public class BrowsingHistoryBean {
                 this.description = description;
             }
 
-            public int getOriginalPrice() {
+            public double getOriginalPrice() {
                 return originalPrice;
             }
 
-            public void setOriginalPrice(int originalPrice) {
+            public void setOriginalPrice(double originalPrice) {
                 this.originalPrice = originalPrice;
             }
 
@@ -547,6 +555,69 @@ public class BrowsingHistoryBean {
 
             public void setHistoryId(int historyId) {
                 this.historyId = historyId;
+            }
+
+            public boolean isCheck() {
+                return isCheck;
+            }
+
+            public void setCheck(boolean check) {
+                isCheck = check;
+            }
+
+            @Override
+            public String toString() {
+                return "ItemBean{" +
+                        "id='" + id + '\'' +
+                        ", productCategoryId='" + productCategoryId + '\'' +
+                        ", feightTemplateId='" + feightTemplateId + '\'' +
+                        ", productAttributeCategoryId='" + productAttributeCategoryId + '\'' +
+                        ", name='" + name + '\'' +
+                        ", pic='" + pic + '\'' +
+                        ", productSn='" + productSn + '\'' +
+                        ", deleteStatus=" + deleteStatus +
+                        ", publishStatus=" + publishStatus +
+                        ", newStatus=" + newStatus +
+                        ", recommandStatus=" + recommandStatus +
+                        ", verifyStatus=" + verifyStatus +
+                        ", sort=" + sort +
+                        ", sale=" + sale +
+                        ", price=" + price +
+                        ", promotionPrice=" + promotionPrice +
+                        ", giftGrowth=" + giftGrowth +
+                        ", giftPoint=" + giftPoint +
+                        ", usePointLimit=" + usePointLimit +
+                        ", subTitle='" + subTitle + '\'' +
+                        ", description='" + description + '\'' +
+                        ", originalPrice=" + originalPrice +
+                        ", stock=" + stock +
+                        ", lowStock=" + lowStock +
+                        ", unit='" + unit + '\'' +
+                        ", weight=" + weight +
+                        ", previewStatus=" + previewStatus +
+                        ", serviceIds='" + serviceIds + '\'' +
+                        ", keywords='" + keywords + '\'' +
+                        ", note='" + note + '\'' +
+                        ", albumPics='" + albumPics + '\'' +
+                        ", detailTitle='" + detailTitle + '\'' +
+                        ", detailDesc='" + detailDesc + '\'' +
+                        ", detailHtml='" + detailHtml + '\'' +
+                        ", detailMobileHtml='" + detailMobileHtml + '\'' +
+                        ", promotionStartTime=" + promotionStartTime +
+                        ", promotionEndTime=" + promotionEndTime +
+                        ", promotionPerLimit=" + promotionPerLimit +
+                        ", promotionType=" + promotionType +
+                        ", brandName='" + brandName + '\'' +
+                        ", productCategoryName='" + productCategoryName + '\'' +
+                        ", supplyId=" + supplyId +
+                        ", createTime=" + createTime +
+                        ", sellerId=" + sellerId +
+                        ", sellerName='" + sellerName + '\'' +
+                        ", goodReputation='" + goodReputation + '\'' +
+                        ", favoriteId=" + favoriteId +
+                        ", historyId=" + historyId +
+                        ", isCheck=" + isCheck +
+                        '}';
             }
         }
     }

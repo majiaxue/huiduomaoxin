@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,23 +15,21 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.example.bean.OrderDetailBean;
-import com.example.common.CommonResource;
 import com.example.bean.MineOrderBean;
+import com.example.bean.OrderDetailBean;
+import com.example.bean.RefundApplyVo;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.bean.RefundApplyVo;
 import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.example.utils.CustomDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +65,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     @BindView(R2.id.refund_type)
     LinearLayout refundType;
     @BindView(R2.id.refund_sum_text)
-    EditText refundSumText;
+    TextView refundSumText;
     @BindView(R2.id.refund_explain_edit)
     EditText refundExplainEdit;
     @BindView(R2.id.refund_add_photo)
@@ -106,19 +103,16 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     public void initData() {
         includeTitle.setText("退款申请");
         ARouter.getInstance().inject(this);
-//        customDialog = new CustomDialog(this);
-//        WaitDialog.show(this,null);
-//        ProcessDialogUtil.showProcessDialog(this);
 
         LogUtil.e("mineOrderBean1退款申请" + mineOrderBean1);
         LogUtil.e("orderDetailBean退款申请" + orderDetailBean);
         if ("1".equals(type)) {
-//            refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
+            refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
             refundImage.setImageURI(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPic());
             refundGoodsName.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductName());
             refundSize.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductAttr());
         } else {
-//            refundSumText.setText("" + orderDetailBean.getPayAmount());
+            refundSumText.setText("" + orderDetailBean.getPayAmount());
             refundImage.setImageURI(orderDetailBean.getItems().get(0).getProductPic());
             refundGoodsName.setText(orderDetailBean.getItems().get(0).getProductName());
             refundSize.setText(orderDetailBean.getItems().get(0).getProductAttr());

@@ -105,10 +105,10 @@ public class BrowsingBean {
              * historyId : 9
              */
 
-            private int id;
-            private int productCategoryId;
-            private int feightTemplateId;
-            private int productAttributeCategoryId;
+            private String id;
+            private String productCategoryId;
+            private String feightTemplateId;
+            private String productAttributeCategoryId;
             private String name;
             private String pic;
             private String productSn;
@@ -119,14 +119,14 @@ public class BrowsingBean {
             private int verifyStatus;
             private int sort;
             private int sale;
-            private int price;
-            private int promotionPrice;
+            private double price;
+            private double promotionPrice;
             private int giftGrowth;
             private int giftPoint;
             private int usePointLimit;
             private String subTitle;
             private String description;
-            private int originalPrice;
+            private double originalPrice;
             private int stock;
             private int lowStock;
             private String unit;
@@ -155,43 +155,35 @@ public class BrowsingBean {
             private int historyId;
             private boolean isCheck;
 
-            public boolean isCheck() {
-                return isCheck;
-            }
-
-            public void setCheck(boolean check) {
-                isCheck = check;
-            }
-
-            public int getId() {
+            public String getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(String id) {
                 this.id = id;
             }
 
-            public int getProductCategoryId() {
+            public String getProductCategoryId() {
                 return productCategoryId;
             }
 
-            public void setProductCategoryId(int productCategoryId) {
+            public void setProductCategoryId(String productCategoryId) {
                 this.productCategoryId = productCategoryId;
             }
 
-            public int getFeightTemplateId() {
+            public String getFeightTemplateId() {
                 return feightTemplateId;
             }
 
-            public void setFeightTemplateId(int feightTemplateId) {
+            public void setFeightTemplateId(String feightTemplateId) {
                 this.feightTemplateId = feightTemplateId;
             }
 
-            public int getProductAttributeCategoryId() {
+            public String getProductAttributeCategoryId() {
                 return productAttributeCategoryId;
             }
 
-            public void setProductAttributeCategoryId(int productAttributeCategoryId) {
+            public void setProductAttributeCategoryId(String productAttributeCategoryId) {
                 this.productAttributeCategoryId = productAttributeCategoryId;
             }
 
@@ -275,19 +267,19 @@ public class BrowsingBean {
                 this.sale = sale;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return price;
             }
 
-            public void setPrice(int price) {
+            public void setPrice(double price) {
                 this.price = price;
             }
 
-            public int getPromotionPrice() {
+            public double getPromotionPrice() {
                 return promotionPrice;
             }
 
-            public void setPromotionPrice(int promotionPrice) {
+            public void setPromotionPrice(double promotionPrice) {
                 this.promotionPrice = promotionPrice;
             }
 
@@ -331,11 +323,11 @@ public class BrowsingBean {
                 this.description = description;
             }
 
-            public int getOriginalPrice() {
+            public double getOriginalPrice() {
                 return originalPrice;
             }
 
-            public void setOriginalPrice(int originalPrice) {
+            public void setOriginalPrice(double originalPrice) {
                 this.originalPrice = originalPrice;
             }
 
@@ -545,6 +537,14 @@ public class BrowsingBean {
 
             public void setHistoryId(int historyId) {
                 this.historyId = historyId;
+            }
+
+            public boolean isCheck() {
+                return isCheck;
+            }
+
+            public void setCheck(boolean check) {
+                isCheck = check;
             }
         }
     }

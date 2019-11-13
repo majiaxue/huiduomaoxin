@@ -185,7 +185,7 @@
                             android:minWidth="@dimen/dp_4"
                             android:progressDrawable="@drawable/bg_fast_scroll_bar_track"
                             android:thumb="@drawable/bg_fast_scroll_bar_thumb"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/home_huo_dong"

@@ -9,7 +9,6 @@ import com.example.common.CommonResource;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
@@ -63,7 +62,7 @@ public class SortDetailPresenter extends BasePresenter {
             bean.setGoodsPrice(data.get(i).getPrice() + "");
 
             list.add(bean);
-            price = ArithUtil.add(price, Double.valueOf(bean.getGoodsPrice()) * bean.getGoodsNum());
+            price = (price * 1000 + Double.valueOf(bean.getGoodsPrice()) * bean.getGoodsNum() * 1000) / 1000;
 
         }
         LocalOrderBean localOrderBean = new LocalOrderBean();

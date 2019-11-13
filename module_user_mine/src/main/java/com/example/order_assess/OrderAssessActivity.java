@@ -102,7 +102,6 @@ public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAsse
     public void initData() {
         ARouter.getInstance().inject(this);
         includeTitle.setText("订单评价");
-        LogUtil.e("beanListBeanList------->" + beanList);
 
         orderAssessImg.setImageURI(beanList.getOrderItems().get(position).getProductPic());
         orderAssessName.setText(beanList.getOrderItems().get(position).getProductName());

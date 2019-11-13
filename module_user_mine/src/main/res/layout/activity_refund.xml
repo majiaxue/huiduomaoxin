@@ -162,14 +162,13 @@
             android:layout_weight="1" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/refund_sum_text"
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:background="@null"
             android:digits="0123456789"
             android:gravity="center|right"
-            android:hint="请输入退款金额"
             android:inputType="numberDecimal"
             android:paddingTop="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_10"

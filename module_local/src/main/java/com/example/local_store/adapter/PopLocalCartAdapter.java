@@ -16,13 +16,12 @@ public class PopLocalCartAdapter extends MyRecyclerAdapter<LocalCartBean.InsideC
 
     @Override
     public void convert(RecyclerViewHolder holder, LocalCartBean.InsideCart data, int position) {
-        holder.setText(R.id.rv_shop_right_name, data.getLocalGoodsName())
-                .setImageUrl(R.id.rv_shop_right_img, data.getLocalGoodsPic())
-                .setText(R.id.rv_shop_right_new_price, data.getPrice() + "")
-                .setText(R.id.rv_shop_right_count, data.getNum() + "");
+        holder.setText(R.id.rv_pop_shopcart_name, data.getLocalGoodsName())
+                .setText(R.id.rv_pop_shopcart_price, data.getPrice() + "")
+                .setText(R.id.rv_pop_shopcart_count, data.getNum() + "");
 
         if (viewTwoOnClickListener != null) {
-            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_shop_right_minus), holder.getView(R.id.rv_shop_add), position);
+            viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.rv_pop_shopcart_minus), holder.getView(R.id.rv_pop_shopcart_add), position);
         }
     }
 }

@@ -266,6 +266,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                             public void onClick(View v) {
                                                 StringBuffer sb = new StringBuffer();
                                                 for (int i = 0; i < chooseList.size(); i++) {
+
                                                     if (i == chooseList.size() - 1) {
                                                         sb.append(chooseList.get(i));
                                                     } else {
@@ -288,10 +289,9 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                                 int tempPosition = 0;
                                                 for (int i = 0; i < cartBeanList.size(); i++) {
                                                     if ((commodity.getSelectName() != null && commodity.getSelectName().equals(cartBeanList.get(i).getLocalGoodsName()))
-                                                            || (commodity.getSelectSpec() != null && commodity.getSelectSpec().equals(cartBeanList.get(i).getLocalGoodsSpecification()))) {
+                                                            && (commodity.getSelectSpec() != null && commodity.getSelectSpec().equals(cartBeanList.get(i).getLocalGoodsSpecification()))) {
                                                         hasSame = true;
                                                         tempPosition = i;
-//                                                            addGoods(cartBeanList.get(i), commodity);
                                                         break;
                                                     }
                                                 }
@@ -304,6 +304,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                                     } else {
                                                         goodsToCartBean.setPrice(Double.valueOf(commodity.getDiscountPrice()));
                                                     }
+
                                                     goodsToCartBean.setLocalGoodsSpecification(commodity.getSelectSpec());
                                                     addGoods(goodsToCartBean, commodity);
                                                 } else {
@@ -335,7 +336,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                             }
 
                             if (temp > 1) {
-                                Toast.makeText(mContext, "多件不同规格商品要从购物车操作", Toast.LENGTH_SHORT).show();
+                                EventBus.getDefault().post(new EventBusBean(CommonResource.MINUS_GOODS, ""));
                             } else if (temp == 1) {
                                 minusGoods(cartBeanList.get(tempPosition), commodity);
                                 add.setEnabled(false);
@@ -357,7 +358,6 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
         }
 
         private void addGoods(LocalCartBean.InsideCart goodsToCartBean, final LocalStoreBean.ListBean data) {
-
             String jsonString = JSON.toJSONString(goodsToCartBean);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
             Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_CART_ADD, requestBody);
@@ -375,12 +375,12 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                         count.setAnimation(getShowAnimation());
                     }
                     currentCount++;
-//                    shopOnClickListtener.startPlace(add);
+
                     count.setText(currentCount + "");
                     data.setCount(currentCount);
                     isShow(data);
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
                 }
 
                 @Override
@@ -402,6 +402,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                 @Override
                 public void onSuccess(String result, String msg) {
                     LogUtil.e("去掉商品：" + result);
+                    LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
                     add.setEnabled(true);
                     minus.setEnabled(true);
                     Integer currentCount = data.getCount();
@@ -416,7 +417,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     data.setCount(currentCount);
                     isShow(data);
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, result));
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
                 }
 
                 @Override

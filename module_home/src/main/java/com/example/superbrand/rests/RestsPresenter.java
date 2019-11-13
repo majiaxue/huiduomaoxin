@@ -58,7 +58,6 @@ public class RestsPresenter extends BasePresenter<RestsView> {
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-//                ProcessDialogUtil.dismissDialog();
                 LogUtil.e("RestsPresenter" + result);
                 if (result.contains("\"code\":1")) {
                     final RestsBean restsBean = JSON.parseObject(result, new TypeReference<RestsBean>() {
@@ -129,7 +128,6 @@ public class RestsPresenter extends BasePresenter<RestsView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("RestsPresenterErrorMsg" + errorMsg);
-//                ProcessDialogUtil.dismissDialog();
                 if (getView() != null) {
                     getView().refreshSuccess();
                 }

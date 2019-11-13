@@ -1,13 +1,13 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.0.118:9001";   //商品//47.99.93.123//192.168.0.118
-    public static final String BASEURL_4001 = "http://192.168.0.118:4001";   //用户192.168.0.164
-    public static final String BASEURL_9003 = "http://192.168.0.118:9003";   //商家
-    public static final String BASEURL_9004 = "http://192.168.0.118:9004";   //订单
-    public static final String BASEURL_9005 = "http://192.168.0.118:9005";   //参数
-    public static final String BASEURL_9010 = "http://192.168.0.118:9010";  //本地小店
-    public static final String BASEURL_4000 = "http://192.168.0.118:4000";   //上传文件
+    public static final String BASEURL_9001 = "http://192.168.0.121:9001";   //商品//47.99.93.123//192.168.0.118
+    public static final String BASEURL_4001 = "http://192.168.0.121:4001";   //用户192.168.0.164
+    public static final String BASEURL_9003 = "http://192.168.0.121:9003";   //商家
+    public static final String BASEURL_9004 = "http://192.168.0.121:9004";   //订单192.168.0.104
+    public static final String BASEURL_9005 = "http://192.168.0.121:9005";   //参数
+    public static final String BASEURL_9010 = "http://192.168.0.121:9010";  //本地小店
+    public static final String BASEURL_4000 = "http://192.168.0.121:4000";   //上传文件
 
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类
@@ -112,6 +112,7 @@ public class CommonResource {
     public static final String LOCAL_SELLERS = "/rest/seller/localSeller";          //本地商家
     public static final String HOT_SELLERS = "/rest/seller/hotSeller";              //热门商家
     public static final String CANCEL_ORDER = "/rest/order/cancel";                 //多用户商城   取消订单
+    public static final String CANCEL_TUIKUAN = "/rest/order/cancelReturnOrder";    //多用户商城   取消申请退款
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -212,6 +213,12 @@ public class CommonResource {
     public static final String SUBMIT_ORDER = "submitOrder";    //提交订单
     public static final String DINGWEI = "dingwei";
     public static final String UPCART = "up_cart";      //刷新购物车
+    public static final String MINUS_GOODS = "minus_goods";     //本地商城减少不同规格商品
+
+
+
+
+
     public static final String PROJECTNAME = "枫林淘客";
     public static final String SERVICE_PHONE = "18503735075";
 

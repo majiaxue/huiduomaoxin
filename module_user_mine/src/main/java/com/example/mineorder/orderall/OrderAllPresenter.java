@@ -122,7 +122,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                         view2.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-
+                                                cancelShenqing(listBeans.get(position).getOrderSn());
                                             }
                                         });
                                     } else if (listBeans.get(position).getBackStatus() == 2) {
@@ -210,7 +210,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                         view2.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-
+                                                cancelShenqing(listBeans.get(position).getOrderSn());
                                             }
                                         });
                                     } else if (listBeans.get(position).getBackStatus() == 2) {
@@ -335,6 +335,25 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("删除errorMsg---------->" + errorMsg);
+            }
+        }));
+    }
+
+    /**
+     * 取消申请退款
+     */
+    private void cancelShenqing(String orderSn) {
+        Map map = MapUtil.getInstance().addParms("orderSn", orderSn).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.CANCEL_TUIKUAN, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("取消申请退款：" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "---------------" + errorMsg);
             }
         }));
     }
