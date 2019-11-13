@@ -1,6 +1,7 @@
 package com.example.refundparticulars;
 
 import com.example.bean.AlterationBean;
+import com.example.bean.RefundParticularsBean;
 import com.example.mvp.IView;
 
 import java.util.List;
@@ -10,5 +11,5 @@ import java.util.List;
  * Describe:
  */
 public interface RefundParticularsView extends IView {
-    void initView(List<AlterationBean.RBean> list);
+    void initView(RefundParticularsBean refundParticularsBean);
 }

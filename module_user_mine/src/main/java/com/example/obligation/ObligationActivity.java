@@ -156,7 +156,7 @@ public class ObligationActivity extends BaseActivity<ObligationView, ObligationP
             @Override
             public void onClick(View v) {
                 SubmitOrderBean submitOrderBean = new SubmitOrderBean();
-                submitOrderBean.setTotalAmount(orderDetailBean.getTotalAmount());
+                submitOrderBean.setTotalAmount(orderDetailBean.getPayAmount());
                 submitOrderBean.setMasterNo(orderDetailBean.getMasterSn());
                 ARouter.getInstance().build("/module_user_store/PaymentActivity")
                         .withSerializable("submitOrderBean", submitOrderBean)

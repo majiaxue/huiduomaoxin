@@ -36,7 +36,7 @@ import okhttp3.ResponseBody;
  */
 public class AlterationPresenter extends BasePresenter<AlterationView> {
 
-    private List<AlterationBean.RBean> rBeanList = new ArrayList<>();
+    private List<AlterationBean> rBeanList = new ArrayList<>();
 //    private CustomDialog customDialog = new CustomDialog(mContext);
 
     public AlterationPresenter(Context context) {
@@ -49,27 +49,16 @@ public class AlterationPresenter extends BasePresenter<AlterationView> {
     }
 
     public void alterationRec(final RecyclerView alterationRec) {
-//        customDialog.show();
-//        WaitDialog.show((AppCompatActivity)mContext,null);
         ProcessDialogUtil.showProcessDialog(mContext);
-
         Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postHeadWithout(CommonResource.RETURNTABLE, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(responseBodyObservable, new OnMyCallBack(new OnDataListener() {
 
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("AlterationResult------->" + result);
-//                customDialog.dismiss();
-//                AlterationBean alterationBean = JSON.parseObject(result, new TypeReference<AlterationBean>() {
-//                }.getType());
-//                AlterationBean alterationBean = new Gson().fromJson(result, AlterationBean.class);
-//                LogUtil.e("alterationBean------->" + alterationBean);
-                AlterationBean alterationBean = JSON.parseObject(result, new TypeReference<AlterationBean>() {
-                }.getType());
-                LogUtil.e("AlterationResult1------->" + alterationBean);
-                if (alterationBean != null && alterationBean.getR().size() != 0) {
-                    rBeanList.clear();
-                    rBeanList.addAll(alterationBean.getR());
+                rBeanList = JSON.parseArray(result, AlterationBean.class);
+                LogUtil.e("AlterationResult1------->" + rBeanList);
+                if (rBeanList != null && rBeanList.size()!=0) {
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                     alterationRec.setLayoutManager(linearLayoutManager);
                     AlterationAdapter alterationAdapter = new AlterationAdapter(mContext, rBeanList, R.layout.item_alteration_rec);
@@ -95,7 +84,6 @@ public class AlterationPresenter extends BasePresenter<AlterationView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-//                customDialog.dismiss();
                 LogUtil.e("AlterationErrorMsg------->" + errorMsg);
             }
         }));

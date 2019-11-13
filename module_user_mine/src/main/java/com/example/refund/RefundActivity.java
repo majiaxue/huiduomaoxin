@@ -68,7 +68,7 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     @BindView(R2.id.refund_type)
     LinearLayout refundType;
     @BindView(R2.id.refund_sum_text)
-    EditText refundSumText;
+    TextView refundSumText;
     @BindView(R2.id.refund_explain_edit)
     EditText refundExplainEdit;
     @BindView(R2.id.refund_add_photo)
@@ -95,7 +95,6 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
 
 
     private List<String> images = new ArrayList<>();
-//    private CustomDialog customDialog;
 
     @Override
     public int getLayoutId() {
@@ -106,19 +105,15 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
     public void initData() {
         includeTitle.setText("退款申请");
         ARouter.getInstance().inject(this);
-//        customDialog = new CustomDialog(this);
-//        WaitDialog.show(this,null);
-//        ProcessDialogUtil.showProcessDialog(this);
-
         LogUtil.e("mineOrderBean1退款申请" + mineOrderBean1);
         LogUtil.e("orderDetailBean退款申请" + orderDetailBean);
         if ("1".equals(type)) {
-//            refundSumText.setText("" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
+            refundSumText.setText("￥" + mineOrderBean1.getOrderList().get(position).getTotalAmount());
             refundImage.setImageURI(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPic());
             refundGoodsName.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductName());
             refundSize.setText(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductAttr());
         } else {
-//            refundSumText.setText("" + orderDetailBean.getPayAmount());
+            refundSumText.setText("￥" + orderDetailBean.getTotalAmount());
             refundImage.setImageURI(orderDetailBean.getItems().get(0).getProductPic());
             refundGoodsName.setText(orderDetailBean.getItems().get(0).getProductName());
             refundSize.setText(orderDetailBean.getItems().get(0).getProductAttr());
@@ -185,9 +180,9 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setReason(refundCauseText.getText().toString());
                         refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
                         refundApplyVo.setProductPrice(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPrice());
-                        refundApplyVo.setReturnAmount(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setReturnAmount(mineOrderBean1.getOrderList().get(position).getTotalAmount());
                         refundApplyVo.setDescription(refundExplainEdit.getText().toString() == null ? "" : refundExplainEdit.getText().toString());
-                        refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setProductRealPrice(mineOrderBean1.getOrderList().get(position).getOrderItems().get(0).getProductPrice());
                         refundApplyVo.setSellerId(mineOrderBean1.getOrderList().get(position).getSellerId());
                         if ("退货退款".equals(refundTypeText.getText().toString())) {
                             refundApplyVo.setReturnType("0");
@@ -228,10 +223,10 @@ public class RefundActivity extends BaseActivity<RefundView, RefundPresenter> im
                         refundApplyVo.setProofPics(images);
                         refundApplyVo.setReason(refundCauseText.getText().toString());
                         refundApplyVo.setMemberUsername(SPUtil.getStringValue(CommonResource.USER_NAME));
-                        refundApplyVo.setProductPrice(orderDetailBean.getPayAmount());
-                        refundApplyVo.setReturnAmount(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setProductPrice(orderDetailBean.getItems().get(0).getProductPrice());
+                        refundApplyVo.setReturnAmount(orderDetailBean.getTotalAmount());
                         refundApplyVo.setDescription(refundExplainEdit.getText().toString() == null ? "" : refundExplainEdit.getText().toString());
-                        refundApplyVo.setProductRealPrice(Double.valueOf(refundSumText.getText().toString()));
+                        refundApplyVo.setProductRealPrice(orderDetailBean.getItems().get(0).getProductPrice());
                         refundApplyVo.setSellerId(orderDetailBean.getSellerId() + "");
                         if ("退货退款".equals(refundTypeText.getText().toString())) {
                             refundApplyVo.setReturnType("0");

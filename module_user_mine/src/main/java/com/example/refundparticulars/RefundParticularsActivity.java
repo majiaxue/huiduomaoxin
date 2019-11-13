@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.AlterationBean;
+import com.example.bean.RefundParticularsBean;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -131,16 +132,16 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     }
 
     @Override
-    public void initView(List<AlterationBean.RBean> list) {
+    public void initView(RefundParticularsBean list) {
 
-        if (list.get(0).getStatus() == 0) {
+        if (list.getStatus() == 0) {
             refundParticularsStatus.setText("等待商家处理");
             refundSucceedTotal.setVisibility(View.GONE);
             refundSucceedPath.setVisibility(View.GONE);
             waitingRefund.setVisibility(View.VISIBLE);
-        } else if (list.get(0).getStatus() == 1) {
+        } else if (list.getStatus() == 1) {
             refundParticularsStatus.setText("处理中");
-        } else if (list.get(0).getStatus() == 2) {
+        } else if (list.getStatus() == 2) {
             refundParticularsStatus.setText("退款成功");
             refundSucceedTotal.setVisibility(View.VISIBLE);
             refundSucceedPath.setVisibility(View.VISIBLE);
@@ -150,23 +151,23 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
 
         }
 
-        refundParticularsTime.setText(list.get(0).getReceiveTime());
-        refundParticularsName.setText(list.get(0).getReceiverName());
-        refundParticularsPhone.setText(list.get(0).getReceiverPhone());
-        refundParticularsAddress.setText(list.get(0).getReceiverRegion() + list.get(0).getReceiverCity() + list.get(0).getReceiverProvince() + list.get(0).getOrderAddress());
-        refundParticularsPrice.setText(list.get(0).getReturnAmount());
-        if ("1".equals(list.get(0).getPayWay())) {
+        refundParticularsTime.setText(list.getReceiveTime());
+        refundParticularsName.setText(list.getReceiverName());
+        refundParticularsPhone.setText(list.getReceiverPhone());
+        refundParticularsAddress.setText(list.getReceiverRegion() + list.getReceiverCity() + list.getReceiverProvince() + list.getOrderAddress());
+        refundParticularsPrice.setText(list.getReturnAmount() + "");
+        if ("1".equals(list.getPayWay())) {
             refundParticularsPath.setText("退回支付宝");
-        } else if ("2".equals(list.get(0).getPayWay())) {
+        } else if ("2".equals(list.getPayWay())) {
             refundParticularsPath.setText("退回微信");
         }
 
-        refundParticularsPrice1.setText(list.get(0).getReturnAmount());
-        refundParticularsReason.setText(list.get(0).getReason());
-        refundParticularsAmount.setText(list.get(0).getReturnAmount());
-        refundParticularsTimeApplication.setText(list.get(0).getCreateTime());
+        refundParticularsPrice1.setText(list.getReturnAmount() + "");
+        refundParticularsReason.setText(list.getReason());
+        refundParticularsAmount.setText(list.getReturnAmount() + "");
+        refundParticularsTimeApplication.setText(list.getCreateTime());
 
-        List<AlterationBean.RBean.ItemlistBean> itemList = list.get(0).getItemlist();
+        List<RefundParticularsBean.ItemlistBean> itemList = list.getItemlist();
         presenter.goodsList(refundParticularsRec, itemList);
 
     }

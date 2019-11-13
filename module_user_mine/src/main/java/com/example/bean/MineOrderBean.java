@@ -47,7 +47,16 @@ public class MineOrderBean implements Serializable {
         private String sellerId;
         private int backStatus;
         private String orderSn;
+        private double payAmount;
         private List<OrderItemsBean> orderItems;
+
+        public double getPayAmount() {
+            return payAmount;
+        }
+
+        public void setPayAmount(double payAmount) {
+            this.payAmount = payAmount;
+        }
 
         public String getOrderSn() {
             return orderSn;
@@ -203,6 +212,19 @@ public class MineOrderBean implements Serializable {
             private int couponId;
             private Object itemDeliveryTemplateId;
             private Object expireDate;
+            private int isComment;
+
+            public void setProductPrice(double productPrice) {
+                this.productPrice = productPrice;
+            }
+
+            public int getIsComment() {
+                return isComment;
+            }
+
+            public void setIsComment(int isComment) {
+                this.isComment = isComment;
+            }
 
             public int getId() {
                 return id;

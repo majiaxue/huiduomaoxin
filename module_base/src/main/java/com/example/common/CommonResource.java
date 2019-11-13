@@ -112,7 +112,7 @@ public class CommonResource {
     public static final String LOCAL_SELLERS = "/rest/seller/localSeller";          //本地商家
     public static final String HOT_SELLERS = "/rest/seller/hotSeller";              //热门商家
     public static final String CANCEL_ORDER = "/rest/order/cancel";                 //多用户商城   取消订单
-
+    public static final String CANCEL_TUIKUAN = "/rest/order/cancelReturnOrder";    //多用户商城   取消申请退款
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
     public static final String SELLERPAGE = "/rest/user/seller/all";   //商家收藏
@@ -133,7 +133,8 @@ public class CommonResource {
     public static final String ORDERALL = "/rest/user/order/all";   //查询登录用户所有订单
     public static final String ORDERSTATUS = "/rest/user/order/status";   //根据状态查询登录用户订单
     public static final String FAVORITESTATUS = "/rest/user/favorite";   //查询收藏状态
-    public static final String RETURNTABLE = "/rest/order/returnInfo";   //退换售后列表
+    public static final String RETURNINFO = "/rest/order/returnInfo";   //退换售后详情
+    public static final String RETURNTABLE = "/rest/order/returnTable";   //退换售后列表
     public static final String ADDRESSADD = "/rest/address/add";   //新增收货地址
     public static final String ADDRESSSELECT = "/rest/address/city";   //三级地址选择
     public static final String COUPONSTATUS = "/rest/user/coupon/status";//根据状态查询优惠券
@@ -212,6 +213,13 @@ public class CommonResource {
     public static final String SUBMIT_ORDER = "submitOrder";    //提交订单
     public static final String DINGWEI = "dingwei";
     public static final String UPCART = "up_cart";      //刷新购物车
+    public static final String MINUS_GOODS = "minus_goods";     //本地商城减少不同规格商品
+
+
+
+
+
     public static final String PROJECTNAME = "枫林淘客";
+    public static final String SERVICE_PHONE = "18503735075";
 
 }
