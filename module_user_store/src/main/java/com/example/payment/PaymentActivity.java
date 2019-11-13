@@ -11,10 +11,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.RedPackageBean;
 import com.example.bean.SubmitOrderBean;
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.SPUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -98,6 +103,13 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.LOCAL_BUY_REDPACKEG.equals(eventBusBean.getMsg())) {
+            finish();
+        }
     }
 
     @Override

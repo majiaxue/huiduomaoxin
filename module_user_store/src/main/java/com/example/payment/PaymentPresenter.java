@@ -189,7 +189,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
 
-            Map map = MapUtil.getInstance().addParms("totalAmount", redPackageBean.getBuyMoney()).addParms("orderSn", "").addParms("productName", CommonResource.PROJECTNAME).addParms("orderFlag", false).build();
+            Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("orderSn", "").addParms("productName", CommonResource.PROJECTNAME).addParms("orderFlag", false).build();
             Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_WX_PAY, map);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
@@ -210,7 +210,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                         request.sign = payBean.getSign();
 
                         api.sendReq(request);
-                        SPUtil.addParm("wxpay", "1");
+                        SPUtil.addParm("wxpay", "10");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

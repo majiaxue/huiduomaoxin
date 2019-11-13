@@ -113,6 +113,7 @@ public class CommonResource {
     public static final String HOT_SELLERS = "/rest/seller/hotSeller";              //热门商家
     public static final String CANCEL_ORDER = "/rest/order/cancel";                 //多用户商城   取消订单
     public static final String CANCEL_TUIKUAN = "/rest/order/cancelReturnOrder";    //多用户商城   取消申请退款
+    public static final String LOCAL_COUPON_LIST = "/rest/local/redpacked/member/all";  //多用户商城获取红包列表
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
@@ -216,9 +217,7 @@ public class CommonResource {
     public static final String UPCART = "up_cart";      //刷新购物车
     public static final String MINUS_GOODS = "minus_goods";     //本地商城减少不同规格商品
     public static final String LOCAL_SELLER_MANJIAN = "local_seller_manjian";
-
-
-
+    public static final String LOCAL_BUY_REDPACKEG = "local_buy_redpackeg"; //本地商城购买红包
 
 
     public static final String PROJECTNAME = "枫林淘客";
