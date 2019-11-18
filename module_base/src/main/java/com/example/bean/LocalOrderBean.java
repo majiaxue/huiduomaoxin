@@ -79,6 +79,10 @@ public class LocalOrderBean implements Serializable {
      */
     private String status;
     /**
+     * 退款中订单状态（0->待处理；1->退货中；2->已完成；3->已拒绝）
+     */
+    private String returnStatus;
+    /**
      * 支付方式（0：微信 1：支付宝）
      */
     private String payWay;
@@ -165,6 +169,14 @@ public class LocalOrderBean implements Serializable {
     private String sellerManJian;
 
     private List<LocalOrderItemListBean> localOrderItemList;
+
+    public String getReturnStatus() {
+        return returnStatus;
+    }
+
+    public void setReturnStatus(String returnStatus) {
+        this.returnStatus = returnStatus;
+    }
 
     public String getSellerManJian() {
         return sellerManJian;
@@ -443,6 +455,7 @@ public class LocalOrderBean implements Serializable {
                 ", realMoney=" + realMoney +
                 ", deliverType='" + deliverType + '\'' +
                 ", status='" + status + '\'' +
+                ", returnStatus='" + returnStatus + '\'' +
                 ", payWay='" + payWay + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userAddress='" + userAddress + '\'' +
@@ -463,6 +476,8 @@ public class LocalOrderBean implements Serializable {
                 ", totalAmount='" + totalAmount + '\'' +
                 ", timeOut=" + timeOut +
                 ", sellerInfo=" + sellerInfo +
+                ", sellerName='" + sellerName + '\'' +
+                ", sellerManJian='" + sellerManJian + '\'' +
                 ", localOrderItemList=" + localOrderItemList +
                 '}';
     }

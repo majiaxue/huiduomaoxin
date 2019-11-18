@@ -108,6 +108,7 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
         if (CommonResource.LOCAL_BUY_REDPACKEG.equals(eventBusBean.getMsg())) {
+
             finish();
         }
     }

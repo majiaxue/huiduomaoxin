@@ -28,6 +28,7 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
 
     private int page = 1;
     private String status = "";
+    private boolean isTui = false;
 
     @Override
     public int getLayoutId() {
@@ -60,14 +61,22 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(status, page);
+                if (isTui) {
+                    presenter.tuihuo(page);
+                } else {
+                    presenter.loadData(status, page);
+                }
             }
         });
         mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(status, page);
+                if (isTui) {
+                    presenter.tuihuo(page);
+                } else {
+                    presenter.loadData(status, page);
+                }
             }
         });
     }
@@ -79,17 +88,24 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
 
     @Override
     public void changeType(int position) {
+        page = 1;
+        isTui = false;
         if (position == 0) {
             status = "";
-        } else if (position == 4) {
-            status = "4";
+            presenter.loadData(status, page);
+        } else if (position == 1) {
+            status = "0";
+            presenter.loadData(status, page);
         } else if (position == 5) {
-            status = "5";
+            status = "6";
+            presenter.loadData(status, page);
+        } else if (position == 6) {
+            isTui = true;
+            presenter.tuihuo(page);
         } else {
-            status = position - 1 + "";
+            status = position + "";
+            presenter.loadData(status, page);
         }
-        page = 1;
-        presenter.loadData(status, page);
     }
 
     @Override

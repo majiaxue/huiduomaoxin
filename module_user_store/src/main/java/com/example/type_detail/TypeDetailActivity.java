@@ -1,5 +1,6 @@
 package com.example.type_detail;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.example.type_detail.adapter.TypeDetailLstAdapter;
 import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -185,6 +187,14 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
                 presenter.jumpToSearch();
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        searchString = intent.getStringExtra("search");
+        mSearch.setText(searchString);
+        presenter.loadData(searchString, categoryId, isHotSale);
     }
 
     @Override

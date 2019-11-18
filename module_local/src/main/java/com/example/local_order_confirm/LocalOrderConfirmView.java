@@ -15,4 +15,6 @@ public interface LocalOrderConfirmView extends IView {
     void loadFinish();
 
     void loadCoupon(RedPackageBean chooseRedPacgage);
+
+    void loadSongType(String string);
 }

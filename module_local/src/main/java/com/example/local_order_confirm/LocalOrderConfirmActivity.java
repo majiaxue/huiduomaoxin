@@ -67,6 +67,8 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
     LinearLayout mCoupon;
     @BindView(R2.id.local_order_confirm_coupon_money_txt)
     TextView mCouponTxt;
+    @BindView(R2.id.local_order_confirm_songtype)
+    LinearLayout mPeisongType;
 
     @Autowired(name = "bean")
     LocalOrderBean bean;
@@ -145,6 +147,13 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
             }
         });
 
+        mPeisongType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.songTypePop();
+            }
+        });
+
         mCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,6 +198,16 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
         bean.setUserPhone(addressBean.getAddressPhone());
         bean.setUserAddress(addressBean.getAddressProvince() + addressBean.getAddressCity() + addressBean.getAddressArea() + addressBean.getAddressDetail());
 
+    }
+
+    @Override
+    public void loadSongType(String string) {
+        localOrderConfirmPeisong.setText(string);
+        if ("商家配送".equals(string)) {
+            bean.setDeliverType("1");
+        } else {
+            bean.setDeliverType("0");
+        }
     }
 
     @Override

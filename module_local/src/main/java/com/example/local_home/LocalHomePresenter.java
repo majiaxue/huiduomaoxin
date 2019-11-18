@@ -206,7 +206,7 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
 
     public void isOpenLocation() {
         LocationManager locManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
 //            PopUtils.location(mContext);
             // 新建一个子线程来发送消息

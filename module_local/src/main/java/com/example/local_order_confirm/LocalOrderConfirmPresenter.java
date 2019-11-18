@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alipay.sdk.app.PayTask;
 import com.example.adapter.MyRecyclerAdapter;
@@ -40,6 +42,7 @@ import com.example.net.OnTripartiteCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
@@ -140,21 +143,28 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                         BaseEntity baseEntity = JSON.parseObject(result, new TypeReference<BaseEntity<LocalGetOrderSnBean>>() {
                         }.getType());
                         LocalGetOrderSnBean localGetOrderSnBean = (LocalGetOrderSnBean) baseEntity.getData();
-                        Map map = MapUtil.getInstance()
-                                .addParms("totalAmount", localGetOrderSnBean.getTotalMoney())
-                                .addParms("productName", CommonResource.PROJECTNAME)
-                                .addParms("orderFlag", true)
-                                .addParms("orderSn", localGetOrderSnBean.getOrderSn())
-                                .addParms("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId())
-                                .addParms("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney())
-                                .addParms("userCode", SPUtil.getUserCode())
-                                .build();
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("totalAmount", localGetOrderSnBean.getTotalMoney());
+                        jsonObject.put("productName", CommonResource.PROJECTNAME);
+                        jsonObject.put("orderFlag", true);
+                        jsonObject.put("orderSn", localGetOrderSnBean.getOrderSn());
+                        jsonObject.put("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId());
+                        jsonObject.put("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney());
+                        jsonObject.put("userCode", SPUtil.getUserCode());
+//                        Map map = MapUtil.getInstance()
+//                                .addParms("totalAmount", localGetOrderSnBean.getTotalMoney())
+//                                .addParms("productName", CommonResource.PROJECTNAME)
+//                                .addParms("orderFlag", true)
+//                                .addParms("orderSn", localGetOrderSnBean.getOrderSn())
+//                                .addParms("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId())
+//                                .addParms("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney())
+//                                .addParms("userCode", SPUtil.getUserCode())
+//                                .build();
 
-                        LogUtil.e("------------->"+map.get("redPackedId")+"============"+map.get("redPackedMoney"));
                         if (isWechat) {
-                            wxpay(map);
+                            wxpay(jsonObject);
                         } else {
-                            alipay(map);
+                            alipay(jsonObject);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -173,26 +183,36 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                 }
             }));
         } else {
-            Map map = MapUtil.getInstance()
-                    .addParms("totalAmount", bean.getTotalMoney())
-                    .addParms("orderSn", bean.getOrderSn())
-                    .addParms("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId())
-                    .addParms("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney())
-                    .addParms("productName", CommonResource.PROJECTNAME)
-                    .addParms("orderFlag", true)
-                    .addParms("userCode", SPUtil.getUserCode())
-                    .build();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("totalAmount", bean.getTotalMoney());
+            jsonObject.put("productName", CommonResource.PROJECTNAME);
+            jsonObject.put("orderFlag", true);
+            jsonObject.put("orderSn", bean.getOrderSn());
+            jsonObject.put("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId());
+            jsonObject.put("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney());
+            jsonObject.put("userCode", SPUtil.getUserCode());
+//            Map map = MapUtil.getInstance()
+//                    .addParms("totalAmount", bean.getTotalMoney())
+//                    .addParms("orderSn", bean.getOrderSn())
+//                    .addParms("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId())
+//                    .addParms("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney())
+//                    .addParms("productName", CommonResource.PROJECTNAME)
+//                    .addParms("orderFlag", true)
+//                    .addParms("userCode", SPUtil.getUserCode())
+//                    .build();
             if (isWechat) {
-                wxpay(map);
+                wxpay(jsonObject);
             } else {
-                alipay(map);
+                alipay(jsonObject);
             }
         }
     }
 
-    private void wxpay(Map map) {
+    private void wxpay(JSONObject jsonObject) {
         final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_WX_PAY, map);
+        String jsonString = JSON.toJSONString(jsonObject);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_WX_PAY, requestBody);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -218,9 +238,10 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
         }));
     }
 
-    private void alipay(Map map) {
-
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_ALI_PAY, map);
+    private void alipay(JSONObject jsonObject) {
+        String jsonString = JSON.toJSONString(jsonObject);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_ALI_PAY, requestBody);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -297,7 +318,6 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                 @Override
                 public void onItemClick(RecyclerView parent, View view, int position) {
                     chooseRedPacgage = redPackageBeans.get(position);
-                    LogUtil.e("==============>"+chooseRedPacgage);
                     popupWindow.dismiss();
                     getView().loadCoupon(chooseRedPacgage);
                 }
@@ -305,5 +325,30 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
         } else {
             Toast.makeText(mContext, "无可用优惠券", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void songTypePop() {
+        PopUtils.changeHeader(mContext, new OnChangeHeaderListener() {
+            @Override
+            public void setOnChangeHeader(final PopupWindow pop, TextView camera, TextView album) {
+                camera.setText("商家配送");
+                album.setText("到店自提");
+                camera.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getView().loadSongType("商家配送");
+                        pop.dismiss();
+                    }
+                });
+
+                album.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getView().loadSongType("到店自提");
+                        pop.dismiss();
+                    }
+                });
+            }
+        });
     }
 }

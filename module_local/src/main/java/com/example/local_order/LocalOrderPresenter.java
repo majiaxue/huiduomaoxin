@@ -16,8 +16,10 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalOrderBean;
+import com.example.bean.LocalTuiKuanBean;
 import com.example.bean.TxtAndChooseBean;
 import com.example.common.CommonResource;
 import com.example.local_order.adapter.LocalOrderAdapter;
@@ -54,6 +56,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
     private List<LocalOrderBean> localOrderBeans = new ArrayList<>();
 
     private String status;
+    private boolean isTui = false;
 
     public LocalOrderPresenter(Context context) {
         super(context);
@@ -71,7 +74,8 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         navbarList.add(new TxtAndChooseBean("待取货", false));
         navbarList.add(new TxtAndChooseBean("配送中", false));
         navbarList.add(new TxtAndChooseBean("已完成", false));
-        navbarList.add(new TxtAndChooseBean("退货", false));
+        navbarList.add(new TxtAndChooseBean("已关闭", false));
+//        navbarList.add(new TxtAndChooseBean("退款中", false));
         navbarAdapter = new LocalOrderNavbarAdapter(mContext, navbarList, R.layout.rv_local_order_navbar);
         if (getView() != null) {
             getView().loadNavbar(navbarAdapter);
@@ -98,6 +102,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
 
     public void loadData(final String status, final int page) {
         this.status = status;
+        isTui = false;
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_GET_ORDER, map);
@@ -212,6 +217,49 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         }));
     }
 
+    public void tuihuo(final int page) {
+        isTui = true;
+        Map map = MapUtil.getInstance().addParms("page", page).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_TUIKUAN + "/" + SPUtil.getUserCode(), map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("退款中----------->" + result);
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                if (page == 1) {
+                    localOrderBeans.clear();
+                }
+                LocalTuiKuanBean localTuiKuanBean = JSON.parseObject(result, LocalTuiKuanBean.class);
+
+                if (orderAdapter == null) {
+                    orderAdapter = new LocalOrderAdapter(mContext, localOrderBeans, R.layout.rv_local_order_list);
+                    if (getView() != null) {
+                        getView().loadRv(orderAdapter);
+                    }
+                } else {
+                    orderAdapter.notifyDataSetChanged();
+                }
+
+                orderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        ARouter.getInstance().build("/module_local/OrderInfoActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                LogUtil.e(errorCode + "--------------" + errorMsg);
+            }
+        }));
+    }
+
     private void cancelOrderTip(final LocalOrderBean localOrderBean) {
         final SelfDialog selfDialog = new SelfDialog(mContext);
         selfDialog.setTitle("提示");
@@ -252,7 +300,11 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("取消订单：" + result);
                 selfDialog.dismiss();
-                loadData(status, 1);
+                if (isTui) {
+                    tuihuo(1);
+                } else {
+                    loadData(status, 1);
+                }
             }
 
             @Override
@@ -302,7 +354,11 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("确认收货：" + result);
                 selfDialog.dismiss();
-                loadData(status, 1);
+                if (isTui) {
+                    tuihuo(1);
+                } else {
+                    loadData(status, 1);
+                }
             }
 
             @Override
@@ -371,17 +427,27 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
      * 退款
      */
     private void refund(final LocalOrderBean localOrderBean, String reason, final PopupWindow pop) {
-        localOrderBean.setNote(reason);
+//        localOrderBean.setNote(reason);
+//        String jsonString = JSON.toJSONString(localOrderBean);
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("orderSn", localOrderBean.getOrderSn());
+        jsonObject.put("reason", reason);
         String jsonString = JSON.toJSONString(localOrderBean);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-//        Map map = MapUtil.getInstance().addParms("orderSn", localOrderBean.getOrderSn()).addParms("orderId", localOrderBean.getId()).addParms("reason", reason).build();
+//        Map map = MapUtil.getInstance().addParms("orderSn", localOrderBean.getOrderSn()).addParms("reason", reason).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postHeadWithBody(CommonResource.LOCAL_TUIKUAN, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("退款：" + result);
+                Toast.makeText(mContext, "申请成功,等待商家处理", Toast.LENGTH_SHORT).show();
                 pop.dismiss();
-                loadData(status, 1);
+                if (isTui) {
+                    tuihuo(1);
+                } else {
+                    loadData(status, 1);
+                }
             }
 
             @Override

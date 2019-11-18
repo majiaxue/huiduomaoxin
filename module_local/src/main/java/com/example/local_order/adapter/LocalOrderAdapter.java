@@ -38,59 +38,71 @@ public class LocalOrderAdapter extends MyRecyclerAdapter<LocalOrderBean> {
                 }
             }
 
-            if ("0".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
-                holder.setText(R.id.rv_local_order_list_cancel, "取消订单")
-                        .setText(R.id.rv_local_order_list_confirm, "去付款")
-                        .setText(R.id.rv_local_order_list_status, "待付款");
-            } else if ("1".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
-                holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
-                        .setText(R.id.rv_local_order_list_confirm, "确认收货")
-                        .setText(R.id.rv_local_order_list_status, "待取货");
-            } else if ("2".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
-                holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
-                        .setText(R.id.rv_local_order_list_confirm, "确认收货")
-                        .setText(R.id.rv_local_order_list_status, "配送中");
-            }
-//            else if ("3".equals(data.getStatus())) {
-//                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
-//                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
-//                holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
-//                        .setText(R.id.rv_local_order_list_confirm, "去评价")
-//                        .setText(R.id.rv_local_order_list_status, "待评价");
-//            }
-            else if ("4".equals(data.getStatus()) || "3".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
-                holder.setText(R.id.rv_local_order_list_status, "已完成");
-            } else if ("5".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
-                holder.setText(R.id.rv_local_order_list_status, "退货");
-            } else if ("6".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
-                holder.setText(R.id.rv_local_order_list_status, "已关闭");
-            } else if ("8".equals(data.getStatus())) {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
-                holder.setText(R.id.rv_local_order_list_cancel, "退款中")
-                        .setText(R.id.rv_local_order_list_status, "退款中");
-                holder.getView(R.id.rv_local_order_list_confirm).setVisibility(View.INVISIBLE);
+            if (!TextUtils.isEmpty(data.getStatus())) {
+                if ("0".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.rv_local_order_list_cancel, "取消订单")
+                            .setText(R.id.rv_local_order_list_confirm, "去付款")
+                            .setText(R.id.rv_local_order_list_status, "待付款");
+                } else if ("1".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
+                            .setText(R.id.rv_local_order_list_confirm, "确认收货")
+                            .setText(R.id.rv_local_order_list_status, "已付款");
+                } else if ("2".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
+                            .setText(R.id.rv_local_order_list_confirm, "确认收货")
+                            .setText(R.id.rv_local_order_list_status, "待取货");
+                } else if ("3".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.VISIBLE);
+                    holder.setText(R.id.rv_local_order_list_cancel, "申请退款")
+                            .setText(R.id.rv_local_order_list_confirm, "确认收货")
+                            .setText(R.id.rv_local_order_list_status, "配送中");
+                } else if ("4".equals(data.getStatus()) || "3".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
+                    holder.setText(R.id.rv_local_order_list_status, "已完成");
+                } else if ("5".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
+                    holder.setText(R.id.rv_local_order_list_status, "退货");
+                } else if ("6".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
+                    holder.setText(R.id.rv_local_order_list_status, "已关闭");
+                } else if ("8".equals(data.getStatus())) {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
+                    holder.setText(R.id.rv_local_order_list_status, "退款中");
+                } else {
+                    holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
+                    holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
+                }
             } else {
-                holder.getView(R.id.rv_local_order_list_linear).setVisibility(View.GONE);
-                holder.getView(R.id.rv_local_order_list_temp).setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(data.getReturnStatus())) {
+                    if ("0".equals(data.getReturnStatus())) {
+                        holder.setText(R.id.rv_local_order_list_status, "等待商家处理");
+                    } else if ("1".equals(data.getReturnStatus())) {
+                        holder.setText(R.id.rv_local_order_list_status, "退货中");
+                    } else if ("2".equals(data.getReturnStatus())) {
+                        holder.setText(R.id.rv_local_order_list_status, "已退款");
+                    } else if ("3".equals(data.getReturnStatus())) {
+                        holder.setText(R.id.rv_local_order_list_status, "已拒绝");
+                    }
+                }
             }
 
             RecyclerView rv = holder.getView(R.id.rv_local_order_list_rv);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             rv.setLayoutManager(layoutManager);
-            rv.addItemDecoration(new SpaceItemDecoration((int) context.getResources().getDimension(R.dimen.dp_3), (int) context.getResources().getDimension(R.dimen.dp_3), 0, 0));
+            if (rv.getItemDecorationCount() == 0) {
+                rv.addItemDecoration(new SpaceItemDecoration((int) context.getResources().getDimension(R.dimen.dp_3), (int) context.getResources().getDimension(R.dimen.dp_3), 0, 0));
+            }
             LocalOrderInnerAdapter innerAdapter = new LocalOrderInnerAdapter(context, data.getLocalOrderItemList(), R.layout.rv_inner_local_order);
             rv.setAdapter(innerAdapter);
 

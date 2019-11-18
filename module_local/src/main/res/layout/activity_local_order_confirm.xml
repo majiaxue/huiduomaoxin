@@ -170,6 +170,7 @@
                 android:layout_marginRight="@dimen/dp_15" />
 
             <LinearLayout
+                android:id="@+id/local_order_confirm_songtype"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_15"
@@ -183,7 +184,7 @@
                     android:background="@drawable/bg_2_fb5318"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="配送费"
+                    android:text="配送方式"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_10" />
 

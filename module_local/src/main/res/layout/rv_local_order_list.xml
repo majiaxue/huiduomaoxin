@@ -48,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_12"
-            android:text="已完成"
             android:textColor="#999999"
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
@@ -75,7 +74,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_17"
             android:includeFontPadding="false"
-            android:text="您的取货码为：0879"
             android:textColor="#fb5318"
             android:textSize="@dimen/sp_14" />
 
@@ -89,7 +87,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="等2件商品"
             android:textColor="#333333"
             android:textSize="@dimen/sp_12" />
 
@@ -100,7 +97,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_12"
             android:includeFontPadding="false"
-            android:text="￥19.9"
             android:textColor="#fb5318"
             android:textSize="@dimen/sp_18" />
 

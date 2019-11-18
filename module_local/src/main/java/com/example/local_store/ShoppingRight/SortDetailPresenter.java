@@ -71,6 +71,7 @@ public class SortDetailPresenter extends BasePresenter {
         localOrderBean.setUserCode(SPUtil.getUserCode());
         localOrderBean.setLocalOrderItemList(list);
         localOrderBean.setTotalMoney(price);
+        localOrderBean.setDeliverType("1");
         localOrderBean.setSellerManJian(SPUtil.getStringValue(CommonResource.LOCAL_SELLER_MANJIAN));
 
         if (hasGoods) {
