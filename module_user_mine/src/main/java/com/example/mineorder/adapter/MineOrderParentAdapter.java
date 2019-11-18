@@ -137,7 +137,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                 public void ViewTwoOnClick(View view1, View view2, final int position) {
                     final TextView btnLeft = view1.findViewById(R.id.stay_appraise_child_btn_left);
                     final TextView btnRight = view2.findViewById(R.id.stay_appraise_child_btn_right);
-                    btnLeft.setOnClickListener(new View.OnClickListener() {
+                    view1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if ("再次购买".equals(btnLeft.getText().toString())) {
@@ -153,7 +153,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                         }
                     });
 
-                    btnRight.setOnClickListener(new View.OnClickListener() {
+                    view2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if ("立即评价".equals(btnRight.getText().toString())) {
