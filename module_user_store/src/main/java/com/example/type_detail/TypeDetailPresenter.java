@@ -150,7 +150,9 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
     }
 
     public void jumpToSearch() {
-        mContext.startActivity(new Intent(mContext, UserSearchActivity.class));
+        Intent intent = new Intent(mContext, UserSearchActivity.class);
+        intent.putExtra("from",CommonResource.HISTORY_USER);
+        mContext.startActivity(intent);
     }
 
     public void click() {

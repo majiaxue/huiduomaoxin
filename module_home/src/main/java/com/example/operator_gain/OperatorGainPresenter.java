@@ -111,11 +111,11 @@ public class OperatorGainPresenter extends BasePresenter<OperatorGainView> {
             }
 
             if (!TextUtils.isEmpty(beanList.get(i).getDirectFansNum())) {
-                factorList.add("直属粉丝数量：" + "<font color='#f84f4f'>" + beanList.get(i).getDirectFansNum() + "</font>元");
+                factorList.add("直属粉丝数量：" + "<font color='#f84f4f'>" + beanList.get(i).getDirectFansNum() + "</font>个");
             }
 
             if (!TextUtils.isEmpty(beanList.get(i).getIndirectFansNum())) {
-                factorList.add("非直推有效粉丝：" + "<font color='#f84f4f'>" + beanList.get(i).getIndirectFansNum() + "</font>元");
+                factorList.add("非直推有效粉丝：" + "<font color='#f84f4f'>" + beanList.get(i).getIndirectFansNum() + "</font>人");
             }
             OperatorGainFactorAdapter factorAdapter = new OperatorGainFactorAdapter(mContext, factorList, R.layout.rv_vp_operator_factor);
             factor.setAdapter(factorAdapter);

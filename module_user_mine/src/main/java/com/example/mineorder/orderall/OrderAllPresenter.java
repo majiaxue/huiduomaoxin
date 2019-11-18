@@ -194,9 +194,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                                 @Override
                                                 public void onSuccess(String result, String msg) {
                                                     LogUtil.e("确认收货---->" + result);
-                                                    if ("true".equals(result)) {
                                                         orderAllRec();
-                                                    }
                                                 }
 
                                                 @Override

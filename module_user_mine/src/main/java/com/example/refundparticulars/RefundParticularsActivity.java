@@ -134,21 +134,22 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
     @Override
     public void initView(RefundParticularsBean list) {
 
-        if (list.getStatus() == 0) {
+        if (0 == list.getBackStatus()) {
             refundParticularsStatus.setText("等待商家处理");
             refundSucceedTotal.setVisibility(View.GONE);
             refundSucceedPath.setVisibility(View.GONE);
             waitingRefund.setVisibility(View.VISIBLE);
-        } else if (list.getStatus() == 1) {
-            refundParticularsStatus.setText("处理中");
-        } else if (list.getStatus() == 2) {
+        } else if (1 == list.getBackStatus()) {
+            refundParticularsStatus.setText("退货中");
+        } else if (2 == list.getBackStatus()) {
             refundParticularsStatus.setText("退款成功");
             refundSucceedTotal.setVisibility(View.VISIBLE);
             refundSucceedPath.setVisibility(View.VISIBLE);
             waitingRefund.setVisibility(View.GONE);
-        } else {
+        } else if (3 == list.getBackStatus()) {
             refundParticularsStatus.setText("商家已拒绝");
-
+        } else if (4 == list.getBackStatus()) {
+            refundParticularsStatus.setText("退款申请已取消");
         }
 
         refundParticularsTime.setText(list.getReceiveTime());

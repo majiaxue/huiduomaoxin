@@ -130,7 +130,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
             @Override
             public void onClick(View v) {
                 if (1 == status) {
-                    if ("申请退款".equals(orderDetailsRefund.getText().toString())) {
+                    if ("申请退款".equals(orderDetailsLeft.getText().toString())) {
                         ARouter.getInstance()
                                 .build("/module_user_mine/RefundActivity")
                                 .withSerializable("orderDetailBean", orderDetailBean)
@@ -160,9 +160,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
                         @Override
                         public void onSuccess(String result, String msg) {
                             LogUtil.e("确认收货---->" + result);
-                            if ("true".equals(result)) {
-                                finish();
-                            }
+                            finish();
                         }
 
                         @Override
@@ -228,40 +226,55 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
 
         if (orderDetailBean.getStatus() == 1) {
             //待发货
-            orderDetailsStatus.setText("购买成功（待发货）");
             orderDetailsSubhead.setVisibility(View.GONE);
             orderDetailsRefund.setVisibility(View.GONE);
-            if (0 == orderDetailBean.getBackStatus()) {
-                orderDetailsLeft.setText("等待卖家处理");
-            } else if (1 == orderDetailBean.getBackStatus()) {
-                orderDetailsLeft.setText("退货中");
-            } else if (2 == orderDetailBean.getBackStatus()) {
-                orderDetailsLeft.setText("退货完成");
-            } else if (3 == orderDetailBean.getBackStatus()) {
-                orderDetailsLeft.setText("卖家已拒绝");
-            } else if (-1 == orderDetailBean.getBackStatus()){
-                orderDetailsLeft.setText("申请退款");
-            }
+            orderDetailsLeft.setVisibility(View.GONE);
+            orderDetailsRight.setVisibility(View.GONE);
+            orderDetailsLeft.setText("申请退款");
             orderDetailsRight.setText("提醒发货");
+            if (0 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("等待卖家处理");
+            } else if (1 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("退货中");
+            } else if (2 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("退货完成");
+            } else if (3 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("卖家已拒绝");
+                orderDetailsRight.setVisibility(View.VISIBLE);
+            } else if (-1 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("购买成功（待发货）");
+                orderDetailsLeft.setVisibility(View.VISIBLE);
+                orderDetailsRight.setVisibility(View.VISIBLE);
+            } else if (4 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("已取消退款");
+                orderDetailsRight.setVisibility(View.VISIBLE);
+            }
         } else if (orderDetailBean.getStatus() == 2) {
 
             //待收货
-            orderDetailsStatus.setText("卖家已发货");
             orderDetailsSubhead.setVisibility(View.VISIBLE);
-            orderDetailsRefund.setVisibility(View.VISIBLE);
-            if (0 == orderDetailBean.getBackStatus()) {
-                orderDetailsRefund.setText("等待卖家处理");
-            } else if (1 == orderDetailBean.getBackStatus()) {
-                orderDetailsRefund.setText("退货中");
-            } else if (2 == orderDetailBean.getBackStatus()) {
-                orderDetailsRefund.setText("退货完成");
-            } else if (3 == orderDetailBean.getBackStatus()) {
-                orderDetailsRefund.setText("卖家已拒绝");
-            } else if (-1 == orderDetailBean.getBackStatus()){
-                orderDetailsRefund.setText("申请退款");
-            }
+            orderDetailsRefund.setVisibility(View.GONE);
+            orderDetailsLeft.setVisibility(View.VISIBLE);
+            orderDetailsRight.setVisibility(View.VISIBLE);
             orderDetailsLeft.setText("查看物流");
             orderDetailsRight.setText("确认收货");
+            if (0 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("等待卖家处理");
+            } else if (1 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("退货中");
+            } else if (2 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("退货完成");
+                orderDetailsLeft.setVisibility(View.GONE);
+                orderDetailsRight.setVisibility(View.GONE);
+            } else if (3 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("卖家已拒绝");
+            } else if (-1 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("卖家已发货");
+                orderDetailsRefund.setText("申请退款");
+                orderDetailsRefund.setVisibility(View.VISIBLE);
+            } else if (4 == orderDetailBean.getBackStatus()) {
+                orderDetailsStatus.setText("已取消退款");
+            }
             time(orderDetailBean.getReceiveTime());
         }
 

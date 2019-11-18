@@ -18,6 +18,7 @@ import com.example.type_detail.adapter.TypeDetailLstAdapter;
 import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -92,9 +93,6 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        if (searchString != null || !"".equals(searchString)) {
-            mSearch.setText(searchString);
-        }
 
         if (isHotSale) {
             index = 1;
@@ -110,21 +108,7 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
         CustomHeader customHeader = new CustomHeader(this);
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         mRefreshLayout.setRefreshHeader(customHeader);
-        //设置上拉刷新下拉加载
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                page = 1;
-                presenter.refreshData(page);
-            }
-        });
-        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                page++;
-                presenter.refreshData(page);
-            }
-        });
+
     }
 
     @Override
@@ -185,6 +169,22 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
                 presenter.jumpToSearch();
             }
         });
+
+        //设置上拉刷新下拉加载
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                presenter.refreshData(page);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                presenter.refreshData(page);
+            }
+        });
     }
 
     @Override
@@ -236,5 +236,14 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
     @Override
     public TypeDetailPresenter createPresenter() {
         return new TypeDetailPresenter(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.e("搜索内容------------>" + searchString);
+        if (searchString != null || !"".equals(searchString)) {
+            mSearch.setText(searchString);
+        }
     }
 }

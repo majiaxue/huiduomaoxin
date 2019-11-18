@@ -69,13 +69,13 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                     listBeans.clear();
                     listBeans.addAll(mineOrderBean.getOrderList());
 
-                    if (mineOrderParentAdapter == null){
+                    if (mineOrderParentAdapter == null) {
                         mineOrderParentAdapter = new MineOrderParentAdapter(mContext, listBeans, R.layout.item_mine_order_parent_rec);
 
-                    }else{
+                    } else {
                         mineOrderParentAdapter.notifyDataSetChanged();
                     }
-                    if (getView()!=null){
+                    if (getView() != null) {
                         getView().load(mineOrderParentAdapter);
                     }
 
@@ -103,6 +103,21 @@ public class StaySendGoodsPresenter extends BasePresenter<StaySendGoodsView> {
                                                 .withString("type", "1")
                                                 .withInt("position", position)
                                                 .navigation();
+                                    } else if ("取消申请".equals(left.getText().toString())) {
+                                        Map map = MapUtil.getInstance().addParms("orderSn", mineOrderBean.getOrderList().get(position).getOrderSn()).build();
+                                        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).postData(CommonResource.CANCEL_TUIKUAN, map);
+                                        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                            @Override
+                                            public void onSuccess(String result, String msg) {
+                                                LogUtil.e("取消申请退款：" + result);
+                                                staySendGoodsRec();
+                                            }
+
+                                            @Override
+                                            public void onError(String errorCode, String errorMsg) {
+                                                LogUtil.e(errorCode + "---------------" + errorMsg);
+                                            }
+                                        }));
                                     }
                                 }
                             });

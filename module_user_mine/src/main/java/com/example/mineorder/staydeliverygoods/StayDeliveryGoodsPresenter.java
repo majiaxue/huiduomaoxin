@@ -139,10 +139,8 @@ public class StayDeliveryGoodsPresenter extends BasePresenter<StayDeliveryGoodsV
                                         @Override
                                         public void onSuccess(String result, String msg) {
                                             LogUtil.e("确认收货---->" + result);
-                                            if ("true".equals(result)) {
-                                                listBeans.remove(position);
-                                                mineOrderParentAdapter.notifyDataSetChanged();
-                                            }
+                                            listBeans.remove(position);
+                                            mineOrderParentAdapter.notifyDataSetChanged();
                                         }
 
                                         @Override

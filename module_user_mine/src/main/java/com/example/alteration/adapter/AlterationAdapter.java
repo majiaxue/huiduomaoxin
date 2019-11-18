@@ -35,14 +35,16 @@ public class AlterationAdapter extends MyRecyclerAdapter<AlterationBean> {
             holder.setText(R.id.alteration_rec_type, "只退款");
         }
         //申请状态：0->待处理；1->退货中；2->已完成；3->已拒绝
-        if (data.getStatus() == 0) {
+        if (0 == data.getBackStatus()) {
             holder.setText(R.id.alteration_rec_status, "等待商家处理");
-        } else if (data.getStatus() == 1) {
-            holder.setText(R.id.alteration_rec_status, "处理中");
-        } else if (data.getStatus() == 2) {
+        } else if (1 == data.getBackStatus()) {
+            holder.setText(R.id.alteration_rec_status, "退货中");
+        } else if (2 == data.getBackStatus()) {
             holder.setText(R.id.alteration_rec_status, "退款成功");
-        } else {
+        } else if (3 == data.getBackStatus()) {
             holder.setText(R.id.alteration_rec_status, "商家已拒绝");
+        } else if (4 == data.getBackStatus()) {
+            holder.setText(R.id.alteration_rec_status, "退款申请已取消");
         }
 
         viewOnClickListener.ViewOnClick(holder.getView(R.id.alteration_rec_view_details), position);
