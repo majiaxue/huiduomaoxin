@@ -52,7 +52,7 @@ public class StayAppraiseParentAdapter extends MyRecyclerAdapter<MineOrderBean.O
             @Override
             public void ViewTwoOnClick(View view1, View view2, final int position) {
                 final TextView btnLeft = view1.findViewById(R.id.stay_appraise_child_btn_left);
-                final TextView btnRight = view1.findViewById(R.id.stay_appraise_child_btn_right);
+                final TextView btnRight = view2.findViewById(R.id.stay_appraise_child_btn_right);
                 btnLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

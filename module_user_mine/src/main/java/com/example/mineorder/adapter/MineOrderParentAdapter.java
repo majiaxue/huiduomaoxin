@@ -38,30 +38,27 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             if (0 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "待处理");
                 left.setText("取消申请");
-                left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (1 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "退货中");
                 left.setText("取消申请");
-                left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (2 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "退货完成");
                 left.setText("删除订单");
-                left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (3 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "卖家已拒绝");
-                left.setVisibility(View.VISIBLE);
-                right.setVisibility(View.VISIBLE);
+                left.setVisibility(View.GONE);
+                right.setText("提醒发货");
             } else if (-1 == data.getBackStatus()) {
                 left.setText("申请退款");
                 right.setText("提醒发货");
                 holder.setText(R.id.mine_order_parent_status, "买家已付款");
             } else {
                 right.setText("提醒发货");
-                holder.setText(R.id.mine_order_parent_status, "买家已付款");
-                left.setVisibility(View.VISIBLE);
+                holder.setText(R.id.mine_order_parent_status, "退款申请已取消");
+                left.setVisibility(View.GONE);
             }
         } else if (data.getStatus() == 3) {
             //3待评论
@@ -78,26 +75,25 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             if (0 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "待处理");
                 left.setText("取消申请");
-                left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (1 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "退货中");
                 left.setText("取消申请");
-                left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (2 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "退货完成");
                 left.setText("删除订单");
-                left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.GONE);
             } else if (3 == data.getBackStatus()) {
                 holder.setText(R.id.mine_order_parent_status, "卖家已拒绝");
-                left.setVisibility(View.VISIBLE);
-                right.setVisibility(View.VISIBLE);
+                left.setText("查看物流");
+                right.setText("确认收货");
+            } else if (-1 == data.getBackStatus()) {
+                holder.setText(R.id.mine_order_parent_status, "卖家已发货");
                 left.setText("查看物流");
                 right.setText("确认收货");
             } else {
-                holder.setText(R.id.mine_order_parent_status, "卖家已发货");
+                holder.setText(R.id.mine_order_parent_status, "退款申请已取消");
                 left.setText("查看物流");
                 right.setText("确认收货");
             }
@@ -140,8 +136,8 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                 @Override
                 public void ViewTwoOnClick(View view1, View view2, final int position) {
                     final TextView btnLeft = view1.findViewById(R.id.stay_appraise_child_btn_left);
-                    final TextView btnRight = view1.findViewById(R.id.stay_appraise_child_btn_right);
-                    btnLeft.setOnClickListener(new View.OnClickListener() {
+                    final TextView btnRight = view2.findViewById(R.id.stay_appraise_child_btn_right);
+                    view1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if ("再次购买".equals(btnLeft.getText().toString())) {
@@ -157,7 +153,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
                         }
                     });
 
-                    btnRight.setOnClickListener(new View.OnClickListener() {
+                    view2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if ("立即评价".equals(btnRight.getText().toString())) {

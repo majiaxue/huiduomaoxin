@@ -64,6 +64,7 @@
                 android:layout_toRightOf="@id/type_detail_lst_payment_amount"
                 android:text="97%好评"
                 android:textColor="#999999"
+                android:visibility="invisible"
                 android:textSize="@dimen/sp_10" />
 
             <TextView

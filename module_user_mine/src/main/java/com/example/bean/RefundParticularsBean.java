@@ -58,6 +58,7 @@ public class RefundParticularsBean {
     private String returnName;
     private String returnPhone;
     private int status;
+    private int backStatus;
     private String handleTime;
     private String productPic;
     private String productName;
@@ -180,6 +181,14 @@ public class RefundParticularsBean {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getBackStatus() {
+        return backStatus;
+    }
+
+    public void setBackStatus(int backStatus) {
+        this.backStatus = backStatus;
     }
 
     public String getHandleTime() {

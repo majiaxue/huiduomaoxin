@@ -34,8 +34,6 @@ import okhttp3.ResponseBody;
  */
 public class MinePresenter extends BasePresenter<MineView> {
 
-    private List<ShopCollectCountBean.RecordsBean> shopCollectList = new ArrayList<>();
-    private List<GoodsCollectCountBean.RecordsBean> goodsCountList = new ArrayList<>();
     private int count1 = 0;
     private int count2 = 0;
     private int count3 = 0;
@@ -62,12 +60,9 @@ public class MinePresenter extends BasePresenter<MineView> {
                 }.getType());
                 LogUtil.e("goodsCollectionRecBean----->" + goodsCollectionRecBean);
                 if (goodsCollectionRecBean != null) {
-                    goodsCountList.clear();
-                    goodsCountList.addAll(goodsCollectionRecBean.getRecords());
-
-                    if (goodsCountList.size() != 0 || goodsCountList != null) {
+                    if (goodsCollectionRecBean.getRecords() != null || goodsCollectionRecBean.getRecords().size() != 0) {
                         if (getView() != null) {
-                            getView().goodsCollectionCount(goodsCountList.size());
+                            getView().goodsCollectionCount(goodsCollectionRecBean.getRecords().size());
                         }
                     } else {
                         if (getView() != null) {
@@ -99,18 +94,29 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onSuccess(final String result, String msg) {
                 LogUtil.e("result--------->" + result);
-                ShopCollectCountBean shopCollectCountBean = JSON.parseObject(result, new TypeReference<ShopCollectCountBean>() {
-                }.getType());
-                LogUtil.e("shopCollectList--------->" + shopCollectCountBean.getRecords().size());
-                if (shopCollectCountBean != null) {
-                    shopCollectList.clear();
-                    shopCollectList.addAll(shopCollectCountBean.getRecords());
-
-                    if (getView() != null) {
-                        getView().shopCollectCount(shopCollectList.size());
+                if (result != null) {
+                    ShopCollectCountBean shopCollectCountBean = JSON.parseObject(result, new TypeReference<ShopCollectCountBean>() {
+                    }.getType());
+                    LogUtil.e("shopCollectList--------->" + shopCollectCountBean);
+                    if (shopCollectCountBean != null) {
+                        if (shopCollectCountBean.getRecords() != null || shopCollectCountBean.getRecords().size() != 0) {
+                            if (getView() != null) {
+                                getView().shopCollectCount(shopCollectCountBean.getRecords().size());
+                            }
+                        } else {
+                            if (getView() != null) {
+                                getView().shopCollectCount(0);
+                            }
+                        }
+                    } else {
+                        if (getView() != null) {
+                            getView().shopCollectCount(0);
+                        }
                     }
                 } else {
-                    getView().shopCollectCount(0);
+                    if (getView() != null) {
+                        getView().shopCollectCount(0);
+                    }
                 }
             }
 
@@ -197,24 +203,24 @@ public class MinePresenter extends BasePresenter<MineView> {
                 if (mineOrderBean != null && mineOrderBean.getOrderList().size() != 0) {
                     for (int i = 0; i < mineOrderBean.getOrderList().size(); i++) {
 
-                        if (mineOrderBean.getOrderList().get(i).getBackStatus() == -1) {
-                            if (mineOrderBean.getOrderList().get(i).getStatus() == 2) {
-                                //2待收货
-                                count2++;
-                            }
-                            if (mineOrderBean.getOrderList().get(i).getStatus() == 6) {
-                                //6待付款
-                                count6++;
-                            }
-                            if (mineOrderBean.getOrderList().get(i).getStatus() == 3) {
-                                //3待评论
-                                count3++;
-                            }
-                            if (mineOrderBean.getOrderList().get(i).getStatus() == 1) {
-                                //1待发货
-                                count1++;
-                            }
+//                        if (mineOrderBean.getOrderList().get(i).getBackStatus() == -1) {
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 2) {
+                            //2待收货
+                            count2++;
                         }
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 6) {
+                            //6待付款
+                            count6++;
+                        }
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 3) {
+                            //3待评论
+                            count3++;
+                        }
+                        if (mineOrderBean.getOrderList().get(i).getStatus() == 1) {
+                            //1待发货
+                            count1++;
+                        }
+//                        }
                     }
                     getView().daishouhuo(count2);
                     count2 = 0;

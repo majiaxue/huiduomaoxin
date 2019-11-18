@@ -190,7 +190,7 @@ public class ShoppingCartFragment extends BaseFragment<ShoppingCartView, Shoppin
             shoppingCartEmpty.setVisibility(View.VISIBLE);
             shoppingCartCompile.setVisibility(View.GONE);
             shoppingCartCloseAccountAndDelete.setEnabled(false);
-            mBottom.setVisibility(View.INVISIBLE);
+            mBottom.setVisibility(View.GONE);
         } else {
             shoppingCartRec.setVisibility(View.VISIBLE);
             shoppingCartEmpty.setVisibility(View.GONE);

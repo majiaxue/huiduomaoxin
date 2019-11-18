@@ -120,7 +120,7 @@ public class VideoRecAdapter extends MyRecyclerAdapter<VideoRecBean.DataBean> {
         holder.setText(R.id.shake_stock_rec_number, data.getItemsale() + "人已购");//销量
         holder.setText(R.id.shake_stock_rec_title, data.getItemshorttitle());//短标题
         holder.setText(R.id.shake_stock_rec_message, data.getItemdesc());//详细信息
-        holder.setText(R.id.shake_stock_rec_juan_hou, "卷后￥" + data.getItemendprice());//卷后价
+        holder.setText(R.id.shake_stock_rec_juan_hou, "券后￥" + data.getItemendprice());//卷后价
         holder.setText(R.id.shake_stock_rec_ling_juan, data.getCouponmoney() + "元劵");//优惠券金额
         holder.setText(R.id.shake_stock_rec_gain_money, "" + ArithUtil.mul(Double.valueOf(data.getTkmoney()), SPUtil.getFloatValue(CommonResource.BACKBL)));//赚了多少钱
         holder.setText(R.id.shake_stock_rec_province_money, data.getCouponmoney());//省了

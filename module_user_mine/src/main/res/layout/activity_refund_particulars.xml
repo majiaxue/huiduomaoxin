@@ -182,23 +182,6 @@
                 android:textColor="#666666"
                 android:textSize="@dimen/sp_13" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginBottom="@dimen/dp_9"
-                android:text="商家超时未处理请从新提交申请或者联系平台客服。"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_11" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="如果商家拒绝，您可以联系客服沟通后，修改申请从新提交。"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_11" />
-
-
         </LinearLayout>
 
     </LinearLayout>
