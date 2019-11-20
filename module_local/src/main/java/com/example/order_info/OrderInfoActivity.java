@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.LocalOrderBean;
+import com.example.bean.LocalTuiKuanBean;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseActivity;
@@ -44,9 +45,13 @@ public class OrderInfoActivity extends BaseActivity<OrderInfoView, OrderInfoPres
     TextView orderInfoTime;
     @BindView(R2.id.order_info_pay_type)
     TextView orderInfoPayType;
+    @BindView(R2.id.order_info_coupon_money_txt)
+    TextView mRedPackage;
 
     @Autowired(name = "bean")
     LocalOrderBean bean;
+    @Autowired(name = "tuikuan")
+    LocalTuiKuanBean.RecordsBean tuiKuanBean;
 
     @Override
     public int getLayoutId() {
@@ -57,19 +62,41 @@ public class OrderInfoActivity extends BaseActivity<OrderInfoView, OrderInfoPres
     public void initData() {
         ARouter.getInstance().inject(this);
         includeTitle.setText("订单详情");
-        orderInfoShopName.setText(bean.getSellerInfo().getShop_name());
-        orderInfoManjianMoney.setText("-￥" + bean.getSellerInfo().getAmount());
-        orderInfoTotalMoney.setText("￥" + bean.getTotalMoney());
-        orderInfoAddress.setText(bean.getUserAddress() + "\n" + bean.getUserName() + "      " + bean.getUserPhone());
-        orderInfoOrdersn.setText(bean.getOrderSn());
-        orderInfoTime.setText(bean.getCreateTime());
-        orderInfoPayType.setText("0".equals(bean.getPayWay()) ? "微信" : "支付宝");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         orderInfoRv.setLayoutManager(layoutManager);
         orderInfoRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_14)));
 
-        presenter.loadData(bean.getLocalOrderItemList());
+        if (tuiKuanBean == null) {
+            orderInfoShopName.setText(bean.getSellerInfo().getShop_name());
+            orderInfoManjianMoney.setText("-￥" + (bean.getSellerInfo().getAmount() == null ? "0" : bean.getSellerInfo().getAmount()));
+            orderInfoTotalMoney.setText("￥" + bean.getTotalMoney());
+            orderInfoAddress.setText(bean.getUserAddress() + "\n" + bean.getUserName() + "      " + bean.getUserPhone());
+            orderInfoOrdersn.setText(bean.getOrderSn());
+            orderInfoTime.setText(bean.getCreateTime());
+            orderInfoPayType.setText("0".equals(bean.getPayWay()) ? "微信" : "支付宝");
+            mRedPackage.setText("-￥" + bean.getRedPackedMoney());
+
+
+            presenter.loadData(bean.getLocalOrderItemList());
+        } else {
+            orderInfoManjianMoney.setText("-￥" + (tuiKuanBean.getFullReductionAmount() == null ? "0" : tuiKuanBean.getFullReductionAmount()));
+            orderInfoTotalMoney.setText("￥" + tuiKuanBean.getReturnAmount());
+            orderInfoAddress.setText(tuiKuanBean.getUserAddress() + "\n" + tuiKuanBean.getReturnName() + "      " + tuiKuanBean.getReturnPhone());
+            orderInfoOrdersn.setText(tuiKuanBean.getOrderSn());
+            orderInfoTime.setText(tuiKuanBean.getCreateTime());
+            if (tuiKuanBean.getRedPackedMoney() == null || "null".equals(tuiKuanBean.getRedPackedMoney())) {
+                mRedPackage.setText("-￥0");
+            } else {
+                mRedPackage.setText(tuiKuanBean.getRedPackedMoney());
+            }
+            orderInfoPayType.setText("0".equals(tuiKuanBean.getPayWay()) ? "微信" : "支付宝");
+            if (tuiKuanBean.getSeller() != null) {
+                orderInfoShopName.setText(tuiKuanBean.getSeller().getSellerShopName());
+            }
+
+            presenter.loadData(tuiKuanBean.getLocalOrderItemList());
+        }
     }
 
     @Override

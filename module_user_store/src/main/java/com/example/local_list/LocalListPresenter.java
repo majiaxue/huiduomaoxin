@@ -1,8 +1,6 @@
 package com.example.local_list;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -11,23 +9,19 @@ import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.LocalShopBean;
 import com.example.common.CommonResource;
-import com.example.local_detail.LocalDetailActivity;
 import com.example.local_shop.LocalShopFragment;
 import com.example.local_shop.adapter.LocalSellerAdapter;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.search.UserSearchActivity;
 import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +58,7 @@ public class LocalListPresenter extends BasePresenter<LocalListView> {
         this.type = type;
         this.search = search;
         this.label = label;
-        Map map = new HashMap();
+        Map map = null;
         if (label != 1 && label != 2) {
             map = MapUtil.getInstance().addParms("sort", sort + " " + sorttype).addParms("page", page).addParms("lon", MyLocationListener.longitude).addParms("lat", MyLocationListener.latitude).addParms("sellerCategory", type).addParms("sellerShopName", search).build();
         } else {

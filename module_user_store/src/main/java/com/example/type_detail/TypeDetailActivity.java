@@ -250,7 +250,6 @@ public class TypeDetailActivity extends BaseActivity<TypeDetailView, TypeDetailP
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.e("搜索内容------------>" + searchString);
         if (searchString != null || !"".equals(searchString)) {
             mSearch.setText(searchString);
         }

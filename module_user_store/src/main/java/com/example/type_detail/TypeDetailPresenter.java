@@ -2,8 +2,8 @@ package com.example.type_detail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -24,7 +24,6 @@ import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.ProcessDialogUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +64,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         ProcessDialogUtil.showProcessDialog(mContext);
 //        WaitDialog.show((AppCompatActivity)mContext,null);
 
-        searchInfo = searchString == null ? "" : searchString;
-        id = categoryId == null ? "" : categoryId;
+        searchInfo = (searchString == null ? "" : searchString);
+        id = (categoryId == null ? "" : categoryId);
         Map map;
         if (isHotSale) {
             if ("".equals(id)) {
@@ -76,11 +75,16 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
             }
         } else {
             if ("".equals(id)) {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).build();
+                map = MapUtil.getInstance().addParms("pageNum", 1).build();
             } else {
-                map = MapUtil.getInstance().addParms("searchInfo", searchInfo).addParms("pageNum", 1).addParms("categoryId", id).build();
+                map = MapUtil.getInstance().addParms("pageNum", 1).addParms("categoryId", id).build();
             }
         }
+
+        if (!TextUtils.isEmpty(searchInfo)) {
+            map.put("searchInfo", searchInfo);
+        }
+
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -88,6 +92,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
                 LogUtil.e("搜索：" + result);
                 HotSaleBean hotSaleBean = JSON.parseObject(result, new TypeReference<HotSaleBean>() {
                 }.getType());
+                LogUtil.e("------------->" + hotSaleBean);
+                dataList.clear();
                 dataList.addAll(hotSaleBean.getData());
                 lstAdapter = new TypeDetailLstAdapter(mContext, dataList, R.layout.rv_type_detail_lst);
                 waterfallAdapter = new TypeDetailWaterfallAdapter(mContext, dataList, R.layout.rv_commend);
@@ -151,7 +157,7 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
 
     public void jumpToSearch() {
         Intent intent = new Intent(mContext, UserSearchActivity.class);
-        intent.putExtra("from",CommonResource.HISTORY_USER);
+        intent.putExtra("from", CommonResource.HISTORY_USER);
         mContext.startActivity(intent);
     }
 
@@ -159,11 +165,6 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         lstAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-//                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-//                intent.putExtra("id", dataList.get(position).getId() + "");
-//                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
-//                intent.putExtra("sellerId", dataList.get(position).getSellerId());
-//                mContext.startActivity(intent);
                 ARouter.getInstance()
                         .build("/module_user_store/GoodsDetailActivity")
                         .withString("id", dataList.get(position).getId() + "")
@@ -186,11 +187,6 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
         waterfallAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
-//                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
-//                intent.putExtra("id", dataList.get(position).getId() + "");
-//                intent.putExtra("commendId", dataList.get(position).getProductCategoryId() + "");
-//                intent.putExtra("sellerId", dataList.get(position).getSellerId());
-//                mContext.startActivity(intent);
                 ARouter.getInstance()
                         .build("/module_user_store/GoodsDetailActivity")
                         .withString("id", dataList.get(position).getId() + "")

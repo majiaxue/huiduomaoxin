@@ -1,13 +1,13 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://47.99.93.123:9001";   //商品//47.99.93.123//192.168.0.118
-    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.164
-    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家192.168.0.121
-    public static final String BASEURL_9004 = "http://47.99.93.123:9004";   //订单192.168.0.104
-    public static final String BASEURL_9005 = "http://47.99.93.123:9005";   //参数
-    public static final String BASEURL_9010 = "http://47.99.93.123:9010";  //本地小店
-    public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
+    public static final String BASEURL_9001 = "http://192.168.0.195:9001";   //商品//47.99.93.123//192.168.0.118
+    public static final String BASEURL_4001 = "http://192.168.0.195:4001";   //用户192.168.0.164
+    public static final String BASEURL_9003 = "http://192.168.0.195:9003";   //商家192.168.0.121
+    public static final String BASEURL_9004 = "http://192.168.0.195:9004";   //订单192.168.0.104
+    public static final String BASEURL_9005 = "http://192.168.0.195:9005";   //参数192.168.0.195
+    public static final String BASEURL_9010 = "http://192.168.0.195:9010";  //本地小店
+    public static final String BASEURL_4000 = "http://192.168.0.195:4000";   //上传文件
 
 
     public static final String ALLCATEGORT = "/rest/goods/allCategory"; //商品分类

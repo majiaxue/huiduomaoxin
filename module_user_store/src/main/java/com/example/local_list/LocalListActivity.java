@@ -93,6 +93,7 @@ public class LocalListActivity extends BaseActivity<LocalListView, LocalListPres
         customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
         mRefresh.setRefreshHeader(customHeader);
 
+        mSearch.setText(search);
         presenter.loadData(type, search, "", "", page, label);
     }
 

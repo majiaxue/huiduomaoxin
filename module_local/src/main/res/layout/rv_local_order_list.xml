@@ -34,7 +34,6 @@
             android:includeFontPadding="false"
             android:maxWidth="@dimen/dp_200"
             android:maxLines="1"
-            android:text="【爆款】招牌麻辣小龙虾-必点约10只麻辣虾"
             android:textColor="#333333"
             android:textSize="@dimen/sp_14" />
 

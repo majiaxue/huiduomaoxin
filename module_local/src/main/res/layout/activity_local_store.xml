@@ -96,34 +96,6 @@
                                 android:textSize="@dimen/sp_11" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dp_4"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="@dimen/dp_26"
-                                android:layout_height="@dimen/dp_12"
-                                android:background="#ffdbce"
-                                android:gravity="center"
-                                android:includeFontPadding="false"
-                                android:text="包配送"
-                                android:textColor="#fb5318"
-                                android:textSize="@dimen/sp_10" />
-
-                            <TextView
-                                android:id="@+id/local_store_txt2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dp_8"
-                                android:text="您下单，我配送，方便你我他"
-                                android:textColor="#999999"
-                                android:textSize="@dimen/sp_11" />
-                        </LinearLayout>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

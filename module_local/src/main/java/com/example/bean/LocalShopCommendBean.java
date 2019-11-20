@@ -68,7 +68,16 @@ public class LocalShopCommendBean {
     private String pigxxId;
     private int hotRecommendStatus;
     private int localRecommendStatus;
+    private String fullReductionAmount;
     private List<GoodsListBean> goodsList;
+
+    public String getFullReductionAmount() {
+        return fullReductionAmount;
+    }
+
+    public void setFullReductionAmount(String fullReductionAmount) {
+        this.fullReductionAmount = fullReductionAmount;
+    }
 
     public String getId() {
         return id;
@@ -351,6 +360,7 @@ public class LocalShopCommendBean {
                 ", pigxxId='" + pigxxId + '\'' +
                 ", hotRecommendStatus=" + hotRecommendStatus +
                 ", localRecommendStatus=" + localRecommendStatus +
+                ", fullReductionAmount='" + fullReductionAmount + '\'' +
                 ", goodsList=" + goodsList +
                 '}';
     }

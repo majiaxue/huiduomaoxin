@@ -54,8 +54,6 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     ImageView localStoreLogo;
     @BindView(R2.id.local_store_txt1)
     TextView localStoreTxt1;
-    @BindView(R2.id.local_store_txt2)
-    TextView localStoreTxt2;
     @BindView(R2.id.local_store_rv_commend)
     RecyclerView localStoreRvCommend;
     @BindView(R2.id.local_store_rv_left)

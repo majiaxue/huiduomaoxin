@@ -24,6 +24,7 @@ import com.example.bean.TxtAndChooseBean;
 import com.example.common.CommonResource;
 import com.example.local_order.adapter.LocalOrderAdapter;
 import com.example.local_order.adapter.LocalOrderNavbarAdapter;
+import com.example.local_order.adapter.LocalTuiKuanAdapter;
 import com.example.module_local.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -57,6 +58,8 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
 
     private String status;
     private boolean isTui = false;
+    private LocalTuiKuanAdapter tuiKuanAdapter;
+    private List<LocalTuiKuanBean.RecordsBean> tuiKuanBeanRecords = new ArrayList<>();
 
     public LocalOrderPresenter(Context context) {
         super(context);
@@ -75,7 +78,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         navbarList.add(new TxtAndChooseBean("配送中", false));
         navbarList.add(new TxtAndChooseBean("已完成", false));
         navbarList.add(new TxtAndChooseBean("已关闭", false));
-//        navbarList.add(new TxtAndChooseBean("退款中", false));
+        navbarList.add(new TxtAndChooseBean("退款中", false));
         navbarAdapter = new LocalOrderNavbarAdapter(mContext, navbarList, R.layout.rv_local_order_navbar);
         if (getView() != null) {
             getView().loadNavbar(navbarAdapter);
@@ -102,7 +105,6 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
 
     public void loadData(final String status, final int page) {
         this.status = status;
-        isTui = false;
         ProcessDialogUtil.showProcessDialog(mContext);
         Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_GET_ORDER, map);
@@ -123,8 +125,14 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                         getView().loadRv(orderAdapter);
                     }
                 } else {
-                    orderAdapter.notifyDataSetChanged();
+                    if (isTui) {
+                        getView().loadRv(orderAdapter);
+                    } else {
+                        orderAdapter.notifyDataSetChanged();
+                    }
                 }
+
+                isTui = false;
 
                 orderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
@@ -159,9 +167,9 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                                         refundPop(localOrderBeans.get(position));
                                         break;
 
-//                                    case "3":
-//                                        refundPop(localOrderBeans.get(position));
-//                                        break;
+                                    case "3":
+                                        refundPop(localOrderBeans.get(position));
+                                        break;
                                     default:
                                         break;
                                 }
@@ -177,7 +185,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                                         break;
 
                                     case "1":
-                                        confrimOrderTip(localOrderBeans.get(position));
+                                        ARouter.getInstance().build("/module_local/OrderInfoActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
                                         break;
 
                                     case "2":
@@ -185,7 +193,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                                         break;
 
                                     case "3":
-                                        ARouter.getInstance().build("/module_user_store/LocalAssessActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
+                                        confrimOrderTip(localOrderBeans.get(position));
                                         break;
                                     default:
                                         break;
@@ -218,7 +226,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
     }
 
     public void tuihuo(final int page) {
-        isTui = true;
+
         Map map = MapUtil.getInstance().addParms("page", page).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_TUIKUAN + "/" + SPUtil.getUserCode(), map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
@@ -229,23 +237,26 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                     getView().loadFinish();
                 }
                 if (page == 1) {
-                    localOrderBeans.clear();
+                    tuiKuanBeanRecords.clear();
                 }
-                LocalTuiKuanBean localTuiKuanBean = JSON.parseObject(result, LocalTuiKuanBean.class);
 
-                if (orderAdapter == null) {
-                    orderAdapter = new LocalOrderAdapter(mContext, localOrderBeans, R.layout.rv_local_order_list);
+                LocalTuiKuanBean localTuiKuanBean = JSON.parseObject(result, LocalTuiKuanBean.class);
+                tuiKuanBeanRecords.addAll(localTuiKuanBean.getRecords());
+                if (tuiKuanAdapter == null || !isTui) {
+                    tuiKuanAdapter = new LocalTuiKuanAdapter(mContext, tuiKuanBeanRecords, R.layout.rv_local_order_list);
                     if (getView() != null) {
-                        getView().loadRv(orderAdapter);
+                        getView().loadTuiKuanRv(tuiKuanAdapter);
                     }
                 } else {
-                    orderAdapter.notifyDataSetChanged();
+                    tuiKuanAdapter.notifyDataSetChanged();
                 }
 
-                orderAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                isTui = true;
+
+                tuiKuanAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(RecyclerView parent, View view, int position) {
-                        ARouter.getInstance().build("/module_local/OrderInfoActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
+                        ARouter.getInstance().build("/module_local/OrderInfoActivity").withSerializable("tuikuan", tuiKuanBeanRecords.get(position)).navigation();
                     }
                 });
             }
@@ -427,15 +438,13 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
      * 退款
      */
     private void refund(final LocalOrderBean localOrderBean, String reason, final PopupWindow pop) {
-//        localOrderBean.setNote(reason);
-//        String jsonString = JSON.toJSONString(localOrderBean);
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("orderSn", localOrderBean.getOrderSn());
         jsonObject.put("reason", reason);
-        String jsonString = JSON.toJSONString(localOrderBean);
+        String jsonString = JSON.toJSONString(jsonObject);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
-//        Map map = MapUtil.getInstance().addParms("orderSn", localOrderBean.getOrderSn()).addParms("reason", reason).build();
+
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postHeadWithBody(CommonResource.LOCAL_TUIKUAN, requestBody, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

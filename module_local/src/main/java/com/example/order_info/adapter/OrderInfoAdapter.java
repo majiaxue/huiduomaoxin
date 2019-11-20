@@ -17,7 +17,7 @@ public class OrderInfoAdapter extends MyRecyclerAdapter<LocalOrderBean.LocalOrde
     @Override
     public void convert(RecyclerViewHolder holder, LocalOrderBean.LocalOrderItemListBean data, int position) {
         holder.setText(R.id.rv_order_info_name, data.getGoodsName())
-                .setText(R.id.rv_order_info_count, data.getGoodsNum() + "")
+                .setText(R.id.rv_order_info_count, "X" + data.getGoodsNum())
                 .setText(R.id.rv_order_info_money, data.getGoodsPrice())
                 .setImageFresco(R.id.rv_order_info_img, data.getGoodsPic());
     }

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.local_order.adapter.LocalOrderAdapter;
 import com.example.local_order.adapter.LocalOrderNavbarAdapter;
+import com.example.local_order.adapter.LocalTuiKuanAdapter;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragment;
@@ -116,6 +117,11 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
 
     @Override
     public void loadRv(LocalOrderAdapter adapter) {
+        localOrderRvList.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadTuiKuanRv(LocalTuiKuanAdapter adapter) {
         localOrderRvList.setAdapter(adapter);
     }
 

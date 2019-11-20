@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
 import com.example.bean.AliPayBean;
 import com.example.bean.RedPackageBean;
@@ -34,6 +35,8 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class PaymentPresenter extends BasePresenter<PaymentView> {
     private String info = "";
@@ -188,9 +191,16 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
     public void pay2(boolean isWeChat, RedPackageBean redPackageBean) {
         if (isWeChat) {
             final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("totalAmount", redPackageBean.getBuyMoney());
+            jsonObject.put("orderSn", "");
+            jsonObject.put("productName", CommonResource.PROJECTNAME);
+            jsonObject.put("orderFlag", false);
+            String string = JSON.toJSONString(jsonObject);
+            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), string);
 
-            Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("orderSn", "").addParms("productName", CommonResource.PROJECTNAME).addParms("orderFlag", false).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.LOCAL_WX_PAY, map);
+//            Map map = MapUtil.getInstance().addParms("totalAmount", "0.01").addParms("orderSn", "").addParms("productName", CommonResource.PROJECTNAME).addParms("orderFlag", false).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_WX_PAY, body);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
@@ -223,8 +233,15 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 }
             }));
         } else {
-            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", redPackageBean.getBuyMoney()).addParms("redPackedId", redPackageBean.getId()).build();
-            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postData(CommonResource.BUY_RED_PACKAGE, map);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("totalAmount", redPackageBean.getBuyMoney());
+            jsonObject.put("userCode", SPUtil.getUserCode());
+            jsonObject.put("redPackedId", redPackageBean.getId());
+            String string = JSON.toJSONString(jsonObject);
+            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), string);
+
+//            Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("totalAmount", redPackageBean.getBuyMoney()).addParms("redPackedId", redPackageBean.getId()).build();
+            Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.BUY_RED_PACKAGE, body);
             RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
                 @Override
                 public void onSuccess(String result, String msg) {
