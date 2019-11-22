@@ -16,6 +16,7 @@ import com.example.entity.EventBusBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -107,8 +108,8 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
+        LogUtil.e("-------------->"+eventBusBean.getMsg());
         if (CommonResource.LOCAL_BUY_REDPACKEG.equals(eventBusBean.getMsg())) {
-
             finish();
         }
     }

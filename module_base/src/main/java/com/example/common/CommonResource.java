@@ -1,22 +1,22 @@
 package com.example.common;
 
 public class CommonResource {
-//    public static final String BASEURL_9001 = "http://47.99.93.123:9999";   //商品//47.99.93.123//192.168.0.118
-//    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.164
-//    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家192.168.0.121
-//    public static final String BASEURL_9004 = "http://47.99.93.123:9999";   //订单192.168.0.104
-//    public static final String BASEURL_9005 = "http://47.99.93.123:9999";   //参数192.168.0.195
-//    public static final String BASEURL_9010 = "http://47.99.93.123:9999";  //本地小店
-//    public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
+    public static final String BASEURL_9001 = "http://47.99.93.123:9999";   //商品//47.99.93.123//192.168.0.118
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.164
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家192.168.0.121
+    public static final String BASEURL_9004 = "http://47.99.93.123:9999";   //订单192.168.0.104
+    public static final String BASEURL_9005 = "http://47.99.93.123:9999";   //参数192.168.0.195
+    public static final String BASEURL_9010 = "http://47.99.93.123:9999";  //本地小店
+    public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
 
 
-    public static final String BASEURL_9001 = "http://192.168.0.100:9001";   //商品//47.99.93.123//192.168.0.118
-    public static final String BASEURL_4001 = "http://192.168.0.100:4001";   //用户192.168.0.164
-    public static final String BASEURL_9003 = "http://192.168.0.100:9003";   //商家192.168.0.121
-    public static final String BASEURL_9004 = "http://192.168.0.100:9004";   //订单192.168.0.104
-    public static final String BASEURL_9005 = "http://192.168.0.100:9005";   //参数192.168.0.195
-    public static final String BASEURL_9010 = "http://192.168.0.100:9010";  //本地小店
-    public static final String BASEURL_4000 = "http://192.168.0.100:4000";   //上传文件
+//    public static final String BASEURL_9001 = "http://192.168.0.100:9001";   //商品//47.99.93.123//192.168.0.118
+//    public static final String BASEURL_4001 = "http://192.168.0.100:4001";   //用户192.168.0.164
+//    public static final String BASEURL_9003 = "http://192.168.0.100:9003";   //商家192.168.0.121
+//    public static final String BASEURL_9004 = "http://192.168.0.100:9004";   //订单192.168.0.104
+//    public static final String BASEURL_9005 = "http://192.168.0.100:9005";   //参数192.168.0.195
+//    public static final String BASEURL_9010 = "http://192.168.0.100:9010";  //本地小店
+//    public static final String BASEURL_4000 = "http://192.168.0.100:4000";   //上传文件
 
 
     public static final String ALLCATEGORT = "/mall/goods/rest/goods/allCategory"; //商品分类
@@ -106,7 +106,7 @@ public class CommonResource {
     public static final String INVITE_ERWEIMA = "/rest/share/register";         //邀请好友页面升成二维码所需地址
     public static final String LOCAL_GET_ORDER = "/mall/local/rest/local-order";           //附近小店  获取订单列表
     public static final String LOCAL_GET_HONGBAO = "/mall/local/rest/local/redpacked/all";     //附近小店  获取红包信息
-    public static final String BUY_RED_PACKAGE = "/rest/local/alipay/redpacked";    //附近小店  购买红包
+    public static final String BUY_RED_PACKAGE = "/mall/local/rest/local/alipay/redpacked";    //附近小店  购买红包
     public static final String LOCAL_SHOP = "/mall/local/rest/local/shop-category/";       //附近小店 店铺详情
     public static final String LOCAL_CART_ADD = "/mall/local/rest/local/shop-car/add";     //附近小店 购物车 增加商品
     public static final String LOCAL_CART_MINUS = "/mall/local/rest/local/shop-car/minus"; //附近小店 购物车 减少商品

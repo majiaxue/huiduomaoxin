@@ -42,6 +42,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
     private String info = "";
     private final int ALI_CODE = 0x123;
     private SubmitOrderBean submitOrderBean;
+    private boolean isRedPackage = false;
 
     public PaymentPresenter(Context context) {
         super(context);
@@ -61,9 +62,11 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 String result = map.get("result");
                 String memo = map.get("memo");
                 if ("9000".equals(resultStatus)) {
-                    ARouter.getInstance().build("/module_user_store/pay_success")
-                            .withSerializable("bean", submitOrderBean)
-                            .navigation();
+                    if (!isRedPackage) {
+                        ARouter.getInstance().build("/module_user_store/pay_success")
+                                .withSerializable("bean", submitOrderBean)
+                                .navigation();
+                    }
                     ((Activity) mContext).finish();
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {
@@ -207,7 +210,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                     LogUtil.e("微信支付-------------->" + result);
                     getView().callBack();
                     try {
-
+                        SPUtil.addParm("wxpay", "10");
                         WeChatPayBean payBean = JSON.parseObject(result, WeChatPayBean.class);
 
                         PayReq request = new PayReq();
@@ -220,7 +223,6 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                         request.sign = payBean.getSign();
 
                         api.sendReq(request);
-                        SPUtil.addParm("wxpay", "10");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -233,6 +235,7 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
                 }
             }));
         } else {
+            isRedPackage = true;
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("totalAmount", redPackageBean.getBuyMoney());
             jsonObject.put("userCode", SPUtil.getUserCode());
