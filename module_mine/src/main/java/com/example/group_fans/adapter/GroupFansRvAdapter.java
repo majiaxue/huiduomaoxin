@@ -18,6 +18,7 @@ public class GroupFansRvAdapter extends MyRecyclerAdapter<UserInfoBean> {
     public void convert(RecyclerViewHolder holder, UserInfoBean data, int position) {
         holder.setText(R.id.rv_group_fans_name, data.getNickname())
                 .setText(R.id.rv_group_fans_time, "时间：" + data.getCreateTime())
-                .setImageUrlCircular(R.id.rv_group_fans_img, data.getIcon());
+                .setImageUrlCircular(R.id.rv_group_fans_img, data.getIcon())
+                .setText(R.id.rv_group_fans_total_fans, data.getTotalFans() == null ? "0" : data.getTotalFans());
     }
 }

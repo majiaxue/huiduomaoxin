@@ -55,12 +55,14 @@ public class MinePresenter extends BasePresenter<MineView> {
     public void loadRec() {
         List<BaseRecImageAndTextBean> dataList = new ArrayList();
         dataList.add(new BaseRecImageAndTextBean("邀请好友", R.drawable.invitefri));//0
-        dataList.add(new BaseRecImageAndTextBean("浏览记录", R.drawable.liulanjilu));//1
+        dataList.add(new BaseRecImageAndTextBean("我的积分", R.drawable.jifenguizeguankong));//1
         dataList.add(new BaseRecImageAndTextBean("我的收藏", R.drawable.shoucang));//2
         dataList.add(new BaseRecImageAndTextBean("联系客服", R.drawable.kefu_tianchong));//3
-//        dataList.add(new BaseRecImageAndTextBean("帮助中心", R.drawable.bangzhuzhongxin));
-        dataList.add(new BaseRecImageAndTextBean("消息通知", R.drawable.xiaoxi));//4
-        dataList.add(new BaseRecImageAndTextBean("意见反馈", R.drawable.icon_yijian));//5
+        dataList.add(new BaseRecImageAndTextBean("帮助中心", R.drawable.bangzhuzhongxin));//4
+        dataList.add(new BaseRecImageAndTextBean("消息通知", R.drawable.xiaoxi));//5
+        dataList.add(new BaseRecImageAndTextBean("意见反馈", R.drawable.icon_yijian));//6
+        dataList.add(new BaseRecImageAndTextBean("浏览记录", R.drawable.liulanjilu));//7
+
 
         myToolAdapter = new MyToolAdapter(mContext, dataList, R.layout.rv_mytool);
         if (getView() != null) {
@@ -90,12 +92,11 @@ public class MinePresenter extends BasePresenter<MineView> {
                 }
                 break;
             case 1:
-                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
-                    ARouter.getInstance().build("/mine/login").navigation();
+                if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
+                    ARouter.getInstance().build("/mine/points").navigation();
                 } else {
-                    ARouter.getInstance().build("/mine/browserecord").navigation();
+                    ARouter.getInstance().build("/mine/login").navigation();
                 }
-
                 break;
             case 2:
                 if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
@@ -107,21 +108,28 @@ public class MinePresenter extends BasePresenter<MineView> {
             case 3:
                 ARouter.getInstance().build("/mine/contactus").navigation();
                 break;
-//            case 4:
-//                ARouter.getInstance().build("/mine/helpcenter").navigation();
-//                break;
             case 4:
+                ARouter.getInstance().build("/mine/helpcenter").navigation();
+                break;
+            case 5:
                 if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
                     ARouter.getInstance().build("/mine/login").navigation();
                 } else {
                     ARouter.getInstance().build("/mine/messagecenter").navigation();
                 }
                 break;
-            case 5:
+            case 6:
                 if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
                     ARouter.getInstance().build("/mine/login").navigation();
                 } else {
                     ARouter.getInstance().build("/mine/suggestion").navigation();
+                }
+                break;
+            case 7:
+                if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+                    ARouter.getInstance().build("/mine/login").navigation();
+                } else {
+                    ARouter.getInstance().build("/mine/browserecord").navigation();
                 }
                 break;
             default:
@@ -201,11 +209,6 @@ public class MinePresenter extends BasePresenter<MineView> {
 
     public void jumpToupYYS() {
         EventBus.getDefault().post(new EventBusBean(CommonResource.JUMP_OPERATOR));
-//        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
-//            ARouter.getInstance().build("/mine/login").navigation();
-//        } else {
-//            ARouter.getInstance().build("/mine/operator").navigation();
-//        }
     }
 
     public void loadData() {
@@ -305,14 +308,6 @@ public class MinePresenter extends BasePresenter<MineView> {
         }));
     }
 
-    public void jumpToPoints() {
-        if (SPUtil.getToken() != null && !"".equals(SPUtil.getToken())) {
-            ARouter.getInstance().build("/mine/points").navigation();
-        } else {
-            ARouter.getInstance().build("/mine/login").navigation();
-        }
-    }
-
     public Bitmap returnBitMap(String url) {
         URL myFileUrl = null;
         Bitmap bitmap = null;
@@ -349,6 +344,14 @@ public class MinePresenter extends BasePresenter<MineView> {
         } catch (Exception e) {
             e.printStackTrace();
 
+        }
+    }
+
+    public void jumpToInviteFriend() {
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/invite_friends").navigation();
         }
     }
 }

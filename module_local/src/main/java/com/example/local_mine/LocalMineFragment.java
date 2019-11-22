@@ -1,6 +1,5 @@
 package com.example.local_mine;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,7 +10,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.RedPackageBean;
 import com.example.common.CommonResource;
-import com.example.coupon_wallet.CouponWalletActivity;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragment;
@@ -81,7 +79,7 @@ public class LocalMineFragment extends BaseFragment<LocalMineView, LocalMinePres
         localMineYouhuiquan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_mine/CouponActivity").navigation();
+                ARouter.getInstance().build("/module_user_mine/CouponActivity").withString("from", CommonResource.HISTORY_LOCAL).navigation();
             }
         });
     }

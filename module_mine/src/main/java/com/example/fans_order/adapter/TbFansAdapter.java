@@ -28,10 +28,19 @@ public class TbFansAdapter extends MyRecyclerAdapter<TbFansOrderBean> {
                 .setText(R.id.fans_order_list_count, "x" + data.getItemNum())
                 .setText(R.id.fans_order_list_total, "共" + data.getItemNum() + "件商品  合计：￥" + data.getAlipayTotalPrice())
                 .setText(R.id.fans_order_list_time, "购买时间：" + data.getCreateTime())
-                .setImageResource(R.id.fans_order_list_type, R.drawable.icon_tb)
                 .setImageUrl(R.id.fans_order_list_head, data.getFansIcon())
                 .setText(R.id.fans_order_list_nickname, data.getFansName())
                 .setText(R.id.fans_order_list_pridect, "预计收益" + (data.getBackMoney() == null ? "0.0" : data.getBackMoney()) + "元");
+
+        if ("京东".equals(data.getOrderType())) {
+            holder.setImageResource(R.id.fans_order_list_type, R.drawable.icon_jingdong);
+        } else if ("拼多多".equals(data.getOrderType())) {
+            holder.setImageResource(R.id.fans_order_list_type, R.drawable.icon_pinduoduo);
+        } else if ("天猫".equals(data.getOrderType())) {
+            holder.setImageResource(R.id.fans_order_list_type, R.drawable.icon_tianmao);
+        } else {
+            holder.setImageResource(R.id.fans_order_list_type, R.drawable.icon_taobao);
+        }
 
         if ("3".equals(data.getTkStatus())) {
             holder.setText(R.id.fans_order_list_status, "已结算");

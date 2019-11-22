@@ -24,7 +24,7 @@ import java.util.List;
 public class CouponPresenter extends BasePresenter<CouponView> {
 
     private List<Fragment> fragmentList = new ArrayList<>();
-    private String[] titleArr = {"全部","已过期"};
+    private String[] titleArr = {"全部", "已过期"};
 
     public CouponPresenter(Context context) {
         super(context);
@@ -35,13 +35,13 @@ public class CouponPresenter extends BasePresenter<CouponView> {
 
     }
 
-    public void initTabLayout(final TabLayout intoShopTab) {
+    public void initTabLayout(final TabLayout intoShopTab, String from) {
         for (String title : titleArr) {
             intoShopTab.addTab(intoShopTab.newTab().setText(title));
         }
 
-        fragmentList.add(new AllFragment());
-        fragmentList.add(new HaveExpiredFragment());
+        fragmentList.add(new AllFragment(from));
+        fragmentList.add(new HaveExpiredFragment(from));
 
         intoShopTab.post(new Runnable() {
             @Override

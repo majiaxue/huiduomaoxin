@@ -91,6 +91,15 @@ public class UserInfoBean implements Serializable {
     private String aliAccount;
     private String cashOutStringegration;
     private String StringegrationCashOutNote;
+    private String totalFans;
+
+    public String getTotalFans() {
+        return totalFans;
+    }
+
+    public void setTotalFans(String totalFans) {
+        this.totalFans = totalFans;
+    }
 
     public String getId() {
         return id;
@@ -473,6 +482,7 @@ public class UserInfoBean implements Serializable {
                 ", aliAccount='" + aliAccount + '\'' +
                 ", cashOutStringegration='" + cashOutStringegration + '\'' +
                 ", StringegrationCashOutNote='" + StringegrationCashOutNote + '\'' +
+                ", totalFans='" + totalFans + '\'' +
                 '}';
     }
 }

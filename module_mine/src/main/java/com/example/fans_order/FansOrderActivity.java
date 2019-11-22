@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.bean.FansOrderCensusBean;
@@ -91,16 +90,6 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
                 fansOrderTab.getTabAt(0).select();
             }
         });
-
-        fansOrderSc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                index = 0;
-//                presenter.change(3, index);
-//                fansOrderTab.getTabAt(0).select();
-                Toast.makeText(FansOrderActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -110,15 +99,14 @@ public class FansOrderActivity extends BaseFragmentActivity<FansOrderView, FansO
 
     @Override
     public void typeChanged(int position) {
-        fansOrderTb.setTextColor(Color.parseColor(position == 0 ? "#ffffff" : "#222222"));
-        fansOrderPdd.setTextColor(Color.parseColor(position == 1 ? "#ffffff" : "#222222"));
-        fansOrderJd.setTextColor(Color.parseColor(position == 2 ? "#ffffff" : "#222222"));
-        fansOrderSc.setTextColor(Color.parseColor(position == 3 ? "#ffffff" : "#222222"));
+        fansOrderTb.setTextColor(Color.parseColor(position == 0 ? "#e74744" : "#ffffff"));
+        fansOrderPdd.setTextColor(Color.parseColor(position == 1 ? "#e74744" : "#ffffff"));
+        fansOrderJd.setTextColor(Color.parseColor(position == 2 ? "#e74744" : "#ffffff"));
 
-        fansOrderTb.setBackgroundResource(position == 0 ? R.drawable.predict_xuan_left : 0);
-        fansOrderPdd.setBackgroundResource(position == 1 ? R.drawable.predict_xuan : 0);
-        fansOrderJd.setBackgroundResource(position == 2 ? R.drawable.predict_xuan_right : 0);
-//        fansOrderSc.setBackgroundResource(position == 3 ? R.drawable.predict_xuan_right : 0);
+
+        fansOrderTb.setBackgroundResource(position == 0 ? R.drawable.bg_fans_order_left : 0);
+        fansOrderPdd.setBackgroundResource(position == 1 ? R.drawable.bg_fans_order_zhong : 0);
+        fansOrderJd.setBackgroundResource(position == 2 ? R.drawable.bg_fans_order_right : 0);
     }
 
     @Override

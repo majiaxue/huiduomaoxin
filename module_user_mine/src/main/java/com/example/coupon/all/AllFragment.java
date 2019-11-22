@@ -1,20 +1,18 @@
 package com.example.coupon.all;
 
-import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.adapter.CouponWalletAdapter;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class AllFragment extends BaseFragment<AllView, AllPresenter> implements AllView {
 
@@ -25,6 +23,16 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
     @BindView(R2.id.all_hide)
     LinearLayout allHide;
 
+    private String from;
+
+    public AllFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public AllFragment(String from) {
+        this.from = from;
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_all;
@@ -32,11 +40,22 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
 
     @Override
     public void initData() {
-        presenter.allRec(allRec);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        allRec.setLayoutManager(linearLayoutManager);
+        if (CommonResource.HISTORY_LOCAL.equals(from)) {
+            presenter.localMyCoupon();
+        } else {
+            presenter.allRec(allRec);
+        }
     }
 
     @Override
     public void initClick() {
+
+    }
+
+    @Override
+    public void loadRv(CouponWalletAdapter adapter) {
 
     }
 

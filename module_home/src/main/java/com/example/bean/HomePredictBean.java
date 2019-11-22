@@ -11,6 +11,15 @@ public class HomePredictBean {
     private String settleLastMonth;
     private String waitCurrentMonth;
     private String settleCurrentMonth;
+    private String waitLastMonth;
+
+    public String getWaitLastMonth() {
+        return waitLastMonth;
+    }
+
+    public void setWaitLastMonth(String waitLastMonth) {
+        this.waitLastMonth = waitLastMonth;
+    }
 
     public String getSettleLastMonth() {
         return settleLastMonth;
@@ -34,5 +43,15 @@ public class HomePredictBean {
 
     public void setSettleCurrentMonth(String settleCurrentMonth) {
         this.settleCurrentMonth = settleCurrentMonth;
+    }
+
+    @Override
+    public String toString() {
+        return "HomePredictBean{" +
+                "settleLastMonth='" + settleLastMonth + '\'' +
+                ", waitCurrentMonth='" + waitCurrentMonth + '\'' +
+                ", settleCurrentMonth='" + settleCurrentMonth + '\'' +
+                ", waitLastMonth='" + waitLastMonth + '\'' +
+                '}';
     }
 }

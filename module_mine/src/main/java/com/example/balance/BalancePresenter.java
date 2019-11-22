@@ -2,8 +2,8 @@ package com.example.balance;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.example.balance.income.IncomeFragment;
 import com.example.balance.payout.PayoutFragment;
@@ -13,19 +13,17 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.order.adapter.OrderVPAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 public class BalancePresenter extends BasePresenter<BalanceView> {
 
-    private List<Fragment> fragmentList;
+    private FragmentManager fragmentManager;
+    private IncomeFragment incomeFragment;
+    private PayoutFragment payoutFragment;
 
     public BalancePresenter(Context context) {
         super(context);
@@ -34,16 +32,6 @@ public class BalancePresenter extends BasePresenter<BalanceView> {
     @Override
     protected void onViewDestroy() {
 
-    }
-
-    public void initVP(FragmentManager fm, String[] titleArr) {
-        fragmentList = new ArrayList<>();
-        fragmentList.add(new IncomeFragment());
-        fragmentList.add(new PayoutFragment());
-        OrderVPAdapter vpAdapter = new OrderVPAdapter(fm, fragmentList, titleArr);
-        if (getView() != null) {
-            getView().updateVP(vpAdapter);
-        }
     }
 
     public void loadData() {
@@ -70,5 +58,30 @@ public class BalancePresenter extends BasePresenter<BalanceView> {
 
     public void jumpToCashout() {
         mContext.startActivity(new Intent(mContext, CashoutActivity.class));
+    }
+
+    public void initFragment(FragmentManager fragmentManager, int resId) {
+        this.fragmentManager = fragmentManager;
+        incomeFragment = new IncomeFragment();
+        payoutFragment = new PayoutFragment();
+        FragmentTransaction transaction = this.fragmentManager.beginTransaction();
+        transaction.add(resId, incomeFragment)
+                .add(resId, payoutFragment)
+                .show(incomeFragment)
+                .hide(payoutFragment)
+                .commit();
+    }
+
+    public void changeView(int i) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (i == 1) {
+            transaction.show(incomeFragment)
+                    .hide(payoutFragment)
+                    .commit();
+        } else {
+            transaction.show(payoutFragment)
+                    .hide(incomeFragment)
+                    .commit();
+        }
     }
 }
