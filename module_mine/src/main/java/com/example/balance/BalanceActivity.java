@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.bean.BalanceBean;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseFragmentActivity;
@@ -89,8 +90,9 @@ public class BalanceActivity extends BaseFragmentActivity<BalanceView, BalancePr
     }
 
     @Override
-    public void loadBalance(String balance) {
-        balanceTotalMoney.setText("￥" + balance);
+    public void loadBalance(BalanceBean balanceBean) {
+        balanceTotalMoney.setText("￥" + balanceBean.getTotalblance());
+        balanceLjsy.setText("￥" + balanceBean.getHistoryBalance());
     }
 
     @Override

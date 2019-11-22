@@ -14,6 +14,12 @@ public class ProductLiuYanBean {
      */
     private String message;
 
+    public ProductLiuYanBean(String name, String phone, String message) {
+        this.name = name;
+        this.phone = phone;
+        this.message = message;
+    }
+
     public String getName() {
         return name;
     }
