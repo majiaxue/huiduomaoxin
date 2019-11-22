@@ -171,7 +171,7 @@ public class CommonResource {
     public static final String GETORDERTRACESBYJSON = "/mall/order/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
     public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品本地类型
-    public static final String SELLERNETCATEGORY = "/rest/tbk/goods/sellerNetCategory";//商品线上类型
+    public static final String SELLERNETCATEGORY = "/mall/goods/rest/tbk/goods/sellerNetCategory";//商品线上类型
     public static final String TBKGOODSGETTRILLDATA = "/mall/goods/rest/tbk/goods/gettrilldata";//抖券直播
     public static final String SIGNFANS = "/rest/sign/fans";//粉丝数量"
     public static final String SIGNFIRSTORDER = "/rest/sign/first/order";//首次下单

@@ -249,7 +249,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopClassify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                businessApplicationShopClassify.setEnabled(false);
                 if (businessApplicationShopTypeText.getText().toString().equals("点击选择")) {
                     Toast.makeText(BusinessApplicationActivity.this, "请先选择商家类型!", Toast.LENGTH_SHORT).show();
                 } else {

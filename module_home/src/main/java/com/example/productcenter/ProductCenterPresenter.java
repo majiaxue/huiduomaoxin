@@ -116,31 +116,27 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
                 getView().loadRefresh();
                 if (result != null) {
                     final ProductCenterBean productCenterBean = JSON.parseObject(result, ProductCenterBean.class);
-                    if (productCenterBean.getRecords() != null && productCenterBean.getRecords().size() != 0) {
-                        if (1 == nextPage) {
-                            recordsBeanList.clear();
-                        }
-                        recordsBeanList.addAll(productCenterBean.getRecords());
-                        if (productCenterAdapter == null) {
-                            productCenterAdapter = new ProductCenterAdapter(mContext, recordsBeanList, R.layout.item_product_center_rec);
-                            if (getView() != null) {
-                                getView().loadAdapter(productCenterAdapter);
-                            }
-                        } else {
-                            productCenterAdapter.notifyDataSetChanged();
-                        }
-
-                        productCenterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(RecyclerView parent, View view, int position) {
-                                ARouter.getInstance().build("/module_home/ProductDetailActivity")
-                                        .withSerializable("bean", productCenterBean.getRecords().get(position))
-                                        .navigation();
-                            }
-                        });
-                    } else {
-                        Toast.makeText(mContext, "已经到底了!", Toast.LENGTH_SHORT).show();
+                    if (1 == nextPage) {
+                        recordsBeanList.clear();
                     }
+                    recordsBeanList.addAll(productCenterBean.getRecords());
+                    if (productCenterAdapter == null) {
+                        productCenterAdapter = new ProductCenterAdapter(mContext, recordsBeanList, R.layout.item_product_center_rec);
+                        if (getView() != null) {
+                            getView().loadAdapter(productCenterAdapter);
+                        }
+                    } else {
+                        productCenterAdapter.notifyDataSetChanged();
+                    }
+
+                    productCenterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            ARouter.getInstance().build("/module_home/ProductDetailActivity")
+                                    .withSerializable("bean", productCenterBean.getRecords().get(position))
+                                    .navigation();
+                        }
+                    });
                 }
             }
 
