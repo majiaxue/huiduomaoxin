@@ -44,6 +44,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.addressselect.AddressSelector;
 import com.example.view.addressselect.CityInterface;
@@ -259,6 +260,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     }
 
     public void popupGoodsClassify(final TextView businessApplicationShopClassifyText, final int type) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         if (1 == type) {
             Map map = MapUtil.getInstance().addParms("type", type).build();
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
