@@ -32,7 +32,7 @@ import com.example.bean.RedPackageBean;
 import com.example.bean.ShippingAddressBean;
 import com.example.bean.WeChatPayBean;
 import com.example.common.CommonResource;
-import com.example.coupon_wallet.adapter.CouponWalletAdapter;
+import com.example.adapter.CouponWalletAdapter;
 import com.example.local_order_confirm.adapter.LocalOrderConfirmAdapter;
 import com.example.module_local.R;
 import com.example.mvp.BasePresenter;

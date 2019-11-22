@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.RedPackageBean;
 import com.example.common.CommonResource;
-import com.example.coupon_wallet.adapter.CouponWalletAdapter;
+import com.example.adapter.CouponWalletAdapter;
 import com.example.module_local.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;

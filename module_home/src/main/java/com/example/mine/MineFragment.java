@@ -14,13 +14,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.HomePredictBean;
 import com.example.bean.UserInfoBean;
-import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.StatusBarUtils;
@@ -59,7 +57,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @BindView(R2.id.mine_yishixiao)
     LinearLayout mineYishixiao;
     @BindView(R2.id.mine_iwantup)
-    TextView mIWantUp;
+    ImageView mIWantUp;
     @BindView(R2.id.mine_income_form)
     LinearLayout mineIncomeForm;
     @BindView(R2.id.mine_fans_order)
@@ -81,16 +79,17 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @BindView(R2.id.mine_shangyue)
     TextView mShangyue;
     @BindView(R2.id.mine_balance)
-    LinearLayout mBalance;
+    TextView mBalance;
     @BindView(R2.id.mine_my_balance)
     TextView mBalanceTxt;
-    @BindView(R2.id.mine_points)
-    LinearLayout mPoints;
-    @BindView(R2.id.mine_my_points)
-    TextView mPointsTxt;
+    @BindView(R2.id.mine_invite_friend)
+    TextView mInviteFriend;
+    @BindView(R2.id.mine_shangyueyugu)
+    TextView mSyyg;
 
     private UserInfoBean userInfo;
     private boolean flag = false;
+    private long currentTime = 0;//判断点击时间间隔
 
     @Override
     public int getLayoutId() {
@@ -109,84 +108,120 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToLogin();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToLogin();
+                }
             }
         });
 
         mineName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToLogin();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToLogin();
+                }
             }
         });
 
         mineSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToSetting();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToSetting();
+                }
             }
         });
 
         mIWantUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToUpgrade();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToUpgrade();
+                }
             }
         });
 
         mineAllOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder(0);
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToOrder(0);
+                }
             }
         });
 
         mineYifukuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder(1);
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToOrder(1);
+                }
             }
         });
 
         mineYijiesuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder(2);
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToOrder(2);
+                }
             }
         });
 
         mineYishixiao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToOrder(3);
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToOrder(3);
+                }
             }
         });
 
         mineFansOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToFansOrder();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToFansOrder();
+                }
             }
         });
 
         mineGroupFans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToGroupFans();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToGroupFans();
+                }
             }
         });
 
         mineUpYys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToupYYS();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToupYYS();
+                }
             }
         });
 
         mineIncomeForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToPredict();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToPredict();
+                }
             }
         });
 
@@ -200,14 +235,20 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToBalance();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToBalance();
+                }
             }
         });
 
-        mPoints.setOnClickListener(new View.OnClickListener() {
+        mInviteFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.jumpToPoints();
+                if ((System.currentTimeMillis() - currentTime) / 1000 >= 3) {
+                    currentTime = System.currentTimeMillis();
+                    presenter.jumpToInviteFriend();
+                }
             }
         });
     }
@@ -230,7 +271,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             StatusBarUtils.setStatusBarColor(getActivity(), R.color.statusBg);
         } else {
             StatusBarUtils.setStatusTheme(getActivity(), true, true);
-            StatusBarUtils.setAndroidNativeLightStatusBar(getActivity(),false);
+            StatusBarUtils.setAndroidNativeLightStatusBar(getActivity(), false);
             flag = false;
         }
     }
@@ -243,6 +284,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             mBenri.setText("0元");
             mBenyue.setText("0元");
             mShangyue.setText("0元");
+            mSyyg.setText("0元");
         } else if (!hidden && !TextUtils.isEmpty(SPUtil.getToken())) {
             //如果该页面可见并且已登录
         }
@@ -254,6 +296,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mBenri.setText(homePredictBean.getWaitCurrentMonth() + "元");
         mBenyue.setText(homePredictBean.getSettleCurrentMonth() + "元");
         mShangyue.setText(homePredictBean.getSettleLastMonth() + "元");
+        mSyyg.setText(homePredictBean.getWaitLastMonth() + "元");
     }
 
     @Override
@@ -265,7 +308,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineTemp.setVisibility(View.VISIBLE);
         mIWantUp.setVisibility(View.VISIBLE);
         mBalanceTxt.setText(userInfo.getBlance() == null ? "0" : userInfo.getBlance());
-        mPointsTxt.setText(userInfo.getIntegration() == null ? "0" : userInfo.getIntegration());
 
         if (userInfo.getLevel() != null && !"".equals(userInfo.getLevel().trim())) {
             mineLv.setVisibility(View.VISIBLE);

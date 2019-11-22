@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/include_status" />
+    <ImageView
+        android:id="@+id/fans_order_top_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/tk_fsdd_bj" />
+
+    <include
+        android:id="@+id/fans_order_temp"
+        layout="@layout/include_status" />
 
     <RelativeLayout
+        android:id="@+id/fans_order_temp2"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45">
+        android:layout_height="@dimen/dp_45"
+        android:layout_below="@id/fans_order_temp">
 
         <ImageView
             android:id="@+id/fans_order_back"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_44"
             android:padding="@dimen/dp_14"
-            android:src="@drawable/icon_fanhui" />
+            android:src="@drawable/icon_fanhui_bai" />
 
         <LinearLayout
             android:layout_width="@dimen/dp_250"
             android:layout_height="@dimen/dp_30"
             android:layout_centerInParent="true"
-            android:background="@drawable/bg_15_dedede"
+            android:background="@drawable/bg_15_f0f0f0_trans"
             android:orientation="horizontal">
 
             <TextView
@@ -30,11 +41,11 @@
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/predict_xuan_left"
+                android:background="@drawable/bg_fans_order_left"
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/taobao"
-                android:textColor="#ffffff"
+                android:textColor="#e74744"
                 android:textSize="@dimen/sp_14" />
 
             <View
@@ -50,7 +61,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/pinduoduo"
-                android:textColor="#222222"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_14" />
 
             <View
@@ -66,7 +77,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/jingdong"
-                android:textColor="#222222"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_14" />
 
             <View
@@ -90,17 +101,16 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="@dimen/dp_348"
-        android:layout_height="@dimen/dp_150"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dp_13"
-        android:background="@drawable/ghfddfg"
+        android:layout_width="@dimen/dp_285"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fans_order_temp2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_35"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_39"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -111,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:text="0"
-                android:textColor="#31a3fe"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_30" />
 
             <TextView
@@ -120,14 +130,13 @@
                 android:layout_marginTop="@dimen/dp_13"
                 android:includeFontPadding="false"
                 android:text="付款笔数（笔）"
-                android:textColor="#c1d3f8"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_10" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_39"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -138,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:text="0"
-                android:textColor="#31a3fe"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_30" />
 
             <TextView
@@ -147,14 +156,13 @@
                 android:layout_marginTop="@dimen/dp_13"
                 android:includeFontPadding="false"
                 android:text="成交金额（元）"
-                android:textColor="#c1d3f8"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_10" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_39"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -165,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:text="0"
-                android:textColor="#31a3fe"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_30" />
 
             <TextView
@@ -174,7 +182,7 @@
                 android:layout_marginTop="@dimen/dp_13"
                 android:includeFontPadding="false"
                 android:text="预估收入（元）"
-                android:textColor="#c1d3f8"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/sp_10" />
         </LinearLayout>
     </LinearLayout>
@@ -183,19 +191,22 @@
         android:id="@+id/fans_order_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/fans_order_top_img"
+        android:layout_marginTop="@dimen/dp_m_35"
         app:tabBackground="@android:color/transparent"
         app:tabGravity="fill"
-        app:tabIndicatorColor="#fc5917"
+        app:tabIndicator="@drawable/icon_indicator"
         app:tabIndicatorFullWidth="false"
-        app:tabIndicatorHeight="@dimen/dp_3"
+        app:tabIndicatorHeight="@dimen/dp_5"
         app:tabMode="fixed"
         app:tabRippleColor="@android:color/transparent"
         app:tabSelectedTextColor="#fc5917"
-        app:tabTextColor="#222222"></android.support.design.widget.TabLayout>
+        app:tabTextColor="#222222" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/fans_order_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"></android.support.v4.view.ViewPager>
-</LinearLayout>
+        android:layout_below="@id/fans_order_tab"
+        android:overScrollMode="never" />
+</RelativeLayout>

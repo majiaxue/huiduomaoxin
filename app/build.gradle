@@ -6,6 +6,8 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+        //com.woxuan.fltk
+        //com.example.taobaoguest_android
         applicationId "com.example.taobaoguest_android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

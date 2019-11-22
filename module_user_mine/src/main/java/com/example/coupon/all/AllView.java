@@ -1,5 +1,6 @@
 package com.example.coupon.all;
 
+import com.example.adapter.CouponWalletAdapter;
 import com.example.mvp.IView;
 
 /**
@@ -7,4 +8,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface AllView extends IView {
+    void loadRv(CouponWalletAdapter adapter);
 }

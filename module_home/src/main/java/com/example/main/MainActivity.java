@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -41,6 +42,8 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     RadioGroup mainGroup;
     @BindView(R2.id.main_shangcheng)
     Button mRela;
+    @BindView(R2.id.main_operator)
+    RadioButton mYYS;
     @Autowired(name = "type")
     String type;
 
@@ -99,6 +102,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
         if (CommonResource.JUMP_OPERATOR.equals(eventBusBean.getMsg())) {
+            mYYS.setChecked(true);
             presenter.click(R.id.main_operator);
         }
     }

@@ -272,7 +272,8 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderView> {
         List<Map> list = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
             for (int j = 0; j < dataList.get(i).getItems().size(); j++) {
-                list.add(MapUtil.getInstance().addParms("provinceName", province)
+                list.add(MapUtil.getInstance()
+                        .addParms("provinceName", province)
                         .addParms("quantity", dataList.get(i).getItems().get(j).getQuantity())
                         .addParms("skuId", dataList.get(i).getItems().get(j).getProductSkuId())
                         .addParms("productId", dataList.get(i).getItems().get(j).getProductId())
