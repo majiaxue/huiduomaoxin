@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.alibaba.fastjson.JSON;
 import com.example.balance.income.IncomeFragment;
 import com.example.balance.payout.PayoutFragment;
+import com.example.bean.BalanceBean;
 import com.example.cashout.CashoutActivity;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
@@ -40,12 +42,9 @@ public class BalancePresenter extends BasePresenter<BalanceView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("余额：" + result);
+                BalanceBean balanceBean = JSON.parseObject(result, BalanceBean.class);
                 if (getView() != null) {
-                    if (result == null || "".equals(result)) {
-                        getView().loadBalance("0");
-                    } else {
-                        getView().loadBalance(result);
-                    }
+                    getView().loadBalance(balanceBean);
                 }
             }
 
