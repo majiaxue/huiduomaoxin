@@ -141,7 +141,20 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                     view3.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Toast.makeText(mContext, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
+                                            Map orderSn = MapUtil.getInstance().addParms("orderSn", listBeans.get(position).getOrderSn()).build();
+                                            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9004).getData(CommonResource.DELIVERGOODSREMIND, orderSn);
+                                            RetrofitUtil.getInstance().toSubscribe(data,new OnMyCallBack(new OnDataListener() {
+                                                @Override
+                                                public void onSuccess(String result, String msg) {
+                                                    LogUtil.e("提醒发货"+result);
+                                                    Toast.makeText(mContext, "已提醒商家发货!", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onError(String errorCode, String errorMsg) {
+                                                    LogUtil.e("提醒发货"+errorMsg);
+                                                }
+                                            }));
                                         }
                                     });
                                 } else if (status == 6) {

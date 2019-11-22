@@ -29,7 +29,9 @@ import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.CityBean;
 import com.example.bean.PopupGoodsClassBean;
+import com.example.bean.PopupXSGoodsClassBean;
 import com.example.businessapplication.adapter.PopupGoodsClassifyAdapter;
+import com.example.businessapplication.adapter.PopupXSGoodsClassifyAdapter;
 import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
@@ -73,6 +75,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     private String cityName3 = "";
     private List<PopupGoodsClassBean> classBeanList = new ArrayList<>();
     private PopupGoodsClassifyAdapter popupGoodsClassifyAdapter;
+    private PopupXSGoodsClassifyAdapter popupXSGoodsClassifyAdapter;
 
     public BusinessApplicationPresenter(Context context) {
         super(context);
@@ -256,92 +259,157 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     }
 
     public void popupGoodsClassify(final TextView businessApplicationShopClassifyText, final int type) {
+        if (1 == type) {
+            Map map = MapUtil.getInstance().addParms("type", type).build();
+            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
+            RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("popupGoodsClassify" + result);
+                    final List<PopupGoodsClassBean> popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
+                    if (popupGoodsClassBeans.size() != 0) {
+                        final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
+                        TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
+                        TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
+                        final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
+                        final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
+                        final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        classifyRec.setLayoutManager(linearLayoutManager);
+                        popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
+                        classifyRec.setAdapter(popupGoodsClassifyAdapter);
 
-        Map map = MapUtil.getInstance().addParms("type", type).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
-        RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("popupGoodsClassify" + result);
-                final List<PopupGoodsClassBean> popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
-                if (popupGoodsClassBeans.size() != 0) {
-                    final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
-                    TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
-                    TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
-                    final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
-                    final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
-                    final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                    classifyRec.setLayoutManager(linearLayoutManager);
-                    popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
-                    classifyRec.setAdapter(popupGoodsClassifyAdapter);
+                        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                        popupWindow.setOutsideTouchable(true);
+                        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
+                        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+                        PopUtils.setTransparency(mContext, 0.3f);
 
-                    final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-                    popupWindow.setOutsideTouchable(true);
-                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
-                    popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
-                    PopUtils.setTransparency(mContext, 0.3f);
-
-                    imageClose.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                        }
-                    });
-
-                    popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
-                                if (position == i) {
-                                    popupGoodsClassBeans.get(i).setCheck(true);
-                                } else {
-                                    popupGoodsClassBeans.get(i).setCheck(false);
-                                }
+                        imageClose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popupWindow.dismiss();
                             }
-                            popupGoodsClassifyAdapter.notifyDataSetChanged();
-                        }
-                    });
+                        });
 
-                    textView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
-                                if (popupGoodsClassBeans.get(i).isCheck()) {
-                                    businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
+                        popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                                    if (position == i) {
+                                        popupGoodsClassBeans.get(i).setCheck(true);
+                                    } else {
+                                        popupGoodsClassBeans.get(i).setCheck(false);
+                                    }
                                 }
+                                popupGoodsClassifyAdapter.notifyDataSetChanged();
                             }
-                            popupWindow.dismiss();
-                        }
-                    });
+                        });
 
-                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
-                            getView().kedian();
-                            PopUtils.setTransparency(mContext, 1.0f);
-                        }
-                    });
+                        textView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                                    if (popupGoodsClassBeans.get(i).isCheck()) {
+                                        businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
+                                    }
+                                }
+                                popupWindow.dismiss();
+                            }
+                        });
 
-//                    PopUtils.createPop(mContext, view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
-//                        @Override
-//                        public void setOnPop(final PopupWindow pop) {
-//
-//
-//
-//
-//                        }
-//                    });
+                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                getView().kedian();
+                                PopUtils.setTransparency(mContext, 1.0f);
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
 
                 }
-            }
+            }));
+        }else{
+            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithout(CommonResource.SELLERNETCATEGORY);
+            RetrofitUtil.getInstance().toSubscribe(dataWithout,new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    final List<PopupXSGoodsClassBean> popupXSGoodsClassBeans = JSON.parseArray(result, PopupXSGoodsClassBean.class);
+                    if (popupXSGoodsClassBeans.size() != 0) {
+                        final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
+                        TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
+                        TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
+                        final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
+                        final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
+                        final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                        classifyRec.setLayoutManager(linearLayoutManager);
+                        popupXSGoodsClassifyAdapter = new PopupXSGoodsClassifyAdapter(mContext, popupXSGoodsClassBeans, R.layout.popup_item_goods_classify);
+                        classifyRec.setAdapter(popupXSGoodsClassifyAdapter);
 
-            @Override
-            public void onError(String errorCode, String errorMsg) {
+                        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                        popupWindow.setOutsideTouchable(true);
+                        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
+                        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+                        PopUtils.setTransparency(mContext, 0.3f);
 
-            }
-        }));
+                        imageClose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popupWindow.dismiss();
+                            }
+                        });
+
+                        popupXSGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(RecyclerView parent, View view, int position) {
+                                for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
+                                    if (position == i) {
+                                        popupXSGoodsClassBeans.get(i).setCheck(true);
+                                    } else {
+                                        popupXSGoodsClassBeans.get(i).setCheck(false);
+                                    }
+                                }
+                                popupXSGoodsClassifyAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                        textView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
+                                    if (popupXSGoodsClassBeans.get(i).isCheck()) {
+                                        businessApplicationShopClassifyText.setText(popupXSGoodsClassBeans.get(i).getName());
+                                    }
+                                }
+                                popupWindow.dismiss();
+                            }
+                        });
+
+                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                getView().kedian();
+                                PopUtils.setTransparency(mContext, 1.0f);
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+
+                }
+            }));
+        }
 
 
     }

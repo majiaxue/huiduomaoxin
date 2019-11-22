@@ -50,7 +50,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailView, Produ
     LinearLayout productDetailZixun;
 
     @Autowired(name = "bean")
-    ProductCenterBean bean;
+    ProductCenterBean.RecordsBean bean;
 
     private String phoneNum;
 

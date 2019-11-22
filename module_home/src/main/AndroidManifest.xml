@@ -10,6 +10,12 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
+            android:name="com.example.flashsale.FlashSaleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.productcenter.ProductCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.example.universallist.UniversalListActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -38,8 +44,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.main.WelcomeActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 

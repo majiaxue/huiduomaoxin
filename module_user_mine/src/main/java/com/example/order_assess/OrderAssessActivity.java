@@ -158,7 +158,7 @@ public class OrderAssessActivity extends BaseActivity<OrderAssessView, OrderAsse
                 commentVo.setPjpf(orderAssessDepict.getStarCount());
                 commentVo.setWlpf(orderAssessLogistics.getStarCount());
                 commentVo.setFwpf(orderAssessService.getStarCount());
-                if (isNiming) {
+                if (orderAssessNimingImg.isChecked()) {
                     commentVo.setIsAnonymous(1);
                 } else {
                     commentVo.setIsAnonymous(0);

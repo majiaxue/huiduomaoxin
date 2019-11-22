@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,19 +22,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.PopCouponAdapter;
 import com.example.adapter.PopQuanyiAdapter;
 import com.example.adapter.PopUpAdapter;
 import com.example.bean.LocalStoreBean;
 import com.example.bean.OperatorBean;
+import com.example.bean.UserCouponBean;
 import com.example.common.CommonResource;
 import com.example.module_base.R;
 import com.example.utils.adapter.VPBigPicAdapter;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -608,5 +612,50 @@ public class PopUtils {
         String parameter = commodity.getParameter();
         String specification = commodity.getSpecification();
         String jsonString = JSON.toJSONString(parameter);
+    }
+
+    public static void youhuiquan(final Context context, List<UserCouponBean> couponBeanList) {
+        View view = LayoutInflater.from(context).inflate(R.layout.pop_youhuiquan, null);
+        ImageView couponClose = view.findViewById(R.id.pop_coupon_close);
+        RecyclerView couponRec = view.findViewById(R.id.pop_coupon_rec);
+
+        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.dp_410), true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setAnimationStyle(R.style.pop_bottom_anim);
+        popupWindow.showAtLocation(new View(context), Gravity.BOTTOM, 0, 0);
+
+        PopUtils.setTransparency(context, 0.3f);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setTransparency(context, 1f);
+            }
+        });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        couponRec.setLayoutManager(linearLayoutManager);
+        PopCouponAdapter popCouponAdapter = new PopCouponAdapter(context, couponBeanList, R.layout.item_coupon_rec1);
+        couponRec.setAdapter(popCouponAdapter);
+
+        popCouponAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+            @Override
+            public void ViewOnClick(View view, int index) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "领取成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        couponClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
 }

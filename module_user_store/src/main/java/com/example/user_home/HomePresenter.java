@@ -3,8 +3,12 @@ package com.example.user_home;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.adapter.MyRecyclerAdapter;
@@ -42,6 +46,9 @@ import okhttp3.ResponseBody;
  * Describe:
  */
 public class HomePresenter extends BasePresenter<HomeView> {
+
+    private List<String> data = new ArrayList<>();
+    private List<View> views = new ArrayList<>();
     private List<BannerBean.RecordsBean> beanList = new ArrayList<>();
     private List<NavBarBean.RecordsBean> navbarList = new ArrayList<>();
     private List<HotSaleBean.DataBean> saleHotList = new ArrayList<>();
@@ -56,6 +63,36 @@ public class HomePresenter extends BasePresenter<HomeView> {
     @Override
     protected void onViewDestroy() {
 
+    }
+
+    public void setViewSingleLine() {
+        if (data != null || data.size() != 0) {
+            data.clear();
+        }
+        data.add("王**获得了5.2元佣金");
+        data.add("李**获得了3.6元佣金");
+        data.add("白**获得了0.48元佣金");
+        data.add("崔**获得了10.5元佣金");
+        data.add("谷**获得了15.1元佣金");
+        data.add("张**获得了1.19元佣金");
+        data.add("赵**获得了26.02元佣金");
+        data.add("孙**获得了10.8元佣金");
+        views.clear();
+        for (int i = 0; i < data.size(); i++) {
+            //设置滚动的单个布局
+            LinearLayout moreView = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.item_home_marquee_view, null);
+            //初始化布局的控件
+            TextView marqueeMessage = moreView.findViewById(R.id.marquee_message);
+
+            //进行对控件赋值
+            marqueeMessage.setText(data.get(i));
+
+            //添加到循环滚动数组里面去
+            views.add(moreView);
+            if (getView() != null) {
+                getView().lodeMarquee(views);
+            }
+        }
     }
 
     public void loadData(int hotSaleIndex) {
@@ -124,9 +161,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     private void jumpToShop(int position) {
-        Intent intent = new Intent(mContext, ShopHomeActivity.class);
-        intent.putExtra("shop_id", commendList.get(position).getSellerId());
-        mContext.startActivity(intent);
+        ARouter.getInstance().build("/module_user_store/ShopHomeActivity")
+                .withString("sellerId", commendList.get(position).getSellerId()).navigation();
+
     }
 
     public void jumpToGoodsDetail(int position) {

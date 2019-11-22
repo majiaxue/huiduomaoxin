@@ -20,8 +20,11 @@ import java.util.List;
  */
 public class StayAppraiseChildAdapter extends MyRecyclerAdapter<MineOrderBean.OrderListBean.OrderItemsBean> {
 
-    public StayAppraiseChildAdapter(Context context, List<MineOrderBean.OrderListBean.OrderItemsBean> mList, int mLayoutId) {
+    private String payAmount;
+
+    public StayAppraiseChildAdapter(Context context, List<MineOrderBean.OrderListBean.OrderItemsBean> mList, int mLayoutId, String payAmount) {
         super(context, mList, mLayoutId);
+        this.payAmount = payAmount;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class StayAppraiseChildAdapter extends MyRecyclerAdapter<MineOrderBean.Or
         holder.setText(R.id.stay_appraise_child_price, "￥" + data.getProductPrice());
         holder.setText(R.id.stay_appraise_child_count, "X" + data.getProductQuantity());
 
-        holder.setText(R.id.stay_appraise_child_total, "共" + data.getProductQuantity() + "件商品  合计：￥" + ArithUtil.mul(data.getProductQuantity(), data.getProductPrice()));
+        holder.setText(R.id.stay_appraise_child_total, "共" + data.getProductQuantity() + "件商品  合计：￥" + payAmount);
 
         viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.stay_appraise_child_btn_left), holder.getView(R.id.stay_appraise_child_btn_right), position);
 

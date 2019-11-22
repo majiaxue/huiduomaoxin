@@ -84,10 +84,7 @@ public class ShopCollectPresenter extends BasePresenter<ShopCollectView> {
                             public void onItemClick(RecyclerView parent, View view, int position) {
 //                            Toast.makeText(mContext, "进入店铺", Toast.LENGTH_SHORT).show();
                                 ARouter.getInstance().build("/module_user_store/ShopHomeActivity")
-                                        .withString("shop_name", dataBeanList.get(position).getSellerName())
-                                        .withString("shop_icon", dataBeanList.get(position).getSellerLogo())
-                                        .withString("sellerId", dataBeanList.get(position).getId() + "")
-                                        .withInt("type", 1).navigation();
+                                        .withString("sellerId", dataBeanList.get(position).getId() + "").navigation();
                             }
                         });
                         shopCollectAdapter.setViewTwoOnClickListener(new MyRecyclerAdapter.ViewTwoOnClickListener() {

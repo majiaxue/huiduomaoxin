@@ -69,7 +69,7 @@ public class ProcessDialogUtil {
             Activity activity = customDialog.getOwnerActivity();
             if (null != activity && !activity.isFinishing()) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                     customDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -61,7 +61,7 @@ import okhttp3.ResponseBody;
 public class HomePresenter extends BasePresenter<HomeView> {
 
 
-    private List<String> data;
+    private List<String> data = new ArrayList<>();
     private List<View> views = new ArrayList<>();
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodsRecommendBean.DataBean> goodList = new ArrayList<>();
@@ -81,7 +81,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void setViewSingleLine() {
-        data = new ArrayList<>();
+        if (data != null || data.size() != 0) {
+            data.clear();
+        }
         data.add("王**获得了5.2元佣金");
         data.add("李**获得了3.6元佣金");
         data.add("白**获得了0.48元佣金");
@@ -92,7 +94,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
         data.add("孙**获得了10.8元佣金");
         views.clear();
         for (int i = 0; i < data.size(); i++) {
-            final int position = i;
             //设置滚动的单个布局
             LinearLayout moreView = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.item_home_marquee_view, null);
             //初始化布局的控件
@@ -317,6 +318,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_9));//7
         strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_juhuasuan1));//8
         strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_qiandao1));//9
+        strings.add(new BaseRecImageAndTextBean("产品中心", R.drawable.icon_cpzx));//10
 
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);
@@ -377,7 +379,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 } else if (position == 9) {
                     ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
                 } else if (position == 10) {
-
+                    ARouter.getInstance().build("/module_home/ProductCenterActivity").navigation();
                 } else if (position == 1) {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 1).navigation();
                 } else if (position == 7) {

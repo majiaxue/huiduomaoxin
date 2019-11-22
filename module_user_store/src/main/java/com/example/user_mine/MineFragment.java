@@ -34,12 +34,12 @@ import q.rorbin.badgeview.QBadgeView;
 public class MineFragment extends BaseFragment<MineView, MinePresenter> implements MineView {
     @BindView(R2.id.mine_header)
     SimpleDraweeView mineHeader;
-    @BindView(R2.id.user_mine_icon)
-    RelativeLayout userMineIcon;
     @BindView(R2.id.user_mine_name)
     TextView userMineName;
     @BindView(R2.id.user_mine_id)
     TextView userMineId;
+    @BindView(R2.id.user_mine_level)
+    TextView userMineLevel;
     @BindView(R2.id.user_mine_goods_collection)
     LinearLayout userMineGoodsCollection;
     @BindView(R2.id.user_mine_shop_collect)
@@ -66,8 +66,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     LinearLayout userMineDiscountCoupon;
     @BindView(R2.id.user_mine_shipping_address)
     LinearLayout userMineShippingAddress;
-    @BindView(R2.id.user_mine_message_notification)
-    LinearLayout userMineMessageNotification;
     @BindView(R2.id.goods_collection_count)
     TextView goodsCollectionCount;
     @BindView(R2.id.shop_collect_count)
@@ -89,10 +87,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
             userMineName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
             userMineId.setText("UID：" + SPUtil.getStringValue(CommonResource.USER_INVITE));
             mineHeader.setImageURI(Uri.parse(SPUtil.getStringValue(CommonResource.USER_PIC)));
+            userMineLevel.setText(SPUtil.getStringValue(CommonResource.LEVEL));
         } else {
             userMineName.setText("请注册/登陆");
             userMineId.setText("");
             mineHeader.setImageResource(R.drawable.vhjfg);
+            userMineLevel.setVisibility(View.GONE);
         }
 
 
@@ -184,19 +184,6 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                     ARouter.getInstance().build("/mine/login").navigation();
                 }else{
                     presenter.businessApplication();
-
-                }
-            }
-        });
-        //消息通知
-        userMineMessageNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(SPUtil.getToken())) {
-                    ARouter.getInstance().build("/mine/login").navigation();
-                }else{
-                    ARouter.getInstance().build("/mine/messagecenter").navigation();
-
                 }
             }
         });

@@ -182,9 +182,9 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderConfirmSubmit.setEnabled(false);
                 confirmBean.setRemark(orderConfirmEdit.getText().toString());
                 presenter.submit(confirmBean);
-                orderConfirmSubmit.setEnabled(false);
             }
         });
 
