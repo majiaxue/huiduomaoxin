@@ -191,11 +191,11 @@ public class CommonResource {
     public static final String BRANDLIST = "/mall/goods/rest/tbk/goods/brandList";   //品牌接口
     public static final String UPLOADORDER = "/file/upload/order";      //上传头像
     public static final String QUERYXSQGSPLIST = "/rest/tbk/goods/time/buy";      //限时抢购
-    public static final String DELIVERGOODSREMIND = "/rest/order/deliverGoodsRemind";      //订单发货提醒
+    public static final String DELIVERGOODSREMIND = "/mall/order/rest/order/deliverGoodsRemind";      //订单发货提醒
     public static final String GETSELLERBYID = "/rest/seller/getSellerById";      //商家店铺详情
-    public static final String GETNETSELLERCATEGORY = "/rest/tbk/goods/getNetSellerCategory";      //商品进店获取商家分类列表接口
-    public static final String PRODUCTCENTERCATEGORY = "/rest/product/center/category";//查询产品分类
-    public static final String PRODUCTCENTER = "/rest/product/center/";//查询当前分类下所有产品
+    public static final String GETNETSELLERCATEGORY = "/mall/goods/rest/tbk/goods/getNetSellerCategory";      //商品进店获取商家分类列表接口
+    public static final String PRODUCTCENTERCATEGORY = "/mall/goods/rest/product/center/category";//查询产品分类
+    public static final String PRODUCTCENTER = "/mall/goods/rest/product/center/";//查询当前分类下所有产品
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
