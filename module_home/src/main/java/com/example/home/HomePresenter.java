@@ -318,6 +318,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_9));//7
         strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_juhuasuan1));//8
         strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_qiandao1));//9
+        strings.add(new BaseRecImageAndTextBean("产品中心", R.drawable.icon_cpzx));//10
 
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);
@@ -378,7 +379,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 } else if (position == 9) {
                     ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
                 } else if (position == 10) {
-
+                    ARouter.getInstance().build("/module_home/ProductCenterActivity").navigation();
                 } else if (position == 1) {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 1).navigation();
                 } else if (position == 7) {

@@ -60,7 +60,7 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
     }
 
     public void initView(String sellerId) {
-        Map map = MapUtil.getInstance().addParms("id", Long.valueOf(sellerId)).build();
+        Map map = MapUtil.getInstance().addParms("id", Long.valueOf(sellerId)).addParms("userCode", SPUtil.getUserCode()).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.GETSELLERBYID, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnTripartiteCallBack(new OnDataListener() {
             @Override

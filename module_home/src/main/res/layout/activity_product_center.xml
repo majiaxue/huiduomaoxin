@@ -20,17 +20,24 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_13"
             android:background="@drawable/bg_5_fff"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="#fb4119"
             app:tabTextColor="#333333" />
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/product_center_rec"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/product_center_smart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/product_center_rec"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

@@ -29,15 +29,15 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
 
     }
 
-    public void loadData(ProductCenterBean data) {
+    public void loadData(ProductCenterBean.RecordsBean data) {
         String testName = data.getTestName();
         String testAddress = data.getTestAddress();
         String testAccount = data.getTestAccount();
         String testPassword = data.getTestPassword();
 
-        List<ProductCenterBean> list = new ArrayList<>();
+        List<ProductCenterBean.RecordsBean> list = new ArrayList<>();
         for (int i = 0; i < testName.split(",").length; i++) {
-            ProductCenterBean productCenterBean = new ProductCenterBean();
+            ProductCenterBean.RecordsBean productCenterBean = new ProductCenterBean.RecordsBean();
             productCenterBean.setTestName(testName.split(",")[i]);
             productCenterBean.setTestAddress(testAddress.split(",")[i]);
             productCenterBean.setTestAccount(testAccount.split(",")[i]);

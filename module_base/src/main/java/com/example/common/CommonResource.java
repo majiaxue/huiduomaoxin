@@ -10,6 +10,15 @@ public class CommonResource {
     public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
 
 
+//    public static final String BASEURL_9001 = "http://192.168.0.100:9001";   //商品//47.99.93.123//192.168.0.118
+//    public static final String BASEURL_4001 = "http://192.168.0.100:4001";   //用户192.168.0.164
+//    public static final String BASEURL_9003 = "http://192.168.0.100:9003";   //商家192.168.0.121
+//    public static final String BASEURL_9004 = "http://192.168.0.100:9004";   //订单192.168.0.104
+//    public static final String BASEURL_9005 = "http://192.168.0.100:9005";   //参数192.168.0.195
+//    public static final String BASEURL_9010 = "http://192.168.0.100:9010";  //本地小店
+//    public static final String BASEURL_4000 = "http://192.168.0.100:4000";   //上传文件
+
+
     public static final String ALLCATEGORT = "/mall/goods/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/mall/goods/rest/goods";  //获取商品详情
     //多用户商城---模糊搜索框,参数:searchInfo->搜索内容,pageNum->当前页,pageSize->每页显示条数,默认20,startPrice->开始价格,endPrice->结束价格,categoryId->分类Id->productAttributeCategoryId->分类规格priceAsc->价格升序,priceDesc->价格降序,sellerId->商家IdsaleAsc->销量升序,saleDesc->销量降序,newStatus->1新品推荐
@@ -161,7 +170,8 @@ public class CommonResource {
     public static final String USERCOMMENT = "/mall/order/rest/order/addComment";      //立即评价
     public static final String GETORDERTRACESBYJSON = "/mall/order/rest/order/getOrderTracesByJson";//物流信息
     public static final String HISTORYSAVE = "/rest/user/history/save";//保存浏览记录
-    public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品类型
+    public static final String SELLERCATEGORY = "/rest/seller/sellerCategory";//商品本地类型
+    public static final String SELLERNETCATEGORY = "/rest/tbk/goods/sellerNetCategory";//商品线上类型
     public static final String TBKGOODSGETTRILLDATA = "/mall/goods/rest/tbk/goods/gettrilldata";//抖券直播
     public static final String SIGNFANS = "/rest/sign/fans";//粉丝数量"
     public static final String SIGNFIRSTORDER = "/rest/sign/first/order";//首次下单
@@ -180,6 +190,12 @@ public class CommonResource {
     public static final String GETGOODSLIST = "/mall/goods/rest/tbk/goods/get_goods_list";   //淘抢购聚划算接口
     public static final String BRANDLIST = "/mall/goods/rest/tbk/goods/brandList";   //品牌接口
     public static final String UPLOADORDER = "/file/upload/order";      //上传头像
+    public static final String QUERYXSQGSPLIST = "/rest/tbk/goods/time/buy";      //限时抢购
+    public static final String DELIVERGOODSREMIND = "/rest/order/deliverGoodsRemind";      //订单发货提醒
+    public static final String GETSELLERBYID = "/rest/seller/getSellerById";      //商家店铺详情
+    public static final String GETNETSELLERCATEGORY = "/rest/tbk/goods/getNetSellerCategory";      //商品进店获取商家分类列表接口
+    public static final String PRODUCTCENTERCATEGORY = "/rest/product/center/category";//查询产品分类
+    public static final String PRODUCTCENTER = "/rest/product/center/";//查询当前分类下所有产品
 
 
     public static final String WXAPPID = "wxf08fd2965ac9ac30";  //本：wxf08fd2965ac9ac30  2：wx7df9caffc7db4493
@@ -199,6 +215,7 @@ public class CommonResource {
     public static final String USER_PHONE = "userPhone";
     public static final String BACKBL = "back";     //佣金比例
     public static final String LEVELID = "levelId";
+    public static final String LEVEL = "level";
     public static final String U_APPKEY = "5d0c57294ca35786440001c6";
     public static final String HISTORY_USER = "user";
     public static final String HISTORY_TBK = "tbk";
