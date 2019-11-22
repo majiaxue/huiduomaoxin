@@ -33,6 +33,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.RvItemDecoration;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.CustomHeader;
+import com.example.view.MarqueeView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -65,7 +66,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     @BindView(R2.id.user_home_rv_navbar)
     RecyclerView userHomeRvNavbar;
     @BindView(R2.id.user_home_more)
-    LinearLayout userHomeMore;
+    TextView userHomeMore;
     @BindView(R2.id.user_home_rv_hot)
     RecyclerView userHomeRvHot;
     @BindView(R2.id.user_home_rv_goods)
@@ -76,6 +77,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     NestedScrollView userHomeNescroll;
     @BindView(R2.id.user_home_gotop)
     ImageView mGoTop;
+    @BindView(R2.id.user_home_marquee)
+    MarqueeView userHomeMarquee;
 
     private int newGoodsIndex = 1;
     private int hotSaleIndex = 1;
@@ -88,6 +91,9 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
     @Override
     public void initData() {
+
+        //跑马灯
+        presenter.setViewSingleLine();
         //导航栏
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 5);
         userHomeRvNavbar.setLayoutManager(gridLayoutManager);
@@ -225,6 +231,11 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     }
 
     @Override
+    public void lodeMarquee(List<View> views) {
+        userHomeMarquee.setViews(views);
+    }
+
+    @Override
     public void refreshSuccess() {
         userHomeRefresh.finishLoadMore();
         userHomeRefresh.finishRefresh();
@@ -246,9 +257,13 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         if (hidden) {
             //隐藏
             userHomeXbanner.stopAutoPlay();
+            userHomeMarquee.stopFlipping();
+
         } else {
             //显示
             userHomeXbanner.startAutoPlay();
+            userHomeMarquee.startFlipping();
+
         }
     }
 

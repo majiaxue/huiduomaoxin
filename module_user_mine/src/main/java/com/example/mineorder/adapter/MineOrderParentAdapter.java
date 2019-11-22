@@ -130,7 +130,7 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         childRec.setLayoutManager(linearLayoutManager);
         if (data.getStatus() == 3) {
-            StayAppraiseChildAdapter stayAppraiseChildAdapter = new StayAppraiseChildAdapter(context, data.getOrderItems(), R.layout.item_stay_appraise_child);
+            StayAppraiseChildAdapter stayAppraiseChildAdapter = new StayAppraiseChildAdapter(context, data.getOrderItems(), R.layout.item_stay_appraise_child, data.getPayAmount() + "");
             childRec.setAdapter(stayAppraiseChildAdapter);
             stayAppraiseChildAdapter.setViewTwoOnClickListener(new ViewTwoOnClickListener() {
                 @Override

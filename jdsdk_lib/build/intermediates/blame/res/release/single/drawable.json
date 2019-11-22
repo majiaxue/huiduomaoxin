@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\kepler_btn_select_more.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\kepler_btn_select_more.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\btn_reload.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\btn_reload.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\kepler_dialog_bk.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\kepler_dialog_bk.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\kepler_dialog_button_po.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\kepler_dialog_button_po.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\kepler_dialog_button_ne.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\kepler_dialog_button_ne.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\pressbar_color.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\pressbar_color.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\sdk_title_bg_with_shadow.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\sdk_title_bg_with_shadow.xml"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable\\kepler_btn_back.xml",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable\\kepler_btn_back.xml"
+    }
+]

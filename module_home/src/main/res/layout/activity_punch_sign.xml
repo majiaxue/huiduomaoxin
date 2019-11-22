@@ -214,7 +214,7 @@
                         android:background="@drawable/button_lingrenwu"
                         android:gravity="center_horizontal"
                         android:paddingTop="@dimen/dp_3"
-                        android:text="完成"
+                        android:text="去完成"
                         android:textColor="#ec4002"
                         android:textSize="@dimen/sp_13" />
                 </RelativeLayout>
@@ -275,7 +275,7 @@
                     android:background="@drawable/button_lingrenwu"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dp_3"
-                    android:text="完成"
+                    android:text="去完成"
                     android:textColor="#ec4002"
                     android:textSize="@dimen/sp_13" />
 
@@ -334,7 +334,7 @@
                     android:background="@drawable/button_lingrenwu"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dp_3"
-                    android:text="完成"
+                    android:text="去完成"
                     android:textColor="#ec4002"
                     android:textSize="@dimen/sp_13" />
 
@@ -393,7 +393,7 @@
                     android:background="@drawable/button_lingrenwu"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dp_3"
-                    android:text="完成"
+                    android:text="去完成"
                     android:textColor="#ec4002"
                     android:textSize="@dimen/sp_13" />
 
@@ -466,7 +466,7 @@
                         android:background="@drawable/button_lingrenwu"
                         android:gravity="center_horizontal"
                         android:paddingTop="@dimen/dp_3"
-                        android:text="完成"
+                        android:text="去完成"
                         android:textColor="#ec4002"
                         android:textSize="@dimen/sp_13" />
                 </RelativeLayout>
@@ -527,7 +527,7 @@
                     android:background="@drawable/button_lingrenwu"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dp_3"
-                    android:text="完成"
+                    android:text="去完成"
                     android:textColor="#ec4002"
                     android:textSize="@dimen/sp_13" />
 
@@ -587,7 +587,7 @@
                     android:background="@drawable/button_lingrenwu"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dp_3"
-                    android:text="完成"
+                    android:text="去完成"
                     android:textColor="#ec4002"
                     android:textSize="@dimen/sp_13" />
 

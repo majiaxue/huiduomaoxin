@@ -69,13 +69,15 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
     private int index = 0;
     private int page = 1;
     private String sellerId;
+    private String categoryId;
 
     public ShopTreasureFragment() {
     }
 
     @SuppressLint("ValidFragment")
-    public ShopTreasureFragment(String sellerId) {
+    public ShopTreasureFragment(String sellerId,String categoryId) {
         this.sellerId = sellerId;
+        this.categoryId = categoryId;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 //        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
 //        mRefresh.setRefreshHeader(customHeader);
 
-        presenter.loadData(sellerId, page);
+        presenter.loadData(sellerId,categoryId, page);
     }
 
     @Override

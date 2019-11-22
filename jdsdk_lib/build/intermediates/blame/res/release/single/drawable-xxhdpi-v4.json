@@ -1,0 +1,54 @@
+[
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\seclect_item_logout.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\seclect_item_logout.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\seclect_item_no_has_message.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\seclect_item_no_has_message.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\kepler_back_normal.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\kepler_back_normal.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\kepler_selcet_more_normal.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\kepler_selcet_more_normal.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\seclect_item_history.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\seclect_item_history.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\seclect_item_has_message.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\seclect_item_has_message.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\kepler_selcet_more_pressed.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\kepler_selcet_more_pressed.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\seclect_item_serch.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\seclect_item_serch.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\neterror.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\neterror.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\seclect_item_orderlist.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\seclect_item_orderlist.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\white.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\white.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\kepler_back_pressed.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\kepler_back_pressed.png"
+    },
+    {
+        "merged": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\build\\intermediates\\res\\merged\\release\\drawable-xxhdpi-v4\\select_bg.9.png",
+        "source": "F:\\workspace\\taobaokeandroid\\jdsdk_lib\\src\\main\\res\\drawable-xxhdpi\\select_bg.9.png"
+    }
+]

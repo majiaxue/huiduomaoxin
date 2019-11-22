@@ -1,11 +1,15 @@
 package com.example.home;
 
+import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,7 +23,6 @@ import com.example.mvp.BaseFragment;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
-import com.example.utils.StatusBarUtils;
 import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;
@@ -31,9 +34,14 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.stx.xhb.xbanner.XBanner;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 首页
@@ -84,9 +92,20 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     RelativeLayout homeFreeOfCharge;
     @BindView(R2.id.home_huo_dong)
     ImageView homeHuoDong;
+    @BindView(R2.id.home_see_more)
+    TextView homeSeeMore;
+    @BindView(R2.id.home_time)
+    TextView homeTime;
+    @BindView(R2.id.home_count_down)
+    TextView homeCountDown;
+    @BindView(R2.id.home_flash_sale_rec)
+    RecyclerView homeFlashSaleRec;
+    @BindView(R2.id.home_xianshiqianggou)
+    RelativeLayout homeXianShiQiangGou;
 
     private int nextPage = 1;
-
+    private CountDownTimer countDownTimer;
+    private String format1;
 
     @Override
     public int getLayoutId() {
@@ -95,6 +114,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
     @Override
     public void initData() {
+//        time();
         //跑马灯
         presenter.setViewSingleLine();
         //xBanner
@@ -242,6 +262,14 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
                 homeNestedScroll.fullScroll(NestedScrollView.FOCUS_UP);
             }
         });
+
+        homeSeeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_home/FlashSaleActivity").navigation();
+            }
+        });
+
     }
 
     @Override
@@ -261,9 +289,11 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
             //不可见
             homeMarquee.stopFlipping();
             homeXbanner.stopAutoPlay();
-
+//            countDownTimer.cancel();
+//            countDownTimer.onFinish();
         } else {
             //可见
+//            time();
             homeMarquee.startFlipping();
             homeXbanner.startAutoPlay();
         }
@@ -274,6 +304,8 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         super.onStop();
         homeMarquee.stopFlipping();
         homeXbanner.stopAutoPlay();
+//        countDownTimer.cancel();
+//        countDownTimer.onFinish();
     }
 
     @Override
@@ -281,6 +313,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         super.onResume();
         homeMarquee.startFlipping();
         homeXbanner.startAutoPlay();
+//        time();
     }
 
     @Override
@@ -304,5 +337,58 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         } else {
             mGoTop.setVisibility(View.GONE);
         }
+    }
+
+    private void time() {
+        //获取当前时间
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH");// yyyy年MM月dd日 HH:mm:ss
+        Date date1 = new Date(System.currentTimeMillis());
+        format1 = simpleDateFormat1.format(date1);
+        homeTime.setText(format1 + "点场");
+        //获取之后的一个小时
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH");// yyyy年MM月dd日 HH:mm:ss
+        Date date = new Date(System.currentTimeMillis() + 1 * 60 * 60 * 1000);
+        String format = simpleDateFormat.format(date);
+        long afterTime = getTimeStamp(format + ":00:00", "yyyy-MM-dd HH:mm:ss");
+        LogUtil.e("时间" + format + "-----------" + afterTime + "--------------" + (afterTime - System.currentTimeMillis()));
+        //第一个参数表示总时间，第二个参数表示间隔时间。
+        countDownTimer = new CountDownTimer(afterTime - System.currentTimeMillis(), 1000) {//第一个参数表示总时间，第二个参数表示间隔时间。
+            @Override
+            public void onTick(long millisUntilFinished) {
+                SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+                String dateString = formatter.format(millisUntilFinished);
+                homeCountDown.setText("00:" + dateString);
+                if (homeCountDown.getText().toString().contains("00:00:00")) {
+                    time();
+//                    presenter.initGoods(format1);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e("结束");
+            }
+        }.start();
+
+    }
+
+    /**
+     * 时间转换为时间戳
+     *
+     * @param timeStr 时间 例如: 2016-03-09
+     * @param format  时间对应格式  例如: yyyy-MM-dd
+     * @return
+     */
+    public static long getTimeStamp(String timeStr, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(timeStr);
+            long timeStamp = date.getTime();
+            return timeStamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -8,13 +8,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.PunchSignBean;
+import com.example.dbflow.ShareBean;
+import com.example.dbflow.ShareUtil;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
+import com.example.utils.SPUtil;
 import com.kongzue.dialog.v3.WaitDialog;
+
+import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,7 +98,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
 
     private PunchSignBean punchSignBean;
     private int allJiFen;
-
+    private int count = 0;
     @Override
     public int getLayoutId() {
         return R.layout.activity_punch_sign;
@@ -105,6 +111,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
 
         //查询签到任务完成度
         presenter.signQuery();
+
     }
 
     @Override
@@ -134,49 +141,92 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         punchSignText111.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.meiRiQianDao(0);
+                if (punchSignBean.getFinish().getHistoryCount() >= punchSignBean.getSignSetting().getGoodsNum()) {
+                    presenter.meiRiQianDao(0);
+                } else {
+                    finish();
+                }
             }
         });
         //多件商品签到
         punchSignText222.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.meiRiQianDao(1);
+                if (punchSignBean.getFinish().getHistoryCount() >= punchSignBean.getSignSetting().getGoodsNum()) {
+                    presenter.meiRiQianDao(1);
+                } else {
+                    finish();
+                }
             }
         });
         //每日分享
         punchSignText333.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.shareCount();
+                if (count >= punchSignBean.getSignSetting().getShareNum()) {
+                    presenter.shareCount();
+                } else {
+                    finish();
+                }
             }
         });
         //每日邀请好友注册
         punchSignText444.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.yaoQingHaoYou();
+                if (punchSignBean.getResult().getInviteUser() == 1) {
+                    if (punchSignBean.getSignSetting().getInviteNum() >= punchSignBean.getSignSetting().getInviteNum()) {
+                        presenter.yaoQingHaoYou();
+                    } else {
+                        ARouter.getInstance().build("/mine/invite_friends").navigation();
+                    }
+                } else {
+                    ARouter.getInstance().build("/mine/invite_friends").navigation();
+                }
+
             }
         });
         //首次下单
         punchSignText555.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.firstOrder();
+                if (punchSignBean.getResult().getFirstOrder() >= 1) {
+                    presenter.firstOrder();
+                } else {
+                    finish();
+                }
             }
         });
         //有效订单
         punchSignText666.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.order();
+                if (punchSignBean.getResult().getOrderIntegration() == 1) {
+                    if (punchSignBean.getFinish().getOrderNum() >= punchSignBean.getNewUserConf().getOrderNum()) {
+                        presenter.order();
+                    } else {
+                        finish();
+                    }
+                } else {
+                    finish();
+                }
+
             }
         });
         //粉丝数量
         punchSignText777.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.fans();
+                if (punchSignBean.getResult().getFansIntegration() == 1) {
+                    if (punchSignBean.getFinish().getFansNum() >= punchSignBean.getNewUserConf().getFansNum()) {
+                        presenter.fans();
+                    } else {
+                        ARouter.getInstance().build("/mine/invite_friends").navigation();
+                    }
+                } else {
+                    ARouter.getInstance().build("/mine/invite_friends").navigation();
+                }
+
             }
         });
 
@@ -195,6 +245,21 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
     @Override
     public void punchSign(PunchSignBean punchSignBean) {
         this.punchSignBean = punchSignBean;
+
+        long timeMillis = System.currentTimeMillis();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateTime = formatter.format(timeMillis);
+        ShareBean shareBean = ShareUtil.getInstance().query(SPUtil.getUserCode());
+        if (shareBean != null) {
+            if (dateTime.equals(shareBean.getUpdateTime())) {
+                if (shareBean.getCount() > punchSignBean.getSignSetting().getShareNum()) {
+                    count = punchSignBean.getSignSetting().getShareNum();
+                } else {
+                    count = shareBean.getCount();
+                }
+            }
+        }
+
         allJiFen = punchSignBean.getResult().getIntegration();
         LogUtil.e("punchSignBean" + punchSignBean);
         punchSignJiFen.setText("" + allJiFen);
@@ -220,7 +285,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
 //        if (punchSignBean.getFinish().getHistoryCount() >= punchSignBean.getSignSetting().getGoodsNum()) {
 //            punchSignText22.setText("完成" + punchSignBean.getSignSetting().getGoodsNum() + "/" + punchSignBean.getSignSetting().getGoodsNum());
 //        } else {
-            punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
+//        punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
 //        }
         punchSignText22.setText("完成" + punchSignBean.getFinish().getHistoryCount() + "/" + punchSignBean.getSignSetting().getGoodsNum());
         if (punchSignBean.getResult().getViewMoreGoods() == 1) {
@@ -232,7 +297,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
         punchSignText33.setText("完成" + 0 + "/" + punchSignBean.getSignSetting().getShareNum());
         if (punchSignBean.getResult().getShareGoods() < 3) {
             punchSignText33.setText("完成" + punchSignBean.getResult().getShareGoods() + "/" + punchSignBean.getSignSetting().getShareNum());
-            punchSignText333.setText("完成");
+            punchSignText333.setText("去完成");
         } else if (punchSignBean.getResult().getShareGoods() == 3) {
             punchSignText33.setText("完成" + punchSignBean.getResult().getShareGoods() + "/" + punchSignBean.getSignSetting().getShareNum());
             punchSignText333.setText("已完成");
@@ -263,6 +328,7 @@ public class PunchSignActivity extends BaseActivity<PunchSignView, PunchSignPres
             punchSignText77.setText("完成" + punchSignBean.getFinish().getFansNum() + "/" + punchSignBean.getNewUserConf().getFansNum());
             punchSignText777.setText("已完成");
         }
+
     }
 
     @Override

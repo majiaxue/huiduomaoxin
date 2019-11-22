@@ -1,5 +1,7 @@
 package com.example.user_home;
 
+import android.view.View;
+
 import com.example.bean.BannerBean;
 import com.example.mvp.IView;
 import com.example.user_home.adapter.CommendAdapter;
@@ -21,6 +23,8 @@ public interface HomeView extends IView {
     void loadCommend(CommendAdapter adapter);
 
     void loadBanner(List<BannerBean.RecordsBean> beanList);
+
+    void lodeMarquee(List<View> views);
 
     void refreshSuccess();
 }

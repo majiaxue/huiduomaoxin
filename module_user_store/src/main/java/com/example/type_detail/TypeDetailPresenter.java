@@ -31,6 +31,8 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 
+import static com.example.user_classify.ClassifyFragment.position;
+
 public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
 
     private List<HotSaleBean.DataBean> dataList = new ArrayList<>();
@@ -178,7 +180,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mContext.startActivity(new Intent(mContext, ShopHomeActivity.class));
+                        ARouter.getInstance().build("/module_user_store/ShopHomeActivity")
+                                .withString("sellerId", dataList.get(position).getSellerId()).navigation();
                     }
                 });
             }
@@ -200,7 +203,8 @@ public class TypeDetailPresenter extends BasePresenter<TypeDetailView> {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mContext.startActivity(new Intent(mContext, ShopHomeActivity.class));
+                        ARouter.getInstance().build("/module_user_store/ShopHomeActivity")
+                                .withString("sellerId", dataList.get(position).getSellerId()).navigation();
                     }
                 });
             }

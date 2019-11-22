@@ -235,6 +235,7 @@ public class MinePresenter extends BasePresenter<MineView> {
                 SPUtil.addParm(CommonResource.USER_PIC, userInfoBean.getIcon());
                 SPUtil.addParm(CommonResource.USER_NAME, userInfoBean.getNickname());
                 SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
+                SPUtil.addParm(CommonResource.LEVEL, userInfoBean.getLevel());
 
                 getBackBili();
 

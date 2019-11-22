@@ -61,7 +61,7 @@ import okhttp3.ResponseBody;
 public class HomePresenter extends BasePresenter<HomeView> {
 
 
-    private List<String> data;
+    private List<String> data = new ArrayList<>();
     private List<View> views = new ArrayList<>();
     private List<BaseRecImageAndTextBean> strings;
     private List<GoodsRecommendBean.DataBean> goodList = new ArrayList<>();
@@ -81,7 +81,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void setViewSingleLine() {
-        data = new ArrayList<>();
+        if (data != null || data.size() != 0) {
+            data.clear();
+        }
         data.add("王**获得了5.2元佣金");
         data.add("李**获得了3.6元佣金");
         data.add("白**获得了0.48元佣金");
@@ -92,7 +94,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
         data.add("孙**获得了10.8元佣金");
         views.clear();
         for (int i = 0; i < data.size(); i++) {
-            final int position = i;
             //设置滚动的单个布局
             LinearLayout moreView = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.item_home_marquee_view, null);
             //初始化布局的控件
