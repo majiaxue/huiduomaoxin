@@ -129,7 +129,7 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         final EditText name = view.findViewById(R.id.pop_product_liuyan_name);
         final EditText phone = view.findViewById(R.id.pop_product_liuyan_phone);
         final EditText content = view.findViewById(R.id.pop_product_liuyan_content);
-        final TextView btn = view.findViewById(R.id.pop_product_liuyan_content);
+        final TextView btn = view.findViewById(R.id.pop_product_liuyan_btn);
         PopUtils.createPopCenter(mContext, view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
             @Override
             public void setOnPop(final PopupWindow pop) {
