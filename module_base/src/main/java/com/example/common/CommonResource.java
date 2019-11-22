@@ -106,7 +106,7 @@ public class CommonResource {
     public static final String INVITE_ERWEIMA = "/rest/share/register";         //邀请好友页面升成二维码所需地址
     public static final String LOCAL_GET_ORDER = "/mall/local/rest/local-order";           //附近小店  获取订单列表
     public static final String LOCAL_GET_HONGBAO = "/mall/local/rest/local/redpacked/all";     //附近小店  获取红包信息
-    public static final String BUY_RED_PACKAGE = "/rest/local/alipay/redpacked";    //附近小店  购买红包
+    public static final String BUY_RED_PACKAGE = "/mall/local/rest/local/alipay/redpacked";    //附近小店  购买红包
     public static final String LOCAL_SHOP = "/mall/local/rest/local/shop-category/";       //附近小店 店铺详情
     public static final String LOCAL_CART_ADD = "/mall/local/rest/local/shop-car/add";     //附近小店 购物车 增加商品
     public static final String LOCAL_CART_MINUS = "/mall/local/rest/local/shop-car/minus"; //附近小店 购物车 减少商品

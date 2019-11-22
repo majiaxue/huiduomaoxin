@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
+import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;

@@ -47,6 +47,11 @@
         <activity
             android:name="com.example.main.GuideActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.productdetail.ProductDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.example.main.WelcomeActivity"
             android:screenOrientation="portrait"

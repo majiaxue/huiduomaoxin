@@ -27,6 +27,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PhoneNumUtil;
 import com.example.utils.PopUtils;
+import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.ArrayList;
@@ -102,7 +103,8 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         }));
     }
 
-    public void liuyan(ProductLiuYanBean liuYanBean) {
+    public void liuyan(ProductLiuYanBean liuYanBean, final PopupWindow pop) {
+        ProcessDialogUtil.showProcessDialog(mContext);
         String jsonString = JSON.toJSONString(liuYanBean);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithBody(CommonResource.PRODUCT_LIUYAN, body);
@@ -110,11 +112,13 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("留言：" + result);
+                pop.dismiss();
                 Toast.makeText(mContext, "留言成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                pop.dismiss();
                 LogUtil.e(errorCode + "----------" + errorMsg);
             }
         }));
@@ -128,7 +132,7 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         final TextView btn = view.findViewById(R.id.pop_product_liuyan_content);
         PopUtils.createPopCenter(mContext, view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
             @Override
-            public void setOnPop(PopupWindow pop) {
+            public void setOnPop(final PopupWindow pop) {
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -140,7 +144,7 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
                             Toast.makeText(mContext, "请输入留言内容", Toast.LENGTH_SHORT).show();
                         } else {
                             ProductLiuYanBean liuYanBean = new ProductLiuYanBean(name.getText().toString(), phone.getText().toString(), content.getText().toString());
-                            liuyan(liuYanBean);
+                            liuyan(liuYanBean, pop);
                         }
                     }
                 });
