@@ -259,9 +259,9 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         }));
     }
 
-    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText, final int type) {
+    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText, final String type) {
         ProcessDialogUtil.showProcessDialog(mContext);
-        if (1 == type) {
+        if (CommonResource.HISTORY_LOCAL.equals(type)) {
             Map map = MapUtil.getInstance().addParms("type", type).build();
             Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
             RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {

@@ -10,6 +10,7 @@ import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.LocalOrderBean;
 import com.example.module_local.R;
+import com.example.utils.LogUtil;
 import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
@@ -96,6 +97,7 @@ public class LocalOrderAdapter extends MyRecyclerAdapter<LocalOrderBean> {
                 viewThreeOnClickListener.ViewThreeOnClick(holder.getView(R.id.rv_local_order_list_shop_name), holder.getView(R.id.rv_local_order_list_cancel), holder.getView(R.id.rv_local_order_list_confirm), position);
             }
         } catch (Exception e) {
+            LogUtil.e("----------------->" + e.getMessage());
             e.printStackTrace();
         }
     }
