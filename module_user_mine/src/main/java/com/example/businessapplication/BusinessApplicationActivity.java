@@ -99,7 +99,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
 
     private int type;
-    private String base64;
     private Map<String, String> map = new HashMap<>();
     private int categoryId;
 
@@ -112,7 +111,11 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     public void initData() {
         ARouter.getInstance().inject(this);
         includeTitle.setText("商家申请");
-
+        if (CommonResource.HISTORY_LOCAL.equals(from)) {
+            presenter.goodsClass(from);
+        } else {
+            presenter.goodsClass(from);
+        }
     }
 
     @Override
@@ -129,7 +132,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (TextUtils.isEmpty(businessApplicationShopName.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入店铺名!", Toast.LENGTH_SHORT).show();
                 } else if ("点击选择".equals(businessApplicationShopClassifyText.getText().toString())) {
@@ -248,7 +250,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopClassify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupGoodsClassify(businessApplicationShopClassifyText, from);
+                presenter.popupGoodsClassify(from);
             }
         });
         //选择地址
@@ -296,45 +298,19 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     public void selectPhoto(Uri uri) {
         if (type == 1) {
             businessApplicationFrontPhoto.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else if (type == 2) {
             businessApplicationVersoPhoto.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else if (type == 3) {
             businessApplicationBusinessLicense.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else if (type == 4) {
             businessApplicationFoodSafetyPermit.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else {
             businessApplicationIcon.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     @Override
     public void showHeader(String bitmap) {
-        this.base64 = bitmap;
         if (type == 1) {
             map.put("1", bitmap.replace("\n", ""));
         } else if (type == 2) {
@@ -349,8 +325,9 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     }
 
     @Override
-    public void categoryId(int categoryId) {
+    public void categoryId(String name, int categoryId) {
         this.categoryId = categoryId;
+        businessApplicationShopClassifyText.setText(name);
     }
 
 
