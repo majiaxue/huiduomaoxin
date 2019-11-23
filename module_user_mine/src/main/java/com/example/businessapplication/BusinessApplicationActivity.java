@@ -1,9 +1,14 @@
 package com.example.businessapplication;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -32,6 +37,7 @@ import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -295,18 +301,49 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     }
 
     @Override
-    public void selectPhoto(Uri uri) {
-        if (type == 1) {
-            businessApplicationFrontPhoto.setImageURI(uri);
-        } else if (type == 2) {
-            businessApplicationVersoPhoto.setImageURI(uri);
-        } else if (type == 3) {
-            businessApplicationBusinessLicense.setImageURI(uri);
-        } else if (type == 4) {
-            businessApplicationFoodSafetyPermit.setImageURI(uri);
+    public void selectPhoto(int flag, File file, Uri uri) {
+//        BitmapFactory.Options options2 = new BitmapFactory.Options();
+//        options2.inPreferredConfig = Bitmap.Config.RGB_565;
+//        Bitmap bitmap = BitmapFactory.decodeFile(realFilePath, options2);
+//        LogUtil.e("图片---------------------------->" + bitmap.toString());
+
+        if (1 == flag) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2;
+            Bitmap bm = BitmapFactory.decodeFile(file + "", options);
+            LogUtil.e("图片1111---------------------------->" + bm.toString());
+            Uri uriImage = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null));
+            if (type == 1) {
+                businessApplicationFrontPhoto.setImageURI(uriImage);
+            } else if (type == 2) {
+                businessApplicationVersoPhoto.setImageURI(uriImage);
+            } else if (type == 3) {
+                businessApplicationBusinessLicense.setImageURI(uriImage);
+            } else if (type == 4) {
+                businessApplicationFoodSafetyPermit.setImageURI(uriImage);
+            } else {
+                businessApplicationIcon.setImageURI(uriImage);
+            }
         } else {
-            businessApplicationIcon.setImageURI(uri);
+            String realFilePath = getRealFilePath(this, uri);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2;
+            Bitmap bm = BitmapFactory.decodeFile(realFilePath, options);
+            LogUtil.e("图片1111---------------------------->" + bm.toString());
+            Uri uriImage = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null));
+            if (type == 1) {
+                businessApplicationFrontPhoto.setImageURI(uriImage);
+            } else if (type == 2) {
+                businessApplicationVersoPhoto.setImageURI(uriImage);
+            } else if (type == 3) {
+                businessApplicationBusinessLicense.setImageURI(uriImage);
+            } else if (type == 4) {
+                businessApplicationFoodSafetyPermit.setImageURI(uriImage);
+            } else {
+                businessApplicationIcon.setImageURI(uriImage);
+            }
         }
+
     }
 
     @Override
@@ -351,4 +388,26 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         }
     }
 
+    public static String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if (scheme == null)
+            data = uri.getPath();
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+            data = uri.getPath();
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
+    }
 }
