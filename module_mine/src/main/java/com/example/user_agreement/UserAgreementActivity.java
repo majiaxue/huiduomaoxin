@@ -1,5 +1,6 @@
 package com.example.user_agreement;
 
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -60,7 +61,12 @@ public class UserAgreementActivity extends BaseActivity<UserAgreementView, UserA
 
     @Override
     public void initClick() {
-
+        includeBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

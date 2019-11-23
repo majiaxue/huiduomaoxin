@@ -160,18 +160,18 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 
     @Override
     public void updateTitle(boolean salesVolume, boolean price, boolean credit) {
-        shopTreasureText1.setTextColor(Color.parseColor(index == 0 ? "#ffffff" : "#333333"));
+        shopTreasureText1.setTextColor(Color.parseColor(index == 0 ? "#ff5253" : "#333333"));
         shopTreasureSynthesizeBottom.setImageResource(index == 0 ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
 
-        shopTreasureText2.setTextColor(Color.parseColor(index == 1 ? "#ffffff" : "#333333"));
+        shopTreasureText2.setTextColor(Color.parseColor(index == 1 ? "#ff5253" : "#333333"));
         shopTreasureSalesVolumeTop.setImageResource(index == 1 ? salesVolume ? R.drawable.gvhgh : R.drawable.ghfgh : R.drawable.ghfgh);
         shopTreasureSalesVolumeBottom.setImageResource(index == 1 ? salesVolume ? R.drawable.khjkjhgjk : R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
 
-        shopTreasureText3.setTextColor(Color.parseColor(index == 2 ? "#ffffff" : "#333333"));
+        shopTreasureText3.setTextColor(Color.parseColor(index == 2 ? "#ff5253" : "#333333"));
         shopTreasurePriceTop.setImageResource(index == 2 ? price ? R.drawable.ghfgh : R.drawable.gvhgh : R.drawable.ghfgh);
         shopTreasurePriceBottom.setImageResource(index == 2 ? price ? R.drawable.cgbhdfg : R.drawable.khjkjhgjk : R.drawable.khjkjhgjk);
 
-        shopTreasureText4.setTextColor(Color.parseColor(index == 3 ? "#ffffff" : "#333333"));
+        shopTreasureText4.setTextColor(Color.parseColor(index == 3 ? "#ff5253" : "#333333"));
         shopTreasureCreditTop.setImageResource(index == 3 ? credit ? R.drawable.gvhgh : R.drawable.ghfgh : R.drawable.ghfgh);
         shopTreasureCreditBottom.setImageResource(index == 3 ? credit ? R.drawable.khjkjhgjk : R.drawable.cgbhdfg : R.drawable.khjkjhgjk);
     }

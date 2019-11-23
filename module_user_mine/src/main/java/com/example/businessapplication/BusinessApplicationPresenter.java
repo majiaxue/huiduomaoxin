@@ -315,6 +315,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                                 for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
                                     if (popupGoodsClassBeans.get(i).isCheck()) {
                                         businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
+                                        getView().categoryId(popupGoodsClassBeans.get(i).getId());
                                     }
                                 }
                                 popupWindow.dismiss();
@@ -389,6 +390,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
                                 for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
                                     if (popupXSGoodsClassBeans.get(i).isCheck()) {
                                         businessApplicationShopClassifyText.setText(popupXSGoodsClassBeans.get(i).getName());
+                                        getView().categoryId(popupXSGoodsClassBeans.get(i).getId());
                                     }
                                 }
                                 popupWindow.dismiss();

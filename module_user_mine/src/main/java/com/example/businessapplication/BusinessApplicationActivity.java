@@ -101,6 +101,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     private int type;
     private String base64;
     private Map<String, String> map = new HashMap<>();
+    private int categoryId;
 
     @Override
     public int getLayoutId() {
@@ -170,12 +171,12 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                         sellerVo.setSellerType("1");
                     }
                     sellerVo.setSellerShopName(businessApplicationShopName.getText().toString());
-                    sellerVo.setSellerCategory(businessApplicationShopClassifyText.getText().toString());
+                    sellerVo.setSellerCategory(categoryId + "");
                     sellerVo.setSellerName(businessApplicationName.getText().toString());
                     sellerVo.setSellerPhone(businessApplicationPhone.getText().toString());
                     sellerVo.setSellerAddredd(businessApplicationAddressProvince.getText().toString() + " " + businessApplicationAddressCity.getText().toString() + " " + businessApplicationAddressArea.getText().toString() + " " + businessApplicationDetailAddress.getText().toString());
                     String sellerVoJson = JSON.toJSONString(sellerVo);
-
+                    LogUtil.e(sellerVoJson);
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
                     Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body, SPUtil.getToken());
@@ -355,6 +356,11 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         } else {
             map.put("0", bitmap.replace("\n", ""));
         }
+    }
+
+    @Override
+    public void categoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
 

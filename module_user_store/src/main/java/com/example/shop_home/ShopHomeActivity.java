@@ -144,7 +144,7 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
         shopHomeStar.setStar(4, false);
         shopHomeStar.setClickable(false);
 
-        shopHomeStoreImage.setImageURI(Uri.parse(shopHomeBean.getSellerLogo()));
+        shopHomeStoreImage.setImageURI(Uri.parse(shopHomeBean.getSellerLogo() == null ? "" : shopHomeBean.getSellerLogo()));
         shopHomeStoreName.setText(shopHomeBean.getSellerShopName());
         shopHomeStoreCollectNumber.setText(0 + "收藏");
         presenter.initTabLayout(shopHomeTab, shop_id, shopHomeBean.getSellerCategory());

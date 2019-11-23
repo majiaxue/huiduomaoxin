@@ -68,7 +68,9 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
                 LogUtil.e("商家详情---------->" + result);
                 if (result != null) {
                     ShopHomeBean shopHomeBean = JSON.parseObject(result, ShopHomeBean.class);
-                    getView().initView(shopHomeBean);
+                    if (shopHomeBean != null) {
+                        getView().initView(shopHomeBean);
+                    }
                 }
 
             }
