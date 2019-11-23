@@ -16,7 +16,7 @@ public class ProductAccountAdapter extends MyRecyclerAdapter<ProductCenterBean.R
 
     @Override
     public void convert(RecyclerViewHolder holder, ProductCenterBean.RecordsBean data, int position) {
-        holder.setText(R.id.rv_product_detail_name, data.getTestName())
+        holder.setText(R.id.rv_product_detail_name, data.getTestName() + "：")
                 .setText(R.id.rv_product_detail_download, data.getTestAddress())
                 .setText(R.id.rv_product_detail_account, data.getTestAccount())
                 .setText(R.id.rv_product_detail_password, data.getTestPassword());
