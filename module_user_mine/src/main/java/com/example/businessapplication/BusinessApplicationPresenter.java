@@ -74,9 +74,10 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     private String cityName1 = "";
     private String cityName2 = "";
     private String cityName3 = "";
-    private List<PopupGoodsClassBean> classBeanList = new ArrayList<>();
     private PopupGoodsClassifyAdapter popupGoodsClassifyAdapter;
     private PopupXSGoodsClassifyAdapter popupXSGoodsClassifyAdapter;
+    private List<PopupGoodsClassBean> popupGoodsClassBeans;
+    private List<PopupXSGoodsClassBean> popupXSGoodsClassBeans;
 
     public BusinessApplicationPresenter(Context context) {
         super(context);
@@ -85,6 +86,40 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     @Override
     protected void onViewDestroy() {
 
+    }
+
+    public void goodsClass(String from) {
+        ProcessDialogUtil.showProcessDialog(mContext);
+        if (CommonResource.HISTORY_LOCAL.equals(from)) {
+            Map map = MapUtil.getInstance().addParms("type", 1).build();
+            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
+            RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("本地商家商品分类" + result);
+                    popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("本地商家商品分类" + errorMsg);
+                }
+            }));
+        } else {
+            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithout(CommonResource.SELLERNETCATEGORY);
+            RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnMyCallBack(new OnDataListener() {
+                @Override
+                public void onSuccess(String result, String msg) {
+                    LogUtil.e("popupXSGoodsClassBeans" + result);
+                    popupXSGoodsClassBeans = JSON.parseArray(result, PopupXSGoodsClassBean.class);
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    LogUtil.e("本地商家商品分类" + errorMsg);
+                }
+            }));
+        }
     }
 
     public void popupWindow() {
@@ -259,160 +294,128 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         }));
     }
 
-    public void popupGoodsClassify(final TextView businessApplicationShopClassifyText, final String type) {
-        ProcessDialogUtil.showProcessDialog(mContext);
-        if (CommonResource.HISTORY_LOCAL.equals(type)) {
-            Map map = MapUtil.getInstance().addParms("type", type).build();
-            Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.SELLERCATEGORY, map);
-            RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
+    public void popupGoodsClassify(String form) {
+        if (CommonResource.HISTORY_LOCAL.equals(form)) {
+            final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
+            TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
+            TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
+            final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
+            final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
+            final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            classifyRec.setLayoutManager(linearLayoutManager);
+            popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
+            classifyRec.setAdapter(popupGoodsClassifyAdapter);
+
+            final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
+            popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+            PopUtils.setTransparency(mContext, 0.3f);
+
+            imageClose.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onSuccess(String result, String msg) {
-                    LogUtil.e("popupGoodsClassify" + result);
-                    final List<PopupGoodsClassBean> popupGoodsClassBeans = JSON.parseArray(result, PopupGoodsClassBean.class);
-                    if (popupGoodsClassBeans.size() != 0) {
-                        final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
-                        TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
-                        TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
-                        final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
-                        final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
-                        final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                        classifyRec.setLayoutManager(linearLayoutManager);
-                        popupGoodsClassifyAdapter = new PopupGoodsClassifyAdapter(mContext, popupGoodsClassBeans, R.layout.popup_item_goods_classify);
-                        classifyRec.setAdapter(popupGoodsClassifyAdapter);
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
 
-                        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-                        popupWindow.setOutsideTouchable(true);
-                        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
-                        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
-                        PopUtils.setTransparency(mContext, 0.3f);
-
-                        imageClose.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                popupWindow.dismiss();
-                            }
-                        });
-
-                        popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(RecyclerView parent, View view, int position) {
-                                for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
-                                    if (position == i) {
-                                        popupGoodsClassBeans.get(i).setCheck(true);
-                                    } else {
-                                        popupGoodsClassBeans.get(i).setCheck(false);
-                                    }
-                                }
-                                popupGoodsClassifyAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        textView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
-                                    if (popupGoodsClassBeans.get(i).isCheck()) {
-                                        businessApplicationShopClassifyText.setText(popupGoodsClassBeans.get(i).getSellerCategoryName());
-                                    }
-                                }
-                                popupWindow.dismiss();
-                            }
-                        });
-
-                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                            @Override
-                            public void onDismiss() {
-                                getView().kedian();
-                                PopUtils.setTransparency(mContext, 1.0f);
-                            }
-                        });
-
+            popupGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                        if (position == i) {
+                            popupGoodsClassBeans.get(i).setCheck(true);
+                        } else {
+                            popupGoodsClassBeans.get(i).setCheck(false);
+                        }
                     }
+                    popupGoodsClassifyAdapter.notifyDataSetChanged();
                 }
+            });
 
+            textView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onError(String errorCode, String errorMsg) {
-
-                }
-            }));
-        }else{
-            Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).postDataWithout(CommonResource.SELLERNETCATEGORY);
-            RetrofitUtil.getInstance().toSubscribe(dataWithout,new OnMyCallBack(new OnDataListener() {
-                @Override
-                public void onSuccess(String result, String msg) {
-                    final List<PopupXSGoodsClassBean> popupXSGoodsClassBeans = JSON.parseArray(result, PopupXSGoodsClassBean.class);
-                    if (popupXSGoodsClassBeans.size() != 0) {
-                        final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
-                        TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
-                        TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
-                        final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
-                        final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
-                        final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-                        classifyRec.setLayoutManager(linearLayoutManager);
-                        popupXSGoodsClassifyAdapter = new PopupXSGoodsClassifyAdapter(mContext, popupXSGoodsClassBeans, R.layout.popup_item_goods_classify);
-                        classifyRec.setAdapter(popupXSGoodsClassifyAdapter);
-
-                        final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-                        popupWindow.setOutsideTouchable(true);
-                        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
-                        popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
-                        PopUtils.setTransparency(mContext, 0.3f);
-
-                        imageClose.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                popupWindow.dismiss();
-                            }
-                        });
-
-                        popupXSGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(RecyclerView parent, View view, int position) {
-                                for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
-                                    if (position == i) {
-                                        popupXSGoodsClassBeans.get(i).setCheck(true);
-                                    } else {
-                                        popupXSGoodsClassBeans.get(i).setCheck(false);
-                                    }
-                                }
-                                popupXSGoodsClassifyAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        textView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
-                                    if (popupXSGoodsClassBeans.get(i).isCheck()) {
-                                        businessApplicationShopClassifyText.setText(popupXSGoodsClassBeans.get(i).getName());
-                                    }
-                                }
-                                popupWindow.dismiss();
-                            }
-                        });
-
-                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                            @Override
-                            public void onDismiss() {
-                                getView().kedian();
-                                PopUtils.setTransparency(mContext, 1.0f);
-                            }
-                        });
-
+                public void onClick(View v) {
+                    for (int i = 0; i < popupGoodsClassBeans.size(); i++) {
+                        if (popupGoodsClassBeans.get(i).isCheck()) {
+                            getView().categoryId(popupGoodsClassBeans.get(i).getSellerCategoryName(), popupGoodsClassBeans.get(i).getId());
+                        }
                     }
+                    popupWindow.dismiss();
                 }
+            });
 
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
-                public void onError(String errorCode, String errorMsg) {
-
+                public void onDismiss() {
+                    getView().kedian();
+                    PopUtils.setTransparency(mContext, 1.0f);
                 }
-            }));
+            });
+
+        } else {
+            final View view = LayoutInflater.from(mContext).inflate(R.layout.popup_select_goods_classify, null);
+            TextView text = view.findViewById(R.id.popup_select_goods_classify_text);
+            TxtUtil.txtJianbian(text, "#feb60e", "#fb4419");
+            final ImageView imageClose = view.findViewById(R.id.popup_select_goods_classify_close);
+            final RecyclerView classifyRec = view.findViewById(R.id.popup_select_goods_classify_rec);
+            final TextView textView = view.findViewById(R.id.popup_select_goods_classify_affirm);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            classifyRec.setLayoutManager(linearLayoutManager);
+            popupXSGoodsClassifyAdapter = new PopupXSGoodsClassifyAdapter(mContext, popupXSGoodsClassBeans, R.layout.popup_item_goods_classify);
+            classifyRec.setAdapter(popupXSGoodsClassifyAdapter);
+
+            final PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupWindow.setAnimationStyle(com.example.module_base.R.style.pop_bottom_anim);
+            popupWindow.showAtLocation(new View(mContext), Gravity.BOTTOM, 0, 0);
+            PopUtils.setTransparency(mContext, 0.3f);
+
+            imageClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+
+            popupXSGoodsClassifyAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position) {
+                    for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
+                        if (position == i) {
+                            popupXSGoodsClassBeans.get(i).setCheck(true);
+                        } else {
+                            popupXSGoodsClassBeans.get(i).setCheck(false);
+                        }
+                    }
+                    popupXSGoodsClassifyAdapter.notifyDataSetChanged();
+                }
+            });
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < popupXSGoodsClassBeans.size(); i++) {
+                        if (popupXSGoodsClassBeans.get(i).isCheck()) {
+                            getView().categoryId(popupXSGoodsClassBeans.get(i).getName(), popupXSGoodsClassBeans.get(i).getId());
+                        }
+                    }
+                    popupWindow.dismiss();
+                }
+            });
+
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    getView().kedian();
+                    PopUtils.setTransparency(mContext, 1.0f);
+                }
+            });
+
         }
-
 
     }
 
@@ -539,55 +542,5 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         }
         getView().selectPhoto(fileUri);
     }
-
-//    /**
-//     * 创建一条图片地址uri,用于保存拍照后的照片
-//     *
-//     * @param context
-//     * @return 图片的uri
-//     */
-//    private static Uri createImagePathUri(final Context context) {
-//        final Uri[] imageFilePath = {null};
-//        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//            imageFilePath[0] = Uri.parse("");
-//        } else {
-//            //拍照前保存一条uri的地址
-//            String status = Environment.getExternalStorageState();
-//            SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
-//            long time = System.currentTimeMillis();
-//            String imageName = timeFormatter.format(new Date(time));
-//            String fileName;
-//            String parentPath;
-//
-//            if (status.equals(Environment.MEDIA_MOUNTED)) {// 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
-//                parentPath = Environment.getExternalStorageDirectory().getPath();
-//            } else {
-//                parentPath = context.getExternalCacheDir().getPath();
-//            }
-//
-//            fileName = parentPath + File.separator + imageName + ".webp";// + ".webp"
-////            imageFilePath[0] = Uri.fromFile(new File(fileName));
-//            imageFilePath[0] = getUriForFile(context, new File(fileName));
-//        }
-//
-//        Log.d("tag", "生成的照片输出路径：" + imageFilePath[0].toString());
-//        return imageFilePath[0];
-//    }
-//
-//    //解决android版本大于7的问题
-//    private static Uri getUriForFile(Context context, File file) {
-//        if (context == null || file == null) {
-//            throw new NullPointerException();
-//        }
-//        Uri uri;
-//        //判断是否是AndroidN以及更高的版本
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//如果SDK版本>=24，即：Build.VERSION.SDK_INT >= 24
-//            uri = FileProvider.getUriForFile(context.getApplicationContext(), "com.lxy.taobaoke.provider", file);
-//        } else {
-//            uri = Uri.fromFile(file);
-//        }
-//        return uri;
-//    }
 
 }

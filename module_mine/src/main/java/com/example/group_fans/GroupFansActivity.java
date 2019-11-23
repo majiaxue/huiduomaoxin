@@ -73,6 +73,11 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
 
     @Override
     public void initData() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        groupFansRv.setLayoutManager(layoutManager);
+        groupFansRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_7)));
+
         mName.setText(SPUtil.getStringValue(CommonResource.USER_NAME));
         Glide.with(this).load(SPUtil.getStringValue(CommonResource.USER_PIC)).placeholder(R.drawable.vhjfg).apply(RequestOptions.circleCropTransform()).into(mHeader);
         presenter.loadData(page, "", "1");
@@ -212,15 +217,15 @@ public class GroupFansActivity extends BaseActivity<GroupFansView, GroupFansPres
     }
 
     @Override
-    public void loadUI(GroupFansRvAdapter adapter, int totalPage, int totalFans) {
+    public void loadUI(int totalPage, int totalFans) {
         this.totalPage = totalPage;
         groupFansTotal.setText(totalFans + "");
+    }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        groupFansRv.setLayoutManager(layoutManager);
-        groupFansRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getResources().getDimension(R.dimen.dp_7)));
+    @Override
+    public void loadRv(GroupFansRvAdapter adapter) {
         groupFansRv.setAdapter(adapter);
+
     }
 
     @Override

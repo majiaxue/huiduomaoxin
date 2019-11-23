@@ -1,13 +1,13 @@
 package com.example.common;
 
 public class CommonResource {
-    public static final String BASEURL_9001 = "http://192.168.0.118:9999";   //商品//47.99.93.123//192.168.0.118
-    public static final String BASEURL_4001 = "http://192.168.0.118:4001";   //用户192.168.0.164
-    public static final String BASEURL_9003 = "http://192.168.0.118:9003";   //商家192.168.0.121
-    public static final String BASEURL_9004 = "http://192.168.0.118:9999";   //订单192.168.0.104
-    public static final String BASEURL_9005 = "http://192.168.0.118:9999";   //参数192.168.0.195
-    public static final String BASEURL_9010 = "http://192.168.0.118:9999";  //本地小店
-    public static final String BASEURL_4000 = "http://192.168.0.118:4000";   //上传文件
+    public static final String BASEURL_9001 = "http://47.99.93.123:9999";   //商品//47.99.93.123//192.168.0.118
+    public static final String BASEURL_4001 = "http://47.99.93.123:4001";   //用户192.168.0.164
+    public static final String BASEURL_9003 = "http://47.99.93.123:9003";   //商家192.168.0.121
+    public static final String BASEURL_9004 = "http://47.99.93.123:9999";   //订单192.168.0.104
+    public static final String BASEURL_9005 = "http://47.99.93.123:9999";   //参数192.168.0.195
+    public static final String BASEURL_9010 = "http://47.99.93.123:9999";  //本地小店
+    public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
 
 
 //    public static final String BASEURL_9001 = "http://192.168.0.100:9001";   //商品//47.99.93.123//192.168.0.118
@@ -224,6 +224,7 @@ public class CommonResource {
     public static final String WXPAY_SUCCESS = "wxpay_success"; //礼包微信支付成功
     public static final String WXPAY_SUCCESS_UP = "wxpay_up";   //金银铜微信支付成功
     public static final String WXPAY_SUCCESS_LOCAL = "wxpay_local"; //本地商城微信支付成功
+    public static final String WXPAY_SUCCESS_LOCAL_ORDER = "wxpay_local_order"; //本地商城订单支付  微信
     public static final String CART_REFRESH = "cartRefresh";        //从购物车的商品推荐进入商品详情，又跳到购物车时刷新购物车
     public static final String NETCHANGED = "net_changed";      //网络发生变化，重新定位
     public static final String CITY = "city";      //网络发生变化，重新定位

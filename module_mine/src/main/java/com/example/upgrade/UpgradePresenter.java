@@ -53,6 +53,9 @@ public class UpgradePresenter extends BasePresenter<UpgradeView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("我要升级：" + result);
                 beanList = JSON.parseArray(result, OperatorBean.class);
+                if (beanList.size() > 0) {
+                    beanList.remove(0);
+                }
                 adapter = new UpgradeAdapter(mContext, beanList, R.layout.rv_upgrade);
                 if (getView() != null) {
                     getView().loadUI(adapter);

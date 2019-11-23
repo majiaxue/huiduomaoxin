@@ -60,6 +60,7 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "------------" + errorMsg);
                 if (getView() != null) {
                     getView().loadFinish();
                 }

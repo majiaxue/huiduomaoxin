@@ -36,6 +36,8 @@ public class JDAdapter extends MyRecyclerAdapter<JDOrderBean> {
             holder.setText(R.id.order_list_status, "已结算");
         } else if ("3".equals(data.getOrderValidCode())) {
             holder.setText(R.id.order_list_status, "已失效");
+        } else if ("15".equals(data.getOrderValidCode())) {
+            holder.setText(R.id.order_list_status, "待付款");
         }
     }
 }

@@ -36,6 +36,8 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @BindView(R2.id.mine_setting)
     ImageView mineSetting;
+    @BindView(R2.id.mine_msg)
+    ImageView mineMsg;
     @BindView(R2.id.mine_header)
     ImageView mineHeader;
     @BindView(R2.id.mine_lv)
@@ -249,6 +251,13 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
                     currentTime = System.currentTimeMillis();
                     presenter.jumpToInviteFriend();
                 }
+            }
+        });
+
+        mineMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.jumpToMsgCenter();
             }
         });
     }

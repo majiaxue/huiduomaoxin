@@ -75,7 +75,7 @@ public class RetrofitUtil {
                         Request build = null;
                         try {
                             build = chain.request().newBuilder()
-                                    .addHeader("TENANT_ID", "2")
+                                    .addHeader("TENANT_ID", "1")
                                     .build();
                         } catch (Exception e) {
                             e.printStackTrace();

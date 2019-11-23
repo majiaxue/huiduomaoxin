@@ -20,5 +20,7 @@ public interface BusinessApplicationView extends IView {
 
     void showHeader(String base64);
 
+    void categoryId(String name, int categoryId);
+
     void kedian();
 }

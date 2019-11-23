@@ -205,6 +205,7 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
         localOrderConfirmPeisong.setText(string);
         if ("商家配送".equals(string)) {
             bean.setDeliverType("1");
+            localOrderConfirmPeisongfei.setText("￥");
         } else {
             bean.setDeliverType("0");
         }

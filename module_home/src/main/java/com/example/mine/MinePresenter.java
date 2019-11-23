@@ -354,4 +354,12 @@ public class MinePresenter extends BasePresenter<MineView> {
             ARouter.getInstance().build("/mine/invite_friends").navigation();
         }
     }
+
+    public void jumpToMsgCenter() {
+        if ("".equals(SPUtil.getToken()) || SPUtil.getToken() == null) {
+            ARouter.getInstance().build("/mine/login").navigation();
+        } else {
+            ARouter.getInstance().build("/mine/messagecenter").navigation();
+        }
+    }
 }

@@ -61,7 +61,25 @@ public class LocalShopBean extends SimpleBannerInfo implements Serializable {
     private String seller_lat;
     private String sellerpics;
     private String pigxx_id;
+    private String min_point;
+    private String full_reduction_amount;
     private List<UserCouponBean> couponList;
+
+    public String getMin_point() {
+        return min_point;
+    }
+
+    public void setMin_point(String min_point) {
+        this.min_point = min_point;
+    }
+
+    public String getFull_reduction_amount() {
+        return full_reduction_amount;
+    }
+
+    public void setFull_reduction_amount(String full_reduction_amount) {
+        this.full_reduction_amount = full_reduction_amount;
+    }
 
     public String getPigxx_id() {
         return pigxx_id;

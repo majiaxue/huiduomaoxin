@@ -48,10 +48,13 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
+                if (getView() != null) {
+                    getView().loadFinish();
+                }
+                LogUtil.e("团队粉丝：" + result);
                 GroupFansBean groupFansBean = JSON.parseObject(result, GroupFansBean.class);
                 pages = groupFansBean.getPages();
 
-                LogUtil.e("团队粉丝：" + result);
                 if (page == 1) {
                     dataList.clear();
                 }
@@ -59,19 +62,32 @@ public class GroupFansPresenter extends BasePresenter<GroupFansView> {
                 if (adapter == null) {
                     adapter = new GroupFansRvAdapter(mContext, dataList, R.layout.rv_group_fans);
                     if (getView() != null) {
-                        getView().loadUI(adapter, groupFansBean.getPages(), groupFansBean.getTotal());
+                        getView().loadRv(adapter);
                     }
                 } else {
                     adapter.notifyDataSetChanged();
-                    getView().loadFinish();
+                }
+
+                if (getView() != null) {
+                    getView().loadUI(groupFansBean.getPages(), groupFansBean.getTotal());
                 }
             }
 
             @Override
             public void onError(String errorCode, String errorMsg) {
                 if ("1".equals(errorCode)) {
+                    dataList.clear();
+                    if (adapter == null) {
+                        adapter = new GroupFansRvAdapter(mContext, dataList, R.layout.rv_group_fans);
+                        if (getView() != null) {
+                            getView().loadRv(adapter);
+                        }
+                    } else {
+                        adapter.notifyDataSetChanged();
+                    }
                     if (getView() != null) {
                         getView().noFans();
+                        getView().loadFinish();
                     }
                 }
                 LogUtil.e(errorCode + "-------" + errorMsg);

@@ -3,6 +3,8 @@ package com.example.cashout;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.example.bean.BalanceBean;
 import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
 import com.example.mvp.BasePresenter;
@@ -41,11 +43,12 @@ public class CashoutPresenter extends BasePresenter<CashoutView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("余额：" + result);
+                BalanceBean balanceBean = JSON.parseObject(result, BalanceBean.class);
                 if (getView() != null) {
                     if (result == null || "".equals(result)) {
                         getView().loadBalance("0");
                     } else {
-                        getView().loadBalance(result);
+                        getView().loadBalance(balanceBean.getTotalblance() + "");
                     }
                 }
             }

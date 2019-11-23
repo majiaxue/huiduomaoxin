@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.bean.LocalCartBean;
 import com.example.bean.LocalShopBean;
@@ -31,7 +30,6 @@ import com.example.local_store.ShoppingRight.SortDetailFragment;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragmentActivity;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 
@@ -108,6 +106,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
             Glide.with(this).load(split[0]).into(localStoreImg);
         }
 
+        localStoreTxt1.setText("满" + bean.getMin_point() + "减" + bean.getFull_reduction_amount() + "元");
         presenter.loadData(bean.getPigxx_id());
         presenter.loadCart(bean.getPigxx_id());
     }

@@ -99,8 +99,8 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
 
     private int type;
-    private String base64;
     private Map<String, String> map = new HashMap<>();
+    private int categoryId;
 
     @Override
     public int getLayoutId() {
@@ -111,7 +111,11 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     public void initData() {
         ARouter.getInstance().inject(this);
         includeTitle.setText("商家申请");
-
+        if (CommonResource.HISTORY_LOCAL.equals(from)) {
+            presenter.goodsClass(from);
+        } else {
+            presenter.goodsClass(from);
+        }
     }
 
     @Override
@@ -167,12 +171,12 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                         sellerVo.setSellerType("0");
                     }
                     sellerVo.setSellerShopName(businessApplicationShopName.getText().toString());
-                    sellerVo.setSellerCategory(businessApplicationShopClassifyText.getText().toString());
+                    sellerVo.setSellerCategory(categoryId + "");
                     sellerVo.setSellerName(businessApplicationName.getText().toString());
                     sellerVo.setSellerPhone(businessApplicationPhone.getText().toString());
                     sellerVo.setSellerAddredd(businessApplicationAddressProvince.getText().toString() + " " + businessApplicationAddressCity.getText().toString() + " " + businessApplicationAddressArea.getText().toString() + " " + businessApplicationDetailAddress.getText().toString());
                     String sellerVoJson = JSON.toJSONString(sellerVo);
-
+                    LogUtil.e(sellerVoJson);
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
                     Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body, SPUtil.getToken());
@@ -246,7 +250,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopClassify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupGoodsClassify(businessApplicationShopClassifyText, from);
+                presenter.popupGoodsClassify(from);
             }
         });
         //选择地址
@@ -294,45 +298,19 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     public void selectPhoto(Uri uri) {
         if (type == 1) {
             businessApplicationFrontPhoto.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else if (type == 2) {
             businessApplicationVersoPhoto.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else if (type == 3) {
             businessApplicationBusinessLicense.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else if (type == 4) {
             businessApplicationFoodSafetyPermit.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         } else {
             businessApplicationIcon.setImageURI(uri);
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     @Override
     public void showHeader(String bitmap) {
-        this.base64 = bitmap;
         if (type == 1) {
             map.put("1", bitmap.replace("\n", ""));
         } else if (type == 2) {
@@ -344,6 +322,12 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         } else {
             map.put("0", bitmap.replace("\n", ""));
         }
+    }
+
+    @Override
+    public void categoryId(String name, int categoryId) {
+        this.categoryId = categoryId;
+        businessApplicationShopClassifyText.setText(name);
     }
 
 

@@ -191,15 +191,6 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
             jsonObject.put("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId());
             jsonObject.put("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney());
             jsonObject.put("userCode", SPUtil.getUserCode());
-//            Map map = MapUtil.getInstance()
-//                    .addParms("totalAmount", bean.getTotalMoney())
-//                    .addParms("orderSn", bean.getOrderSn())
-//                    .addParms("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId())
-//                    .addParms("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney())
-//                    .addParms("productName", CommonResource.PROJECTNAME)
-//                    .addParms("orderFlag", true)
-//                    .addParms("userCode", SPUtil.getUserCode())
-//                    .build();
             if (isWechat) {
                 wxpay(jsonObject);
             } else {

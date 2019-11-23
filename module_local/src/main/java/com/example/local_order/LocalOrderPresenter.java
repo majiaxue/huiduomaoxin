@@ -181,7 +181,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                             public void onClick(View v) {
                                 switch (localOrderBeans.get(position).getStatus()) {
                                     case "0":
-                                        ARouter.getInstance().build("/module_local/LocalOrderConfirmActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
+                                        ARouter.getInstance().build("/module_local/LocalPaymentActivity").withSerializable("bean", localOrderBeans.get(position)).navigation();
                                         break;
 
                                     case "1":

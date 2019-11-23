@@ -203,90 +203,91 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         homeZhongXbanner.setPageMargin(16);
                         homeZhongXbanner.setOffscreenPageLimit(3);
                         homeZhongXbanner.setPageTransformer(true, new RotateYTransformer());
-                        homeZhongXbanner.setAdapter(mAdapter = new PagerAdapter() {
-                            @Override
-                            public Object instantiateItem(ViewGroup container, int position) {
-                                SimpleDraweeView view = new SimpleDraweeView(mContext);
-                                view.setScaleType(SimpleDraweeView.ScaleType.FIT_XY);
-                                final int realPosition = getRealPosition(position);
-                                view.setImageURI(Uri.parse(images.get(realPosition)));
-                                container.addView(view);
-                                view.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (realPosition == 0) {
-                                            ARouter.getInstance().build("/mine/invite_friends").navigation();
-                                        } else if (realPosition == 1) {
-                                            if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                                                ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                        if (images.size()>0){
+                            homeZhongXbanner.setAdapter(mAdapter = new PagerAdapter() {
+                                @Override
+                                public Object instantiateItem(ViewGroup container, int position) {
+                                    SimpleDraweeView view = new SimpleDraweeView(mContext);
+                                    view.setScaleType(SimpleDraweeView.ScaleType.FIT_XY);
+                                    final int realPosition = getRealPosition(position);
+                                    view.setImageURI(Uri.parse(images.get(realPosition)));
+                                    container.addView(view);
+                                    view.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (realPosition == 0) {
+                                                ARouter.getInstance().build("/mine/invite_friends").navigation();
+                                            } else if (realPosition == 1) {
+                                                if (!TextUtils.isEmpty(SPUtil.getToken())) {
+                                                    ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
+                                                } else {
+                                                    //是否登录
+                                                    PopUtils.isLogin(mContext);
+                                                }
                                             } else {
-                                                //是否登录
-                                                PopUtils.isLogin(mContext);
+
                                             }
-                                        } else {
-
                                         }
-                                    }
-                                });
-                                return view;
-                            }
-
-
-                            @Override
-                            public int getItemPosition(Object object) {
-                                return POSITION_NONE;
-                            }
-
-                            @Override
-                            public void destroyItem(ViewGroup container, int position, Object object) {
-                                container.removeView((View) object);
-                            }
-
-                            @Override
-                            public int getCount() {
-                                return Integer.MAX_VALUE;
-                            }
-
-                            @Override
-                            public boolean isViewFromObject(View view, Object o) {
-                                return view == o;
-                            }
-
-                            //
-                            @Override
-                            public void startUpdate(ViewGroup container) {
-                                super.startUpdate(container);
-                                ViewPager viewPager = (ViewPager) container;
-                                int position = viewPager.getCurrentItem();
-                                if (position == 0) {
-                                    position = getFirstItemPosition();
-                                } else if (position == getCount() - 1) {
-                                    position = getLastItemPosition();
+                                    });
+                                    return view;
                                 }
-                                viewPager.setCurrentItem(position, false);
 
-                            }
 
-                            //
-                            private int getRealCount() {
-                                return images.size();
-                            }
+                                @Override
+                                public int getItemPosition(Object object) {
+                                    return POSITION_NONE;
+                                }
 
-                            //
-                            private int getRealPosition(int position) {
-                                return position % getRealCount();
-                            }
+                                @Override
+                                public void destroyItem(ViewGroup container, int position, Object object) {
+                                    container.removeView((View) object);
+                                }
 
-                            //
-                            private int getFirstItemPosition() {
-                                return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount();
-                            }
+                                @Override
+                                public int getCount() {
+                                    return Integer.MAX_VALUE;
+                                }
 
-                            private int getLastItemPosition() {
-                                return Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1;
-                            }
-                        });
+                                @Override
+                                public boolean isViewFromObject(View view, Object o) {
+                                    return view == o;
+                                }
 
+                                //
+                                @Override
+                                public void startUpdate(ViewGroup container) {
+                                    super.startUpdate(container);
+                                    ViewPager viewPager = (ViewPager) container;
+                                    int position = viewPager.getCurrentItem();
+                                    if (position == 0) {
+                                        position = getFirstItemPosition();
+                                    } else if (position == getCount() - 1) {
+                                        position = getLastItemPosition();
+                                    }
+                                    viewPager.setCurrentItem(position, false);
+
+                                }
+
+                                //
+                                private int getRealCount() {
+                                    return images.size();
+                                }
+
+                                //
+                                private int getRealPosition(int position) {
+                                    return getRealCount() == 0 ? 0 : position % getRealCount();
+                                }
+
+                                //
+                                private int getFirstItemPosition() {
+                                    return getRealCount() == 0 ? 0 : (Integer.MAX_VALUE / getRealCount() / 2 * getRealCount());
+                                }
+
+                                private int getLastItemPosition() {
+                                    return getRealCount() == 0 ? 0 : (Integer.MAX_VALUE / getRealCount() / 2 * getRealCount() - 1);
+                                }
+                            });
+                        }
                         homeZhongXbanner.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % images.size()));//设置首个轮播显示的位置   实现左右滑动 且首页面对应的是第一个数据
                     }
                 } catch (Exception e) {

@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:includeFontPadding="false"
-                    android:text="全部人数（人）"
+                    android:text="粉丝数量（人）"
                     android:textColor="#222222"
                     android:textSize="@dimen/sp_10" />
             </LinearLayout>
