@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.example.mvp.IView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
@@ -16,7 +17,7 @@ public interface BusinessApplicationView extends IView {
 
     void photoAlbum(Intent intent);
 
-    void selectPhoto(Uri uri);
+    void selectPhoto(int type, File file, Uri uri);
 
     void showHeader(String base64);
 

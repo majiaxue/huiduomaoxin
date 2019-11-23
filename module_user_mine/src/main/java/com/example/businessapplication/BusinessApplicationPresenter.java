@@ -78,6 +78,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
     private PopupXSGoodsClassifyAdapter popupXSGoodsClassifyAdapter;
     private List<PopupGoodsClassBean> popupGoodsClassBeans;
     private List<PopupXSGoodsClassBean> popupXSGoodsClassBeans;
+    private File file;
 
     public BusinessApplicationPresenter(Context context) {
         super(context);
@@ -474,7 +475,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         if (!file0.exists()) {
             file0.mkdirs();
         }
-        File file = new File(filePath, System.currentTimeMillis() + ".jpg");
+        file = new File(filePath, System.currentTimeMillis() + ".jpg");
 
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -529,7 +530,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        getView().selectPhoto(fileUri);
+        getView().selectPhoto(2,file,fileUri);
     }
 
     public void takePhoto() {
@@ -540,7 +541,7 @@ public class BusinessApplicationPresenter extends BasePresenter<BusinessApplicat
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        getView().selectPhoto(fileUri);
+        getView().selectPhoto(1,file,fileUri);
     }
 
 }
