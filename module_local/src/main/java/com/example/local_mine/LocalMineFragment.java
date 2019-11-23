@@ -65,6 +65,7 @@ public class LocalMineFragment extends BaseFragment<LocalMineView, LocalMinePres
         localMineShangjiaruzhu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                localMineShangjiaruzhu.setEnabled(false);
                 presenter.businessApplication();
             }
         });
@@ -100,6 +101,11 @@ public class LocalMineFragment extends BaseFragment<LocalMineView, LocalMinePres
                 linear.setBackgroundResource(((RedPackageBean) model).getBackground());
             }
         });
+    }
+
+    @Override
+    public void callBack() {
+        localMineShangjiaruzhu.setEnabled(true);
     }
 
     @Override

@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface LocalMineView extends IView {
     void loadBanner(List<RedPackageBean> redPackageBeans);
+
+    void callBack();
+
 }

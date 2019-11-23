@@ -128,7 +128,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (TextUtils.isEmpty(businessApplicationShopName.getText().toString())) {
                     Toast.makeText(BusinessApplicationActivity.this, "请输入店铺名!", Toast.LENGTH_SHORT).show();
                 } else if ("点击选择".equals(businessApplicationShopClassifyText.getText().toString())) {

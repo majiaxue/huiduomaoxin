@@ -78,6 +78,7 @@ public class LocalMinePresenter extends BasePresenter<LocalMineView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("查询商家申请" + result);
+                getView().callBack();
                 ApplicationBean applicationBean = JSON.parseObject(result, new TypeReference<ApplicationBean>() {
                 }.getType());
                 if (applicationBean != null) {
@@ -93,6 +94,7 @@ public class LocalMinePresenter extends BasePresenter<LocalMineView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
+                getView().callBack();
                 LogUtil.e(errorCode + "--------------------->" + errorMsg);
             }
         }));
