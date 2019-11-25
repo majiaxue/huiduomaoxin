@@ -1,10 +1,10 @@
 package com.example.coupon.all;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.CouponWalletAdapter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -60,14 +60,14 @@ public class AllPresenter extends BasePresenter<AllView> {
                         view1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                        ARouter.getInstance().build("").navigation();
+                                ARouter.getInstance().build("/module_user_store/ShopHomeActivity").withString("sellerId", couponBeans.get(position).getSellerId()).navigation();
                             }
                         });
 
                         view2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
+                                ARouter.getInstance().build("/module_user_store/ShopHomeActivity").withString("sellerId", couponBeans.get(position).getSellerId()).navigation();
                             }
                         });
                     }

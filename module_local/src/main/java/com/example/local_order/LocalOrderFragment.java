@@ -4,18 +4,25 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.local_order.adapter.LocalOrderAdapter;
 import com.example.local_order.adapter.LocalOrderNavbarAdapter;
 import com.example.local_order.adapter.LocalTuiKuanAdapter;
 import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.CustomHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -123,6 +130,16 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
     @Override
     public void loadTuiKuanRv(LocalTuiKuanAdapter adapter) {
         localOrderRvList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ("13".equals(SPUtil.getStringValue("wxpay"))) {
+            SPUtil.addParm("wxpay", "");
+            page = 1;
+            presenter.loadData(status, page);
+        }
     }
 
     @Override

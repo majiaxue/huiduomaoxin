@@ -56,6 +56,7 @@ public class LocalPaymentPresenter extends BasePresenter<LocalPaymentView> {
                 String result = map.get("result");
                 String memo = map.get("memo");
                 if ("9000".equals(resultStatus)) {
+                    SPUtil.addParm("wxpay", "13");
                     ((Activity) mContext).finish();
                     Toast.makeText(mContext, "支付成功", Toast.LENGTH_SHORT).show();
                 } else {

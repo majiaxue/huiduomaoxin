@@ -1,10 +1,10 @@
 package com.example.coupon.haveexpired;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.CouponWalletAdapter;
 import com.example.adapter.MyRecyclerAdapter;
@@ -49,17 +49,17 @@ public class HaveExpiredPresenter extends BasePresenter<HaveExpiredView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("haveExpiredResult---------->" + result);
-                List<CouponBean> couponBeans = JSON.parseArray(result, CouponBean.class);
+                final List<CouponBean> couponBeans = JSON.parseArray(result, CouponBean.class);
 
                 HaveExpiredAdapter haveExpiredAdapter = new HaveExpiredAdapter(mContext, couponBeans, R.layout.item_have_expired_rec);
                 haveExpiredRec.setAdapter(haveExpiredAdapter);
                 haveExpiredAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
                     @Override
-                    public void ViewOnClick(View view, int index) {
+                    public void ViewOnClick(View view, final int index) {
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
+                                ARouter.getInstance().build("/module_user_store/ShopHomeActivity").withString("sellerId", couponBeans.get(index).getSellerId()).navigation();
                             }
                         });
                     }

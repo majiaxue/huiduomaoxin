@@ -40,6 +40,8 @@ import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.SelfDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
