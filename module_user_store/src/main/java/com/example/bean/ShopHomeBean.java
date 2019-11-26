@@ -69,6 +69,33 @@ public class ShopHomeBean {
     private int pigxxId;
     private Object hotRecommendStatus;
     private Object localRecommendStatus;
+    private int starNum;
+    private int isFavorite;
+    private long favoriteNum;
+
+    public int getStarNum() {
+        return starNum;
+    }
+
+    public void setStarNum(int starNum) {
+        this.starNum = starNum;
+    }
+
+    public int getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(int isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
+    public long getFavoriteNum() {
+        return favoriteNum;
+    }
+
+    public void setFavoriteNum(long favoriteNum) {
+        this.favoriteNum = favoriteNum;
+    }
 
     public int getId() {
         return id;

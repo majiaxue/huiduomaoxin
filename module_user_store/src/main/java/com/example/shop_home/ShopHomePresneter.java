@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.PopCouponAdapter;
 import com.example.bean.ShopHomeBean;
 import com.example.bean.ShopHomeClassBean;
 import com.example.bean.UserCouponBean;
@@ -31,6 +32,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnAdapterListener;
 import com.example.utils.OnClearCacheListener;
+import com.example.utils.OnPopAdapterListener;
 import com.example.utils.PopUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
@@ -130,8 +132,8 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
     }
 
     public void youhuiquan(String sellerID) {
-        Map map = MapUtil.getInstance().addParms("status", "0").addParms("userCode", SPUtil.getUserCode()).addParms("sellerId", sellerID).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.QUERY_COUPON, map);
+        Map map = MapUtil.getInstance().addParms("platform", "2").addParms("sellerId", sellerID).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.COUPON_KELING, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -139,7 +141,38 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
                 try {
                     final List<UserCouponBean> couponBeanList = JSON.parseArray(result, UserCouponBean.class);
                     if (couponBeanList != null && couponBeanList.size() > 0) {
-                        PopUtils.youhuiquan(mContext, couponBeanList);
+                        PopUtils.youhuiquan(mContext, couponBeanList, new OnPopAdapterListener() {
+                            @Override
+                            public void setOnAdapterListener(PopupWindow popupWindow, final PopCouponAdapter adapter) {
+                                adapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
+                                    @Override
+                                    public void ViewOnClick(View view, final int index) {
+                                        view.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Map map = MapUtil.getInstance().addParms("couponID", couponBeanList.get(index).getId()).addParms("userID", SPUtil.getUserCode()).addParms("userNickName", SPUtil.getStringValue(CommonResource.USER_NAME)).build();
+                                                Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.LINGCOUPON, map);
+                                                RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+                                                    @Override
+                                                    public void onSuccess(String result, String msg) {
+                                                        LogUtil.e("领取：" + result);
+                                                        Toast.makeText(mContext, "领取成功", Toast.LENGTH_SHORT).show();
+                                                        couponBeanList.get(index).setHas(true);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+
+                                                    @Override
+                                                    public void onError(String errorCode, String errorMsg) {
+                                                        LogUtil.e(errorCode + "------------" + errorMsg);
+                                                        Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }));
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -167,7 +200,8 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
 
             @Override
             public void onError(String errorCode, String errorMsg) {
-                Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                LogUtil.e("收藏商品失败" + errorCode + "------------" + errorMsg);
+                Toast.makeText(mContext, errorMsg, Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -198,21 +232,21 @@ public class ShopHomePresneter extends BasePresenter<ShopHomeView> {
         }
     };
 
-    public void isCollect(String shop_id) {
-        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.USER_ISCOLLECT + "/" + shop_id, SPUtil.getToken());
-        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
-            @Override
-            public void onSuccess(String result, String msg) {
-                LogUtil.e("是否收藏：" + result);
-                if (getView() != null) {
-                    getView().isCollect(result);
-                }
-            }
-
-            @Override
-            public void onError(String errorCode, String errorMsg) {
-                LogUtil.e(errorCode + "---------------" + errorMsg);
-            }
-        }));
-    }
+//    public void isCollect(String shop_id) {
+//        Observable<ResponseBody> observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHeadWithout(CommonResource.USER_ISCOLLECT + "/" + shop_id, SPUtil.getToken());
+//        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+//            @Override
+//            public void onSuccess(String result, String msg) {
+//                LogUtil.e("是否收藏：" + result);
+//                if (getView() != null) {
+//                    getView().isCollect(result);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String errorCode, String errorMsg) {
+//                LogUtil.e(errorCode + "---------------" + errorMsg);
+//            }
+//        }));
+//    }
 }

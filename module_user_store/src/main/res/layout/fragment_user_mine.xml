@@ -398,6 +398,39 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/user_mine_discount_coupon"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_40"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_16"
+                            android:layout_height="@dimen/dp_16"
+                            android:layout_marginLeft="@dimen/dp_17"
+                            android:src="@drawable/dyhsc_wdicon_yhq" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:text="优惠券"
+                            android:textColor="#333333"
+                            android:textSize="@dimen/sp_14" />
+
+                        <View
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="@dimen/dp_0"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_6"
+                            android:layout_height="@dimen/dp_11"
+                            android:layout_marginRight="@dimen/dp_26"
+                            android:src="@drawable/right_back" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/user_mine_business_application"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_40"
@@ -463,38 +496,6 @@
                             android:src="@drawable/right_back" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/user_mine_discount_coupon"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_40"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_16"
-                            android:layout_height="@dimen/dp_16"
-                            android:layout_marginLeft="@dimen/dp_17"
-                            android:src="@drawable/dyhsc_wdicon_yhq" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:text="优惠券"
-                            android:textColor="#333333"
-                            android:textSize="@dimen/sp_14" />
-
-                        <View
-                            android:layout_width="@dimen/dp_0"
-                            android:layout_height="@dimen/dp_0"
-                            android:layout_weight="1" />
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_6"
-                            android:layout_height="@dimen/dp_11"
-                            android:layout_marginRight="@dimen/dp_26"
-                            android:src="@drawable/right_back" />
-                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.example.utils;
 
 import android.widget.PopupWindow;
 
+import com.example.adapter.PopCouponAdapter;
 import com.example.goods_detail.adapter.PopLingQuanAdapter;
 
 public interface OnAdapterListener {

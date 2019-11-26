@@ -20,6 +20,8 @@ import com.example.user_store.R;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +54,11 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(this);
     }
 
-    public void loadData(String sellerId,String categoryId, final int page) {
-        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("categoryId",categoryId).addParms("pageNum", page).addParms("pageSize", "2000").build();
+    public void loadData(String sellerId,String categoryId, final int page,String searchInfo) {
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("categoryId",categoryId).addParms("pageNum", page).addParms("pageSize", "2000").addParms("searchInfo",searchInfo).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

@@ -24,7 +24,7 @@ public class CouponAdapter extends MyRecyclerAdapter<CouponBean> {
         holder.setText(R.id.coupon_rec_shop_name, data.getSellerName());
         holder.setImageResource(R.id.coupon_rec_image, R.drawable.img_104);
         holder.setText(R.id.coupon_rec_qian, data.getAmount() + "");
-        holder.setText(R.id.coupon_rec_total_usage_amount, "满" + data.getMinPoint() + "50元可使用");
+        holder.setText(R.id.coupon_rec_total_usage_amount, "满" + data.getMinPoint() + "元可使用");
         holder.setText(R.id.coupon_rec_valid_time, data.getEndTime());
         viewTwoOnClickListener.ViewTwoOnClick(holder.getView(R.id.coupon_rec_go_shop), holder.getView(R.id.coupon_rec_immediate_use), position);
     }

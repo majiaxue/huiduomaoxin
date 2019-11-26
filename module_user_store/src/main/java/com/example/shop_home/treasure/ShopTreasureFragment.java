@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.mvp.BaseFragment;
 import com.example.type_detail.adapter.TypeDetailLstAdapter;
 import com.example.type_detail.adapter.TypeDetailWaterfallAdapter;
@@ -22,6 +24,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -87,6 +93,8 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
+
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         itemDecoration = new RvItemDecoration((int) getResources().getDimension(R.dimen.dp_13), (int) getResources().getDimension(R.dimen.dp_10));
@@ -97,7 +105,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 //        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
 //        mRefresh.setRefreshHeader(customHeader);
 
-        presenter.loadData(sellerId,categoryId, page);
+        presenter.loadData(sellerId,categoryId, page,"");
     }
 
     @Override
@@ -156,6 +164,14 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 //                presenter.loadData(sellerId, page);
 //            }
 //        });
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if ("001".equals(eventBusBean.getCode())) {
+            presenter.loadData(sellerId,categoryId, page,eventBusBean.getMsg());
+        }
     }
 
     @Override

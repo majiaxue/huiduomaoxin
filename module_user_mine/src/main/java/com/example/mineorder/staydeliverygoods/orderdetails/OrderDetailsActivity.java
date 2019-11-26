@@ -122,7 +122,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsView, OrderDe
         orderDetailsConsultCustomerService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call("CommonResource.SERVICE_PHONE");
+                call(CommonResource.SERVICE_PHONE);
             }
         });
 

@@ -117,6 +117,15 @@ public class UserGoodsDetail implements Serializable {
     private List productAttributeValueList;
     private List<XsProductAttributesBean> xsProductAttributes;
     private String levelId;
+    private Long sellerFavoriteShu;
+
+    public Long getSellerFavoriteShu() {
+        return sellerFavoriteShu;
+    }
+
+    public void setSellerFavoriteShu(Long sellerFavoriteShu) {
+        this.sellerFavoriteShu = sellerFavoriteShu;
+    }
 
     public String getLevelId() {
         return levelId;

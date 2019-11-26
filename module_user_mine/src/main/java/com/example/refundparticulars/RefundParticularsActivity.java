@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.AlterationBean;
 import com.example.bean.RefundParticularsBean;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -100,14 +101,14 @@ public class RefundParticularsActivity extends BaseActivity<RefundParticularsVie
         refundParticularsContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call("18818814558");
+                call(CommonResource.SERVICE_PHONE);
             }
         });
         //咨询客服
         refundParticularsConsultCustomerService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call("40083312345");
+                call(CommonResource.SERVICE_PHONE);
             }
         });
     }

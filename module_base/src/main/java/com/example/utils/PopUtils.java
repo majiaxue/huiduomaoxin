@@ -614,7 +614,7 @@ public class PopUtils {
         String jsonString = JSON.toJSONString(parameter);
     }
 
-    public static void youhuiquan(final Context context, List<UserCouponBean> couponBeanList) {
+    public static void youhuiquan(final Context context, List<UserCouponBean> couponBeanList, OnPopAdapterListener listener) {
         View view = LayoutInflater.from(context).inflate(R.layout.pop_youhuiquan, null);
         ImageView couponClose = view.findViewById(R.id.pop_coupon_close);
         RecyclerView couponRec = view.findViewById(R.id.pop_coupon_rec);
@@ -639,17 +639,7 @@ public class PopUtils {
         PopCouponAdapter popCouponAdapter = new PopCouponAdapter(context, couponBeanList, R.layout.item_coupon_rec1);
         couponRec.setAdapter(popCouponAdapter);
 
-        popCouponAdapter.setViewOnClickListener(new MyRecyclerAdapter.ViewOnClickListener() {
-            @Override
-            public void ViewOnClick(View view, int index) {
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "领取成功", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+        listener.setOnAdapterListener(popupWindow,popCouponAdapter);
 
         couponClose.setOnClickListener(new View.OnClickListener() {
             @Override

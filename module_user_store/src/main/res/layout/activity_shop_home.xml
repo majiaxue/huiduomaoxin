@@ -18,7 +18,7 @@
     <RelativeLayout
         android:id="@+id/shop_home_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_50"
         android:layout_below="@id/shop_home_include">
 
         <ImageView
@@ -44,6 +44,7 @@
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center_vertical"
             android:hint="搜索店内商品"
+            android:visibility="gone"
             android:paddingLeft="@dimen/dp_12"
             android:textColor="#ffffff"
             android:textColorHint="#ffffff"
@@ -57,7 +58,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_5"
             android:padding="@dimen/dp_10"
+            android:visibility="gone"
             android:src="@drawable/icon_gengduo8" />
+        
     </RelativeLayout>
 
     <RelativeLayout

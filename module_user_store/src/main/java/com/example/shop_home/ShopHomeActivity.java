@@ -18,6 +18,7 @@ import com.example.mvp.BaseFragmentActivity;
 import com.example.shop_home.adapter.ShopHomeVPAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.TxtUtil;
 import com.example.view.RatingBarView;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -58,6 +59,8 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     @Autowired(name = "sellerId")
     String shop_id;
 
+    private long favoriteNum;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_shop_home;
@@ -88,7 +91,7 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
                         .build();
         shopHomeYouhuiquan.setController(draweeController);
 
-        presenter.isCollect(shop_id);
+//        presenter.isCollect(shop_id);
     }
 
     @Override
@@ -134,19 +137,28 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
     public void isCollect(String result) {
         if ("true".equals(result)) {
             shopHomeCollectStore.setText("取消收藏");
+            favoriteNum = favoriteNum + 1;
+            shopHomeStoreCollectNumber.setText(TxtUtil.parse(favoriteNum) + "收藏");
         } else if ("false".equals(result)) {
             shopHomeCollectStore.setText("收藏");
+            favoriteNum = favoriteNum - 1;
+            shopHomeStoreCollectNumber.setText(TxtUtil.parse(favoriteNum) + "收藏");
         }
     }
 
     @Override
     public void initView(ShopHomeBean shopHomeBean) {
-        shopHomeStar.setStar(4, false);
+        this.favoriteNum = shopHomeBean.getFavoriteNum();
+        shopHomeStar.setStar(5, false);
         shopHomeStar.setClickable(false);
-
+        if (1 == shopHomeBean.getIsFavorite()) {
+            shopHomeCollectStore.setText("取消收藏");
+        } else {
+            shopHomeCollectStore.setText("收藏");
+        }
         shopHomeStoreImage.setImageURI(Uri.parse(shopHomeBean.getSellerLogo() == null ? "" : shopHomeBean.getSellerLogo()));
         shopHomeStoreName.setText(shopHomeBean.getSellerShopName());
-        shopHomeStoreCollectNumber.setText(0 + "收藏");
+        shopHomeStoreCollectNumber.setText(TxtUtil.parse(shopHomeBean.getFavoriteNum()) + "收藏");
         presenter.initTabLayout(shopHomeTab, shop_id, shopHomeBean.getSellerCategory());
 
         shopHomeTab.setupWithViewPager(shopHomeVp);
