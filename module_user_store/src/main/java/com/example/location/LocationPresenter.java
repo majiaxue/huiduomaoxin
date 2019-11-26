@@ -99,7 +99,7 @@ public class LocationPresenter extends BasePresenter<LocationView> {
         RegionAdapter regionAdapter = new RegionAdapter(mContext, mList, R.layout.item_location_rec);
         locationRecycler.setAdapter(regionAdapter);
 
-        regionAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+        regionAdapter.setOnItemClick( new MyRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position) {
                 final RecyclerView itemRegionList = view.findViewById(R.id.item_regionList);

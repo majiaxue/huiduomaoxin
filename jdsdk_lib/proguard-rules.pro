@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.kepler.**{*;}
+-dontwarn com.kepler.**
+-keep class com.jingdong.jdma.**{*;}
+-dontwarn com.jingdong.jdma.**

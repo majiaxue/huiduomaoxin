@@ -95,8 +95,7 @@
                 android:id="@+id/mine_iwantup"
                 android:layout_width="@dimen/dp_24"
                 android:layout_height="@dimen/dp_26"
-                android:padding="@dimen/dp_5"
-                android:src="@drawable/grzx_con_sj" />
+                android:padding="@dimen/dp_5" />
         </LinearLayout>
 
         <LinearLayout

@@ -382,7 +382,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     data.setCount(currentCount);
                     isShow(data);
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean)));
                 }
 
                 @Override
@@ -420,7 +420,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     data.setCount(currentCount);
                     isShow(data);
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean)));
                 }
 
                 @Override

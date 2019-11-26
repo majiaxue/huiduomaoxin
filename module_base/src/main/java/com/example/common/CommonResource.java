@@ -205,7 +205,6 @@ public class CommonResource {
     public static final String USER_BACK = "USER_BACK";
     public static final String JUMP_CLASSIFY = "JUMP_CLASSIFY";
     public static final String JUMP_CART = "JUMP_CART";
-    public static final String JUMP_LOCAL_SHOP = "JUMP_LOCAL_SHOP";
     public static final String JUMP_OPERATOR = "JUMP_OPERATOR";
     public static final String TOKEN = "token";
     public static final String USERCODE = "userCode";
@@ -226,7 +225,6 @@ public class CommonResource {
     public static final String WXPAY_SUCCESS_LOCAL = "wxpay_local"; //本地商城微信支付成功
     public static final String WXPAY_SUCCESS_LOCAL_ORDER = "wxpay_local_order"; //本地商城订单支付  微信
     public static final String CART_REFRESH = "cartRefresh";        //从购物车的商品推荐进入商品详情，又跳到购物车时刷新购物车
-    public static final String NETCHANGED = "net_changed";      //网络发生变化，重新定位
     public static final String CITY = "city";      //网络发生变化，重新定位
     public static final String TAN_CONTENT = "tan_content";     //粘贴板内容
 
@@ -238,7 +236,6 @@ public class CommonResource {
     public static final String UPCART = "up_cart";      //刷新购物车
     public static final String MINUS_GOODS = "minus_goods";     //本地商城减少不同规格商品
     public static final String LOCAL_SELLER_MANJIAN = "local_seller_manjian";
-    public static final String LOCAL_BUY_REDPACKEG = "local_buy_redpackeg"; //本地商城购买红包
 
 
     public static final String PROJECTNAME = "枫林淘客";

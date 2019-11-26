@@ -91,4 +91,5 @@ dependencies {
     implementation project(':module_user_store')
     implementation project(':module_user_mine')
     implementation project(':module_local')
+    implementation project(':jdsdk_lib')
 }
