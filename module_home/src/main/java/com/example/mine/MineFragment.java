@@ -101,6 +101,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     @Override
     public void initData() {
         EventBus.getDefault().register(this);
+        Glide.with(getContext()).load(R.drawable.iwantup).into(mIWantUp);
         presenter.loadRec();
         mineParent.setOnScrollChangeListener(this);
     }

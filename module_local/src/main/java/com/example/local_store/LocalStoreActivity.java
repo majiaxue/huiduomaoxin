@@ -138,7 +138,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     }
 
     @Override
-    public void upMoney(double money, int size) {
+    public void upMoney(String money, int size) {
         localStoreTotalMoney.setText("￥" + money);
     }
 

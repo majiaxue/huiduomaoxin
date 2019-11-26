@@ -37,7 +37,7 @@ public class MyLocationListener extends BDAbstractLocationListener {
                 // 此处设置开发者获取到的方向信息，顺时针0-360
                 .direction(bdLocation.getDirection()).latitude(bdLocation.getLatitude())
                 .longitude(bdLocation.getLongitude()).build();
-        LogUtil.e("--------》纬度：" + latitude + "=====经度：" + longitude + "=====城市：" + city + "-----------getLocType:" + adCode);
+        LogUtil.e("--------》纬度：" + latitude + "=====经度：" + longitude + "=====城市：" + city + "-----------区:" + district);
 //        EventBus.getDefault().post(new EventBusBean(CommonResource.NETCHANGED));
     }
 }

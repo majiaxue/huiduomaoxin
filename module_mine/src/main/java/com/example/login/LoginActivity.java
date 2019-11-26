@@ -16,7 +16,6 @@ import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.CountDownTimerUtil;
-import com.example.utils.DisplayUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,6 +65,9 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     LinearLayout loginVisiLogin4;
     @BindView(R2.id.login_read_check)
     ImageView mReadCheck;
+    @BindView(R2.id.login_visi_register2)
+    View loginVisiRegister2;
+
 
     private boolean isLogin = true;
     private boolean isRead = true;
@@ -110,6 +112,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 loginVisiLogin4.setVisibility(View.GONE);
                 loginInviteCode.setVisibility(View.GONE);
                 loginVisiRegister1.setVisibility(View.VISIBLE);
+                loginVisiRegister2.setVisibility(View.VISIBLE);
                 loginLoginText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
                 loginRegText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 
@@ -127,6 +130,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 loginVisiLogin4.setVisibility(View.VISIBLE);
                 loginInviteCode.setVisibility(View.VISIBLE);
                 loginVisiRegister1.setVisibility(View.GONE);
+                loginVisiRegister2.setVisibility(View.GONE);
                 loginLoginText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 loginRegText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
             }
@@ -205,5 +209,4 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     public LoginPresenter createPresenter() {
         return new LoginPresenter(this);
     }
-
 }

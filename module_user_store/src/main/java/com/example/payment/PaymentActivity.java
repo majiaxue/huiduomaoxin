@@ -11,16 +11,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.bean.RedPackageBean;
 import com.example.bean.SubmitOrderBean;
-import com.example.common.CommonResource;
-import com.example.entity.EventBusBean;
 import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -106,14 +101,6 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventBusBean eventBusBean) {
-        LogUtil.e("-------------->"+eventBusBean.getMsg());
-        if (CommonResource.LOCAL_BUY_REDPACKEG.equals(eventBusBean.getMsg())) {
-            finish();
-        }
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         presenter.goBack();
@@ -123,9 +110,14 @@ public class PaymentActivity extends BaseActivity<PaymentView, PaymentPresenter>
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.e("111111111111111111111111");
         if ("0".equals(SPUtil.getStringValue("wxpay"))) {
             SPUtil.addParm("wxpay", "");
             presenter.paySuccess();
+        } else if ("11".equals(SPUtil.getStringValue("wxpay"))) {
+            LogUtil.e("222222222222222222222");
+            SPUtil.addParm("wxpay", "");
+            finish();
         }
     }
 

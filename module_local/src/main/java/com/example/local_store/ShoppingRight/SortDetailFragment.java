@@ -46,8 +46,6 @@ public class SortDetailFragment extends BaseFragment<SortDetailPresenter, String
     public void msgEventBus(EventBusBean eventBusBean) {
         if (CommonResource.SUBMIT_ORDER.equals(eventBusBean.getMsg())) {
             presenter.loadCart();
-        } else if (CommonResource.UPCART.equals(eventBusBean.getCode())) {
-            String result = eventBusBean.getMsg();
         }
     }
 

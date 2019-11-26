@@ -10,5 +10,5 @@ public interface LocalStoreView extends IView {
 
     void loadData(List<LocalStoreBean> localStoreBeans);
 
-    void upMoney(double money, int size);
+    void upMoney(String money, int size);
 }

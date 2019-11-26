@@ -30,7 +30,7 @@ import com.example.entity.EventBusBean;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
 import com.example.local_shop.adapter.LocalNavbarAdapter;
 import com.example.local_shop.adapter.LocalSellerAdapter;
-import com.example.local_store.ShoppingRight.ShopRightSpaceItemDecoration;
+import com.example.location.LocationActivity;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_local.R;
 import com.example.module_local.R2;
@@ -147,7 +147,10 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
         localHomeChooseCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/module_user_store/LocationActivity").withString("cityName", localHomeCity.getText().toString()).navigation(getActivity(), REQUESTCODE);
+                Intent intent = new Intent(getContext(), LocationActivity.class);
+                intent.putExtra("cityName", localHomeCity.getText().toString());
+                startActivityForResult(intent, REQUESTCODE);
+//                ARouter.getInstance().build("/module_user_store/LocationActivity").withString("cityName", localHomeCity.getText().toString()).navigation(getActivity(), REQUESTCODE);
             }
         });
 

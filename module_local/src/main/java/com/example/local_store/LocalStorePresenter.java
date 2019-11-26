@@ -101,7 +101,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
                 LogUtil.e("购物车：" + result);
                 flag++;
                 LocalCartBean localCartBean = JSON.parseObject(result, LocalCartBean.class);
-                EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean.getLocalShopcarList())));
+                EventBus.getDefault().post(new EventBusBean(CommonResource.UPCART, JSON.toJSONString(localCartBean)));
                 LocalCartBean cartBean = JSON.parseObject(result, LocalCartBean.class);
                 localCartBeans = cartBean.getLocalShopcarList();
                 if (flag == 2) {
@@ -140,21 +140,9 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     }
 
     public void upCart(String msg) {
-
-        localCartBeans = JSON.parseArray(msg, LocalCartBean.InsideCart.class);
-        double money = 0.0;
-        for (int i = 0; i < localCartBeans.size(); i++) {
-            money += (localCartBeans.get(i).getPrice() * localCartBeans.get(i).getNum());
-        }
-        getView().upMoney(ArithUtil.exact(money, 2), localCartBeans.size());
-    }
-
-    public void upCart2() {
-        double money = 0.0;
-        for (int i = 0; i < localCartBeans.size(); i++) {
-            money += (localCartBeans.get(i).getPrice() * localCartBeans.get(i).getNum());
-        }
-        getView().upMoney(ArithUtil.exact(money, 2), localCartBeans.size());
+        LocalCartBean localCartBean = JSON.parseObject(msg, LocalCartBean.class);
+        localCartBeans = localCartBean.getLocalShopcarList();
+        getView().upMoney(localCartBean.getTotalMoney(), localCartBeans.size());
     }
 
     public void cartPop(LinearLayout linear) {
@@ -225,7 +213,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
                 localCartBeans.addAll(localCartBean.getLocalShopcarList());
                 popLocalCartAdapter.notifyDataSetChanged();
                 relevance();
-                upCart2();
+                getView().upMoney(localCartBean.getTotalMoney(), localCartBeans.size());
                 if (localCartBeans.size() == 0) {
                     popupWindow.dismiss();
                 }
@@ -254,7 +242,7 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
                 localCartBeans.addAll(localCartBean.getLocalShopcarList());
                 popLocalCartAdapter.notifyDataSetChanged();
                 relevance();
-                upCart2();
+                getView().upMoney(localCartBean.getTotalMoney(), localCartBeans.size());
                 if (localCartBeans.size() == 0) {
                     popupWindow.dismiss();
                 }
