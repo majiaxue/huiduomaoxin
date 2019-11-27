@@ -372,10 +372,10 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     add.setEnabled(true);
                     minus.setEnabled(true);
                     int currentCount = data.getCount();
-                    if (currentCount == 0) {
-                        minus.setAnimation(getShowAnimation());
-                        count.setAnimation(getShowAnimation());
-                    }
+//                    if (currentCount == 0) {
+//                        minus.setAnimation(getShowAnimation());
+//                        count.setAnimation(getShowAnimation());
+//                    }
                     currentCount++;
 
                     count.setText(currentCount + "");
@@ -413,8 +413,8 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                     if (currentCount <= 0) {
                         currentCount = 0;
                         minus.setEnabled(false);
-                        minus.setAnimation(getHiddenAnimation());
-                        count.setAnimation(getHiddenAnimation());
+//                        minus.setAnimation(getHiddenAnimation());
+//                        count.setAnimation(getHiddenAnimation());
                     }
                     count.setText(currentCount + "");
                     data.setCount(currentCount);
