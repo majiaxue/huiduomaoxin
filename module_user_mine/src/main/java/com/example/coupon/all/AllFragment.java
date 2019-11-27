@@ -56,7 +56,7 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
 
     @Override
     public void loadRv(CouponWalletAdapter adapter) {
-
+        allRec.setAdapter(adapter);
     }
 
     @Override
