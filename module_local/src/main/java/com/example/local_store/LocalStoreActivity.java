@@ -108,7 +108,6 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
 
         localStoreTxt1.setText("满" + bean.getMin_point() + "减" + bean.getFull_reduction_amount() + "元");
         presenter.loadData(bean.getPigxx_id());
-        presenter.loadCart(bean.getPigxx_id());
     }
 
     @Override
@@ -224,6 +223,12 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
 
         }
         moveToCenter(position);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadCart(bean.getPigxx_id());
     }
 
     @Override

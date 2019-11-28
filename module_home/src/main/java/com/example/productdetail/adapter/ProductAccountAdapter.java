@@ -20,5 +20,9 @@ public class ProductAccountAdapter extends MyRecyclerAdapter<ProductCenterBean.R
                 .setText(R.id.rv_product_detail_download, data.getTestAddress())
                 .setText(R.id.rv_product_detail_account, data.getTestAccount())
                 .setText(R.id.rv_product_detail_password, data.getTestPassword());
+
+        if (viewThreeOnClickListener != null) {
+            viewThreeOnClickListener.ViewThreeOnClick(holder.getView(R.id.rv_product_detail_copy1), holder.getView(R.id.rv_product_detail_copy2), holder.getView(R.id.rv_product_detail_download), position);
+        }
     }
 }

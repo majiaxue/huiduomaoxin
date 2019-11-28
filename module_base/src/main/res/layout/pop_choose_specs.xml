@@ -41,7 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/pop_choose_specs_name"
         android:layout_alignBottom="@id/pop_choose_specs_img"
-        android:text="￥19.9"
         android:textColor="#fb5318"
         android:textSize="@dimen/sp_18" />
 

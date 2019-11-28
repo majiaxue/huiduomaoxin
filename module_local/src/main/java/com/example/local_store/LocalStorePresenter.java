@@ -19,7 +19,6 @@ import com.example.bean.LocalCartBean;
 import com.example.bean.LocalStoreBean;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
-import com.example.local_store.adapter.LocalStoreCommendAdapter;
 import com.example.local_store.adapter.PopLocalCartAdapter;
 import com.example.local_store.adapter.ShoppingRightAdapter;
 import com.example.module_local.R;
@@ -27,7 +26,6 @@ import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
-import com.example.utils.ArithUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
@@ -35,7 +33,6 @@ import com.example.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -47,11 +44,9 @@ public class LocalStorePresenter extends BasePresenter<LocalStoreView> {
     private int flag = 0;
     private List<LocalCartBean.InsideCart> localCartBeans;
     private List<LocalStoreBean> localStoreBeans;
-    private List<LocalStoreBean.ListBean> recommendList = new ArrayList<>();
 
     private int temp1 = 0;
     private int temp2 = 0;
-    private LocalStoreCommendAdapter commendAdapter;
     private PopLocalCartAdapter popLocalCartAdapter;
 
 

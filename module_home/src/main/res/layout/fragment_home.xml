@@ -372,6 +372,18 @@
                                 android:textColor="#999999"
                                 android:textSize="@dimen/sp_12" />
 
+                            <TextView
+                                android:layout_width="@dimen/dp_72"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_below="@id/text131"
+                                android:layout_alignLeft="@id/text131"
+                                android:layout_marginTop="@dimen/dp_23"
+                                android:background="@drawable/shape_text_bg_look_right"
+                                android:gravity="center"
+                                android:text="立即查看"
+                                android:textColor="#ffffff"
+                                android:textSize="@dimen/sp_12" />
+
                             <ImageView
                                 android:layout_width="@dimen/dp_83"
                                 android:layout_height="@dimen/dp_50"
@@ -422,6 +434,18 @@
                                 android:layout_marginTop="@dimen/dp_10"
                                 android:text="免单福利砸中你"
                                 android:textColor="#999999"
+                                android:textSize="@dimen/sp_12" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_72"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_below="@id/text141"
+                                android:layout_alignLeft="@id/text141"
+                                android:layout_marginTop="@dimen/dp_23"
+                                android:background="@drawable/shape_text_bg_look_left"
+                                android:gravity="center"
+                                android:text="立即查看"
+                                android:textColor="#ffffff"
                                 android:textSize="@dimen/sp_12" />
 
                             <ImageView

@@ -69,7 +69,7 @@ public class OrderInfoActivity extends BaseActivity<OrderInfoView, OrderInfoPres
 
         if (tuiKuanBean == null) {
             orderInfoShopName.setText(bean.getSellerInfo().getShop_name());
-            orderInfoManjianMoney.setText("-￥" + (bean.getSellerInfo().getAmount() == null ? "0" : bean.getSellerInfo().getAmount()));
+            orderInfoManjianMoney.setText("-￥" + (bean.getFullReductionAmount() == null ? "0" : bean.getFullReductionAmount()));
             orderInfoTotalMoney.setText("￥" + bean.getTotalMoney());
             orderInfoAddress.setText(bean.getUserAddress() + "\n" + bean.getUserName() + "      " + bean.getUserPhone());
             orderInfoOrdersn.setText(bean.getOrderSn());
