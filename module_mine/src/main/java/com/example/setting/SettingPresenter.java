@@ -13,7 +13,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.bean.UserInfoBean;
 import com.example.common.CommonResource;
 import com.example.module_base.ModuleBaseApplication;
+import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
@@ -34,6 +37,7 @@ import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
 import com.example.utils.OnChangeHeaderListener;
 import com.example.utils.OnClearCacheListener;
+import com.example.utils.OnPopListener;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
@@ -267,7 +271,13 @@ public class SettingPresenter extends BasePresenter<SettingView> {
     }
 
     public void aboutUs() {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_about_us, null);
+        PopUtils.createPopCenter(mContext, view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, new OnPopListener() {
+            @Override
+            public void setOnPop(PopupWindow pop) {
 
+            }
+        });
     }
 
     public void jumpToRevisePassword() {

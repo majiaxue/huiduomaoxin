@@ -82,7 +82,7 @@ public class AllPresenter extends BasePresenter<AllView> {
     }
 
     public void localMyCoupon() {
-        Map map = MapUtil.getInstance().addParms("status", "2").build();
+        Map map = MapUtil.getInstance().addParms("status", "0").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getHead(CommonResource.LOCAL_COUPON_LIST, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

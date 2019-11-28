@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -133,7 +132,7 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
                             ARouter.getInstance().build("/module_home/ProductDetailActivity")
-                                    .withSerializable("bean", productCenterBean.getRecords().get(position))
+                                    .withSerializable("bean", recordsBeanList.get(position))
                                     .navigation();
                         }
                     });
