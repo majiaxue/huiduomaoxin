@@ -20,7 +20,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dp_13"
             android:background="@drawable/bg_5_fff"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="#fb4119"
             app:tabTextColor="#333333" />
