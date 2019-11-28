@@ -77,9 +77,6 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
     private String sellerId;
     private String categoryId;
 
-    public ShopTreasureFragment() {
-    }
-
     @SuppressLint("ValidFragment")
     public ShopTreasureFragment(String sellerId,String categoryId) {
         this.sellerId = sellerId;
@@ -93,7 +90,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 
     @Override
     public void initData() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
 
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -105,7 +102,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
 //        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
 //        mRefresh.setRefreshHeader(customHeader);
 
-        presenter.loadData(sellerId,categoryId, page,"");
+        presenter.loadData(sellerId,categoryId, page);
     }
 
     @Override
@@ -121,7 +118,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 0;
-                presenter.changeTyep(index,sellerId);
+                presenter.changeTyep(index,sellerId,categoryId);
             }
         });
 
@@ -129,7 +126,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 1;
-                presenter.changeTyep(index,sellerId);
+                presenter.changeTyep(index,sellerId,categoryId);
             }
         });
 
@@ -137,7 +134,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 2;
-                presenter.changeTyep(index,sellerId);
+                presenter.changeTyep(index,sellerId,categoryId);
             }
         });
 
@@ -145,7 +142,7 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
             @Override
             public void onClick(View v) {
                 index = 3;
-                presenter.changeTyep(index,sellerId);
+                presenter.changeTyep(index,sellerId,categoryId);
             }
         });
 
@@ -167,12 +164,12 @@ public class ShopTreasureFragment extends BaseFragment<ShopTreasureView, ShopTre
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventBusBean eventBusBean) {
-        if ("001".equals(eventBusBean.getCode())) {
-            presenter.loadData(sellerId,categoryId, page,eventBusBean.getMsg());
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEventMainThread(EventBusBean eventBusBean) {
+//        if ("001".equals(eventBusBean.getCode())) {
+//            presenter.loadData(sellerId,categoryId, page,eventBusBean.getMsg());
+//        }
+//    }
 
     @Override
     public void updateTitle(boolean salesVolume, boolean price, boolean credit) {
