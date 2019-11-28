@@ -30,7 +30,6 @@ public class TBAdapter extends MyRecyclerAdapter<TBOrderBean> {
         } else if (data.getImage() != null && data.getImage().startsWith("img")) {
             data.setImage("https://" + data.getImage());
         }
-
         holder.setText(R.id.order_list_my_name, SPUtil.getStringValue("name"))
                 .setText(R.id.order_list_name, data.getItemTitle())
                 .setText(R.id.order_list_price, "￥" + data.getPrice())

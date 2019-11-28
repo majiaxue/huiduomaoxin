@@ -1,5 +1,7 @@
 package com.example.productdetail;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerImageBean;
 import com.example.bean.ProductCenterBean;
 import com.example.bean.ProductLiuYanBean;
@@ -55,7 +59,7 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         String testAccount = data.getTestAccount();
         String testPassword = data.getTestPassword();
 
-        List<ProductCenterBean.RecordsBean> list = new ArrayList<>();
+        final List<ProductCenterBean.RecordsBean> list = new ArrayList<>();
         for (int i = 0; i < testName.split(",").length; i++) {
             ProductCenterBean.RecordsBean productCenterBean = new ProductCenterBean.RecordsBean();
             productCenterBean.setTestName(testName.split(",")[i]);
@@ -68,6 +72,32 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         if (getView() != null) {
             getView().loadRv(productAccountAdapter);
         }
+
+        productAccountAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+            @Override
+            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+                view1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setClipboard(list.get(position).getTestAccount());
+                    }
+                });
+
+                view2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setClipboard(list.get(position).getTestPassword());
+                    }
+                });
+
+                view3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build("/module_home/WebDetailActivity").withString("url", list.get(position).getTestAddress()).navigation();
+                    }
+                });
+            }
+        });
 
         String[] pics = data.getPic().split(",");
         List<BannerImageBean> imgList = new ArrayList<>();
@@ -157,5 +187,15 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         Uri data = Uri.parse("tel:" + phoneNum);
         intent.setData(data);
         mContext.startActivity(intent);
+    }
+
+    public void setClipboard(String content) {
+        //获取剪贴板管理器：
+        ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        // 创建普通字符型ClipData
+        ClipData mClipData = ClipData.newPlainText("Label", content);
+        // 将ClipData内容放到系统剪贴板里。
+        cm.setPrimaryClip(mClipData);
+        Toast.makeText(mContext, "复制成功", Toast.LENGTH_SHORT).show();
     }
 }

@@ -167,8 +167,20 @@ public class LocalOrderBean implements Serializable {
     private String sellerName;
 
     private String sellerManJian;
+    /**
+     * 满减金额
+     */
+    private String fullReductionAmount;
 
     private List<LocalOrderItemListBean> localOrderItemList;
+
+    public String getFullReductionAmount() {
+        return fullReductionAmount;
+    }
+
+    public void setFullReductionAmount(String fullReductionAmount) {
+        this.fullReductionAmount = fullReductionAmount;
+    }
 
     public String getReturnStatus() {
         return returnStatus;
