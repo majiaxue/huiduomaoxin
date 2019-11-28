@@ -54,11 +54,11 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
 
     @Override
     protected void onViewDestroy() {
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
-    public void loadData(String sellerId,String categoryId, final int page,String searchInfo) {
-        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("categoryId",categoryId).addParms("pageNum", page).addParms("pageSize", "2000").addParms("searchInfo",searchInfo).build();
+    public void loadData(String sellerId, String categoryId, final int page) {
+        Map map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("categoryId", categoryId).addParms("pageNum", page).addParms("pageSize", "2000").build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -118,7 +118,7 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
         }
     }
 
-    public void changeTyep(int index, String sellerId) {
+    public void changeTyep(int index, String sellerId, String categoryId) {
         isPositiveSalesVolume = index == 1 ? !isPositiveSalesVolume : false;
         isSalesVolumeReduce = index == 1 ? !isSalesVolumeReduce : false;
         saleVolumTemp = index == 1 ? true : false;
@@ -130,33 +130,33 @@ public class ShopTreasurePresenter extends BasePresenter<ShopTreasureView> {
         isPositiveCredit = index == 3 ? !isPositiveCredit : false;
         isCreditReduce = index == 3 ? !isCreditReduce : false;
         creditTemp = index == 3 ? true : false;
-        loadMore(sellerId, 1);
+        loadMore(sellerId, 1, categoryId);
         getView().updateTitle(isPositiveSalesVolume, isPositivePrice, isPositiveCredit);
 
     }
 
-    public void loadMore(String sellerId, final int page) {
+    public void loadMore(String sellerId, final int page,String categoryId) {
         Map map;
         if (saleVolumTemp) {
             if (isSalesVolumeReduce) {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleDesc", "1").addParms("pageNum", page).addParms("pageSize", "2000").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleDesc", "1").addParms("pageNum", page).addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
             } else {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleAsc", "1").addParms("pageNum", page).addParms("pageSize", "2000").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("saleAsc", "1").addParms("pageNum", page).addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
             }
         } else if (priceTemp) {
             if (isPriceReduce) {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceDesc", "1").addParms("pageSize", "2000").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceDesc", "1").addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
             } else {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceAsc", "1").addParms("pageSize", "2000").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("priceAsc", "1").addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
             }
         } else if (creditTemp) {
             if (isCreditReduce) {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
             } else {
-                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
+                map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
             }
         } else {
-            map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").build();
+            map = MapUtil.getInstance().addParms("sellerId", sellerId).addParms("pageNum", page).addParms("pageSize", "2000").addParms("categoryId", categoryId).build();
         }
 
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.HOTNEWSEARCH, map);
