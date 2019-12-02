@@ -508,7 +508,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                             goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
                             homeBottomRec.setAdapter(goodsRecommendAdapter);
                         } else {
-                            goodsRecommendAdapter.notifyItemChanged(20);
+                            goodsRecommendAdapter.notifyDataSetChanged( );
                             getView().refreshSuccess();
                         }
 

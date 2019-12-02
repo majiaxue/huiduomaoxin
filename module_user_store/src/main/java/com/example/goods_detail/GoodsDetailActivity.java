@@ -404,7 +404,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailName.setText(data.getName());
         goodsDetailPrice.setText(data.getPromotionPrice() + "");
         mTotalSpecs.setText("共" + size + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
-        Glide.with(this).load(data.getSellerLogo()).into(goodsDetailShopImg);
+        Glide.with(this).load("http://47.99.93.123:4000/file/" + data.getSellerLogo()).into(goodsDetailShopImg);
         goodsDetailShopName.setText(data.getSellerName());
         goodsDetailShopAttention.setText("店铺关注  " + TxtUtil.parse(data.getSellerFavoriteShu()));
 

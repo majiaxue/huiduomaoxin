@@ -156,7 +156,7 @@ public class ShopHomeActivity extends BaseFragmentActivity<ShopHomeView, ShopHom
         } else {
             shopHomeCollectStore.setText("收藏");
         }
-        shopHomeStoreImage.setImageURI(Uri.parse(shopHomeBean.getSellerLogo() == null ? "" : shopHomeBean.getSellerLogo()));
+        shopHomeStoreImage.setImageURI(Uri.parse(shopHomeBean.getSellerLogo() == null ? "" : "http://47.99.93.123:4000/file/"+shopHomeBean.getSellerLogo()));
         shopHomeStoreName.setText(shopHomeBean.getSellerShopName());
         shopHomeStoreCollectNumber.setText(TxtUtil.parse(shopHomeBean.getFavoriteNum()) + "收藏");
         presenter.initTabLayout(shopHomeTab, shop_id, shopHomeBean.getSellerCategory());
