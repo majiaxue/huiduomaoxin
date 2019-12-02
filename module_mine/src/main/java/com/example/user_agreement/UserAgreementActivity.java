@@ -14,6 +14,7 @@ import com.example.common.CommonResource;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
+import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 

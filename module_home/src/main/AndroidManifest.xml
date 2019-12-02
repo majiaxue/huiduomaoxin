@@ -16,6 +16,15 @@
         <activity
             android:name="com.example.productcenter.ProductCenterActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.productdetail.ProductDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.example.web_detail.WebDetailActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.example.universallist.UniversalListActivity"
             android:screenOrientation="portrait" />

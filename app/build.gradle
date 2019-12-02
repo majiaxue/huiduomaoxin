@@ -51,6 +51,7 @@ android {
             storePassword '123456'
             storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
         }
+
         debug {
             keyAlias 'key'
             keyPassword '123456'

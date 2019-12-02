@@ -197,6 +197,8 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("totalAmount", redPackageBean.getBuyMoney());
             jsonObject.put("orderSn", "");
+            jsonObject.put("userCode", SPUtil.getUserCode());
+            jsonObject.put("redPackedId", redPackageBean.getId());
             jsonObject.put("productName", CommonResource.PROJECTNAME);
             jsonObject.put("orderFlag", false);
             String string = JSON.toJSONString(jsonObject);
