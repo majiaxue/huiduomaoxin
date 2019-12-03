@@ -66,6 +66,7 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
                     productCenterTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
+                            recordsBeanList.clear();
                             productCenterGoods(classBeanList.get(tab.getPosition()).getId(), 1);
                         }
 
@@ -117,6 +118,7 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
                 }
                 if (result != null) {
                     final ProductCenterBean productCenterBean = JSON.parseObject(result, ProductCenterBean.class);
+
                     if (1 == nextPage) {
                         recordsBeanList.clear();
                     }
