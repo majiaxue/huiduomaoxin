@@ -9,6 +9,8 @@ public class CommonResource {
     public static final String BASEURL_9010 = "http://47.99.93.123:9999";  //本地小店
     public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
 
+    public static final String BASE_PIC = "http://47.99.93.123:4000/file/";     //图片前缀
+
 
 //    public static final String BASEURL_9001 = "http://192.168.0.100:9001";   //商品//47.99.93.123//192.168.0.118
 //    public static final String BASEURL_4001 = "http://192.168.0.100:4001";   //用户192.168.0.164
@@ -125,6 +127,7 @@ public class CommonResource {
     public static final String LOCAL_COUPON_LIST = "/mall/local/rest/local/redpacked/member/all";  //多用户商城获取红包列表
     public static final String PRODUCT_LIUYAN = "/mall/goods/rest/product/center/message";         //产品中心  用户留言
     public static final String PRODUCT_GETPHONE = "/mall/goods/rest/product/center/talk";          //产品中心  咨询热线电话
+    public static final String COUPON_GUOQI = "rest/seller/coupon/status";                  //过期优惠券
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏

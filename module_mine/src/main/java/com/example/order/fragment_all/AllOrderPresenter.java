@@ -156,9 +156,9 @@ public class AllOrderPresenter extends BasePresenter<AllOrderView> {
                         getView().loadTB(tbAdapter);
                     }
 
-                    for (int i = 0; i < orderBeans.size(); i++) {
-                        getTbPic(orderBeans.get(i), i);
-                    }
+//                    for (int i = 0; i < orderBeans.size(); i++) {
+//                        getTbPic(orderBeans.get(i), i);
+//                    }
                     tbAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {

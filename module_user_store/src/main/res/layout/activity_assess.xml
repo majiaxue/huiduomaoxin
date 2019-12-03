@@ -16,14 +16,20 @@
         android:overScrollMode="never"
         android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/assess_rv"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/assess_refresh"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0"
-        android:layout_above="@id/assess_temp"
-        android:layout_below="@id/assess_title"
-        android:layout_weight="1"
-        android:overScrollMode="never" />
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/assess_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/assess_temp"
+            android:layout_below="@id/assess_title"
+            android:overScrollMode="never" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <LinearLayout
         android:id="@+id/assess_temp"

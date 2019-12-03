@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.common.CommonResource;
-import com.example.entity.EventBusBean;
 import com.example.local_order.adapter.LocalOrderAdapter;
 import com.example.local_order.adapter.LocalOrderNavbarAdapter;
 import com.example.local_order.adapter.LocalTuiKuanAdapter;
@@ -19,10 +17,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -59,7 +53,7 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
         mRefresh.setRefreshHeader(customHeader);
 
         presenter.initNavbar();
-        presenter.loadData(status, page);
+        presenter.loadData(status, "", page);
     }
 
     @Override
@@ -72,7 +66,13 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
                 if (isTui) {
                     presenter.tuihuo(page);
                 } else {
-                    presenter.loadData(status, page);
+                    if ("2".equals(status)) {
+                        presenter.loadData(status, "0", page);
+                    } else if ("3".equals(status)) {
+                        presenter.loadData(status, "1", page);
+                    } else {
+                        presenter.loadData(status, "", page);
+                    }
                 }
             }
         });
@@ -83,7 +83,13 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
                 if (isTui) {
                     presenter.tuihuo(page);
                 } else {
-                    presenter.loadData(status, page);
+                    if ("2".equals(status)) {
+                        presenter.loadData(status, "0", page);
+                    } else if ("3".equals(status)) {
+                        presenter.loadData(status, "1", page);
+                    } else {
+                        presenter.loadData(status, "", page);
+                    }
                 }
             }
         });
@@ -100,19 +106,25 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
         isTui = false;
         if (position == 0) {
             status = "";
-            presenter.loadData(status, page);
+            presenter.loadData(status, "", page);
         } else if (position == 1) {
             status = "0";
-            presenter.loadData(status, page);
+            presenter.loadData(status, "", page);
+        } else if (position == 2) {
+            status = position + "";
+            presenter.loadData(status, "0", page);
+        } else if (position == 3) {
+            status = position + "";
+            presenter.loadData(status, "1", page);
+        } else if (position == 4) {
+            status = position + "";
+            presenter.loadData(status, "", page);
         } else if (position == 5) {
             status = "6";
-            presenter.loadData(status, page);
+            presenter.loadData(status, "", page);
         } else if (position == 6) {
             isTui = true;
             presenter.tuihuo(page);
-        } else {
-            status = position + "";
-            presenter.loadData(status, page);
         }
     }
 
@@ -138,7 +150,13 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
         if ("13".equals(SPUtil.getStringValue("wxpay"))) {
             SPUtil.addParm("wxpay", "");
             page = 1;
-            presenter.loadData(status, page);
+            if ("2".equals(status)) {
+                presenter.loadData(status, "0", page);
+            } else if ("3".equals(status)) {
+                presenter.loadData(status, "1", page);
+            } else {
+                presenter.loadData(status, "", page);
+            }
         }
     }
 

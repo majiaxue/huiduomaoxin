@@ -68,6 +68,18 @@ public class AssessBean {
         this.records = records;
     }
 
+    @Override
+    public String toString() {
+        return "AssessBean{" +
+                "total=" + total +
+                ", size=" + size +
+                ", current=" + current +
+                ", searchCount=" + searchCount +
+                ", pages=" + pages +
+                ", records=" + records +
+                '}';
+    }
+
     public static class RecordsBean {
         /**
          * id : 2

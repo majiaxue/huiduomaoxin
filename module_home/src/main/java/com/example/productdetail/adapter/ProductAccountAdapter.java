@@ -1,28 +1,40 @@
 package com.example.productdetail.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.adapter.RecyclerViewHolder;
-import com.example.bean.ProductCenterBean;
+import com.example.bean.TestAccountBean;
 import com.example.module_home.R;
+import com.example.utils.SpaceItemDecoration;
 
 import java.util.List;
 
-public class ProductAccountAdapter extends MyRecyclerAdapter<ProductCenterBean.RecordsBean> {
-    public ProductAccountAdapter(Context context, List<ProductCenterBean.RecordsBean> mList, int mLayoutId) {
+public class ProductAccountAdapter extends MyRecyclerAdapter<TestAccountBean> {
+    public ProductAccountAdapter(Context context, List<TestAccountBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, ProductCenterBean.RecordsBean data, int position) {
-        holder.setText(R.id.rv_product_detail_name, data.getTestName() + "：")
-                .setText(R.id.rv_product_detail_download, data.getTestAddress())
-                .setText(R.id.rv_product_detail_account, data.getTestAccount())
-                .setText(R.id.rv_product_detail_password, data.getTestPassword());
+    public void convert(RecyclerViewHolder holder, TestAccountBean data, int position) {
+        holder.setText(R.id.rv_product_detail_name, data.getTitle() + "：");
 
-        if (viewThreeOnClickListener != null) {
-            viewThreeOnClickListener.ViewThreeOnClick(holder.getView(R.id.rv_product_detail_copy1), holder.getView(R.id.rv_product_detail_copy2), holder.getView(R.id.rv_product_detail_download), position);
-        }
+        RecyclerView addressRv = holder.getView(R.id.rv_product_detail_download_rv);
+        RecyclerView accountRv = holder.getView(R.id.rv_product_detail_account_rv);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        addressRv.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        accountRv.setLayoutManager(linearLayoutManager2);
+
+
+        ProductAddressAdapter addressAdapter = new ProductAddressAdapter(context, data.getAddressList(), R.layout.rv_product_detai_inside);
+        addressRv.setAdapter(addressAdapter);
+        addressRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) context.getResources().getDimension(R.dimen.dp_5)));
+
+        ProductAccountInsideAdapter accountAdapter = new ProductAccountInsideAdapter(context, data.getAccountList(), R.layout.rv_product_detail_account);
+        accountRv.setAdapter(accountAdapter);
+        accountRv.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) context.getResources().getDimension(R.dimen.dp_5)));
     }
 }

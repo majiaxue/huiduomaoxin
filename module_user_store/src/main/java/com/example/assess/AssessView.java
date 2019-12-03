@@ -8,4 +8,6 @@ public interface AssessView extends IView {
     void loadTitle(AssessTitleAdapter adapter);
 
     void loadAssess(AssessAdapter adapter);
+
+    void loadFinish();
 }

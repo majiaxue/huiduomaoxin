@@ -127,6 +127,10 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
         ProcessDialogUtil.showProcessDialog(getContext());
 
         presenter.initNavbar();
+        if (MyLocationListener.longitude == 0 && MyLocationListener.latitude == 0) {
+            MyLocationListener.latitude = 34.78;
+            MyLocationListener.longitude = 113.65;
+        }
         presenter.loadData(page, MyLocationListener.longitude, MyLocationListener.latitude);
         presenter.getXBanner();
         presenter.isOpenLocation();

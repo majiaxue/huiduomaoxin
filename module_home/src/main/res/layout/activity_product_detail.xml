@@ -6,6 +6,8 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
+    <include layout="@layout/page_top" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
@@ -16,8 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <include layout="@layout/page_top" />
 
             <com.stx.xhb.xbanner.XBanner
                 android:id="@+id/product_detail_xbanner"

@@ -1,6 +1,7 @@
 package com.example.assess;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,11 @@ import com.example.mvp.BaseActivity;
 import com.example.user_store.R;
 import com.example.user_store.R2;
 import com.example.utils.SpaceItemDecoration;
-import com.example.view.flowLayout.TagFlowLayout;
+import com.example.view.CustomHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import butterknife.BindView;
 
@@ -40,6 +45,8 @@ public class AssessActivity extends BaseActivity<AssessView, AssessPresenter> im
     TextView assessBuy;
     @BindView(R2.id.assess_rv)
     RecyclerView assessRv;
+    @BindView(R2.id.assess_refresh)
+    SmartRefreshLayout mRefresh;
 
     private int page = 1;
     private String id;
@@ -63,7 +70,12 @@ public class AssessActivity extends BaseActivity<AssessView, AssessPresenter> im
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         assessRv.setLayoutManager(linearLayoutManager);
 
-        presenter.loadData(page,id);
+        //下拉刷新样式
+        CustomHeader customHeader = new CustomHeader(this);
+        customHeader.setPrimaryColors(getResources().getColor(R.color.colorTransparency));
+        mRefresh.setRefreshHeader(customHeader);
+
+        presenter.loadData(page, id);
     }
 
     @Override
@@ -74,6 +86,28 @@ public class AssessActivity extends BaseActivity<AssessView, AssessPresenter> im
                 finish();
             }
         });
+
+        mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                presenter.loadData(page, id);
+            }
+        });
+
+        mRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                presenter.loadData(page, id);
+            }
+        });
+    }
+
+    @Override
+    public void loadFinish() {
+        mRefresh.finishLoadMore();
+        mRefresh.finishRefresh();
     }
 
     @Override

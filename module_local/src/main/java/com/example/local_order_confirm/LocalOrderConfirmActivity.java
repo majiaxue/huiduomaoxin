@@ -216,6 +216,8 @@ public class LocalOrderConfirmActivity extends BaseActivity<LocalOrderConfirmVie
         mCouponTxt.setText("-￥" + chooseRedPacgage.getMoney());
         localOrderConfirmTotalMoney.setText("￥" + (bean.getTotalMoney() * 1000 - Double.valueOf(chooseRedPacgage.getMoney()) * 1000) / 1000);
         localOrderConfirmFinalMoney.setText("￥" + (bean.getTotalMoney() * 1000 - Double.valueOf(chooseRedPacgage.getMoney()) * 1000) / 1000);
+        bean.setRedPackedId(chooseRedPacgage.getId());
+        bean.setRedPackedMoney(chooseRedPacgage.getMoney());
     }
 
     @Override

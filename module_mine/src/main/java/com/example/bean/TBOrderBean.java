@@ -61,6 +61,24 @@ public class TBOrderBean {
     private String clickTime;
     private String settleTime;
     private String image;
+    private String itemImg;
+    private String shareOrderFlag;
+
+    public String getItemImg() {
+        return itemImg;
+    }
+
+    public void setItemImg(String itemImg) {
+        this.itemImg = itemImg;
+    }
+
+    public String getShareOrderFlag() {
+        return shareOrderFlag;
+    }
+
+    public void setShareOrderFlag(String shareOrderFlag) {
+        this.shareOrderFlag = shareOrderFlag;
+    }
 
     public int getId() {
         return id;
@@ -284,5 +302,41 @@ public class TBOrderBean {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "TBOrderBean{" +
+                "id=" + id +
+                ", tradeParentId='" + tradeParentId + '\'' +
+                ", tradeId='" + tradeId + '\'' +
+                ", numIid='" + numIid + '\'' +
+                ", itemTitle='" + itemTitle + '\'' +
+                ", incomeRate='" + incomeRate + '\'' +
+                ", itemNum=" + itemNum +
+                ", price='" + price + '\'' +
+                ", alipayTotalPrice='" + alipayTotalPrice + '\'' +
+                ", siteId='" + siteId + '\'' +
+                ", sellerNick='" + sellerNick + '\'' +
+                ", sellerShopTitle='" + sellerShopTitle + '\'' +
+                ", orderType='" + orderType + '\'' +
+                ", terminalType='" + terminalType + '\'' +
+                ", subsidyRate='" + subsidyRate + '\'' +
+                ", tkStatus='" + tkStatus + '\'' +
+                ", totalCommissionRate='" + totalCommissionRate + '\'' +
+                ", totalCommissionFree=" + totalCommissionFree +
+                ", commission='" + commission + '\'' +
+                ", pubSharePreFee=" + pubSharePreFee +
+                ", commissionRate='" + commissionRate + '\'' +
+                ", relationId='" + relationId + '\'' +
+                ", auctionCategory='" + auctionCategory + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", clickTime='" + clickTime + '\'' +
+                ", settleTime='" + settleTime + '\'' +
+                ", image='" + image + '\'' +
+                ", itemImg='" + itemImg + '\'' +
+                ", shareOrderFlag='" + shareOrderFlag + '\'' +
+                '}';
     }
 }

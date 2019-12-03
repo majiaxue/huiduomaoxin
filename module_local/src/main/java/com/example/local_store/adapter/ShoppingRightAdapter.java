@@ -201,6 +201,7 @@ public class ShoppingRightAdapter extends RvAdapter<LocalStoreBean.ListBean> {
                                 for (int i = 0; i < keyValueBeans.size(); i++) {
                                     List<TxtAndChooseBean> contentList = new ArrayList<>();
                                     String value = keyValueBeans.get(i).getValue();
+                                    LogUtil.e("--------------------->" + value);
                                     contentList.clear();
                                     String[] split = value.split(",");
                                     for (int j = 0; j < split.length; j++) {
