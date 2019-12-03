@@ -1,6 +1,7 @@
 package com.example.productcenter.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.adapter.MyRecyclerAdapter;
@@ -19,15 +20,20 @@ public class ProductCenterAdapter extends MyRecyclerAdapter<ProductCenterBean.Re
     @Override
     public void convert(RecyclerViewHolder holder, ProductCenterBean.RecordsBean data, int position) {
         TextView ranking = holder.getView(R.id.product_center_rec_ranking);
-        if (0 == position) {
-            ranking.setText("1");
+        if (data.getSort() == 1) {
+            ranking.setText("" + data.getSort());
+            ranking.setVisibility(View.VISIBLE);
             ranking.setBackground(context.getResources().getDrawable(R.drawable.cpzx_icon_1));
-        } else if (1 == position) {
-            ranking.setText("2");
+        } else if (data.getSort() == 2) {
+            ranking.setText("" + data.getSort());
+            ranking.setVisibility(View.VISIBLE);
             ranking.setBackground(context.getResources().getDrawable(R.drawable.cpzx_icon_2));
-        } else if (2 == position) {
-            ranking.setText("3");
+        } else if (data.getSort() == 3) {
+            ranking.setText("" + data.getSort());
+            ranking.setVisibility(View.VISIBLE);
             ranking.setBackground(context.getResources().getDrawable(R.drawable.cpzx_icon_3));
+        } else {
+            ranking.setVisibility(View.INVISIBLE);
         }
         holder.setImageFresco(R.id.product_center_rec_pic, data.getLogo())
                 .setText(R.id.product_center_rec_name, data.getTitle())
