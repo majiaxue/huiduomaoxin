@@ -151,7 +151,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         presenter.setZhongXBanner(homeZhongXbanner);
         //topRec
         presenter.setRec(homeTopRec, homeSlideIndicatorPoint);
-//优选recycler
+        //优选recycler
         presenter.setGoodChoiceRec(homeGoodChoiceRec);
         //推荐recycler
         presenter.setBottomRec(nextPage, homeBottomRec);

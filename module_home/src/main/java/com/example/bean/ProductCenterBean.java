@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ProductCenterBean implements Serializable {
+
     /**
-     * records : [{"id":4,"logo":"http://192.168.0.118:9000/goods/4a7f5d8b907742308f7e0f9e48de3157.png","title":"测试1","message":"测试","price":99,"info":"<p><img src=\"http://47.99.93.123:8083/goods/d26d9d2509934b75be0eec8158cb0199.jpg\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/2661b2bab1bc49de93f8b7995f35b05c.jpg\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/1104d05177974e7fa52aaa3cb0f303ed.jpg\"><\/p>","pic":"http://192.168.0.118:9000/goods/410f8fb4b2bb4dd1aa2271668596e8e9.png","createTime":null,"updateTime":"2019-11-22 10:37:15","sort":2,"status":1,"phone":"13523565115","name":"销售A","categoryId":1,"testName":"APP,后台","testAddress":"www.xxx.com,www.bbb.com","testAccount":"test1,test2","testPassword":"123,456"},{"id":12,"logo":"http://192.168.0.118:9000/goods/4a7f5d8b907742308f7e0f9e48de3157.png","title":"测试6","message":"测试","price":99,"info":"<p><img src=\"http://47.99.93.123:8083/goods/432229703cd04e3aa1c9afa78a6a485d.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 392px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/aa0657400fdc4baea239bda61c454999.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 1119px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/ba0dda34e2974533bba3924a4d4ccff1.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 920px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/4fbdd1e3aeef44cfbc3b029bfc12d158.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 1463px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/314d44264a7147b29f7c02d1a3d100d7.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 696px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/5bbefd90937441ebb396381b6bf26e5b.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 1016px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/1a0b01dbbae24eb4a13be2cfa32f1786.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 1103px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/c469f69aa9574b589947b29a81806a3c.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 928px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/5c8757ea81a74a88813d38ad186d31b0.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 1535px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/0bd214d3a8764e96b1f993b0bedac13f.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 768px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/0fe76663283b49b4977563a68ce747ec.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 790px; height: 1519px;\"><\/p>","pic":"http://192.168.0.118:9000/goods/410f8fb4b2bb4dd1aa2271668596e8e9.png","createTime":null,"updateTime":"2019-11-22 10:37:15","sort":2,"status":1,"phone":"13523565115","name":"销售A","categoryId":1,"testName":"APP,后台","testAddress":"www.xxx.com,www.bbb.com","testAccount":"test1,test2","testPassword":"123,456"},{"id":13,"logo":"http://192.168.0.118:9000/goods/4a7f5d8b907742308f7e0f9e48de3157.png","title":"测试7","message":"测试","price":99,"info":"<p><img src=\"http://47.99.93.123:8083/goods/475d2d2197f447758791dcac7470b6c1.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 750px; height: 777px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/79ad7c70858541a1b257ec922427de74.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 750px; height: 1194px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/dac69e7d49fd40deac438eb0f6a2704f.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 750px; height: 1078px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/cb66a8baee3f4b98930db1653c2bf091.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 750px; height: 1271px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/7519177545554590b812c38c3bb4f6b3.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 750px; height: 1198px;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/4a0e760341ae4fb19cfe9ea30de10e4b.jpg\" alt=\"\" class=\"avue-ueditor__img-img\" style=\"width: 721px; height: 1600px;\"><\/p>","pic":"http://192.168.0.118:9000/goods/410f8fb4b2bb4dd1aa2271668596e8e9.png","createTime":null,"updateTime":"2019-11-22 10:37:15","sort":2,"status":1,"phone":"13523565115","name":"销售A","categoryId":1,"testName":"APP,后台","testAddress":"www.xxx.com,www.bbb.com","testAccount":"test1,test2","testPassword":"123,456"},{"id":1,"logo":"http://47.99.93.123:8083/parameter/ea2542daf5cc40f695a267645bded688.png","title":"1111","message":"1111","price":100,"info":"<p><img src=\"http://47.99.93.123:8083/goods/4d1f037cf4ab4ee28e6476f933e38c82.jpg\"><\/p>","pic":"165165","createTime":null,"updateTime":"2019-11-22 10:37:12","sort":1,"status":1,"phone":"13523565115","name":"销售A","categoryId":1,"testName":"APP,后台","testAddress":"www.xxx.com,www.bbb.com","testAccount":"test1,test2","testPassword":"123,456"}]
-     * total : 4
+     * records : [{"id":1,"logo":"http://47.99.93.123:8083/goods/248ebe8d45eb4ed7a341f17bc8fe6609.png","title":"测试产品","message":"这是简介","price":998,"info":"<p>好<img src=\"http://47.99.93.123:8083/goods/fa0ce1ed685741889dd56043afa6871f.png\" style=\"max-width:100%;\"><\/p><p><img src=\"http://47.99.93.123:8083/goods/94a969c9a28e40b9bd14b11e8c49a245.png\" style=\"max-width: 100%;\"><br><\/p><p><img src=\"http://47.99.93.123:8083/goods/f874cdd6d061477d8d42ffdf73d87306.png\" style=\"max-width:100%;\"><br><\/p>","pic":"http://47.99.93.123:8083/goods/669fb1205bd84cd496f382a14bbf8d2b.png,http://47.99.93.123:8083/goods/b19654f628454fff96535cd86a63fbec.png","createTime":"2019-11-22 16:08:33","updateTime":"2019-11-28 11:07:26","sort":1,"status":1,"phone":"12345678901","name":"销售A","categoryId":1,"testName":"APP测试地址;后台地址","testAddress":"www.aaa.com;www.ios.com,www.anzhuo.com","testAccount":"18888888888;18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888","testPassword":"18888888888;18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888","categoryName":null,"testNameList":[["APP测试地址"],["后台地址"]],"testAddressList":[["www.aaa.com"],["www.ios.com","www.anzhuo.com"]],"testAccountList":[["18888888888"],["18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888"]],"testPasswordList":[["18888888888"],["18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888"]]}]
+     * total : 1
      * size : 10
      * current : 1
      * searchCount : true
@@ -68,29 +69,46 @@ public class ProductCenterBean implements Serializable {
         this.records = records;
     }
 
-    public static class RecordsBean implements Serializable{
+    @Override
+    public String toString() {
+        return "ProductCenterBean{" +
+                "total=" + total +
+                ", size=" + size +
+                ", current=" + current +
+                ", searchCount=" + searchCount +
+                ", pages=" + pages +
+                ", records=" + records +
+                '}';
+    }
+
+    public static class RecordsBean implements Serializable {
         /**
-         * id : 4
-         * logo : http://192.168.0.118:9000/goods/4a7f5d8b907742308f7e0f9e48de3157.png
-         * title : 测试1
-         * message : 测试
-         * price : 99
-         * info : <p><img src="http://47.99.93.123:8083/goods/d26d9d2509934b75be0eec8158cb0199.jpg"></p><p><img src="http://47.99.93.123:8083/goods/2661b2bab1bc49de93f8b7995f35b05c.jpg"></p><p><img src="http://47.99.93.123:8083/goods/1104d05177974e7fa52aaa3cb0f303ed.jpg"></p>
-         * pic : http://192.168.0.118:9000/goods/410f8fb4b2bb4dd1aa2271668596e8e9.png
-         * createTime : null
-         * updateTime : 2019-11-22 10:37:15
-         * sort : 2
+         * id : 1
+         * logo : http://47.99.93.123:8083/goods/248ebe8d45eb4ed7a341f17bc8fe6609.png
+         * title : 测试产品
+         * message : 这是简介
+         * price : 998.0
+         * info : <p>好<img src="http://47.99.93.123:8083/goods/fa0ce1ed685741889dd56043afa6871f.png" style="max-width:100%;"></p><p><img src="http://47.99.93.123:8083/goods/94a969c9a28e40b9bd14b11e8c49a245.png" style="max-width: 100%;"><br></p><p><img src="http://47.99.93.123:8083/goods/f874cdd6d061477d8d42ffdf73d87306.png" style="max-width:100%;"><br></p>
+         * pic : http://47.99.93.123:8083/goods/669fb1205bd84cd496f382a14bbf8d2b.png,http://47.99.93.123:8083/goods/b19654f628454fff96535cd86a63fbec.png
+         * createTime : 2019-11-22 16:08:33
+         * updateTime : 2019-11-28 11:07:26
+         * sort : 1
          * status : 1
-         * phone : 13523565115
+         * phone : 12345678901
          * name : 销售A
          * categoryId : 1
-         * testName : APP,后台
-         * testAddress : www.xxx.com,www.bbb.com
-         * testAccount : test1,test2
-         * testPassword : 123,456
+         * testName : APP测试地址;后台地址
+         * testAddress : www.aaa.com;www.ios.com,www.anzhuo.com
+         * testAccount : 18888888888;18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888
+         * testPassword : 18888888888;18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888,18888888888
+         * categoryName : null
+         * testNameList : [["APP测试地址"],["后台地址"]]
+         * testAddressList : [["www.aaa.com"],["www.ios.com","www.anzhuo.com"]]
+         * testAccountList : [["18888888888"],["18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888"]]
+         * testPasswordList : [["18888888888"],["18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888","18888888888"]]
          */
 
-        private Long id;
+        private String id;
         private String logo;
         private String title;
         private String message;
@@ -103,17 +121,22 @@ public class ProductCenterBean implements Serializable {
         private int status;
         private String phone;
         private String name;
-        private int categoryId;
+        private String categoryId;
         private String testName;
         private String testAddress;
         private String testAccount;
         private String testPassword;
+        private String categoryName;
+        private List<List<String>> testNameList;
+        private List<List<String>> testAddressList;
+        private List<List<String>> testAccountList;
+        private List<List<String>> testPasswordList;
 
-        public Long getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(Long id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -213,11 +236,11 @@ public class ProductCenterBean implements Serializable {
             this.name = name;
         }
 
-        public int getCategoryId() {
+        public String getCategoryId() {
             return categoryId;
         }
 
-        public void setCategoryId(int categoryId) {
+        public void setCategoryId(String categoryId) {
             this.categoryId = categoryId;
         }
 
@@ -251,6 +274,75 @@ public class ProductCenterBean implements Serializable {
 
         public void setTestPassword(String testPassword) {
             this.testPassword = testPassword;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        public void setCategoryName(String categoryName) {
+            this.categoryName = categoryName;
+        }
+
+        public List<List<String>> getTestNameList() {
+            return testNameList;
+        }
+
+        public void setTestNameList(List<List<String>> testNameList) {
+            this.testNameList = testNameList;
+        }
+
+        public List<List<String>> getTestAddressList() {
+            return testAddressList;
+        }
+
+        public void setTestAddressList(List<List<String>> testAddressList) {
+            this.testAddressList = testAddressList;
+        }
+
+        public List<List<String>> getTestAccountList() {
+            return testAccountList;
+        }
+
+        public void setTestAccountList(List<List<String>> testAccountList) {
+            this.testAccountList = testAccountList;
+        }
+
+        public List<List<String>> getTestPasswordList() {
+            return testPasswordList;
+        }
+
+        public void setTestPasswordList(List<List<String>> testPasswordList) {
+            this.testPasswordList = testPasswordList;
+        }
+
+        @Override
+        public String toString() {
+            return "RecordsBean{" +
+                    "id='" + id + '\'' +
+                    ", logo='" + logo + '\'' +
+                    ", title='" + title + '\'' +
+                    ", message='" + message + '\'' +
+                    ", price=" + price +
+                    ", info='" + info + '\'' +
+                    ", pic='" + pic + '\'' +
+                    ", createTime='" + createTime + '\'' +
+                    ", updateTime='" + updateTime + '\'' +
+                    ", sort=" + sort +
+                    ", status=" + status +
+                    ", phone='" + phone + '\'' +
+                    ", name='" + name + '\'' +
+                    ", categoryId='" + categoryId + '\'' +
+                    ", testName='" + testName + '\'' +
+                    ", testAddress='" + testAddress + '\'' +
+                    ", testAccount='" + testAccount + '\'' +
+                    ", testPassword='" + testPassword + '\'' +
+                    ", categoryName='" + categoryName + '\'' +
+                    ", testNameList=" + testNameList +
+                    ", testAddressList=" + testAddressList +
+                    ", testAccountList=" + testAccountList +
+                    ", testPasswordList=" + testPasswordList +
+                    '}';
         }
     }
 }

@@ -23,6 +23,7 @@ import com.example.adapter.GoodsImageAdapter;
 import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
+import com.example.common.CommonResource;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.mvp.BaseActivity;

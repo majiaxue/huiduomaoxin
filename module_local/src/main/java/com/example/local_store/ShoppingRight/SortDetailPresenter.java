@@ -37,7 +37,7 @@ public class SortDetailPresenter extends BasePresenter {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("购物车：" + result);
                 LocalCartBean localCartBeans = JSON.parseObject(result, LocalCartBean.class);
-                submitOrder(localCartBeans.getLocalShopcarList());
+                submitOrder(localCartBeans);
             }
 
             @Override
@@ -47,32 +47,31 @@ public class SortDetailPresenter extends BasePresenter {
         }));
     }
 
-    public void submitOrder(List<LocalCartBean.InsideCart> data) {
+    public void submitOrder(LocalCartBean data) {
         List<LocalOrderBean.LocalOrderItemListBean> list = new ArrayList<>();
         double price = 0;
         boolean hasGoods = false;
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.getLocalShopcarList().size(); i++) {
             hasGoods = true;
             LocalOrderBean.LocalOrderItemListBean bean = new LocalOrderBean.LocalOrderItemListBean();
-            bean.setGoodsName(data.get(i).getLocalGoodsName());
-            bean.setGoodsId(data.get(i).getLocalGoodsId());
-            bean.setGoodsNum(Integer.valueOf(data.get(i).getNum()));
-            bean.setGoodsPic(data.get(i).getLocalGoodsPic());
-            bean.setGoodsSpec(data.get(i).getLocalGoodsSpecification());
-            bean.setGoodsPrice(data.get(i).getPrice() + "");
+            bean.setGoodsName(data.getLocalShopcarList().get(i).getLocalGoodsName());
+            bean.setGoodsId(data.getLocalShopcarList().get(i).getLocalGoodsId());
+            bean.setGoodsNum(Integer.valueOf(data.getLocalShopcarList().get(i).getNum()));
+            bean.setGoodsPic(data.getLocalShopcarList().get(i).getLocalGoodsPic());
+            bean.setGoodsSpec(data.getLocalShopcarList().get(i).getLocalGoodsSpecification());
+            bean.setGoodsPrice(data.getLocalShopcarList().get(i).getPrice() + "");
 
             list.add(bean);
-            price = (price * 1000 + Double.valueOf(bean.getGoodsPrice()) * bean.getGoodsNum() * 1000) / 1000;
-
         }
         LocalOrderBean localOrderBean = new LocalOrderBean();
         localOrderBean.setLocalSellerId(SPUtil.getStringValue(CommonResource.SELLERID));
         localOrderBean.setSellerName(SPUtil.getStringValue(CommonResource.SELLERNAME));
         localOrderBean.setUserCode(SPUtil.getUserCode());
         localOrderBean.setLocalOrderItemList(list);
-        localOrderBean.setTotalMoney(price);
+        localOrderBean.setTotalMoney(Double.valueOf(data.getTotalMoney()));
         localOrderBean.setDeliverType("1");
-        localOrderBean.setSellerManJian(SPUtil.getStringValue(CommonResource.LOCAL_SELLER_MANJIAN));
+        localOrderBean.setSellerManJian(data.getAmount());
+        LogUtil.e("------------------->" + data.getAmount());
 
         if (hasGoods) {
             ARouter.getInstance().build("/module_local/LocalOrderConfirmActivity").withSerializable("bean", localOrderBean).navigation();

@@ -91,6 +91,11 @@ public abstract class MyRecyclerAdapter<T> extends RecyclerView.Adapter<Recycler
         return mList == null ? 0 : mList.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     public abstract void convert(RecyclerViewHolder holder, T data, int position);
 
     /**

@@ -40,8 +40,6 @@ import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
 import com.example.view.SelfDialog;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -105,10 +103,15 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         });
     }
 
-    public void loadData(final String status, final int page) {
+    /**
+     * @param status
+     * @param type   0：自提 1：配送
+     * @param page
+     */
+    public void loadData(final String status, String type, final int page) {
         this.status = status;
         ProcessDialogUtil.showProcessDialog(mContext);
-        Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).build();
+        Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).addParms("deliverType", type).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_GET_ORDER, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -316,7 +319,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                 if (isTui) {
                     tuihuo(1);
                 } else {
-                    loadData(status, 1);
+                    loadData(status, "", 1);
                 }
             }
 
@@ -370,7 +373,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                 if (isTui) {
                     tuihuo(1);
                 } else {
-                    loadData(status, 1);
+                    loadData(status, "", 1);
                 }
             }
 
@@ -457,7 +460,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
                 if (isTui) {
                     tuihuo(1);
                 } else {
-                    loadData(status, 1);
+                    loadData(status, "", 1);
                 }
             }
 

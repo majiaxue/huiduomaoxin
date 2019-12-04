@@ -201,6 +201,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
     }
 
     private void wxpay(JSONObject jsonObject) {
+        LogUtil.e("=============>"+jsonObject);
         final IWXAPI api = WXAPIFactory.createWXAPI(mContext, CommonResource.WXAPPID, false);
         String jsonString = JSON.toJSONString(jsonObject);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
@@ -231,6 +232,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
     }
 
     private void alipay(JSONObject jsonObject) {
+        LogUtil.e("=============>"+jsonObject);
         String jsonString = JSON.toJSONString(jsonObject);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonString);
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).postDataWithBody(CommonResource.LOCAL_ALI_PAY, requestBody);

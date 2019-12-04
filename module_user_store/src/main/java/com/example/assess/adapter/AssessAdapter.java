@@ -3,6 +3,7 @@ package com.example.assess.adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.example.adapter.MyRecyclerAdapter;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AssessAdapter extends MyRecyclerAdapter<AssessBean.RecordsBean> {
-    private AssessImageAdapter imageAdapter;
+
 
     public AssessAdapter(Context context, List<AssessBean.RecordsBean> mList, int mLayoutId) {
         super(context, mList, mLayoutId);
@@ -33,14 +34,14 @@ public class AssessAdapter extends MyRecyclerAdapter<AssessBean.RecordsBean> {
         ratingBar.setClickable(false);
 
         String pics = data.getPics();
-        if (pics != null && !"".equals(pics)) {
+        if (!TextUtils.isEmpty(pics)) {
             String[] split = pics.split(",");
             final List<String> list = Arrays.asList(split);
             RecyclerView rv = holder.getView(R.id.rv_assess_pic);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
             rv.setLayoutManager(gridLayoutManager);
             rv.addItemDecoration(new SpaceItemDecoration(0, 5, 0, 5));
-            imageAdapter = new AssessImageAdapter(context, list, R.layout.rv_assess_rv_img);
+            AssessImageAdapter imageAdapter = new AssessImageAdapter(context, list, R.layout.rv_assess_rv_img);
             rv.setAdapter(imageAdapter);
             imageAdapter.setViewOnClickListener(new ViewOnClickListener() {
                 @Override

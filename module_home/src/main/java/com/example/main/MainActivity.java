@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
+import com.example.module_base.ModuleBaseApplication;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
@@ -61,6 +62,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         EventBus.getDefault().register(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
+        ModuleBaseApplication.mLocationClient.restart();
         presenter.registerReceiver();
 //        WebSocketManager.getInstance().init(url);
 

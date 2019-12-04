@@ -14,12 +14,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.BannerImageBean;
 import com.example.bean.ProductCenterBean;
 import com.example.bean.ProductLiuYanBean;
+import com.example.bean.TestAccountBean;
 import com.example.common.CommonResource;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
@@ -54,50 +53,52 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
     }
 
     public void loadData(ProductCenterBean.RecordsBean data) {
-        String testName = data.getTestName();
-        String testAddress = data.getTestAddress();
-        String testAccount = data.getTestAccount();
-        String testPassword = data.getTestPassword();
+        final List<TestAccountBean> list = new ArrayList<>();
+        for (int i = 0; i < data.getTestNameList().size(); i++) {
+            TestAccountBean testAccountBean = new TestAccountBean();
+            testAccountBean.setTitle(data.getTestNameList().get(i).get(0));
+            testAccountBean.setAddressList(data.getTestAddressList().get(i));
 
-        final List<ProductCenterBean.RecordsBean> list = new ArrayList<>();
-        for (int i = 0; i < testName.split(",").length; i++) {
-            ProductCenterBean.RecordsBean productCenterBean = new ProductCenterBean.RecordsBean();
-            productCenterBean.setTestName(testName.split(",")[i]);
-            productCenterBean.setTestAddress(testAddress.split(",")[i]);
-            productCenterBean.setTestAccount(testAccount.split(",")[i]);
-            productCenterBean.setTestPassword(testPassword.split(",")[i]);
-            list.add(productCenterBean);
+            List<TestAccountBean.Account> accountList = new ArrayList<>();
+            for (int j = 0; j < data.getTestAccountList().get(i).size(); j++) {
+                TestAccountBean.Account account = new TestAccountBean.Account();
+                account.setAccount(data.getTestAccountList().get(i).get(j));
+                account.setPassword(data.getTestPasswordList().get(i).get(j));
+                accountList.add(account);
+            }
+            testAccountBean.setAccountList(accountList);
+            list.add(testAccountBean);
         }
         ProductAccountAdapter productAccountAdapter = new ProductAccountAdapter(mContext, list, R.layout.rv_product_detail);
         if (getView() != null) {
             getView().loadRv(productAccountAdapter);
         }
 
-        productAccountAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
-            @Override
-            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
-                view1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setClipboard(list.get(position).getTestAccount());
-                    }
-                });
-
-                view2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setClipboard(list.get(position).getTestPassword());
-                    }
-                });
-
-                view3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ARouter.getInstance().build("/module_home/WebDetailActivity").withString("url", list.get(position).getTestAddress()).navigation();
-                    }
-                });
-            }
-        });
+//        productAccountAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
+//            @Override
+//            public void ViewThreeOnClick(View view1, View view2, View view3, final int position) {
+//                view1.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        setClipboard(list.get(position).getTestAccount());
+//                    }
+//                });
+//
+//                view2.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        setClipboard(list.get(position).getTestPassword());
+//                    }
+//                });
+//
+//                view3.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        ARouter.getInstance().build("/module_home/WebDetailActivity").withString("url", list.get(position).getTestAddress()).navigation();
+//                    }
+//                });
+//            }
+//        });
 
         String[] pics = data.getPic().split(",");
         List<BannerImageBean> imgList = new ArrayList<>();

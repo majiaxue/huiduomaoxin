@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -47,6 +48,10 @@ public class OrderInfoActivity extends BaseActivity<OrderInfoView, OrderInfoPres
     TextView orderInfoPayType;
     @BindView(R2.id.order_info_coupon_money_txt)
     TextView mRedPackage;
+    @BindView(R2.id.order_info_type)
+    TextView mType;
+    @BindView(R2.id.order_info_linear)
+    LinearLayout mLinear;
 
     @Autowired(name = "bean")
     LocalOrderBean bean;
@@ -71,12 +76,19 @@ public class OrderInfoActivity extends BaseActivity<OrderInfoView, OrderInfoPres
             orderInfoShopName.setText(bean.getSellerInfo().getShop_name());
             orderInfoManjianMoney.setText("-￥" + (bean.getFullReductionAmount() == null ? "0" : bean.getFullReductionAmount()));
             orderInfoTotalMoney.setText("￥" + bean.getTotalMoney());
-            orderInfoAddress.setText(bean.getUserAddress() + "\n" + bean.getUserName() + "      " + bean.getUserPhone());
             orderInfoOrdersn.setText(bean.getOrderSn());
             orderInfoTime.setText(bean.getCreateTime());
             orderInfoPayType.setText("0".equals(bean.getPayWay()) ? "微信" : "支付宝");
             mRedPackage.setText("-￥" + bean.getRedPackedMoney());
 
+            if ("0".equals(bean.getDeliverType())) {
+                orderInfoPeisong.setText("上门自提");
+                mType.setText("取货码");
+                orderInfoAddress.setText(bean.getTakeGoodsCode());
+            } else {
+                orderInfoPeisong.setText("商家配送");
+                orderInfoAddress.setText(bean.getUserAddress() + "\n" + bean.getUserName() + "      " + bean.getUserPhone());
+            }
 
             presenter.loadData(bean.getLocalOrderItemList());
         } else {
@@ -94,6 +106,12 @@ public class OrderInfoActivity extends BaseActivity<OrderInfoView, OrderInfoPres
             if (tuiKuanBean.getSeller() != null) {
                 orderInfoShopName.setText(tuiKuanBean.getSeller().getSellerShopName());
             }
+            if ("0".equals(tuiKuanBean.getDeliverType())) {
+                orderInfoPeisong.setText("上门自提");
+            } else {
+                orderInfoPeisong.setText("商家配送");
+            }
+            mLinear.setVisibility(View.GONE);
 
             presenter.loadData(tuiKuanBean.getLocalOrderItemList());
         }

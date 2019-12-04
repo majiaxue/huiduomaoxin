@@ -144,7 +144,7 @@ public class LocalTuiKuanBean implements Serializable {
         private String fullReductionAmount; //退款金额
         private String payWay;  //支付方式
         private String redPackedMoney;  //红包金额
-        private String deliverType;     //配送方式
+        private String deliverType;     //配送方式（0：自提 1：配送）
         private String userAddress;
         private List<LocalOrderBean.LocalOrderItemListBean> localOrderItemList;
 

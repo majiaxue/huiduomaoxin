@@ -12,7 +12,6 @@ import com.example.utils.ArithUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.view.RatingBarView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocalSellerAdapter extends MyRecyclerAdapter<LocalShopBean> {

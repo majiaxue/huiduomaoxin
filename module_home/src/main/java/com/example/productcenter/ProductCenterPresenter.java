@@ -113,7 +113,9 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("产品中心商品" + result);
-                getView().loadRefresh();
+                if (getView() != null) {
+                    getView().loadRefresh();
+                }
                 if (result != null) {
                     final ProductCenterBean productCenterBean = JSON.parseObject(result, ProductCenterBean.class);
 
@@ -144,7 +146,9 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("产品中心商品失败" + errorMsg);
-                getView().loadRefresh();
+                if (getView() != null) {
+                    getView().loadRefresh();
+                }
             }
         }));
 

@@ -29,10 +29,10 @@ public class GoodsRecommendAdapter extends MyRecyclerAdapter<GoodsRecommendBean.
         // 1表示天猫，0表示淘宝产品
         if (data.getUser_type().equals("0")) {
             //淘宝
-            holder.setImageResource(R.id.base_type, R.drawable.taobao);
+            holder.setImageResource(R.id.base_type, R.drawable.icon_taobao);
         } else {
             //天猫
-            holder.setImageResource(R.id.base_type, R.drawable.tianmao);
+            holder.setImageResource(R.id.base_type, R.drawable.icon_tianmao);
         }
         double couponPrice = Double.valueOf(data.getZk_final_price()) - Double.valueOf(data.getCoupon_amount());//商品价格
         double div = Double.valueOf(data.getCommission_rate()) / 100;

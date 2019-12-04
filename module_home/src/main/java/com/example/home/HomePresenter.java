@@ -35,7 +35,6 @@ import com.example.entity.BaseRecImageAndTextBean;
 import com.example.home.adapter.GoodChoiceRecAdapter;
 import com.example.home.adapter.GoodsRecommendAdapter;
 import com.example.home.adapter.HomeTopRecAdapter;
-import com.example.module_base.ModuleBaseApplication;
 import com.example.module_home.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -480,7 +479,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
                     if (TextUtils.isEmpty(SPUtil.getToken())) {
                         PopUtils.isLogin(mContext);
                     } else {
-                        ModuleBaseApplication.mLocationClient.restart();
                         ARouter.getInstance().build("/module_local/LocalMainActivity").navigation();
                     }
 //                    final SelfDialog selfDialog = new SelfDialog(mContext);
