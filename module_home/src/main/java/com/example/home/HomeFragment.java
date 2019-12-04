@@ -1,12 +1,18 @@
 package com.example.home;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,16 +20,30 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
 import com.example.utils.LogUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
+import com.example.utils.StatusBarUtils;
 import com.example.utils.TxtUtil;
 import com.example.view.CustomHeader;
 import com.example.view.CustomeRecyclerView;
 import com.example.view.MarqueeView;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.kongzue.tabbar.TabBarView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -37,6 +57,8 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 首页
@@ -97,6 +119,12 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
     RecyclerView homeFlashSaleRec;
     @BindView(R2.id.home_xianshiqianggou)
     RelativeLayout homeXianShiQiangGou;
+    @BindView(R2.id.home_tab_bar1)
+    TabBarView homeTabBar1;
+    @BindView(R2.id.home_tab_bar2)
+    TabBarView homeTabBar2;
+    @BindView(R2.id.home_tab_bar3)
+    TabBarView homeTabBar3;
 
     private int nextPage = 1;
     private CountDownTimer countDownTimer;
@@ -109,6 +137,11 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
 
     @Override
     public void initData() {
+        StatusBarUtils.setAndroidNativeLightStatusBar(getActivity(), false);
+
+        initGif();
+
+        presenter.initTabBar(homeTabBar1,homeTabBar2,homeTabBar3);
 //        time();
         //跑马灯
         presenter.setViewSingleLine();
@@ -132,6 +165,32 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         TxtUtil.txtJianbian(text131GradualChange, "#0c53e4", "#ae3fed");
         TxtUtil.txtJianbian(text141GradualChange, "#fe5d05", "#fdb902");
 
+    }
+
+    private void initGif() {
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                //.placeholder(R.mipmap.ic_launcher_round)
+                .error(android.R.drawable.stat_notify_error)
+                .priority(Priority.HIGH)
+                //.skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+
+        Glide.with(this)
+                .load(R.drawable.huodong)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .apply(options)
+                .into(homeHuoDong);
     }
 
     @Override
@@ -223,11 +282,7 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeHuoDong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(SPUtil.getToken())) {
-                    ARouter.getInstance().build("/mine/invite_friends").navigation();
-                } else {
-                    PopUtils.isLogin(getContext());
-                }
+
             }
         });
 

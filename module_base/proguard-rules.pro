@@ -254,3 +254,10 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep class com.baidu.** {*;}
 -keep class mapsdkvi.com.** {*;}
 -dontwarn com.baidu.**
+
+###############dialog#########################
+-keep class com.kongzue.dialog.** { *; }
+-dontwarn com.kongzue.dialog.**
+
+# 额外的，建议将 android.view 也列入 keep 范围：
+-keep class android.view.** { *; }

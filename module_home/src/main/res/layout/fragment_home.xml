@@ -187,13 +187,68 @@
                             android:thumb="@drawable/bg_fast_scroll_bar_thumb"
                             android:visibility="invisible" />
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/home_huo_dong"
+                            android:layout_marginTop="@dimen/dp_m_10"
+                            android:background="@drawable/bj"
+                            android:orientation="vertical">
+
+                            <com.kongzue.tabbar.TabBarView
+                                android:id="@+id/home_tab_bar1"
+                                android:layout_width="@dimen/dp_358"
+                                android:layout_height="@dimen/dp_146"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/dp_106"
+                                android:background="@drawable/bj2"
+                                android:paddingLeft="@dimen/dp_13"
+                                android:paddingRight="@dimen/dp_13"
+                                app:noDyeing="true"
+                                app:noSelect="true"
+                                app:paddingNavigationBar="false"
+                                app:tabClickBackground="empty"
+                                app:textSize="@dimen/dp_0" />
+
+                            <com.kongzue.tabbar.TabBarView
+                                android:id="@+id/home_tab_bar2"
+                                android:layout_width="@dimen/dp_358"
+                                android:layout_height="@dimen/dp_146"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/dp_10"
+                                android:background="@drawable/bj2"
+                                android:paddingLeft="@dimen/dp_13"
+                                android:paddingRight="@dimen/dp_13"
+                                app:noDyeing="true"
+                                app:noSelect="true"
+                                app:paddingNavigationBar="false"
+                                app:tabClickBackground="empty"
+                                app:textSize="@dimen/dp_0" />
+
+                            <com.kongzue.tabbar.TabBarView
+                                android:id="@+id/home_tab_bar3"
+                                android:layout_width="@dimen/dp_358"
+                                android:layout_height="@dimen/dp_146"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/dp_10"
+                                android:background="@drawable/bj2"
+                                android:paddingLeft="@dimen/dp_13"
+                                android:paddingRight="@dimen/dp_13"
+                                app:noDyeing="true"
+                                app:noSelect="true"
+                                app:paddingNavigationBar="false"
+                                app:tabClickBackground="empty"
+                                app:textSize="@dimen/dp_0" />
+                        </LinearLayout>
+
                         <ImageView
                             android:id="@+id/home_huo_dong"
-                            android:layout_width="@dimen/dp_335"
-                            android:layout_height="@dimen/dp_101"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_98"
                             android:layout_below="@id/home_slide_indicator_point"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/bg_huodong" />
+                            android:layout_centerHorizontal="true" />
+
+
                     </RelativeLayout>
 
                     <LinearLayout

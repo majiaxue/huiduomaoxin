@@ -1,6 +1,7 @@
 package com.example.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -48,6 +49,9 @@ import com.example.utils.PopUtils;
 import com.example.utils.SPUtil;
 import com.example.view.animation.RotateYTransformer;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kongzue.tabbar.Tab;
+import com.kongzue.tabbar.TabBarView;
+import com.kongzue.tabbar.interfaces.OnTabChangeListener;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
@@ -77,6 +81,86 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     @Override
     protected void onViewDestroy() {
+
+    }
+
+    public void initTabBar(TabBarView homeTabBar1, TabBarView homeTabBar2, TabBarView homeTabBar3) {
+        List<Tab> tabs1 = new ArrayList<>();
+        tabs1.add(new Tab(mContext, null, R.drawable.bj_shimaonz));
+        tabs1.add(new Tab(mContext, null, R.drawable.bj_chaoliunz));
+        tabs1.add(new Tab(mContext, null, R.drawable.bj_meizhuanggh));
+        tabs1.add(new Tab(mContext, null, R.drawable.bj_muyingcp));
+        homeTabBar1.setTab(tabs1);
+
+        homeTabBar1.setOnTabChangeListener(new OnTabChangeListener() {
+            @Override
+            public void onTabChanged(View v, int index) {
+                switch (index) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        List<Tab> tabs2 = new ArrayList<>();
+        tabs2.add(new Tab(mContext, null, R.drawable.bj_chaoliunx));
+        tabs2.add(new Tab(mContext, null, R.drawable.bj_shenghuobh));
+        tabs2.add(new Tab(mContext, null, R.drawable.bj_jiazhijf));
+        tabs2.add(new Tab(mContext, null, R.drawable.bj_xiangbaips));
+        homeTabBar2.setTab(tabs2);
+
+        homeTabBar2.setOnTabChangeListener(new OnTabChangeListener() {
+            @Override
+            public void onTabChanged(View v, int index) {
+                switch (index) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        });
+
+        List<Tab> tabs3 = new ArrayList<>();
+        tabs3.add(new Tab(mContext, null, R.drawable.bj_shimaony));
+        tabs3.add(new Tab(mContext, null, R.drawable.bj_huwaiyd));
+        tabs3.add(new Tab(mContext, null, R.drawable.bj_maibianqq));
+        tabs3.add(new Tab(mContext, null, R.drawable.bj_pinzhijd));
+        homeTabBar3.setTab(tabs3);
+
+        homeTabBar3.setOnTabChangeListener(new OnTabChangeListener() {
+            @Override
+            public void onTabChanged(View v, int index) {
+                switch (index) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        });
 
     }
 
@@ -203,7 +287,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                         homeZhongXbanner.setPageMargin(16);
                         homeZhongXbanner.setOffscreenPageLimit(3);
                         homeZhongXbanner.setPageTransformer(true, new RotateYTransformer());
-                        if (images.size()>0){
+                        if (images.size() > 0) {
                             homeZhongXbanner.setAdapter(mAdapter = new PagerAdapter() {
                                 @Override
                                 public Object instantiateItem(ViewGroup container, int position) {
@@ -310,18 +394,18 @@ public class HomePresenter extends BasePresenter<HomeView> {
         homeTopRec.setLayoutManager(gridLayoutManager);
 
         strings = new ArrayList<>();
-        strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.icon_taobao1));//0
-        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.icon_taoqianggou1));//1
-        strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.icon_pinduoduo1));//2
+        strings.add(new BaseRecImageAndTextBean("淘宝", R.drawable.icon_yb));//0
+        strings.add(new BaseRecImageAndTextBean("淘抢购", R.drawable.icon_tqg));//1
+        strings.add(new BaseRecImageAndTextBean("拼多多", R.drawable.icon_pdd));//2
 //        strings.add(new BaseRecImageAndTextBean("今日免单", R.drawable.icon_miandan1));//3
         strings.add(new BaseRecImageAndTextBean("产品中心", R.drawable.icon_cpzx));//3
 //        strings.add(new BaseRecImageAndTextBean("商城", R.drawable.icon_shangcheng1));
-        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.icon_jingdong1));//4
-        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.icon_xiaodian1));//5
-        strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.icon_tianmao1));//6
-        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_9));//7
-        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_juhuasuan1));//8
-        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_qiandao1));//9
+        strings.add(new BaseRecImageAndTextBean("京东", R.drawable.icon_jd));//4
+        strings.add(new BaseRecImageAndTextBean("附近小店", R.drawable.icon_fjxd));//5
+        strings.add(new BaseRecImageAndTextBean("天猫", R.drawable.icon_tm));//6
+        strings.add(new BaseRecImageAndTextBean("9.9包邮", R.drawable.icon_99by));//7
+        strings.add(new BaseRecImageAndTextBean("聚划算", R.drawable.icon_jhs));//8
+        strings.add(new BaseRecImageAndTextBean("打卡签到", R.drawable.icon_dkqd));//9
 
         HomeTopRecAdapter homeTopRecAdapter = new HomeTopRecAdapter(mContext, strings, R.layout.item_home_top_rec);
         homeTopRec.setAdapter(homeTopRecAdapter);
@@ -508,7 +592,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
                             goodsRecommendAdapter = new GoodsRecommendAdapter(mContext, goodList, R.layout.item_base_rec);
                             homeBottomRec.setAdapter(goodsRecommendAdapter);
                         } else {
-                            goodsRecommendAdapter.notifyDataSetChanged( );
+                            goodsRecommendAdapter.notifyDataSetChanged();
                             getView().refreshSuccess();
                         }
 
