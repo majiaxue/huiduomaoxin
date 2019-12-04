@@ -1,5 +1,6 @@
 package com.example.home;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.trade.biz.AlibcConstants;
+import com.alibaba.baichuan.trade.biz.context.AlibcTradeResult;
+import com.alibaba.baichuan.trade.biz.core.taoke.AlibcTaokeParams;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -54,7 +62,9 @@ import com.stx.xhb.xbanner.XBanner;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -282,7 +292,29 @@ public class HomeFragment extends BaseFragment<HomeView, HomePresenter> implemen
         homeHuoDong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //提供给三方传递配置参数
+                Map<String, String> exParams = new HashMap<>();
+                exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
 
+
+                //设置页面打开方式
+                AlibcShowParams showParams = new AlibcShowParams();
+                showParams.setOpenType(OpenType.Auto);
+
+                AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+                taokeParams.setPid("mm_112883640_11584347_72287650277");
+
+                AlibcTrade.openByUrl((Activity) getContext(), "", "https://s.click.taobao.com/t?e=m%3D2%26s%3Dzm6jhQNKreYcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMQ53%2FRat2hkiRitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTAyJWI2L%2Fu1zVVOoyAUYPOxgxdTc00KD8%3D&union_lens=lensId%3APUB%401575447181%400b0b4eb0_0d55_16ecff839d0_0b2e%4001", null, null, null, showParams, taokeParams, exParams, new AlibcTradeCallback() {
+                    @Override
+                    public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+
+                    }
+                });
             }
         });
 

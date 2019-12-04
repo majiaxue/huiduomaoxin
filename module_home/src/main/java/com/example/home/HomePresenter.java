@@ -1,5 +1,6 @@
 package com.example.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -20,6 +21,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.callback.AlibcTradeCallback;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.trade.biz.AlibcConstants;
+import com.alibaba.baichuan.trade.biz.context.AlibcTradeResult;
+import com.alibaba.baichuan.trade.biz.core.taoke.AlibcTaokeParams;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
@@ -55,6 +63,7 @@ import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,12 +105,16 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onTabChanged(View v, int index) {
                 switch (index) {
                     case 0:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DA%2BwWQJM%2FJ1McQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMZwXH6P3nAw%2FRitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFrm4t5hCa%2F3vGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447241%400bb642bf_0d2a_16ecff92448_0b19%4001");
                         break;
                     case 1:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DR%2FYWPTVxkwccQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMV%2BJxoyXzDYcRitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFigbQYQSXoszGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575448871%400b093607_0d50_16ed01203f4_03eb%4001");
                         break;
                     case 2:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DFyj91J1iCTMcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMawCRoSDSe%2B%2F79%2FTFaMDK6S9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFS0ZgpugNVI%2FGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447269%400b832d8d_0cc0_16ecff991b8_0b17%4001");
                         break;
                     case 3:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DPDZBd2uoLQccQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMaDyXBK0xhACRitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFjQfhsEJjxnjGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447311%400b01c303_0ce7_16ecffa33f3_0b05%4001");
                         break;
                     default:
                         break;
@@ -121,12 +134,16 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onTabChanged(View v, int index) {
                 switch (index) {
                     case 0:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3D6s%2FDSv43K2AcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMZld42WfGN3Ilovu%2FCElQOu9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFjSsQp1kiWpvGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447377%400b152c5a_0d8f_16ecffb356e_0b7c%4001");
                         break;
                     case 1:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DylBy3lUOCuscQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMcMpMvDnDrl91aH1Hk3GeOi9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFvbvnsvGSSI3GJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447406%400bb36611_0d42_16ecffba8de_0b09%4001");
                         break;
                     case 2:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DljiTtWlf5rocQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMa21mrjNDdPH5x%2BIUlGKNpW9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjF0Y9AlwZcdQXGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447435%400b19bc93_0d1e_16ecffc18c0_0b35%4001");
                         break;
                     case 3:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DBWdlQ9VUdYkcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMaXBj7GJEUQk5x%2BIUlGKNpW9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFxoQ5Es5wzlnGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447745%400b82d822_0d58_16ed000d2f7_0b0c%4001");
                         break;
                     default:
                         break;
@@ -147,12 +164,16 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onTabChanged(View v, int index) {
                 switch (index) {
                     case 0:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3Dt9GD%2FdrCDGgcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMbSa4aY0rv9vJ1gyddu7kN%2B9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFaKpZdcIZXBXGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447840%400b19bc93_0d1e_16ed002481c_0b38%4001");
                         break;
                     case 1:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DrGxDux9TqkgcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMWm4rDjT3sW8RitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFORcNhkNC7yPGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447631%400b1b8c89_0d68_16ecfff1609_0b53%4001");
                         break;
                     case 2:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3DuYBVr2T5Hz4cQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMXAONpr633fcRitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjF3P2KstxdvyzGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447661%400b83c05b_0ce6_16ecfff8a50_0ad6%4001");
                         break;
                     case 3:
+                        jumpToTB("https://s.click.taobao.com/t?e=m%3D2%26s%3D3SPdEY3hYEgcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMXHxX9SrNmS9J1gyddu7kN%2B9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTreHkggu7Fu8MWOMwcRpjFHW5J6Khwjf%2FGJe8N%2FwNpGw%3D%3D&union_lens=lensId%3APUB%401575447680%400b0ba3b8_0cec_16ecfffd628_03ef%4001");
                         break;
                     default:
                         break;
@@ -161,6 +182,32 @@ public class HomePresenter extends BasePresenter<HomeView> {
             }
         });
 
+    }
+
+    public void jumpToTB(String url) {
+//提供给三方传递配置参数
+        Map<String, String> exParams = new HashMap<>();
+        exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
+
+
+        //设置页面打开方式
+        AlibcShowParams showParams = new AlibcShowParams();
+        showParams.setOpenType(OpenType.Auto);
+
+        AlibcTaokeParams taokeParams = new AlibcTaokeParams("", "", "");
+        taokeParams.setPid("mm_112883640_11584347_72287650277");
+
+        AlibcTrade.openByUrl((Activity) mContext, "", url, null, null, null, showParams, taokeParams, exParams, new AlibcTradeCallback() {
+            @Override
+            public void onTradeSuccess(AlibcTradeResult alibcTradeResult) {
+
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
     }
 
     public void setViewSingleLine() {
