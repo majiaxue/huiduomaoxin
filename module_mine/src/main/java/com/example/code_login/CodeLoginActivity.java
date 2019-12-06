@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -70,6 +71,13 @@ public class CodeLoginActivity extends BaseActivity<CodeLoginView, CodeLoginPres
             @Override
             public void onClick(View v) {
                 presenter.checkAgreement();
+            }
+        });
+
+        codeLoginUserAgreement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/agreement").withString("type", "ysxy").navigation();
             }
         });
     }

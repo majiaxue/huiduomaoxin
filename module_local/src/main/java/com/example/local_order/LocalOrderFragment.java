@@ -115,14 +115,11 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
             presenter.loadData(status, "0", page);
         } else if (position == 3) {
             status = position + "";
-            presenter.loadData(status, "1", page);
-        } else if (position == 4) {
-            status = position + "";
             presenter.loadData(status, "", page);
-        } else if (position == 5) {
+        } else if (position == 4) {
             status = "6";
             presenter.loadData(status, "", page);
-        } else if (position == 6) {
+        } else if (position == 5) {
             isTui = true;
             presenter.tuihuo(page);
         }

@@ -50,8 +50,6 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
             if (CommonResource.CODE_SUCCESS.equals(code)) {
                 listener.onSuccess(data, msg);
             } else if (CommonResource.TOKEN_EXPIRE.equals(code)) {
-                SPUtil.clear();
-                JpushUtil.deleteAlias();
                 listener.onError(code, msg);
             } else {
                 listener.onError(code, msg);

@@ -84,25 +84,6 @@
         android:paddingTop="@dimen/dp_3"
         android:paddingRight="@dimen/dp_7"
         android:paddingBottom="@dimen/dp_4"
-        android:text="满100减10元"
-        android:textColor="#fefefe"
-        android:textSize="@dimen/sp_11" />
-
-    <TextView
-        android:id="@+id/local_home_xbanner_coupon2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/local_home_xbanner_coupon1"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_toRightOf="@id/local_home_xbanner_coupon1"
-        android:background="@drawable/bg_5_leftbottom_righttop"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:paddingLeft="@dimen/dp_7"
-        android:paddingTop="@dimen/dp_3"
-        android:paddingRight="@dimen/dp_7"
-        android:paddingBottom="@dimen/dp_4"
-        android:text="满200减40元"
         android:textColor="#fefefe"
         android:textSize="@dimen/sp_11" />
 

@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:maxLines="1"
         android:text="10只"
         android:textColor="#fb5318"
         android:textSize="@dimen/sp_15" />

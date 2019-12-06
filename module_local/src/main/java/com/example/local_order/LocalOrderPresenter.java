@@ -75,7 +75,6 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         navbarList.add(new TxtAndChooseBean("全部订单", true));
         navbarList.add(new TxtAndChooseBean("待付款", false));
         navbarList.add(new TxtAndChooseBean("待取货", false));
-        navbarList.add(new TxtAndChooseBean("配送中", false));
         navbarList.add(new TxtAndChooseBean("已完成", false));
         navbarList.add(new TxtAndChooseBean("已关闭", false));
         navbarList.add(new TxtAndChooseBean("退款中", false));

@@ -43,6 +43,7 @@ import com.example.net.RetrofitUtil;
 import com.example.operator_gain.OperatorGainFragment;
 import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
+import com.example.utils.CitySPUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.OnClearCacheListener;
 import com.example.utils.PopUtils;
@@ -69,7 +70,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private CommunityFragment communityFragment;
     private HomeFragment homeFragment;
     private MineFragment mineFragment;
-//    private SuperBrandFragment superBrandFragment;
+    //    private SuperBrandFragment superBrandFragment;
     private OperatorGainFragment operatorGainFragment;
     private ProgressBar mProgress;
     private AlertDialog alertDialog;
@@ -222,6 +223,8 @@ public class MainPresenter extends BasePresenter<MainView> {
         mContext.unregisterReceiver(receiver);
         EventBus.getDefault().unregister(this);
         SPUtil.addParm(CommonResource.TAN_CONTENT, "");
+        CitySPUtil.addParm(CommonResource.CITY, "");
+
     }
 
     public void registerReceiver() {
