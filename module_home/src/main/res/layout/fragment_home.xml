@@ -248,7 +248,6 @@
                             android:layout_below="@id/home_slide_indicator_point"
                             android:layout_centerHorizontal="true" />
 
-
                     </RelativeLayout>
 
                     <LinearLayout

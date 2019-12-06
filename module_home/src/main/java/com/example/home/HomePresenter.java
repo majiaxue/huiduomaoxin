@@ -185,6 +185,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void jumpToTB(String url) {
+//        ARouter.getInstance().build("/module_classify/tshop_home").withString("url","https://s.click.taobao.com/t?e=m%3D2%26s%3Dzm6jhQNKreYcQipKwQzePCperVdZeJviLKpWJ%2Bin0XJRAdhuF14FMQ53%2FRat2hkiRitN3%2FurF3y9240E272vT5e1q28sdb9ofviWYg2ijQSnnpCc7iyvkKS2XTLv%2BVcH%2F2NLiseXG8sRye%2FDw5l6PgMXNI5sr7noQBRB1XJCO28RYIZhO1sDRLvex8GPs9uzI%2BVo4ZbOXiTKLJiYzWv6xmKche5LvsSoIez2UrYlUs7IpLlhUuPEixdPxHZbx0DROsIkmqRCprTAyJWI2L%2Fu1zVVOoyAUYPOxgxdTc00KD8%3D&union_lens=lensId%3APUB%401575447181%400b0b4eb0_0d55_16ecff839d0_0b2e%4001").navigation();
 //提供给三方传递配置参数
         Map<String, String> exParams = new HashMap<>();
         exParams.put(AlibcConstants.ISV_CODE, "appisvcode");
