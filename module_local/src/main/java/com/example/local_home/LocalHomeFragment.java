@@ -24,7 +24,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.BannerBean;
 import com.example.bean.LocalShopBean;
 import com.example.bean.LocalShopCommendBean;
-import com.example.bean.UserCouponBean;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.local_home.adapter.LocalHomeCommendAdapter;
@@ -72,7 +71,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     RecyclerView localHomeNavbar;
     @BindView(R2.id.local_home_xiaochi)
     ImageView localHomeXiaochi;
-    @BindView(R2.id._local_home_zhong_banner)
+    @BindView(R2.id.local_home_zhong_banner)
     XBanner LocalHomeZhongBanner;
     @BindView(R2.id.local_home_commend_shop)
     TextView localHomeCommendShop;
@@ -82,6 +81,8 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     RecyclerView localHomeRvShop;
     @BindView(R2.id.local_home_refresh)
     SmartRefreshLayout mRefresh;
+    @BindView(R2.id.local_home_linear)
+    LinearLayout mLinear;
 
     private List<LocalShopBean> zhongList;
     private static int REQUESTCODE = 0;
@@ -96,11 +97,10 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     @Override
     public void initData() {
         EventBus.getDefault().register(this);
-        if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-            LogUtil.e("城市----------->" + CitySPUtil.getStringValue(CommonResource.CITY));
-            localHomeCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
+        if (!TextUtils.isEmpty(MyLocationListener.city)) {
+            localHomeCity.setText(MyLocationListener.city);
         } else {
-            localHomeCity.setText("选择城市");
+            localHomeCity.setText("郑州市");
         }
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localHomeNavbar.setLayoutManager(layoutManager);
@@ -206,7 +206,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String cityName = data.getStringExtra("cityName");
+        final String cityName = data.getStringExtra("cityName");
         if (resultCode == 0) {
             localHomeCity.setText(cityName);
             GeoCoder mCoder = GeoCoder.newInstance();
@@ -225,6 +225,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                             LogUtil.e("-------->纬度：" + latitude + "--------->经度：" + longitude);
                             page = 1;
                             presenter.loadData(page, longitude, latitude);
+                            presenter.initCommend(longitude, latitude, cityName);
                         }
                     }
                 }
@@ -244,9 +245,23 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     }
 
     @Override
-    public void loadCommend(LocalShopCommendBean shopCommendBean, LocalHomeCommendAdapter adapter) {
-        localHomeCommendShop.setText(shopCommendBean.getSellerName());
+    public void loadCommend(final LocalShopCommendBean shopCommendBean, LocalHomeCommendAdapter adapter) {
+        localHomeCommendShop.setText(shopCommendBean.getSellerShopName());
         localHomeCommendRv.setAdapter(adapter);
+        mLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocalShopBean localShopBean = new LocalShopBean();
+                localShopBean.setPigxx_id(shopCommendBean.getPigxxId());
+                localShopBean.setSeller_shop_name(shopCommendBean.getSellerShopName());
+                localShopBean.setSeller_logo(shopCommendBean.getSellerLogo());
+                localShopBean.setSellerpics(shopCommendBean.getSellerPics());
+                localShopBean.setMin_point(shopCommendBean.getMinPoint());
+                localShopBean.setFull_reduction_amount(shopCommendBean.getFullReductionAmount());
+
+                ARouter.getInstance().build("/module_local/LocalStoreActivity").withSerializable("bean", localShopBean).navigation();
+            }
+        });
     }
 
     @Override
@@ -261,7 +276,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 TextView address = view.findViewById(R.id.local_home_xbanner_address);
                 RatingBarView rtb = view.findViewById(R.id.local_home_xbanner_rtb);
                 TextView coupon1 = view.findViewById(R.id.local_home_xbanner_coupon1);
-                TextView coupon2 = view.findViewById(R.id.local_home_xbanner_coupon2);
                 TextView type = view.findViewById(R.id.local_home_xbanner_type);
                 TextView space = view.findViewById(R.id.local_home_xbanner_space);
 
@@ -279,26 +293,14 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                         space.setText(integer + "米");
                     }
                 }
-                List<UserCouponBean> couponList = ((LocalShopBean) model).getCouponList();
-                if (couponList.size() > 1) {
-                    if (couponList.get(0).getMinPoint() == 0) {
-                        coupon1.setText("领券减" + couponList.get(0).getAmount() + "元");
-                    } else {
-                        coupon1.setText("满" + couponList.get(0).getMinPoint() + "减" + couponList.get(0).getAmount());
-                    }
-
-                    if (couponList.get(1).getMinPoint() == 0) {
-                        coupon2.setText("领券减" + couponList.get(1).getAmount() + "元");
-                    } else {
-                        coupon2.setText("满" + couponList.get(1).getMinPoint() + "减" + couponList.get(1).getAmount());
-                    }
-                } else if (couponList.size() == 1) {
-                    if (couponList.get(0).getMinPoint() == 0) {
-                        coupon1.setText("领券减" + couponList.get(0).getAmount() + "元");
-                    } else {
-                        coupon1.setText("满" + couponList.get(0).getMinPoint() + "减" + couponList.get(0).getAmount());
-                    }
-                    coupon2.setVisibility(View.GONE);
+                String min_point = ((LocalShopBean) model).getMin_point();
+                String full_reduction_amount = ((LocalShopBean) model).getFull_reduction_amount();
+                if (TextUtils.isEmpty(min_point) && TextUtils.isEmpty(full_reduction_amount)) {
+                    coupon1.setVisibility(View.GONE);
+                } else if (TextUtils.isEmpty(min_point) && !TextUtils.isEmpty(full_reduction_amount)) {
+                    coupon1.setText("立减" + full_reduction_amount);
+                } else {
+                    coupon1.setText("满" + min_point + "减" + full_reduction_amount);
                 }
 
                 RequestOptions requestOptions = RequestOptions.centerCropTransform();

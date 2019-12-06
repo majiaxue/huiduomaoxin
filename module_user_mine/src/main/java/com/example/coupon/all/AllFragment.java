@@ -11,6 +11,7 @@ import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
+import com.example.utils.SpaceItemDecoration;
 
 import butterknife.BindView;
 
@@ -43,6 +44,7 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         allRec.setLayoutManager(linearLayoutManager);
         if (CommonResource.HISTORY_LOCAL.equals(from)) {
+            allRec.addItemDecoration(new SpaceItemDecoration(0, 0, 0, (int) getContext().getResources().getDimension(R.dimen.dp_10)));
             presenter.localMyCoupon();
         } else {
             presenter.allRec(allRec);

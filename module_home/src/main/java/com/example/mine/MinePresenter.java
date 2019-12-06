@@ -253,7 +253,6 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("个人信息" + errorCode + "---------" + errorMsg);
-                SPUtil.addParm(CommonResource.TOKEN, "");
 
                 if (getView() != null) {
                     getView().onError();

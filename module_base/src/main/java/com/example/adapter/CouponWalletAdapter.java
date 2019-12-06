@@ -14,7 +14,6 @@ public class CouponWalletAdapter extends MyRecyclerAdapter<RedPackageBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, RedPackageBean data, int position) {
-        holder.setText(R.id.rv_coupon_wallet_money, data.getMoney())
-                .setText(R.id.rv_coupon_wallet_count, data.getCount());
+        holder.setText(R.id.rv_coupon_wallet_money, data.getMoney());
     }
 }

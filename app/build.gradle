@@ -8,7 +8,7 @@ android {
     defaultConfig {
         //com.woxuan.fltk
         //com.example.taobaoguest_android
-        applicationId "com.example.taobaoguest_android"
+        applicationId "com.woxuan.fltk"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
@@ -49,16 +49,14 @@ android {
             keyAlias 'key'
             keyPassword '123456'
             storePassword '123456'
-            storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
+            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
         }
-
         debug {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('C:/Users/Administrator/taobaoke/keystore.jks')
+            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
             storePassword '123456'
         }
-
     }
 
     buildTypes {
