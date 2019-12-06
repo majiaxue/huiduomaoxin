@@ -23,7 +23,6 @@ import com.example.adapter.GoodsImageAdapter;
 import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
-import com.example.common.CommonResource;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.mvp.BaseActivity;
@@ -403,7 +402,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     @Override
     public void loadUI(UserGoodsDetail data, int size) {
         goodsDetailName.setText(data.getName());
-        goodsDetailPrice.setText(data.getPromotionPrice() + "");
+        goodsDetailPrice.setText(data.getPrice() + "");
         mTotalSpecs.setText("共" + size + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
         Glide.with(this).load("http://47.99.93.123:4000/file/" + data.getSellerLogo()).into(goodsDetailShopImg);
         goodsDetailShopName.setText(data.getSellerName());

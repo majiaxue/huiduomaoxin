@@ -8,7 +8,7 @@ android {
     defaultConfig {
         //com.woxuan.fltk
         //com.example.taobaoguest_android
-        applicationId "com.woxuan.fltk"
+        applicationId "com.example.taobaoguest_android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode

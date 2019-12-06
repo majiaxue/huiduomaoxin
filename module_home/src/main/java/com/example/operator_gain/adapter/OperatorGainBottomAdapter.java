@@ -1,7 +1,6 @@
 package com.example.operator_gain.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +21,7 @@ public class OperatorGainBottomAdapter extends MyRecyclerAdapter<UserGoodsDetail
     @Override
     public void convert(RecyclerViewHolder holder, UserGoodsDetail data, int position) {
         holder.setText(R.id.rv_yys_quanyi_name, data.getName())
-                .setText(R.id.rv_yys_quanyi_price, "￥" + data.getOriginalPrice());
+                .setText(R.id.rv_yys_quanyi_price, "￥" + data.getPrice());
 
         ImageView view = holder.getView(R.id.rv_yys_quanyi_img);
         RequestOptions requestOptions = RequestOptions.centerCropTransform();

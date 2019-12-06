@@ -14,6 +14,7 @@ import com.example.common.CommonResource;
 import com.example.community.goods_commend.GoodsCommendPresenter;
 import com.example.module_home.R;
 import com.example.utils.ArithUtil;
+import com.example.utils.LogUtil;
 import com.example.utils.MyTimeUtil;
 import com.example.utils.SPUtil;
 
