@@ -131,7 +131,7 @@ public class OrderAllPresenter extends BasePresenter<OrderAllView> {
                                                             .build("/module_user_mine/RefundActivity")
                                                             .withSerializable("mineOrderBean", mineOrderBean)
                                                             .withInt("position", position)
-                                                            .withString("type", "0")
+                                                            .withString("type", "1")
                                                             .navigation();
                                                 }
                                             }

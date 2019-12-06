@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clipChildren="false">
 
     <com.example.view.WindowInsetsFrameLayout
         android:id="@+id/main_frame"
@@ -15,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45"
         android:background="#FFFFFF"
+
         android:orientation="horizontal">
 
         <RadioButton
@@ -49,6 +51,7 @@
             style="@style/main_bottom_back"
             android:drawableTop="@drawable/huiyuan"
             android:gravity="center"
+            android:layout_marginTop="@dimen/dp_m_10"
             android:orientation="vertical" />
 
         <RadioButton

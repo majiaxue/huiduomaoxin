@@ -30,7 +30,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.shakestock.ShakeStockActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.example.freecharge.FreeChargeActivity"
             android:screenOrientation="portrait" />
