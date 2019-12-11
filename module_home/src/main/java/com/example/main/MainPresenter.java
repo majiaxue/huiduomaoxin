@@ -33,6 +33,7 @@ import com.example.community.CommunityFragment;
 import com.example.fix.Constants;
 import com.example.fix.FileUtils;
 import com.example.fix.FixDexUtils;
+import com.example.h5home.H5HomeFragment;
 import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.module_home.R;
@@ -41,7 +42,6 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.operator_gain.OperatorGainFragment;
-import com.example.superbrand.SuperBrandFragment;
 import com.example.utils.AppManager;
 import com.example.utils.CitySPUtil;
 import com.example.utils.LogUtil;
@@ -90,6 +90,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private CheckUpBean checkUpBean;
     private NetStateChangeReceiver receiver;
     private String newVersion;
+    private H5HomeFragment h5HomeFragment;
 
 
     public MainPresenter(Context context) {
@@ -134,6 +135,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void loadData(FragmentManager fragmentManager, int resId) {
         this.fragmentManager = fragmentManager;
+        h5HomeFragment = new H5HomeFragment();
         communityFragment = new CommunityFragment();
         homeFragment = new HomeFragment();
         mineFragment = new MineFragment();
@@ -142,11 +144,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(resId, communityFragment)
-                .add(resId, homeFragment)
+                .add(resId, h5HomeFragment)
                 .add(resId, mineFragment)
                 .add(resId, operatorGainFragment);
 //                .add(resId, superBrandFragment);
-        transaction.show(homeFragment)
+        transaction.show(h5HomeFragment)
                 .hide(communityFragment)
                 .hide(mineFragment)
 //                .hide(superBrandFragment)
@@ -159,7 +161,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         if (resId == R.id.main_home) {
-            transaction.show(homeFragment)
+            transaction.show(h5HomeFragment)
                     .hide(communityFragment)
                     .hide(mineFragment)
 //                    .hide(superBrandFragment)
@@ -180,7 +182,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             transaction.show(mineFragment)
                     .hide(communityFragment)
 //                    .hide(superBrandFragment)
-                    .hide(homeFragment)
+                    .hide(h5HomeFragment)
                     .hide(operatorGainFragment)
                     .commit();
 
@@ -188,7 +190,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             transaction.show(communityFragment)
                     .hide(mineFragment)
 //                    .hide(superBrandFragment)
-                    .hide(homeFragment)
+                    .hide(h5HomeFragment)
                     .hide(operatorGainFragment)
                     .commit();
         } else if (resId == R.id.main_operator) {
@@ -199,7 +201,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 transaction.show(operatorGainFragment)
                         .hide(mineFragment)
 //                        .hide(superBrandFragment)
-                        .hide(homeFragment)
+                        .hide(h5HomeFragment)
                         .hide(communityFragment)
                         .commit();
             }
