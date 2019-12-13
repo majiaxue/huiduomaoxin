@@ -135,7 +135,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void loadData(FragmentManager fragmentManager, int resId) {
         this.fragmentManager = fragmentManager;
-        h5HomeFragment = new H5HomeFragment();
+//        h5HomeFragment = new H5HomeFragment();
         communityFragment = new CommunityFragment();
         homeFragment = new HomeFragment();
         mineFragment = new MineFragment();

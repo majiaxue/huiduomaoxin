@@ -27,6 +27,8 @@ import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.productdetail.adapter.ProductAccountAdapter;
 import com.example.utils.LogUtil;
+import com.example.utils.MacUtil;
+import com.example.utils.MapUtil;
 import com.example.utils.OnPopListener;
 import com.example.utils.PhoneNumUtil;
 import com.example.utils.PopUtils;
@@ -198,5 +200,21 @@ public class ProductDetailPresenter extends BasePresenter<ProductDetailView> {
         // 将ClipData内容放到系统剪贴板里。
         cm.setPrimaryClip(mClipData);
         Toast.makeText(mContext, "复制成功", Toast.LENGTH_SHORT).show();
+    }
+
+    public void loading(String id) {
+        Map map = MapUtil.getInstance().addParms("type", "0").addParms("phoneId", MacUtil.getMac(mContext)).addParms("productId", id).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.PRODUCT_COUNTS, map);
+        RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
+            @Override
+            public void onSuccess(String result, String msg) {
+                LogUtil.e("计数：" + result);
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                LogUtil.e(errorCode + "--------------" + errorMsg);
+            }
+        }));
     }
 }

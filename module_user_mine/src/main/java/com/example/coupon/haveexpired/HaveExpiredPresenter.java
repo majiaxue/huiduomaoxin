@@ -75,8 +75,8 @@ public class HaveExpiredPresenter extends BasePresenter<HaveExpiredView> {
     }
 
     public void localGuoQiCoupon() {
-        Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
-        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.COUPON_GUOQI, map);
+        Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).addParms("status", 2).build();
+        Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getHead(CommonResource.LOCAL_COUPON_LIST, map, SPUtil.getToken());
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

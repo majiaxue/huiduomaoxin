@@ -77,6 +77,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailView, Produ
 
         presenter.loadData(bean);
         presenter.loadPhone();
+        presenter.loading(bean.getId());
     }
 
     @Override

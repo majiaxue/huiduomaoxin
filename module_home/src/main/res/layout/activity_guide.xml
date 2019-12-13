@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:isAutoPlay="false"
-        app:pointTopBottomPadding="@dimen/dp_20"
         app:pointNormal="@drawable/shape_normal_gay"
-        app:pointSelect="@drawable/shape_select_red" />
+        app:pointSelect="@drawable/shape_select_red"
+        app:pointTopBottomPadding="@dimen/dp_20" />
 
 
     <TextView
@@ -30,5 +30,53 @@
         android:text="跳过"
         android:textColor="#222222"
         android:textSize="@dimen/dp_12" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_50"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请阅读并悉知"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_13" />
+
+        <TextView
+            android:id="@+id/guide_yhxy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《用户协议》"
+            android:textColor="#ff0000"
+            android:textSize="@dimen/sp_13" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="和"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_13" />
+
+        <TextView
+            android:id="@+id/guide_ysxy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《隐私协议》"
+            android:textColor="#ff0000"
+            android:textSize="@dimen/sp_13" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -149,7 +149,6 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                         jsonObject.put("productName", CommonResource.PROJECTNAME);
                         jsonObject.put("orderFlag", true);
                         jsonObject.put("orderSn", localGetOrderSnBean.getOrderSn());
-                        jsonObject.put("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId());
                         jsonObject.put("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney());
                         jsonObject.put("userCode", SPUtil.getUserCode());
 //                        Map map = MapUtil.getInstance()
@@ -189,7 +188,6 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
             jsonObject.put("productName", CommonResource.PROJECTNAME);
             jsonObject.put("orderFlag", true);
             jsonObject.put("orderSn", bean.getOrderSn());
-            jsonObject.put("redPackedId", chooseRedPacgage == null ? "" : chooseRedPacgage.getId());
             jsonObject.put("redPackedMoney", chooseRedPacgage == null ? "0" : chooseRedPacgage.getMoney());
             jsonObject.put("userCode", SPUtil.getUserCode());
             if (isWechat) {

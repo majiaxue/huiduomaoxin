@@ -3,6 +3,7 @@ package com.example.productcenter;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -19,6 +20,8 @@ import com.example.net.RetrofitUtil;
 import com.example.productcenter.adapter.ProductCenterAdapter;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.PopUtils;
+import com.example.utils.SPUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -135,9 +138,13 @@ public class ProductCenterPresenter extends BasePresenter<ProductCenterView> {
                     productCenterAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(RecyclerView parent, View view, int position) {
-                            ARouter.getInstance().build("/module_home/ProductDetailActivity")
-                                    .withSerializable("bean", recordsBeanList.get(position))
-                                    .navigation();
+                            if (TextUtils.isEmpty(SPUtil.getToken())) {
+                                PopUtils.isLogin(mContext);
+                            } else {
+                                ARouter.getInstance().build("/module_home/ProductDetailActivity")
+                                        .withSerializable("bean", recordsBeanList.get(position))
+                                        .navigation();
+                            }
                         }
                     });
                 }

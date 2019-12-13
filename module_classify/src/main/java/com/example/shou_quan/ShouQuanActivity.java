@@ -61,12 +61,13 @@ public class ShouQuanActivity extends BaseActivity<ShouQuanView, ShouQuanPresent
                 LogUtil.e("===============>" + url);
 
                 if (url.indexOf("goback") != -1) {
-                    if (url.indexOf("goback?code=0") != -1) {
-                        ShouQuanActivity.this.finish();
-                        return false;
-                    } else {
-                        url = SPUtil.getStringValue("link");
-                    }
+                    ShouQuanActivity.this.finish();
+//                    if (url.indexOf("goback?code=0") != -1) {
+//                        ShouQuanActivity.this.finish();
+//                        return false;
+//                    } else {
+//                        url = SPUtil.getStringValue("link");
+//                    }
                 }
                 view.loadUrl(url);
                 return false;

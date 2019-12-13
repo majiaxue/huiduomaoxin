@@ -1,9 +1,6 @@
 package com.example.order_assess;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,8 +15,9 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.example.common.CommonResource;
+import com.example.bean.CommentVo;
 import com.example.bean.MineOrderBean;
+import com.example.common.CommonResource;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseActivity;
@@ -27,8 +25,6 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.order_assess.adapter.OrderAssessAdapter;
-import com.example.bean.CommentVo;
-import com.example.utils.ImageUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
@@ -38,7 +34,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 

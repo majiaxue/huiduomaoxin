@@ -1,5 +1,6 @@
 package com.example.login;
 
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 登录
@@ -67,10 +69,13 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     ImageView mReadCheck;
     @BindView(R2.id.login_visi_register2)
     View loginVisiRegister2;
+    @BindView(R2.id.login_user_ysxy)
+    TextView loginUserYsxy;
 
 
     private boolean isLogin = true;
     private boolean isRead = true;
+    private boolean yinsi = true;
 
 
     @Override
@@ -208,5 +213,12 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     @Override
     public LoginPresenter createPresenter() {
         return new LoginPresenter(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

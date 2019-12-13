@@ -2,27 +2,28 @@ package com.example.main;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.entity.TopBannerBean;
 import com.example.module_home.R;
 import com.example.utils.StatusBarUtils;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class GuideActivity extends Activity {
 
+    private TextView guideYhxy;
+    private TextView guideYsxy;
     private XBanner guideBanner;
     private TextView guideSkip;
     private List<TopBannerBean> images = new ArrayList<>();
@@ -32,6 +33,7 @@ public class GuideActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
+        ButterKnife.bind(this);
         changeStatus();
         initView();
 
@@ -47,6 +49,8 @@ public class GuideActivity extends Activity {
     private void initView() {
         guideBanner = findViewById(R.id.guide_banner);
         guideSkip = findViewById(R.id.guide_skip);
+        guideYhxy = findViewById(R.id.guide_yhxy);
+        guideYsxy = findViewById(R.id.guide_ysxy);
     }
 
 
@@ -102,6 +106,20 @@ public class GuideActivity extends Activity {
                 guideBanner.stopAutoPlay();
                 startActivity(new Intent(GuideActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+
+        guideYhxy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/agreement").withString("type", "zcxy").navigation();
+            }
+        });
+
+        guideYsxy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/agreement").withString("type", "ysxy").navigation();
             }
         });
 

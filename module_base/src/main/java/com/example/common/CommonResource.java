@@ -12,14 +12,16 @@ public class CommonResource {
     public static final String BASE_PIC = "http://47.99.93.123:4000/file/";     //图片前缀
 
 
-//    public static final String BASEURL_9001 = "http://192.168.0.100:9001";   //商品//47.99.93.123//192.168.0.118
-//    public static final String BASEURL_4001 = "http://192.168.0.100:4001";   //用户192.168.0.164
-//    public static final String BASEURL_9003 = "http://192.168.0.100:9003";   //商家192.168.0.121
-//    public static final String BASEURL_9004 = "http://192.168.0.100:9004";   //订单192.168.0.104
-//    public static final String BASEURL_9005 = "http://192.168.0.100:9005";   //参数192.168.0.195
-//    public static final String BASEURL_9010 = "http://192.168.0.100:9010";  //本地小店
-//    public static final String BASEURL_4000 = "http://192.168.0.100:4000";   //上传文件
+//    public static final String BASEURL_9001 = "http://192.168.0.105:9001";   //商品//47.99.93.123//192.168.0.118
+//    public static final String BASEURL_4001 = "http://192.168.0.105:4001";   //用户192.168.0.164
+//    public static final String BASEURL_9003 = "http://192.168.0.105:9003";   //商家192.168.0.121
+//    public static final String BASEURL_9004 = "http://192.168.0.105:9004";   //订单192.168.0.105
+//    public static final String BASEURL_9005 = "http://192.168.0.105:9005";   //参数192.168.0.195
+//    public static final String BASEURL_9010 = "http://192.168.0.105:9010";  //本地小店
+//    public static final String BASEURL_4000 = "http://192.168.0.105:4000";   //上传文件
 
+    public static final String MALLGOODS = "/mall/goods";
+    public static final String MALLPARA = "/mall/parameter";
 
     public static final String ALLCATEGORT = "/mall/goods/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/mall/goods/rest/goods";  //获取商品详情
@@ -128,6 +130,7 @@ public class CommonResource {
     public static final String PRODUCT_LIUYAN = "/mall/goods/rest/product/center/message";         //产品中心  用户留言
     public static final String PRODUCT_GETPHONE = "/mall/goods/rest/product/center/talk";          //产品中心  咨询热线电话
     public static final String COUPON_GUOQI = "rest/seller/coupon/status";                  //过期优惠券
+    public static final String PRODUCT_COUNTS = "/mall/goods/rest/product/center/count";       //产品中心   计数
 
 
     public static final String GOODSCOLLECTION = "/rest/user/product/all";   //查看商品收藏
