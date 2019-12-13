@@ -18,8 +18,8 @@ import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 
-@Route(path = "/mine/agreement")
-public class UserAgreementActivity extends BaseActivity<UserAgreementView, UserAgreementPresenter> implements UserAgreementView {
+@Route(path = "/mine/agreement2")
+public class UserAgreementActivity2 extends BaseActivity<UserAgreementView,UserAgreementPresenter> implements UserAgreementView {
     @BindView(R2.id.include_back)
     ImageView includeBack;
     @BindView(R2.id.include_title)

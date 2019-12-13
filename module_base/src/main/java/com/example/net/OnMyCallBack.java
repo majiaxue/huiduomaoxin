@@ -1,11 +1,9 @@
 package com.example.net;
 
 import com.example.common.CommonResource;
-import com.example.utils.JpushUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.SPUtil;
-import com.kongzue.dialog.v3.WaitDialog;
 
 import org.json.JSONObject;
 
@@ -51,6 +49,7 @@ public class OnMyCallBack extends DisposableObserver<ResponseBody> {
                 listener.onSuccess(data, msg);
             } else if (CommonResource.TOKEN_EXPIRE.equals(code)) {
                 listener.onError(code, msg);
+                SPUtil.addParm(CommonResource.TOKEN, "");
             } else {
                 listener.onError(code, msg);
             }

@@ -104,10 +104,14 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("淘宝全部：" + errorCode + "--------" + errorMsg);
-                tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
-                if (getView() != null) {
-                    getView().loadTb(tbFansAdapter);
-                    getView().loadSuccess();
+                if (type == 0) {
+                    tbFansAdapter = new TbFansAdapter(mContext, tbList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadTb(tbFansAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    tbFansAdapter.notifyDataSetChanged();
                 }
             }
         }));
@@ -140,10 +144,14 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("京东全部：" + errorCode + "--------" + errorMsg);
-                jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
-                if (getView() != null) {
-                    getView().loadJd(jdAdapter);
-                    getView().loadSuccess();
+                if (type == 0) {
+                    jdAdapter = new JdFansAdapter(mContext, jdList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadJd(jdAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    jdAdapter.notifyDataSetChanged();
                 }
             }
         }));
@@ -184,10 +192,14 @@ public class FansAllOrderPresenter extends BasePresenter<FansAllOrderView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("拼多多全部：" + errorCode + "--------" + errorMsg);
-                pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
-                if (getView() != null) {
-                    getView().loadFansRv(pddAdapter);
-                    getView().loadSuccess();
+                if (type == 0) {
+                    pddAdapter = new FansOrderRvAdapter(mContext, pddList, R.layout.rv_fans_order_list);
+                    if (getView() != null) {
+                        getView().loadFansRv(pddAdapter);
+                        getView().loadSuccess();
+                    }
+                } else {
+                    pddAdapter.notifyDataSetChanged();
                 }
             }
         }));

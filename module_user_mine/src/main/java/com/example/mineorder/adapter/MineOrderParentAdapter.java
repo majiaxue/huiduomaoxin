@@ -66,8 +66,8 @@ public class MineOrderParentAdapter extends MyRecyclerAdapter<MineOrderBean.Orde
             left.setVisibility(View.GONE);
             right.setVisibility(View.GONE);
         } else if (data.getStatus() == 6) {
-            //6待付款
-            holder.setText(R.id.mine_order_parent_status, "等待买家付款");
+            //
+            holder.setText(R.id.mine_order_parent_status, "等待买待付款家付款");
             left.setText("取消订单");
             right.setText("付款");
         } else if (data.getStatus() == 2) {
