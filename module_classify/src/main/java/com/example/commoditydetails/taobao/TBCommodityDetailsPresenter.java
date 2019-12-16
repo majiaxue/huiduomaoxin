@@ -122,7 +122,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
 
                 @Override
                 public void onFailure(int code, String msg) {
-                    Toast.makeText(mContext, "登录失败 ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "登录失败 " + msg, Toast.LENGTH_LONG).show();
 //                    if (getView() != null) {
 //                        getView().finishLoad();
 //                    }

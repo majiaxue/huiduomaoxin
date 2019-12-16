@@ -111,11 +111,11 @@ public class LocalOrderFragment extends BaseFragment<LocalOrderView, LocalOrderP
             status = "0";
             presenter.loadData(status, "", page);
         } else if (position == 2) {
-            status = position + "";
+            status = position + 1 + "";
             presenter.loadData(status, "0", page);
         } else if (position == 3) {
-            status = position + "";
-            presenter.loadData(status, "", page);
+            status = position + 1 + "";
+            presenter.loadData(status, "1", page);
         } else if (position == 4) {
             status = "6";
             presenter.loadData(status, "", page);
