@@ -43,8 +43,8 @@ public class HaveExpiredPresenter extends BasePresenter<HaveExpiredView> {
     }
 
     public void haveExpiredRec(final RecyclerView haveExpiredRec) {
-        Map status = MapUtil.getInstance().addParms("status", 2).build();
-        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COUPONSTATUS, status, SPUtil.getToken());
+        Map map = MapUtil.getInstance().addParms("userCode", SPUtil.getUserCode()).build();
+        Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).getData(CommonResource.COUPON_OVERDUE, map);
         RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {

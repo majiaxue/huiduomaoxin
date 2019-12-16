@@ -25,6 +25,7 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
     LinearLayout allHide;
 
     private String from;
+    private int flag = 0;
 
     public AllFragment() {
     }
@@ -48,12 +49,23 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
             presenter.localMyCoupon();
         } else {
             presenter.allRec(allRec);
+            flag = 1;
         }
     }
 
     @Override
     public void initClick() {
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (flag == 1) {
+                presenter.allRec(allRec);
+            }
+        }
     }
 
     @Override

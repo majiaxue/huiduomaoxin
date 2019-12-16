@@ -104,6 +104,7 @@ public class CommonResource {
     public static final String LIBAO_WXPAY = "/mall/order/rest/WXPay/level";          //礼包升级微信支付
     public static final String LIBAO_ZFBPAY = "/mall/order/rest/alipay/upLevelSign";   //礼包升级支付宝支付
     public static final String QUERY_COUPON = "/rest/seller/coupon/status";     //查询已领取优惠券  未使用 status 0
+    public static final String COUPON_OVERDUE = "/rest/seller/coupon/overdue";     //已过期优惠券
     public static final String LOCAL_BALANCE_PAY = "/mall/order/rest/localPay/localOrderPay";   //本地商城余额支付
     public static final String LIBAO_CANCEL_ORDER = "/mall/order/rest/order/remove/level";     //取消礼包订单
     public static final String TKOULING = "/rest/tbk/goods/jiexitkl";           //淘口令转商品信息
@@ -156,7 +157,6 @@ public class CommonResource {
     public static final String RETURNTABLE = "/mall/order/rest/order/returnTable";   //退换售后列表
     public static final String ADDRESSADD = "/rest/address/add";   //新增收货地址
     public static final String ADDRESSSELECT = "/rest/address/city";   //三级地址选择
-    public static final String COUPONSTATUS = "/rest/user/coupon/status";//根据状态查询优惠券
     public static final String SELLERINFO = "/rest/seller/info";//商家入驻
     public static final String TBKGOODSPRODUCTS = "/mall/goods/rest/tbk/goods/products";//淘宝客推荐
     public static final String TBKGOODSITEMDETAIL = "/rest/tbk/goods/itemdetail";//商品详情接口功能（店铺信息/产品介绍/主图视频/SKU）
