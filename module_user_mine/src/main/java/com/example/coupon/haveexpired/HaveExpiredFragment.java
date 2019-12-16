@@ -19,6 +19,7 @@ public class HaveExpiredFragment extends BaseFragment<HaveExpiredView, HaveExpir
     RecyclerView haveExpiredRec;
 
     private String from;
+    private int flag = 0;
 
     public HaveExpiredFragment() {
     }
@@ -43,6 +44,7 @@ public class HaveExpiredFragment extends BaseFragment<HaveExpiredView, HaveExpir
             presenter.localGuoQiCoupon();
         } else {
             presenter.haveExpiredRec(haveExpiredRec);
+            flag = 1;
         }
     }
 
@@ -50,6 +52,17 @@ public class HaveExpiredFragment extends BaseFragment<HaveExpiredView, HaveExpir
     public void initClick() {
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (flag == 1) {
+                presenter.haveExpiredRec(haveExpiredRec);
+            }
+        }
+    }
+
 
     @Override
     public void loadRv(CouponWalletAdapter adapter) {

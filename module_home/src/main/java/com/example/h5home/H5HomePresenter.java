@@ -84,6 +84,6 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
         });
 
         //加载url地址
-        homeH5Web.loadUrl("http://192.168.0.119:8080/#/");
+        homeH5Web.loadUrl("http://192.168.0.122:8080/#/");
     }
 }

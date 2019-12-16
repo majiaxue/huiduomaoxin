@@ -19,6 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+######################webview###################
+-keepclassmembers class com.example.utils.AndroidJs {
+   public *;
+}
+-keepattributes *Annotation*
+-keepattributes *JavascriptInterface*
 
 -keep class com.example.common.**{*;}
 -keep class com.example.net.**{*;}
