@@ -319,7 +319,7 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineCode.setText("邀请码：" + userInfo.getInviteCode());
         mineTemp.setVisibility(View.VISIBLE);
         mIWantUp.setVisibility(View.VISIBLE);
-        mBalanceTxt.setText(userInfo.getBlance() == null ? "0" : userInfo.getBlance());
+        mBalanceTxt.setText(userInfo.getBlance() == null ? "￥0" : "￥" + userInfo.getBlance());
 
         if (userInfo.getLevel() != null && !"".equals(userInfo.getLevel().trim())) {
             mineLv.setVisibility(View.VISIBLE);
@@ -336,6 +336,12 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
         mineTemp.setVisibility(View.GONE);
         mIWantUp.setVisibility(View.GONE);
         mineLv.setVisibility(View.GONE);
+
+        mBenri.setText("0元");
+        mBenyue.setText("0元");
+        mShangyue.setText("0元");
+        mSyyg.setText("0元");
+        mBalanceTxt.setText("￥0");
     }
 
     @Override

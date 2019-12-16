@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.example.bean.RedPackageBean;
 import com.example.module_base.R;
@@ -14,7 +15,7 @@ public class CouponWalletAdapter extends MyRecyclerAdapter<RedPackageBean> {
 
     @Override
     public void convert(RecyclerViewHolder holder, RedPackageBean data, int position) {
-        holder.setText(R.id.rv_coupon_wallet_money, data.getMoney())
-                .setText(R.id.rv_coupon_wallet_count, data.getCount());
+        holder.setText(R.id.rv_coupon_wallet_money, (int) (Double.valueOf(data.getMoney()) / Double.valueOf(data.getCount())) + "")
+                .setText(R.id.rv_coupon_wallet_count, TextUtils.isEmpty(data.getCount()) ? "1" : data.getCount());
     }
 }

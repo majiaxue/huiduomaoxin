@@ -1,5 +1,7 @@
 package com.example.goods_detail;
 
+import android.graphics.Bitmap;
+
 import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
@@ -31,4 +33,6 @@ public interface GoodsDetailView extends IView {
     void weixuanze(String str);
 
     void loadUI(UserGoodsDetail data, int size);
+
+    void loadQrCode(Bitmap qrImage);
 }
