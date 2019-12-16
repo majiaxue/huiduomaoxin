@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_14"
-        android:layout_marginRight="@dimen/dp_14"
         android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_14"
         android:background="@drawable/bg_10_fff"
         android:orientation="vertical">
 
@@ -74,6 +74,7 @@
                 android:layout_width="@dimen/dp_60"
                 android:layout_height="@dimen/dp_60"
                 android:layout_marginLeft="@dimen/dp_14"
+                android:visibility="gone"
                 app:placeholderImage="@drawable/img_104"
                 app:placeholderImageScaleType="fitCenter"
                 app:roundedCornerRadius="5dp" />
@@ -81,7 +82,7 @@
             <RelativeLayout
                 android:layout_width="@dimen/dp_143"
                 android:layout_height="@dimen/dp_68"
-                android:layout_marginLeft="@dimen/dp_14">
+                android:layout_marginLeft="@dimen/dp_24">
 
                 <TextView
                     android:id="@+id/coupon_rec_text"
@@ -109,8 +110,8 @@
                     android:layout_width="@dimen/dp_95"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/coupon_rec_qian"
-                    android:layout_marginBottom="@dimen/dp_3"
                     android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_3"
                     android:layout_toRightOf="@id/coupon_rec_qian"
                     android:ellipsize="end"
                     android:lines="1"
@@ -129,10 +130,14 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_0"
+                android:layout_weight="1" />
+
             <LinearLayout
                 android:id="@+id/coupon_rec_immediate_use"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="@dimen/dp_115"
                 android:layout_height="@dimen/dp_108"
                 android:gravity="center"
                 android:orientation="vertical">
