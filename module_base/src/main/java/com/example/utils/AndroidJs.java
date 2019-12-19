@@ -3,15 +3,11 @@ package com.example.utils;
 import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.example.bean.AddressBean;
 import com.example.bean.H5DetailBean1;
 import com.example.bean.H5DetailBean2;
-
-import java.util.Map;
 
 
 public class AndroidJs extends Object {
@@ -24,22 +20,19 @@ public class AndroidJs extends Object {
     @JavascriptInterface
     public void showToast() {
         LogUtil.e("我成功了showToast");
-        Toast.makeText(mContext, "成功了showToast", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "成功了showToast", Toast.LENGTH_SHORT).show();
     }
 
     @JavascriptInterface
-    public void jumpPage(String data, int type) {
+    public void jumpPage(String data, String type) {
         //type = 0 是网页 type = 1本地链接
-        LogUtil.e("我成功了jumpPage");
-        Toast.makeText(mContext, "成功了jumpPage" + data, Toast.LENGTH_SHORT).show();
+        LogUtil.e("我成功了jumpPage----------" + data + "type--------" + type);
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            if (1 == type) {
+            if (!"0".equals(type)) {
                 if ("搜索".equals(data)) {
                     ARouter.getInstance().build("/module_home/SearchActivity").navigation();
                 } else if ("消息".equals(data)) {
                     ARouter.getInstance().build("/mine/messagecenter").navigation();
-                } else if ("头部轮播0".equals(data)) {
-
                 } else if ("淘宝".equals(data)) {
                     ARouter.getInstance().build("/module_home/SecondaryDetailsActivity")
                             .withString("type", 0 + "")
@@ -74,15 +67,6 @@ public class AndroidJs extends Object {
                 } else if ("会场".equals(data)) {
                     ARouter.getInstance().build("/mine/invite_friends").navigation();
 
-                } else if ("四图0".equals(data)) {
-                    ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).withInt("type", 2).navigation();
-
-                } else if ("四图1".equals(data)) {
-                    ARouter.getInstance().build("/module_home/ShakeStockActivity").navigation();
-
-                } else if ("四图2".equals(data)) {
-                    ARouter.getInstance().build("/module_home/PunchSignActivity").navigation();
-
                 } else if ("爆款推荐".equals(data)) {
                     ARouter.getInstance().build("/module_home/UniversalListActivity").withInt("position", 4).withInt("type", 2).navigation();
 
@@ -94,11 +78,10 @@ public class AndroidJs extends Object {
 
                 } else if ("邀请好友".equals(data)) {
                     ARouter.getInstance().build("/mine/invite_friends").navigation();
-
                 }
             } else {
                 //网页
-                ARouter.getInstance().build("/module_classify/WebViewActivity").withString("url",data).navigation();
+                ARouter.getInstance().build("/module_classify/WebViewActivity").withString("url", data).navigation();
             }
 
         } else {

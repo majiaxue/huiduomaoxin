@@ -129,8 +129,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     public void historySave(String goodsId) {
-        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 2).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
+        Map map = MapUtil.getInstance().addParms("skuIds", goodsId).addParms("userCode", SPUtil.getUserCode()).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.QUERYJDGOODS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -142,6 +142,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                 LogUtil.e("添加浏览记录errorMsg" + errorMsg);
             }
         }));
+
+
 
     }
 
@@ -208,7 +210,9 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     //收藏商品
     public void goodsCollect(final ImageView commodityCollectImage, String skuid) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            Map map = MapUtil.getInstance().addParms("productId", skuid).addParms("type", 3).build();
+            jDGoodsRecBean.setSysOriginalMsg("");
+            String jsonString = JSON.toJSONString(jDGoodsRecBean);
+            Map map = MapUtil.getInstance().addParms("productId", skuid).addParms("type", 3).addParms("product", jsonString).build();
             Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
                 @Override
@@ -405,7 +409,7 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         }
     };
 
-    public void loadData(String skuid) {
+    public void loadData(final String skuid) {
         Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("skuIds", skuid).addParms("keyword", "").build();
 
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
@@ -421,7 +425,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                         Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                     } else if ("200".equals(code)) {
                         jDGoodsRecBean = JSON.parseObject(result, JDListBean.class);
-
 
                         List<JDListBean.DataBean.ImageInfoBean.ImageListBean> imageList = jDGoodsRecBean.getData().get(0).getImageInfo().getImageList();
                         for (int i = 0; i < imageList.size(); i++) {

@@ -74,6 +74,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     private List<CommodityDetailsPddRecBean.TopGoodsListGetResponseBean.ListBean> topGoodsList = new ArrayList<>();
     private LedSecuritiesBean ledSecuritiesBean;
     private Bitmap bitmap;
+    private CommodityDetailsBean commodityDetailsBean;
 
     public CommodityDetailsPresenter(Context context) {
         super(context);
@@ -84,16 +85,18 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     }
 
-    public void initView(String goods_id) {
+    public void initView(final String goods_id) {
         Map map = MapUtil.getInstance().addParms("userId", SPUtil.getUserCode()).build();
         Observable<ResponseBody> dataWithout = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.PDDGOODSDETAIL + "/" + goods_id, map);
         RetrofitUtil.getInstance().toSubscribe(dataWithout, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
                 LogUtil.e("CommodityDetailsResult详情------------>" + result);
-                CommodityDetailsBean commodityDetailsBean = JSON.parseObject(result, new TypeReference<CommodityDetailsBean>() {
+                commodityDetailsBean = JSON.parseObject(result, new TypeReference<CommodityDetailsBean>() {
                 }.getType());
                 if (commodityDetailsBean != null && commodityDetailsBean.getGoods_detail_response() != null && commodityDetailsBean.getGoods_detail_response().getGoods_details().size() != 0) {
+                    //保存浏览记录
+                    historySave(goods_id);
                     beanList.clear();
                     beanList.addAll(commodityDetailsBean.getGoods_detail_response().getGoods_details());
                     if (getView() != null) {
@@ -110,7 +113,8 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
     }
 
     public void historySave(String goodsId) {
-        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 1).build();
+        String jsonString = JSON.toJSONString(commodityDetailsBean.getGoods_detail_response());
+        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 1).addParms("product",jsonString).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -190,7 +194,8 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
 
     public void goodsCollect(final ImageView commodityCollectImage, List<CommodityDetailsBean.GoodsDetailResponseBean.GoodsDetailsBean> beanList) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).build();
+            String jsonString = JSON.toJSONString(commodityDetailsBean.getGoods_detail_response());
+            Map map = MapUtil.getInstance().addParms("productId", beanList.get(0).getGoods_id()).addParms("type", 2).addParms("product",jsonString).build();
             Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
                 @Override

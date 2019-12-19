@@ -22,7 +22,7 @@ public class MyCollectBean {
     private int type;
     private String sellerId;
     private String sellerName;
-    private long goodsId;
+    private String goodsId;
     private boolean isCheck;
 
     public boolean isCheck() {
@@ -97,11 +97,11 @@ public class MyCollectBean {
         this.sellerName = sellerName;
     }
 
-    public long getGoodsId() {
+    public String getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(long goodsId) {
+    public void setGoodsId(String goodsId) {
         this.goodsId = goodsId;
     }
 

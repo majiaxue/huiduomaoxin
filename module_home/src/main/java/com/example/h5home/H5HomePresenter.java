@@ -50,16 +50,16 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
         webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
         // 应用可以有缓存 true false 没有缓存
-        webSettings.setAppCacheEnabled(true);
-        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setAllowFileAccessFromFileURLs(false);
         //不加的话有些网页加载不出来，是空白
         webSettings.setDomStorageEnabled(true);
         //设置数据库
         webSettings.setDatabaseEnabled(true);
 
         //其他细节操作
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //没有网络时加载缓存
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //没有网络时加载缓存
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
         webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
@@ -79,6 +79,11 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
             @Override
             public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return super.shouldOverrideUrlLoading(view, url);
             }
 
             @Override

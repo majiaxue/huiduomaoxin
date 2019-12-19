@@ -201,6 +201,7 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
                     if (getView() != null) {
                         getView().tbBeanList(tbGoodsDetailsBean);
                         getView().tBDetails();
+                        historySave(goodsId);
                     }
                 }
             }
@@ -213,7 +214,9 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     }
 
     public void historySave(String goodsId) {
-        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 3).build();
+        tbGoodsDetailsBean.getData().setDetailPics("");
+        String jsonString = JSON.toJSONString(tbGoodsDetailsBean.getData());
+        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 3).addParms("product",jsonString).build();
         Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
@@ -303,7 +306,9 @@ public class TBCommodityDetailsPresenter extends BasePresenter<TBCommodityDetail
     //收藏商品
     public void goodsCollect(final ImageView commodityCollectImage, String id) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            Map map = MapUtil.getInstance().addParms("productId", id).addParms("type", 4).build();
+            tbGoodsDetailsBean.getData().setDetailPics("");
+            String jsonString = JSON.toJSONString(tbGoodsDetailsBean.getData());
+            Map map = MapUtil.getInstance().addParms("productId", id).addParms("type", 4).addParms("product",jsonString).build();
             Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
                 @Override

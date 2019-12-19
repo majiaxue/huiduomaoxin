@@ -322,8 +322,8 @@ public class TBCommodityDetailsActivity extends BaseActivity<TBCommodityDetailsV
             }
             presenter.setShopParticulars(shopParticulars, images);
 
-            //浏览历史
-            presenter.historySave(para);
+//            浏览历史
+//            presenter.historySave(para);
             //收藏状态
             presenter.isCollect(commodityCollectImage, para);
         } catch (Exception e) {
