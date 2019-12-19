@@ -133,11 +133,11 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(resId, communityFragment)
-                .add(resId, homeFragment)
+                .add(resId, h5HomeFragment)
                 .add(resId, mineFragment)
                 .add(resId, operatorGainFragment);
 //                .add(resId, superBrandFragment);
-        transaction.show(homeFragment)
+        transaction.show(h5HomeFragment)
                 .hide(communityFragment)
                 .hide(mineFragment)
 //                .hide(superBrandFragment)
@@ -150,7 +150,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         if (resId == R.id.main_home) {
-            transaction.show(homeFragment)
+            transaction.show(h5HomeFragment)
                     .hide(communityFragment)
                     .hide(mineFragment)
 //                    .hide(superBrandFragment)
@@ -171,7 +171,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             transaction.show(mineFragment)
                     .hide(communityFragment)
 //                    .hide(superBrandFragment)
-                    .hide(homeFragment)
+                    .hide(h5HomeFragment)
                     .hide(operatorGainFragment)
                     .commit();
 
@@ -179,7 +179,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             transaction.show(communityFragment)
                     .hide(mineFragment)
 //                    .hide(superBrandFragment)
-                    .hide(homeFragment)
+                    .hide(h5HomeFragment)
                     .hide(operatorGainFragment)
                     .commit();
         } else if (resId == R.id.main_operator) {
@@ -190,7 +190,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 transaction.show(operatorGainFragment)
                         .hide(mineFragment)
 //                        .hide(superBrandFragment)
-                        .hide(homeFragment)
+                        .hide(h5HomeFragment)
                         .hide(communityFragment)
                         .commit();
             }

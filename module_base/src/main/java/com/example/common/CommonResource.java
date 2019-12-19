@@ -241,6 +241,7 @@ public class CommonResource {
     public static final String UPCART = "up_cart";      //刷新购物车
     public static final String MINUS_GOODS = "minus_goods";     //本地商城减少不同规格商品
     public static final String LOCAL_SELLER_MANJIAN = "local_seller_manjian";
+    public static final String TENANT_ID = "1";
 
 
     public static final String PROJECTNAME = "枫林淘客";

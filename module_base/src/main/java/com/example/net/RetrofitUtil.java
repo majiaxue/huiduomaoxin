@@ -1,5 +1,7 @@
 package com.example.net;
 
+import com.example.common.CommonResource;
+
 import java.io.IOException;
 
 import io.reactivex.Observable;
@@ -75,7 +77,7 @@ public class RetrofitUtil {
                         Request build = null;
                         try {
                             build = chain.request().newBuilder()
-                                    .addHeader("TENANT_ID", "1")
+                                    .addHeader("TENANT_ID", CommonResource.TENANT_ID)
                                     .build();
                         } catch (Exception e) {
                             e.printStackTrace();

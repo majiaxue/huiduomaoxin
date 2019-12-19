@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,20 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.ali.auth.third.core.util.StringUtil;
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.baichuan.trade.common.utils.StringUtils;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
+import com.example.utils.AndroidJs;
 import com.example.utils.LogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Route(path = "/module_classify/WebViewActivity")
 public class WebViewActivity extends Activity {
 
     @BindView(R2.id.web_view)
@@ -29,36 +37,46 @@ public class WebViewActivity extends Activity {
     @BindView(R2.id.web_image_back)
     ImageView webImageBack;
 
+    @Autowired(name = "url")
+    String url1;
+    private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
+        ARouter.getInstance().inject(this);
+        if (StringUtil.isBlank(url1)) {
+            Intent intent = getIntent();
+            url = intent.getStringExtra("url");
+        }
+        WebSettings webSettings = webView.getSettings();
+        // 设置与Js交互的权限
+        webSettings.setJavaScriptEnabled(true);
 
-        Intent intent = getIntent();
-        String url = intent.getStringExtra("url");
-        webView.loadUrl(url);
+        //设置自适应屏幕，两者合用
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        //缩放操作
+        webSettings.setSupportZoom(false); //支持缩放，默认为true。是下面那个的前提。
+        webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
+        webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+        //不加的话有些网页加载不出来，是空白
+        webSettings.setDomStorageEnabled(true);
+        //其他细节操作
+        webSettings.setAllowFileAccess(true); //设置可以访问文件
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
+        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+        if (StringUtil.isBlank(url1)) {
+            webView.loadUrl(url);
+        } else {
+            webView.loadUrl(url1);
+
+        }
         LogUtil.e("========>1" + url);
-//        // 特别注意：5.1以上默认禁止了https和http混用，以下方式是开启
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-//        }
-
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
-
-//        //设置不用系统浏览器打开,直接显示在当前Webview
-//        webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-////                url.replace("");
-//                LogUtil.e("========>2"+url);
-//                view.loadUrl(url);
-//
-//                return true;
-//            }
-//        });
-
+        LogUtil.e("========>1" + url1);
         WebViewClient webViewClient = new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView wv, String url) {
@@ -101,16 +119,16 @@ public class WebViewActivity extends Activity {
 
     }
 
-//    //点击返回上一页面而不是退出浏览器
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-//            webView.goBack();
-//            return true;
-//        }
-//
-//        return super.onKeyDown(keyCode, event);
-//    }
+    //点击返回上一页面而不是退出浏览器
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
     //销毁Webview
     @Override
