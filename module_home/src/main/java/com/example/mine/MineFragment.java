@@ -331,17 +331,17 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void onError() {
-        mineName.setText("请注册/登录");
-        mineHeader.setImageResource(R.drawable.vhjfg);
-        mineTemp.setVisibility(View.GONE);
-        mIWantUp.setVisibility(View.GONE);
-        mineLv.setVisibility(View.GONE);
-
-        mBenri.setText("0元");
-        mBenyue.setText("0元");
-        mShangyue.setText("0元");
-        mSyyg.setText("0元");
-        mBalanceTxt.setText("￥0");
+//        mineName.setText("请注册/登录");
+//        mineHeader.setImageResource(R.drawable.vhjfg);
+//        mineTemp.setVisibility(View.GONE);
+//        mIWantUp.setVisibility(View.GONE);
+//        mineLv.setVisibility(View.GONE);
+//
+//        mBenri.setText("0元");
+//        mBenyue.setText("0元");
+//        mShangyue.setText("0元");
+//        mSyyg.setText("0元");
+//        mBalanceTxt.setText("￥0");
     }
 
     @Override

@@ -35,7 +35,6 @@ import com.example.module_local.R;
 import com.example.module_local.R2;
 import com.example.mvp.BaseFragment;
 import com.example.utils.ArithUtil;
-import com.example.utils.CitySPUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.ProcessDialogUtil;
@@ -88,6 +87,9 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     private static int REQUESTCODE = 0;
     private boolean isFirst = true;
     private int page = 1;
+    private double lat;
+    private double lon;
+    private String cityName;
 
     @Override
     public int getLayoutId() {
@@ -97,11 +99,13 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
     @Override
     public void initData() {
         EventBus.getDefault().register(this);
-        if (!TextUtils.isEmpty(MyLocationListener.city)) {
-            localHomeCity.setText(MyLocationListener.city);
+        if (!TextUtils.isEmpty(MyLocationListener.district)) {
+            cityName = MyLocationListener.district;
         } else {
-            localHomeCity.setText("郑州市");
+            cityName = "选择城市";
         }
+        localHomeCity.setText(cityName);
+
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         localHomeNavbar.setLayoutManager(layoutManager);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -112,13 +116,6 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
         localHomeCommendRv.setLayoutManager(linearLayoutManager1);
         localHomeCommendRv.addItemDecoration(new SpaceItemDecoration(0, (int) getContext().getResources().getDimension(R.dimen.dp_4), 0, 0));
 
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false) {
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            }
-        };
-
         //下拉刷新样式
         CustomHeader customHeader = new CustomHeader(getActivity());
         customHeader.setPrimaryColors(getResources().getColor(com.example.user_store.R.color.colorTransparency));
@@ -128,21 +125,17 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
 
         presenter.initNavbar();
         if (MyLocationListener.longitude == 0 && MyLocationListener.latitude == 0) {
-            MyLocationListener.latitude = 34.78;
-            MyLocationListener.longitude = 113.65;
+            lat = 34.78;
+            lon = 113.65;
+        } else {
+            lat = MyLocationListener.latitude;
+            lon = MyLocationListener.longitude;
         }
-        presenter.loadData(page, MyLocationListener.longitude, MyLocationListener.latitude);
+        presenter.loadData(page, lon, lat);
         presenter.getXBanner();
         presenter.isOpenLocation();
-        presenter.initCommend(MyLocationListener.longitude, MyLocationListener.latitude, CitySPUtil.getStringValue(CommonResource.CITY));
+        presenter.initCommend(lon, lat, "选择城市".equals(cityName) ? "郑州市" : cityName);
 
-        if (!TextUtils.isEmpty(CitySPUtil.getStringValue(CommonResource.CITY))) {
-            localHomeCity.setText(CitySPUtil.getStringValue(CommonResource.CITY));
-        } else if (!TextUtils.isEmpty(MyLocationListener.district)) {
-            localHomeCity.setText(MyLocationListener.district);
-        } else {
-            localHomeCity.setText("选择城市");
-        }
         ModuleBaseApplication.isDingWei = true;
     }
 
@@ -163,14 +156,14 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                presenter.loadData(page, MyLocationListener.longitude, MyLocationListener.latitude);
+                presenter.loadData(page, lon, lat);
             }
         });
         mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                presenter.loadData(page, MyLocationListener.longitude, MyLocationListener.latitude);
+                presenter.loadData(page, lon, lat);
             }
         });
 
@@ -198,15 +191,22 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusBean eventBusBean) {
-        if (CommonResource.DINGWEI.equals(eventBusBean.getMsg())) {
-            localHomeCity.setText(MyLocationListener.district);
+        if (CommonResource.DINGWEI.equals(eventBusBean.getMsg()) && "选择城市".equals(cityName)) {
+            cityName = MyLocationListener.district;
+            lat = MyLocationListener.latitude;
+            lon = MyLocationListener.longitude;
+            localHomeCity.setText(cityName);
+
+            page = 1;
+            presenter.loadData(page, lon, lat);
+            presenter.initCommend(lon, lat, cityName);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        final String cityName = data.getStringExtra("cityName");
+        cityName = data.getStringExtra("cityName");
         if (resultCode == 0) {
             localHomeCity.setText(cityName);
             GeoCoder mCoder = GeoCoder.newInstance();
@@ -220,12 +220,13 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                             LogUtil.e("没检索到结果");
                             return;
                         } else {
-                            double latitude = geoCodeResult.getLocation().latitude;
-                            double longitude = geoCodeResult.getLocation().longitude;
-                            LogUtil.e("-------->纬度：" + latitude + "--------->经度：" + longitude);
+                            lat = geoCodeResult.getLocation().latitude;
+                            lon = geoCodeResult.getLocation().longitude;
+                            String address = geoCodeResult.getAddress();
+                            LogUtil.e("-------->纬度：" + lat + "--------->经度：" + lon + "--------地址：" + address);
                             page = 1;
-                            presenter.loadData(page, longitude, latitude);
-                            presenter.initCommend(longitude, latitude, cityName);
+                            presenter.loadData(page, lon, lat);
+                            presenter.initCommend(lon, lat, cityName);
                         }
                     }
                 }
@@ -246,6 +247,8 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
 
     @Override
     public void loadCommend(final LocalShopCommendBean shopCommendBean, LocalHomeCommendAdapter adapter) {
+        localHomeCommendShop.setVisibility(View.VISIBLE);
+        localHomeCommendRv.setVisibility(View.VISIBLE);
         localHomeCommendShop.setText(shopCommendBean.getSellerShopName());
         localHomeCommendRv.setAdapter(adapter);
         mLinear.setOnClickListener(new View.OnClickListener() {
@@ -307,6 +310,12 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
                 Glide.with(getContext()).load(((LocalShopBean) model).getSeller_logo()).apply(requestOptions).transform(new RoundedCorners((int) getContext().getResources().getDimension(com.example.user_store.R.dimen.dp_10))).into(img);
             }
         });
+    }
+
+    @Override
+    public void noCommend() {
+        localHomeCommendShop.setVisibility(View.INVISIBLE);
+        localHomeCommendRv.setVisibility(View.INVISIBLE);
     }
 
     @Override

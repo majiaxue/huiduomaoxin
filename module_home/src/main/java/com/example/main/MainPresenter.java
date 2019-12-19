@@ -30,9 +30,6 @@ import com.alibaba.fastjson.JSON;
 import com.example.bean.CheckUpBean;
 import com.example.common.CommonResource;
 import com.example.community.CommunityFragment;
-import com.example.fix.Constants;
-import com.example.fix.FileUtils;
-import com.example.fix.FixDexUtils;
 import com.example.h5home.H5HomeFragment;
 import com.example.home.HomeFragment;
 import com.example.mine.MineFragment;
@@ -78,12 +75,9 @@ public class MainPresenter extends BasePresenter<MainView> {
     private static final String savePath = "/sdcard/fltk/apk"; // apk保存到SD卡的路径
     private static final String saveFileName = savePath + "/fltk"; // 完整路径名
 
-    private static final String patchPath = "/sdcard/fltk/patch"; // apk保存到SD卡的路径
-    private static final String patchFileName = patchPath + "/classes_0.dex"; // 完整路径名
     private static final int DOWNLOADING = 1; // 表示正在下载
     private static final int DOWNLOADED = 2; // 下载完毕
     private static final int DOWNLOAD_FAILED = 3; // 下载失败
-    private static final int PATCHEND = 4;
 
     private int progress; // 下载进度
     private boolean cancelFlag = false; // 取消下载标志位
@@ -121,11 +115,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    break;
-                case PATCHEND:
-                    hotFix();
-//                    Beta.canAutoPatch = true;
-//                    Beta.applyDownloadedPatch();
                     break;
                 default:
                     break;
@@ -460,10 +449,22 @@ public class MainPresenter extends BasePresenter<MainView> {
         if (!apkFile.exists()) {
             apkFile.mkdirs();
         }
+
+        //解决部分手机调用安装器的时候没有读写权限
+        if (Build.VERSION.SDK_INT >= 24) {//判读版本是否在7.0以上
+            String[] command = {"chmod", "777", apkFile.getPath()};
+            ProcessBuilder builder = new ProcessBuilder(command);
+            try {
+                builder.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        //判断是否是AndroidN以及更高的版本
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
+        //判断是否是AndroidN以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             Uri contentUri = FileProvider.getUriForFile(mContext, mContext.getPackageName(), apkFile);
@@ -474,78 +475,5 @@ public class MainPresenter extends BasePresenter<MainView> {
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
         }
         mContext.startActivity(intent);
-    }
-
-    private void downLoadPatch(final String patchUrl) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(patchUrl);
-                    HttpURLConnection conn = (HttpURLConnection) url
-                            .openConnection();
-                    conn.connect();
-
-                    int length = conn.getContentLength();
-                    InputStream is = conn.getInputStream();
-
-                    File file = new File(patchPath);
-                    if (!file.exists()) {
-                        file.mkdir();
-                    }
-                    String apkFile = patchFileName;
-                    File ApkFile = new File(apkFile);
-                    FileOutputStream fos = new FileOutputStream(ApkFile);
-
-                    int count = 0;
-                    byte buf[] = new byte[64];
-
-                    do {
-                        int numread = is.read(buf);
-                        count += numread;
-                        progress = (int) (((float) count / length) * 100);
-                        // 更新进度
-                        mHandler.sendEmptyMessage(DOWNLOADING);
-                        if (numread <= 0) {
-                            // 下载完成通知安装
-                            mHandler.sendEmptyMessage(PATCHEND);
-                            break;
-                        }
-                        fos.write(buf, 0, numread);
-                    } while (!cancelFlag); // 点击取消就停止下载.
-
-                    fos.close();
-                    is.close();
-                } catch (Exception e) {
-                    mHandler.sendEmptyMessage(DOWNLOAD_FAILED);
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    public void hotFix() {
-        //修复包
-        File sourceFile = new File(patchFileName);
-        // 私有目录
-        File targetFile = new File(mContext.getDir(Constants.DEX_DIR, Context.MODE_PRIVATE).getAbsolutePath() + File.separator + Constants.DEX_NAME);
-
-        // 如果存在之前修复过的dex
-        if (targetFile.exists()) {
-            targetFile.delete();
-            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT);
-        }
-
-        Toast.makeText(mContext, "开始修复", Toast.LENGTH_SHORT).show();
-        // 将下载的修复包复制到私有目录，然后再解压
-        try {
-            FileUtils.copyFile(sourceFile, targetFile);
-
-            // 开始修复
-            FixDexUtils.loadFixedDex(mContext);
-            Toast.makeText(mContext, "修复成功", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

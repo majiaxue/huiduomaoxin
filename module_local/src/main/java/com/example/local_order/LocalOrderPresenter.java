@@ -111,7 +111,7 @@ public class LocalOrderPresenter extends BasePresenter<LocalOrderView> {
         this.status = status;
         ProcessDialogUtil.showProcessDialog(mContext);
 
-        Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).addParms("deliverType", type).build();
+        Map map = MapUtil.getInstance().addParms("status", status).addParms("page", page).addParms("deliverType", type).addParms("userCode", SPUtil.getUserCode()).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9010).getData(CommonResource.LOCAL_GET_ORDER, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

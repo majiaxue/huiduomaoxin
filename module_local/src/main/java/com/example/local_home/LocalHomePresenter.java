@@ -190,10 +190,17 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("本地商家推荐：" + result);
                 List<LocalShopCommendBean> localShopCommendBean = JSON.parseArray(result, LocalShopCommendBean.class);
-                List<LocalShopCommendBean.GoodsListBean> goodsList = localShopCommendBean.get(0).getGoodsList();
-                LocalHomeCommendAdapter commendAdapter = new LocalHomeCommendAdapter(mContext, goodsList, R.layout.rv_local_home_commend);
-                if (getView() != null) {
-                    getView().loadCommend(localShopCommendBean.get(0), commendAdapter);
+                if (localShopCommendBean.size() > 0) {
+                    List<LocalShopCommendBean.GoodsListBean> goodsList = localShopCommendBean.get(0).getGoodsList();
+                    LocalHomeCommendAdapter commendAdapter = new LocalHomeCommendAdapter(mContext, goodsList, R.layout.rv_local_home_commend);
+                    if (getView() != null) {
+                        LogUtil.e("------------>" + localShopCommendBean.get(0));
+                        getView().loadCommend(localShopCommendBean.get(0), commendAdapter);
+                    }
+                } else {
+                    if (getView() != null) {
+                        getView().noCommend();
+                    }
                 }
             }
 

@@ -62,21 +62,21 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         EventBus.getDefault().register(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         initPermission();
-        ModuleBaseApplication.mLocationClient.restart();
+//        ModuleBaseApplication.mLocationClient.restart();
         presenter.registerReceiver();
 //        WebSocketManager.getInstance().init(url);
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(1500);
-//                    presenter.checkUp();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                    presenter.checkUp();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         presenter.loadData(getSupportFragmentManager(), R.id.main_frame);
         if ("login".equals(type)) {
