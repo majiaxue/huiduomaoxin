@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
@@ -29,9 +28,7 @@ import com.example.commoditydetails.pdd.adapter.CommodityDetailsPddRecAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
 import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
-import com.example.dbflow.ShareBean;
 import com.example.dbflow.ShareOperationUtil;
-import com.example.dbflow.ShareUtil;
 import com.example.module_classify.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -56,7 +53,6 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -389,7 +385,7 @@ public class CommodityDetailsPresenter extends BasePresenter<CommodityDetailsVie
         new ShareAction((Activity) mContext)
                 .withMedia(new UMImage(mContext, this.bitmap))
                 .withText("hello")
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)// SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
                 .setCallback(shareListener).open(config);
 
     }

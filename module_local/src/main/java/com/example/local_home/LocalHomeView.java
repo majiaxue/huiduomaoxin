@@ -24,4 +24,6 @@ public interface LocalHomeView extends IView {
     void loadZhongBanner(List<LocalShopBean> zhongList);
 
     void loadCommend(LocalShopCommendBean shopCommendBean, LocalHomeCommendAdapter adapter);
+
+    void noCommend();
 }

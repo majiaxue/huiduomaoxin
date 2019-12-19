@@ -21,7 +21,6 @@ import com.example.utils.LogUtil;
 import com.example.utils.MyLocationListener;
 import com.example.utils.SPUtil;
 import com.example.utils.TxtUtil;
-import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.kepler.jd.Listener.AsyncInitListener;
@@ -195,6 +194,7 @@ public class ModuleBaseApplication extends MultiDexApplication {
         //如果开发者需要获得当前点的地址信息，此处必须为true
 
         mLocationClient.setLocOption(option);
+        mLocationClient.start();
     }
 
     private void initAppStatusListener() {

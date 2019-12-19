@@ -17,9 +17,9 @@ public class NetStateChangeReceiver extends BroadcastReceiver {
             LogUtil.e("当前网络：" + networkType);
             if (networkType == NetworkType.NETWORK_NO) {
             } else {
-                if (ModuleBaseApplication.isDingWei) {
-                    ModuleBaseApplication.mLocationClient.restart();
-                }
+//                if (ModuleBaseApplication.isDingWei) {
+//                    ModuleBaseApplication.mLocationClient.restart();
+//                }
             }
         }
     }

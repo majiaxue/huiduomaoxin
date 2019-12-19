@@ -151,7 +151,7 @@ public class SettingPresenter extends BasePresenter<SettingView> {
         getView().cropPhoto(intent);
     }
 
-    public void parseUri(Intent intent) {
+    public void  parseUri(Intent intent) {
         fileUri = intent.getData();
         String type = intent.getType();
         if (fileUri.getScheme().equals("file") && (type.contains("image/"))) {

@@ -90,6 +90,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
     private double totalMoney = 0.0;
     private double couponMoney = 0.0;
     private double minAmount = -125;
+    private PostageBean postageBean;
 
     @Override
     public int getLayoutId() {
@@ -216,7 +217,9 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
         orderConfirmTotalCoupon.setText("-￥" + coupon.getAmount());
         confirmBean.setCouponAmount(coupon.getAmount());
         confirmBean.setCouponId(coupon.getId());
-        orderConfirmFinalPrice.setText("" + ArithUtil.sub(Double.valueOf(orderConfirmFinalPrice.getText().toString()), coupon.getAmount()));
+        if (postageBean != null) {
+            orderConfirmFinalPrice.setText("" + ArithUtil.sub(postageBean.getTotal(), coupon.getAmount()));
+        }
     }
 
     @Override
@@ -247,6 +250,7 @@ public class OrderConfirmActivity extends BaseActivity<OrderConfirmView, OrderCo
 
     @Override
     public void loadPostage(PostageBean postageBean) {
+        this.postageBean = postageBean;
         DecimalFormat df = new DecimalFormat("0.00");//格式化，区小数后两位
 
         totalMoney = postageBean.getTotal() - postageBean.getFeight();

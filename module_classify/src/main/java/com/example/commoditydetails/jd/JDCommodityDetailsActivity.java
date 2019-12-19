@@ -161,7 +161,6 @@ public class JDCommodityDetailsActivity extends BaseActivity<JDCommodityDetailsV
 
         presenter.historySave(skuid);
 
-
         commodityShopItem.setVisibility(View.GONE);
 
 //        sub = ArithUtil.sub(Double.valueOf(listsBeanList.getPriceInfo().getPrice()), Double.valueOf(listsBeanList.getCouponInfo().getCouponList().get(0).getDiscount()));
