@@ -25,6 +25,7 @@
 }
 -keepattributes *Annotation*
 -keepattributes *JavascriptInterface*
+#########
 
 -keep class com.example.common.**{*;}
 -keep class com.example.net.**{*;}

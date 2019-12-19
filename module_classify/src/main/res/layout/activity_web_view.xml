@@ -17,15 +17,15 @@
             android:id="@+id/web_image_back"
             android:layout_width="@dimen/dp_28"
             android:layout_height="@dimen/dp_36"
-            android:src="@drawable/icon_fanhui"
+            android:layout_marginLeft="@dimen/dp_5"
             android:padding="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_5"/>
+            android:src="@drawable/icon_fanhui" />
 
     </LinearLayout>
 
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
