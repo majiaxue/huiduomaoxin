@@ -184,6 +184,13 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 presenter.getCodeNum(loginName.getText().toString());
             }
         });
+
+        loginUserYsxy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/mine/agreement").withString("type", "ysxy").navigation();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

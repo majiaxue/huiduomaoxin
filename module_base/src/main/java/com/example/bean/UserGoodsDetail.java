@@ -118,6 +118,15 @@ public class UserGoodsDetail implements Serializable {
     private List<XsProductAttributesBean> xsProductAttributes;
     private String levelId;
     private Long sellerFavoriteShu;
+    private int returnRatio;
+
+    public int getReturnRatio() {
+        return returnRatio;
+    }
+
+    public void setReturnRatio(int returnRatio) {
+        this.returnRatio = returnRatio;
+    }
 
     public Long getSellerFavoriteShu() {
         return sellerFavoriteShu;
@@ -624,6 +633,9 @@ public class UserGoodsDetail implements Serializable {
                 ", skuStockList=" + skuStockList +
                 ", productAttributeValueList=" + productAttributeValueList +
                 ", xsProductAttributes=" + xsProductAttributes +
+                ", levelId='" + levelId + '\'' +
+                ", sellerFavoriteShu=" + sellerFavoriteShu +
+                ", returnRatio=" + returnRatio +
                 '}';
     }
 

@@ -1,6 +1,7 @@
 package com.example.coupon.haveexpired;
 
 import com.example.adapter.CouponWalletAdapter;
+import com.example.coupon.adapter.LocalCouponWalletAdapter;
 import com.example.mvp.IView;
 
 /**
@@ -8,5 +9,5 @@ import com.example.mvp.IView;
  * Describe:
  */
 public interface HaveExpiredView extends IView {
-    void loadRv(CouponWalletAdapter adapter);
+    void loadRv(LocalCouponWalletAdapter adapter);
 }

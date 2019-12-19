@@ -1,11 +1,15 @@
 package com.example.goods_detail;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,18 +22,26 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.adapter.GoodsImageAdapter;
 import com.example.bean.AssessBean;
 import com.example.bean.BannerBean;
 import com.example.bean.UserGoodsDetail;
+import com.example.common.CommonResource;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
 import com.example.mvp.BaseActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.R2;
+import com.example.utils.ArithUtil;
+import com.example.utils.PopUtils;
 import com.example.utils.RvItemDecoration;
+import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.TxtUtil;
 import com.stx.xhb.xbanner.XBanner;
@@ -125,6 +137,28 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     TextView mTotalSpecs;
     @BindView(R2.id.goods_detail_webview)
     WebView mWebView;
+    @BindView(R2.id.share_image)
+    ImageView shareImage;
+    @BindView(R2.id.share_name)
+    TextView shareName;
+    @BindView(R2.id.share_preferential_price)
+    TextView sharePreferentialPrice;
+    @BindView(R2.id.share_original_price)
+    TextView shareOriginalPrice;
+    @BindView(R2.id.share_coupon_price)
+    TextView shareCouponPrice;
+    @BindView(R2.id.share_number)
+    TextView shareNumber;
+    @BindView(R2.id.share_qr_code)
+    ImageView shareQrCode;
+    @BindView(R2.id.share_parent)
+    LinearLayout shareParent;
+    @BindView(R2.id.share_txt)
+    TextView shareTxt;
+    @BindView(R2.id.share_linear1)
+    LinearLayout shareLinear;
+
+
     @Autowired(name = "id")
     String id;
     @Autowired(name = "sellerId")
@@ -133,6 +167,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     String commendId;
     @Autowired(name = "from")
     String from;
+
 
     @Override
     public int getLayoutId() {
@@ -185,6 +220,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         presenter.loadCommend(commendId);
         presenter.loadCoupon(id, sellerId);
         presenter.loadAssess(id);
+        presenter.createQrCode();
     }
 
     @Override
@@ -263,7 +299,12 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         goodsDetailAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.chooseOrAddCart();
+//                presenter.chooseOrAddCart();
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    PopUtils.isLogin(GoodsDetailActivity.this);
+                } else {
+                    presenter.share(shareParent);
+                }
             }
         });
         //进入店铺
@@ -345,6 +386,17 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
                 presenter.seeBigPicture(position);
             }
         });
+
+        goodsDetailShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(SPUtil.getToken())) {
+                    PopUtils.isLogin(GoodsDetailActivity.this);
+                } else {
+                    presenter.share(shareParent);
+                }
+            }
+        });
     }
 
     @Override
@@ -401,6 +453,9 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
 
     @Override
     public void loadUI(UserGoodsDetail data, int size) {
+        double predict = ArithUtil.mul(ArithUtil.mul(data.getPrice(), data.getReturnRatio() / 100), SPUtil.getFloatValue(CommonResource.BACKBL));
+        goodsDetailAddCart.setText("分享赚" + "\n" + predict + "元");
+        goodsDetailBuy.setText("自购赚" + "\n" + predict + "元");
         goodsDetailName.setText(data.getName());
         goodsDetailPrice.setText(data.getPrice() + "");
         mTotalSpecs.setText("共" + size + "种" + data.getXsProductAttributes().get(0).getName() + "可选");
@@ -424,6 +479,15 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
         String varjs = "<script type='text/javascript'> \nwindow.onload = function()\n{var $img = document.getElementsByTagName('img');for(var p in  $img){$img[p].style.width = '100%'; $img[p].style.height ='auto'}}</script>";
         //替换img属性
         mWebView.loadData(varjs + detailHtml, "text/html", "UTF-8");
+
+        if (data.getSkuStockList() != null && data.getSkuStockList().size() > 0) {
+            Glide.with(this).load(data.getSkuStockList().get(0).getPic()).into(shareImage);
+        }
+        shareName.setText(data.getName());
+        sharePreferentialPrice.setText("￥" + data.getPrice());
+        shareOriginalPrice.setVisibility(View.GONE);
+        shareLinear.setVisibility(View.GONE);
+        shareTxt.setVisibility(View.GONE);
     }
 
     @Override
@@ -450,6 +514,21 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailView, GoodsDeta
     @Override
     public void loadBanner(List<BannerBean.RecordsBean> list) {
         goodsDetailXbanner.setBannerData(list);
+    }
+
+    @Override
+    public void loadQrCode(Bitmap qrImage) {
+        Glide.with(this).load(qrImage).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                return false;
+            }
+        }).into(shareQrCode);
     }
 
     @Override

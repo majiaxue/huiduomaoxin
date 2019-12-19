@@ -6,12 +6,12 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.example.adapter.CouponWalletAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.CouponBean;
 import com.example.bean.RedPackageBean;
 import com.example.common.CommonResource;
 import com.example.coupon.adapter.CouponAdapter;
+import com.example.coupon.adapter.LocalCouponWalletAdapter;
 import com.example.module_user_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -89,7 +89,7 @@ public class AllPresenter extends BasePresenter<AllView> {
             public void onSuccess(String result, String msg) {
                 LogUtil.e("可用红包：" + result);
                 List<RedPackageBean> redPackageBeans = JSON.parseArray(result, RedPackageBean.class);
-                CouponWalletAdapter walletAdapter = new CouponWalletAdapter(mContext, redPackageBeans, R.layout.rv_coupon_wallet);
+                LocalCouponWalletAdapter walletAdapter = new LocalCouponWalletAdapter(mContext, redPackageBeans, R.layout.rv_coupon_wallet2);
                 if (getView() != null) {
                     getView().loadRv(walletAdapter);
                 }

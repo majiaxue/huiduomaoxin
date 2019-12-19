@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.adapter.CouponWalletAdapter;
 import com.example.common.CommonResource;
+import com.example.coupon.adapter.LocalCouponWalletAdapter;
 import com.example.module_user_mine.R;
 import com.example.module_user_mine.R2;
 import com.example.mvp.BaseFragment;
@@ -69,7 +69,7 @@ public class AllFragment extends BaseFragment<AllView, AllPresenter> implements 
     }
 
     @Override
-    public void loadRv(CouponWalletAdapter adapter) {
+    public void loadRv(LocalCouponWalletAdapter adapter) {
         allRec.setAdapter(adapter);
     }
 

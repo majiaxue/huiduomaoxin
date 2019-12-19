@@ -38,6 +38,78 @@ public class RedPackageBean extends SimpleBannerInfo implements Serializable {
     private String name;
     private String note;
     private int background;
+    private String userCode;
+    private String redPackedId;
+    private String payTime;
+    private String endTime;
+    private String payWay;
+    private String payMoney;
+    private String tradeNo;
+    private String sellerId;
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getRedPackedId() {
+        return redPackedId;
+    }
+
+    public void setRedPackedId(String redPackedId) {
+        this.redPackedId = redPackedId;
+    }
+
+    public String getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(String payTime) {
+        this.payTime = payTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getPayWay() {
+        return payWay;
+    }
+
+    public void setPayWay(String payWay) {
+        this.payWay = payWay;
+    }
+
+    public String getPayMoney() {
+        return payMoney;
+    }
+
+    public void setPayMoney(String payMoney) {
+        this.payMoney = payMoney;
+    }
+
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
 
     public String getId() {
         return id;
@@ -181,6 +253,15 @@ public class RedPackageBean extends SimpleBannerInfo implements Serializable {
                 ", pic='" + pic + '\'' +
                 ", name='" + name + '\'' +
                 ", note='" + note + '\'' +
+                ", background=" + background +
+                ", userCode='" + userCode + '\'' +
+                ", redPackedId='" + redPackedId + '\'' +
+                ", payTime='" + payTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", payWay='" + payWay + '\'' +
+                ", payMoney='" + payMoney + '\'' +
+                ", tradeNo='" + tradeNo + '\'' +
+                ", sellerId='" + sellerId + '\'' +
                 '}';
     }
 }

@@ -1,7 +1,9 @@
 package com.example.goods_detail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -34,6 +36,7 @@ import com.example.bean.ParmsBean;
 import com.example.bean.UserCouponBean;
 import com.example.bean.UserGoodsDetail;
 import com.example.common.CommonResource;
+import com.example.dbflow.ShareOperationUtil;
 import com.example.entity.EventBusBean;
 import com.example.goods_detail.adapter.GoodsAssessAdapter;
 import com.example.goods_detail.adapter.GoodsCouponAdapter;
@@ -43,7 +46,6 @@ import com.example.net.OnDataListener;
 import com.example.net.OnMyCallBack;
 import com.example.net.RetrofitUtil;
 import com.example.order_confirm.OrderConfirmActivity;
-import com.example.shop_home.ShopHomeActivity;
 import com.example.user_home.adapter.CommendAdapter;
 import com.example.user_store.R;
 import com.example.user_store.UserActivity;
@@ -53,10 +55,16 @@ import com.example.utils.OnAdapterListener;
 import com.example.utils.PopUtil;
 import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
+import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
-import com.example.utils.TxtUtil;
+import com.example.utils.ViewToBitmap;
 import com.example.view.flowLayout.FlowLayout;
 import com.example.view.flowLayout.TagFlowLayout;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -1647,4 +1655,50 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
         }
         PopUtils.popAssessBigPic(mContext, list, position);
     }
+
+    public void createQrCode() {
+        Bitmap qrImage = QRCode.createQRImage(CommonResource.BASEURL_4001 + CommonResource.INVITE_ERWEIMA + "?inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE), (int) mContext.getResources().getDimension(R.dimen.dp_193), (int) mContext.getResources().getDimension(R.dimen.dp_193));
+        if (getView() != null) {
+            getView().loadQrCode(qrImage);
+        }
+    }
+
+    public void share(LinearLayout shareParent) {
+        Bitmap bitmap = ViewToBitmap.createBitmap3(shareParent, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setTitleText("分享到")
+                .setTitleTextColor(Color.parseColor("#222222"))
+                .setMenuItemTextColor(Color.parseColor("#666666"))
+                .setMenuItemIconPressedColor(Color.parseColor("#000000"))
+//                .setMenuItemBackgroundColor(Color.parseColor("#fd3c15"),Color.parseColor("#008577"))
+                .setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_ROUNDED_SQUARE, (int) mContext.getResources().getDimension(R.dimen.dp_20));
+//                .setCancelButtonText("您取消了分享");
+
+
+        new ShareAction((Activity) mContext)
+                .withMedia(new UMImage(mContext, bitmap))
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
+                .setCallback(shareListener).open(config);
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LogUtil.e("start:" + share_media.toString());
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            LogUtil.e("result:" + share_media.toString());
+            ShareOperationUtil.getShareOperationUtil().createOrUpdate();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+        }
+    };
 }

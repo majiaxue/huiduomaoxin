@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="#f5f5f5">
 
+    <include layout="@layout/sharebg" />
+
     <LinearLayout
         android:id="@+id/goods_detail_temp"
         android:layout_width="match_parent"
@@ -83,22 +85,22 @@
             android:id="@+id/goods_detail_add_cart"
             android:layout_width="@dimen/dp_105"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_10_left_feb_fb4"
+            android:background="@drawable/img_zuobian"
             android:gravity="center"
-            android:text="加入购物车"
+            android:text="分享赚"
             android:textColor="#ffffff"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_13" />
 
         <TextView
             android:id="@+id/goods_detail_buy"
             android:layout_width="@dimen/dp_105"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_5"
-            android:background="@drawable/bg_10_right_feb_fb4"
+            android:background="@drawable/img_youbian"
             android:gravity="center"
-            android:text="立即购买"
+            android:text="自购转"
             android:textColor="#ffffff"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_13" />
     </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
@@ -106,6 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/goods_detail_temp"
+        android:background="#f5f5f5"
         android:overScrollMode="never">
 
         <LinearLayout
@@ -257,8 +260,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_42"
                     android:layout_alignLeft="@id/goods_detail_text5"
+                    android:layout_marginTop="@dimen/dp_42"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -347,8 +350,8 @@
                         android:id="@+id/goods_detail_temp1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/goods_detail_text6"
                         android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_toRightOf="@id/goods_detail_text6"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -364,8 +367,8 @@
                         android:id="@+id/goods_detail_rv_img"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_30"
-                        android:layout_alignLeft="@id/goods_detail_temp1"
                         android:layout_below="@id/goods_detail_temp1"
+                        android:layout_alignLeft="@id/goods_detail_temp1"
                         android:layout_marginTop="@dimen/dp_10" />
 
                     <TextView
@@ -405,8 +408,8 @@
                         android:id="@+id/goods_detail_text2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/goods_detail_text1"
                         android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_toRightOf="@id/goods_detail_text1"
                         android:text="品质、材质..."
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
@@ -453,7 +456,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_20"
-                        android:text="评价(666)"
+                        android:text="评价(0)"
                         android:textColor="#666666"
                         android:textSize="@dimen/sp_13" />
 
@@ -482,7 +485,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_5"/>
+                    android:layout_marginTop="@dimen/dp_5" />
             </LinearLayout>
 
             <RelativeLayout
@@ -497,8 +500,7 @@
                     android:layout_width="@dimen/dp_50"
                     android:layout_height="@dimen/dp_50"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:src="@drawable/img_43" />
+                    android:layout_marginLeft="@dimen/dp_20" />
 
                 <TextView
                     android:id="@+id/goods_detail_shop_name"
@@ -507,7 +509,6 @@
                     android:layout_marginLeft="@dimen/dp_70"
                     android:layout_marginTop="@dimen/dp_24"
                     android:includeFontPadding="false"
-                    android:text="一二三旗舰店"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
 
@@ -531,7 +532,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/dp_25"
                     android:layout_marginRight="@dimen/dp_27"
-                    android:text="店铺关注  1.8万"
+                    android:text="店铺关注  0"
                     android:textColor="#666666"
                     android:textSize="@dimen/sp_11" />
 
@@ -595,7 +596,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/goods_detail_rv_commend"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
 
             <View
                 android:layout_width="@dimen/dp_0"

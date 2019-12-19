@@ -80,7 +80,7 @@ public class InAndOutBean {
 
         private int id;
         private String userCode;
-        private int price;
+        private String price;
         private int type;
         private String note;
         private String createTime;
@@ -101,11 +101,11 @@ public class InAndOutBean {
             this.userCode = userCode;
         }
 
-        public int getPrice() {
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(String price) {
             this.price = price;
         }
 
