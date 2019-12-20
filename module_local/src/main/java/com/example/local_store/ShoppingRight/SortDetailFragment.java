@@ -22,7 +22,7 @@ import java.util.List;
  * Created by yadianna02 on 2018/7/31.
  */
 
-public class SortDetailFragment extends BaseFragment<SortDetailPresenter, String> implements CheckListener {
+public class SortDetailFragment extends BaseFragment2<SortDetailPresenter, String> implements CheckListener {
     private RecyclerView mRv;
     private ShoppingRightAdapter mAdapter;
     private GridLayoutManager mManager;

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.example.module_local.R;
 
 
-public abstract class BaseFragment<T extends BasePresenter, V> extends Fragment implements View.OnClickListener, ViewCallBack<V> {
+public abstract class BaseFragment2<T extends BasePresenter2, V> extends Fragment implements View.OnClickListener, ViewCallBack<V> {
     public T presenter;
     protected boolean isVisible;
     protected Context mContext;

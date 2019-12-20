@@ -1,6 +1,6 @@
 package com.example.local_store.ShoppingRight;
 
-public abstract class BasePresenter {
+public abstract class BasePresenter2 {
 
     protected ViewCallBack mViewCallBack;
 

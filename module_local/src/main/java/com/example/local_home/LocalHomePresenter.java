@@ -86,6 +86,7 @@ public class LocalHomePresenter extends BasePresenter<LocalHomeView> {
 //                            intent.putExtra("bean", shopBeans.get(position));
 //                            mContext.startActivity(intent);
                             ARouter.getInstance().build("/module_local/LocalStoreActivity").withSerializable("bean", shopBeans.get(position)).navigation();
+//                            ARouter.getInstance().build("/module_user_store/MapDetailActivity").withSerializable("bean", shopBeans.get(position)).navigation();
                         }
                     });
 

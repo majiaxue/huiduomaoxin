@@ -7,11 +7,8 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.example.bean.AddressBean;
 import com.example.bean.H5DetailBean1;
 import com.example.bean.H5DetailBean2;
-
-import java.util.Map;
 
 
 public class AndroidJs extends Object {
@@ -28,12 +25,11 @@ public class AndroidJs extends Object {
     }
 
     @JavascriptInterface
-    public void jumpPage(String data, int type) {
+    public void jumpPage(String data, String type) {
         //type = 0 是网页 type = 1本地链接
-        LogUtil.e("我成功了jumpPage");
-        Toast.makeText(mContext, "成功了jumpPage" + data, Toast.LENGTH_SHORT).show();
+        LogUtil.e("我成功了jumpPage------------->" + type);
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            if (1 == type) {
+            if (!"0".equals(type)) {
                 if ("搜索".equals(data)) {
                     ARouter.getInstance().build("/module_home/SearchActivity").navigation();
                 } else if ("消息".equals(data)) {
@@ -98,7 +94,7 @@ public class AndroidJs extends Object {
                 }
             } else {
                 //网页
-                ARouter.getInstance().build("/module_classify/WebViewActivity").withString("url",data).navigation();
+                ARouter.getInstance().build("/module_classify/WebViewActivity").withString("url", data).navigation();
             }
 
         } else {

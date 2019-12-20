@@ -253,10 +253,14 @@ public class MinePresenter extends BasePresenter<MineView> {
             @Override
             public void onError(String errorCode, String errorMsg) {
                 LogUtil.e("个人信息" + errorCode + "---------" + errorMsg);
+                if ("2".equals(errorCode)) {
+                    if (getView() != null) {
+                        getView().onError();
+                    }
+                } else {
 
-                if (getView() != null) {
-                    getView().onError();
                 }
+
             }
         }));
     }

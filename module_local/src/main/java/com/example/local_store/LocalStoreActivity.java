@@ -62,6 +62,8 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
     TextView localStoreBtn;
     @BindView(R2.id.local_store_bottom)
     LinearLayout localStoreBottom;
+    @BindView(R2.id.local_store_address)
+    TextView localStoreAddress;
 
 
     @Autowired(name = "bean")
@@ -106,6 +108,7 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
             Glide.with(this).load(split[0]).into(localStoreImg);
         }
 
+        localStoreAddress.setText(bean.getSeller_addredd());
         localStoreTxt1.setText("满" + bean.getMin_point() + "减" + bean.getFull_reduction_amount() + "元");
         presenter.loadData(bean.getPigxx_id());
     }
@@ -123,6 +126,13 @@ public class LocalStoreActivity extends BaseFragmentActivity<LocalStoreView, Loc
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new EventBusBean(CommonResource.SUBMIT_ORDER));
+            }
+        });
+
+        localStoreAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build("/module_local/LocalShopMapActivity").withSerializable("bean", bean).navigation();
             }
         });
     }

@@ -14,13 +14,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bean.HomePredictBean;
 import com.example.bean.UserInfoBean;
-import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
 import com.example.mine.adapter.MyToolAdapter;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.example.utils.SpaceItemDecoration;
 import com.example.utils.StatusBarUtils;
@@ -331,17 +329,17 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
 
     @Override
     public void onError() {
-//        mineName.setText("请注册/登录");
-//        mineHeader.setImageResource(R.drawable.vhjfg);
-//        mineTemp.setVisibility(View.GONE);
-//        mIWantUp.setVisibility(View.GONE);
-//        mineLv.setVisibility(View.GONE);
-//
-//        mBenri.setText("0元");
-//        mBenyue.setText("0元");
-//        mShangyue.setText("0元");
-//        mSyyg.setText("0元");
-//        mBalanceTxt.setText("￥0");
+        mineName.setText("请注册/登录");
+        mineHeader.setImageResource(R.drawable.vhjfg);
+        mineTemp.setVisibility(View.GONE);
+        mIWantUp.setVisibility(View.GONE);
+        mineLv.setVisibility(View.GONE);
+
+        mBenri.setText("0元");
+        mBenyue.setText("0元");
+        mShangyue.setText("0元");
+        mSyyg.setText("0元");
+        mBalanceTxt.setText("￥0");
     }
 
     @Override

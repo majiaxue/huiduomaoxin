@@ -252,7 +252,8 @@ public class MainPresenter extends BasePresenter<MainView> {
             @Override
             public void onNoClick() {
                 selfDialog.dismiss();
-                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                Uri packageURI = Uri.parse("package:" + mContext.getPackageName());
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
                 ((Activity) mContext).startActivityForResult(intent, 0x111);
             }
         });

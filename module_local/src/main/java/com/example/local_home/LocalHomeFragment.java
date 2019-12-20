@@ -251,6 +251,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
         localHomeCommendRv.setVisibility(View.VISIBLE);
         localHomeCommendShop.setText(shopCommendBean.getSellerShopName());
         localHomeCommendRv.setAdapter(adapter);
+        mLinear.setEnabled(true);
         mLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -314,6 +315,7 @@ public class LocalHomeFragment extends BaseFragment<LocalHomeView, LocalHomePres
 
     @Override
     public void noCommend() {
+        mLinear.setEnabled(false);
         localHomeCommendShop.setVisibility(View.INVISIBLE);
         localHomeCommendRv.setVisibility(View.INVISIBLE);
     }

@@ -3,14 +3,10 @@ package com.example.commoditydetails.webview;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,10 +16,8 @@ import com.ali.auth.third.core.util.StringUtil;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.baichuan.trade.common.utils.StringUtils;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
-import com.example.utils.AndroidJs;
 import com.example.utils.LogUtil;
 
 import butterknife.BindView;
@@ -123,10 +117,11 @@ public class WebViewActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack();
-            return true;
+            if (webView.canGoBack()) {
+                webView.goBack();
+                return true;
+            }
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
