@@ -245,6 +245,7 @@ public class CommonResource {
     public static final String LOCAL_SELLER_MANJIAN = "local_seller_manjian";
     public static final String TENANT_ID = "1";
 
+    public static final String WEBVIEW = "webView";     //佣金比例
 
     public static final String PROJECTNAME = "枫林淘客";
     public static final String SERVICE_PHONE = "18503735075";

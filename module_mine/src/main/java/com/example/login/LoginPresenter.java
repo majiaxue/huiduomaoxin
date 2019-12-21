@@ -12,6 +12,7 @@ import com.example.bean.RegisterBean;
 import com.example.bean.UserInfoBean;
 import com.example.code_login.CodeLoginActivity;
 import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.forget.ForgetActivity;
 import com.example.login_wechat.LoginWeChatActivity;
 import com.example.mvp.BasePresenter;
@@ -146,6 +147,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
                     SPUtil.addParm(CommonResource.USER_PHONE, userInfoBean.getPhone());
 
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.WEBVIEW));
                     JpushUtil.setAlias(userInfoBean.getUserCode());
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
@@ -193,6 +195,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     SPUtil.addParm(CommonResource.LEVELID, userInfoBean.getLevelId());
 
                     JpushUtil.setAlias(userInfoBean.getUserCode());
+
+                    EventBus.getDefault().post(new EventBusBean(CommonResource.WEBVIEW));
                     ARouter.getInstance().build("/home/main").withString("type", "login").navigation();
                     ((Activity) mContext).finish();
                 }

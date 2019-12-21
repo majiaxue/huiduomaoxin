@@ -3,6 +3,7 @@ package com.example.h5home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
@@ -11,6 +12,7 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
+import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -19,6 +21,10 @@ import com.example.mvp.BasePresenter;
 import com.example.utils.AndroidJs;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
+import com.example.utils.net_change_util.NetworkType;
+import com.example.utils.net_change_util.NetworkUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import static android.content.Context.TELEPHONY_SERVICE;
 
@@ -32,7 +38,7 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
 
     @Override
     protected void onViewDestroy() {
-
+        EventBus.getDefault().unregister(this);
     }
 
     public void initWebView(WebView homeH5Web) {
@@ -50,20 +56,33 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
         webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
         // 应用可以有缓存 true false 没有缓存
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setAllowFileAccessFromFileURLs(false);
-        //不加的话有些网页加载不出来，是空白
+        // 应用可以有缓存
+        webSettings.setAppCacheEnabled(true);
+        String appCaceDir = mContext.getDir("cache", Context.MODE_PRIVATE).getPath();
+        webSettings.setAppCachePath(appCaceDir);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        //设置可以使用localStorage
         webSettings.setDomStorageEnabled(true);
-        //设置数据库
+        // 应用可以有数据库
         webSettings.setDatabaseEnabled(true);
+        String dbPath = mContext.getDir("database", Context.MODE_PRIVATE).getPath();
+        webSettings.setDatabasePath(dbPath);
+
+        webSettings.setAppCacheMaxSize(8 * 1024 * 1024); //缓存最多可以有8M
+        webSettings.setAllowFileAccess(true); // 可以读取文件缓存(manifest生效)
 
         //其他细节操作
-//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //没有网络时加载缓存
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
         webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+        NetworkType networkType = NetworkUtil.getNetworkType(mContext);
+        LogUtil.e("当前网络：" + networkType);
+        if (networkType == NetworkType.NETWORK_NO) {
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //没有网络时加载缓存
+        } else {
+            webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        }
 
         homeH5Web.setWebViewClient(new WebViewClient() {
             @Override
@@ -98,10 +117,28 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 return super.onJsAlert(view, url, message, result);
             }
+
+            @Override
+            public void onExceededDatabaseQuota(String url, String databaseIdentifier,
+                                                long currentQuota, long estimatedSize, long totalUsedQuota,
+                                                WebStorage.QuotaUpdater quotaUpdater) {
+                quotaUpdater.updateQuota(estimatedSize * 2);
+            }
+
+            // 扩充缓存的容量
+            @Override
+            public void onReachedMaxAppCacheSize(long spaceNeeded, long totalUsedQuota,
+                                                 WebStorage.QuotaUpdater quotaUpdater) {
+                quotaUpdater.updateQuota(spaceNeeded * 2);
+            }
         });
         //加载url地址
-        homeH5Web.loadUrl(" http://47.99.93.123:8085/?tenantId=" + CommonResource.TENANT_ID + "&" + "preProfit=" + SPUtil.getFloatValue(CommonResource.BACKBL) + "&" + "imei=" + imei);
+        loadUrl(homeH5Web);
 //        LogUtil.e("getIMEi===" + getIMEINew(mContext));
+    }
+
+    public void loadUrl(WebView homeH5Web) {
+        homeH5Web.loadUrl(" http://47.99.93.123:8085/?tenantId=" + CommonResource.TENANT_ID + "&" + "preProfit=" + SPUtil.getFloatValue(CommonResource.BACKBL) + "&" + "imei=" + imei);
     }
 
     /**

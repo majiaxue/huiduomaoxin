@@ -8,14 +8,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.view.View;
 import android.webkit.WebView;
 
+import com.example.common.CommonResource;
+import com.example.entity.EventBusBean;
 import com.example.main.MainActivity;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragment;
 import com.example.utils.LogUtil;
+import com.example.utils.SPUtil;
 import com.example.utils.StatusBarUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -29,6 +37,8 @@ public class H5HomeFragment extends BaseFragment<H5HomeView, H5HomePresenter> im
     @BindView(R2.id.home_h5_web)
     WebView homeH5Web;
 
+    private int flag = 0;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_h5_home;
@@ -36,15 +46,30 @@ public class H5HomeFragment extends BaseFragment<H5HomeView, H5HomePresenter> im
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
 //        StatusBarUtils.setAndroidNativeLightStatusBar(getActivity(), false);
 //        StatusBarUtils.setStatusTheme(getActivity(), true, true);
         presenter.check();
         presenter.initWebView(homeH5Web);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusBean eventBusBean) {
+        if (CommonResource.WEBVIEW.equals(eventBusBean.getMsg())) {
+            flag = 1;
+            LogUtil.e("刷新webView" + flag);
+        }
+    }
+
     @Override
     public void initClick() {
 
+        homeH5Web.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
     }
 
     @Override
@@ -57,5 +82,19 @@ public class H5HomeFragment extends BaseFragment<H5HomeView, H5HomePresenter> im
         return new H5HomePresenter(getContext());
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            //不可见
+        } else {
+            //可见
+            if (1 == flag) {
+                presenter.loadUrl(homeH5Web);
+                flag = 0;
+            }
+        }
+    }
 
 }
