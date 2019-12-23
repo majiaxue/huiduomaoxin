@@ -2,6 +2,7 @@ package com.example.commoditydetails.jd;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +14,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +25,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.adapter.MyRecyclerAdapter;
+import com.example.adapter.SecondaryJDRecAdapter;
 import com.example.bean.JDGoodsRecBean;
 import com.example.bean.JDLedSecuritiesBean;
 import com.example.bean.JDListBean;
 import com.example.commoditydetails.jd.adapter.JDRecAdapter;
 import com.example.commoditydetails.pdd.adapter.CommodityDetailsRecAdapter;
+import com.example.commoditydetails.webview.WebViewActivity;
 import com.example.common.CommonResource;
 import com.example.dbflow.ShareOperationUtil;
 import com.example.module_classify.R;
@@ -39,10 +44,13 @@ import com.example.utils.ArithUtil;
 import com.example.utils.DisplayUtil;
 import com.example.utils.LogUtil;
 import com.example.utils.MapUtil;
+import com.example.utils.OnPopListener;
+import com.example.utils.PopUtils;
 import com.example.utils.ProcessDialogUtil;
 import com.example.utils.QRCode;
 import com.example.utils.SPUtil;
 import com.example.utils.ViewToBitmap;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KelperTask;
@@ -76,7 +84,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     private List<JDGoodsRecBean.DataBean.ListsBean> listsBeanList = new ArrayList<>();
     private Bitmap bitmap;
     private JDListBean jDGoodsRecBean;
-    private String goodsData;
 
     /**
      * 超时时间设定
@@ -122,8 +129,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     }
 
     public void historySave(String goodsId) {
-        Map map = MapUtil.getInstance().addParms("productId", goodsId).addParms("userCode", SPUtil.getUserCode()).addParms("type", 2).build();
-        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
+        Map map = MapUtil.getInstance().addParms("skuIds", goodsId).addParms("userCode", SPUtil.getUserCode()).build();
+        Observable data = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.QUERYJDGOODS, map);
         RetrofitUtil.getInstance().toSubscribe(data, new OnMyCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
@@ -135,6 +142,8 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                 LogUtil.e("添加浏览记录errorMsg" + errorMsg);
             }
         }));
+
+
 
     }
 
@@ -201,7 +210,9 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
     //收藏商品
     public void goodsCollect(final ImageView commodityCollectImage, String skuid) {
         if (!TextUtils.isEmpty(SPUtil.getToken())) {
-            Map map = MapUtil.getInstance().addParms("productId", skuid).addParms("type", 3).addParms("product", goodsData).build();
+            jDGoodsRecBean.setSysOriginalMsg("");
+            String jsonString = JSON.toJSONString(jDGoodsRecBean);
+            Map map = MapUtil.getInstance().addParms("productId", skuid).addParms("type", 3).addParms("product", jsonString).build();
             Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
             RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
                 @Override
@@ -398,14 +409,13 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
         }
     };
 
-    public void loadData(String skuid) {
+    public void loadData(final String skuid) {
         Map build = MapUtil.getInstance().addParms("isCoupon", 1).addParms("skuIds", skuid).addParms("keyword", "").build();
 
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9001).getData(CommonResource.JDGOODSLIST, build);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnTripartiteCallBack(new OnDataListener() {
             @Override
             public void onSuccess(String result, String msg) {
-                goodsData = result;
                 LogUtil.e("SecondaryDetailsResult京东商品--------------->" + result);
                 ProcessDialogUtil.dismissDialog();
                 try {
@@ -415,7 +425,6 @@ public class JDCommodityDetailsPresenter extends BasePresenter<JDCommodityDetail
                         Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                     } else if ("200".equals(code)) {
                         jDGoodsRecBean = JSON.parseObject(result, JDListBean.class);
-
 
                         List<JDListBean.DataBean.ImageInfoBean.ImageListBean> imageList = jDGoodsRecBean.getData().get(0).getImageInfo().getImageList();
                         for (int i = 0; i < imageList.size(); i++) {

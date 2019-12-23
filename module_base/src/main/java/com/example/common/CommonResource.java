@@ -22,6 +22,8 @@ public class CommonResource {
     public static final String MALLGOODS = "/mall/goods";
     public static final String MALLPARA = "/mall/parameter";
 
+    public static final String QUERYJDGOODS = "/mall/goods/rest/jd/queryJdGoods";
+
     public static final String ALLCATEGORT = "/mall/goods/rest/goods/allCategory"; //商品分类
     public static final String GETGOODSDETAIL = "/mall/goods/rest/goods";  //获取商品详情
     //多用户商城---模糊搜索框,参数:searchInfo->搜索内容,pageNum->当前页,pageSize->每页显示条数,默认20,startPrice->开始价格,endPrice->结束价格,categoryId->分类Id->productAttributeCategoryId->分类规格priceAsc->价格升序,priceDesc->价格降序,sellerId->商家IdsaleAsc->销量升序,saleDesc->销量降序,newStatus->1新品推荐
@@ -243,6 +245,7 @@ public class CommonResource {
     public static final String LOCAL_SELLER_MANJIAN = "local_seller_manjian";
     public static final String TENANT_ID = "1";
 
+    public static final String WEBVIEW = "webView";     //佣金比例
 
     public static final String PROJECTNAME = "枫林淘客";
     public static final String SERVICE_PHONE = "18503735075";

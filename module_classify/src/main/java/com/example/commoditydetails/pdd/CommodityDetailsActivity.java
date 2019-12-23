@@ -145,7 +145,7 @@ public class CommodityDetailsActivity extends BaseActivity<CommodityDetailsView,
         presenter.initView(goods_id);
 
         //保存浏览记录
-        presenter.historySave(goods_id);
+//        presenter.historySave(goods_id);
         //推荐recycler
         presenter.setRecommendRec(shopRecommendRec);
         //字体加中划线

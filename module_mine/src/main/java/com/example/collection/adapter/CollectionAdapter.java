@@ -53,7 +53,8 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
                 holder.setText(R.id.rv_collection_preferential_price, "￥" + normalPrice);
             }
             holder.setText(R.id.rv_collection_number, "已抢" + (data.getQuantity() == null ? "0" : data.getQuantity().split("\\.")[0]) + "件");
-            holder.setImageFresco(R.id.rv_collection_image, data.getImage());
+            holder.setImageFresco(R.id.rv_collection_image, data.getImage().contains("http") ? data.getImage() : "http:" + data.getImage());
+
         } else if (data.getType() == 1) {
             //京东
             holder.setImageResource(R.id.rv_collection_type, R.drawable.jingdong);
@@ -65,13 +66,14 @@ public class CollectionAdapter extends MyRecyclerAdapter<MyCollectBean> {
                 holder.setText(R.id.rv_collection_number, "已抢0件");
             }
 
-            holder.setImageFresco(R.id.rv_collection_image, data.getImage());
+            holder.setImageFresco(R.id.rv_collection_image, data.getImage().contains("http") ? data.getImage() : "http:" + data.getImage());
+
         } else if (data.getType() == 2) {
             //拼多多
             holder.setImageResource(R.id.rv_collection_type, R.drawable.pinduoduo);
             holder.setText(R.id.rv_collection_name, data.getGoodsName())
                     .setText(R.id.rv_collection_preferential_price, "￥" + ArithUtil.exact(data.getGroupPrice() == null ? 0 : data.getGroupPrice() * 0.01, 1))
-                    .setImageFresco(R.id.rv_collection_image, data.getImage());
+                    .setImageFresco(R.id.rv_collection_image, data.getImage().contains("http") ? data.getImage() : "http:" + data.getImage());
             if (data.getQuantity() == null || "null".equals(data.getQuantity())) {
                 holder.setText(R.id.rv_collection_number, "已抢0件");
             } else {

@@ -2,11 +2,17 @@ package com.example.commoditydetails.webview;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,8 +22,10 @@ import com.ali.auth.third.core.util.StringUtil;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.baichuan.trade.common.utils.StringUtils;
 import com.example.module_classify.R;
 import com.example.module_classify.R2;
+import com.example.utils.AndroidJs;
 import com.example.utils.LogUtil;
 
 import butterknife.BindView;
@@ -34,6 +42,7 @@ public class WebViewActivity extends Activity {
     @Autowired(name = "url")
     String url1;
     private String url;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +65,22 @@ public class WebViewActivity extends Activity {
         webSettings.setSupportZoom(false); //支持缩放，默认为true。是下面那个的前提。
         webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+        // 应用可以有缓存 true false 没有缓存
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setAllowFileAccessFromFileURLs(false);
         //不加的话有些网页加载不出来，是空白
         webSettings.setDomStorageEnabled(true);
+        //设置数据库
+        webSettings.setDatabaseEnabled(true);
+
         //其他细节操作
+//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //没有网络时加载缓存
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
         webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+
         if (StringUtil.isBlank(url1)) {
             webView.loadUrl(url);
         } else {
@@ -73,13 +91,28 @@ public class WebViewActivity extends Activity {
         LogUtil.e("========>1" + url1);
         WebViewClient webViewClient = new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView wv, String url) {
-                if (url == null) return false;
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url == null) return false;
                 try {
                     if (url.startsWith("pinduoduo://") || url.startsWith("tbopen://") || url.startsWith("openapp.jdmobile://")) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        startActivity(intent);
+                        view.loadUrl(url);
                         return true;
                     }
                 } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
@@ -87,22 +120,17 @@ public class WebViewActivity extends Activity {
                 }
 
                 //处理http和https开头的url
-                wv.loadUrl(url);
+                view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
             }
         };
 
         webView.setWebViewClient(webViewClient);
-
-//        webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//                handler.proceed();    //表示等待证书响应
-//                // handler.cancel();      //表示挂起连接，为默认方式
-//                // handler.handleMessage(null);    //可做其他处理
-//            }
-//        });
-
         webImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,17 +138,14 @@ public class WebViewActivity extends Activity {
             }
         });
 
-
     }
 
     //点击返回上一页面而不是退出浏览器
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            if (webView.canGoBack()) {
-                webView.goBack();
-                return true;
-            }
+            webView.goBack();//返回上个页面
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
