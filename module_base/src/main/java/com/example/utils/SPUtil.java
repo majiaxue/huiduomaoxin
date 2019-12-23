@@ -7,10 +7,12 @@ import com.example.common.CommonResource;
 
 public class SPUtil {
     private static SharedPreferences userSP;
+    private static SharedPreferences netSp;
 
     public static void getInstance(Context context) {
         if (userSP == null) {
             userSP = context.getSharedPreferences("fltk", 0);
+            netSp = context.getSharedPreferences("fltk_net", 0);
         }
     }
 
@@ -73,5 +75,13 @@ public class SPUtil {
      */
     public static void loginOut() {
         userSP.edit().clear().commit();
+    }
+
+    public static void setNetType(boolean hasNet) {
+        netSp.edit().putBoolean(CommonResource.NET, hasNet).commit();
+    }
+
+    public static boolean getNetType() {
+        return netSp.getBoolean(CommonResource.NET, true);
     }
 }

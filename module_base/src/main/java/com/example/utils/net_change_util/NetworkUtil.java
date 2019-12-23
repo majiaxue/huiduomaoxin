@@ -1,12 +1,16 @@
 package com.example.utils.net_change_util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 
+import com.example.common.CommonResource;
+
 public class NetworkUtil {
+
     private NetworkUtil() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }

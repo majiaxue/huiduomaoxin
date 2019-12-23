@@ -11,6 +11,7 @@ import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.NetworkUtil;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
 import com.example.utils.AppManager;

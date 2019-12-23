@@ -234,6 +234,7 @@ public class CommonResource {
     public static final String CART_REFRESH = "cartRefresh";        //从购物车的商品推荐进入商品详情，又跳到购物车时刷新购物车
     public static final String CITY = "city";      //网络发生变化，重新定位
     public static final String TAN_CONTENT = "tan_content";     //粘贴板内容
+    public static final String NET = "net";
 
     public static final String ISTAN = "isTan";     //粘贴板内容是否弹过popupwindow
     public static final String SELLERID = "sellerId";   //店铺ID
