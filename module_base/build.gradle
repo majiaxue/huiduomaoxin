@@ -168,6 +168,7 @@ dependencies {
 
     //对话框
     api 'com.kongzue.dialog_v3:dialog:3.1.6'
+
     //底部导航栏
     api 'com.kongzue.tabbar:tabbar:1.5.4'
 
@@ -183,8 +184,8 @@ dependencies {
 
     //
     api 'org.apache.commons:commons-lang3:3.7'
+
     //卡片式布局
     api 'com.android.support:cardview-v7:28.0.0'
-
-
+    implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1148_43697_sharewithdownloadwithfile_withoutGame_obfs_20190805_175505.jar')
 }

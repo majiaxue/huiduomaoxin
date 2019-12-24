@@ -21,7 +21,7 @@ import java.net.URL;
 public class ViewToBitmap {
 
     public static Bitmap createBitmap3(View v, int width, int height) {
-        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(bitmap);
         c.drawColor(Color.WHITE);
         v.draw(c);

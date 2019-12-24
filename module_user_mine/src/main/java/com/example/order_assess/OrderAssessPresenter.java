@@ -203,9 +203,9 @@ public class OrderAssessPresenter extends BasePresenter<OrderAssessView> {
                 String bucketName = jsonObject.getString("bucketName");
                 String fileName = jsonObject.getString("fileName");
                 if (getView() != null) {
-                    getView().imagePath("http://47.99.93.123:8083" + "/" + bucketName + "/" + fileName);
+                    getView().imagePath(CommonResource.BASEURL_8083 + "/" + bucketName + "/" + fileName);
                 }
-                uriList.add("http://47.99.93.123:8083" + "/" + bucketName + "/" + fileName);
+                uriList.add(CommonResource.BASEURL_8083 + "/" + bucketName + "/" + fileName);
                 adapter.notifyDataSetChanged();
                 isSHowAdd();
                 fileUri = null;

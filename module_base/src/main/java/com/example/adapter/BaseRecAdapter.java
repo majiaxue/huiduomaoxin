@@ -63,7 +63,7 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListB
                 holder.setText(R.id.base_reduce_price, "领劵减" + data.getCoupon_amount() + "元");//优惠劵
             }
 
-            holder.setText(R.id.base_preferential_price, "￥" + ArithUtil.sub(Double.valueOf(data.getZk_final_price() == null ? "0" : data.getZk_final_price()), Double.valueOf(data.getCoupon_amount() == null ? "0" : data.getCoupon_amount())));//优惠价
+            holder.setText(R.id.base_preferential_price, "￥" + (Double.valueOf(data.getZk_final_price() == null ? "0" : data.getZk_final_price()) * 1000 - Double.valueOf(data.getCoupon_amount() == null ? "0" : data.getCoupon_amount()) * 1000) / 1000);//优惠价
             holder.setText(R.id.base_original_price, "￥" + data.getZk_final_price());//原价
             holder.setText(R.id.base_number, "已抢" + data.getVolume() + "件");//已抢数量
             LogUtil.e("商品佣金" + data.getCommission_rate());
@@ -81,7 +81,6 @@ public class BaseRecAdapter extends MyRecyclerAdapter<TBGoodsRecBean.ResultListB
             // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
             holder.setTextLine(R.id.base_original_price);
         } catch (Exception e) {
-            LogUtil.e("---------------------->" + e.getMessage());
             e.printStackTrace();
         }
 //        TextView immediatelyGrab = holder.getView(R.id.base_immediately_grab);

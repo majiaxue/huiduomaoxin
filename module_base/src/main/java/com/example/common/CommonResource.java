@@ -8,6 +8,7 @@ public class CommonResource {
     public static final String BASEURL_9005 = "http://47.99.93.123:9999";   //参数192.168.0.110
     public static final String BASEURL_9010 = "http://47.99.93.123:9999";  //本地小店
     public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
+    public static final String BASEURL_8083 = "http://47.99.93.123:8083";
     public static final String BASEURL_PICT = "http://47.99.93.123:4000/file/";     //图片前缀
 
 
