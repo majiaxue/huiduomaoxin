@@ -11,7 +11,6 @@ import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.NetworkUtil;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.common.CommonResource;
 import com.example.utils.AppManager;
@@ -29,6 +28,7 @@ import com.kepler.jd.login.KeplerApiManager;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -70,6 +70,9 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 JPushInterface.setDebugMode(true);
                 JPushInterface.init(this);
                 JpushUtil.getInstance(this);
+
+                //腾讯X5内核webview
+                QbSdk.initX5Environment(this, null);
 
                 //百度地图
                 initLocationClient();

@@ -5,13 +5,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.webkit.WebView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.bean.InviteBean;
 import com.example.common.CommonResource;
+import com.example.invite_friends.adapter.InviteVpAdapter;
 import com.example.module_mine.R;
 import com.example.mvp.BasePresenter;
 import com.example.utils.LogUtil;
@@ -31,6 +33,7 @@ import java.util.List;
 public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
 
     private List<InviteBean> beanList = new ArrayList<>();
+    private List<View> list = new ArrayList<>();
 
 
     public InviteFriendsPresenter(Context context) {
@@ -52,16 +55,28 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
 
     };
 
-    public void loadData(WebView webView) {
-        Bitmap bitmap = ViewToBitmap.createBitmap3(webView, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-//        Bitmap bitmap2 = ViewToBitmap.createBitmap3(webView2, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-//        Bitmap bitmap3 = ViewToBitmap.createBitmap3(webView3, ViewToBitmap.getScreenWidth(mContext), ViewToBitmap.getScreenHeight(mContext));
-        beanList.add(new InviteBean(bitmap));
-//        beanList.add(new InviteBean(bitmap2));
-//        beanList.add(new InviteBean(bitmap3));
-        if (getView() != null && beanList.size() == 3) {
-            ProcessDialogUtil.dismissDialog();
-            getView().loadBanner(beanList);
+    public void loadData() {
+        Bitmap qrImage1 = QRCode.createQRImage(CommonResource.BASEURL_4001 + CommonResource.INVITE_ERWEIMA + "?inviteCode=" + SPUtil.getStringValue(CommonResource.USER_INVITE), (int) mContext.getResources().getDimension(R.dimen.dp_193), (int) mContext.getResources().getDimension(R.dimen.dp_193));
+        View view1 = LayoutInflater.from(mContext).inflate(R.layout.vp_invite_view1, null);
+        ImageView img1 = view1.findViewById(R.id.invite_friends_erweima1);
+        Glide.with(mContext).load(qrImage1).into(img1);
+        View view2 = LayoutInflater.from(mContext).inflate(R.layout.vp_invite_view2, null);
+        ImageView img2 = view2.findViewById(R.id.invite_friends_erweima2);
+        Glide.with(mContext).load(qrImage1).into(img2);
+        View view3 = LayoutInflater.from(mContext).inflate(R.layout.vp_invite_view3, null);
+        ImageView img3 = view3.findViewById(R.id.invite_friends_erweima3);
+        Glide.with(mContext).load(qrImage1).into(img3);
+        View view4 = LayoutInflater.from(mContext).inflate(R.layout.vp_invite_view4, null);
+        ImageView img4 = view4.findViewById(R.id.invite_friends_erweima4);
+        Glide.with(mContext).load(qrImage1).into(img4);
+
+        list.add(view1);
+        list.add(view2);
+        list.add(view3);
+        list.add(view4);
+        InviteVpAdapter inviteVpAdapter = new InviteVpAdapter(list);
+        if (getView() != null) {
+            getView().loadVP(inviteVpAdapter, list.size());
         }
     }
 
@@ -77,8 +92,9 @@ public class InviteFriendsPresenter extends BasePresenter<InviteFriendsView> {
     }
 
     public void share(int position) {
+        Bitmap bitmap = ViewToBitmap.createBitmap3(list.get(position % list.size()), list.get(position % list.size()).getWidth(), list.get(position % list.size()).getHeight());
         new ShareAction((Activity) mContext)
-                .withMedia(new UMImage(mContext, beanList.get(position).getXBannerUrl()))
+                .withMedia(new UMImage(mContext, bitmap))
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE)
                 .setCallback(shareListener).open();
     }

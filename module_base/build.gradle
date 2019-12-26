@@ -21,7 +21,9 @@ android {
             }
         }
 
-
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
     }
 
     buildTypes {
@@ -187,5 +189,5 @@ dependencies {
 
     //卡片式布局
     api 'com.android.support:cardview-v7:28.0.0'
-    implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1148_43697_sharewithdownloadwithfile_withoutGame_obfs_20190805_175505.jar')
+    api 'com.tencent.tbs.tbssdk:sdk:43697'
 }

@@ -6,7 +6,7 @@
 
     <include layout="@layout/include_status" />
 
-    <WebView
+    <com.tencent.smtt.sdk.WebView
         android:id="@+id/web_detail_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -7,15 +7,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -25,6 +20,10 @@ import com.example.module_home.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.AndroidBug5497Workaround;
 import com.example.utils.AndroidJs;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import java.io.File;
 
@@ -50,7 +49,7 @@ public class WebDetailActivity extends BaseActivity<WebDetailView, WebDetailPres
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        AndroidBug5497Workaround.assistActivity(this);
+//        AndroidBug5497Workaround.assistActivity(this);
         //声明WebSettings子类
         WebSettings webSettings = webView.getSettings();
 
@@ -79,9 +78,8 @@ public class WebDetailActivity extends BaseActivity<WebDetailView, WebDetailPres
 
         WebChromeClient webChromeClient = new WebChromeClient() {
             @Override
-
-            public boolean onShowFileChooser(WebView webView, ValueCallback filePathCallback, FileChooserParams fileChooserParams) {
-                mUploadCallbackAboveL = filePathCallback;
+            public boolean onShowFileChooser(WebView webView, com.tencent.smtt.sdk.ValueCallback<Uri[]> valueCallback, FileChooserParams fileChooserParams) {
+                mUploadCallbackAboveL = valueCallback;
                 presenter.take();
                 return true;
             }
