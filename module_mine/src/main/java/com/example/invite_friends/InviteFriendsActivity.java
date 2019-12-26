@@ -6,14 +6,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.example.bean.InviteBean;
 import com.example.invite_friends.adapter.InviteVpAdapter;
 import com.example.module_base.ModuleBaseApplication;
 import com.example.module_mine.R;
 import com.example.module_mine.R2;
 import com.example.mvp.BaseActivity;
 import com.example.utils.UIHelper;
-import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.transformers.BasePageTransformer;
 import com.stx.xhb.xbanner.transformers.Transformer;
 
