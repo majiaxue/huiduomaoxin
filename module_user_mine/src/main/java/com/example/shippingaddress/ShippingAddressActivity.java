@@ -43,7 +43,6 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
     @Override
     public void initData() {
         ARouter.getInstance().inject(this);
-        presenter.setShippingAddressRec(shippingAddressRec, from);
     }
 
     @Override
@@ -75,8 +74,8 @@ public class ShippingAddressActivity extends BaseActivity<ShippingAddressView, S
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
         presenter.setShippingAddressRec(shippingAddressRec, from);
     }
 }

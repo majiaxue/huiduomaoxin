@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -77,7 +78,8 @@ public class VideoRecAdapter extends MyRecyclerAdapter<VideoRecBean.DataBean> {
             }
         }));
 
-        Map map = MapUtil.getInstance().addParms("productId", data.getItemid()).addParms("userCode", SPUtil.getUserCode()).addParms("type", 3).build();
+        String jsonString = JSON.toJSONString(data);
+        Map map = MapUtil.getInstance().addParms("productId", data.getItemid()).addParms("userCode", SPUtil.getUserCode()).addParms("type", 3).addParms("product", jsonString).build();
         Observable observable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getData(CommonResource.HISTORYSAVE, map);
         RetrofitUtil.getInstance().toSubscribe(observable, new OnMyCallBack(new OnDataListener() {
             @Override

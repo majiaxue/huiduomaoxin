@@ -110,8 +110,8 @@ public class WebViewActivity extends Activity {
                 if (url == null) return false;
                 try {
                     if (url.startsWith("pinduoduo://") || url.startsWith("tbopen://") || url.startsWith("openapp.jdmobile://")) {
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                        startActivity(intent);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
                         view.loadUrl(url);
                         return true;
                     }

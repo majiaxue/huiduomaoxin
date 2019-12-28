@@ -1,6 +1,7 @@
 package com.example.h5home;
 
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.example.common.CommonResource;

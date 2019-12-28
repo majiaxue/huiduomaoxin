@@ -147,7 +147,8 @@ public class ShakeStockPresenter extends BasePresenter<ShakeStockView> {
                                 @Override
                                 public void onClick(final View v) {
                                     final ImageView image = v.findViewById(R.id.shake_stock_rec_collect_image);
-                                    Map map = MapUtil.getInstance().addParms("productId", videoList.get(position).getItemid()).addParms("type", 4).build();
+                                    String jsonString = JSON.toJSONString(videoList);
+                                    Map map = MapUtil.getInstance().addParms("productId", videoList.get(position).getItemid()).addParms("type", 4).addParms("product",jsonString).build();
                                     Observable head = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_4001).getHead(CommonResource.COLLECT, map, SPUtil.getToken());
                                     RetrofitUtil.getInstance().toSubscribe(head, new OnMyCallBack(new OnDataListener() {
                                         @Override

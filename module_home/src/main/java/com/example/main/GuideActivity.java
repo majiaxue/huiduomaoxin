@@ -3,7 +3,10 @@ package com.example.main;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
 import android.content.SharedPreferences;
+>>>>>>> 5c3fc906bd028810797077303ca42482b4ffc586
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +39,10 @@ public class GuideActivity extends Activity {
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private final int REQUEST_CODE = 0xa123;
 
+    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private final int REQUEST_CODE = 0xa321;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,9 @@ public class GuideActivity extends Activity {
         changeStatus();
         initView();
         initData();
+
+        initPermission();
+
     }
 
     private void changeStatus() {
@@ -121,6 +131,28 @@ public class GuideActivity extends Activity {
         });
 
         initPermission();
+    }
+
+    private void initPermission() {
+        for (String perm : perms) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, perms, REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            for (int result : grantResults) {
+                if (result == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    finish();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void initPermission() {
