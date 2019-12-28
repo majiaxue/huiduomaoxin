@@ -3,6 +3,10 @@ package com.example.main;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.content.SharedPreferences;
+>>>>>>> 5c3fc906bd028810797077303ca42482b4ffc586
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -31,7 +35,9 @@ public class GuideActivity extends Activity {
     private XBanner guideBanner;
     private TextView guideSkip;
     private List<TopBannerBean> images = new ArrayList<>();
-//    private CountDownTimer start;
+    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private final int REQUEST_CODE = 0xa123;
 
     private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -44,7 +50,6 @@ public class GuideActivity extends Activity {
         ButterKnife.bind(this);
         changeStatus();
         initView();
-
         initData();
 
         initPermission();
@@ -66,31 +71,14 @@ public class GuideActivity extends Activity {
 
 
     private void initData() {
-
-//        start = new CountDownTimer(5000, 1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                guideSkip.setText("跳转(" + Math.round((double) millisUntilFinished / 1000) + "s)");
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//
-//            }
-//        }.start();
-
         images.add(new TopBannerBean(R.drawable.frist111));
         images.add(new TopBannerBean(R.drawable.jgfhfhdfhdf));
         images.add(new TopBannerBean(R.drawable.hfcgxhdhd));
 
-//        guideBanner.setData(images,null);
         guideBanner.setBannerData(images);
         guideBanner.loadImage(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-
-                //1、此处使用的Glide加载图片，可自行替换自己项目中的图片加载框架
-                //2、返回的图片路径为Object类型，你只需要强转成你传输的类型就行，切记不要胡乱强转！
                 Glide.with(GuideActivity.this).load(images.get(position).getXBannerUrl()).into((ImageView) view);
             }
         });
@@ -104,6 +92,10 @@ public class GuideActivity extends Activity {
             public void onItemClick(XBanner banner, Object model, View view, int position) {
                 if (position == 2) {
                     guideBanner.stopAutoPlay();
+                    SharedPreferences preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isFirstIn", true);
+                    editor.commit();
                     startActivity(new Intent(GuideActivity.this, MainActivity.class));
                     finish();
                 }
@@ -115,6 +107,10 @@ public class GuideActivity extends Activity {
             @Override
             public void onClick(View v) {
                 guideBanner.stopAutoPlay();
+                SharedPreferences preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("isFirstIn", true);
+                editor.commit();
                 startActivity(new Intent(GuideActivity.this, MainActivity.class));
                 finish();
             }
@@ -134,6 +130,29 @@ public class GuideActivity extends Activity {
             }
         });
 
+        initPermission();
+    }
+
+    private void initPermission() {
+        for (String perm : perms) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, perms, REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            for (int result : grantResults) {
+                if (result == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    finish();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void initPermission() {

@@ -28,6 +28,7 @@ import com.kepler.jd.login.KeplerApiManager;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -69,6 +70,9 @@ public class ModuleBaseApplication extends MultiDexApplication {
                 JPushInterface.setDebugMode(true);
                 JPushInterface.init(this);
                 JpushUtil.getInstance(this);
+
+                //腾讯X5内核webview
+                QbSdk.initX5Environment(this, null);
 
                 //百度地图
                 initLocationClient();

@@ -2,11 +2,9 @@ package com.example.taobaoguest_android.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
-import com.example.module_base.ModuleBaseApplication;
 import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -68,6 +66,7 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             switch (baseResp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
                     SPUtil.addParm("wx_code", ((SendAuth.Resp) baseResp).code);
+                    LogUtil.e("------------->" + ((SendAuth.Resp) baseResp).code);
                     String weixin = SPUtil.getStringValue("weixin");
                     EventBus.getDefault().post(new EventBusBean("bind".equals(weixin) ? "WXBIND" : "WXCODE"));
                     finish();

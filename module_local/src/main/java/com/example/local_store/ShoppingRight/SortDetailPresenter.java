@@ -24,7 +24,7 @@ import okhttp3.ResponseBody;
  * email fat_chao@163.com.
  */
 
-public class SortDetailPresenter extends BasePresenter {
+public class SortDetailPresenter extends BasePresenter2 {
     @Override
     protected void getData() {
 

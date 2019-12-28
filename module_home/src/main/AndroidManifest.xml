@@ -24,7 +24,8 @@
 
         <activity
             android:name="com.example.web_detail.WebDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <activity
             android:name="com.example.universallist.UniversalListActivity"
@@ -32,7 +33,7 @@
         <activity
             android:name="com.example.shakestock.ShakeStockActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.example.freecharge.FreeChargeActivity"
             android:screenOrientation="portrait" />

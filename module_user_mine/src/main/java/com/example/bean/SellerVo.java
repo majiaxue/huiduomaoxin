@@ -60,6 +60,24 @@ public class SellerVo {
      */
     private String sellerFoodSafetyPermitUrl;
 
+    private String sellerLon;
+    private String sellerLat;
+
+    public String getSellerLon() {
+        return sellerLon;
+    }
+
+    public void setSellerLon(String sellerLon) {
+        this.sellerLon = sellerLon;
+    }
+
+    public String getSellerLat() {
+        return sellerLat;
+    }
+
+    public void setSellerLat(String sellerLat) {
+        this.sellerLat = sellerLat;
+    }
 
     public String getUserCode() {
         return userCode;
@@ -155,5 +173,25 @@ public class SellerVo {
 
     public void setSellerFoodSafetyPermitUrl(String sellerFoodSafetyPermitUrl) {
         this.sellerFoodSafetyPermitUrl = sellerFoodSafetyPermitUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "SellerVo{" +
+                "userCode='" + userCode + '\'' +
+                ", sellerLogo='" + sellerLogo + '\'' +
+                ", sellerShopName='" + sellerShopName + '\'' +
+                ", sellerType='" + sellerType + '\'' +
+                ", sellerCategory='" + sellerCategory + '\'' +
+                ", sellerName='" + sellerName + '\'' +
+                ", sellerPhone='" + sellerPhone + '\'' +
+                ", sellerAddredd='" + sellerAddredd + '\'' +
+                ", sellerIdPositiveCardUrl='" + sellerIdPositiveCardUrl + '\'' +
+                ", sellerIdBackCardUrl='" + sellerIdBackCardUrl + '\'' +
+                ", sellerBusinessLicenseUrl='" + sellerBusinessLicenseUrl + '\'' +
+                ", sellerFoodSafetyPermitUrl='" + sellerFoodSafetyPermitUrl + '\'' +
+                ", sellerLon=" + sellerLon +
+                ", sellerLat='" + sellerLat + '\'' +
+                '}';
     }
 }

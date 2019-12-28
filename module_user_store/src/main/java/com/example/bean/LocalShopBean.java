@@ -585,6 +585,8 @@ public class LocalShopBean extends SimpleBannerInfo implements Serializable {
                 ", seller_lat='" + seller_lat + '\'' +
                 ", sellerpics='" + sellerpics + '\'' +
                 ", pigxx_id='" + pigxx_id + '\'' +
+                ", min_point='" + min_point + '\'' +
+                ", full_reduction_amount='" + full_reduction_amount + '\'' +
                 ", couponList=" + couponList +
                 '}';
     }

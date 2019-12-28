@@ -17,9 +17,9 @@ import com.example.utils.StatusBarUtils;
  */
 public class WelcomeActivity extends Activity {
     private boolean isFirstIn = false;
-    private static final int TIME = 1500;
-    private static final int GO_HOME = 1000;
-    private static final int GO_GUIDE = 1001;
+    private final int TIME = 1500;
+    private final int GO_HOME = 1000;
+    private final int GO_GUIDE = 1001;
 
     private Handler handler = new Handler() {
         @Override
@@ -57,10 +57,6 @@ public class WelcomeActivity extends Activity {
         if (isFirstIn) {
             handler.sendEmptyMessageDelayed(GO_HOME, TIME);
         } else {
-            SharedPreferences preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("isFirstIn", true);
-            editor.commit();
             handler.sendEmptyMessageDelayed(GO_GUIDE, TIME);
         }
     }

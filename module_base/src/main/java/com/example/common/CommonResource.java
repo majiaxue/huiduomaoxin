@@ -8,6 +8,7 @@ public class CommonResource {
     public static final String BASEURL_9005 = "http://47.99.93.123:9999";   //参数192.168.0.110
     public static final String BASEURL_9010 = "http://47.99.93.123:9999";  //本地小店
     public static final String BASEURL_4000 = "http://47.99.93.123:4000";   //上传文件
+    public static final String BASEURL_8083 = "http://47.99.93.123:8083";
     public static final String BASEURL_PICT = "http://47.99.93.123:4000/file/";     //图片前缀
 
 
@@ -234,6 +235,7 @@ public class CommonResource {
     public static final String CART_REFRESH = "cartRefresh";        //从购物车的商品推荐进入商品详情，又跳到购物车时刷新购物车
     public static final String CITY = "city";      //网络发生变化，重新定位
     public static final String TAN_CONTENT = "tan_content";     //粘贴板内容
+    public static final String NET = "net";
 
     public static final String ISTAN = "isTan";     //粘贴板内容是否弹过popupwindow
     public static final String SELLERID = "sellerId";   //店铺ID

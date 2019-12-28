@@ -279,7 +279,6 @@
                     android:layout_marginTop="@dimen/dp_9"
                     android:background="@drawable/bg_5_f5f5f5"
                     android:gravity="top"
-                    android:hint="街道、楼牌号等"
                     android:padding="@dimen/dp_10"
                     android:textColorHint="#999999"
                     android:textCursorDrawable="@drawable/edit_cursor"

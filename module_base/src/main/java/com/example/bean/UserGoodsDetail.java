@@ -119,6 +119,15 @@ public class UserGoodsDetail implements Serializable {
     private String levelId;
     private Long sellerFavoriteShu;
     private double returnRatio;
+    private String customerService;
+
+    public String getCustomerService() {
+        return customerService;
+    }
+
+    public void setCustomerService(String customerService) {
+        this.customerService = customerService;
+    }
 
     public double getReturnRatio() {
         return returnRatio;
@@ -636,6 +645,7 @@ public class UserGoodsDetail implements Serializable {
                 ", levelId='" + levelId + '\'' +
                 ", sellerFavoriteShu=" + sellerFavoriteShu +
                 ", returnRatio=" + returnRatio +
+                ", customerService='" + customerService + '\'' +
                 '}';
     }
 

@@ -7,10 +7,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +24,14 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.example.bean.BusinessApplicationBean;
 import com.example.bean.SellerVo;
 import com.example.common.CommonResource;
@@ -38,7 +48,6 @@ import com.example.utils.SPUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,6 +116,10 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     private int type;
     private Map<String, String> map = new HashMap<>();
     private int categoryId;
+    private GeoCoder geoCoder;
+    private double lat = 0;
+    private double lon = 0;
+    private boolean editFocus = false;//详细地址是否有焦点 每当失去焦点获取详细地址对应的经纬度
 
     @Override
     public int getLayoutId() {
@@ -117,6 +130,7 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     public void initData() {
         ARouter.getInstance().inject(this);
         includeTitle.setText("商家申请");
+        geoCoder = GeoCoder.newInstance();
         if (CommonResource.HISTORY_LOCAL.equals(from)) {
             presenter.goodsClass(from);
         } else {
@@ -180,9 +194,11 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                     sellerVo.setSellerCategory(categoryId + "");
                     sellerVo.setSellerName(businessApplicationName.getText().toString());
                     sellerVo.setSellerPhone(businessApplicationPhone.getText().toString());
+                    sellerVo.setSellerLon(lon + "");
+                    sellerVo.setSellerLat(lat + "");
                     sellerVo.setSellerAddredd(businessApplicationAddressProvince.getText().toString() + " " + businessApplicationAddressCity.getText().toString() + " " + businessApplicationAddressArea.getText().toString() + " " + businessApplicationDetailAddress.getText().toString());
                     String sellerVoJson = JSON.toJSONString(sellerVo);
-                    LogUtil.e(sellerVoJson);
+
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sellerVoJson);
 
                     Observable<ResponseBody> responseBodyObservable = RetrofitUtil.getInstance().getApi(CommonResource.BASEURL_9003).postHeadWithBody(CommonResource.SELLERINFO, body, SPUtil.getToken());
@@ -263,7 +279,8 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
         businessApplicationShopAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.popupAddressWhere(businessApplicationAddressProvince, businessApplicationAddressCity, businessApplicationAddressArea);
+                ARouter.getInstance().build("/module_user_store/MapDetailActivity").navigation(BusinessApplicationActivity.this, 112);
+//                presenter.popupAddressWhere(businessApplicationAddressProvince, businessApplicationAddressCity, businessApplicationAddressArea);
             }
         });
         //商家类型
@@ -273,6 +290,97 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
                 presenter.popupGoodsType(businessApplicationShopTypeText, from);
             }
         });
+
+        businessApplicationDetailAddress.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editFocus = hasFocus;
+                if (!hasFocus && !"点击选择".equals(businessApplicationAddressProvince.getText().toString())) {
+                    geoCoder.geocode(new GeoCodeOption().city(businessApplicationAddressProvince.getText().toString()).address(businessApplicationDetailAddress.getText().toString()));
+                }
+            }
+        });
+
+        geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+            @Override
+            public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+                lat = geoCodeResult.getLocation().latitude;
+                lon = geoCodeResult.getLocation().longitude;
+                String address = geoCodeResult.getAddress();
+                LogUtil.e("-------->纬度：" + lat + "--------->经度：" + lon + "--------地址：" + address);
+            }
+
+            @Override
+            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+                if (reverseGeoCodeResult == null || reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                    //没有检索到结果
+                    LogUtil.e("没检索到结果");
+                    return;
+                } else {
+                    String address = reverseGeoCodeResult.getAddress();
+                    String sematicDescription = reverseGeoCodeResult.getSematicDescription();
+                    ReverseGeoCodeResult.AddressComponent addressDetail = reverseGeoCodeResult.getAddressDetail();
+                    businessApplicationAddressProvince.setText(addressDetail.city);
+                    businessApplicationDetailAddress.setText(address + sematicDescription);
+                    LogUtil.e("地址：" + address + "-----------" + sematicDescription);
+                    LogUtil.e("详细：" + addressDetail.toString());
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideKeyboard(v.getWindowToken());
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+     *
+     * @param v
+     * @param event
+     * @return
+     */
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
+
+    /**
+     * 获取InputMethodManager，隐藏软键盘
+     *
+     * @param token
+     */
+    private void hideKeyboard(IBinder token) {
+        if (token != null) {
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+
+        if (editFocus) {
+            businessApplicationDetailAddress.clearFocus();
+        }
     }
 
     @Override
@@ -283,6 +391,13 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
     @Override
     public BusinessApplicationPresenter createPresenter() {
         return new BusinessApplicationPresenter(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        geoCoder.destroy();
+        presenter.onViewDestroy();
     }
 
     @Override
@@ -302,16 +417,11 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
 
     @Override
     public void selectPhoto(int flag, File file, Uri uri) {
-//        BitmapFactory.Options options2 = new BitmapFactory.Options();
-//        options2.inPreferredConfig = Bitmap.Config.RGB_565;
-//        Bitmap bitmap = BitmapFactory.decodeFile(realFilePath, options2);
-//        LogUtil.e("图片---------------------------->" + bitmap.toString());
 
         if (1 == flag) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 2;
             Bitmap bm = BitmapFactory.decodeFile(file + "", options);
-            LogUtil.e("图片1111---------------------------->" + bm.toString());
             Uri uriImage = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null));
             if (type == 1) {
                 businessApplicationFrontPhoto.setImageURI(uriImage);
@@ -329,7 +439,6 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 2;
             Bitmap bm = BitmapFactory.decodeFile(realFilePath, options);
-            LogUtil.e("图片1111---------------------------->" + bm.toString());
             Uri uriImage = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null));
             if (type == 1) {
                 businessApplicationFrontPhoto.setImageURI(uriImage);
@@ -382,8 +491,12 @@ public class BusinessApplicationActivity extends BaseActivity<BusinessApplicatio
             case PHOTO_ALBUM_CODE:
                 presenter.parseUri(data);
                 break;
-            case CROP_CODE:
-//                presenter.uploadPhoto();
+            case 112:
+                lat = data.getDoubleExtra("lat", 0);
+                lon = data.getDoubleExtra("lon", 0);
+                LogUtil.e("lat:" + lat + "----------lon:" + lon);
+
+                geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(new LatLng(lat, lon)));
                 break;
         }
     }

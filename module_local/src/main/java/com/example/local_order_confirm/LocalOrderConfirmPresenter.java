@@ -23,7 +23,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alipay.sdk.app.PayTask;
-import com.example.adapter.CouponWalletAdapter;
 import com.example.adapter.MyRecyclerAdapter;
 import com.example.bean.AliPayBean;
 import com.example.bean.BaseEntity;
@@ -34,6 +33,7 @@ import com.example.bean.ShippingAddressBean;
 import com.example.bean.WeChatPayBean;
 import com.example.common.CommonResource;
 import com.example.local_order_confirm.adapter.LocalOrderConfirmAdapter;
+import com.example.local_order_confirm.adapter.LocalOrderCouponAdapter;
 import com.example.module_local.R;
 import com.example.mvp.BasePresenter;
 import com.example.net.OnDataListener;
@@ -299,7 +299,7 @@ public class LocalOrderConfirmPresenter extends BasePresenter<LocalOrderConfirmV
                 }
             });
 
-            CouponWalletAdapter walletAdapter = new CouponWalletAdapter(mContext, redPackageBeans, R.layout.rv_coupon_wallet);
+            LocalOrderCouponAdapter walletAdapter = new LocalOrderCouponAdapter(mContext, redPackageBeans, R.layout.rv_coupon_wallet);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             rv.setLayoutManager(linearLayoutManager);
             rv.setAdapter(walletAdapter);

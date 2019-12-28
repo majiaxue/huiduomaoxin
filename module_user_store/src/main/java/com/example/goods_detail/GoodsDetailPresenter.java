@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -1642,10 +1641,11 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailView> {
     }
 
     public void callServe() {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + CommonResource.SERVICE_PHONE);
-        intent.setData(data);
-        mContext.startActivity(intent);
+        ARouter.getInstance().build("/module_home/WebDetailActivity").withString("url", userGoodsDetail.getCustomerService()).navigation();
+//        Intent intent = new Intent(Intent.ACTION_DIAL);
+//        Uri data = Uri.parse("tel:" + CommonResource.SERVICE_PHONE);
+//        intent.setData(data);
+//        mContext.startActivity(intent);
     }
 
     public void seeBigPicture(int position) {
