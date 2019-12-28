@@ -17,7 +17,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.common.CommonResource;
 import com.example.entity.EventBusBean;
-import com.example.module_base.ModuleBaseApplication;
 import com.example.module_home.R;
 import com.example.module_home.R2;
 import com.example.mvp.BaseFragmentActivity;
@@ -34,10 +33,6 @@ import butterknife.BindView;
  */
 @Route(path = "/home/main")
 public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> implements MainView {
-
-    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-    private final int REQUEST_CODE = 0xa123;
 
     @BindView(R2.id.main_group)
     RadioGroup mainGroup;
@@ -61,8 +56,7 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
-        initPermission();
-//        ModuleBaseApplication.mLocationClient.restart();
+
         presenter.registerReceiver();
 //        WebSocketManager.getInstance().init(url);
 
@@ -82,6 +76,8 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         if ("login".equals(type)) {
             presenter.click(R.id.main_mine);
         }
+
+        presenter.uninstall("com.example.taobaoguest_android");
     }
 
     @Override
@@ -126,28 +122,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().post(new EventBusBean("login"));
-    }
-
-    private void initPermission() {
-        for (String perm : perms) {
-            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, perms, REQUEST_CODE);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            for (int result : grantResults) {
-                if (result == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    finish();
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

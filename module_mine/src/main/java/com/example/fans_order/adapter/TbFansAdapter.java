@@ -23,7 +23,7 @@ public class TbFansAdapter extends MyRecyclerAdapter<TbFansOrderBean> {
         }
 
         holder.setText(R.id.fans_order_list_name, data.getItemTitle())
-                .setImageUrl(R.id.fans_order_list_img, data.getImage())
+                .setImageUrl(R.id.fans_order_list_img, "https://" + data.getItemImg())
                 .setText(R.id.fans_order_list_price, "￥" + data.getPrice())
                 .setText(R.id.fans_order_list_count, "x" + data.getItemNum())
                 .setText(R.id.fans_order_list_total, "共" + data.getItemNum() + "件商品  合计：￥" + data.getAlipayTotalPrice())

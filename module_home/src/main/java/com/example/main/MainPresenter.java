@@ -55,6 +55,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -476,5 +477,39 @@ public class MainPresenter extends BasePresenter<MainView> {
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
         }
         mContext.startActivity(intent);
+    }
+
+    /**
+     * 卸载指定包名的应用
+     *
+     * @param packageName
+     */
+    public boolean uninstall(String packageName) {
+        boolean b = isAvilible(packageName);
+        if (b) {
+            Uri packageURI = Uri.parse("package:".concat(packageName));
+            Intent intent = new Intent(Intent.ACTION_DELETE);
+            intent.setData(packageURI);
+            mContext.startActivity(intent);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断该包名的应用是否安装
+     *
+     * @param packagename
+     * @return
+     */
+    private boolean isAvilible(String packagename) {
+        PackageManager pm = mContext.getPackageManager();
+        List<PackageInfo> pinfo = pm.getInstalledPackages(0);
+        for (int i = 0; i < pinfo.size(); i++) {
+            if (pinfo.get(i).packageName.equalsIgnoreCase(packagename)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

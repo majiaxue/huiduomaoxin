@@ -67,6 +67,15 @@ public class TbFansOrderBean {
     private String backMoney;
     private String fansIcon;
     private String fansName;
+    private String itemImg;
+
+    public String getItemImg() {
+        return itemImg;
+    }
+
+    public void setItemImg(String itemImg) {
+        this.itemImg = itemImg;
+    }
 
     public String getId() {
         return id;
@@ -314,5 +323,43 @@ public class TbFansOrderBean {
 
     public void setFansName(String fansName) {
         this.fansName = fansName;
+    }
+
+    @Override
+    public String toString() {
+        return "TbFansOrderBean{" +
+                "id='" + id + '\'' +
+                ", tradeParentId='" + tradeParentId + '\'' +
+                ", tradeId='" + tradeId + '\'' +
+                ", numIid='" + numIid + '\'' +
+                ", itemTitle='" + itemTitle + '\'' +
+                ", incomeRate='" + incomeRate + '\'' +
+                ", itemNum='" + itemNum + '\'' +
+                ", price='" + price + '\'' +
+                ", alipayTotalPrice='" + alipayTotalPrice + '\'' +
+                ", siteId='" + siteId + '\'' +
+                ", sellerNick='" + sellerNick + '\'' +
+                ", sellerShopTitle='" + sellerShopTitle + '\'' +
+                ", orderType='" + orderType + '\'' +
+                ", terminalType='" + terminalType + '\'' +
+                ", subsidyRate='" + subsidyRate + '\'' +
+                ", tkStatus='" + tkStatus + '\'' +
+                ", totalCommissionRate='" + totalCommissionRate + '\'' +
+                ", totalCommissionFree='" + totalCommissionFree + '\'' +
+                ", commission='" + commission + '\'' +
+                ", pubSharePreFee='" + pubSharePreFee + '\'' +
+                ", commissionRate='" + commissionRate + '\'' +
+                ", relationId='" + relationId + '\'' +
+                ", auctionCategory='" + auctionCategory + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", clickTime='" + clickTime + '\'' +
+                ", settleTime='" + settleTime + '\'' +
+                ", image='" + image + '\'' +
+                ", backMoney='" + backMoney + '\'' +
+                ", fansIcon='" + fansIcon + '\'' +
+                ", fansName='" + fansName + '\'' +
+                ", itemImg='" + itemImg + '\'' +
+                '}';
     }
 }

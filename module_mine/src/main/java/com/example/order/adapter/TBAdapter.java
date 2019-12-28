@@ -9,7 +9,6 @@ import com.example.adapter.RecyclerViewHolder;
 import com.example.bean.TBOrderBean;
 import com.example.module_mine.R;
 import com.example.utils.ArithUtil;
-import com.example.utils.LogUtil;
 import com.example.utils.SPUtil;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class TBAdapter extends MyRecyclerAdapter<TBOrderBean> {
                 .setText(R.id.order_list_name, data.getItemTitle())
                 .setText(R.id.order_list_price, "￥" + data.getPrice())
                 .setText(R.id.order_list_count, "x" + data.getItemNum())
-                .setImageUrl(R.id.order_list_img, data.getImage())
+                .setImageUrl(R.id.order_list_img, "https://" + data.getItemImg())
                 .setText(R.id.order_list_total, "共" + data.getItemNum() + "件商品  合计：￥" + data.getAlipayTotalPrice())
                 .setText(R.id.order_list_predict, "预计收益" + ArithUtil.mul(0.9, ArithUtil.mul(SPUtil.getFloatValue("back"), data.getPubSharePreFee())) + "元");
 

@@ -8,7 +8,7 @@ android {
     defaultConfig {
         //com.woxuan.fltk
         //com.example.taobaoguest_android
-        applicationId "com.example.taobaoguest_android"
+        applicationId "com.woxuan.fltk"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
@@ -34,8 +34,8 @@ android {
         multiDexKeepFile file('multidex-config.txt')
 
         manifestPlaceholders = [
-                JPUSH_PKGNAME: "com.example.taobaoguest_android",
-                JPUSH_APPKEY : "a6db2b6c24a07fc1b1de7abb", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_PKGNAME: "com.woxuan.fltk",
+                JPUSH_APPKEY : "e8eb0e02cac99b5fe1a59663", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
 
@@ -49,12 +49,12 @@ android {
             keyAlias 'key'
             keyPassword '123456'
             storePassword '123456'
-            storeFile file('C:\\Users\\Administrator\\taobaoke\\keystore.jks')
+            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
         }
         debug {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('C:\\Users\\Administrator\\taobaoke\\keystore.jks')
+            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
             storePassword '123456'
         }
     }
