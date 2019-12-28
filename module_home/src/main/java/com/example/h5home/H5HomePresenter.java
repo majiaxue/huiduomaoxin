@@ -3,16 +3,11 @@ package com.example.h5home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
-import android.view.View;
+import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
-import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,11 +21,14 @@ import com.example.utils.net_change_util.NetworkUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+
 import static android.content.Context.TELEPHONY_SERVICE;
 
 public class H5HomePresenter extends BasePresenter<H5HomeView> {
 
     private static String imei;
+    private static final String APP_CACAHE_DIRNAME = "/webcache";
 
     public H5HomePresenter(Context context) {
         super(context);
@@ -55,27 +53,30 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
         webSettings.setSupportZoom(false); //支持缩放，默认为true。是下面那个的前提。
         webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
-        // 应用可以有缓存 true false 没有缓存
-        // 应用可以有缓存
-        webSettings.setAppCacheEnabled(true);
-        String appCaceDir = mContext.getDir("cache", Context.MODE_PRIVATE).getPath();
-        webSettings.setAppCachePath(appCaceDir);
         webSettings.setAllowFileAccessFromFileURLs(true);
-        //设置可以使用localStorage
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);  //设置 缓存模式
+        // 开启 DOM storage API 功能
         webSettings.setDomStorageEnabled(true);
-        // 应用可以有数据库
+        //开启 database storage API 功能
         webSettings.setDatabaseEnabled(true);
-        String dbPath = mContext.getDir("database", Context.MODE_PRIVATE).getPath();
-        webSettings.setDatabasePath(dbPath);
-
-        webSettings.setAppCacheMaxSize(8 * 1024 * 1024); //缓存最多可以有8M
-        webSettings.setAllowFileAccess(true); // 可以读取文件缓存(manifest生效)
+        String cacheDirPath = mContext.getFilesDir().getAbsolutePath() + APP_CACAHE_DIRNAME;
+//      String cacheDirPath = getCacheDir().getAbsolutePath()+Constant.APP_DB_DIRNAME;
+        LogUtil.e("cacheDirPath=" + cacheDirPath);
+        //设置数据库缓存路径
+        webSettings.setDatabasePath(cacheDirPath);
+        //设置  Application Caches 缓存目录
+        webSettings.setAppCachePath(cacheDirPath);
+        //开启 Application Caches 功能
+        webSettings.setAppCacheEnabled(true);
+//        webSettings.setAppCacheMaxSize(1024 * 1024 * 1024); //缓存最多可以有8M
 
         //其他细节操作
         webSettings.setAllowFileAccess(true); //设置可以访问文件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
         webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+
         NetworkType networkType = NetworkUtil.getNetworkType(mContext);
         LogUtil.e("当前网络：" + networkType);
         if (networkType == NetworkType.NETWORK_NO) {
@@ -86,28 +87,26 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
 
         homeH5Web.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            @Override
             public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return super.shouldOverrideUrlLoading(view, url);
+            public boolean shouldOverrideUrlLoading(WebView webview, String url) {
+                webview.loadUrl(url);
+                return true;
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return super.shouldOverrideUrlLoading(view, request);
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             }
 
         });
@@ -115,21 +114,18 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
         homeH5Web.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                return super.onJsAlert(view, url, message, result);
+                result.confirm();
+                return true;
             }
 
             @Override
-            public void onExceededDatabaseQuota(String url, String databaseIdentifier,
-                                                long currentQuota, long estimatedSize, long totalUsedQuota,
-                                                WebStorage.QuotaUpdater quotaUpdater) {
-                quotaUpdater.updateQuota(estimatedSize * 2);
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                return super.onJsConfirm(view, url, message, result);
             }
 
-            // 扩充缓存的容量
             @Override
-            public void onReachedMaxAppCacheSize(long spaceNeeded, long totalUsedQuota,
-                                                 WebStorage.QuotaUpdater quotaUpdater) {
-                quotaUpdater.updateQuota(spaceNeeded * 2);
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                return super.onJsPrompt(view, url, message, defaultValue, result);
             }
         });
         //加载url地址
@@ -198,4 +194,58 @@ public class H5HomePresenter extends BasePresenter<H5HomeView> {
         LogUtil.e("Q_M ICCID--" + icc);//353515234688244
     }
 
+
+    /**
+     * 清除WebView缓存
+     */
+    public void clearWebViewCache() {
+
+        //清理Webview缓存数据库
+        try {
+            mContext.deleteDatabase("webview.db");
+            mContext.deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //WebView 缓存文件
+        File appCacheDir = new File(mContext.getFilesDir().getAbsolutePath() + APP_CACAHE_DIRNAME);
+        LogUtil.e("appCacheDir path=" + appCacheDir.getAbsolutePath());
+
+        File webviewCacheDir = new File(mContext.getCacheDir().getAbsolutePath() + "/webviewCache");
+        LogUtil.e("webviewCacheDir path=" + webviewCacheDir.getAbsolutePath());
+
+        //删除webview 缓存目录
+        if (webviewCacheDir.exists()) {
+            deleteFile(webviewCacheDir);
+        }
+        //删除webview 缓存 缓存目录
+        if (appCacheDir.exists()) {
+            deleteFile(appCacheDir);
+        }
+    }
+
+    /**
+     * 递归删除 文件/文件夹
+     *
+     * @param file
+     */
+    public void deleteFile(File file) {
+
+        LogUtil.e("delete file path=" + file.getAbsolutePath());
+
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
+            file.delete();
+        } else {
+            LogUtil.e("delete file no exists " + file.getAbsolutePath());
+        }
+    }
 }

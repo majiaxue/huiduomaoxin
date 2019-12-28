@@ -64,18 +64,19 @@ public class ShippingAddressPresenter extends BasePresenter<ShippingAddressView>
                 shippingAddressAdapter = new ShippingAddressAdapter(mContext, shippingAddressBeanList, R.layout.item_shipping_address_rec);
                 shippingAddressRec.setAdapter(shippingAddressAdapter);
 
-                if (!TextUtils.isEmpty(from)) {
-                    shippingAddressAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
+                shippingAddressAdapter.setOnItemClick(new MyRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView parent, View view, int position) {
+                        if (!TextUtils.isEmpty(from)) {
+
                             Intent intent = new Intent();
                             intent.putExtra("address", shippingAddressBeanList.get(position));
                             ((Activity) mContext).setResult(Activity.RESULT_OK, intent);
 //                        ARouter.getInstance().build("/user/order_confirm").withSerializable("address", shippingAddressBeanList.get(position)).navigation();
                             ((Activity) mContext).finish();
                         }
-                    });
-                }
+                    }
+                });
 
                 shippingAddressAdapter.setViewThreeOnClickListener(new MyRecyclerAdapter.ViewThreeOnClickListener() {
                     @Override
