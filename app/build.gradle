@@ -49,12 +49,12 @@ android {
             keyAlias 'key'
             keyPassword '123456'
             storePassword '123456'
-            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
+            storeFile file('F:\\workspace\\taobaokeandroid\\keystore.jks')
         }
         debug {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('E:/AndroidStudioProjects/taobaokeandroid/keystore.jks')
+            storeFile file('F:\\workspace\\taobaokeandroid\\keystore.jks')
             storePassword '123456'
         }
     }

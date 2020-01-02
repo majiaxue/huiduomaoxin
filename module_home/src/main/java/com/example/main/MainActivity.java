@@ -34,13 +34,10 @@ import butterknife.BindView;
 @Route(path = "/home/main")
 public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> implements MainView {
 
-<<<<<<< HEAD
 //    private final String[] perms = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
 //            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private final int REQUEST_CODE = 0xa123;
 
-=======
->>>>>>> 5c3fc906bd028810797077303ca42482b4ffc586
     @BindView(R2.id.main_group)
     RadioGroup mainGroup;
     @BindView(R2.id.main_shangcheng)
@@ -63,12 +60,8 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
         getWindow().setFormat(PixelFormat.TRANSPARENT);
-<<<<<<< HEAD
 //        initPermission();
 //        ModuleBaseApplication.mLocationClient.restart();
-=======
-
->>>>>>> 5c3fc906bd028810797077303ca42482b4ffc586
         presenter.registerReceiver();
 //        WebSocketManager.getInstance().init(url);
 
@@ -136,7 +129,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
         EventBus.getDefault().post(new EventBusBean("login"));
     }
 
-<<<<<<< HEAD
 //    private void initPermission() {
 //        for (String perm : perms) {
 //            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
@@ -159,8 +151,6 @@ public class MainActivity extends BaseFragmentActivity<MainView, MainPresenter> 
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 //    }
 
-=======
->>>>>>> 5c3fc906bd028810797077303ca42482b4ffc586
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0x111) {
